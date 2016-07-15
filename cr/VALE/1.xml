@@ -1,0 +1,985 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
+   <ans:cabecalho>
+      <ans:identificacaoTransacao>
+         <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
+         <ans:sequencialTransacao>7569</ans:sequencialTransacao>
+         <ans:dataRegistroTransacao>2015-11-09</ans:dataRegistroTransacao>
+         <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
+      </ans:identificacaoTransacao>
+      <ans:origem>
+         <ans:identificacaoPrestador>
+            <ans:codigoPrestadorNaOperadora>03304537000133</ans:codigoPrestadorNaOperadora>
+         </ans:identificacaoPrestador>
+      </ans:origem>
+      <ans:destino>
+         <ans:registroANS>324477</ans:registroANS>
+      </ans:destino>
+      <ans:versaoPadrao>3.02.00</ans:versaoPadrao>
+   </ans:cabecalho>
+   <ans:prestadorParaOperadora>
+      <ans:loteGuias>
+         <ans:numeroLote>7555</ans:numeroLote>
+            <ans:guiasTISS>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047538</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-09</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>9000350909</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Maria Lucia Bruna Ferreira</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>MANOEL VELOSO</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >0000000</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-09</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>09:37:18</ans:horaInicial>
+                            <ans:horaFinal>09:37:18</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>20102011</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >HOLTER</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >105.18</ans:valorUnitario >
+                        <ans:valorTotal>105.18</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>MANOEL VELOSO</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>09:37:18</ans:horaInicial>
+                            <ans:horaFinal>09:37:18</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>20102011</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >105.18</ans:valorUnitario >
+                            <ans:valorTotal>105.18</ans:valorTotal>
+                            <ans:descricaoProcedimento >HOLTER</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >105.18</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>105.18</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047541</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-09</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>0143350803</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Irismar Alves de Araújo</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>EDER J. ALEXANDRE</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >8355</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-09</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>09:45:28</ans:horaInicial>
+                            <ans:horaFinal>09:45:28</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >CONSULTA CARDIOLOGICA</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >60.00</ans:valorUnitario >
+                        <ans:valorTotal>60.00</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>EDER J. ALEXANDRE</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>8355</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>09:45:28</ans:horaInicial>
+                            <ans:horaFinal>09:45:28</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >60.00</ans:valorUnitario >
+                            <ans:valorTotal>60.00</ans:valorTotal>
+                            <ans:descricaoProcedimento >CONSULTA CARDIOLOGICA</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >60.00</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>60.00</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047669</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-10</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>0100000001</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Parkaprekti Kokaproti Jokukrek Aprekre</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>GLICERIO JUNIOR</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >6445</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-10</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>09:29:01</ans:horaInicial>
+                            <ans:horaFinal>09:29:01</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >CONSULTA CARDIOLOGICA</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >60.00</ans:valorUnitario >
+                        <ans:valorTotal>60.00</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>GLICERIO JUNIOR</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>6445</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>09:29:01</ans:horaInicial>
+                            <ans:horaFinal>09:29:01</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >60.00</ans:valorUnitario >
+                            <ans:valorTotal>60.00</ans:valorTotal>
+                            <ans:descricaoProcedimento >CONSULTA CARDIOLOGICA</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >60.00</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>60.00</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047714</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-10</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>9038531000</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Nilma da Costa Arantes</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>GLICERIO JUNIOR</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >6445</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-10</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>12:23:54</ans:horaInicial>
+                            <ans:horaFinal>12:23:54</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >RETORNO CARDIOLOGISTA</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >0.00</ans:valorUnitario >
+                        <ans:valorTotal>0.00</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>GLICERIO JUNIOR</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>6445</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>12:23:54</ans:horaInicial>
+                            <ans:horaFinal>12:23:54</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >0.00</ans:valorUnitario >
+                            <ans:valorTotal>0.00</ans:valorTotal>
+                            <ans:descricaoProcedimento >RETORNO CARDIOLOGISTA</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>0.00</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047741</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-10</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>9016306300</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Raimundo Oliveira de Abreu</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>GLICERIO JUNIOR</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >6445</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-10</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>15:15:28</ans:horaInicial>
+                            <ans:horaFinal>15:15:28</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >CONSULTA CARDIOLOGICA</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >60.00</ans:valorUnitario >
+                        <ans:valorTotal>60.00</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>GLICERIO JUNIOR</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>6445</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>15:15:28</ans:horaInicial>
+                            <ans:horaFinal>15:15:28</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >60.00</ans:valorUnitario >
+                            <ans:valorTotal>60.00</ans:valorTotal>
+                            <ans:descricaoProcedimento >CONSULTA CARDIOLOGICA</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >60.00</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>60.00</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047750</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-10</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>0152008101</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Danielle Araujo Maia Santos</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>GLICERIO JUNIOR</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >6445</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-10</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>15:53:56</ans:horaInicial>
+                            <ans:horaFinal>15:53:56</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >CONSULTA CARDIOLOGICA</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >60.00</ans:valorUnitario >
+                        <ans:valorTotal>60.00</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>GLICERIO JUNIOR</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>6445</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>15:53:56</ans:horaInicial>
+                            <ans:horaFinal>15:53:56</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>10101012</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >60.00</ans:valorUnitario >
+                            <ans:valorTotal>60.00</ans:valorTotal>
+                            <ans:descricaoProcedimento >CONSULTA CARDIOLOGICA</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >60.00</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>60.00</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047750</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-10</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>0152008101</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Danielle Araujo Maia Santos</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>GLICERIO JUNIOR</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >6445</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-10</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>16:26:59</ans:horaInicial>
+                            <ans:horaFinal>16:26:59</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>40101010</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >ELETROCARDIOGRAMA (ECG)</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >21.47</ans:valorUnitario >
+                        <ans:valorTotal>21.47</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>GLICERIO JUNIOR</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>6445</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>16:26:59</ans:horaInicial>
+                            <ans:horaFinal>16:26:59</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>40101010</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >21.47</ans:valorUnitario >
+                            <ans:valorTotal>21.47</ans:valorTotal>
+                            <ans:descricaoProcedimento >ELETROCARDIOGRAMA (ECG)</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >21.47</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>21.47</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047838</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-11</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>0152008101</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Danielle Araujo Maia Santos</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>EDER J. ALEXANDRE</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >8355</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-11</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>10:22:44</ans:horaInicial>
+                            <ans:horaFinal>10:22:44</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>40101037</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >TESTE ERGOMÉTRICO</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >112.44</ans:valorUnitario >
+                        <ans:valorTotal>112.44</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>EDER J. ALEXANDRE</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>8355</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>10:22:44</ans:horaInicial>
+                            <ans:horaFinal>10:22:44</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>40101037</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >112.44</ans:valorUnitario >
+                            <ans:valorTotal>112.44</ans:valorTotal>
+                            <ans:descricaoProcedimento >TESTE ERGOMÉTRICO</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >112.44</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>112.44</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>
+                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>368253</ans:registroANS>
+                     <ans:numeroGuiaPrestador>3047838</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>000000</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>2015-11-11</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>0152008101</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>Danielle Araujo Maia Santos</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>68970536272</ans:cpfContratado>
+                        <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>EDER J. ALEXANDRE</ans:nomeProfissional>
+                        <ans:conselhoProfissional>1</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >8355</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>2015-11-11</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>68970536272</ans:cpfContratado>
+                     <ans:nomeContratado>INSTITUTO DE CARDIOLOGIA MARABA</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>3348873</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                  
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>10:22:44</ans:horaInicial>
+                            <ans:horaFinal>10:22:44</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>40901106</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >ECOCARDIOGRAMA (ECOCOLOR)</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >224.00</ans:valorUnitario >
+                        <ans:valorTotal>224.00</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>34665</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>EDER J. ALEXANDRE</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>8355</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:outrasDespesas>
+                  <ans:despesa>
+                  <ans:codigoDespesa>01</ans:codigoDespesa>
+                  <ans:servicosExecutados>
+                            <ans:dataExecucao>2014-10-10</ans:dataExecucao>
+                            <ans:horaInicial>10:22:44</ans:horaInicial>
+                            <ans:horaFinal>10:22:44</ans:horaFinal>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                            <ans:codigoProcedimento>40901106</ans:codigoProcedimento>
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                            <ans:unidadeMedida>001</ans:unidadeMedida>
+                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                            <ans:valorUnitario >224.00</ans:valorUnitario >
+                            <ans:valorTotal>224.00</ans:valorTotal>
+                            <ans:descricaoProcedimento >ECOCARDIOGRAMA (ECOCOLOR)</ans:descricaoProcedimento >
+                            <ans:registroANVISA >1</ans:registroANVISA >
+                            <ans:codigoRefFabricante>1</ans:codigoRefFabricante>
+                            <ans:autorizacaoFuncionamento>1</ans:autorizacaoFuncionamento>
+                  </ans:servicosExecutados>
+                  </ans:despesa>
+                  </ans:outrasDespesas>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >224.00</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>224.00</ans:valorTotalGeral>
+                  </ans:valorTotal>
+               </ans:guiaSP-SADT>   </ans:guiasTISS>
+         
+      </ans:loteGuias>
+   </ans:prestadorParaOperadora>
+   <ans:epilogo>
+      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
+   </ans:epilogo>
+</ans:mensagemTISS>
+
