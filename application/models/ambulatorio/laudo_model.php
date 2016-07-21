@@ -1255,10 +1255,12 @@ class laudo_model extends Model {
                             pt.nome as procedimento,
                             p.nome as paciente,
                             o.nome as medico,
+                            pi.nome as indicacao,
                             al.exame_id,
                             al.ambulatorio_laudo_id');
         $this->db->from('tb_ambulatorio_laudo al');
         $this->db->join('tb_paciente p', 'p.paciente_id = al.paciente_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
         $this->db->join('tb_exames e', 'e.exames_id = al.exame_id ', 'left');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');

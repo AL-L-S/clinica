@@ -19,7 +19,7 @@ function mascara(data){
 
                     <dl class="dl_desconto_lista">
                         <dt>
-                        <label>Data</label>
+                            <label>Data</label>
                         </dt>
                         <dd>
                             <input type="text" name="data" id="data" maxlength="10" onkeypress="mascara(this)" class="texto00"/>
