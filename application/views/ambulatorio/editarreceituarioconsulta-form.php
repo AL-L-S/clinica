@@ -7,20 +7,16 @@
     $teste = $diff->format('%Ya %mm %dd');
 
 
-    if (count($receita) == 0) {
-        $receituario_id = 0;
-        $texto = "";
-        $medico = "";
-    } else {
-        $texto = $receita[0]->texto;
-        $receituario_id = $receita[0]->ambulatorio_receituario_especial_id;
-        $medico = $receita[0]->medico_parecer1;
-    }
+
+
+    $texto = $receita[0]->texto;
+    $receituario_id = $receita[0]->ambulatorio_receituario_id;
+    $medico = $receita[0]->medico_parecer1;
     $operador_id = $this->session->userdata('operador_id');
     ?>
 
     <div >
-        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarreceituarioespecial/<?= $ambulatorio_laudo_id ?>" method="post">
+        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/editarreceituario/<?= $receituario_id ?>" method="post">
             <div >
                 <fieldset>
                     <legend>Dados</legend>
@@ -40,24 +36,14 @@
                     <div>
 
                         <fieldset>
-                            <legend>Receituario Especial</legend>
-                            <div>
-                                <label>Modelos</label>
-                                <select name="exame" id="exame" class="size2" >
-                                    <option value='' >selecione</option>
-                                    <?php foreach ($lista as $item) { ?>
-                                        <option value="<?php echo $item->ambulatorio_modelo_receita_especial_id; ?>" ><?php echo $item->nome; ?></option>
-                                    <?php } ?>
-                                </select>
-
-                            </div>
+                            <legend>Receituario</legend>
                             <div>
                                 <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $receituario_id ?>"/>
                                 <input type="hidden" id="ambulatorio_laudo_id" name="ambulatorio_laudo_id" value="<?= $ambulatorio_laudo_id ?>"/>
                                 <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                             </div>
                             <div>
-                                <textarea id="laudo" name="laudo" rows="20" cols="80" style="width: 80%"></textarea></td>
+                                <textarea id="laudo" name="laudo" rows="20" cols="80" style="width: 80%"><?= $texto ?></textarea></td>
                             </div>
 
                             <hr>
@@ -68,43 +54,7 @@
                     </div> 
                 </div> 
             </div> 
-            <?
-            if (count($receita) > 0) {
-                ?>
-                <table id="table_agente_toxico" border="0">
-                    <thead>
-                        <tr>
-                            <th class="tabela_header">Descri&ccedil;&atilde;o</th>
-                            <th colspan="2" class="tabela_header">&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <?
-                    $estilo_linha = "tabela_content01";
-                    foreach ($receita as $item) {
-                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                        ?>
-                        <tbody>
-                            <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceitaespecial/<?= $item->ambulatorio_receituario_especial_id; ?>');">Imprimir
-                                        </a></div>
-                                </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituarioespecial/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_especial_id; ?>');">Editar
-                                        </a></div>
-                                </td>
-
-                            </tr>
-
-                        </tbody>
-                        <?
-                    }
-                }
-                ?>
-
-            </table> 
-
+            
             </fieldset>
 
     </div> 
@@ -126,7 +76,6 @@
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-
 
 
 
@@ -168,12 +117,12 @@
 
                                     });
 
-                                    $(function () {
-                                        $('#exame').change(function () {
+                                    $(function() {
+                                        $('#exame').change(function() {
                                             if ($(this).val()) {
                                                 //$('#laudo').hide();
                                                 $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/modelosreceitaespecial', {exame: $(this).val(), ajax: true}, function (j) {
+                                                $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function(j) {
                                                     options = "";
 
                                                     options += j[0].texto;
@@ -194,12 +143,12 @@
                                         });
                                     });
 
-                                    $(function () {
-                                        $('#linha').change(function () {
+                                    $(function() {
+                                        $('#linha').change(function() {
                                             if ($(this).val()) {
                                                 //$('#laudo').hide();
                                                 $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                                $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function(j) {
                                                     options = "";
 
                                                     options += j[0].texto;
@@ -215,15 +164,15 @@
                                         });
                                     });
 
-                                    $(function () {
+                                    $(function() {
                                         $("#linha2").autocomplete({
                                             source: "<?= base_url() ?>index?c=autocomplete&m=linhas",
                                             minLength: 1,
-                                            focus: function (event, ui) {
+                                            focus: function(event, ui) {
                                                 $("#linha2").val(ui.item.label);
                                                 return false;
                                             },
-                                            select: function (event, ui) {
+                                            select: function(event, ui) {
                                                 $("#linha2").val(ui.item.value);
                                                 tinyMCE.triggerSave(true, true);
                                                 document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
@@ -237,12 +186,12 @@
                                         });
                                     });
 
-                                    $(function (a) {
-                                        $('#anteriores').change(function () {
+                                    $(function(a) {
+                                        $('#anteriores').change(function() {
                                             if ($(this).val()) {
                                                 //$('#laudo').hide();
                                                 $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                                $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function(i) {
                                                     option = "";
 
                                                     option = i[0].texto;

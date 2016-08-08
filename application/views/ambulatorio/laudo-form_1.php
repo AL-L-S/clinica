@@ -33,14 +33,13 @@
                         $i++;
                     }
                 endif
-                    
                 ?>
                 <fieldset>
-                    <legend>Imagens : <font size="2"><b> <?= $i ?></b><?if($i > 0){?>  <div class="bt_link_new">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/limparnomes/" . $exame_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=400,height=200');">
-                                        <font size="-1">Limpar Nomes</font>
-                                    </a>
-                                </div><?}?></legend>
+                    <legend>Imagens : <font size="2"><b> <?= $i ?></b><? if ($i > 0) { ?>  <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/limparnomes/" . $exame_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=400,height=200');">
+                                    <font size="-1">Limpar Nomes</font>
+                                </a>
+                            </div><? } ?></legend>
                     <?
                     if ($arquivo_pasta != false):
                         foreach ($arquivo_pasta as $value) {
@@ -168,7 +167,7 @@
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
                                         <?php foreach ($linha as $item) { ?>
-                                                                                                                <option value="<?php echo $item->nome; ?>" ><?php echo $item->nome; ?></option>
+                                                                                                                    <option value="<?php echo $item->nome; ?>" ><?php echo $item->nome; ?></option>
                                         <?php } ?>
                                         </select>-->
 
@@ -185,8 +184,8 @@
                                             <option value=0 >selecione</option>
                                             <? foreach ($operadores as $value) : ?>
                                                 <option value="<?= $value->operador_id; ?>"<?
-                                                if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
-                                                endif;
+                                            if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
+                                            endif;
                                                 ?>><?= $value->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -205,8 +204,8 @@
                                             <option value="">Selecione</option>
                                             <? foreach ($operadores as $valor) : ?>
                                                 <option value="<?= $valor->operador_id; ?>"<?
-                                                if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
-                                                endif;
+                                            if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
+                                            endif;
                                                 ?>><?= $valor->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -238,17 +237,17 @@
                                         <label>situa&ccedil;&atilde;o</label>
                                         <select name="situacao" id="situacao" class="size2" onChange="muda(this)">
                                             <option value='DIGITANDO'<?
-                                            if (@$obj->_status == 'DIGITANDO'):echo 'selected';
-                                            endif;
-                                            ?> >DIGITANDO</option>
+                                        if (@$obj->_status == 'DIGITANDO'):echo 'selected';
+                                        endif;
+                                        ?> >DIGITANDO</option>
                                             <option value='REVISAR' <?
                                             if (@$obj->_status == 'REVISAR'):echo 'selected';
                                             endif;
-                                            ?> >REVISAR</option>
+                                        ?> >REVISAR</option>
                                             <option value='FINALIZADO' <?
                                             if (@$obj->_status == 'FINALIZADO'):echo 'selected';
                                             endif;
-                                            ?> >FINALIZADO</option>
+                                        ?> >FINALIZADO</option>
                                         </select>
                                     </div>
                                     <div>
@@ -299,20 +298,20 @@
                                     </div>
                                 </fieldset>
                                 <table border="1">
-            <tr>
-                <th>Tecla</th>
-                <th>Bot&atilde;o Fun&ccedil;&atilde;o</th>
-            </tr>
-            <tr>
-                <td>F8</td>
-                <td>Bot&atilde;o Visualizar Impress&atilde;o</td>
-            </tr>
-            <tr>
-                <td>F9</td>
-                <td>Bot&atilde;o Finalizar</td>
-            </tr>
+                                    <tr>
+                                        <th>Tecla</th>
+                                        <th>Bot&atilde;o Fun&ccedil;&atilde;o</th>
+                                    </tr>
+                                    <tr>
+                                        <td>F8</td>
+                                        <td>Bot&atilde;o Visualizar Impress&atilde;o</td>
+                                    </tr>
+                                    <tr>
+                                        <td>F9</td>
+                                        <td>Bot&atilde;o Finalizar</td>
+                                    </tr>
 
-        </table>
+                                </table>
                                 </form>
 
                             </div> 
@@ -336,190 +335,190 @@
                             <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
                             <script type="text/javascript">
 
-                        document.getElementById('titulosenha').style.display = "none";
-                        document.getElementById('senha').style.display = "none";
+                                                            document.getElementById('titulosenha').style.display = "none";
+                                                            document.getElementById('senha').style.display = "none";
 
-                        $(document).ready(function() {
-                            $("body").keypress(function(event) {
+                                                            $(document).ready(function () {
+                                                                $("body").keypress(function (event) {
 
-                                if (event.keyCode == 119)   // se a tecla apertada for 13 (enter)
-                                {
-                                    document.getElementById('Imprimir').click();
-                                }
-                                if (event.keyCode == 120)   // se a tecla apertada for 13 (enter)
-                                {
-                                    var combosituacao = document.getElementById("situacao");
-                                    combosituacao.selectedIndex = 2;
-                                    document.getElementById('titulosenha').style.display = "block";
-                                    document.getElementById('senha').style.display = "block";
-                                    document.form_laudo.senha.focus()
-                                }
-                            });
-                        });
-                        $(document).ready(function() {
-                            $('#sortable').sortable();
-                        });
-
-
-                        $(document).ready(function() {
-                            jQuery('#ficha_laudo').validate({
-                                rules: {
-                                    imagem: {
-                                        required: true
-                                    }
-                                },
-                                messages: {
-                                    imagem: {
-                                        required: "*"
-                                    }
-                                }
-                            });
-                        });
+                                                                    if (event.keyCode == 119)   // se a tecla apertada for 13 (enter)
+                                                                    {
+                                                                        document.getElementById('Imprimir').click();
+                                                                    }
+                                                                    if (event.keyCode == 120)   // se a tecla apertada for 13 (enter)
+                                                                    {
+                                                                        var combosituacao = document.getElementById("situacao");
+                                                                        combosituacao.selectedIndex = 2;
+                                                                        document.getElementById('titulosenha').style.display = "block";
+                                                                        document.getElementById('senha').style.display = "block";
+                                                                        document.form_laudo.senha.focus()
+                                                                    }
+                                                                });
+                                                            });
+                                                            $(document).ready(function () {
+                                                                $('#sortable').sortable();
+                                                            });
 
 
-
-                        function muda(obj) {
-                            if (obj.value == 'FINALIZADO') {
-                                document.getElementById('titulosenha').style.display = "block";
-                                document.getElementById('senha').style.display = "block";
-                            } else {
-                                document.getElementById('titulosenha').style.display = "none";
-                                document.getElementById('senha').style.display = "none";
-                            }
-                        }
+                                                            $(document).ready(function () {
+                                                                jQuery('#ficha_laudo').validate({
+                                                                    rules: {
+                                                                        imagem: {
+                                                                            required: true
+                                                                        }
+                                                                    },
+                                                                    messages: {
+                                                                        imagem: {
+                                                                            required: "*"
+                                                                        }
+                                                                    }
+                                                                });
+                                                            });
 
 
 
-                        tinyMCE.init({
-                            // General options
-                            mode: "textareas",
-                            theme: "advanced",
-                            plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                            // Theme options
-                            theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                            theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
-                            theme_advanced_toolbar_location: "top",
-                            theme_advanced_toolbar_align: "left",
-                            theme_advanced_statusbar_location: "bottom",
-                            theme_advanced_resizing: true,
-                            // Example content CSS (should be your site CSS)
-                            //                                    content_css : "css/content.css",
-                            content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                            // Drop lists for link/image/media/template dialogs
-                            template_external_list_url: "lists/template_list.js",
-                            external_link_list_url: "lists/link_list.js",
-                            external_image_list_url: "lists/image_list.js",
-                            media_external_list_url: "lists/media_list.js",
-                            // Style formats
-                            style_formats: [
-                                {title: 'Bold text', inline: 'b'},
-                                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                {title: 'Table styles'},
-                                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                            ],
-                            // Replace values for the template plugin
-                            template_replace_values: {
-                                username: "Some User",
-                                staffid: "991234"
-                            }
+                                                            function muda(obj) {
+                                                                if (obj.value == 'FINALIZADO') {
+                                                                    document.getElementById('titulosenha').style.display = "block";
+                                                                    document.getElementById('senha').style.display = "block";
+                                                                } else {
+                                                                    document.getElementById('titulosenha').style.display = "none";
+                                                                    document.getElementById('senha').style.display = "none";
+                                                                }
+                                                            }
 
-                        });
 
-                        $(function() {
-                            $('#exame').change(function() {
-                                if ($(this).val()) {
-                                    //$('#laudo').hide();
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function(j) {
-                                        options = "";
 
-                                        options += j[0].texto;
-                                        //                                                document.getElementById("laudo").value = options
+                                                            tinyMCE.init({
+                                                                // General options
+                                                                mode: "textareas",
+                                                                theme: "advanced",
+                                                                plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                                // Theme options
+                                                                theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                                theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
+                                                                theme_advanced_toolbar_location: "top",
+                                                                theme_advanced_toolbar_align: "left",
+                                                                theme_advanced_statusbar_location: "bottom",
+                                                                theme_advanced_resizing: true,
+                                                                // Example content CSS (should be your site CSS)
+                                                                //                                    content_css : "css/content.css",
+                                                                content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                                // Drop lists for link/image/media/template dialogs
+                                                                template_external_list_url: "lists/template_list.js",
+                                                                external_link_list_url: "lists/link_list.js",
+                                                                external_image_list_url: "lists/image_list.js",
+                                                                media_external_list_url: "lists/media_list.js",
+                                                                // Style formats
+                                                                style_formats: [
+                                                                    {title: 'Bold text', inline: 'b'},
+                                                                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                                    {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                                    {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                                    {title: 'Table styles'},
+                                                                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                                ],
+                                                                // Replace values for the template plugin
+                                                                template_replace_values: {
+                                                                    username: "Some User",
+                                                                    staffid: "991234"
+                                                                }
 
-                                        $('#laudo').val(options)
-                                        var ed = tinyMCE.get('laudo');
-                                        ed.setContent($('#laudo').val());
+                                                            });
 
-                                        //$('#laudo').val(options);
-                                        //$('#laudo').html(options).show();
-                                        //                                                $('.carregando').hide();
-                                        //history.go(0) 
-                                    });
-                                } else {
-                                    $('#laudo').html('value=""');
-                                }
-                            });
-                        });
+                                                            $(function () {
+                                                                $('#exame').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        //$('#laudo').hide();
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
 
-                        $(function() {
-                            $('#linha').change(function() {
-                                if ($(this).val()) {
-                                    //$('#laudo').hide();
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function(j) {
-                                        options = "";
+                                                                            options += j[0].texto;
+                                                                            //                                                document.getElementById("laudo").value = options
 
-                                        options += j[0].texto;
-                                        //                                                document.getElementById("laudo").value = $('#laudo').val() + options
-                                        $('#laudo').val() + options
-                                        var ed = tinyMCE.get('laudo');
-                                        ed.setContent($('#laudo').val());
-                                        //$('#laudo').html(options).show();
-                                    });
-                                } else {
-                                    $('#laudo').html('value=""');
-                                }
-                            });
-                        });
+                                                                            $('#laudo').val(options)
+                                                                            var ed = tinyMCE.get('laudo');
+                                                                            ed.setContent($('#laudo').val());
 
-                        $(function() {
-                            $("#linha2").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=linhas",
-                                minLength: 1,
-                                focus: function(event, ui) {
-                                    $("#linha2").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function(event, ui) {
-                                    $("#linha2").val(ui.item.value);
-                                    tinyMCE.triggerSave(true, true);
-                                    document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                                    $('#laudo').val() + ui.item.id
-                                    var ed = tinyMCE.get('laudo');
-                                    ed.setContent($('#laudo').val());
-                                    //$( "#laudo" ).val() + ui.item.id;
-                                    document.getElementById("linha2").value = ''
-                                    return false;
-                                }
-                            });
-                        });
+                                                                            //$('#laudo').val(options);
+                                                                            //$('#laudo').html(options).show();
+                                                                            //                                                $('.carregando').hide();
+                                                                            //history.go(0) 
+                                                                        });
+                                                                    } else {
+                                                                        $('#laudo').html('value=""');
+                                                                    }
+                                                                });
+                                                            });
 
-                        $(function(a) {
-                            $('#anteriores').change(function() {
-                                if ($(this).val()) {
-                                    //$('#laudo').hide();
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function(i) {
-                                        option = "";
+                                                            $(function () {
+                                                                $('#linha').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        //$('#laudo').hide();
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
 
-                                        option = i[0].texto;
-                                        tinyMCE.triggerSave();
-                                        document.getElementById("laudo").value = option
-                                        //$('#laudo').val(options);
-                                        //$('#laudo').html(options).show();
-                                        $('.carregando').hide();
-                                        history.go(0)
-                                    });
-                                } else {
-                                    $('#laudo').html('value="texto"');
-                                }
-                            });
-                        });
-                        //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                        $('.jqte-test').jqte();
+                                                                            options += j[0].texto;
+                                                                            //                                                document.getElementById("laudo").value = $('#laudo').val() + options
+                                                                            $('#laudo').val() + options
+                                                                            var ed = tinyMCE.get('laudo');
+                                                                            ed.setContent($('#laudo').val());
+                                                                            //$('#laudo').html(options).show();
+                                                                        });
+                                                                    } else {
+                                                                        $('#laudo').html('value=""');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#linha2").autocomplete({
+                                                                    source: "<?= base_url() ?>index?c=autocomplete&m=linhas",
+                                                                    minLength: 1,
+                                                                    focus: function (event, ui) {
+                                                                        $("#linha2").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#linha2").val(ui.item.value);
+                                                                        tinyMCE.triggerSave(true, true);
+                                                                        document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                                                                        $('#laudo').val() + ui.item.id
+                                                                        var ed = tinyMCE.get('laudo');
+                                                                        ed.setContent($('#laudo').val());
+                                                                        //$( "#laudo" ).val() + ui.item.id;
+                                                                        document.getElementById("linha2").value = ''
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function (a) {
+                                                                $('#anteriores').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        //$('#laudo').hide();
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                                                            option = "";
+
+                                                                            option = i[0].texto;
+                                                                            tinyMCE.triggerSave();
+                                                                            document.getElementById("laudo").value = option
+                                                                            //$('#laudo').val(options);
+                                                                            //$('#laudo').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                            history.go(0)
+                                                                        });
+                                                                    } else {
+                                                                        $('#laudo').html('value="texto"');
+                                                                    }
+                                                                });
+                                                            });
+                                                            //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+                                                            $('.jqte-test').jqte();
 
 
 
@@ -535,7 +534,7 @@
                                 <script type="text/javascript">
                                     alert("Sucesso ao finalizar Laudo");
                                 </script>
-                            <?
+                                <?
                             }
                             if ($mensagem == 1) {
                                 ?>

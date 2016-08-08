@@ -37,27 +37,27 @@
                 <div>
 
                     <fieldset>
-                        <legend>Receituario</legend>
-                                                            <div>
-                                        <label>Modelos</label>
-                                        <select name="exame" id="exame" class="size2" >
-                                            <option value='' >selecione</option>
-<?php foreach ($lista as $item) { ?>
-                                                <option value="<?php echo $item->ambulatorio_modelo_atestado_id; ?>" ><?php echo $item->nome; ?></option>
-                                            <?php } ?>
-                                        </select>
+                        <legend>Atestado</legend>
+                        <div>
+                            <label>Modelos</label>
+                            <select name="exame" id="exame" class="size2" >
+                                <option value='' >selecione</option>
+                                <?php foreach ($lista as $item) { ?>
+                                    <option value="<?php echo $item->ambulatorio_modelo_atestado_id; ?>" ><?php echo $item->nome; ?></option>
+                                <?php } ?>
+                            </select>
 
-                                    </div>
+                        </div>
                         <div>
                             <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $receituario_id ?>"/>
                             <input type="hidden" id="ambulatorio_laudo_id" name="ambulatorio_laudo_id" value="<?= $ambulatorio_laudo_id ?>"/>
-                            <input type="hidden" id="medico" name="medico" value="<?= $operador_id?>"/>
+                            <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                         </div>
                         <div>
-                            <textarea id="laudo" name="laudo" rows="25" cols="80" style="width: 80%"><?= $texto; ?></textarea></td>
+                            <textarea id="laudo" name="laudo" rows="25" cols="80" style="width: 80%"></textarea></td>
                         </div>
                         <table>
-                            <tr>
+<!--                            <tr>
 
                                 <td>
                                     &ensp;
@@ -67,7 +67,7 @@
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoatestado/<?= $ambulatorio_laudo_id ?>');">
                                             <center>Imprimir</center></a></div>
 
-                            </tr>
+                            </tr>-->
                         </table>
                         <hr>
                         <div>
@@ -78,6 +78,46 @@
 
                 </div> 
             </div> 
+
+            <?
+            if (count($receita) > 0) {
+                ?>
+                <table id="table_agente_toxico" border="0">
+                    <thead>
+                        <tr>
+                            <th class="tabela_header">Descri&ccedil;&atilde;o</th>
+                            <th colspan="2" class="tabela_header">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <?
+                    $estilo_linha = "tabela_content01";
+                    foreach ($receita as $item) {
+                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        ?>
+                        <tbody>
+                            <tr>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoatestado/<?= $item->ambulatorio_atestado_id; ?>');">Imprimir
+                                        </a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregaratestado/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_atestado_id; ?>');">Editar
+                                        </a></div>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                        <?
+                    }
+                }
+                ?>
+
+            </table> 
+
+            </fieldset>
+
     </div> 
 </div> <!-- Final da DIV content -->
 <style>
@@ -98,7 +138,7 @@
 <script type="text/javascript">
 
 
-                                            $(document).ready(function() {
+                                            $(document).ready(function () {
                                                 $('#sortable').sortable();
                                             });
 
@@ -142,12 +182,12 @@
 
                                             });
 
-                                            $(function() {
-                                                $('#exame').change(function() {
+                                            $(function () {
+                                                $('#exame').change(function () {
                                                     if ($(this).val()) {
                                                         //$('#laudo').hide();
                                                         $('.carregando').show();
-                                                        $.getJSON('<?= base_url() ?>autocomplete/modelosatestado', {exame: $(this).val(), ajax: true}, function(j) {
+                                                        $.getJSON('<?= base_url() ?>autocomplete/modelosatestado', {exame: $(this).val(), ajax: true}, function (j) {
                                                             options = "";
 
                                                             options += j[0].texto;
@@ -168,7 +208,7 @@
                                                 });
                                             });
 
-                     
+
 
 
 

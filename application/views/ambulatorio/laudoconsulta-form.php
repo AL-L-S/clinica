@@ -136,8 +136,9 @@
                                 </tr>
                                 <tr>
                                     <td width="40px;"><div class="bt_link_new">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');" >
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarexames/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');" >
                                                 S. exames</a></div>
+<!--                                        impressaolaudo -->
                                     </td>
                                 </tr>
                                 <tr>

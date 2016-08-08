@@ -44,7 +44,6 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    
     function unidadeleito() {
 
         if (isset($_GET['unidade'])) {
@@ -54,7 +53,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function horariosambulatorioconsulta() {
 
         if (isset($_GET['exame'])) {
@@ -64,7 +63,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function horariosambulatoriogeral() {
 
         if (isset($_GET['exame'])) {
@@ -251,6 +250,16 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompleteprocedimentos($_GET['convenio1']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentos();
+        }
+        echo json_encode($result);
+    }
+
+    function procedimentoporconvenio() {
+
+        if (isset($_GET['covenio'])) {
+            $result = $this->procedimentoplano->listarautocompleteprocedimentos($_GET['covenio']);
+        } else {
+            $result = $this->procedimentoplano->listarautocompleteprocedimentos();
         }
         echo json_encode($result);
     }
@@ -685,7 +694,6 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    
     function procedimentoconvenioconsulta4() {
 
         if (isset($_GET['convenio4'])) {
@@ -695,7 +703,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentovalor4() {
 
         if (isset($_GET['procedimento4'])) {
@@ -716,7 +724,6 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    
     function procedimentoconvenioconsulta5() {
 
         if (isset($_GET['convenio5'])) {
@@ -726,8 +733,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
-    
+
     function procedimentovalor5() {
 
         if (isset($_GET['procedimento5'])) {
@@ -747,7 +753,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-        
+
     function procedimentoconvenioconsulta6() {
 
         if (isset($_GET['convenio6'])) {
@@ -757,7 +763,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentovalor6() {
 
         if (isset($_GET['procedimento6'])) {
@@ -777,7 +783,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentoconvenioconsulta7() {
 
         if (isset($_GET['convenio7'])) {
@@ -807,7 +813,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentoconvenioconsulta8() {
 
         if (isset($_GET['convenio8'])) {
@@ -837,7 +843,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentoconvenioconsulta9() {
 
         if (isset($_GET['convenio9'])) {
@@ -867,7 +873,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentoconvenioconsulta10() {
 
         if (isset($_GET['convenio10'])) {
@@ -934,6 +940,30 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompletemodelosatestado($_GET['exame']);
         } else {
             $result = $this->exametemp->listarautocompletemodelosatestado();
+            //$result = 'oi nao';
+        }
+        echo json_encode($result);
+    }
+    
+        function modelossolicitarexames() {
+
+        if (isset($_GET['exame'])) {
+            //$result = 'oi';
+            $result = $this->exametemp->listarautocompletemodelossolicitarexames($_GET['exame']);
+        } else {
+            $result = $this->exametemp->listarautocompletemodelossolicitarexames();
+            //$result = 'oi nao';
+        }
+        echo json_encode($result);
+    }
+
+    function modelosreceitaespecial() {
+
+        if (isset($_GET['exame'])) {
+            //$result = 'oi';
+            $result = $this->exametemp->listarautocompletemodelosreceitaespecial($_GET['exame']);
+        } else {
+            $result = $this->exametemp->listarautocompletemodelosreceitaespecial();
             //$result = 'oi nao';
         }
         echo json_encode($result);

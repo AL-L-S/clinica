@@ -54,8 +54,9 @@
             $totalretorno = 0;
             foreach ($relatorio as $item) :
             $i++;
-            $procedimentopercentual = $item->procedimento_tuss_id;
-            $medicopercentual = $item->medico_parecer1;
+            $procedimentopercentual = $item->procedimento_convenio_id;
+//            $medicopercentual = $item->medico_parecer1;
+            $medicopercentual = $item->operador_id;
             $percentual = $this->guia->percentualmedico($procedimentopercentual, $medicopercentual);
             $testearray = count($percentual);
             if ($item->classificacao == 1) {

@@ -16,6 +16,7 @@ class Procedimentoplano extends BaseController {
     function Procedimentoplano() {
         parent::Controller();
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
+        $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ponto/Competencia_model', 'competencia');
         $this->load->library('mensagem');
@@ -34,6 +35,7 @@ class Procedimentoplano extends BaseController {
 
 //            $this->carregarView($data);
     }
+
     function procedimentoplanoconsulta($args = array()) {
 
         $this->loadView('ambulatorio/procedimentoplano-consulta', $args);
@@ -56,10 +58,17 @@ class Procedimentoplano extends BaseController {
     }
 
     function procedimentopercentualmedico() {
+        $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento();
+        $data['grupo'] = $this->procedimentoplano->listargrupo();
         $data['medicos'] = $this->operador_m->listarmedicos();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimentopercentualmedico-form', $data);
+    }
+
+    function editarprocedimento($procedimento_percentual_medico_id) {
+        $data['dados'] = $procedimento_percentual_medico_id;        
+        $this->loadView('ambulatorio/procedimentopercentualmedico-editar', $data);
     }
 
     function excluir($procedimentoplano_tuss_id) {
@@ -75,6 +84,17 @@ class Procedimentoplano extends BaseController {
 
     function excluirpercentual($procedimento_percentual_medico_id) {
         if ($this->procedimentoplano->excluirpercentual($procedimento_percentual_medico_id)) {
+            $mensagem = 'Sucesso ao excluir o Percentual medico';
+        } else {
+            $mensagem = 'Erro ao excluir o Percentual medico. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentual");
+    }
+
+    function excluirmedicopercentual($procedimento_percentual_medico_convenio_id) {
+        if ($this->procedimentoplano->excluirmedicopercentual($procedimento_percentual_medico_convenio_id)) {
             $mensagem = 'Sucesso ao excluir o Percentual medico';
         } else {
             $mensagem = 'Erro ao excluir o Percentual medico. Opera&ccedil;&atilde;o cancelada.';

@@ -13,14 +13,14 @@
         $medico = "";
     } else {
         $texto = $receita[0]->texto;
-        $receituario_id = $receita[0]->ambulatorio_receituario_especial_id;
+        $receituario_id = $receita[0]->ambulatorio_exame_id;
         $medico = $receita[0]->medico_parecer1;
     }
     $operador_id = $this->session->userdata('operador_id');
     ?>
 
     <div >
-        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarreceituarioespecial/<?= $ambulatorio_laudo_id ?>" method="post">
+        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarexame/<?= $ambulatorio_laudo_id ?>" method="post">
             <div >
                 <fieldset>
                     <legend>Dados</legend>
@@ -40,13 +40,13 @@
                     <div>
 
                         <fieldset>
-                            <legend>Receituario Especial</legend>
+                            <legend>Solicitar Exame</legend>
                             <div>
                                 <label>Modelos</label>
                                 <select name="exame" id="exame" class="size2" >
                                     <option value='' >selecione</option>
                                     <?php foreach ($lista as $item) { ?>
-                                        <option value="<?php echo $item->ambulatorio_modelo_receita_especial_id; ?>" ><?php echo $item->nome; ?></option>
+                                        <option value="<?php echo $item->ambulatorio_modelo_solicitar_exames_id; ?>" ><?php echo $item->nome; ?></option>
                                     <?php } ?>
                                 </select>
 
@@ -87,11 +87,11 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceitaespecial/<?= $item->ambulatorio_receituario_especial_id; ?>');">Imprimir
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo2/<?= $item->ambulatorio_exame_id; ?>');">Imprimir
                                         </a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituarioespecial/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_especial_id; ?>');">Editar
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarexame/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_exame_id; ?>');">Editar
                                         </a></div>
                                 </td>
 
@@ -173,7 +173,7 @@
                                             if ($(this).val()) {
                                                 //$('#laudo').hide();
                                                 $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/modelosreceitaespecial', {exame: $(this).val(), ajax: true}, function (j) {
+                                                $.getJSON('<?= base_url() ?>autocomplete/modelossolicitarexames', {exame: $(this).val(), ajax: true}, function (j) {
                                                     options = "";
 
                                                     options += j[0].texto;

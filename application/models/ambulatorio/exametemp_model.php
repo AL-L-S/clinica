@@ -1342,14 +1342,14 @@ class exametemp_model extends Model {
             $this->db->where("paciente_id is null");
             $query = $this->db->get();
             $return = $query->result();
-            
+
             $this->db->select('medico');
             $this->db->from('tb_procedimento_convenio pc');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->where("pc.procedimento_convenio_id", $_POST['procedimento1']);
             $querye = $this->db->get();
             $retorno = $querye->result();
-            
+
             $data = $return[0]->data;
             $inicio = $return[0]->inicio;
             $fim = $return[0]->fim;
@@ -1405,25 +1405,25 @@ class exametemp_model extends Model {
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
-                
+
                 $medico_consulta_id = $_POST['medico'];
-                
-                if ($retorno[0]->medico == 't'){
-                $this->db->set('ocupado', 't');
-                $this->db->where('medico_consulta_id', $medico_consulta_id);
-                $this->db->where('inicio >=', $inicio);
-                $this->db->where('inicio <=', $fim);
-                $this->db->where('data', $data);
-                $this->db->where('agenda_exames_id !=', $agenda_exames_id);
-                $this->db->update('tb_agenda_exames');
-                
-                $this->db->set('ocupado', 't');
-                $this->db->where('medico_consulta_id', $medico_consulta_id);
-                $this->db->where('inicio <=', $inicio);
-                $this->db->where('fim >=', $fim);
-                $this->db->where('data', $data);
-                $this->db->where('agenda_exames_id !=', $agenda_exames_id);
-                $this->db->update('tb_agenda_exames');
+
+                if ($retorno[0]->medico == 't') {
+                    $this->db->set('ocupado', 't');
+                    $this->db->where('medico_consulta_id', $medico_consulta_id);
+                    $this->db->where('inicio >', $inicio);
+                    $this->db->where('inicio <', $fim);
+                    $this->db->where('data', $data);
+                    $this->db->where('agenda_exames_id !=', $agenda_exames_id);
+                    $this->db->update('tb_agenda_exames');
+
+                    $this->db->set('ocupado', 't');
+                    $this->db->where('medico_consulta_id', $medico_consulta_id);
+                    $this->db->where('inicio <', $inicio);
+                    $this->db->where('fim >', $fim);
+                    $this->db->where('data', $data);
+                    $this->db->where('agenda_exames_id !=', $agenda_exames_id);
+                    $this->db->update('tb_agenda_exames');
                 }
                 return $paciente_id;
             } else {
@@ -2686,6 +2686,34 @@ class exametemp_model extends Model {
         $this->db->where('aml.ativo', 'true');
         if ($parametro != null) {
             $this->db->where('ambulatorio_modelo_atestado_id', $parametro);
+        }
+        $this->db->orderby('aml.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletemodelossolicitarexames($parametro = null) {
+        $this->db->select('aml.ambulatorio_modelo_solicitar_exames_id,
+                            aml.nome,
+                            aml.texto');
+        $this->db->from('tb_ambulatorio_modelo_solicitar_exames aml');
+        $this->db->where('aml.ativo', 'true');
+        if ($parametro != null) {
+            $this->db->where('ambulatorio_modelo_solicitar_exames_id', $parametro);
+        }
+        $this->db->orderby('aml.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletemodelosreceitaespecial($parametro = null) {
+        $this->db->select('aml.ambulatorio_modelo_receita_especial_id,
+                            aml.nome,
+                            aml.texto');
+        $this->db->from('tb_ambulatorio_modelo_receita_especial aml');
+        $this->db->where('aml.ativo', 'true');
+        if ($parametro != null) {
+            $this->db->where('ambulatorio_modelo_receita_especial_id', $parametro);
         }
         $this->db->orderby('aml.nome');
         $return = $this->db->get();

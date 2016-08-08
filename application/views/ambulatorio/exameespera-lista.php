@@ -70,7 +70,7 @@
                     <th class="tabela_header">Tempo</th>
                     <th class="tabela_header">Agenda</th>
                     <th class="tabela_header">Sala</th>
-                    <th class="tabela_header">Procedimento</th>
+                    <th class="tabela_header">Procedimento</th>              
                     <th class="tabela_header">Obs.</th>
                     <th class="tabela_header" colspan="4"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
@@ -90,12 +90,11 @@
                         $lista = $this->exame->listarexameagendaconfirmada2($_GET)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
-                            $dataFuturo = date("Y-m-d H:i:s");
+                            $dataFuturo = date("Y-m-d H:i:s");                           
                             $dataAtual = $item->data_autorizacao;
-
                             $date_time = new DateTime($dataAtual);
-                            $diff = $date_time->diff(new DateTime($dataFuturo));
-                            $teste = $diff->format('%H:%I:%S');
+                            $diff = $date_time->diff(new DateTime($dataFuturo));                         
+                            $teste = $diff->format('%H:%I:%S');                          
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
@@ -105,6 +104,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
+                                
                                 <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $item->observacoes; ?></b></td>
                                 <? if ($situacaocaixa[0]->caixa == 't') { ?>
                                     <? if ($item->dinheiro == 'f') { ?>
