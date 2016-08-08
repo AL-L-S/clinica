@@ -61,7 +61,7 @@
             </tr>
             <? IF (COUNT($medico) > 0) { ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MEDICO: <?= $medico[0]->nome; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MEDICO: <?= $medico[0]->operador; ?></th>
                 </tr>
             <? } ELSE { ?>
                 <tr>

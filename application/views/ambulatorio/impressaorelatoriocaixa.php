@@ -14,7 +14,7 @@
     <? } ?>
     <hr>
     <?
-    if ($contador > 0) {
+    if (count($relatorio) > 0) {
         ?>
         <table >
             <thead>
@@ -104,9 +104,9 @@
                                 <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>
                             <? } ?>
                             <? if ($item->exames_id == "") { ?>
-                                <td><font color="red" size="-2"><?= utf8_decode($item->exame); ?></td>
+                                <td><font color="red" size="-2"><?= utf8_decode($item->exame). " "  . $item->numero_sessao; ?></td>
                             <? } else { ?>
-                                <td><font size="-2"><?= utf8_decode($item->exame); ?></td>
+                                <td><font size="-2"><?= utf8_decode($item->exame). " "  . $item->numero_sessao; ?></td>
                             <? } ?>
                             <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -387,9 +387,9 @@
                                 <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>
                             <? } ?>
                             <? if ($item->exames_id == "") { ?>
-                                <td><font color="red" size="-2"><?= utf8_decode($item->exame); ?></td>
+                                <td><font color="red" size="-2"><?= utf8_decode($item->exame). " "  . $item->numero_sessao; ?></td>
                             <? } else { ?>
-                                <td><font size="-2"><?= utf8_decode($item->exame); ?></td>
+                                <td><font size="-2"><?= utf8_decode($item->exame). " "  . $item->numero_sessao; ?></td>
                             <? } ?>
                             <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>

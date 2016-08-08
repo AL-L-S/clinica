@@ -116,18 +116,18 @@ class Guia extends BaseController {
         }
 
 //HUMANA        
-        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
-            $this->load->View('ambulatorio/impressaofichaus', $data);
-        }
-        if ($grupo == "MAMOGRAFIA") {
-            $this->load->View('ambulatorio/impressaofichamamografia', $data);
-        }
-        if ($grupo == "DENSITOMETRIA") {
-            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
-        }
-        if ($grupo == "RM") {
-            $this->load->View('ambulatorio/impressaoficharm', $data);
-        }
+//        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
+//            $this->load->View('ambulatorio/impressaofichaus', $data);
+//        }
+//        if ($grupo == "MAMOGRAFIA") {
+//            $this->load->View('ambulatorio/impressaofichamamografia', $data);
+//        }
+//        if ($grupo == "DENSITOMETRIA") {
+//            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
+//        }
+//        if ($grupo == "RM") {
+//            $this->load->View('ambulatorio/impressaoficharm', $data);
+//        }
 //PROIMAGEM       
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
 //            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
@@ -175,11 +175,11 @@ class Guia extends BaseController {
         // CLINICA MED
 //        $this->load->View('ambulatorio/impressaofichamed', $data);
         //RONALDO
-//            if ($dinheiro == "t") {
-//                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-//            } else {
-//                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-//            }
+            if ($dinheiro == "t") {
+                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+            }
         // CLINICA SAO PAULO
 //        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
     }
@@ -929,7 +929,43 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriocancelamento', $data);
     }
+    
+    function relatoriotempoesperaexame() {
 
+        $this->loadView('ambulatorio/relatoriotempoesperaexame');
+    }
+    
+    function relatoriotemposalaespera() {
+
+        $this->loadView('ambulatorio/relatoriotemposalaespera');
+    }
+    
+    function gerarelatoriotempoesperaexame() {
+        $data['convenio'] = $_POST['convenio'];
+        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        if ($_POST['convenio'] != '') {
+            $data['convenios'] = $this->guia->listardados($_POST['convenio']);
+        } else {
+            $data['convenios'] = 0;
+        }
+        $data['listar'] = $this->exame->gerarelatoriotempoesperaexame();
+        $this->load->View('ambulatorio/impressaorelatoriotempoesperaexame', $data);
+    }
+    
+    function gerarelatoriotemposalaespera() {
+        $data['convenio'] = $_POST['convenio'];
+        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        if ($_POST['convenio'] != '') {
+            $data['convenios'] = $this->guia->listardados($_POST['convenio']);
+        } else {
+            $data['convenios'] = 0;
+        }
+        $data['listar'] = $this->exame->gerarelatoriotemposalaespera();
+        $this->load->View('ambulatorio/impressaorelatoriotemposalaespera', $data);
+    }
+    
     function gerarelatoriocancelamento() {
         $data['convenio'] = $_POST['convenio'];
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];

@@ -102,7 +102,7 @@
                         <tr>
                             <td ><?= $item->ambulatorio_guia_id; ?></td>
                             <td ><?= $item->autorizacao; ?></td>
-                            <td ><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');"><?= substr($item->procedimento, 0, 16); ?></a></td>
+                            <td ><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');"><?= substr($item->procedimento, 0, 16) . " ". $item->numero_sessao; ?></a></td>
                             <td ><?= $item->codigo; ?></td>
                             <td ><?= substr($item->medico, 0, 10); ?></td>
                             <td ><?= substr($item->data_criacao, 8, 2) . "/" . substr($item->data_criacao, 5, 2) . "/" . substr($item->data_criacao, 0, 4); ?></td>

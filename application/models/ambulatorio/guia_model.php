@@ -376,6 +376,7 @@ class guia_model extends Model {
         $this->db->select('ac.agenda_exames_id,
                             ac.data_cadastro as data,
                             ac.operador_cadastro,
+                            o.nome as operador,
                             c.nome as convenio,
                             ac.paciente_id,
                             ae.data_autorizacao,
@@ -394,6 +395,7 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_ambulatorio_cancelamento ca', 'ca.ambulatorio_cancelamento_id = ac.ambulatorio_cancelamento_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ac.operador_cadastro', 'left');
         $this->db->where("ac.data_cadastro >=", $_POST['txtdata_inicio'] . ' 00:00:00');
         $this->db->where("ac.data_cadastro <=", $_POST['txtdata_fim'] . ' 23:59:59');
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
@@ -2715,6 +2717,7 @@ ORDER BY p.nome";
                             ae.valor2,
                             ae.forma_pagamento3,
                             ae.valor3,
+                            ae.numero_sessao,
                             ae.forma_pagamento4,
                             ae.valor4,
                             ae.autorizacao,
@@ -4774,7 +4777,7 @@ ORDER BY ae.agenda_exames_id)";
                 $agenda_exames_id = $this->db->insert_id();
                 $this->db->set('senha', md5($agenda_exames_id));
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
-                $this->db->insert('tb_agenda_exames');
+                $this->db->update('tb_agenda_exames');
             }
 
             return $agenda_exames_id;
@@ -5035,7 +5038,11 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('fim', $hora);
                 if ($_POST['formapamento'] != 0 && $dinheiro == "t") {
                     $this->db->set('faturado', 't');
+                    if ($index == 1) {
                     $this->db->set('valor1', $_POST['valor1']);
+                    }else {
+                       $this->db->set('valor1', 0); 
+                    }
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('forma_pagamento', $_POST['formapamento']);

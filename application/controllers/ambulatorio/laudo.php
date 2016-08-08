@@ -36,8 +36,6 @@ class Laudo extends BaseController {
 
     function pesquisar($args = array()) {
         $this->loadView('ambulatorio/laudo-lista', $args);
-
-//            $this->carregarView($data);
     }
 
     function pesquisarconsulta($args = array()) {
@@ -144,8 +142,8 @@ class Laudo extends BaseController {
         $data['procedimento_tuss_id'] = $procedimento_tuss_id;
 
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-        $this->load->View('ambulatorio/laudo-form_1', $data);
-//        $this->load->View('ambulatorio/laudo-form', $data);
+//        $this->load->View('ambulatorio/laudo-form_1', $data);
+        $this->load->View('ambulatorio/laudo-form', $data);
     }
 
     function carregarlaudolaboratorial($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
@@ -627,9 +625,12 @@ class Laudo extends BaseController {
 //        $html = $this->load->view('ambulatorio/impressaolaudo_6', $data, true);
 //        pdf($html, $filename, $cabecalho, $rodape, $grupo);
 //        $this->load->View('ambulatorio/impressaolaudo_6', $data);
+//        
+//        
         //RONALDO BARREIRA
 //        $medicoparecer = $data['laudo']['0']->medico_parecer1;
 //        $cabecalho = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 10pt;'>
+//            <tr><td ><center><img align = 'left'  width='140px' height='40px' src='img/cabecalho.jpg'><center></td></tr>
 //            <tr><td style='vertical-align: bottom; font-family: serif; font-size: 14pt;' colspan='2'><center><u>Clinica Radiol&oacute;gica Dr. Ronaldo Barreira</u><center></td></tr>
 //            <tr><td colspan='2'><center>Rua 24 de maio, 961 - Fone: 3226-9536<center></td></tr>
 //            <tr><td></td><td></td></tr>
@@ -1314,36 +1315,34 @@ class Laudo extends BaseController {
 
 
 //GERAL
-//        $this->carregarView($data, 'giah/servidor-form');
-//        $filename = "laudo.pdf";
-//        $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
-//        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+        $filename = "laudo.pdf";
+        $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
+        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
 //humana
-//        $this->carregarView($data, 'giah/servidor-form');
 //        $filename = "laudo.pdf";
 //        $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
 //        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'>";
         //CAGE
-
-        $filename = "laudo.pdf";
-        if ($data['laudo']['0']->sexo == "F") {
-            $SEXO = 'FEMININO';
-        } else {
-            $SEXO = 'MASCULINO';
-        }
-        $filename = "laudo.pdf";
-        $cabecalho = "<table>
-
-<tr>
-</td><td width='430px'>Nome.:" . $data['laudo']['0']->paciente . "</td><td></td>
-</tr>
-<tr>
-  </td><td >Sexo:" . $SEXO . " Idade:" . substr($teste, 0, 2) . "</td><td></td>
-</tr>
-
-</table>";
-        $rodape = "";
-        $html = $this->load->view('ambulatorio/impressaoimagem6cage', $data, true);
+//
+//        $filename = "laudo.pdf";
+//        if ($data['laudo']['0']->sexo == "F") {
+//            $SEXO = 'FEMININO';
+//        } else {
+//            $SEXO = 'MASCULINO';
+//        }
+//        $filename = "laudo.pdf";
+//        $cabecalho = "<table>
+//
+//<tr>
+//</td><td width='430px'>Nome.:" . $data['laudo']['0']->paciente . "</td><td></td>
+//</tr>
+//<tr>
+//  </td><td >Sexo:" . $SEXO . " Idade:" . substr($teste, 0, 2) . "</td><td></td>
+//</tr>
+//
+//</table>";
+//        $rodape = "";
+//        $html = $this->load->view('ambulatorio/impressaoimagem6cage', $data, true);
         //GASTROSUL
 //
 //        $filename = "laudo.pdf";
@@ -1374,29 +1373,29 @@ class Laudo extends BaseController {
 //        $cabecalho = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame: Dr(a). " . $data['laudo']['0']->procedimento . "</td></tr></table>";
 //        $rodape = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table>";
 //        
-//        if ($verificador == 1) {
-//            $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
-//        }
-//        if ($verificador == 2) {
-//            $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
-//        }
-//        if ($verificador == 3) {
-//            $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
-//        }
-//        if ($verificador == 4) {
-//            $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
-//        }
-//        if ($verificador == 5) {
-//            $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
-//        }
-//        if ($verificador == 6 || $verificador == "") {
-//
-//            $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
-//        }
-//        $grupo = $data['laudo']['0']->grupo;
-//
-//        pdf($html, $filename, $cabecalho, $rodape, $grupo);
-        pdf($html, $filename, $cabecalho, $rodape);
+        if ($verificador == 1) {
+            $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
+        }
+        if ($verificador == 2) {
+            $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
+        }
+        if ($verificador == 3) {
+            $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
+        }
+        if ($verificador == 4) {
+            $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
+        }
+        if ($verificador == 5) {
+            $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
+        }
+        if ($verificador == 6 || $verificador == "") {
+
+            $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
+        }
+        $grupo = $data['laudo']['0']->grupo;
+
+        pdf($html, $filename, $cabecalho, $rodape, $grupo);
+//        pdf($html, $filename, $cabecalho, $rodape);
     }
 
     function carregarrevisao($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {

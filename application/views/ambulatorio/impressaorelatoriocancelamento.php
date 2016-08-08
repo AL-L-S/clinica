@@ -46,7 +46,7 @@
                             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
         border-bottom:none;mso-border-top-alt:none;border-left:
-        none;border-right:none;' colspan="8">&nbsp;</th>
+        none;border-right:none;' colspan="9">&nbsp;</th>
             </tr>
     <? if ($contador > 0) {
         ?>
@@ -58,12 +58,13 @@
                     <td class="tabela_teste" ><font size="-2">D. Cancelamento</th>
                     <td class="tabela_teste"><font size="-2">Convenio</th>
                     <td class="tabela_teste"><font size="-2">Motivo</th>
+                    <td class="tabela_teste"><font size="-2">Usuario</th>
                     <td class="tabela_teste"><font size="-2">Observa&ccedil;&atilde;o</th>
                 </tr>
                                             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
         border-bottom:none;mso-border-top-alt:none;border-left:
-        none;border-right:none;' colspan="8">&nbsp;</th>
+        none;border-right:none;' colspan="9">&nbsp;</th>
             </tr>
             </thead>
             <tbody>
@@ -101,6 +102,7 @@
                              <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->convenio); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->descricao); ?></td>
+                            <td><font size="-2"><?= utf8_decode($item->operador); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->observacao_cancelamento); ?></td>
                         </tr>
 

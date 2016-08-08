@@ -1,6 +1,6 @@
 <?php
 
-class entrada_model extends Model {
+class inventario_model extends Model {
 
     var $_estoque_entrada_id = null;
     var $_razao_social = null;
@@ -14,7 +14,7 @@ class entrada_model extends Model {
     var $_valor_compra = null;
     var $_validade = null;
 
-    function Entrada_model($estoque_entrada_id = null) {
+    function Inventario_model($estoque_entrada_id = null) {
         parent::Model();
         if (isset($estoque_entrada_id)) {
             $this->instanciar($estoque_entrada_id);
@@ -39,14 +39,14 @@ class entrada_model extends Model {
         $this->db->join('tb_estoque_fornecedor f', 'f.estoque_fornecedor_id = e.fornecedor_id', 'left');
         $this->db->join('tb_estoque_armazem a', 'a.estoque_armazem_id = e.armazem_id', 'left');
         $this->db->where('e.ativo', 'true');
-        $this->db->where('e.inventario', 'false');
+        $this->db->where('e.inventario', 'true');
         if (isset($args['produto']) && strlen($args['produto']) > 0) {
             $this->db->where('p.descricao ilike', "%" . $args['produto'] . "%");
         }
         if (isset($args['fornecedor']) && strlen($args['fornecedor']) > 0) {
             $this->db->where('f.razao_social ilike', "%" . $args['fornecedor'] . "%");
         }
-        if (isset($args['armazem']) && strlen($args['armazem']) > 0) {
+        if (isset($args['armazem']) && strlen($args['armazemo']) > 0) {
             $this->db->where('a.descricao ilike', "%" . $args['armazem'] . "%");
         }
         if (isset($args['nota']) && strlen($args['nota']) > 0) {
@@ -512,10 +512,9 @@ class entrada_model extends Model {
             $estoque_entrada_id = $_POST['txtestoque_entrada_id'];
             $this->db->set('produto_id', $_POST['txtproduto']);
             $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
+            $this->db->set('inventario', 't');
             $this->db->set('armazem_id', $_POST['txtarmazem']);
-            $this->db->set('valor_compra', str_replace(",", ".", str_replace(".", "", $_POST['compra'])));
             $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
-            $this->db->set('nota_fiscal', str_replace(",", ".", str_replace(".", "", $_POST['nota'])));
             if ($_POST['validade'] != "//") {
                 $this->db->set('validade', $_POST['validade']);
             }
@@ -536,9 +535,7 @@ class entrada_model extends Model {
                 $this->db->set('produto_id', $_POST['txtproduto']);
                 $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
                 $this->db->set('armazem_id', $_POST['txtarmazem']);
-                $this->db->set('valor_compra', str_replace(",", ".", str_replace(".", "", $_POST['compra'])));
                 $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
-                $this->db->set('nota_fiscal', str_replace(",", ".", str_replace(".", "", $_POST['nota'])));
                 if ($_POST['validade'] != "//") {
                     $this->db->set('validade', $_POST['validade']);
                 }
@@ -555,9 +552,7 @@ class entrada_model extends Model {
                 $this->db->set('produto_id', $_POST['txtproduto']);
                 $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
                 $this->db->set('armazem_id', $_POST['txtarmazem']);
-                $this->db->set('valor_compra', str_replace(",", ".", str_replace(".", "", $_POST['compra'])));
                 $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
-                $this->db->set('nota_fiscal', str_replace(",", ".", str_replace(".", "", $_POST['nota'])));
                 if ($_POST['validade'] != "//") {
                     $this->db->set('validade', $_POST['validade']);
                 }

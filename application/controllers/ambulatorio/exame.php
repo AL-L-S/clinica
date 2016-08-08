@@ -1529,7 +1529,8 @@ class Exame extends BaseController {
                   </ans:cabecalhoGuia>
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
-                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAutorizacao>
+                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 8, 2) . "/" . substr($value->data_autorizacao, 5, 2) . "/" . substr($value->data_autorizacao, 0, 4) . "</ans:dataAutorizacao>
+                  <ans:senhaAutorizacao>" . $value->autorizacao . "</ans:senhaAutorizacao>                  
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>
                      <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
@@ -1568,7 +1569,6 @@ class Exame extends BaseController {
                   <ans:motivoEncerramento>41</ans:motivoEncerramento>
                   </ans:dadosAtendimento>
                   <ans:procedimentosExecutados>
-                  
                      <ans:procedimentoExecutado>
                             <ans:dataExecucao>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataExecucao>
                             <ans:horaInicial>" . substr($value->data_autorizacao, 11, 8) . "</ans:horaInicial>
@@ -1847,7 +1847,8 @@ class Exame extends BaseController {
                   </ans:cabecalhoGuia>
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
-                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAutorizacao>
+                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 8, 2) . "/" . substr($value->data_autorizacao, 5, 2) . "/" . substr($value->data_autorizacao, 0, 4) . "</ans:dataAutorizacao>
+                  <ans:senhaAutorizacao>" . $value->autorizacao . "</ans:senhaAutorizacao>                  
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>
                      <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
