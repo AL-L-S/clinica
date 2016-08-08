@@ -142,8 +142,8 @@ class Laudo extends BaseController {
         $data['procedimento_tuss_id'] = $procedimento_tuss_id;
 
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-//        $this->load->View('ambulatorio/laudo-form_1', $data);
-        $this->load->View('ambulatorio/laudo-form', $data);
+        $this->load->View('ambulatorio/laudo-form_1', $data);
+//        $this->load->View('ambulatorio/laudo-form', $data);
     }
 
     function carregarlaudolaboratorial($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
