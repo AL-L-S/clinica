@@ -87,7 +87,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo2/<?= $item->ambulatorio_exame_id; ?>');">Imprimir
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaosolicitarexame/<?= $item->ambulatorio_exame_id; ?>');">Imprimir
                                         </a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
