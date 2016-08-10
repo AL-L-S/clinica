@@ -34,6 +34,9 @@
                         </tr>
                     </table>
                 </fieldset>
+                <div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modeloreceita');" >
+                                                Modelo Receituario</a></div>
                 <div>
 
                     <fieldset>

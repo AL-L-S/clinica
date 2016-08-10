@@ -21,7 +21,7 @@
                     <tr>
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">Tipo</th>
-                        <th class="tabela_header" colspan="2">Detalhes</th>
+                        <th class="tabela_header" colspan="3">Detalhes</th>
                     </tr>
                 </thead>
                 <?php
@@ -49,6 +49,9 @@
                             </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a href="<?= base_url() ?>ambulatorio/sala/ativar/<?= $item->exame_sala_id ?>">Ativar</a></div>
+                            </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/sala/excluirsala/<?= $item->exame_sala_id ?>">excluir</a></div>
                             </td>
                         </tr>
 

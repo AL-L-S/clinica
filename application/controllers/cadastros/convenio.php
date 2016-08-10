@@ -48,7 +48,7 @@ class Convenio extends BaseController {
     }
 
     function excluir($convenio_id) {
-        if ($this->procedimento->excluir($convenio_id)) {
+        if ($this->convenio->excluir($convenio_id)) {
             $mensagem = 'Sucesso ao excluir a Convenio';
         } else {
             $mensagem = 'Erro ao excluir a Convenio. Opera&ccedil;&atilde;o cancelada.';

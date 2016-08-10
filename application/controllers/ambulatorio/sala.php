@@ -51,6 +51,17 @@ class Sala extends BaseController {
         redirect(base_url() . "ambulatorio/sala");
     }
 
+    function excluirsala($exame_sala_id) {
+        if ($this->sala->excluirsala($exame_sala_id)) {
+            $mensagem = 'Sucesso ao excluir a Sala';
+        } else {
+            $mensagem = 'Erro ao excluir a sala. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/sala");
+    }
+
     function gravar() {
         $exame_sala_id = $this->sala->gravar();
         if ($exame_sala_id == "-1") {
