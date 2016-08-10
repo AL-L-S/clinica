@@ -468,9 +468,9 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteconsulta() {
-        if (trim($_POST['txtNome']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
-            $this->session->set_flashdata('message', $data['mensagem']);
+        if ((trim($_POST['txtNome']) == "") || (trim($_POST['convenio']) == "0")) {
+            $mensagem = 'Erro ao marcar consulta é obrigatorio nome do Paciente e Convenio.';
+            $this->session->set_flashdata('message', $mensagem);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
         } else {
             $pacientetemp_id = $this->paciente->gravarpacientetemp();
@@ -503,8 +503,8 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexameencaixe() {
-        if (trim($_POST['txtNome']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
+        if ((trim($_POST['txtNome']) == "") || (trim($_POST['convenio1']) == "-1"))  {
+            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente e Convenio.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
         } else {

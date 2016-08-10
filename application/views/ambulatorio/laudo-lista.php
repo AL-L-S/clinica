@@ -133,7 +133,7 @@
                                         Revis&atilde;o</a>
                                 </td>-->
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');  ">
                                             Imprimir</a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
@@ -182,5 +182,6 @@
                                             $(function() {
                                                 $("#accordion").accordion();
                                             });
+                                            
 
 </script>

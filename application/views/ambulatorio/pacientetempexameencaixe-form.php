@@ -30,7 +30,7 @@
             </div>
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" alt="time" class="size1" name="horarios" />
+                <input type="time" id="horarios" name="horarios"  class="size1"  maxlength="8"  onkeypress="mascara(this)" onclick="if(this.value !=='')this.value=''" />
             </div>
             <div>
                 <label>Convenio *</label>
@@ -94,7 +94,7 @@
 <script type="text/javascript">
 
 
-    $(function() {
+    $(function () {
         $("#data_ficha").datepicker({
             autosize: true,
             changeYear: true,
@@ -106,11 +106,11 @@
         });
     });
 
-    $(function() {
-        $('#convenio1').change(function() {
+    $(function () {
+        $('#convenio1').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function(j) {
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
                     options = '<option value=""></option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -124,15 +124,15 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index?c=autocomplete&m=paciente",
             minLength: 3,
-            focus: function(event, ui) {
+            focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
                 $("#telefone").val(ui.item.itens);
@@ -143,12 +143,12 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         jQuery('#form_exametemp').validate({
             rules: {
                 data_ficha: {
@@ -189,5 +189,13 @@
         });
     });
 
+    /* Máscaras ER */
+    function mascara(horarios) {
+        if (horarios.value.length == 2)
+            horarios.value = horarios.value + ':' ; //quando o campo já tiver 2 caracteres (2 números) o script irá inserir um ':'.
+
+        if (horarios.value.length == 5)
+            horarios.value = horarios.value + ':'; //quando o campo já tiver 5 caracteres (2 números + ':' + 2 números), o script irá inserir um ':'.      
+    }
 
 </script>
