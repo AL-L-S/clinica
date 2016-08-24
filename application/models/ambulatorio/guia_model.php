@@ -22,7 +22,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function listarpacientes() {
         $this->db->select('nome,
                             paciente_id');
@@ -2433,8 +2433,10 @@ ORDER BY p.nome";
         $this->db->select('ae.quantidade,
             p.nome as paciente,
             pt.nome as procedimento,
+            pc.procedimento_convenio_id,
             ae.autorizacao,
-            ae.data,            
+            ae.data,
+            op.operador_id,
             ae.valor_total,
             pc.procedimento_tuss_id,
             al.medico_parecer1,

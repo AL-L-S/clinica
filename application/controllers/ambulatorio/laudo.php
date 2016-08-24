@@ -77,7 +77,12 @@ class Laudo extends BaseController {
         $this->laudo->deletarnomesimagens($exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-
+      function chamarpaciente($ambulatorio_laudo_id) {
+        $this->laudo->chamada($ambulatorio_laudo_id);
+        die;
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
     function calcularvolume($args = array()) {
         (int)
                 $valor1 = str_replace(",", ".", $_POST['valor1']);

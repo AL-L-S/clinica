@@ -397,8 +397,8 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
-    function listarxmllaudo($args = array()) {
+    
+        function listarxmllaudo($args = array()) {
 //        var_dump($_POST['convenio'] , $_POST['medico'],$_POST['paciente']);
 //        die;
 
@@ -472,6 +472,55 @@ class laudo_model extends Model {
 //        var_dump($return->result());
 //        die;
         return $return->result();
+    }
+
+    function chamada($ambulatorio_laudo_id) {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ag.ambulatorio_laudo_id,
+                            o.nome as medico,
+                            an.nome as sala,
+                            cbo.descricao,
+                            p.nome as paciente');
+        $this->db->from('tb_ambulatorio_laudo ag');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
+        $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = age.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+        $this->db->where('ag.ambulatorio_laudo_id', $ambulatorio_laudo_id);
+        $return = $this->db->get()->result();
+
+        $config['hostname'] = "localhost";
+        $config['username'] = "postgres";
+        $config['password'] = "123456";
+        $config['database'] = "painelWeb";
+        $config['dbdriver'] = "postgre";
+        $config['dbprefix'] = "public.";
+        $config['pconnect'] = FALSE;
+        $config['db_debug'] = TRUE;
+        $config['active_r'] = TRUE;
+        $config['cachedir'] = "";
+        $config['char_set'] = "utf8";
+        $config['dbcollat'] = "utf8_general_ci";
+        $DB1 = $this->load->database($config, TRUE);
+//            $DB1 = $this->load->database('group_one', TRUE);
+        $salas = $return[0]->sala;
+        $data = date("Y-m-d H:i:s");
+        $medico = $return[0]->descricao;
+        
+        $paciente = $return[0]->paciente;
+        $superior = 'Paciente: ' . $paciente;
+         $inferior=  $salas . ' ' .$medico;
+        $sql = "INSERT INTO chamado(
+            data, linha_inferior, linha_superior, setor_id)
+    VALUES ('$data', '$inferior', '$superior', 1);";
+        $DB1->query($sql);
+
     }
 
     function listarconsultahistoricoantigo($paciente_id) {
