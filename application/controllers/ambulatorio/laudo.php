@@ -77,12 +77,13 @@ class Laudo extends BaseController {
         $this->laudo->deletarnomesimagens($exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-      function chamarpaciente($ambulatorio_laudo_id) {
+
+    function chamarpaciente($ambulatorio_laudo_id) {
         $this->laudo->chamada($ambulatorio_laudo_id);
         die;
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-    
+
     function calcularvolume($args = array()) {
         (int)
                 $valor1 = str_replace(",", ".", $_POST['valor1']);
@@ -1549,16 +1550,16 @@ class Laudo extends BaseController {
 //        if ($_POST['convenio'] !== "") {
         $listarexame = $this->laudo->listarxmllaudo();
         $empresa = $this->exame->listarcnpj();
-        $cnpjxml = $listarexame[0]->codigoidentificador;
-        $razao_socialxml = $empresa[0]->razao_socialxml;
-        $registroans = $listarexame[0]->registroans;
-        $cpfxml = $empresa[0]->cpfxml;
-        $cnpj = $empresa[0]->cnpj;
+//        $cnpjxml = $listarexame[0]->codigoidentificador;
+//        $razao_socialxml = $empresa[0]->razao_socialxml;
+//        $registroans = $listarexame[0]->registroans;
+//        $cpfxml = $empresa[0]->cpfxml;
+//        $cnpj = $empresa[0]->cnpj;
 
         $convenio = $listarexame[0]->convenio;
-        $datainicio = str_replace("/", "", $_POST['datainicio']);
-        $datafim = str_replace("/", "", $_POST['datafim']);
-        $paciente = $listarexame[0]->paciente;
+//        $datainicio = str_replace("/", "", $_POST['datainicio']);
+//        $datafim = str_replace("/", "", $_POST['datafim']);
+//        $paciente = $listarexame[0]->paciente;
 //        $nomearquivo = $convenio . "-" . $paciente . "-" . $datainicio . "-" . $datafim;
         $origem = "/home/sisprod/projetos/clinica/upload/laudo";
 
@@ -1614,7 +1615,7 @@ class Laudo extends BaseController {
                            <OPER_NUMCARTEIRA>" . $numerodacarteira . "</OPER_NUMCARTEIRA>
                            <OPER_NUMGUIA>" . $numeroguia . "
                                 ";
-
+            //este foreach irá inserir todos os códigos dos exames relacionados ao numeroguia  
             foreach ($listarexame as $value) {
 
                 // CODIGO EXAME
@@ -1641,26 +1642,29 @@ class Laudo extends BaseController {
             $rodape = "</SL_OPER>
                        <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
+
+            $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
+            $xml = $cabecalho . $corpo . $fim_numguia . $rodape;
+            $fp = fopen($nome, "w+");
+            fwrite($fp, $xml . "\n");
+            fclose($fp);
         }
 
+//        $texto = "<html>
+//                   <head></head>
+//                   <body>
+//                     <h1>Teste</h1>
+//                   </body>
+//                 </html> ";
+//        $arquivo = "/home/sisprod/projetos/clinica/upload/laudo/teste001.pdf";
+//        
+//        $this->load->plugin('mpdf');
+//        $mpdf = new mPDF();
+//        $mpdf->SetHeader("<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome: <br>Emiss&atilde;o: </td></tr></table>");
+//        $mpdf->SetFooter("<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>");
+//        $mpdf->WriteHTML($texto);
+//        $mpdf->Output($arquivo, 'F');
 
-        $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
-        $xml = $cabecalho . $corpo . $fim_numguia . $rodape;
-        $fp = fopen($nome, "w+");
-        fwrite($fp, $xml . "\n");
-        fclose($fp);
-        
-        $this->load->plugin('mpdf');
-        $filename = $sl_cod_doc . ".pdf";
-        $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome: <br>Emiss&atilde;o: </td></tr></table>";
-        $rodape = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
-        $html = "";
-        pdf($html, $filename, $cabecalho, $rodape);
-        Output($nome, 'F'); 
-        
-
-
-        //
 //        $zip = new ZipArchive;
 //        $this->load->helper('directory');
 //        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/laudo/$convenio/");
