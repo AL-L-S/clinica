@@ -1529,7 +1529,7 @@ class Exame extends BaseController {
                   </ans:cabecalhoGuia>
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
-                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 8, 2) . "/" . substr($value->data_autorizacao, 5, 2) . "/" . substr($value->data_autorizacao, 0, 4) . "</ans:dataAutorizacao>
+                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 8, 2) . "-" . substr($value->data_autorizacao, 5, 2) . "-" . substr($value->data_autorizacao, 0, 4) . "</ans:dataAutorizacao>
                   <ans:senhaAutorizacao>" . $value->autorizacao . "</ans:senhaAutorizacao>                  
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>

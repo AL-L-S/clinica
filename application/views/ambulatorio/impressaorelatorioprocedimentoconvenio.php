@@ -107,6 +107,7 @@
                         </tr>
                         <tr>
                             <td><font width="180px;"></td>
+                            <td><font size="-2"><?= $item->codigo; ?></td>
                             <td><font size="-2"><?= $item->procedimento; ?></td>
                             <td><font size="-2"><?= substr($item->data_atualizacao, 8,2) . "/" . substr($item->data_atualizacao, 5,2) . "/" . substr($item->data_atualizacao, 0,4); ?></td>
                             <td><font size="-2"><?= number_format($item->valortotal, 2, ',', '.') ?></td>
