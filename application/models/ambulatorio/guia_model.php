@@ -15,9 +15,19 @@ class guia_model extends Model {
     function listarpaciente($paciente_id) {
 
         $this->db->select('nome,
-                            telefone');
+                            telefone,
+                            ');
         $this->db->from('tb_paciente');
         $this->db->where("paciente_id", $paciente_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarpacientes() {
+        $this->db->select('nome,
+                            paciente_id');
+        $this->db->from('tb_paciente');
+        $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -1490,6 +1500,55 @@ ORDER BY p.nome";
         $this->db->orderby('c.nome');
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function relatoriograficovalormedio2($procedimento, $convenio, $txtdata_inicio, $txtdata_fim) {
+
+        $txtdatainicio = str_replace("-", "/", $txtdata_inicio);
+        $txtdatafim = str_replace("-", "/", $txtdata_fim);
+//        var_dump($txtdatainicio);
+//        var_dump($txtdatafim);
+//        die;
+        $this->db->select('count(pt.nome) as quantidade');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
+        $this->db->where('ae.realizada', 'true');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where("ae.data >=", $txtdatainicio);
+        $this->db->where("ae.data <=", $txtdatafim);
+        $this->db->where('pt.procedimento_tuss_id', $procedimento);
+        $this->db->where('c.nome', $convenio);
+        $this->db->groupby('pt.nome');
+        $this->db->orderby('pt.nome');
+        $return = $this->db->get();
+        $result = $return->result();
+
+        if (isset($result[0]->quantidade)) {
+            $qua = $result[0]->quantidade;
+            $quantidade = (int) $qua;
+        } else {
+            $quantidade = 0;
+        }
+        return $quantidade;
+
+//        $quantidade = count($result);
+//        $this->db->select('pt.nome as procedimento,
+//                            pt.procedimento_tuss_id,
+//                            c.nome as convenio,
+//                            pc.valortotal');
+//        $this->db->from('tb_convenio c');
+//        $this->db->join('tb_procedimento_convenio pc', 'pc.convenio_id = c.convenio_id', 'left');
+//        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+//        $this->db->where('pc.ativo', 'true');
+//        $this->db->where('pt.procedimento_tuss_id', $procedimento);
+//        $this->db->where('c.nome', $convenio);
+//        $this->db->orderby('c.nome');
+//        $return = $this->db->get();
+//        $result=$return->result();
+//        $quantidade=  count($result);
+//        return $quantidade;
     }
 
     function relatoriotecnicoconveniocontador() {
@@ -5040,9 +5099,9 @@ ORDER BY ae.agenda_exames_id)";
                 if ($_POST['formapamento'] != 0 && $dinheiro == "t") {
                     $this->db->set('faturado', 't');
                     if ($index == 1) {
-                    $this->db->set('valor1', $_POST['valor1']);
-                    }else {
-                       $this->db->set('valor1', 0); 
+                        $this->db->set('valor1', $_POST['valor1']);
+                    } else {
+                        $this->db->set('valor1', 0);
                     }
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('data_faturamento', $horario);

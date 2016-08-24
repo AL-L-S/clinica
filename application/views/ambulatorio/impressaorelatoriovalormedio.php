@@ -31,7 +31,7 @@
             </tr>
 
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= $txtdatainicio; ?> ate <?= $txtdatafim; ?></th>
             </tr>
 
         </thead>
@@ -60,11 +60,16 @@
             </thead>
             <hr>
             <tbody>
+                <?  
+                //var_dump($txtdatainicio);
+                //var_dump($txtdatafim);
+                //die;
+                ?>
                 <?php
                 $conevenio = "";
                 $valorconvenio = "";
                 $procedimento = 0;
-                foreach ($relatorio as $item) :
+                foreach ($relatorio as $item) :                                           
                     $conevenio = "";
                     $valorconvenio = "";
 
@@ -72,18 +77,21 @@
                         if ($item->procedimento == $value->procedimento) {
                             $valorconvenio = $value->valortotal;
                             $procedimento = $value->procedimento_tuss_id;
+//                            var_dump($valorconvenio);
+//                            die;
                         }
                     endforeach;
                     if ($item->quantidade != 0) {
                         $valor = $item->valor / $item->quantidade;
+                        $quantidade=$item->quantidade;
                     } else {
                         $valor = 0;
                     }
-                    ?>
+                    ?>                      
                     <tr>
                         <td ><font size="-2"><?= utf8_decode($item->procedimento); ?></td>
                         <td style='text-align: center;' ><?= $item->quantidade; ?></td>
-                        <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/graficovalormedio/$procedimento/$valor"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
+                        <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/graficovalormedio/$procedimento/$valor/$txtdatainicio/$txtdatafim"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no');">
                                 <font size="-2"><?= number_format($valor, 2, ',', '.'); ?></font>
                             </a></td>
                     </tr>

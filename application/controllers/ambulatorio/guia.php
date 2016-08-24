@@ -175,11 +175,11 @@ class Guia extends BaseController {
         // CLINICA MED
 //        $this->load->View('ambulatorio/impressaofichamed', $data);
         //RONALDO
-            if ($dinheiro == "t") {
-                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-            } else {
-                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-            }
+        if ($dinheiro == "t") {
+            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+        } else {
+            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+        }
         // CLINICA SAO PAULO
 //        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
     }
@@ -929,17 +929,17 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriocancelamento', $data);
     }
-    
+
     function relatoriotempoesperaexame() {
 
         $this->loadView('ambulatorio/relatoriotempoesperaexame');
     }
-    
+
     function relatoriotemposalaespera() {
 
         $this->loadView('ambulatorio/relatoriotemposalaespera');
     }
-    
+
     function gerarelatoriotempoesperaexame() {
         $data['convenio'] = $_POST['convenio'];
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
@@ -952,7 +952,7 @@ class Guia extends BaseController {
         $data['listar'] = $this->exame->gerarelatoriotempoesperaexame();
         $this->load->View('ambulatorio/impressaorelatoriotempoesperaexame', $data);
     }
-    
+
     function gerarelatoriotemposalaespera() {
         $data['convenio'] = $_POST['convenio'];
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
@@ -965,7 +965,7 @@ class Guia extends BaseController {
         $data['listar'] = $this->exame->gerarelatoriotemposalaespera();
         $this->load->View('ambulatorio/impressaorelatoriotemposalaespera', $data);
     }
-    
+
     function gerarelatoriocancelamento() {
         $data['convenio'] = $_POST['convenio'];
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
@@ -1352,9 +1352,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriovalormedio() {
-
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdatainicio'] = str_replace("/", "-", $_POST['txtdata_inicio']);
+        $data['txtdatafim'] = str_replace("/" , "-", $_POST['txtdata_fim']);                
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriovalormedio();
         $data['convenio'] = $this->guia->relatoriovalormedioconvenio();
@@ -1672,11 +1671,16 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/verificado-form', $data);
     }
 
-    function graficovalormedio($procedimento, $valor) {
-        $data['grafico'] = $this->guia->relatoriograficoalormedio($procedimento);
-//        var_dump($data['data']);
+    function graficovalormedio($procedimento, $valor, $txtdata_inicio, $txtdata_fim) {
+//        var_dump($txtdata_inicio);
+//        var_dump($txtdata_fim);
 //        die;
-        $this->load->View('ambulatorio/graficovalormedio', $data);
+        $data['grafico'] = $this->guia->relatoriograficoalormedio($procedimento);
+        $data['valor']=$valor;
+        $data['txtdata_inicio']=$txtdata_inicio;
+        $data['txtdata_fim']=$txtdata_fim;
+        $data['procedimento']=$procedimento;
+        $this->load->View('ambulatorio/graficovalormedio', $data); 
     }
 
     function entregaexame($paciente_id, $agenda_exames_id) {

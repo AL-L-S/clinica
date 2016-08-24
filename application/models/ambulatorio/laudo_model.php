@@ -398,6 +398,82 @@ class laudo_model extends Model {
         return $return->result();
     }
 
+    function listarxmllaudo($args = array()) {
+//        var_dump($_POST['convenio'] , $_POST['medico'],$_POST['paciente']);
+//        die;
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('g.ambulatorio_guia_id,
+                            ae.valor_total,
+                            ae.valor,
+                            ae.autorizacao,
+                            p.convenionumero,
+                            p.nome as paciente,
+                            p.nascimento,
+                            op.nome as medicosolicitante,
+                            op.conselho as conselhosolicitante,
+                            o.nome as medico,
+                            o.conselho,
+                            o.cbo_ocupacao_id,
+                            o.cpf,
+                            ae.data_autorizacao,
+                            ae.data_realizacao,
+                            pt.codigo,
+                            tu.descricao as procedimento,
+                            ae.data,
+                            pt.grupo,
+                            c.nome as convenio,
+                            tuc.nome as classificacao,
+                            ae.quantidade,
+                            c.registroans,
+                            c.codigoidentificador,
+                            e.data_cadastro,
+                            e.data_atualizacao,
+                            g.data_criacao,
+                            g.guiaconvenio,
+                            ae.paciente_id,
+                            al.texto_laudo');
+        $this->db->from('tb_ambulatorio_guia g');
+        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_tuss_classificacao tuc', 'tuc.tuss_classificacao_id = tu.classificacao', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("c.dinheiro", 'f');
+        $this->db->where('ae.ativo', 'false');
+        $this->db->where('ae.cancelada', 'false');
+        if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
+            $this->db->where('ae.data >=', $_POST['datainicio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
+        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
+            $this->db->where('ae.data <=', $_POST['datafim']);
+        }
+        if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
+            $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        if (isset($_POST['paciente']) && $_POST['paciente'] != "") {
+            $this->db->where('p.paciente_id', $_POST['paciente']);
+        }
+        $return = $this->db->get();
+        
+//        var_dump($return->result());
+//        die;
+        return $return->result();
+    }
+
     function listarconsultahistoricoantigo($paciente_id) {
 
         $this->db->select('laudo');

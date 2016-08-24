@@ -1,43 +1,63 @@
 
 
 <html>
-  <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawSeriesChart);
+    <head>  
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {'packages': ['corechart']});
+            google.charts.setOnLoadCallback(drawSeriesChart);
 
-    function drawSeriesChart() {
+            function drawSeriesChart() {
 
-      var data = google.visualization.arrayToDataTable([
-        ['ID', 'Life Expectancy', 'Fertility Rate'],
-        ['UNIMED',    80.66,              1.67],
-        ['CAMED',    79.84,              1.36],
-        ['HAPVIDA',    78.6,               1.84],
-        ['AMIL',    72.73,              2.78],
-        ['TESTE1',    80.05,              2],
-        ['TESTE2',    72.49,              1.7],
-        ['TESTE3',    68.09,              4.77],
-        ['TESTE4',    81.55,              2.96],
-        ['TESTE5',    68.6,               1.54],
-        ['TESTE6',    78.09,              2.05]
-      ]);
+                var data = google.visualization.arrayToDataTable([
+                    ['Convenio', 'Quantidade', 'Valor'],
+                    //                ['Valor Medio', 0.5, <?php echo $valor ?>],
+<?php
+$convenio = $grafico[0]->convenio;
+$valortotal = $grafico[0]->valortotal;
+$quantidade = $this->guia->relatoriograficovalormedio2($procedimento, $convenio, $txtdata_inicio, $txtdata_fim);
 
-      var options = {
-        title: 'VALOR MEDIO',
-        hAxis: {title: 'dtde'},
-        vAxis: {title: 'valor'},
-        bubble: {textStyle: {fontSize: 11}}
-      };
-
-      var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
-      chart.draw(data, options);
+if ($quantidade !== 0) {
+    ?>
+                        ['<?php echo $convenio ?>', <?php echo $quantidade ?>, <?php echo $valortotal ?>],
+<? } ?>
+<?php
+foreach ($grafico as $item) {
+    if ($convenio !== $item->convenio) {
+        $convenio = $item->convenio;
+        $valortotal = $item->valortotal;
+        $quantidade = $this->guia->relatoriograficovalormedio2($procedimento, $convenio, $txtdata_inicio, $txtdata_fim);
+        if ($quantidade !== 0) {
+            ?>
+                                ['<?php echo $convenio ?>', <?php echo $quantidade ?>, <?php echo $valortotal ?>],
+        <?php
+        }
     }
-    </script>
-  </head>
-  <body>
-    <div id="series_chart_div" style="width: 900px; height: 500px;"></div>
-  </body>
+}
+?>
+                ]);
+                var options = {
+                    title: 'VALOR MEDIO',
+                    hAxis: {title: 'quantidade',
+                        maxValue: '10',
+                        gridlines: {count: '15'}
+                    },
+                    vAxis: {title: 'valor',
+                        maxValue: '10',
+                        baseline: '<?php echo $valor ?>',
+                        gridlines: {count: '15'}
+                    },
+                    bubble: {textStyle: {fontSize: 11}}
+                };
+
+                var chart = new google.visualization.BubbleChart(document.getElementById('series_chart_div'));
+                chart.draw(data, options);
+            }
+        </script>
+    </head>
+    <body>
+        <div id="series_chart_div" style="width: 1000px; height: 500px;"></div>
+    </body>
 </html>
 
 
