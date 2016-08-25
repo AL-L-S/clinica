@@ -22,11 +22,16 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    function listarpacientes() {
-        $this->db->select('nome,
-                            paciente_id');
+
+    function listarpacientes($parametro = null) {
+
+        $this->db->select('paciente_id,
+                            nome');
         $this->db->from('tb_paciente');
+        $this->db->where('ativo', 't');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();

@@ -401,9 +401,9 @@ class laudo_model extends Model {
         function listarxmllaudo($args = array()) {
 //        var_dump($_POST['convenio'] , $_POST['medico'],$_POST['paciente']);
 //        die;
-
+            
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('g.ambulatorio_guia_id,
+        $this->db->select('pt.codigo , g.ambulatorio_guia_id,
                             ae.valor_total,
                             ae.valor,
                             ae.autorizacao,
@@ -417,8 +417,7 @@ class laudo_model extends Model {
                             o.cbo_ocupacao_id,
                             o.cpf,
                             ae.data_autorizacao,
-                            ae.data_realizacao,
-                            pt.codigo,
+                            ae.data_realizacao,                            
                             tu.descricao as procedimento,
                             ae.data,
                             pt.grupo,
@@ -464,8 +463,8 @@ class laudo_model extends Model {
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
         }
-        if (isset($_POST['paciente']) && $_POST['paciente'] != "") {
-            $this->db->where('p.paciente_id', $_POST['paciente']);
+        if (isset($_POST['paciente_id']) && $_POST['paciente_id'] != "") {            
+            $this->db->where('p.paciente_id', $_POST['paciente_id']);
         }
         $return = $this->db->get();
         

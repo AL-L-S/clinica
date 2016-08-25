@@ -1547,6 +1547,7 @@ class Laudo extends BaseController {
 
     function gerarxml() {
 
+        $this->load->plugin('mpdf');
 //        if ($_POST['convenio'] !== "") {
         $listarexame = $this->laudo->listarxmllaudo();
         $empresa = $this->exame->listarcnpj();
@@ -1577,14 +1578,21 @@ class Laudo extends BaseController {
         }
 
         $corpo = "";
-
+        $texto = "";
         foreach ($listarexame as $item) {
+           
+
+            if (!is_dir($origem . '/' . $convenio . '/' . $item->paciente)) {
+                mkdir($origem . '/' . $convenio . '/' . $item->paciente);
+                chmod($origem . '/' . $convenio . '/' . $item->paciente, 0777);
+            }
             //cria código para TAG <SL_COD_DOC>
             $dataatual = date("Y-m-d");
-            $horarioatual = date("H-i-s");
+            $horarioatual = date("H-i");
             $data_cod = str_replace("-", "", $dataatual);
             $horario_cod = str_replace("-", "", $horarioatual);
-            $sl_cod_doc = $item->paciente_id . $data_cod . $horario_cod;
+            $num_aleatorio = mt_rand(1000, 100000000);
+            $sl_cod_doc = $num_aleatorio . $data_cod . $horario_cod;
 
             //NUMERO DA CARTEIRA
             if ($item->convenionumero == '') {
@@ -1594,10 +1602,10 @@ class Laudo extends BaseController {
             }
 
             //NUMERO GUIA CONVENIO  
-            if ($item->autorizacao == '') {
+            if ($item->guiaconvenio == '') {
                 $numeroguia = '0000000';
             } else {
-                $numeroguia = $item->autorizacao;
+                $numeroguia = $item->guiaconvenio;
             }
 
             $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -1615,71 +1623,31 @@ class Laudo extends BaseController {
                            <OPER_NUMCARTEIRA>" . $numerodacarteira . "</OPER_NUMCARTEIRA>
                            <OPER_NUMGUIA>" . $numeroguia . "
                                 ";
-            //este foreach irá inserir todos os códigos dos exames relacionados ao numeroguia  
+            //este foreach irá inserir todos os códigos dos exames relacionados ao numeroguia 
             foreach ($listarexame as $value) {
-
-                // CODIGO EXAME
-                if (isset($value->codigo)) {
-                    $codigoexame = $value->codigo;
-                } else {
-                    $codigoexame = '0000000';
-                }
-                $corpo = $corpo . "<OPER_EXAME>" . $codigoexame . "</OPER_EXAME>";
+                $corpo = $corpo . "<OPER_EXAME>" . $value->codigo . "</OPER_EXAME>";
+                $texto = $texto . "</br>" . $value->texto_laudo . "</br>";
             }
 
             $fim_numguia = "</OPER_NUMGUIA>";
-
-//            foreach ($listarexame as $value) {
-//                if($value !== $numeroguia){
-//                    $guia2 = $guia2 . "<OPER_NUMGUIA>" . $numeroguia;
-//                    
-//                    foreach ($listarexame as $exame) {
-//                                                
-//                    }
-//                }
-//            }
 
             $rodape = "</SL_OPER>
                        <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
 
-            $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
+            $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente . "/" . $sl_cod_doc . ".xml";
             $xml = $cabecalho . $corpo . $fim_numguia . $rodape;
             $fp = fopen($nome, "w+");
             fwrite($fp, $xml . "\n");
             fclose($fp);
+
+            $nomepdf = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente . "/" . $sl_cod_doc . ".pdf";
+            $cabecalhopdf = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:". $item->paciente ." <br>Emiss&atilde;o: </td></tr></table>";
+            $rodapepdf = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
+            salvapdf($texto, $nomepdf, $cabecalhopdf, $rodapepdf);
         }
+     
 
-//        $texto = "<html>
-//                   <head></head>
-//                   <body>
-//                     <h1>Teste</h1>
-//                   </body>
-//                 </html> ";
-//        $arquivo = "/home/sisprod/projetos/clinica/upload/laudo/teste001.pdf";
-//        
-//        $this->load->plugin('mpdf');
-//        $mpdf = new mPDF();
-//        $mpdf->SetHeader("<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome: <br>Emiss&atilde;o: </td></tr></table>");
-//        $mpdf->SetFooter("<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>");
-//        $mpdf->WriteHTML($texto);
-//        $mpdf->Output($arquivo, 'F');
-
-//        $zip = new ZipArchive;
-//        $this->load->helper('directory');
-//        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/laudo/$convenio/");
-//        if ($arquivo_pasta != false) {
-//            foreach ($arquivo_pasta as $value) {
-//                if ($value == $nomearquivo . ".xml") {
-//                    $zip->open("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$value.zip", ZipArchive::CREATE);
-//                    $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$value", "$value");
-//                    $zip->close();
-//                    $arquivoxml = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$value";
-//                    unlink($arquivoxml);
-//                }
-//            }
-//        }
-//        }
         $data['mensagem'] = 'Sucesso ao gerar arquivo.';
 
         $this->session->set_flashdata('message', $data['mensagem']);

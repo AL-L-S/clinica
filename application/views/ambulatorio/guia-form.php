@@ -10,7 +10,7 @@
         </a>
     </div>
     <div >
-        <?
+        <?        
         $sala = "";
         $ordenador1 = "";
         $sala_id = "";

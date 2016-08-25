@@ -8,6 +8,8 @@
             $convenios = $this->convenio->listarconvenionaodinheiro();
             $medicos = $this->operador_m->listarmedicos();
             $pacientes = $this->guia->listarpacientes();
+            $paciente_nome = "";
+            $paciente_id = "";
             $classificacao = $this->guia->listarclassificacao();
             $empresa = $this->guia->listarempresas();
             $guia = "";
@@ -27,6 +29,13 @@
                         <input type="text"  id="datafim" alt="date" name="datafim" class="size1"/>
                     </dd>
                     <dt>
+                        <label>Paciente*</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="paciente" id="paciente" value="" class="size2"/>
+                    </dd>                   
+                    <input type="hidden" name="paciente_id" id="paciente_id" value="" class="texto01"/>                                              
+                    <dt>
                         <label>Convenio</label>
                     </dt>
                     <dd>
@@ -38,19 +47,7 @@
                         </select>
                     </dd>
                     <dt>
-                        <label>Paciente*</label>
-                    </dt>
-                    <dd>
-                        <select name="paciente" id="paciente" class="size2">
-                            <option value="">TODOS</option>
-                            <? foreach ($pacientes as $value) : ?>
-                                <option value="<?= $value->paciente_id; ?>" ><?php echo $value->nome; ?></option>
-                            <? endforeach; ?>
-
-                        </select>
-                    </dd>
-                    <dt>
-                        <label>Medico</label>
+                    <label>Medico</label>
                     </dt>
                     <dd>
                         <select name="medico" id="medico" class="size2">
@@ -113,7 +110,7 @@
 
                                             foreach ($arquivo_pasta as $value) {
                                                 ?>
-                                                <td width="10px"> <img  width="50px" height="50px" onclick="javascript:window.open('<?base_url() ."upload/laudo/" . $covenionome . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?base_url() . "upload/laudo/" . $covenionome . "/" . $value ?>"><br><? echo $value ?></td>
+                                                <td width="10px"> <img  width="50px" height="50px" onclick="javascript:window.open('<? base_url() . "upload/laudo/" . $covenionome . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<? base_url() . "upload/laudo/" . $covenionome . "/" . $value ?>"><br><? echo $value ?></td>
                                                 <td>&nbsp;</td>        
                                             <br><?
                                         }
@@ -155,6 +152,22 @@
                                                             dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
                                                             buttonImage: '<?= base_url() ?>img/form/date.png',
                                                             dateFormat: 'dd/mm/yy'
+                                                        });
+                                                    });
+
+                                                    $(function () {
+                                                        $("#paciente").autocomplete({
+                                                            source: "<?= base_url() ?>index?c=autocomplete&m=pacientes",
+                                                            minLength: 3,
+                                                            focus: function (event, ui) {
+                                                                $("#paciente").val(ui.item.label);
+                                                                return false;
+                                                            },
+                                                            select: function (event, ui) {
+                                                                $("#paciente").val(ui.item.value);
+                                                                $("#paciente_id").val(ui.item.id);
+                                                                return false;
+                                                            }
                                                         });
                                                     });
 
