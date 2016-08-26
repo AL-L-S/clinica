@@ -199,12 +199,14 @@ class laudo_model extends Model {
                             pt.grupo,
                             age.agenda_exames_nome_id,
                             ag.medico_parecer2,
-                            p.nome as paciente');
+                            p.nome as paciente,
+                            c.nome as convenio');
         $this->db->from('tb_ambulatorio_laudo ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
         $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
@@ -431,7 +433,8 @@ class laudo_model extends Model {
                             g.data_criacao,
                             g.guiaconvenio,
                             ae.paciente_id,
-                            al.texto_laudo');
+                            al.texto_laudo,
+                            al.ambulatorio_laudo_id');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
