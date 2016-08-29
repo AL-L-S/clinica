@@ -30,11 +30,12 @@ class procedimento_model extends Model {
                             codigo,
                             descricao');
         $this->db->from('tb_procedimento_tuss');
-        $this->db->where("ativo", 't');
+        
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', "%" . $args['nome'] . "%");
             $this->db->orwhere('codigo ilike', "%" . $args['nome'] . "%");
         }
+        $this->db->where("ativo", 't');
         return $this->db;
     }
 
