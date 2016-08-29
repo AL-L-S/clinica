@@ -70,7 +70,7 @@
                         <th class="tabela_header" width="300px;">Procedimento</th>
 <!--                            <th class="tabela_header">M&eacute;dico Revisor</th>
                         <th class="tabela_header">Status Revisor</th>-->
-                        <th class="tabela_header" colspan="4" width="140px;"><center>A&ccedil;&otilde;es</center></th>
+                        <th class="tabela_header" colspan="5" width="140px;"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -130,9 +130,9 @@
                                 <? }
                                 ?>
         <!--                                    <td class="<?php echo $estilo_linha; ?>" width="70px;">
-                        <a href="<?= base_url() ?>ambulatorio/laudo/carregarrevisao/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">
-                            Revis&atilde;o</a>
-                    </td>-->
+                    <a href="<?= base_url() ?>ambulatorio/laudo/carregarrevisao/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">
+                        Revis&atilde;o</a>
+                </td>-->
 
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
@@ -146,6 +146,10 @@
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoetiiqueta/<?= $item->paciente_id ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">
                                             Etiqueta</a></div>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/listarxml/<?= $item->convenio?>/<?= $item->paciente_id?>');">
+                                            XML</a></div>
+                                </td>
                             </tr>
 
                         </tbody>
@@ -155,7 +159,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="12">
+                        <th class="tabela_footer" colspan="14">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

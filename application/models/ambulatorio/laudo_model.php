@@ -199,12 +199,14 @@ class laudo_model extends Model {
                             pt.grupo,
                             age.agenda_exames_nome_id,
                             ag.medico_parecer2,
-                            p.nome as paciente');
+                            p.nome as paciente,
+                            c.nome as convenio');
         $this->db->from('tb_ambulatorio_laudo ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
         $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
@@ -401,9 +403,9 @@ class laudo_model extends Model {
         function listarxmllaudo($args = array()) {
 //        var_dump($_POST['convenio'] , $_POST['medico'],$_POST['paciente']);
 //        die;
-
+            
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('g.ambulatorio_guia_id,
+        $this->db->select('pt.codigo , g.ambulatorio_guia_id,
                             ae.valor_total,
                             ae.valor,
                             ae.autorizacao,
@@ -417,8 +419,7 @@ class laudo_model extends Model {
                             o.cbo_ocupacao_id,
                             o.cpf,
                             ae.data_autorizacao,
-                            ae.data_realizacao,
-                            pt.codigo,
+                            ae.data_realizacao,                            
                             tu.descricao as procedimento,
                             ae.data,
                             pt.grupo,
@@ -432,7 +433,8 @@ class laudo_model extends Model {
                             g.data_criacao,
                             g.guiaconvenio,
                             ae.paciente_id,
-                            al.texto_laudo');
+                            al.texto_laudo,
+                            al.ambulatorio_laudo_id');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -464,8 +466,8 @@ class laudo_model extends Model {
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
         }
-        if (isset($_POST['paciente']) && $_POST['paciente'] != "") {
-            $this->db->where('p.paciente_id', $_POST['paciente']);
+        if (isset($_POST['paciente_id']) && $_POST['paciente_id'] != "") {            
+            $this->db->where('p.paciente_id', $_POST['paciente_id']);
         }
         $return = $this->db->get();
         
