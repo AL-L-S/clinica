@@ -1441,6 +1441,7 @@ class Exame extends BaseController {
         $convenio = $listarexame[0]->convenio;
         $versao = $_POST['xml'];
         $modelo = $_POST['modelo'];
+
         if ($_POST['tipo'] != 0) {
             $classificacao = $listarexame[0]->classificacao;
         } else {
@@ -1489,6 +1490,8 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                 $contador = count($listarexame);
                 foreach ($listarexame as $value) {
+                    $senha = substr($value->data_autorizacao, 0, 10);
+                    $datavalidadesenha = date('Y-m-d', strtotime("+30 days", strtotime($senha)));
                     $i++;
                     if ($value->convenionumero == '') {
                         $numerodacarteira = '0000000';
@@ -1529,8 +1532,9 @@ class Exame extends BaseController {
                   </ans:cabecalhoGuia>
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
-                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 8, 2) . "-" . substr($value->data_autorizacao, 5, 2) . "-" . substr($value->data_autorizacao, 0, 4) . "</ans:dataAutorizacao>
-                  <ans:senhaAutorizacao>" . $value->autorizacao . "</ans:senhaAutorizacao>                  
+                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAutorizacao>
+                  <ans:senha>" . $value->autorizacao . "</ans:senha>                  
+                  <ans:dataValidadeSenha>" . $datavalidadesenha . "</ans:dataValidadeSenha>                  
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>
                      <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
@@ -1847,8 +1851,9 @@ class Exame extends BaseController {
                   </ans:cabecalhoGuia>
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
-                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 8, 2) . "/" . substr($value->data_autorizacao, 5, 2) . "/" . substr($value->data_autorizacao, 0, 4) . "</ans:dataAutorizacao>
-                  <ans:senhaAutorizacao>" . $value->autorizacao . "</ans:senhaAutorizacao>                  
+                  <ans:dataAutorizacao>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAutorizacao>
+                  <ans:senha>" . $value->autorizacao . "</ans:senha>
+                      <ans:dataValidadeSenha>" . $datavalidadesenha . "</ans:dataValidadeSenha> 
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>
                      <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>

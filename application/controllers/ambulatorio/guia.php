@@ -129,12 +129,12 @@ class Guia extends BaseController {
 //            $this->load->View('ambulatorio/impressaoficharm', $data);
 //        }
 //PROIMAGEM       
-//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
-//        }
-//        if ($grupo == "MAMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
-//        }
+        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
+            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
+        }
+        if ($grupo == "MAMOGRAFIA") {
+            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
+        }
 //         CLINICAS PACAJUS
 //        if ($grupo == "CONSULTA") {
 //            $this->load->View('ambulatorio/impressaofichaconsulta', $data);
@@ -175,11 +175,11 @@ class Guia extends BaseController {
         // CLINICA MED
 //        $this->load->View('ambulatorio/impressaofichamed', $data);
         //RONALDO
-        if ($dinheiro == "t") {
-            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-        } else {
-            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-        }
+//        if ($dinheiro == "t") {
+//            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+//        } else {
+//            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+//        }
         // CLINICA SAO PAULO
 //        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
     }
@@ -295,7 +295,7 @@ class Guia extends BaseController {
 //            } else {
 //                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
 //            }
-        // CLINICA SAO PAULO
+//         CLINICA SAO PAULO
 //        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
     }
 
