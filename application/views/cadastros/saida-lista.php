@@ -67,8 +67,8 @@
                             <select name="nome" id="nome" class="size2">
                                 <option value="">TODOS</option>
                                 <? foreach ($tipo as $value) : ?>
-                                    <option value="<?= $value->descricao; ?>" <?
-                                    if (@$_GET['NOME'] == $value->descricao):echo 'selected';
+                                    <option value="<?= $value->tipo_entradas_saida_id; ?>" <?
+                                    if (@$_GET['NOME'] == $value->tipo_entradas_saida_id):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->descricao; ?></option>
                                         <? endforeach; ?>

@@ -38,11 +38,12 @@ class contasreceber_model extends Model {
         $this->db->where('fc.ativo', 'true');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = fc.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor cd', 'cd.financeiro_credor_devedor_id = fc.devedor', 'left');
+                $this->db->join('tb_financeiro_classe f', 'f.descricao = fc.classe', 'left');
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('fc.devedor', $args['empresa']);
         }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('fc.tipo', $args['nome']);
+            $this->db->where('tipo_id', $args['nome']);
         }
         if (isset($args['nome_classe']) && strlen($args['nome_classe']) > 0) {
             $this->db->where('fc.classe', $args['nome_classe']);
