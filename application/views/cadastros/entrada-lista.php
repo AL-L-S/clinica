@@ -1,4 +1,4 @@
-
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>cadastros/caixa/novaentrada">
@@ -49,8 +49,8 @@
                             <select name="nome" id="nome" class="size2">
                                 <option value="">TODOS</option>
                                 <? foreach ($tipo as $value) : ?>
-                                    <option value="<?= $value->descricao; ?>" <?
-                                    if (@$_GET['nome'] == $value->descricao):echo 'selected';
+                                    <option value="<?= $value->tipo_entradas_saida_id; ?>" <?
+                                    if (@$_GET['nome'] == $value->tipo_entradas_saida_id):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->descricao; ?></option>
                                         <? endforeach; ?>

@@ -83,7 +83,7 @@ class classe_model extends Model {
         $this->db->from('tb_financeiro_classe c');
         $this->db->join('tb_tipo_entradas_saida t', 't.tipo_entradas_saida_id = c.tipo_id');
         $this->db->where("c.ativo", 't');
-        $this->db->where('t.descricao', $parametro);
+        $this->db->where('t.tipo_entradas_saida_id', $parametro);
         $this->db->orderby("c.descricao");
 //        $this->db->orderby("descricao");
         $return = $this->db->get();

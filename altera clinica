@@ -591,3 +591,8 @@ atualiza 03/09/16
 ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN classe character varying(60);
 ALTER TABLE ponto.tb_entradas ADD COLUMN classe character varying(60);
 ALTER TABLE ponto.tb_financeiro_contasreceber ADD COLUMN classe character varying(60);
+
+atualiza 08/09/16
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN CNES character varying(20);
+UPDATE ponto.tb_empresa SET cnes= '3348873';
