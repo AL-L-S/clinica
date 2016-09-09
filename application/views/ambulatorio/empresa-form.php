@@ -25,6 +25,12 @@
                         <input type="text" name="txtCNPJ" maxlength="14" alt="cnpj" class="texto03" value="<?= @$obj->_cnpj; ?>" />
                     </dd>
                     <dt>
+                    <label>CNES</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtCNES" maxlength="14" class="texto03" value="<?= @$obj->_cnes; ?>" />
+                    </dd>
+                    <dt>
                     <label>Endere&ccedil;o</label>
                     </dt>
                     <dd>

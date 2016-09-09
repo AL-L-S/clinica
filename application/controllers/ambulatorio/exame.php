@@ -1438,6 +1438,7 @@ class Exame extends BaseController {
         $registroans = $listarexame[0]->registroans;
         $cpfxml = $empresa[0]->cpfxml;
         $cnpj = $empresa[0]->cnpj;
+        $cnes = $empresa[0]->cnes;
         $convenio = $listarexame[0]->convenio;
         $versao = $_POST['xml'];
         $modelo = $_POST['modelo'];
@@ -1564,7 +1565,7 @@ class Exame extends BaseController {
                         <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
                      <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                      </ans:contratadoExecutante>
-                     <ans:CNES>3348873</ans:CNES>
+                     <ans:CNES>" . $cnes . "</ans:CNES>
                   </ans:dadosExecutante>
                   <ans:dadosAtendimento>
                   <ans:tipoAtendimento>04</ans:tipoAtendimento>
@@ -1717,7 +1718,7 @@ class Exame extends BaseController {
                 <ans:contratadoExecutante>
                     <ans:codigoPrestadorNaOperadora>" . $cpfxml . "</ans:codigoPrestadorNaOperadora>
                     <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
-                    <ans:CNES>2334143</ans:CNES>
+                    <ans:CNES>" . $cnes . "</ans:CNES>
                 </ans:contratadoExecutante>
                 <ans:profissionalExecutante>
                     <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
@@ -1883,7 +1884,7 @@ class Exame extends BaseController {
                         <ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>
                      <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                      </ans:contratadoExecutante>
-                     <ans:CNES>3348873</ans:CNES>
+                     <ans:CNES>" . $cnes . "</ans:CNES>
                   </ans:dadosExecutante>
                   <ans:dadosAtendimento>
                   <ans:tipoAtendimento>04</ans:tipoAtendimento>
@@ -2037,7 +2038,7 @@ class Exame extends BaseController {
                 <ans:contratadoExecutante>
                     <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
                     <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
-                    <ans:CNES>2334143</ans:CNES>
+                    <ans:CNES>" . $cnes . "</ans:CNES>
                 </ans:contratadoExecutante>
                 <ans:profissionalExecutante>
                     <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>

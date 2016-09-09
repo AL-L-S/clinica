@@ -2772,8 +2772,8 @@ class exametemp_model extends Model {
         $this->db->set('paciente_id', null);
         $this->db->set('procedimento_tuss_id', null);
         $this->db->set('convenio_id', null);
-        $this->db->set('medico_consulta_id', null);
-        $this->db->set('medico_agenda', null);
+//        $this->db->set('medico_consulta_id', null);
+//        $this->db->set('medico_agenda', null);
         $this->db->set('ativo', 't');
         $this->db->set('situacao', 'LIVRE');
         $this->db->set('observacoes', "");
