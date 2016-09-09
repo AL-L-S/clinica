@@ -30,6 +30,7 @@ class contaspagar_model extends Model {
                             fc.observacao,
                             fe.descricao as conta,
                             fc.tipo,
+                            fc.classe,
                             fc.data,
                             cd.razao_social,
                             fc.tipo_numero');
@@ -42,6 +43,9 @@ class contaspagar_model extends Model {
         }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('fc.tipo', $args['nome']);
+        }
+        if (isset($args['nome_classe']) && strlen($args['nome_classe']) > 0) {
+            $this->db->where('fc.classe', $args['nome_classe']);
         }
         if (isset($args['conta']) && strlen($args['conta']) > 0) {
             $this->db->where('fc.conta', $args['conta']);
@@ -66,7 +70,8 @@ class contaspagar_model extends Model {
                             fc.data,
                             fcd.razao_social,
                             fe.descricao as conta,
-                            fc.tipo');
+                            fc.tipo,
+                            fc.classe');
         $this->db->from('tb_financeiro_contaspagar fc');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = fc.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = fc.credor', 'left');
@@ -74,8 +79,11 @@ class contaspagar_model extends Model {
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
-        if ($_POST['tipo'] != 0) {
+        if ($_POST['tipo'] != '') {
             $this->db->where('tipo', $_POST['tipo']);
+        }
+        if ($_POST['classe'] != '') {
+            $this->db->where('classe', $_POST['classe']);
         }
         if ($_POST['conta'] != 0) {
             $this->db->where('fc.conta', $_POST['conta']);
@@ -199,13 +207,26 @@ class contaspagar_model extends Model {
 
     function gravar($dia, $parcela) {
         try {
+
+            //busca tipo
+            $this->db->select('t.descricao');
+            $this->db->from('tb_tipo_entradas_saida t');
+            $this->db->join('tb_financeiro_classe c', 'c.tipo_id = t.tipo_entradas_saida_id', 'left');
+            $this->db->where('c.ativo', 't');
+            $this->db->where('c.descricao', $_POST['classe']);
+            $return = $this->db->get();
+            $result = $return->result();
+            $tipo = $result[0]->descricao;
+
+
             /* inicia o mapeamento no banco */
             $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];
             $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $this->db->set('credor', $_POST['credor']);
             $this->db->set('data', $dia);
             $this->db->set('parcela', $parcela);
-            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('tipo', $tipo);
+            $this->db->set('classe', $_POST['classe']);
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('tipo_numero', $_POST['tiponumero']);
             $this->db->set('numero_parcela', $_POST['repitir']);

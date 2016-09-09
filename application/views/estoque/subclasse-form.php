@@ -13,7 +13,7 @@
                         <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_descricao; ?>" />
                     </dd>
                     <dt>
-                    <label>Tipo</label>
+                    <label>Classe</label>
                     </dt>
                     <dd>
                         <select name="txtclasse_id" id="txtclasse_id" class="size4">

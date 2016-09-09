@@ -31,7 +31,8 @@ class procedimentoplano_model extends Model {
                             pc.procedimento_tuss_id,
                             pt.nome as procedimento,
                             pt.codigo,
-                            pc.valortotal');
+                            pc.valortotal,
+                            pt.grupo');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -44,6 +45,9 @@ class procedimentoplano_model extends Model {
         }
         if (isset($args['codigo']) && strlen($args['codigo']) > 0) {
             $this->db->where('pt.codigo ilike', $args['codigo'] . "%");
+        }
+        if (isset($args['grupo']) && strlen($args['grupo']) > 0) {
+            $this->db->where('pt.grupo ilike', $args['grupo'] . "%");
         }
         return $this->db;
     }
@@ -133,7 +137,7 @@ class procedimentoplano_model extends Model {
 //            $this->db->where('ppmc.valor ilike', "%" . $_POST['valor'] . "%");
 //        } 
         if (isset($_POST['valor']) && strlen($_POST['valor']) > 0) {
-            $this->db->where('ppmc.valor',  $_POST['valor']);
+            $this->db->where('ppmc.valor', $_POST['valor']);
         }
         return $this->db;
     }

@@ -5,7 +5,7 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/procedimento/gerarelatorioprocedimento">
                 <dl>
                     <dt>
-                    <label>Especialidade</label>
+                    <label>Grupo</label>
                     </dt>
                     <dd>
                         <select name="grupo" id="grupo" class="size1" >

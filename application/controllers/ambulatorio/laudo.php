@@ -97,6 +97,55 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/calculadora-form', $data);
     }
 
+    function email($texto, $email) {        
+
+//        $this->load->library('email');
+//
+//        //SMTP
+////        stgsaude
+////        teste123
+//        $config['protocol'] = 'smtp';
+//        $config['smtp_host'] = 'ssl://smtp.gmail.com';
+//        $config['smtp_port'] = '465';
+//        $config['smtp_user'] = 'equipe2016gcjh@gmail.com';
+//        $config['smtp_pass'] = 'DUCOCOFRUTOPCE';
+//        $config['validate']  = TRUE;
+//        $config['mailtype']  = 'text';
+//        $config['charset'] = 'utf-8';
+//        $config['newline'] = "\r\n";
+//        $this->email->initialize($config);
+//
+//        $this->email->from('equipe2016gcjh@gmail.com', 'STG Saúde');
+//        $this->email->to($email_paciente);
+//        $this->email->subject('Laudo Médico');
+//        $this->email->message($texto);
+//        $this->email->send();
+//        echo $this->email->print_debugger();     
+
+        $this->load->library('My_phpmailer');        
+        
+        $mail = new PHPMailer;
+        
+        $mail->setLanguage('br');                             // Habilita as saídas de erro em Português
+        $mail->CharSet = 'UTF-8';                             // Habilita o envio do email como 'UTF-8'
+        //$mail->SMTPDebug = 3;                               // Habilita a saída do tipo "verbose"
+        $mail->isSMTP();                                      // Configura o disparo como SMTP
+        $mail->Host = 'smtp.gmail.com';                       // Especifica o enderço do servidor SMTP da Locaweb
+        $mail->SMTPAuth = true;                               // Habilita a autenticação SMTP
+        $mail->Username = 'equipe2016gcjh@gmail.com';         // Usuário do SMTP
+        $mail->Password = 'DUCOCOFRUTOPCE';                   // Senha do SMTP
+        $mail->SMTPSecure = 'ssl';                            // Habilita criptografia TLS | 'ssl' também é possível
+        $mail->Port = 465;                                    // Porta TCP para a conexão
+        $mail->From = 'equipe2016gcjh@gmail.com';             // Endereço previamente verificado no painel do SMTP
+        $mail->FromName = 'STG Saúde';                        // Nome no remetente
+        $mail->addAddress($email);                            // Acrescente um destinatário
+        $mail->isHTML(true);                                  // Configura o formato do email como HTML
+        $mail->Subject = 'Laudo Médico';
+        $mail->Body = $texto;
+        $mail->send();
+
+    }
+
     function carregarlaudo($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
 //        $arquivo_pasta = directory_map( base_url() . "dicom/");
@@ -1792,6 +1841,11 @@ class Laudo extends BaseController {
             if ($validar == '1') {
                 $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id);
                 $messagem = 2;
+
+                $email_paciente = $this->laudo->email($paciente_id);
+                if ((isset($email_paciente)) && $email_paciente !== "") {
+                    $this->email($_POST['laudo'], $email_paciente);
+                }
             } else {
                 $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id);
                 $messagem = 1;

@@ -2,7 +2,13 @@
     <? if (count($tipo) > 0) { ?>
         <h4>TIPO<?= $tipo[0]->descricao; ?></h4>
     <? } else { ?>
-        <h4>TODAS OS TIPOS</h4>
+        <h4>TODOS OS TIPOS</h4>
+    <? } ?>
+    <? if (count($classe) > 0) { ?>
+        <? $texto = strtr(strtoupper($classe[0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß"); ?>
+        <h4>CLASSE: <?= $texto; ?></h4>
+    <? } else { ?>
+        <h4>TODAS AS CLASSES</h4>
     <? } ?>
     <? if (count($forma) > 0) { ?>
         <h4>CONTA:<?= $forma[0]->descricao; ?></h4>
@@ -14,10 +20,10 @@
     <? } else { ?>
         <h4>TODAS OS DEVEDORES</h4>
     <? } ?>
-        <h4>RELATORIO MOVIMENTA&Ccedil;&Atilde;O</h4>
+    <h4>RELATORIO MOVIMENTA&Ccedil;&Atilde;O</h4>
     <h4>PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></h4>
     <hr>
-    <h4>Saldo anterior: <?=number_format($saldoantigo[0]->total, 2, ",", "."); ?></h4>
+    <h4>Saldo anterior: <?= number_format($saldoantigo[0]->total, 2, ",", "."); ?></h4>
     <?
     if (count($relatorio) > 0) {
         ?>
@@ -28,6 +34,7 @@
                     <th class="tabela_header">Data</th>
                     <th class="tabela_header">Nome</th>
                     <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
                     <th class="tabela_header">Valor</th>
                     <th class="tabela_header">Observa&ccedil;&atilde;o</th>
                     <th class="tabela_header">Saldo</th>
@@ -37,7 +44,7 @@
                 <?php
                 $total = $saldoantigo[0]->total;
                 $data = 0;
-                $totalrelatorio =0;
+                $totalrelatorio = 0;
                 foreach ($relatorio as $item) :
                     $total = $total + $item->valor;
                     $totalrelatorio = $totalrelatorio + $item->valor;
@@ -50,9 +57,11 @@
                         <td ><?= utf8_decode($item->razao_social); ?></td>
                         <? if ($item->tiposaida != null) { ?>
                             <td ><?= utf8_decode($item->tiposaida); ?></td>
+                            <td ><?= utf8_decode($item->classesaida); ?></td>
                             <td ><font color="red"><?= number_format($item->valor, 2, ",", "."); ?></td>
                         <? } else { ?>
                             <td ><?= utf8_decode($item->tipoentrada); ?></td>
+                             <td ><?= utf8_decode($item->classeentrada); ?></td>                      
                             <td ><font color="blue"><?= number_format($item->valor, 2, ",", "."); ?></td>
                         <? } ?>
 
@@ -62,7 +71,7 @@
                         <? } else { ?>
                             <td ><?= utf8_decode($item->observacaoentrada); ?></td>
                         <? } ?>
-                            <td colspan="2"><b><?= number_format($total, 2, ",", "."); ?></b></td>
+                        <td colspan="2"><b><?= number_format($total, 2, ",", "."); ?></b></td>
                     </tr>
 
 
@@ -91,7 +100,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

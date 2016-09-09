@@ -20,60 +20,69 @@
                         </th>
                     </tr>
                     <tr>
-                        <th class="tabela_header">Nome</th>
-                        <th class="tabela_header">Codigo</th>
-                        <th class="tabela_header">Descri&ccedil;&atilde;o</th>
+                        <th class="tabela_header" width="50%">Nome</th>
+                        <th class="tabela_header" width="10%">Grupo</th>
+                        <th class="tabela_header" width="10%">Codigo</th>
+                        <th class="tabela_header" width="25%">Descri&ccedil;&atilde;o</th>
                         <th class="tabela_header">Detalhes</th>
                     </tr>
                 </thead>
                 <?php
-                    $url      = $this->utilitario->build_query_params(current_url(), $_GET);
-                    $consulta = $this->procedimento->listar($_GET);
-                    $total    = $consulta->count_all_results();
-                    $limit    = 10;
-                    isset ($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+                $url = $this->utilitario->build_query_params(current_url(), $_GET);
+                $consulta = $this->procedimento->listar($_GET);
+                $total = $consulta->count_all_results();
+                $limit = 50;
+                isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
-                    if ($total > 0) {
-                ?>
-                <tbody>
-                    <?php
-                        $lista = $this->procedimento->listar($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
+                if ($total > 0) {
+                    ?>
+                    <tbody>
+                        <?php
+                        $lista = $this->procedimento->listar($_GET)->orderby('nome')->orderby('grupo')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                     ?>
+                            ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
 
-                           
+
 
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento <?=$item->nome; ?>');"
-                                       href="<?=base_url()?>ambulatorio/procedimento/excluir/<?=$item->procedimento_tuss_id;?>">
-                                        <img border="0" title="Excluir" alt="Excluir"
-                                     src="<?=  base_url()?>img/form/page_white_delete.png" />
+                                    <a onclick="javascript: confirm('Deseja realmente excluir o procedimento <?= $item->nome; ?>'); window.open('<?= base_url() . "ambulatorio/procedimento/excluir/$item->procedimento_tuss_id"; ?>', '_blanck')"
+                                       ><img border="0" title="Excluir" alt="Excluir"
+                                          src="<?= base_url() ?>img/form/page_white_delete.png" />
                                     </a>
-                                    
-                                    <a href="<?= base_url() ?>ambulatorio/procedimento/carregarprocedimento/<?= $item->procedimento_tuss_id ?>">
+        <!--                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento <?= $item->nome; ?>');"
+                                       href="<?= base_url() ?>ambulatorio/procedimento/excluir/<?= $item->procedimento_tuss_id; ?>">
+                                        <img border="0" title="Excluir" alt="Excluir"
+                                             src="<?= base_url() ?>img/form/page_white_delete.png" />
+                                    </a>-->
+                                    <a  onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/carregarprocedimento/$item->procedimento_tuss_id"; ?> ', '_blank');">
                                         <img border="0" title="Detalhes" alt="Detalhes"
                                              src="<?= base_url() ?>img/form/page_white_edit.png" />
                                     </a>
-                            </td>
-                        </tr>
+<!--                                    <a href="<?= base_url() ?>ambulatorio/procedimento/carregarprocedimento/<?= $item->procedimento_tuss_id ?>">
+                                        <img border="0" title="Detalhes" alt="Detalhes"
+                                             src="<?= base_url() ?>img/form/page_white_edit.png" />
+                                    </a>-->
+                                </td>
+                            </tr>
 
                         </tbody>
                         <?php
-                                }
-                            }
-                        ?>
-                        <tfoot>
-                            <tr>
-                                <th class="tabela_footer" colspan="6">
-                                   <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                    }
+                }
+                ?>
+                <tfoot>
+                    <tr>
+                        <th class="tabela_footer" colspan="6">
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
-                                </th>
+                        </th>
                     </tr>
                 </tfoot>
             </table>
@@ -82,8 +91,8 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
-    $(function() {
-        $( "#accordion" ).accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
 </script>

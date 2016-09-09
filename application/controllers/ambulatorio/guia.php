@@ -172,14 +172,15 @@ class Guia extends BaseController {
         // CLINICA dez
 //            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
 //            
-        // CLINICA MED
-//        $this->load->View('ambulatorio/impressaofichamed', $data);
+//      CLINICA MED
+        $this->load->View('ambulatorio/impressaofichamed', $data);
         //RONALDO
-        if ($dinheiro == "t") {
-            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-        } else {
-            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-        }
+        
+//        if ($dinheiro == "t") {
+//            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+//        } else {
+//            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+//        }
         // CLINICA SAO PAULO
 //        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
     }

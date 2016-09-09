@@ -20,6 +20,7 @@ class Autocomplete extends Controller {
         $this->load->model('ponto/setor_model', 'setor');
         $this->load->model('cadastro/paciente_model', 'paciente_m');
         $this->load->model('cadastro/contaspagar_model', 'contaspagar');
+        $this->load->model('cadastro/classe_model', 'financeiro_classe');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('emergencia/solicita_acolhimento_model', 'solicita_acolhimento_m');
         $this->load->model('internacao/internacao_model', 'internacao_m');
@@ -260,6 +261,36 @@ class Autocomplete extends Controller {
             $result = $this->procedimentoplano->listarautocompleteprocedimentos($_GET['covenio']);
         } else {
             $result = $this->procedimentoplano->listarautocompleteprocedimentos();
+        }
+        echo json_encode($result);
+    }
+
+    function classeportipo() {
+
+        if (isset($_GET['tipo'])) {
+            $result = $this->financeiro_classe->listarautocompleteclasses($_GET['tipo']);
+        } else {
+            $result = $this->financeiro_classe->listarautocompleteclasses();
+        }
+        echo json_encode($result);
+    }
+
+    function classeportiposaida() {
+
+        if (isset($_GET['tipo'])) {
+            $result = $this->financeiro_classe->listarautocompleteclassessaida($_GET['tipo']);
+        } else {
+            $result = $this->financeiro_classe->listarautocompleteclassessaida();
+        }
+        echo json_encode($result);
+    }
+
+    function classeportiposaidalista() {
+
+        if (isset($_GET['nome'])) {
+            $result = $this->financeiro_classe->listarautocompleteclassessaida($_GET['nome']);
+        } else {
+            $result = $this->financeiro_classe->listarautocompleteclassessaida();
         }
         echo json_encode($result);
     }
@@ -944,8 +975,8 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
-        function modelossolicitarexames() {
+
+    function modelossolicitarexames() {
 
         if (isset($_GET['exame'])) {
             //$result = 'oi';
@@ -1151,8 +1182,8 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
-        function pacientes() {
+
+    function pacientes() {
         if (isset($_GET['term'])) {
             $result = $this->guia->listarpacientes($_GET['term']);
         } else {

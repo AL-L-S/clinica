@@ -78,13 +78,13 @@ class paciente_model extends BaseModel {
         if ($args) {
             if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
                 $this->db->where('paciente_id', $args['prontuario']);
-            }elseif (isset($args['nome']) && strlen($args['nome']) > 0) {
+            } elseif (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('tb_paciente.nome ilike', '%' . $args['nome'] . '%');
                 $this->db->orwhere('tb_paciente.nome_mae ilike', '%' . $args['nome'] . '%');
                 $this->db->orwhere('tb_paciente.celular ilike', '%' . $args['nome'] . '%');
                 $this->db->orwhere('tb_paciente.telefone ilike', '%' . $args['nome'] . '%');
                 $this->db->orwhere('tb_paciente.cpf ilike', '%' . $args['nome'] . '%');
-            }elseif (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
+            } elseif (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
                 $this->db->where('tb_paciente.nascimento', $args['nascimento']);
             }
         }
@@ -194,6 +194,7 @@ class paciente_model extends BaseModel {
 
         $this->db->select('paciente_indicacao_id, nome');
         $this->db->from('tb_paciente_indicacao');
+        $this->db->where('ativo', 't');
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
@@ -229,7 +230,7 @@ class paciente_model extends BaseModel {
             }
             $this->db->set('cns', $_POST['cns']);
             if ($_POST['indicacao'] != '') {
-            $this->db->set('indicacao', $_POST['indicacao']);
+                $this->db->set('indicacao', $_POST['indicacao']);
             }
             $this->db->set('rg', $_POST['rg']);
             $this->db->set('uf_rg', $_POST['uf_rg']);
@@ -287,8 +288,7 @@ class paciente_model extends BaseModel {
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return false;
-                }
-                else
+                } else
                     $paciente_id = $this->db->insert_id();
             }
             else { // update
@@ -365,8 +365,7 @@ class paciente_model extends BaseModel {
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return false;
-                }
-                else
+                } else
                     $temp_paciente_id = $this->db->insert_id();
             }
             else { // update
@@ -452,8 +451,7 @@ class paciente_model extends BaseModel {
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return false;
-                }
-                else
+                } else
                     return true;
             }
             else { // update
@@ -656,8 +654,7 @@ class paciente_model extends BaseModel {
             $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco
                 return false;
-            }
-            else
+            } else
                 return $id;
             return $id;
         } catch (Exception $exc) {

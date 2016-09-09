@@ -26,6 +26,7 @@
                     <th class="tabela_header"><font size="-1">F. Pagamento</th>
                     <th class="tabela_header"><font size="-1">QTDE</th>
                     <th class="tabela_header" width="80px;"><font size="-1">V. Total</th>
+                    <th class="tabela_header" width="80px;"><font size="-1">Desconto</th>
                 </tr>
             </thead>
             <tbody>
@@ -121,8 +122,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
+                                    
+                                <?}?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
                                     <?
-                                }
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -137,8 +140,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>
 
+                                    
+                                <?}?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
                                     <?
-                                }
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -153,8 +158,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>
 
+                                    
+                                <?}?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
                                     <?
-                                }
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -173,8 +180,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>
 
+                                    
+                               <? }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
                                     <?
-                                }
                             } if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -194,8 +203,9 @@
                                     <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
 
                                     <?
-                                }
-                            }
+                                }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
+                           <? }
                             if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -211,7 +221,9 @@
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
                                     <?
-                                }
+                                }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
+                                    <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -228,7 +240,9 @@
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
                                     <?
-                                }
+                                }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
+                                    <?
                             }
                             ?>
                         </tr>
@@ -404,7 +418,9 @@
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
                                     <?
-                                }
+                                }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
+                                    <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
@@ -415,7 +431,9 @@
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>
 
                                     <?
-                                }
+                                }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
+                                    <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
@@ -430,7 +448,9 @@
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>
 
                                     <?
-                                }
+                                }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
+                                    <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?></td>
@@ -445,7 +465,9 @@
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>
 
                                     <?
-                                }
+                                }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
+                                    <?
                             } if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?></td>
@@ -460,7 +482,9 @@
                                     <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
 
                                     <?
-                                }
+                                }?>
+                                    <td><font size="-2"><?= $item->desconto; ?></td>
+                                    <?
                             }
                             ?>
                         </tr>

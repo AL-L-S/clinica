@@ -149,7 +149,7 @@ class CI_Session {
         $session = $this->_unserialize($session);
 
         // Is the session data we unserialized an array with the correct format?
-        if (!is_array($session) OR !isset($session['session_id']) OR !isset($session['ip_address']) OR !isset($session['user_agent']) OR !isset($session['last_activity'])) {
+        if (!is_array($session) OR ! isset($session['session_id']) OR ! isset($session['ip_address']) OR ! isset($session['user_agent']) OR ! isset($session['last_activity'])) {
             $this->sess_destroy();
             return FALSE;
         }
@@ -457,7 +457,7 @@ class CI_Session {
         if (count($newdata) > 0) {
             foreach ($newdata as $key => $val) {
                 $flashdata_key = $this->flashdata_key . ':new:' . $key;
-                $this->set_userdata($flashdata_key, $val);
+                 $this->set_userdata($flashdata_key, $val);
             }
         }
     }
@@ -582,7 +582,6 @@ class CI_Session {
         setcookie(
                 $this->sess_cookie_name, $cookie_data, $this->sess_expiration + time(), $this->cookie_path, $this->cookie_domain, 0
         );
-
     }
 
     // --------------------------------------------------------------------

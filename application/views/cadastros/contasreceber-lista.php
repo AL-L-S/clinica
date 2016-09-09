@@ -22,6 +22,7 @@
                         <th class="tabela_title">Data Inicio</th>
                         <th class="tabela_title">Data Fim</th>
                         <th class="tabela_title">Tipo</th>
+                        <th class="tabela_title">Classe</th>
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Observacao</th>
                     </tr>
@@ -56,6 +57,11 @@
                             </select>
                         </th>
                         <th class="tabela_title">
+                            <select name="nome_classe" id="nome_classe" class="size2">
+                                <option value="">TODOS</option>
+                            </select>
+                        </th>
+                        <th class="tabela_title">
                             <select name="empresa" id="empresa" class="size1">
                                 <option value="">TODOS</option>
                                 <? foreach ($empresa as $value) : ?>
@@ -81,6 +87,7 @@
                 <tr>
                     <th class="tabela_header">Devedor</th>
                     <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
                     <th class="tabela_header">Dt contasreceber</th>
                     <th class="tabela_header">Conta</th>
                     <th class="tabela_header">Valor</th>
@@ -115,6 +122,7 @@
                                 <? } ?>
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->tipo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->classe; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", "."); ?></td>
@@ -141,7 +149,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="6">
+                        <th class="tabela_footer" colspan="7">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?> 
                         </th>
@@ -184,10 +192,29 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-                                            $(function() {
+                                            $(function () {
                                                 $("#accordion").accordion();
                                             });
 
+                                            $(function () {
+                                                $('#nome').change(function () {
+                                                    if ($(this).val()) {
+                                                        $('.carregando').show();
+                                                        $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
+                                                            options = '<option value=""></option>';
+                                                            for (var c = 0; c < j.length; c++) {
+                                                                options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                                                            }
+                                                            $('#nome_classe').html(options).show();
+                                                            $('.carregando').hide();
+                                                        });
+                                                    } else {
+                                                        $('#nome_classe').html('<option value="">TODOS</option>');
+                                                    }
+                                                });
+                                            });
 </script>

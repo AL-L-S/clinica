@@ -66,6 +66,17 @@ class Convenio_model extends Model {
         return $return->result();
     }
 
+    function listarconveniodesconto($convenio_id) {
+        $this->db->select('convenio_id,
+                            nome');
+        $this->db->from('tb_convenio');
+        $this->db->where("ativo", 't');
+        $this->db->where('convenio_id', $convenio_id);
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarforma() {
         $this->db->select('forma_entradas_saida_id,
                             descricao');
@@ -73,7 +84,7 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarcredordevedor() {
         $this->db->select('financeiro_credor_devedor_id,
                             razao_social,');
@@ -81,7 +92,7 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listardadosconvenios() {
         $this->db->select('convenio_id,
                             nome');
@@ -128,6 +139,41 @@ class Convenio_model extends Model {
             return true;
     }
 
+    function gravardesconto() {
+
+        $ajustech = $_POST['ajustech'] / 100;
+        $ajustefilme = $_POST['ajustefilme'] / 100;
+        $ajusteporte = $_POST['ajusteporte'] / 100;
+        $ajusteuco = $_POST['ajusteuco'] / 100;
+//        $ajustetotal = $_POST['ajustetotal'] / 100;
+        $convenioid = $_POST['convenio'];
+        $operador_id = $this->session->userdata('operador_id');
+        $data = date('Y-m-d H:i:s');
+//        var_dump($data);
+//        die; 
+        try { 
+            
+            $sql = "update ponto.tb_procedimento_convenio
+                    set valorch = (valorch * $ajustech) + valorch, 
+                    valorfilme = (valorfilme * $ajustefilme) + valorfilme,
+                    valorporte = (valorporte * $ajusteporte) + valorporte,                        
+                    valoruco = (valoruco * $ajusteuco) + valoruco,
+                    operador_atualizacao = $operador_id,
+                    data_atualizacao = '$data'                    
+                    where convenio_id = $convenioid;";            
+            $this->db->query($sql);
+            
+            $sqll =  "update ponto.tb_procedimento_convenio
+                      set valortotal = (valorch * qtdech) + (valorfilme * qtdefilme) + (valorporte * qtdeporte) + (valoruco * qtdeuco)
+                      where convenio_id = convenio_id ;";
+            $this->db->query($sqll);
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravar() {
         try {
             /* inicia o mapeamento no banco */
@@ -138,13 +184,13 @@ class Convenio_model extends Model {
             $this->db->set('registroans', $_POST['txtregistroans']);
             $this->db->set('codigoidentificador', $_POST['txtcodigo']);
             if ($_POST['credor_devedor'] != "") {
-            $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
+                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
             if ($_POST['conta'] != "") {
-            $this->db->set('conta_id', $_POST['conta']);
+                $this->db->set('conta_id', $_POST['conta']);
             }
             if ($_POST['grupoconvenio'] != "") {
-            $this->db->set('convenio_grupo_id', $_POST['grupoconvenio']);
+                $this->db->set('convenio_grupo_id', $_POST['grupoconvenio']);
             }
             $this->db->set('cep', $_POST['cep']);
             if ($_POST['tipo_logradouro'] != "") {
@@ -169,7 +215,7 @@ class Convenio_model extends Model {
                 $this->db->set('valor_base', str_replace(",", ".", $_POST['valor_base']));
             }
             if ($_POST['entrega'] != "") {
-                $this->db->set('entrega',  $_POST['entrega']);
+                $this->db->set('entrega', $_POST['entrega']);
             }
             if ($_POST['pagamento'] != "") {
                 $this->db->set('pagamento', $_POST['pagamento']);
@@ -188,7 +234,7 @@ class Convenio_model extends Model {
             $this->db->set('procedimento2', $_POST['procedimento2']);
             if (isset($_POST['txtdinheiro'])) {
                 $this->db->set('dinheiro', $_POST['txtdinheiro']);
-            }else{
+            } else {
                 $this->db->set('dinheiro', 'f');
             }
             $this->db->set('observacao', $_POST['txtObservacao']);
@@ -314,7 +360,7 @@ class Convenio_model extends Model {
             $this->_tabela = $return[0]->tabela;
             $this->_credor_devedor_id = $return[0]->credor_devedor_id;
             $this->_conta_id = $return[0]->conta_id;
-            $this->_enteral= $return[0]->enteral;
+            $this->_enteral = $return[0]->enteral;
             $this->_parenteral = $return[0]->parenteral;
             $this->_registroans = $return[0]->registroans;
             $this->_codigoidentificador = $return[0]->codigoidentificador;
