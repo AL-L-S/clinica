@@ -5,7 +5,7 @@
             <form method="post" action="<?= base_url() ?>cadastros/caixa/gerarelatoriosaidagrupo">
                 <dl>
                     <dt>
-                    <label>Conta</label>
+                        <label>Conta</label>
                     </dt>
                     <dd>
                         <select name="conta" id="conta" class="size2">
@@ -16,7 +16,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Credor</label>
+                        <label>Credor</label>
                     </dt>
                     <dd>
                         <select name="credordevedor" id="credordevedor" class="size2">
@@ -27,39 +27,47 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Tipo</label>
+                        <label>Tipo</label>
                     </dt>
                     <dd>
                         <select name="tipo" id="tipo" class="size2">
-                            <option value="0">TODOS</option>
+                            <option value="">TODOS</option>
                             <? foreach ($tipo as $value) : ?>
-                                <option value="<?= $value->tipo_entradas_saida_id; ?>" ><?php echo $value->descricao; ?></option>
+                                <option value="<?= $value->descricao; ?>" ><?php echo $value->descricao; ?></option>
                             <? endforeach; ?>
                         </select>
                     </dd>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Classe</label>
+                    </dt>
+                    <dd>
+                        <select name="classe" id="classe" class="size2">
+                            <option value="">TODOS</option>                           
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
-<!--                    <dt>
-                    <label>Empresa</label>
-                    </dt>
-                    <dd>
-                        <select name="empresa" id="empresa" class="size2">
-                            <? foreach ($empresa as $value) : ?>
-                                <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
-                            <? endforeach; ?>
-                            <option value="0">TODOS</option>
-                        </select>
-                    </dd>-->
+                    <!--                    <dt>
+                                        <label>Empresa</label>
+                                        </dt>
+                                        <dd>
+                                            <select name="empresa" id="empresa" class="size2">
+                    <? foreach ($empresa as $value) : ?>
+                                                                <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
+                    <? endforeach; ?>
+                                                <option value="0">TODOS</option>
+                                            </select>
+                                        </dd>-->
                 </dl>
                 <button type="submit" >Pesquisar</button>
 
@@ -71,8 +79,10 @@
 
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -84,7 +94,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -97,8 +107,26 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
+    });
+
+    $(function () {
+        $('#tipo').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaida', {tipo: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value="">TODOS</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                    }
+                    $('#classe').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#classe').html('<option value="">TODOS</option>');
+            }
+        });
     });
 
 </script>

@@ -216,7 +216,7 @@ class Exametemp extends BaseController {
 //            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral2/$agenda_exames_id/$medico_id");
 //            
 //        } else {
-            $this->loadView('ambulatorio/examepacientegeral-form', $data);
+        $this->loadView('ambulatorio/examepacientegeral-form', $data);
 //        }
     }
 
@@ -503,7 +503,7 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexameencaixe() {
-        if ((trim($_POST['txtNome']) == "") || (trim($_POST['convenio1']) == "-1"))  {
+        if ((trim($_POST['txtNome']) == "") || ($_POST['convenio1'] == "-1")) {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente e Convenio.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");

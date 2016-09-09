@@ -1,4 +1,7 @@
-<?php if (!defined('BASEPATH')) exit ('N&atilde;o &eacute; permitido acesso direto a esse script.'); 
+<?php
+
+if (!defined('BASEPATH'))
+    exit('N&atilde;o &eacute; permitido acesso direto a esse script.');
 
 class Mensagem {
 
@@ -18,6 +21,9 @@ class Mensagem {
                 break;
             case 'login005':
                 return "Usu&aacute;rio n&atilde;o possui permiss&atilde;o de acesso a esse procedimento.";
+                break;
+            case 'login006':
+                return "Navegador n&atilde;o suportado. Utilize o Firefox.";
                 break;
 //            case 'servidor001':
 //                return "Sucesso ao gravar o servidor.";
@@ -320,9 +326,8 @@ class Mensagem {
                 return $mensagem;
                 break;
         }
-
     }
-	
+
 }
 
 /* End of file mensagem.php */

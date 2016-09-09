@@ -19,6 +19,7 @@ class Contaspagar extends BaseController {
         $this->load->model('cadastro/caixa_model', 'caixa');
         $this->load->model('cadastro/forma_model', 'forma');
         $this->load->model('cadastro/tipo_model', 'tipo');
+        $this->load->model('cadastro/classe_model', 'classe');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -40,7 +41,8 @@ class Contaspagar extends BaseController {
         $obj_contaspagar = new contaspagar_model($financeiro_contaspagar_id);
         $data['obj'] = $obj_contaspagar;
         $data['conta'] = $this->forma->listarforma();
-        $data['tipo'] = $this->tipo->listartipo();
+//        $data['tipo'] = $this->tipo->listartipo();
+        $data['classe'] = $this->classe->listarclasse();
         $this->loadView('cadastros/contaspagar-form', $data);
     }
 
@@ -64,7 +66,8 @@ class Contaspagar extends BaseController {
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
-        $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
+        $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
+        $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->contaspagar->relatoriocontaspagar();

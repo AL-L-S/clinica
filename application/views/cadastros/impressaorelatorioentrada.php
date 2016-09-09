@@ -2,7 +2,13 @@
     <? if (count($tipo) > 0) { ?>
         <h4>TIPO<?= $tipo[0]->descricao; ?></h4>
     <? } else { ?>
-        <h4>TODAS OS TIPOS</h4>
+        <h4>TODOS OS TIPOS</h4>
+    <? } ?>
+    <? if (count($classe) > 0) { ?>
+        <? $texto = strtr(strtoupper($classe[0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß"); ?>
+        <h4>CLASSE: <?= $texto; ?></h4>
+    <? } else { ?>
+        <h4>TODAS AS CLASSES</h4>
     <? } ?>
     <? if (count($forma) > 0) { ?>
         <h4>CONTA:<?= $forma[0]->descricao; ?></h4>
@@ -27,6 +33,7 @@
                     <th class="tabela_header">Nome</th>
                     <th class="tabela_header">Dt entrada</th>
                     <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
                     <th class="tabela_header">Valor</th>
                     <th class="tabela_header">Observacao</th>
                 </tr>
@@ -42,18 +49,19 @@
                         <td ><?= utf8_decode($item->razao_social); ?>&nbsp;</td>
                         <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                         <td ><?= utf8_decode($item->tipo); ?>&nbsp;</td>
+                        <td ><?= utf8_decode($item->classe); ?>&nbsp;</td>
                         <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                         <td ><?= utf8_decode($item->observacao); ?>&nbsp;</td>
                     </tr>
                 <? endforeach; ?>
                 <tr>
-            <td colspan="4"><b>TOTAL</b></td>
+                    <td colspan="4"><b>TOTAL</b></td>
                     <td colspan="2"><b><?= number_format($total, 2, ",", "."); ?></b></td>
                 </tr>
             </tbody>
 
 
-        <?
+            <?
         }
         else {
             ?>
@@ -69,7 +77,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

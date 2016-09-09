@@ -45,7 +45,7 @@ class Indicacao extends BaseController {
     }
 
     function excluir($exame_indicacao_id) {
-        if ($this->procedimento->excluir($exame_indicacao_id)) {
+        if ($this->indicacao->excluir($exame_indicacao_id)) {
             $mensagem = 'Sucesso ao excluir a Indicacao';
         } else {
             $mensagem = 'Erro ao excluir a indicacao. Opera&ccedil;&atilde;o cancelada.';

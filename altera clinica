@@ -1,0 +1,593 @@
+atualiza 08/09/2015
+
+CREATE TABLE ponto.tb_ambulatorio_modelo_receita
+(
+  ambulatorio_modelo_receita_id serial NOT NULL,
+  medico_id integer,
+  nome character varying(200),
+  texto text,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_modelo_receita_pkey PRIMARY KEY (ambulatorio_modelo_receita_id)
+)
+
+CREATE TABLE ponto.tb_ambulatorio_modelo_atestado
+(
+  ambulatorio_modelo_atestado_id serial NOT NULL,
+  medico_id integer,
+  nome character varying(200),
+  texto text,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_modelo_atestado_pkey PRIMARY KEY (ambulatorio_modelo_atestado_id)
+)
+
+CREATE TABLE ponto.tb_ambulatorio_atestado
+(
+  ambulatorio_atestado_id integer NOT NULL DEFAULT nextval('ponto.tb_ambulatorio_receituario_es_ambulatorio_receituario_espec_seq'::regclass),
+  paciente_id integer,
+  procedimento_tuss_id integer,
+  texto character varying(3000),
+  observacao character varying(3000),
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  medico_parecer1 integer,
+  laudo_id integer,
+  tipo character varying(50),
+  CONSTRAINT tb_ambulatorio_atestado_pkey PRIMARY KEY (ambulatorio_atestado_id )
+)
+
+CREATE TABLE ponto.tb_ambulatorio_grupo
+(
+  ambulatorio_grupo_id serial,
+  nome character varying(40),
+  CONSTRAINT tb_ambulatorio_grupo_pkey PRIMARY KEY (ambulatorio_grupo_id )
+)
+
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('AUDIOMETRIA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('CONSULTA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('DENSITOMETRIA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('ECOCARDIOGRAMA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('ELETROCARDIOGRAMA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('ELETROENCEFALOGRAMA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('ESPIROMETRIA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('FISIOTERAPIA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('LABORATORIAL');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('MEDICAMENTO');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('MAMOGRAFIA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('TOMOGRAFIA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('ENDOSCOPIA');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('RM');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('RX');
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('US');
+
+
+CREATE TABLE ponto.tb_ambulatorio_nome_endoscopia
+(
+  ambulatorio_nome_endoscopia_id serial,
+  nome character varying(40),
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_nome_endoscopia_pkey PRIMARY KEY (ambulatorio_nome_endoscopia_id )
+)
+
+
+atualiza 17/09/2015
+
+CREATE TABLE ponto.tb_paciente_indicacao
+(
+  paciente_indicacao_id serial,
+  nome character varying(40),
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_paciente_indicacao_pkey PRIMARY KEY (paciente_indicacao_id)
+)
+
+
+ALTER TABLE ponto.tb_paciente ALTER column indicacao  type integer USING indicacao::integer; 
+USING x::int; 
+atualiza 22/09/2015
+
+CREATE TABLE ponto.tb_ambulatorio_atendimentos_excluiragendado
+(
+  ambulatorio_atendimentos_excluiragendado_id serial,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  agenda_exames_id integer,
+  paciente_id integer,
+  procedimento_tuss_id integer,
+  empresa_id integer,
+  CONSTRAINT tb_ambulatorio_atendimentos_excluiragendado_pkey PRIMARY KEY (ambulatorio_atendimentos_excluiragendado_id )
+)
+
+ALTER TABLE ponto.tb_empresa add column caixa boolean DEFAULT false;
+
+
+atualiza 01/10/2015
+
+CREATE TABLE ponto.tb_ambulatorio_desconto
+(
+  ambulatorio_desconto_id serial,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  agenda_exames_id integer,
+  paciente_id integer,
+  guia_id integer,
+  operador_id integer,
+  valor_total numeric(10,2),
+  CONSTRAINT tb_ambulatorio_desconto_pkey PRIMARY KEY (ambulatorio_desconto_id )
+)
+
+atualiza 07/10/2015
+
+ALTER TABLE ponto.tb_ambulatorio_guia add column observacoes character varying(8000);
+ALTER TABLE ponto.tb_ambulatorio_guia add column data_observacoes timestamp without time zone;
+ALTER TABLE ponto.tb_ambulatorio_guia add column operador_observacoes integer;
+ALTER TABLE ponto.tb_ambulatorio_guia add column nota_fiscal boolean DEFAULT false;
+ALTER TABLE ponto.tb_ambulatorio_guia add column recibo boolean DEFAULT false;
+
+atualiza 16/10/2015
+
+INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('PSICOLOGIA');
+
+atualiza 02/11/2015
+
+ALTER TABLE ponto.tb_convenio add column entrega integer;
+ALTER TABLE ponto.tb_convenio add column pagamento integer;
+ALTER TABLE ponto.tb_convenio add column ir decimal;
+ALTER TABLE ponto.tb_convenio add column pis decimal;
+ALTER TABLE ponto.tb_convenio add column cofins decimal;
+ALTER TABLE ponto.tb_convenio add column csll decimal;
+ALTER TABLE ponto.tb_convenio add column iss decimal;
+ALTER TABLE ponto.tb_convenio add column valor_base decimal;
+
+atualiza 10/11/2015
+
+CREATE TABLE ponto.tb_ambulatorio_nome_endoscopia_imagem
+(
+  ambulatorio_nome_endoscopia_imagem_id serial,
+  ambulatorio_nome_endoscopia character varying(40),
+  exame_id integer,
+  nome character varying(40),
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_nome_endoscopia_imagem_pkey PRIMARY KEY (ambulatorio_nome_endoscopia_imagem_id )
+)
+
+atualiza 27/11/2015
+
+ALTER TABLE ponto.tb_ambulatorio_guia add column peso numeric(10,2);
+ALTER TABLE ponto.tb_ambulatorio_guia add column altura integer;
+ALTER TABLE ponto.tb_ambulatorio_guia add column pasistolica integer;
+ALTER TABLE ponto.tb_ambulatorio_guia add column padiastolica integer;
+
+atualiza 28/11/2015
+
+ALTER TABLE ponto.tb_empresa add column cnpjxml character varying(20);
+ALTER TABLE ponto.tb_empresa add column razao_socialxml character varying(200);
+ALTER TABLE ponto.tb_empresa add column cpfxml character varying(11);
+
+ALTER TABLE ponto.tb_ambulatorio_laudo rename ae_indice_diametro to ae_volume;
+ALTER TABLE ponto.tb_ambulatorio_laudo add column ae_volume_indexado numeric(10,2);
+ALTER TABLE ponto.tb_ambulatorio_laudo add column ad_volume integer;
+ALTER TABLE ponto.tb_ambulatorio_laudo add column ad_volume_indexado numeric(10,2);
+ALTER TABLE ponto.tb_ambulatorio_laudo add column vd_diametro_pel numeric(10,2);
+ALTER TABLE ponto.tb_ambulatorio_laudo add column vd_diametro_basal numeric(10,2);
+
+
+CREATE TABLE ponto.tb_sangria
+(
+  sangria_id serial NOT NULL,
+  valor numeric(10,2),
+  observacao character varying(2000),
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  operador_caixa integer,
+  data_cancelamento timestamp without time zone,
+  operador_cancelamento integer,
+  operador_caixa_cancelamento integer,
+  data date,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_sangria_pkey PRIMARY KEY (sangria_id )
+)
+
+
+ALTER TABLE ponto.tb_operador add column ir decimal;
+ALTER TABLE ponto.tb_operador add column pis decimal;
+ALTER TABLE ponto.tb_operador add column cofins decimal;
+ALTER TABLE ponto.tb_operador add column csll decimal;
+ALTER TABLE ponto.tb_operador add column iss decimal;
+ALTER TABLE ponto.tb_operador add column  credor_devedor_id integer;
+ALTER TABLE ponto.tb_operador add column valor_base decimal;
+
+
+atualiza 16/12/2015
+
+ALTER TABLE ponto.tb_empresa add column registroans character varying(11);
+
+
+
+atualiza 11/01/2015
+
+CREATE TABLE ponto.tb_ambulatorio_orcamento
+(
+  ambulatorio_orcamento_id serial NOT NULL,
+  paciente_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_criacao date,
+  empresa_id integer,
+  CONSTRAINT tb_ambulatorio_orcamento_pkey PRIMARY KEY (ambulatorio_orcamento_id )
+)
+
+
+CREATE TABLE ponto.tb_ambulatorio_orcamento_item
+(
+  ambulatorio_orcamento_item_id serial NOT NULL,
+  paciente_id integer,
+  procedimento_tuss_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data date,
+  realizada boolean DEFAULT false,
+  orcamento_id integer,
+  valor numeric(10,2),
+  quantidade integer,
+  valor_total numeric(10,2),
+  empresa_id integer,
+  CONSTRAINT tb_ambulatorio_orcamento_item_pkey PRIMARY KEY (ambulatorio_orcamento_item_id )
+)
+
+atualiza 19/01/2015
+
+ALTER TABLE ponto.tb_operador add column conta_id  integer;
+ALTER TABLE ponto.tb_operador add column tipo_id  character varying(60);
+ALTER TABLE ponto.tb_saldo add column data date;
+
+UPDATE ponto.tb_saldo
+   SET data=data_cadastro
+
+
+CREATE TABLE ponto.tb_integracao_agenda
+(
+  integracao_agenda_id serial,
+  paciente_prontuario character varying(40),
+  paciente_nome character varying(200),
+  paciente_sexo character varying(1),
+  paciente_data_nascimento date,
+  paciente_cpf character varying(11),
+  paciente_senha character varying(40),
+  paciente_celular character varying(15),
+  paciente_email character varying(50),
+  exame_requisicao character varying(50),
+  exame_lancamento character varying(50),
+exame_codigo character varying(50),
+exame_convenio character varying(50),
+exame_dados_clinicos character varying(50),
+exame_data_hora character varying(50),
+exame_descricao character varying(50),
+exame_modalidade character varying(50),
+exame_equipamento character varying(50),
+solicitante_nome character varying(50),
+solicitante_conselho character varying(50),
+pacs_accessionnumber character varying(50),
+pacs_url character varying(50),
+status_integracao character varying(1),
+  CONSTRAINT tb_integracao_agenda_pkey PRIMARY KEY (integracao_agenda_id )
+)
+
+
+CREATE TABLE ponto.tb_integracao_laudo
+(
+  integracao_laudo_id serial,
+  paciente_prontuario integer,
+  paciente_nome character varying(200),
+  paciente_sexo character varying(1),
+  paciente_data_nascimento date,
+  paciente_idade character varying(3),
+  exame_uid integer,
+  exame_guia character varying(50),
+  exame_requisicao character varying(50),
+  exame_data date,
+  exame_hora time,
+  exame_descricao character varying(50),
+  exame_modalidade character varying(20),
+  laudo_data_hora  timestamp without time zone,
+  laudo_texto character varying(3000),
+  laudo_medico_id integer,
+  laudo_nome_medico character varying(200),
+  laudo_conselho_medico character varying(10),
+  laudo_conselho_uf_medico character varying(2),
+  laudo_medico_revisor_id integer,
+  laudo_nome_medico_revisor character varying(200),
+  laudo_conselho_medico_revisor character varying(10),
+  laudo_conselho_uf_medico_revisor character varying(2),
+  laudo_status character varying(20),
+  CONSTRAINT tb_integracao_laudo_pkey PRIMARY KEY (integracao_laudo_id )
+)
+
+
+atualiza 24/02/2015
+
+ALTER TABLE ponto.tb_agenda_exames_nome add column ativo boolean NOT NULL DEFAULT true;
+ALTER TABLE ponto.tb_ambulatorio_laudo ALTER column peso type numeric(10,2);
+ALTER TABLE ponto.tb_empresa add column producaomedicadinheiro boolean DEFAULT false;
+ALTER TABLE ponto.tb_ambulatorio_guia add column declaracao character varying(3000);
+ALTER TABLE ponto.tb_ambulatorio_guia add column operador_declaracao integer;
+ALTER TABLE ponto.tb_ambulatorio_guia add column data_declaracao timestamp without time zone;
+
+atualiza 02/02/2015
+
+ALTER TABLE ponto.tb_agenda_exames add column operador_aterardatafaturamento integer;
+ALTER TABLE ponto.tb_agenda_exames add column data_aterardatafaturamento timestamp without time zone;
+
+atualiza 02/02/2015
+
+ALTER TABLE ponto.tb_integracao add column wkl_id serial;
+
+atualiza 15/03/2015
+
+ALTER TABLE ponto.tb_convenio add column registroans character varying(11);
+ALTER TABLE ponto.tb_convenio add column codigoidentificador character varying(20);
+
+
+atualiza 24/03/2015
+
+ALTER TABLE ponto.tb_ambulatorio_guia add column guiaconvenio character varying(25);
+
+atualiza 26/03/2015
+
+ALTER TABLE ponto.tb_procedimento_tuss add column percentual boolean default true;
+
+atualiza 30/03/2015
+
+ALTER TABLE ponto.tb_procedimento_tuss add column entrega integer;
+
+
+
+
+
+ALTER TABLE ponto.tb_integracao_laudo add column paciente_prontuario integer;
+ALTER TABLE ponto.tb_integracao_laudo add column paciente_nome character varying(200);
+ALTER TABLE ponto.tb_integracao_laudo add column paciente_sexo character varying(1);
+ALTER TABLE ponto.tb_integracao_laudo add column paciente_data_nascimento date;
+ALTER TABLE ponto.tb_integracao_laudo add column paciente_idade character varying(3);
+ALTER TABLE ponto.tb_integracao_laudo add column exame_id integer;
+ALTER TABLE ponto.tb_integracao_laudo add column exame_guia character varying(50);
+ALTER TABLE ponto.tb_integracao_laudo add column exame_requisicao character varying(50);
+ALTER TABLE ponto.tb_integracao_laudo add column exame_data date;
+ALTER TABLE ponto.tb_integracao_laudo add column exame_hora time;
+ALTER TABLE ponto.tb_integracao_laudo add column exame_descricao character varying(50);
+ALTER TABLE ponto.tb_integracao_laudo add column exame_modalidade character varying(20);
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_data_hora  timestamp without time zone;
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_texto character varying(3000);
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_medico_id integer;
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_nome_medico character varying(200);
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_conselho_medico character varying(10);
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_conselho_uf_medico character varying(2);
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_medico_revisor_id integer;
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_nome_medico_revisor character varying(200);
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_conselho_medico_revisor character varying(10);
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_conselho_uf_medico_revisor character varying(2)
+ALTER TABLE ponto.tb_integracao_laudo add column laudo_status character varying(20);
+
+atualiza 18/04/2015
+
+ALTER TABLE ponto.tb_agenda_exames add column guiaconvenio character varying(25);
+
+atualiza 18/04/2015
+
+ALTER TABLE ponto.tb_procedimento_tuss add column medico boolean default false;
+
+atualiza 09/05/2015
+
+CREATE TABLE ponto.tb_ambulatorio_convenio_operador
+(
+  ambulatorio_convenio_operador_id serial NOT NULL,
+  operador_id integer,
+  convenio_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  CONSTRAINT tb_ambulatorio_convenio_operador_pkey PRIMARY KEY (ambulatorio_convenio_operador_id )
+)
+
+
+atualiza 12/05/2016
+
+ALTER TABLE ponto.tb_agenda_exames add column tipo_agenda character varying(20);
+
+atualiza 27/05/2016
+
+ALTER TABLE ponto.tb_tuss add column ativo boolean default true;
+
+atualiza 29/05/2016
+
+ALTER TABLE ponto.tb_integracao add column wkl_exame_id integer;
+ALTER TABLE ponto.tb_estoque_fornecedor add column  credor_devedor_id integer;
+
+atualiza 13/06/2016
+
+CREATE TABLE ponto.tb_convenio_grupo
+(
+  convenio_grupo_id serial NOT NULL,
+  nome character varying(200),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_convenio_grupo_pkey PRIMARY KEY (convenio_grupo_id )
+)
+
+atualiza 14/06/2016
+
+ALTER TABLE ponto.tb_convenio add column convenio_grupo_id integer;
+
+atualiza 17/06/2016
+
+CREATE TABLE ponto.tb_convenio_operador_procedimento
+(
+  convenio_operador_procedimento_id serial NOT NULL,
+  operador integer,
+  convenio_id integer,
+  procedimento_convenio_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_convenio_operador_procedimento_pkey PRIMARY KEY (convenio_operador_procedimento_id )
+)
+
+
+
+atualiza 05/07/2016
+
+  update ponto.tb_agenda_exames
+	set medico_consulta_id = medico_agenda
+	where medico_consulta_id is null
+
+ALTER TABLE ponto.tb_agenda_exames add column ocupado boolean DEFAULT false;
+
+atualiza 16/07/2016
+
+CREATE TABLE ponto.tb_versao
+(
+  versao_id integer NOT NULL,
+  sistema character varying(20),
+  banco_de_dados character varying(20),
+  CONSTRAINT tb_versao_pkey PRIMARY KEY (versao_id )
+)
+
+atualiza 20/07/2016
+
+CREATE TABLE ponto.tb_procedimento_percentual_medico_convenio
+
+atualiza 01/08/2016
+
+ALTER TABLE ponto.tb_agenda_exames add column internet boolean DEFAULT false;
+ALTER TABLE ponto.tb_paciente add column internet boolean DEFAULT false;
+
+atualiza 04/08/2016
+
+ALTER TABLE ponto.tb_estoque_entrada add column inventario boolean DEFAULT false;
+
+atualiza 08/08/2016
+
+CREATE TABLE ponto.tb_ambulatorio_exame
+(
+  ambulatorio_exame_id serial NOT NULL,
+  paciente_id integer,
+  procedimento_tuss_id integer,
+  guia_id integer,
+  texto character varying(20000),
+  assinatura boolean,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  medico_parecer1 integer,
+  medico_parecer2 integer,
+  laudo_id integer,
+  empresa_id integer,
+  tipo character varying(50),
+  CONSTRAINT tb_ambulatorio_exame_pkey PRIMARY KEY (ambulatorio_exame_id )
+)
+
+CREATE TABLE ponto.tb_procedimento_percentual_medico_convenio
+(
+  procedimento_percentual_medico_convenio_id serial,
+  procedimento_percentual_medico_id integer,
+  medico integer,
+  valor numeric(10,2),
+  percentual boolean DEFAULT true,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_procedimento_percentual_medico_convenio_pkey PRIMARY KEY (procedimento_percentual_medico_convenio_id )
+)
+
+CREATE TABLE ponto.tb_ambulatorio_modelo_receita_especial
+(
+  ambulatorio_modelo_receita_especial_id serial,
+  medico_id integer,
+  nome character varying(200),
+  texto text,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_modelo_receita_especial_pkey PRIMARY KEY (ambulatorio_modelo_receita_especial_id )
+)
+
+
+CREATE TABLE ponto.tb_ambulatorio_modelo_solicitar_exames
+(
+  ambulatorio_modelo_solicitar_exames_id serial,
+  medico_id integer,
+  nome character varying(200),
+  texto text,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_modelo_solicitar_exames_pkey PRIMARY KEY (ambulatorio_modelo_solicitar_exames_id )
+)
+
+ALTER TABLE ponto.tb_exame_sala add column excluido boolean DEFAULT false;
+
+atualiza 31/08/16
+
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN data_atualizacao timestamp without time zone;
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN operador_atualizacao integer;
+
+CREATE TABLE ponto.tb_financeiro_classe
+(
+  financeiro_classe_id serial NOT NULL,
+  descricao character varying(200),
+  tipo_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_financeiro_classe_pkey PRIMARY KEY (financeiro_classe_id )
+)
+
+CREATE TABLE ponto.tb_financeiro_sub_classe
+(
+  financeiro_sub_classe_id serial NOT NULL,
+  descricao character varying(200),
+  classe_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_financeiro_sub_classe_pkey PRIMARY KEY (financeiro_sub_classe_id )
+)
+
+atualiza 02/09/16
+
+ALTER TABLE ponto.tb_saidas ADD COLUMN classe character varying(60);
+
+atualiza 03/09/16
+
+ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN classe character varying(60);
+ALTER TABLE ponto.tb_entradas ADD COLUMN classe character varying(60);
+ALTER TABLE ponto.tb_financeiro_contasreceber ADD COLUMN classe character varying(60);

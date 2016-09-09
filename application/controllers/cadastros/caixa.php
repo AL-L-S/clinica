@@ -17,6 +17,7 @@ class Caixa extends BaseController {
         parent::Controller();
         $this->load->model('cadastro/caixa_model', 'caixa');
         $this->load->model('cadastro/tipo_model', 'tipo');
+        $this->load->model('cadastro/classe_model', 'classe');
         $this->load->model('cadastro/forma_model', 'forma');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('seguranca/operador_model', 'operador');
@@ -55,14 +56,18 @@ class Caixa extends BaseController {
     }
 
     function novaentrada() {
-        $data['tipo'] = $this->tipo->listartipo();
+//        $data['tipo'] = $this->tipo->listartipo();
+        $data['classe'] = $this->classe->listarclasse();
         $data['conta'] = $this->forma->listarforma();
         $this->loadView('cadastros/entrada-form', $data);
     }
 
     function novasaida() {
-        $data['tipo'] = $this->tipo->listartipo();
+//        $data['tipo'] = $this->tipo->listartipo();
+        $data['classe'] = $this->classe->listarclasse();
         $data['conta'] = $this->forma->listarforma();
+//        $r = $this->classe->listarautocompleteclassessaida('CUSTO FIXO IMPRESSÃO'); 
+//        var_dump($r); die;
         $this->loadView('cadastros/saida-form', $data);
     }
 
@@ -215,6 +220,7 @@ class Caixa extends BaseController {
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
+        $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->caixa->relatoriosaida();
@@ -233,7 +239,8 @@ class Caixa extends BaseController {
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
-        $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
+        $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
+        $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->caixa->relatoriosaidagrupo();
@@ -254,6 +261,7 @@ class Caixa extends BaseController {
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
+        $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorioentrada'] = $this->caixa->relatorioentrada();
@@ -265,14 +273,15 @@ class Caixa extends BaseController {
         $data['credordevedor'] = $this->caixa->listarcredordevedor();
         $data['tipo'] = $this->tipo->listartipo();
 //        $data['empresa'] = $this->guia->listarempresas();
-        $this->loadView('cadastros/relatorioentradagrupo', $data);
+        $this->loadView('ambulatorio/relatorioentradagrupo', $data);
     }
 
     function gerarelatorioentradagrupo() {
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
-        $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
+        $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
+        $data['classe'] = $this->tipo->buscartiporelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorioentrada'] = $this->caixa->relatorioentradagrupo();
@@ -292,7 +301,8 @@ class Caixa extends BaseController {
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
-        $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
+        $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
+        $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 

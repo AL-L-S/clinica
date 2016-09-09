@@ -4,9 +4,11 @@
         <h3><?= $empresa[0]->razao_social; ?></h3>
     <? } ?>
     <? if ($grupo == "0") { ?>
-        <h3>ESPECIALIDADE: TODOS</h3>
-    <? } else { ?>
-        <h3>ESPECIALIDADE: <?= $grupo; ?></h3>
+        <h3>GRUPO: TODOS</h3>
+    <? } elseif ($grupo == "1") { ?>        
+        <h3>GRUPO: SEM RM</h3>
+    <? } else { ?>             
+        <h3>GRUPO: <?= $grupo; ?></h3>
     <? } ?>
 
     <? if (count($relatorio) > 0) {
@@ -33,6 +35,7 @@
                     ?>
                     <tr>
                         <td><?= $item->codigo; ?></td>
+                        <td><?= $item->nome; ?></td>
                         <td><?= utf8_decode($item->descricao); ?></td>
                         <td><?= $item->grupo; ?></td>
                         <td><?= $item->perc_medico; ?></td>
@@ -63,7 +66,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

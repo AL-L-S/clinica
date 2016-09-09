@@ -2433,6 +2433,21 @@ ORDER BY p.nome";
         return $return->result();
     }
 
+    function percentualmedicoconvenio($procedimentopercentual, $medicopercentual) {
+         
+        $this->db->select('mc.valor');
+        $this->db->from('tb_procedimento_percentual_medico_convenio mc');
+        $this->db->join('tb_procedimento_percentual_medico m' , 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id' , 'left');
+        $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);
+        $this->db->where('mc.medico', $medicopercentual);
+        $this->db->where('mc.ativo', 'true');
+        $return = $this->db->get();
+        
+//        var_dump($return->result());
+//        die;
+        return $return->result();
+    }
+
     function relatoriomedicoconveniofinanceiro() {
 
         $this->db->select('ae.quantidade,
@@ -2508,6 +2523,7 @@ ORDER BY p.nome";
             ae.data,            
             ae.valor_total,
             pc.procedimento_tuss_id,
+            pc.procedimento_convenio_id,
             al.medico_parecer1,
             pt.perc_medico,
             al.situacao as situacaolaudo,
@@ -2801,7 +2817,8 @@ ORDER BY p.nome";
                             f3.nome as forma_pagamento_3,
                             f4.nome as forma_pagamento_4,
                             pt.descricao as procedimento,
-                            pt.codigo');
+                            pt.codigo,
+                            ae.desconto');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');

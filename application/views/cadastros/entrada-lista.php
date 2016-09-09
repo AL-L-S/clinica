@@ -22,6 +22,7 @@
                         <th class="tabela_title">Data Inicio</th>
                         <th class="tabela_title">Data Fim</th>
                         <th class="tabela_title">Tipo</th>
+                        <th class="tabela_title">Classe</th>
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Observacao</th>
                     </tr>
@@ -53,6 +54,11 @@
                                     endif;
                                     ?>><?php echo $value->descricao; ?></option>
                                         <? endforeach; ?>
+                            </select>
+                        </th>
+                        <th class="tabela_title">
+                            <select name="nome_classe" id="nome_classe" class="size2">
+                                <option value="">TODOS</option>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -90,6 +96,7 @@
                     <tr>
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">Tipo</th>
+                        <th class="tabela_header">Classe</th>
                         <th class="tabela_header" width="90px;">Dt entrada</th>
                         <th class="tabela_header" width="90px;">Valor</th>
                         <th class="tabela_header">Conta</th>
@@ -118,6 +125,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->razao_social; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->tipo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->classe; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><b><?= number_format($item->valor, 2, ",", "."); ?></b></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
@@ -139,7 +147,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="5">
+                        <th class="tabela_footer" colspan="7">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
@@ -183,31 +191,52 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-        $(function() {
-            $("#datainicio").datepicker({
+    
+        $(function () {
+        $('#nome').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                    }
+                    $('#nome_classe').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#nome_classe').html('<option value="">TODOS</option>');
+            }
+        });
+    });
+    
+    $(function () {
+        $("#datainicio").datepicker({
             autosize: true,
             changeYear: true,
             changeMonth: true,
             monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
             buttonImage: '<?= base_url() ?>img/form/date.png',
-    dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy'
+        });
     });
-    });
-        $(function() {
-            $("#datafim").datepicker({
+    $(function () {
+        $("#datafim").datepicker({
             autosize: true,
             changeYear: true,
             changeMonth: true,
             monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
             buttonImage: '<?= base_url() ?>img/form/date.png',
-    dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy'
+        });
     });
-    });
-        $(function() {
-    $("#accordion").accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
 </script>

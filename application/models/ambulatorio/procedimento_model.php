@@ -28,11 +28,13 @@ class procedimento_model extends Model {
         $this->db->select('procedimento_tuss_id,
                             nome,
                             codigo,
-                            descricao');
+                            descricao,
+                            grupo');
         $this->db->from('tb_procedimento_tuss');
         
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', "%" . $args['nome'] . "%");
+            $this->db->orwhere('grupo ilike', "%" . $args['nome'] . "%");
             $this->db->orwhere('codigo ilike', "%" . $args['nome'] . "%");
         }
         $this->db->where("ativo", 't');
@@ -83,10 +85,10 @@ class procedimento_model extends Model {
         $this->db->from('tb_procedimento_tuss');
         $this->db->where("ativo", 't');
         if ($_POST['grupo'] == "1") {
-            $this->db->where('pt.grupo !=', 'RM');
+            $this->db->where('grupo !=', 'RM');
         }
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
-            $this->db->where('pt.grupo', $_POST['grupo']);
+            $this->db->where('grupo', $_POST['grupo']);
         }
         $this->db->orderby("nome");
         $return = $this->db->get();
@@ -157,7 +159,7 @@ class procedimento_model extends Model {
                             ans');
         $this->db->from('tb_tuss');
         if ($parametro != null) {
-            
+
             $this->db->where('codigo ilike', "%" . $parametro . "%");
             $this->db->orwhere('descricao ilike', "%" . $parametro . "%");
         }

@@ -16,6 +16,7 @@ class indicacao_model extends Model {
         $this->db->select('paciente_indicacao_id,
                             aml.nome');
         $this->db->from('tb_paciente_indicacao aml');
+        $this->db->where('ativo', 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('aml.nome ilike', "%" . $args['nome'] . "%");
         }

@@ -47,6 +47,18 @@ class Convenio extends BaseController {
         $this->loadView('cadastros/copiarconvenio-form', $data);
     }
 
+    function desconto($convenio_id) {
+        $data['convenio'] = $this->convenio->listarconveniodesconto($convenio_id);
+        $data['convenioid'] = $convenio_id;
+        $this->loadView('cadastros/desconto-convenio', $data);
+    }
+
+    function gravardesconto($convenio_id) {
+        $data['convenio'] = $this->convenio->gravardesconto($convenio_id);
+        $data['convenioid'] = $convenio_id;
+        redirect(base_url() . "cadastros/convenio");
+    }
+
     function excluir($convenio_id) {
         if ($this->convenio->excluir($convenio_id)) {
             $mensagem = 'Sucesso ao excluir a Convenio';

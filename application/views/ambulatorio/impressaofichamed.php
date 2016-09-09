@@ -1,22 +1,21 @@
 <?
 $dataatualizacao = $exame[0]->data_autorizacao;
-$totalpagar =0;
-$formapagamento ='';
-     $teste= "";
-     $teste2= "";
-     $teste3= "";
-     $teste4= "";
-     
-     
-         $dataFuturo = date("Y-m-d");
-    $dataAtual = $paciente['0']->nascimento;
-    $date_time = new DateTime($dataAtual);
-    $diff = $date_time->diff(new DateTime($dataFuturo));
-    $idade = $diff->format('%Y');
+$totalpagar = 0;
+$formapagamento = '';
+$teste = "";
+$teste2 = "";
+$teste3 = "";
+$teste4 = "";
+
+
+$dataFuturo = date("Y-m-d");
+$dataAtual = $paciente['0']->nascimento;
+$date_time = new DateTime($dataAtual);
+$diff = $date_time->diff(new DateTime($dataFuturo));
+$idade = $diff->format('%Y');
 ?>
 
 <?
-
 $sexo = $exame[0]->sexo;
 if ($sexo == "M") {
     $sexopaciente = "Masculino";
@@ -44,7 +43,7 @@ $agenda = $exame[0]->agenda;
 <td ><font size = -1><u>CLINICA RADIOLOGICA</u></font></td>
 </tr>
 <tr>
-    <td colspan="2" ><font size = -1><?= utf8_decode($exame[0]->convenio); ?>&nbsp;&nbsp; - &nbsp;&nbsp;<?= $exame[0]->guia_id?></font></td>
+    <td colspan="2" ><font size = -1><?= utf8_decode($exame[0]->convenio); ?>&nbsp;&nbsp; - &nbsp;&nbsp;<?= $exame[0]->guia_id ?></font></td>
     <td ><font size = -1>SEXO: <?= $sexopaciente ?></font></td>
     <td><font size = -2></font></td>
     <td >&nbsp;</td>
@@ -129,16 +128,16 @@ $agenda = $exame[0]->agenda;
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
     <td ><font size = -1>N.PEDIDO: <u><?= $exame[0]->guia_id ?></font></td>
-    </tr>
-    <tr>
-        <td ><font size = -2>( )DISPNEIA</font></td>
-        <td ><font size = -2>( )CEFALEIA</font></td>
-        <td ><font size = -2>( )DIABETE</font></td>
-        <td style='width:58pt;border:solid windowtext 1.0pt;
-            border-bottom:none;border-top:none;mso-border-left-alt:
-            solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
-        <td >&nbsp;</td>
-        <td ><font size = -1>REALIZADO: <?= substr($exame[0]->data_autorizacao, 8, 2) . "/" . substr($exame[0]->data_autorizacao, 5, 2) . "/" . substr($exame[0]->data_autorizacao, 0, 4); ?>&agrave;s <?= substr($dataatualizacao, 10, 9); ?></u></font></td>
+</tr>
+<tr>
+    <td ><font size = -2>( )DISPNEIA</font></td>
+    <td ><font size = -2>( )CEFALEIA</font></td>
+    <td ><font size = -2>( )DIABETE</font></td>
+    <td style='width:58pt;border:solid windowtext 1.0pt;
+        border-bottom:none;border-top:none;mso-border-left-alt:
+        solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
+    <td >&nbsp;</td>
+    <td ><font size = -1>REALIZADO: <?= substr($exame[0]->data_autorizacao, 8, 2) . "/" . substr($exame[0]->data_autorizacao, 5, 2) . "/" . substr($exame[0]->data_autorizacao, 0, 4); ?>&agrave;s <?= substr($dataatualizacao, 10, 9); ?></u></font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )TB RESIDUAL</font></td>
@@ -148,7 +147,30 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1>PREVISAO ENTREGA:</font></td>
+
+    <?
+    $DT_ENTREGA = substr($exame[0]->data_entrega, 8,2) . "/" . substr($exame[0]->data_entrega, 5,2) .  "/" . substr($exame[0]->data_entrega, 0,4);
+//    $b = 0;
+//    foreach ($exames as $item) :
+//    $b++;
+//    $data = $item->data_autorizacao;
+    $data = $exame[0]->data_autorizacao;
+    $dia = strftime("%A", strtotime($data));
+
+    if ($dia == "Saturday") {    
+    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($exame[0]->data_autorizacao)));
+    }elseif($dia == "Sunday") {
+    $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($exame[0]->data_autorizacao)));
+    }
+//    if ($dia == "Saturday") {    
+//    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($item->data_autorizacao)));
+//    }elseif($dia == "Sunday") {
+//    $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($item->data_autorizacao)));
+//    }
+//    endforeach;
+    ?>
+
+    <td ><font size = -1>PREVISAO ENTREGA: </font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )CONT. DE TRAT.</font></td>
@@ -158,7 +180,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1><?= substr($exame[0]->data_entrega, 8, 2) . "/" . substr($exame[0]->data_entrega, 5, 2) . "/" . substr($exame[0]->data_entrega, 0, 4); ?></font></td>
+    <td ><font size = -1><?= $DT_ENTREGA ?></font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )COMUNICANTE</font></td>
@@ -248,71 +270,75 @@ $agenda = $exame[0]->agenda;
         </tr>
     </table>
 </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br style="page-break-before: always;" /> 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br style="page-break-before: always;" /> 
 
 <table>
     <tbody>
         <tr>
             <td ><font size = -1><u>RECIBO</u></font></td>
-</tr>
-<tr>
-    <td ><font size = -1>N&SmallCircle;: <?= $exame[0]->agenda_exames_id; ?></font></td>
-</tr>
+        </tr>
+        <tr>
+            <td ><font size = -1>N&SmallCircle;: <?= $exame[0]->agenda_exames_id; ?></font></td>
+        </tr>
 
-<tr>
-    <td ><font size = -1>DATA: <?= substr($exame[0]->data, 8, 2) . "/" . substr($exame[0]->data, 5, 2) . "/" . substr($exame[0]->data, 0, 4); ?> HORA: <?= substr($dataatualizacao, 10, 6); ?></font></td>
-</tr>
-<tr>
-    <td ><font size = -1>Paciente: <?= utf8_decode($paciente['0']->nome); ?></font></td>
-</tr>
-<tr>
-    <td ><font size = -1>Idade: <?= $idade; ?></font></td>
-</tr>
-<tr>
-    <td ><font size = -1>Convenio: <?= utf8_decode($exame[0]->convenio); ?></font></td>
-</tr>
-<tr>
-    <td ><font size = -1>-------------------------------------------------------------</font></td>
-</tr>
-<td ><font size = -1><?
-    foreach ($exames as $item) :
-        $totalpagar = $totalpagar + $item->valor_total;
-                                                        if($item->forma_pagamento != null && $item->formadepagamento != $teste && $item->formadepagamento != $teste2 && $item->formadepagamento != $teste3 && $item->formadepagamento != $teste4){
-                                                            $teste= $item->formadepagamento; 
-                                                            $formapagamento = $formapagamento . "/" . $item->formadepagamento; }
-                                                        if($item->forma_pagamento2 != null && $item->formadepagamento2 != $teste && $item->formadepagamento2 != $teste2 && $item->formadepagamento2 != $teste3 && $item->formadepagamento2 != $teste4){
-                                                            $teste2= $item->formadepagamento2; 
-                                                            $formapagamento = $formapagamento . "/" . $item->formadepagamento2; }
-                                                        if($item->forma_pagamento3 != null && $item->formadepagamento3 != $teste && $item->formadepagamento3 != $teste2 && $item->formadepagamento3 != $teste3 && $item->formadepagamento3 != $teste4){
-                                                            $teste3= $item->formadepagamento3; 
-                                                            $formapagamento = $formapagamento . "/" . $item->formadepagamento3; }
-                                                        if($item->forma_pagamento4 != null && $item->formadepagamento4 != $teste && $item->formadepagamento4 != $teste2 && $item->formadepagamento4 != $teste3 && $item->formadepagamento4 != $teste4){
-                                                            $teste4= $item->formadepagamento4;
-                                                            $formapagamento = $formapagamento . "/" . $item->formadepagamento4; }
-        echo utf8_decode($item->procedimento);
-        ?><br><? endforeach; ?></font>
-</td>
-<tr>
-    <td ><font size = -1>-------------------------------------------------------------</font></td>
-</tr>
-<tr>
-    <td ><font size = -1><b>TOTAL R$ <?= number_format($totalpagar, 2, ',', '.')?> <?= $formapagamento; ?></b></font></td>
-</tr>
-<tr>
-    <td ><font size = -1>-------------------------------------------------------------</font></td>
-</tr>
-<tr>
-    <td ><font size = -1>Entrega Data</font></td>
-</tr>
-<tr>
-    <td ><font size = -1><?= substr($exame[0]->data_entrega, 8,2) . "/" . substr($exame[0]->data_entrega, 5,2) .  "/" . substr($exame[0]->data_entrega, 0,4)?></font></td>
-</tr>
+        <tr>
+            <td ><font size = -1>DATA: <?= substr($exame[0]->data, 8, 2) . "/" . substr($exame[0]->data, 5, 2) . "/" . substr($exame[0]->data, 0, 4); ?> HORA: <?= substr($dataatualizacao, 10, 6); ?></font></td>
+        </tr>
+        <tr>
+            <td ><font size = -1>Paciente: <?= utf8_decode($paciente['0']->nome); ?></font></td>
+        </tr>
+        <tr>
+            <td ><font size = -1>Idade: <?= $idade; ?></font></td>
+        </tr>
+        <tr>
+            <td ><font size = -1>Convenio: <?= utf8_decode($exame[0]->convenio); ?></font></td>
+        </tr>
+        <tr>
+            <td ><font size = -1>-------------------------------------------------------------</font></td>
+        </tr>
+    <td ><font size = -1><?
+        foreach ($exames as $item) :
+            $totalpagar = $totalpagar + $item->valor_total;
+            if ($item->forma_pagamento != null && $item->formadepagamento != $teste && $item->formadepagamento != $teste2 && $item->formadepagamento != $teste3 && $item->formadepagamento != $teste4) {
+                $teste = $item->formadepagamento;
+                $formapagamento = $formapagamento . "/" . $item->formadepagamento;
+            }
+            if ($item->forma_pagamento2 != null && $item->formadepagamento2 != $teste && $item->formadepagamento2 != $teste2 && $item->formadepagamento2 != $teste3 && $item->formadepagamento2 != $teste4) {
+                $teste2 = $item->formadepagamento2;
+                $formapagamento = $formapagamento . "/" . $item->formadepagamento2;
+            }
+            if ($item->forma_pagamento3 != null && $item->formadepagamento3 != $teste && $item->formadepagamento3 != $teste2 && $item->formadepagamento3 != $teste3 && $item->formadepagamento3 != $teste4) {
+                $teste3 = $item->formadepagamento3;
+                $formapagamento = $formapagamento . "/" . $item->formadepagamento3;
+            }
+            if ($item->forma_pagamento4 != null && $item->formadepagamento4 != $teste && $item->formadepagamento4 != $teste2 && $item->formadepagamento4 != $teste3 && $item->formadepagamento4 != $teste4) {
+                $teste4 = $item->formadepagamento4;
+                $formapagamento = $formapagamento . "/" . $item->formadepagamento4;
+            }
+            echo utf8_decode($item->procedimento);
+            ?><br><? endforeach; ?></font>
+    </td>
+    <tr>
+        <td ><font size = -1>-------------------------------------------------------------</font></td>
+    </tr>
+    <tr>
+        <td ><font size = -1><b>TOTAL R$ <?= number_format($totalpagar, 2, ',', '.') ?> <?= $formapagamento; ?></b></font></td>
+    </tr>
+    <tr>
+        <td ><font size = -1>-------------------------------------------------------------</font></td>
+    </tr>
+    <tr>
+        <td ><font size = -1>Entrega Data</font></td>
+    </tr>
+    <tr>
+        <td ><font size = -1><?= $DT_ENTREGA ?></font></td>
+    </tr>
 </table>
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>

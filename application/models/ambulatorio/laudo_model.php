@@ -122,6 +122,17 @@ class laudo_model extends Model {
         }
     }
 
+    function email($paciente_id) {
+
+        $this->db->select('cns');
+        $this->db->from('tb_paciente');
+        $this->db->where('paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        
+        return $result[0]->cns;
+    }
+
     function listar($args = array()) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -399,11 +410,11 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-        function listarxmllaudo($args = array()) {
+
+    function listarxmllaudo($args = array()) {
 //        var_dump($_POST['convenio'] , $_POST['medico'],$_POST['paciente']);
 //        die;
-            
+
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('pt.codigo , g.ambulatorio_guia_id,
                             ae.valor_total,
@@ -466,11 +477,11 @@ class laudo_model extends Model {
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
         }
-        if (isset($_POST['paciente_id']) && $_POST['paciente_id'] != "") {            
+        if (isset($_POST['paciente_id']) && $_POST['paciente_id'] != "") {
             $this->db->where('p.paciente_id', $_POST['paciente_id']);
         }
         $return = $this->db->get();
-        
+
 //        var_dump($return->result());
 //        die;
         return $return->result();
@@ -514,15 +525,14 @@ class laudo_model extends Model {
         $salas = $return[0]->sala;
         $data = date("Y-m-d H:i:s");
         $medico = $return[0]->descricao;
-        
+
         $paciente = $return[0]->paciente;
         $superior = 'Paciente: ' . $paciente;
-         $inferior=  $salas . ' ' .$medico;
+        $inferior = $salas . ' ' . $medico;
         $sql = "INSERT INTO chamado(
             data, linha_inferior, linha_superior, setor_id)
     VALUES ('$data', '$inferior', '$superior', 1);";
         $DB1->query($sql);
-
     }
 
     function listarconsultahistoricoantigo($paciente_id) {

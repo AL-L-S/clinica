@@ -30,7 +30,7 @@
                     $url      = $this->utilitario->build_query_params(current_url(), $_GET);
                     $consulta = $this->operador_m->listar($_GET);
                     $total    = $consulta->count_all_results();
-                    $limit    = 10;
+                    $limit    = 50;
                     isset ($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                     if ($total > 0) {
@@ -53,17 +53,20 @@
                                 <?}?>
                                                                 <?if($item->ativo == 't'){?>
                                 <td class="<?php echo $estilo_linha; ?>" >
-                                    <a onclick="javascript: return confirm('Deseja realmente excluir o operador <?=$item->usuario; ?>');"
-                                       href="<?=base_url()?>seguranca/operador/excluirOperador/<?=$item->operador_id;?>">Excluir
+                                    <a onclick="javascript: confirm('Deseja realmente excluir o operador <?=$item->usuario; ?>'); window.open('<?= base_url() . "seguranca/operador/excluirOperador/$item->operador_id";?>' , '_blanck')"
+                                       >Excluir
                                     </a>
+<!--                                    href="<?=base_url()?>seguranca/operador/excluirOperador/<?=$item->operador_id;?>"-->
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="140px;">
-                                    <a href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>">Editar
+                                    <a  onclick="javascript:window.open('<?= base_url() . "seguranca/operador/alterar/$item->operador_id"; ?> ', '_blank');">Editar
                                     </a>
+<!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
                                         </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="140px;">
-                                    <a href="<?= base_url() ?>seguranca/operador/operadorconvenio/<?= $item->operador_id ?>">Convenio
+                                    <a  onclick="javascript:window.open('<?= base_url() . "seguranca/operador/operadorconvenio/$item->operador_id"; ?> ', '_blank');">Convenio
                                     </a>
+<!--                           href="<?= base_url() ?>seguranca/operador/operadorconvenio/<?= $item->operador_id ?>"-->
                                         </td>
                                                                     <?}else{?>
                                     <td class="<?php echo $estilo_linha; ?>" width="140px;">

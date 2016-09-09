@@ -102,6 +102,7 @@ class Operador extends BaseController {
 
 //            redirect(base_url()."seguranca/operador/index/$data","refresh");
         $this->session->set_flashdata('message', $data['mensagem']);
+//        header("Location: base_url() . seguranca/operador");
         redirect(base_url() . "seguranca/operador", $data);
     }
     

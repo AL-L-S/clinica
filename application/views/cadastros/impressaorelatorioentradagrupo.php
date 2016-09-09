@@ -4,6 +4,12 @@
     <? } else { ?>
         <h4>TODAS OS TIPOS</h4>
     <? } ?>
+    <? if (count($classe) > 0) { ?>
+        <? $texto = strtr(strtoupper($classe[0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß"); ?>
+        <h4>CLASSE: <?= $texto; ?></h4>
+    <? } else { ?>
+        <h4>TODAS AS CLASSES</h4>
+    <? } ?>
     <? if (count($forma) > 0) { ?>
         <h4>CONTA:<?= $forma[0]->descricao; ?></h4>
     <? } else { ?>
@@ -26,6 +32,7 @@
                     <th width="100px;" class="tabela_header">Conta</th>
                     <th class="tabela_header">Nome</th>
                     <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
                     <th class="tabela_header">Dt entrada</th>
                     <th class="tabela_header">Valor</th>
 
@@ -48,31 +55,33 @@
                             <td ><?= utf8_decode($item->conta); ?></td>
                             <td ><?= utf8_decode($item->razao_social); ?></td>
                             <td ><?= utf8_decode($item->tipo); ?>&nbsp;</td>
+                            <td ><?= utf8_decode($item->classe); ?></td>
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                             <td ><?= utf8_decode($item->observacao); ?>&nbsp;</td>
                         </tr>
-        <? } else { ?>
+                    <? } else { ?>
                         <tr>
                             <td colspan="5" bgcolor="#C0C0C0"><b>SUB-TOTAL</b></td>
                             <td bgcolor="#C0C0C0"><b><?= number_format($totaltipo, 2, ",", "."); ?></b></td>
-                            
+
                         </tr>
                         <tr>
                             <td ><?= utf8_decode($item->conta); ?></td>
                             <td ><?= utf8_decode($item->razao_social); ?></td>
                             <td ><?= utf8_decode($item->tipo); ?></td>
+                            <td ><?= utf8_decode($item->classe); ?></td>
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                             <td ><?= utf8_decode($item->observacao); ?></td>
                         </tr>
-        <? 
-        $s = $item->conta;
-        $totaltipo = 0;
-        $totaltipo = $item->valor;
-        }
-        $i++
-        ?>
+                        <?
+                        $s = $item->conta;
+                        $totaltipo = 0;
+                        $totaltipo = $item->valor;
+                    }
+                    $i++
+                    ?>
                 <? endforeach; ?>
                 <tr>
                     <td colspan="4" bgcolor="#C0C0C0"><b>TOTAL</b></td>
@@ -81,9 +90,8 @@
             </tbody>
 
 
-    <?
-        }
-        else {
+            <?
+        } else {
             ?>
             <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
             <?
@@ -97,7 +105,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
