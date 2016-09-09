@@ -80,7 +80,6 @@ class Laudo extends BaseController {
 
     function chamarpaciente($ambulatorio_laudo_id) {
         $this->laudo->chamada($ambulatorio_laudo_id);
-        die;
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
@@ -628,77 +627,77 @@ class Laudo extends BaseController {
 //        
 //        
         //PRONTOMEDICA
-//        $filename = "laudo.pdf";
-//        $cabecalho = "<table>
-//<tr>
-//  <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='img/clinicadez.jpg'></td>
-//</tr>
-//<tr>
-//<td width='30px'></td><td width='400px'>Numero do exame: " . $ambulatorio_laudo_id . "</td><td>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td>
-//</tr>
-//<tr>
-//  <td width='30px'></td><td >Paciente: " . $data['laudo']['0']->paciente . "</td><td>Idade: " . $teste . "</td>
-//</tr>
-//<tr>
-//<td width='30px'></td><td>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "</td><td>Data de Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "</td>
-//</tr>
-//<tr>
-//<td width='30px'></td><td>Covenio: " . $data['laudo']['0']->convenio . "</td>
-//</tr>
-//</tr>
-//</tr><tr><td>&nbsp;</td></tr>
-//<tr>
-//</table>";
-//        $rodape = "";
-//        if ($data['laudo']['0']->situacao == "FINALIZADO") {
-//            $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table>";
-//        }else{
-//            $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
-//            <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
-//        }
-//        $grupo = 'laboratorial';
-//        $html = $this->load->view('ambulatorio/impressaolaudo_5', $data, true);
-//        pdf($html, $filename, $cabecalho, $rodape, $grupo);
-//        $this->load->View('ambulatorio/impressaolaudo_5', $data);
-        //INSTITUTO VASCULAR
-
         $filename = "laudo.pdf";
-        $cabecalho = "<table >
+        $cabecalho = "<table>
 <tr>
-  <td width='300px'></td><td width='180px'></td><td><img align = 'right'  width='180px' height='90px' src='img/clinicadez.jpg'></td>
-</tr>
-
-<tr>
-  <td >PACIENTE: " . $data['laudo']['0']->paciente . "</td><td>IDADE: " . $teste . "</td>
+  <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='img/clinicadez.jpg'></td>
 </tr>
 <tr>
-<td>COVENIO: " . $data['laudo']['0']->convenio . "</td><td>NASCIMENTO: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "</td>
+<td width='30px'></td><td width='400px'>Numero do exame: " . $ambulatorio_laudo_id . "</td><td>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td>
 </tr>
 <tr>
-<td>INDICA&Ccedil;&Atilde;O: " . $data['laudo']['0']->indicacao . "</td><td>DATA: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td>
+  <td width='30px'></td><td >Paciente: " . $data['laudo']['0']->paciente . "</td><td>Idade: " . $teste . "</td>
 </tr>
-
+<tr>
+<td width='30px'></td><td>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "</td><td>Data de Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "</td>
+</tr>
+<tr>
+<td width='30px'></td><td>Covenio: " . $data['laudo']['0']->convenio . "</td>
+</tr>
 </tr>
 </tr><tr><td>&nbsp;</td></tr>
 <tr>
 </table>";
         $rodape = "";
         if ($data['laudo']['0']->situacao == "FINALIZADO") {
-            $rodape = "<table  width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr>"
-                    . "<tr><td><img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'></td></tr>"
-                    . "</table> ";
-        } else {
+            $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table>";
+        }else{
             $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
-            <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr>"
-                    . "<tr><td><img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'></td></tr>"
-                    . "</table> ";
+            <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
         }
         $grupo = 'laboratorial';
-
         $html = $this->load->view('ambulatorio/impressaolaudo_5', $data, true);
-
         pdf($html, $filename, $cabecalho, $rodape, $grupo);
         $this->load->View('ambulatorio/impressaolaudo_5', $data);
+        //INSTITUTO VASCULAR
+
+//        $filename = "laudo.pdf";
+//        $cabecalho = "<table >
+//<tr>
+//  <td width='300px'></td><td width='180px'></td><td><img align = 'right'  width='180px' height='90px' src='img/clinicadez.jpg'></td>
+//</tr>
+//
+//<tr>
+//  <td >PACIENTE: " . $data['laudo']['0']->paciente . "</td><td>IDADE: " . $teste . "</td>
+//</tr>
+//<tr>
+//<td>COVENIO: " . $data['laudo']['0']->convenio . "</td><td>NASCIMENTO: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "</td>
+//</tr>
+//<tr>
+//<td>INDICA&Ccedil;&Atilde;O: " . $data['laudo']['0']->indicacao . "</td><td>DATA: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td>
+//</tr>
+//
+//</tr>
+//</tr><tr><td>&nbsp;</td></tr>
+//<tr>
+//</table>";
+//        $rodape = "";
+//        if ($data['laudo']['0']->situacao == "FINALIZADO") {
+//            $rodape = "<table  width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr>"
+//                    . "<tr><td><img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'></td></tr>"
+//                    . "</table> ";
+//        } else {
+//            $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
+//            <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr>"
+//                    . "<tr><td><img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'></td></tr>"
+//                    . "</table> ";
+//        }
+//        $grupo = 'laboratorial';
+//
+//        $html = $this->load->view('ambulatorio/impressaolaudo_5', $data, true);
+//
+//        pdf($html, $filename, $cabecalho, $rodape, $grupo);
+//        $this->load->View('ambulatorio/impressaolaudo_5', $data);
 
 
 
@@ -911,19 +910,19 @@ class Laudo extends BaseController {
         $teste = $diff->format('%Ya %mm %dd');
 
         //GERAL
-        //        $filename = "laudo.pdf";
-        //        $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/CABECALHO.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-        //        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
-        //        $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
-        //        pdf($html, $filename, $cabecalho, $rodape);
-        //        $this->load->View('ambulatorio/impressaolaudo_1', $data);
+                $filename = "laudo.pdf";
+                $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/CABECALHO.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+                $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+                $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
+                pdf($html, $filename, $cabecalho, $rodape);
+                $this->load->View('ambulatorio/impressaolaudo_1', $data);
         //HUMANA IMAGEM
-        $filename = "laudo.pdf";
-        $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/humana.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'>";
-        $html = $this->load->view('ambulatorio/impressaolaudo_3', $data, true);
-        pdf($html, $filename, $cabecalho, $rodape);
-        $this->load->View('ambulatorio/impressaolaudo_3', $data);
+//        $filename = "laudo.pdf";
+//        $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/humana.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+//        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'>";
+//        $html = $this->load->view('ambulatorio/impressaolaudo_3', $data, true);
+//        pdf($html, $filename, $cabecalho, $rodape);
+//        $this->load->View('ambulatorio/impressaolaudo_3', $data);
         //CAGE
         //                if ($data['laudo']['0']->sexo == "F"){
         //            $SEXO= 'FEMININO';
@@ -1046,52 +1045,52 @@ class Laudo extends BaseController {
         $teste = $diff->format('%Ya %mm %dd');
 
         //GERAL
-        //        $filename = "laudo.pdf";
-        //        $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/CABECALHO.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-        //        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
-        //        $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
-        //        pdf($html, $filename, $cabecalho, $rodape);
-        //        $this->load->View('ambulatorio/impressaolaudo_1', $data);
+//                $filename = "laudo.pdf";
+//                $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/CABECALHO.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+//                $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+//                $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
+//                pdf($html, $filename, $cabecalho, $rodape);
+//                $this->load->View('ambulatorio/impressaolaudo_1', $data);
         //HUMANA IMAGEM
-        $filename = "laudo.pdf";
-        $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-        $rodape = "";
-        $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
-        pdf($html, $filename, $cabecalho, $rodape);
-        $this->load->View('ambulatorio/impressaolaudo_1', $data);
+//        $filename = "laudo.pdf";
+//        $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+//        $rodape = "";
+//        $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
+//        pdf($html, $filename, $cabecalho, $rodape);
+//        $this->load->View('ambulatorio/impressaolaudo_1', $data);
         //PROIMAGEM
-        //        $filename = "laudo.pdf";
-        //        $cabecalho = "<table>
-        //<tr>
-        //  <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='img/clinicadez.jpg'></td>
-        //</tr>
-        //<td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-        //<tr>
-        //<td width='30px'></td><td>" . substr($data['laudo']['0']->sala, 0, 10) . "</td>
-        //</tr>
-        //<tr>
-        //<td width='30px'></td><td width='400px'>Reg.:" . $data['laudo']['0']->paciente_id . "</td><td>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td>
-        //</tr>
-        //<tr>
-        //  <td width='30px'></td><td >Paciente:" . $data['laudo']['0']->paciente . "</td><td>Idade:" . $teste . "</td>
-        //</tr>
-        //<tr>
-        //<td width='30px'></td><td>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "</td><td>Sexo:" . $data['laudo']['0']->sexo . "</td>
-        //</tr>
-        //</tr>
-        //</tr><tr><td>&nbsp;</td></tr>
-        //<tr>
-        //</table>";
-        //        $rodape = "";
-        //        if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer2 == "" ) {
-        //            $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td width='400px'></td><td><img align = 'Right'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></tr><tr><td>&nbsp;</td></tr></table>";
-        //        }elseif ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer2 != "") {
-        //                        $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td width='30px'></td><td><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td><td width='30px'></td><td><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer2 . ".jpg'></td></tr></tr><tr><td>&nbsp;</td></tr></table>";
-        //        }
-        //        $grupo = 'laboratorial';
-        //        $html = $this->load->view('ambulatorio/impressaolaudo_5', $data, true);
-        //        pdf($html, $filename, $cabecalho, $rodape, $grupo);
-        //        $this->load->View('ambulatorio/impressaolaudo_5', $data);
+                $filename = "laudo.pdf";
+                $cabecalho = "<table>
+        <tr>
+          <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='img/clinicadez.jpg'></td>
+        </tr>
+        <td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+        <tr>
+        <td width='30px'></td><td>" . substr($data['laudo']['0']->sala, 0, 10) . "</td>
+        </tr>
+        <tr>
+        <td width='30px'></td><td width='400px'>Reg.:" . $data['laudo']['0']->paciente_id . "</td><td>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td>
+        </tr>
+        <tr>
+          <td width='30px'></td><td >Paciente:" . $data['laudo']['0']->paciente . "</td><td>Idade:" . $teste . "</td>
+        </tr>
+        <tr>
+        <td width='30px'></td><td>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "</td><td>Sexo:" . $data['laudo']['0']->sexo . "</td>
+        </tr>
+        </tr>
+        </tr><tr><td>&nbsp;</td></tr>
+        <tr>
+        </table>";
+                $rodape = "";
+                if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer2 == "" ) {
+                    $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td width='400px'></td><td><img align = 'Right'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></tr><tr><td>&nbsp;</td></tr></table>";
+                }elseif ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer2 != "") {
+                                $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td width='30px'></td><td><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td><td width='30px'></td><td><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer2 . ".jpg'></td></tr></tr><tr><td>&nbsp;</td></tr></table>";
+                }
+                $grupo = 'laboratorial';
+                $html = $this->load->view('ambulatorio/impressaolaudo_5', $data, true);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                $this->load->View('ambulatorio/impressaolaudo_5', $data);
         //CAGE
         //                if ($data['laudo']['0']->sexo == "F"){
         //            $SEXO= 'FEMININO';

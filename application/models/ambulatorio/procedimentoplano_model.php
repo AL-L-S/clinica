@@ -286,6 +286,8 @@ class procedimentoplano_model extends Model {
     function gravar() {
         try {
 
+
+
             /* inicia o mapeamento no banco */
             $procedimento_convenio_id = $_POST['txtprocedimentoplanoid'];
             $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
@@ -304,6 +306,16 @@ class procedimentoplano_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
 
             if ($_POST['txtprocedimentoplanoid'] == "") {// insert
+                $this->db->select('convenio_id');
+                $this->db->from('tb_procedimento_convenio');
+                $this->db->where('ativo', 't');
+                $this->db->where("procedimento_tuss_id", $_POST['procedimento']);
+                $this->db->where("convenio_id", $_POST['convenio']);
+                $query = $this->db->get();
+                $return = $query->result();
+                $qtde = count($return);
+    
+                if($qtde == 0){
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_procedimento_convenio');
@@ -312,6 +324,9 @@ class procedimentoplano_model extends Model {
                     return -1;
                 else
                     $procedimento_convenio_id = $this->db->insert_id();
+                }else{
+                    return -1;
+                }
             }
             else { // update
                 $this->db->set('data_atualizacao', $horario);
