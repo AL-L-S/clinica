@@ -596,3 +596,28 @@ atualiza 08/09/16
 
 ALTER TABLE ponto.tb_empresa ADD COLUMN CNES character varying(20);
 UPDATE ponto.tb_empresa SET cnes= '3348873';
+
+atualiza 09/09/2016
+
+UPDATE ponto.tb_entradas
+   SET classe= tipo;
+
+
+UPDATE ponto.tb_saidas
+   SET classe= tipo;
+
+UPDATE ponto.tb_financeiro_contaspagar
+   SET classe= tipo;
+
+UPDATE ponto.tb_financeiro_contasreceber
+   SET classe= tipo;
+
+INSERT INTO ponto.tb_financeiro_classe(
+            financeiro_classe_id, descricao,data_cadastro, 
+            operador_cadastro, data_atualizacao, operador_atualizacao)
+   (SELECT tipo_entradas_saida_id, descricao, data_cadastro, operador_cadastro, 
+       data_atualizacao, operador_atualizacao
+  FROM ponto.tb_tipo_entradas_saida);
+
+
+DELETE FROM ponto.tb_tipo_entradas_saida;
