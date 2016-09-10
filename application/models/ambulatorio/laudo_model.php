@@ -129,7 +129,7 @@ class laudo_model extends Model {
         $this->db->where('paciente_id', $paciente_id);
         $return = $this->db->get();
         $result = $return->result();
-        
+
         return $result[0]->cns;
     }
 
@@ -484,6 +484,63 @@ class laudo_model extends Model {
 
 //        var_dump($return->result());
 //        die;
+        return $return->result();
+    }
+
+    function listarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id) {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('pt.codigo , g.ambulatorio_guia_id,
+                            ae.valor_total,
+                            ae.valor,
+                            ae.autorizacao,
+                            p.convenionumero,
+                            p.nome as paciente,
+                            p.nascimento,
+                            op.nome as medicosolicitante,
+                            op.conselho as conselhosolicitante,
+                            o.nome as medico,
+                            o.conselho,
+                            o.cbo_ocupacao_id,
+                            o.cpf,
+                            ae.data_autorizacao,
+                            ae.data_realizacao,                            
+                            tu.descricao as procedimento,
+                            ae.data,
+                            pt.grupo,
+                            c.nome as convenio,
+                            tuc.nome as classificacao,
+                            ae.quantidade,
+                            c.registroans,
+                            c.codigoidentificador,
+                            e.data_cadastro,
+                            e.data_atualizacao,
+                            g.data_criacao,
+                            g.guiaconvenio,
+                            ae.paciente_id,
+                            al.texto_laudo,
+                            al.ambulatorio_laudo_id');
+        $this->db->from('tb_ambulatorio_guia g');
+        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_tuss_classificacao tuc', 'tuc.tuss_classificacao_id = tu.classificacao', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("c.dinheiro", 'f');
+        $this->db->where('ae.ativo', 'false');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('an.exame_sala_id', $sala_id);
+        $this->db->where('e.exames_id', $exame_id);
+        $this->db->where('al.ambulatorio_laudo_id', $ambulatorio_laudo_id);
+        $return = $this->db->get();
+
         return $return->result();
     }
 
