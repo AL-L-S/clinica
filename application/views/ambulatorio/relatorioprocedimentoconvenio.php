@@ -10,8 +10,6 @@
                     <dd>
                         <select name="convenio" id="convenio" class="size2">
                             <option value='0' >TODOS</option>
-                            <option value="" >CONVENIOS</option>
-                            <option value="-1" >PARTICULARES</option>
                             <? foreach ($convenio as $value) : ?>
                                 <option value="<?= $value->convenio_id; ?>" ><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
