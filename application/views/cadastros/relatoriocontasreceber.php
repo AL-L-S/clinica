@@ -115,7 +115,7 @@
         $('#tipo').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaida', {tipo: $(this).val(), ajax: true}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/classeportipo', {tipo: $(this).val(), ajax: true}, function (j) {
                     options = '<option value="">TODOS</option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
