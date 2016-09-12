@@ -1491,8 +1491,6 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                 $contador = count($listarexame);
                 foreach ($listarexame as $value) {
-                    $senha = substr($value->data_autorizacao, 0, 10);
-                    $datavalidadesenha = date('Y-m-d', strtotime("+30 days", strtotime($senha)));
                     $i++;
                     if ($value->convenionumero == '') {
                         $numerodacarteira = '0000000';
@@ -1534,8 +1532,6 @@ class Exame extends BaseController {
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
                   <ans:dataAutorizacao>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAutorizacao>
-                  <ans:senha>" . $value->autorizacao . "</ans:senha>                  
-                  <ans:dataValidadeSenha>" . $datavalidadesenha . "</ans:dataValidadeSenha>                  
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>
                      <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
@@ -1853,8 +1849,6 @@ class Exame extends BaseController {
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
                   <ans:dataAutorizacao>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAutorizacao>
-                  <ans:senha>" . $value->autorizacao . "</ans:senha>
-                      <ans:dataValidadeSenha>" . $datavalidadesenha . "</ans:dataValidadeSenha> 
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>
                      <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>

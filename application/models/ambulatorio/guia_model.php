@@ -2514,6 +2514,72 @@ ORDER BY p.nome";
         return $return->result();
     }
 
+    function relatoriomedicoconveniofinanceirotodos() {
+
+        $this->db->select('ae.quantidade,
+            p.nome as paciente,
+            pt.nome as procedimento,
+            pc.procedimento_convenio_id,
+            ae.autorizacao,
+            ae.data,
+            op.operador_id,
+            ae.valor_total,
+            pc.procedimento_tuss_id,
+            al.medico_parecer1,
+            pt.perc_medico,
+            al.situacao as situacaolaudo,
+            tu.classificacao,
+            o.nome as revisor,
+            pt.percentual,
+            op.nome as medico,
+            ops.nome as medicosolicitante,
+            c.nome as convenio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('al.situacao', 'FINALIZADO');
+        if ($_POST['medicos'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['grupoconvenio'] != "0") {
+            $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        $this->db->where("ae.data >=", $_POST['txtdata_inicio']);
+        $this->db->where("ae.data <=", $_POST['txtdata_fim']);
+
+        $this->db->orderby('al.medico_parecer1');
+        $this->db->orderby('pc.convenio_id');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('ae.paciente_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function relatoriomedicoconvenioprevisaofinanceiro() {
 
         $this->db->select('ae.quantidade,
