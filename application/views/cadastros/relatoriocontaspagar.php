@@ -31,9 +31,9 @@
                     </dt>
                     <dd>
                         <select name="tipo" id="tipo" class="size2">
-                            <option value="">TODOS</option>
+                            <option value=0>TODOS</option>
                             <? foreach ($tipo as $value) : ?>
-                                <option value="<?= $value->descricao; ?>" ><?php echo $value->descricao; ?></option>
+                                <option value="<?= $value->tipo_entradas_saida_id; ?>" ><?php echo $value->descricao; ?></option>
                             <? endforeach; ?>
                         </select>
                     </dd>
@@ -115,7 +115,7 @@
         $('#tipo').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/classeportipo', {tipo: $(this).val(), ajax: true}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaida', {tipo: $(this).val(), ajax: true}, function (j) {
                     options = '<option value="">TODOS</option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';

@@ -151,12 +151,13 @@ class caixa_model extends Model {
         $this->db->from('tb_saidas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
-        if ($_POST['tipo'] != '') {
-            $this->db->where('s.tipo', $_POST['tipo']);
+        if ($_POST['tipo'] != 0) {
+            $this->db->where('tipo_id', $_POST['tipo']);
         }
         if ($_POST['classe'] != '') {
             $this->db->where('s.classe', $_POST['classe']);
@@ -231,12 +232,13 @@ class caixa_model extends Model {
         $this->db->from('tb_saidas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
-        if ($_POST['tipo'] != '') {
-            $this->db->where('tipo', $_POST['tipo']);
+        if ($_POST['tipo'] != 0) {
+            $this->db->where('tipo_id', $_POST['tipo']);
         }
         if ($_POST['classe'] != '') {
             $this->db->where('classe', $_POST['classe']);
@@ -301,12 +303,13 @@ class caixa_model extends Model {
         $this->db->from('tb_entradas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+         $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
-        if ($_POST['tipo'] != '') {
-            $this->db->where('tipo', $_POST['tipo']);
+        if ($_POST['tipo'] != 0) {
+            $this->db->where('tipo_id', $_POST['tipo']);
         }
         if ($_POST['classe'] != '') {
             $this->db->where('classe', $_POST['classe']);
@@ -356,12 +359,13 @@ class caixa_model extends Model {
         $this->db->from('tb_entradas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+                $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
-        if ($_POST['tipo'] != '') {
-            $this->db->where('tipo', $_POST['tipo']);
+        if ($_POST['tipo'] != 0) {
+            $this->db->where('tipo_id', $_POST['tipo']);
         }
         if ($_POST['classe'] != '') {
             $this->db->where('classe', $_POST['classe']);
@@ -409,7 +413,8 @@ class caixa_model extends Model {
         $this->db->join('tb_entradas e', 'e.entradas_id = s.entrada_id', 'left');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-        if (($_POST['tipo'] != '') && ($_POST['classe'] == '')) {
+         $this->db->join('tb_financeiro_classe fc', 'fc.descricao = sa.classe', 'left');
+        if (($_POST['tipo'] != 0) && ($_POST['classe'] == '')) {
             $this->db->where('sa.tipo', $_POST['tipo']);
             $this->db->orwhere('e.tipo', $_POST['tipo']);
         }
