@@ -76,7 +76,7 @@ class Contasreceber extends BaseController {
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
-        $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
+        $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
