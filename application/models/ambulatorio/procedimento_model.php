@@ -100,6 +100,7 @@ class procedimento_model extends Model {
                             pt.nome as procedimento,
                             pt.codigo,
                             pc.data_atualizacao,
+                            pc.data_cadastro,
                             c.nome as convenio,
                             pc.valortotal');
         $this->db->from('tb_procedimento_convenio pc');
