@@ -2516,24 +2516,9 @@ ORDER BY p.nome";
 
     function relatoriomedicoconveniofinanceirotodos() {
 
-        $this->db->select('ae.quantidade,
-            p.nome as paciente,
-            pt.nome as procedimento,
-            pc.procedimento_convenio_id,
-            ae.autorizacao,
-            ae.data,
-            op.operador_id,
-            ae.valor_total,
-            pc.procedimento_tuss_id,
-            al.medico_parecer1,
-            pt.perc_medico,
-            al.situacao as situacaolaudo,
-            tu.classificacao,
-            o.nome as revisor,
-            pt.percentual,
-            op.nome as medico,
-            ops.nome as medicosolicitante,
-            c.nome as convenio');
+        $this->db->select('sum(ae.valor_total)as valor,
+            sum(ae.quantidade) as quantidade,
+            op.nome as medico');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -2543,7 +2528,6 @@ ORDER BY p.nome";
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
-        $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('e.cancelada', 'false');
@@ -2571,11 +2555,8 @@ ORDER BY p.nome";
         }
         $this->db->where("ae.data >=", $_POST['txtdata_inicio']);
         $this->db->where("ae.data <=", $_POST['txtdata_fim']);
-
-        $this->db->orderby('al.medico_parecer1');
-        $this->db->orderby('pc.convenio_id');
-        $this->db->orderby('ae.data');
-        $this->db->orderby('ae.paciente_id');
+        $this->db->groupby('op.nome');
+        $this->db->orderby('op.nome');
         $return = $this->db->get();
         return $return->result();
     }
