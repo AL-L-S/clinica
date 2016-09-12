@@ -268,9 +268,9 @@ class Autocomplete extends Controller {
     function classeportipo() {
 
         if (isset($_GET['tipo'])) {
-            $result = $this->financeiro_classe->listarautocompleteclasses($_GET['tipo']);
+            $result = $this->financeiro_classe->listarautocompleteclasse($_GET['tipo']);
         } else {
-            $result = $this->financeiro_classe->listarautocompleteclasses();
+            $result = $this->financeiro_classe->listarautocompleteclasse();
         }
         echo json_encode($result);
     }
