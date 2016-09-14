@@ -4,7 +4,11 @@
         <a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">
             Voltar
         </a>
-
+    </div>
+    <div class="bt_link_new">
+        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novomedico/<?=$dados?>">
+            Novo M&eacute;dico
+        </a>
     </div>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento Honor&aacute;rios M&eacute;dicos</a></h3>
@@ -20,7 +24,7 @@
                         <th class="tabela_title" width="10px;" >Valor</th>
                         <th class="tabela_title" >Procedimento</th>                         
                         <th class="tabela_title" width="10px;">Conv&ecirc;nio</th>
-                        
+
                     </tr>
                     <tr>
                         <th class="tabela_title">
@@ -66,7 +70,7 @@
                 if ($total > 0) {
                     ?>
                     <tbody>
-                        <?php                                                     
+                        <?php
                         $lista = $this->procedimentoplano->listarmedicopercentual($dados)->orderby('o.nome')->orderby('pt.nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
@@ -74,7 +78,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->medico; ?></td>
-                                
+
                                 <?php
                                 $percentual = $item->percentual;
                                 if ($percentual == "t") {
@@ -82,7 +86,7 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor; ?>%</td>
                                 <? } elseif ($percentual == "f") { ?>
                                     <td class="<?php echo $estilo_linha; ?>">R$&nbsp;<?= $item->valor; ?></td>
-        <? } ?> 
+                                <? } ?> 
                                 <td class="<?php echo $estilo_linha; ?>" ></td>    
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"></td>
@@ -91,6 +95,10 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="45px;">
                                     <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento');"
                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirmedicopercentual/<?= $item->procedimento_percentual_medico_convenio_id; ?>">Excluir
+                                    </a>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="45px;">
+                                    <a href="<?= base_url() ?>ambulatorio/procedimentoplano/editarmedicopercentual/<?= $item->procedimento_percentual_medico_convenio_id; ?>">Editar
                                     </a>
                                 </td>
                             </tr>
@@ -103,8 +111,8 @@
 
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="8">
-<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                        <th class="tabela_footer" colspan="9">
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>
