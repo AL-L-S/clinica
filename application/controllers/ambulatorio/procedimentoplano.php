@@ -67,8 +67,28 @@ class Procedimentoplano extends BaseController {
     }
 
     function editarprocedimento($procedimento_percentual_medico_id) {
-        $data['dados'] = $procedimento_percentual_medico_id;        
+        $data['dados'] = $procedimento_percentual_medico_id;
         $this->loadView('ambulatorio/procedimentopercentualmedico-editar', $data);
+    }
+
+    function novomedico($procedimento_percentual_medico_id) {
+        $data['dados'] = $this->procedimentoplano->novomedico($procedimento_percentual_medico_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['procedimento_percentual_medico_id'] = $procedimento_percentual_medico_id;
+        $this->loadView('ambulatorio/procedimentopercentualmediconovo', $data);
+    }
+
+    function gravarnovomedico($procedimento_percentual_medico_id) {
+        $return = $this->procedimentoplano->gravarnovomedico($procedimento_percentual_medico_id);
+        if ($return == 1) {
+            $mensagem = 'Sucesso ao gravar Médico.';
+        }if ($return == 0) {
+            $mensagem = 'Erro ao gravar Médico.';
+        }if ($return == 2) {
+            $mensagem = 'Erro: Médico já cadastrado.';
+        }
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimento/$procedimento_percentual_medico_id");
     }
 
     function excluir($procedimentoplano_tuss_id) {
@@ -98,6 +118,23 @@ class Procedimentoplano extends BaseController {
             $mensagem = 'Sucesso ao excluir o Percentual medico';
         } else {
             $mensagem = 'Erro ao excluir o Percentual medico. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentual");
+    }
+
+    function editarmedicopercentual($procedimento_percentual_medico_convenio_id) {
+        $data['busca'] = $this->procedimentoplano->buscarmedicopercentual($procedimento_percentual_medico_convenio_id);
+        $data['procedimento_percentual_medico_convenio_id'] = $procedimento_percentual_medico_convenio_id;
+        $this->loadView("ambulatorio/medicopercentual-editar", $data);
+    }
+
+    function gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id) {
+        if ($this->procedimentoplano->gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id)) {
+            $mensagem = 'Sucesso ao editar o Percentual medico';
+        } else {
+            $mensagem = 'Erro ao editar o Percentual medico. Opera&ccedil;&atilde;o cancelada.';
         }
 
         $this->session->set_flashdata('message', $mensagem);
