@@ -59,6 +59,20 @@ class exame_model extends Model {
             return true;
     }
 
+    function gravarlote($b) {
+            $this->db->set('lote', $b);
+            $this->db->update('tb_lote');
+            $erro = $this->db->_error_message();
+
+    }
+
+    function listarlote() {
+
+        $this->db->select('lote');
+        $this->db->from('tb_lote');
+        $return = $this->db->get();
+        return $return->result();
+    }
     function gravarpacientedetalhes() {
         try {
             /* inicia o mapeamento no banco */
@@ -2593,6 +2607,144 @@ class exame_model extends Model {
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
         }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarpacientesxmlfaturamento($args = array()) {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.paciente_id, g.guiaconvenio, convenionumero, p.nome as paciente, ambulatorio_guia_id');
+        $this->db->from('tb_ambulatorio_guia g');
+        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_tuss_classificacao tuc', 'tuc.tuss_classificacao_id = tu.classificacao', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("c.dinheiro", 'f');
+        $this->db->where('ae.ativo', 'false');
+        $this->db->where('ae.cancelada', 'false');
+        if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
+            $this->db->where('ae.data >=', $_POST['datainicio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['tipo'] != "0" && $_POST['tipo'] != "") {
+            $this->db->where("tu.classificacao", $_POST['tipo']);
+        }
+        if ($_POST['tipo'] == "") {
+            $this->db->where("tu.classificacao", "2");
+            $this->db->where("tu.classificacao", "3");
+        }
+        if ($_POST['raca_cor'] != "0" && $_POST['raca_cor'] != "-1") {
+            $this->db->where('p.raca_cor', $_POST['raca_cor']);
+        }
+        if ($_POST['raca_cor'] == "-1") {
+            $this->db->where('p.raca_cor !=', '5');
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
+        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
+            $this->db->where('ae.data <=', $_POST['datafim']);
+        }
+        if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
+            $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        $this->db->groupby('ae.paciente_id, g.guiaconvenio, convenionumero, p.nome, ambulatorio_guia_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarxmlfaturamentoexames($args = array()) {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select("g.ambulatorio_guia_id,
+                            sum(ae.valor_total) as valor_total,
+                            ae.valor,
+                            ae.autorizacao,
+                            op.nome as medicosolicitante,
+                            op.conselho as conselhosolicitante,
+                            o.nome as medico,
+                            o.conselho,
+                            o.cbo_ocupacao_id,
+                            o.cpf,
+                            pt.codigo,
+                            tu.descricao as procedimento,
+                            sum(ae.quantidade) as quantidade,
+                            g.guiaconvenio,
+                            ae.paciente_id");
+        $this->db->from("tb_ambulatorio_guia g");
+        $this->db->join("tb_agenda_exames ae", "ae.guia_id = g.ambulatorio_guia_id", "left");
+        $this->db->join("tb_paciente p", "p.paciente_id = ae.paciente_id", "left");
+        $this->db->join("tb_procedimento_convenio pc", "pc.procedimento_convenio_id = ae.procedimento_tuss_id", "left");
+        $this->db->join("tb_procedimento_tuss pt", "pt.procedimento_tuss_id = pc.procedimento_tuss_id", "left");
+        $this->db->join("tb_tuss tu", "tu.tuss_id = pt.tuss_id", "left");
+        $this->db->join("tb_tuss_classificacao tuc", "tuc.tuss_classificacao_id = tu.classificacao", "left");
+        $this->db->join("tb_exame_sala an", "an.exame_sala_id = ae.agenda_exames_nome_id", "left");
+        $this->db->join("tb_exames e", "e.agenda_exames_id= ae.agenda_exames_id", "left");
+        $this->db->join("tb_ambulatorio_laudo al", "al.exame_id = e.exames_id", "left");
+        $this->db->join("tb_operador o", "o.operador_id = al.medico_parecer1", "left");
+        $this->db->join("tb_operador op", "op.operador_id = ae.medico_solicitante", "left");
+        $this->db->join("tb_convenio c", "c.convenio_id = pc.convenio_id", "left");
+        $this->db->where("c.dinheiro", 'f');
+        $this->db->where('ae.ativo', 'false');
+        $this->db->where('ae.cancelada', 'false');
+        if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
+            $this->db->where('ae.data >=', $_POST['datainicio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['tipo'] != "0" && $_POST['tipo'] != "") {
+            $this->db->where("tu.classificacao", $_POST['tipo']);
+        }
+        if ($_POST['tipo'] == "") {
+            $this->db->where("tu.classificacao", "2");
+            $this->db->where("tu.classificacao", "3");
+        }
+        if ($_POST['raca_cor'] != "0" && $_POST['raca_cor'] != "-1") {
+            $this->db->where('p.raca_cor', $_POST['raca_cor']);
+        }
+        if ($_POST['raca_cor'] == "-1") {
+            $this->db->where('p.raca_cor !=', '5');
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
+        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
+            $this->db->where('ae.data <=', $_POST['datafim']);
+        }
+        if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
+            $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        $this->db->groupby("g.ambulatorio_guia_id,ae.valor, ae.autorizacao,
+                            op.nome,
+                            op.conselho,
+                            o.nome,
+                            o.conselho,
+                            o.cbo_ocupacao_id,
+                            o.cpf,
+                            pt.codigo,
+                            tu.descricao,
+                            g.guiaconvenio,
+                            ae.paciente_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarxmldataautorizacao($ambulatorio_guia_id) {
+        $this->db->select('data_cadastro');
+        $this->db->from('tb_ambulatorio_guia');
+        $this->db->where('ambulatorio_guia_id', $ambulatorio_guia_id);
         $return = $this->db->get();
         return $return->result();
     }

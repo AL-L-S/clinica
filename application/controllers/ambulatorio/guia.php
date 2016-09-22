@@ -129,12 +129,12 @@ class Guia extends BaseController {
 //            $this->load->View('ambulatorio/impressaoficharm', $data);
 //        }
 //PROIMAGEM       
-        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
-            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
-        }
-        if ($grupo == "MAMOGRAFIA") {
-            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
-        }
+//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
+//            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
+//        }
+//        if ($grupo == "MAMOGRAFIA") {
+//            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
+//        }
 //         CLINICAS PACAJUS
 //        if ($grupo == "CONSULTA") {
 //            $this->load->View('ambulatorio/impressaofichaconsulta', $data);
@@ -1622,8 +1622,6 @@ class Guia extends BaseController {
         } else {
             $data['medico'] = 0;
         }
-//        var_dump($data['medico']);
-//        die;
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);

@@ -621,3 +621,12 @@ INSERT INTO ponto.tb_financeiro_classe(
 
 
 DELETE FROM ponto.tb_tipo_entradas_saida;
+
+atualiza 13/09/16
+
+CREATE TABLE ponto.tb_lote
+(
+  lote character varying(100)
+)
+
+INSERT INTO ponto.tb_lote(lote) VALUES (7899);
