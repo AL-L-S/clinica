@@ -255,13 +255,6 @@ class paciente_model extends BaseModel {
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
             $this->db->set('complemento', $_POST['complemento']);
-            $this->db->set('telefoneresp', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefoneresp']))));
-            $this->db->set('logradouroresp', $_POST['enderecoresp']);
-
-            $this->db->set('numeroresp', $_POST['numeroresp']);
-            $this->db->set('nomeresp', $_POST['nomeresp']);
-            $this->db->set('bairroresp', $_POST['bairroresp']);
-            $this->db->set('complementoresp', $_POST['complementoresp']);
             if ($_POST['municipio_id'] != '') {
                 $this->db->set('municipio_id', $_POST['municipio_id']);
             }
@@ -269,7 +262,6 @@ class paciente_model extends BaseModel {
                 $this->db->set('profissao', $_POST['txtcboID']);
             }
             $this->db->set('cep', $_POST['cep']);
-            $this->db->set('observacao', $_POST['observacao']);
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');

@@ -197,7 +197,7 @@ class Guia extends BaseController {
 //        if ($grupo == "RM") {
 //            $this->fichaxml($paciente_id, $guia_id, $exames_id);        
 //        }
-//PROIMAGEM    
+//PROIMAGEM       
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
 //            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
 //        }
@@ -1703,13 +1703,12 @@ class Guia extends BaseController {
         } else {
             $data['medico'] = 0;
         }
-//        var_dump($data['medico']);
-//        die;
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
+        $data['relatoriogeral'] = $this->guia->relatoriomedicoconveniofinanceirotodos();
         $this->load->View('ambulatorio/impressaorelatoriomedicoconveniofinanceiro', $data);
     }
 

@@ -187,13 +187,6 @@
                               ?> 
                 </select>
             </div>
-            <!--            <div>
-                            <label>Observa&ccedil;&otilde;es</label>
-            
-            
-                            <input type  ="text" name="observacao" id="txtObservacao" class="texto10"  value ="<?= @$obj->_observacao; ?>" >
-            
-                        </div>-->
         </fieldset>
         <fieldset>
             <legend>Dados Sociais</legend>
@@ -291,43 +284,6 @@
                     ?>>Outros</option>
                 </select>
             </div>
-            <!--            <div>
-                            <label>Nome Responsavel</label>
-            
-            
-                            <input type="text" id="txtnomeresp" class="texto10" name="nomeresp" value="<?= @$obj->_nomeresp; ?>" />
-                        </div>
-                        <div>
-                            <label>Telefone Responsavel</label>
-            
-            
-                            <input type="text" id="txttelefoneresp" class="texto02" name="telefoneresp" alt="phone" value="<?= @$obj->_telefoneresp; ?>" />
-                        </div>
-                        <div>
-                                            <label>Endere&ccedil;o</label>
-            
-            
-                            <input type="hidden" id="txtenderecoresp" class="texto10" name="enderecoresp" value="<?= @$obj->_enderecoresp; ?>" />
-                        </div>
-                        <div>
-                                            <label>N&uacute;mero</label>
-            
-            
-                            <input type="hidden" id="txtNumeroresp" class="texto02" name="numeroresp" value="<?= @$obj->_numeroresp; ?>" />
-                        </div>
-                        <div>
-                                            <label>Bairro</label>
-            
-            
-                            <input type="hidden" id="txtBairroresp" class="texto03" name="bairroresp" value="<?= @$obj->_bairroresp; ?>"/>
-                        </div>
-                        <div>
-                                            <label>Complemento</label>
-            
-            
-                            <input type="hidden" id="txtComplementoresp" class="texto06" name="complementoresp" value="<?= @$obj->_complementoresp; ?>"/>
-                        </div>-->
-
         </fieldset>
         <button type="submit">Enviar</button>
         <button type="reset">Limpar</button>
