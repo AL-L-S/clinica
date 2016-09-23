@@ -31,7 +31,7 @@ class procedimento_model extends Model {
                             descricao,
                             grupo');
         $this->db->from('tb_procedimento_tuss');
-        
+
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', "%" . $args['nome'] . "%");
             $this->db->orwhere('grupo ilike', "%" . $args['nome'] . "%");
@@ -64,6 +64,16 @@ class procedimento_model extends Model {
                             descricao');
         $this->db->from('tb_procedimento_tuss');
         $this->db->where("ativo", 't');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listargrupos() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome,
+                            ');
+        $this->db->from('tb_ambulatorio_grupo');
         $this->db->orderby("nome");
         $return = $this->db->get();
         return $return->result();

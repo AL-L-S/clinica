@@ -51,23 +51,30 @@
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: TODOS</th>
                 </tr>
-            <? } else { ?>
+            <?
+            } else {
+                if (isset($relatorio[0]->grupo)) {
+                    $nome_grupo = $relatorio[0]->grupo;
+                } else {
+                    $nome_grupo = $grupo;
+                }
+                ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $relatorio[0]->grupo; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $nome_grupo; ?></th>
                 </tr>
-            <? } ?>
+<? } ?>
             <tr>
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></th>
             </tr>
-            <? IF (COUNT($medico) > 0) { ?>
+<? IF (COUNT($medico) > 0) { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MEDICO: <?= $medico[0]->nome; ?></th>
                 </tr>
-            <? } ELSE { ?>
+<? } ELSE { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MEDICO: TODOS</th>
                 </tr>
-            <? } ?>
+<? } ?>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
@@ -100,7 +107,7 @@
                 <td><?= utf8_decode($itens->nome); ?></td>
                 <td style='text-align: right;'><?= $itens->valortotal; ?></td>
             </tr>
-        <?
+            <?
         endforeach;
         if (isset($atendidosdatafim) && count($atendidosdatafim) > 0) {
             foreach ($atendidosdatafim as $itens) :
@@ -111,10 +118,10 @@
                     <td><?= utf8_decode($itens->nome); ?></td>
                     <td style='text-align: right;'><?= $itens->valortotal; ?></td>
                 </tr>
-    <?
-    endforeach;
-}
-?>
+                <?
+            endforeach;
+        }
+        ?>
 
     </table>
     <p>
@@ -127,33 +134,33 @@
             <th width="400px;">DESCRI&Ccedil;&Atilde;O</th>
             <th width="200px;">VALOR</th>
         </tr>
-<?
-foreach ($naoatendidos as $itens) :
-    $qtdetotal = $qtdetotal + 1;
-    $valortotal = $valortotal + $itens->valortotal;
-    ?>
+        <?
+        foreach ($naoatendidos as $itens) :
+            $qtdetotal = $qtdetotal + 1;
+            $valortotal = $valortotal + $itens->valortotal;
+            ?>
             <tr>
                 <td><?= ($itens->data); ?></td>
                 <td><?= utf8_decode($itens->nome); ?></td>
                 <td style='text-align: right;'><?= $itens->valortotal; ?></td>
             </tr>
-<?
-endforeach;
+            <?
+        endforeach;
 
-if (isset($naoatendidosdatafim) && count($naoatendidosdatafim) > 0) {
-    foreach ($naoatendidosdatafim as $itens) :
-        $qtdetotal = $qtdetotal + 1;
-        $valortotal = $valortotal + $itens->valortotal;
-        ?>
+        if (isset($naoatendidosdatafim) && count($naoatendidosdatafim) > 0) {
+            foreach ($naoatendidosdatafim as $itens) :
+                $qtdetotal = $qtdetotal + 1;
+                $valortotal = $valortotal + $itens->valortotal;
+                ?>
                 <tr>
                     <td><?= ($itens->data); ?></td>
                     <td><?= utf8_decode($itens->nome); ?></td>
                     <td style='text-align: right;'><?= $itens->valortotal; ?></td>
                 </tr>
-    <?
-    endforeach;
-}
-?>
+                <?
+            endforeach;
+        }
+        ?>
 
     </table>
     <p>
@@ -176,7 +183,7 @@ if (isset($naoatendidosdatafim) && count($naoatendidosdatafim) > 0) {
                 <td><?= utf8_decode($itens->nome); ?></td>
                 <td style='text-align: right;'><?= $itens->valortotal; ?></td>
             </tr>
-        <?
+            <?
         endforeach;
         if (isset($consultasatendidosdatafim) && count($consultasatendidosdatafim) > 0) {
             foreach ($consultasatendidosdatafim as $itens) :
@@ -188,7 +195,7 @@ if (isset($naoatendidosdatafim) && count($naoatendidosdatafim) > 0) {
                     <td><?= utf8_decode($itens->nome); ?></td>
                     <td style='text-align: right;'><?= $itens->valortotal; ?></td>
                 </tr>
-            <?
+                <?
             endforeach;
         }
         ?>
@@ -203,33 +210,33 @@ if (isset($naoatendidosdatafim) && count($naoatendidosdatafim) > 0) {
             <th width="400px;">DESCRI&Ccedil;&Atilde;O</th>
             <th width="200px;">VALOR</th>
         </tr>
-<?
-foreach ($consultasnaoatendidos as $itens) :
-    $qtdetotal = $qtdetotal + 1;
-    $valortotal = $valortotal + $itens->valortotal;
-    ?>
+        <?
+        foreach ($consultasnaoatendidos as $itens) :
+            $qtdetotal = $qtdetotal + 1;
+            $valortotal = $valortotal + $itens->valortotal;
+            ?>
             <tr>
                 <td><?= ($itens->data); ?></td>
                 <td><?= utf8_decode($itens->nome); ?></td>
                 <td style='text-align: right;'><?= $itens->valortotal; ?></td>
             </tr>
-<?
-endforeach;
+            <?
+        endforeach;
 
-if (isset($consultasnaoatendidosdatafim) && count($consultasnaoatendidosdatafim) > 0) {
-    foreach ($consultasnaoatendidosdatafim as $itens) :
-        $qtdetotal = $qtdetotal + 1;
-        $valortotal = $valortotal + $itens->valortotal;
-        ?>
+        if (isset($consultasnaoatendidosdatafim) && count($consultasnaoatendidosdatafim) > 0) {
+            foreach ($consultasnaoatendidosdatafim as $itens) :
+                $qtdetotal = $qtdetotal + 1;
+                $valortotal = $valortotal + $itens->valortotal;
+                ?>
                 <tr>
                     <td><?= ($itens->data); ?></td>
                     <td><?= utf8_decode($itens->nome); ?></td>
                     <td style='text-align: right;'><?= $itens->valortotal; ?></td>
                 </tr>
-    <?
-    endforeach;
-}
-?>
+                <?
+            endforeach;
+        }
+        ?>
 
     </table>
     <P>
@@ -251,7 +258,7 @@ if (isset($consultasnaoatendidosdatafim) && count($consultasnaoatendidosdatafim)
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

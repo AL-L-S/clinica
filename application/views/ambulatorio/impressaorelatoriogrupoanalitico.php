@@ -21,9 +21,16 @@
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: TODOS</th>
                 </tr>
-            <? } else { ?>
+                <?
+            } else {
+                if (isset($relatorio[0]->grupo)) {
+                    $nome_grupo = $relatorio[0]->grupo;
+                } else {
+                    $nome_grupo = $grupo;
+                }
+                ?>                
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $relatorio[0]->grupo; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $nome_grupo; ?></th>
                 </tr>
             <? } ?>
             <? if ($conveniotipo == "0") { ?>
@@ -84,6 +91,12 @@
                     $NUMEROESPIROMETRIA = 0;
                     $ECOCARDIOGRAMA = 0;
                     $NUMEROECOCARDIOGRAMA = 0;
+                    $LABORATORIAL = 0;
+                    $NUMEROLABORATORIAL = 0;
+                    $TOMOGRAFIA = 0;
+                    $NUMEROTOMOGRAFIA = 0;
+                    $CONSULTA = 0;
+                    $NUMEROCONSULTA = 0;
 
                     foreach ($relatorio as $item) :
                         $i++;
@@ -145,6 +158,18 @@
                             if ($item->grupo == "ECOCARDIOGRAMA") {
                                 $ECOCARDIOGRAMA = $ECOCARDIOGRAMA + $item->valor;
                                 $NUMEROECOCARDIOGRAMA = $NUMEROECOCARDIOGRAMA + $item->quantidade;
+                            }
+                            if ($item->grupo == "LABORATORIAL") {
+                                $LABORATORIAL = $LABORATORIAL + $item->valor;
+                                $NUMEROLABORATORIAL = $NUMEROLABORATORIAL + $item->quantidade;
+                            }
+                            if ($item->grupo == "TOMOGRAFIA") {
+                                $TOMOGRAFIA = $TOMOGRAFIA + $item->valor;
+                                $NUMEROTOMOGRAFIA = $NUMEROTOMOGRAFIA + $item->quantidade;
+                            }
+                            if ($item->grupo == "CONSULTA") {
+                                $CONSULTA = $CONSULTA + $item->valor;
+                                $NUMEROCONSULTA = $NUMEROCONSULTA + $item->quantidade;
                             }
                             $qtde = $qtde + $item->quantidade;
                             $qtdetotal = $qtdetotal + $item->quantidade;
@@ -213,6 +238,18 @@
                             if ($item->grupo == "ECOCARDIOGRAMA") {
                                 $ECOCARDIOGRAMA = $ECOCARDIOGRAMA + $item->valor;
                                 $NUMEROECOCARDIOGRAMA = $NUMEROECOCARDIOGRAMA + $item->quantidade;
+                            }
+                            if ($item->grupo == "LABORATORIAL") {
+                                $LABORATORIAL = $LABORATORIAL + $item->valor;
+                                $NUMEROLABORATORIAL = $NUMEROLABORATORIAL + $item->quantidade;
+                            }
+                            if ($item->grupo == "TOMOGRAFIA") {
+                                $TOMOGRAFIA = $TOMOGRAFIA + $item->valor;
+                                $NUMEROTOMOGRAFIA = $NUMEROTOMOGRAFIA + $item->quantidade;
+                            }
+                            if ($item->grupo == "CONSULTA") {
+                                $CONSULTA = $CONSULTA + $item->valor;
+                                $NUMEROCONSULTA = $NUMEROCONSULTA + $item->quantidade;
                             }
                             $qtde = 0;
                             $qtde = $qtde + $item->quantidade;
@@ -319,6 +356,24 @@
                         <td width="200px;"><font size="-1"><?= number_format($ECOCARDIOGRAMA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
+                        <td width="140px;"><font size="-1">LABORATORIAL</td>
+                        <td width="140px;"><font size="-1"><?= $NUMEROLABORATORIAL; ?></td>
+                        <td><font size="-2"></td>
+                        <td width="200px;"><font size="-1"><?= number_format($LABORATORIAL, 2, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
+                        <td width="140px;"><font size="-1">TOMOGRAFIA</td>
+                        <td width="140px;"><font size="-1"><?= $NUMEROTOMOGRAFIA; ?></td>
+                        <td><font size="-2"></td>
+                        <td width="200px;"><font size="-1"><?= number_format($TOMOGRAFIA, 2, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
+                        <td width="140px;"><font size="-1">CONSULTA</td>
+                        <td width="140px;"><font size="-1"><?= $NUMEROCONSULTA; ?></td>
+                        <td><font size="-2"></td>
+                        <td width="200px;"><font size="-1"><?= number_format($CONSULTA, 2, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
                         <td width="140px;"><font size="-1">TOTAL GERAL</td>
                         <td width="140px;"><font size="-1"><?= $qtdetotal; ?></td>
                         <td><font size="-2"></td>
@@ -342,7 +397,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

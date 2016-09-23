@@ -63,11 +63,20 @@
                                         <dd>
                                             <select name="empresa" id="empresa" class="size2">
                     <? foreach ($empresa as $value) : ?>
-                                                            <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
+                                                                    <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
                     <? endforeach; ?>
                                                 <option value="0">TODOS</option>
                                             </select>
                                         </dd>-->
+                    <dt>
+                        <label>Enviar para Email?</label>
+                    </dt>
+                    <dd>
+                        <select name="email" id="email" class="size2">
+                            <option value="NAO">NÃO</option>
+                            <option value="SIM">SIM</option>                           
+                        </select> 
+                    </dd>
                 </dl>
                 <button type="submit" >Pesquisar</button>
 

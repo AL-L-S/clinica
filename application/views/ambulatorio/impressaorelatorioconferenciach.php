@@ -21,28 +21,35 @@
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: TODOS</th>
                 </tr>
-            <? } else { ?>
+            <?
+            } else {
+                if (isset($relatorio[0]->grupo)) {
+                    $nome_grupo = $relatorio[0]->grupo;
+                } else {
+                    $nome_grupo = $grupo;
+                }
+                ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $relatorio[0]->grupo; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $nome_grupo; ?></th>
                 </tr>
             <? } ?>
-            <? if ($convenio == "0") { ?>
+<? if ($convenio == "0") { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODOS OS CONVENIOS</th>
                 </tr>
-            <? } elseif ($convenio == "-1") { ?>
+<? } elseif ($convenio == "-1") { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PARTICULARES</th>
                 </tr>
-            <? } elseif ($convenio == "") { ?>
+<? } elseif ($convenio == "") { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">CONVENIOS</th>
                 </tr>
-            <? } else { ?>
+<? } else { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">CONVENIO: <?= $convenios[0]->nome; ?></th>
                 </tr>
-            <? } ?>
+<? } ?>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
@@ -98,14 +105,14 @@
                             <tr>
                                 <td colspan="8"><font ><b>Convenio:&nbsp;<?= utf8_decode($item->convenio); ?></b></td>
                             </tr>
-                        <? } ?>
+            <? } ?>
                         <tr>
 
-                            <? if ($paciente == $item->paciente) { ?>
+            <? if ($paciente == $item->paciente) { ?>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                            <? } else { ?>
+            <? } else { ?>
                                 <td><?= $item->guia_id; ?></td>
                                 <td><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td><?= utf8_decode($item->paciente); ?></td>
@@ -154,11 +161,11 @@
                             <td colspan="8"><font ><b>Convenio:&nbsp;<?= utf8_decode($item->convenio); ?></b></td>
                         </tr>
                         <tr>
-                            <? if ($paciente == $item->paciente) { ?>
+            <? if ($paciente == $item->paciente) { ?>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                            <? } else { ?>
+            <? } else { ?>
                                 <td><?= $item->guia_id; ?></td>
                                 <td><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td><?= utf8_decode($item->paciente); ?></td>
@@ -220,7 +227,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

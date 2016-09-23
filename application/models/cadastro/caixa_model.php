@@ -303,7 +303,7 @@ class caixa_model extends Model {
         $this->db->from('tb_entradas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-         $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
@@ -359,7 +359,7 @@ class caixa_model extends Model {
         $this->db->from('tb_entradas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-                $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
@@ -413,10 +413,10 @@ class caixa_model extends Model {
         $this->db->join('tb_entradas e', 'e.entradas_id = s.entrada_id', 'left');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-         $this->db->join('tb_financeiro_classe fc', 'fc.descricao = sa.classe', 'left');
+        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = sa.classe AND fc.descricao = e.classe' ,'left');
         if (($_POST['tipo'] != 0) && ($_POST['classe'] == '')) {
-            $this->db->where('sa.tipo', $_POST['tipo']);
-            $this->db->orwhere('e.tipo', $_POST['tipo']);
+            $this->db->where('tipo_id', $_POST['tipo']);
+//            $this->db->orwhere('e.tipo', $_POST['tipo']);
         }
         if ($_POST['classe'] != '') {
             $this->db->where('e.classe', $_POST['classe']);
@@ -444,12 +444,13 @@ class caixa_model extends Model {
         $this->db->join('tb_entradas e', 'e.entradas_id = s.entrada_id', 'left');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = sa.classe AND fc.descricao = e.classe' ,'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
         if ($_POST['tipo'] != 0) {
-            $this->db->where('tipo', $_POST['tipo']);
+            $this->db->where('tipo_id', $_POST['tipo']);
         }
         if ($_POST['conta'] != 0) {
             $this->db->where('s.conta', $_POST['conta']);
@@ -798,6 +799,37 @@ class caixa_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function gravaremailmensagem($html) {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('mensagem', $html);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_financeiro_email');
+            $financeiro_email_id = $this->db->insert_id();
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                return $financeiro_email_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function listaremailmensagem($email_id) {
+
+        $this->db->select('mensagem');
+        $this->db->from('tb_financeiro_email');
+        $this->db->where('financeiro_email_id', $email_id);
+        $return = $this->db->get();
+        $result=$return->result();
+        return $result[0]->mensagem;
     }
 
     function saldo() {

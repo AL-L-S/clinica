@@ -31,9 +31,9 @@
                     </dt>
                     <dd>
                         <select name="tipo" id="tipo" class="size2">
-                            <option value="">TODOS</option>
+                            <option value=0>TODOS</option>
                             <? foreach ($tipo as $value) : ?>
-                                <option value="<?= $value->descricao; ?>" ><?php echo $value->descricao; ?></option>
+                                <option value="<?= $value->tipo_entradas_saida_id; ?>" ><?php echo $value->descricao; ?></option>
                             <? endforeach; ?>
                         </select>
                     </dd>
@@ -63,11 +63,19 @@
                                         <dd>
                                             <select name="empresa" id="empresa" class="size2">
                     <? foreach ($empresa as $value) : ?>
-                                                            <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
+                                                                    <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
                     <? endforeach; ?>
                                                 <option value="0">TODOS</option>
                                             </select>
                                         </dd>-->
+                    <dt>
+                        <label>Enviar para Email?</label>
+                    </dt>
+                    <dd>
+                        <select name="email" id="email" class="size2">
+                            <option value="NAO">NÃO</option>
+                            <option value="SIM">SIM</option>                           
+                        </select>
                 </dl>
                 <button type="submit" >Pesquisar</button>
 
@@ -110,12 +118,12 @@
     $(function () {
         $("#accordion").accordion();
     });
-    
-        $(function () {
+
+    $(function () {
         $('#tipo').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/classeportipo', {tipo: $(this).val(), ajax: true}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaida', {tipo: $(this).val(), ajax: true}, function (j) {
                     options = '<option value="">TODOS</option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';

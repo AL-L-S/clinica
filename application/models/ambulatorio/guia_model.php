@@ -324,16 +324,16 @@ class guia_model extends Model {
         if ($_POST['convenio'] == "-1") {
             $this->db->where("c.dinheiro", "t");
         }
-        if ($_POST['tipo'] != "0" && $_POST['tipo'] != "") {
+        if (isset($_POST['tipo']) && $_POST['tipo'] != "0" && $_POST['tipo'] != "") {
             $this->db->where("tu.classificacao", $_POST['tipo']);
         }
-        if ($_POST['tipo'] == "") {
+        if (isset($_POST['tipo']) && $_POST['tipo'] == "") {
             $this->db->where("tu.classificacao !=", "2");
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        if ($_POST['procedimentos'] != "0") {
+        if (isset($_POST['procedimentos']) && $_POST['procedimentos'] != "0") {
             $this->db->where('pt.procedimento_tuss_id', $_POST['procedimentos']);
         }
         if ($_POST['grupo'] == "1") {
@@ -2391,7 +2391,7 @@ ORDER BY p.nome";
 
     function relatorioaniversariantes() {
         $mes = $_POST['txtdata_inicio'];
-        $sql = "SELECT p.nome as paciente, p.nascimento from ponto.tb_paciente p
+        $sql = "SELECT p.nome as paciente, p.nascimento , p.celular , p.telefone from ponto.tb_paciente p
                 left join ponto.tb_convenio c on c.convenio_id = p.convenio_id
                 Where Extract(Month From p.nascimento) = $mes ";
         $return = $this->db->query($sql)->result();
@@ -2434,15 +2434,15 @@ ORDER BY p.nome";
     }
 
     function percentualmedicoconvenio($procedimentopercentual, $medicopercentual) {
-         
+
         $this->db->select('mc.valor');
         $this->db->from('tb_procedimento_percentual_medico_convenio mc');
-        $this->db->join('tb_procedimento_percentual_medico m' , 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id' , 'left');
+        $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
         $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);
         $this->db->where('mc.medico', $medicopercentual);
         $this->db->where('mc.ativo', 'true');
         $return = $this->db->get();
-        
+
 //        var_dump($return->result());
 //        die;
         return $return->result();
@@ -5451,6 +5451,71 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function listarfichaxml($exames_id) {
+        $this->load->dbutil();
+        $query = $this->db->query("SELECT perguntas_respostas FROM ponto.tb_respostas_xml where agenda_exames_id = $exames_id");
+        $config = array(
+            'root' => 'root',
+            'element' => 'element',
+            'newline' => "\n",
+            'tab' => "\t"
+        );
+        $return = $this->dbutil->xml_from_result($query, $config);
+        return $return;
+    }
+
+    function gravarfichaxml($exames_id) {
+        $p1 = $_POST['p1'];
+        $p2 = $_POST['p2'];
+        $p3 = $_POST['p3'];
+        $p4 = $_POST['p4'];
+        $p5 = $_POST['p5'];
+        $p6 = $_POST['p6'];
+        $p7 = $_POST['p7'];
+        $p8 = $_POST['p8'];
+        $p9 = $_POST['p9'];
+        $p10 = $_POST['p10'];
+        $p11 = $_POST['p11'];
+        $p12 = $_POST['p12'];
+        $p13 = $_POST['p13'];
+        $p14 = $_POST['p14'];
+        $p15 = $_POST['p15'];
+        $p16 = $_POST['p16'];
+        $p17 = $_POST['p17'];
+        $p18 = $_POST['p18'];
+
+        try {
+            $sql = "INSERT INTO ponto.tb_respostas_xml(agenda_exames_id,
+                    perguntas_respostas)
+                    VALUES ($exames_id, xmlelement (name perguntas ,xmlconcat (
+                     xmlelement ( name  p1 , '$p1') , 
+                     xmlelement ( name  p2 , '$p2') , 
+                     xmlelement ( name  p3 , '$p3') , 
+                     xmlelement ( name  p4 , '$p4') , 
+                     xmlelement ( name  p5 , '$p5') ,
+                     xmlelement ( name  p6 , '$p6') ,
+                     xmlelement ( name  p7 , '$p7') ,
+                     xmlelement ( name  p8 , '$p8') ,
+                     xmlelement ( name  p9 , '$p9') ,
+                     xmlelement ( name  p10 , '$p10') ,
+                     xmlelement ( name  p11 , '$p11') ,
+                     xmlelement ( name  p12 , '$p12') ,
+                     xmlelement ( name  p13 , '$p13') ,
+                     xmlelement ( name  p14 , '$p14') ,
+                     xmlelement ( name  p15 , '$p15') ,
+                     xmlelement ( name  p16 , '$p16') ,
+                     xmlelement ( name  p17 , '$p17') ,
+                     xmlelement ( name  p18 , '$p18')
+                     )));";
+
+            $this->db->query($sql);
+
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
     }
 
     private function instanciar($exame_sala_id) {

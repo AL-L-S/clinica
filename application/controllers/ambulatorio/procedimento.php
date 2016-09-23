@@ -40,6 +40,7 @@ class Procedimento extends BaseController {
     function carregarprocedimento($procedimento_tuss_id) {
         $obj_procedimento = new procedimento_model($procedimento_tuss_id);
         $data['obj'] = $obj_procedimento;
+        $data['grupos'] = $this->procedimento->listargrupos();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimento-form', $data);
     }
@@ -55,7 +56,8 @@ class Procedimento extends BaseController {
     }
 
     function relatorioprocedimento() {
-        $this->loadView('ambulatorio/relatorioprocedimento');
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $this->loadView('ambulatorio/relatorioprocedimento' , $data);
     }
 
     function relatorioprocedimentoconvenio() {

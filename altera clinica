@@ -621,3 +621,19 @@ INSERT INTO ponto.tb_financeiro_classe(
 
 
 DELETE FROM ponto.tb_tipo_entradas_saida;
+
+atualiza 16/09/16
+CREATE TABLE ponto.tb_respostas_xml
+(
+  agenda_exames_id integer,
+  perguntas_respostas xml
+)
+
+atualiza 21/09/16
+CREATE TABLE ponto.tb_financeiro_email
+(
+  financeiro_email_id serial NOT NULL,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  mensagem text
+)

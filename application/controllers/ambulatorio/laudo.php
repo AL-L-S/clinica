@@ -1950,7 +1950,7 @@ class Laudo extends BaseController {
             //$validar = $this->laudo->validar();
 
             if ($validar == '1') {
-                  $gravar = $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id);               
+                $gravar = $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id);
                 if ($gravar == 0) {
                     $this->gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id);
                 }

@@ -157,15 +157,15 @@
         </tr>
         <tr>
             <td ><font size = -1>Trabalha ou trabalhou com metais?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r1;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem ou teve fragmentos metalicos nos olhos?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r2;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem ou teve projetil de arma no corpo?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r3;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>(bala ou fragmentos metalicos de qualquer origem)</font></td>
@@ -173,43 +173,43 @@
         </tr>
         <tr>
             <td ><font size = -1>Tem marcapasso cardiaco, desfibrilador ou cardioverter?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r4;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem clipes de aneurisma no cerebro?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r5;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem pumpes ou neuroestimuladores implantados?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r6;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Fez substituicao de valvulas cardiacas?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r7;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem implantes no ouvido (coclear, estribo) ou aparelho auditivo?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r8;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem algum componente artificial no corpo?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r9;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem protese, hastes, placas ou parafuso metalicos no corpo?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r10;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem protese dentaria, aparelho ortodontico ou peruca?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r11;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem implante peniano?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r12;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem D.I. udispositivo contraceptivo intra-uterino?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r13;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Consegue ficar deitado de costas e sentir-se confortavel num</font></td>
@@ -217,23 +217,23 @@
         </tr>
         <tr>
             <td ><font size = -1>espaco pequeno durante aproximadamente 1/2 hora?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r14;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Ja fez tratamento quimioterapico ou radioterapico?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r15;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem problema de insuficiencia renal?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r16;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Existe alguma possibilidade de voce estar gravida?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r17;?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Esta amamentando?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r18;?> &nbsp; )</td>
         </tr>
         <tr>
             <td colspan="2"><font size = -1>Tem alergia S /N (   ) A que___________________________________________________</font></td>
