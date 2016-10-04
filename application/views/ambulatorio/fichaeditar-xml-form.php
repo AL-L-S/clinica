@@ -3,19 +3,19 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Honor&aacute;rios M&eacute;dicos</a></h3>
         <div>
-            <form name="form_ficha_xml" id="form_ficha_xml" action="<?= base_url() ?>ambulatorio/guia/gravarfichaxml/<?= $paciente_id ?>/<?= $guia_id ?>/<?= $exames_id ?>" method="post">
+            <form name="form_ficha_xml" id="form_ficha_xml" action="<?= base_url() ?>ambulatorio/guia/gravareditarfichaxml/<?= $paciente_id ?>/<?= $exames_id ?>" method="post">
 
                 <dt><label>Peso:</label></dt>
                 <dd>
-                    <input type="number" name="txtpeso" id="txtpeso" class="texto03" value="">
+                    <input type="number" name="txtpeso" id="txtpeso" class="texto03">
                 </dd>
                 <dt>
                     <label>Trabalha ou trabalhou com metais?</label>
                 </dt>
 
                 <dd>
-                    <select name="p1" id="p1" class="size1" >
-                        <option value="" disabled selected>SELECIONE</option>
+                    <select name="p1" id="p1" class="size1">
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>
                     </select>               
@@ -26,7 +26,7 @@
                 </dt>                    
                 <dd>                       
                     <select name="p2" id="p2" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>
 
@@ -38,7 +38,7 @@
                 </dt>
                 <dd>
                     <select  name="p3" id="p3" class="size1" >
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>
                     </select>
@@ -50,7 +50,7 @@
                 </dt>
                 <dd>                    
                     <select name="p4" id="p4" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>
                     </select>
@@ -61,7 +61,7 @@
                 </dt>
                 <dd>
                     <select name="p5"  id="p5" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>
                     </select>
@@ -72,7 +72,7 @@
                 </dt>
                 <dd>
                     <select name="p6"  id="p6" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -83,7 +83,7 @@
                 </dt>
                 <dd>
                     <select name="p7"  id="p7" class="size1"> 
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -94,7 +94,7 @@
                 </dt>
                 <dd>
                     <select name="p8"  id="p8" class="size1"> 
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -105,30 +105,32 @@
                 </dt>
                 <dd>
                     <select name="p9"  id="p9" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
                 </dd>
+                <br>                
+                <input type="text"  name="txtp9" id="txtp9" class="texto04">
+                <br/>
                 <br/>
                 <dt>
                     <label>Tem protese, hastes, placas ou parafuso metalicos no corpo?</label>
                 </dt>
                 <dd>
                     <select name="p10"  id="p10" class="size1">  
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
-                    <input type="text"  name="txtp9" id="txtp9" class="texto04">
                 </dd>
-                <br>                                 
+                <br/>
                 <dt>
                     <label>Tem protese dentaria, aparelho ortodontico ou peruca?</label>
                 </dt>
                 <dd>
                     <select name="p11"  id="p11" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -139,7 +141,7 @@
                 </dt>
                 <dd>
                     <select name="p12"  id="p12" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -150,7 +152,7 @@
                 </dt>
                 <dd>
                     <select name="p13"  id="p13" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -162,7 +164,7 @@
                 </dt>
                 <dd>
                     <select name="p14"  id="p14" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -173,7 +175,7 @@
                 </dt>
                 <dd>
                     <select name="p15"  id="p15" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -184,7 +186,7 @@
                 </dt>
                 <dd>
                     <select name="p16"  id="p16" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -195,7 +197,7 @@
                 </dt>
                 <dd>
                     <select name="p17"  id="p17" class="size1">
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -206,7 +208,7 @@
                 </dt>
                 <dd>
                     <select name="p18"  id="p18" class="size1">  
-                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="">SELECIONE</option>
                         <option value="SIM">SIM</option> 
                         <option value="NAO">NÃO</option>                                   
                     </select>
@@ -319,12 +321,6 @@
                 p18: {
                     required: true
                 },
-                p19: {
-                    required: true
-                },
-                p20: {
-                    required: true
-                },                
                 txtpeso: {
                     required: true
                 }
@@ -385,12 +381,6 @@
                 p18: {
                     required: "*"
                 },
-                p19: {
-                    required: "*"
-                },
-                p20: {
-                    required: "*"
-                },                
                 txtpeso: {
                     required: "*"
                 }

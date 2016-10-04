@@ -38,7 +38,7 @@ class Solicitacao extends BaseController {
         }
         $this->loadView('estoque/solicitacaoitens-form', $data);
     }
-    
+
     function carregarsaida($estoque_solicitacao_id) {
 
         $data['estoque_solicitacao_id'] = $estoque_solicitacao_id;
@@ -74,6 +74,15 @@ class Solicitacao extends BaseController {
         $data['nome'] = $this->solicitacao->solicitacaonome($estoque_solicitacao_id);
         $data['produtossaida'] = $this->solicitacao->listarsaidaitem($estoque_solicitacao_id);
         $this->load->View('estoque/impressaosaida', $data);
+    }
+
+    function imprimirliberada($estoque_solicitacao_id) {
+
+        $data['estoque_solicitacao_id'] = $estoque_solicitacao_id;
+//        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['nome'] = $this->solicitacao->solicitacaonomeliberado($estoque_solicitacao_id);
+        $data['produtossaida'] = $this->solicitacao->listaritemliberado($estoque_solicitacao_id);
+        $this->load->View('estoque/impressaoliberada', $data);
     }
 
     function saidaitens($estoque_solicitacao_itens_id, $estoque_solicitacao_id) {

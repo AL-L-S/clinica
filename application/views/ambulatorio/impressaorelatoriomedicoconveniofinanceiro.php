@@ -57,7 +57,7 @@
                     $procedimentopercentual = $item->procedimento_convenio_id;
 //            $medicopercentual = $item->medico_parecer1;
                     $medicopercentual = $item->operador_id;
-                    $percentual = $this->guia->percentualmedico($procedimentopercentual, $medicopercentual);
+                    $percentual = $this->guia->percentualmedicoconvenio($procedimentopercentual, $medicopercentual);
                     $testearray = count($percentual);
                     if ($item->classificacao == 1) {
                         $totalconsulta++;

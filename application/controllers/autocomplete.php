@@ -28,7 +28,7 @@ class Autocomplete extends Controller {
         $this->load->model('internacao/enfermaria_model', 'enfermaria_m');
         $this->load->model('internacao/leito_model', 'leito_m');
         $this->load->model('ponto/horariostipo_model', 'horariostipo');
-        ;
+        $this->load->model('cadastro/formapagamento_model', 'formapagamento');
     }
 
     function index() {
@@ -261,6 +261,16 @@ class Autocomplete extends Controller {
             $result = $this->procedimentoplano->listarautocompleteprocedimentos($_GET['covenio']);
         } else {
             $result = $this->procedimentoplano->listarautocompleteprocedimentos();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamento($forma) {
+
+        if (isset($forma)) {
+            $result = $this->formapagamento->buscarforma($forma);
+        } else {
+            $result = $this->formapagamento->buscarforma();
         }
         echo json_encode($result);
     }

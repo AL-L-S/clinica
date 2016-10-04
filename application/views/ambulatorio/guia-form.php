@@ -214,7 +214,7 @@ if ($contador > 0) {
                                     </td>
         <? if ($item->faturado == "f" && $item->dinheiro== "t") { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">Faturar
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
 
                                                 </a></div>
                                         </td>
@@ -232,7 +232,7 @@ if ($contador > 0) {
                                 Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                             </th>
                             <th colspan="2" align="center"><center><div class="bt_linkf">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=600');">Faturar Guia
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
 
                                                 </a></div></center></th>
                         </tr>
@@ -292,7 +292,7 @@ if ($contador > 0) {
                                 options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                             }
                             $('#procedimento1').html(options).show();
-                            $('.carregando').hide();
+                            $('.carregando').hide();              
                         });
                     } else {
                         $('#procedimento1').html('<option value="">Selecione</option>');

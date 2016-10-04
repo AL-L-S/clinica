@@ -17,6 +17,7 @@ class Guia extends BaseController {
         parent::Controller();
         $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('cadastro/paciente_model', 'paciente');
+        $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('ambulatorio/sala_model', 'sala');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('cadastro/convenio_model', 'convenio');
@@ -81,16 +82,34 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/aafala', $data);
     }
 
+    function editarfichaxml($paciente_id ,$exames_id) {
+        $data['exames_id'] = $exames_id;
+         $data['paciente_id'] = $paciente_id;
+        $this->loadView('ambulatorio/fichaeditar-xml-form', $data);
+    }
+
+    function gravareditarfichaxml($paciente_id , $exames_id) {
+        $this->guia->gravareditarfichaxml($exames_id);
+        $this->pesquisar($paciente_id);
+    }
+
     function fichaxml($paciente_id, $guia_id, $exames_id) {
         $data['exames_id'] = $exames_id;
         $data['paciente_id'] = $paciente_id;
         $data['guia_id'] = $guia_id;
-        $this->loadView('ambulatorio/ficha-xml-form', $data);
+        $teste = $this->guia->listarfichatexto($exames_id);
+        if (isset($teste[0]->agenda_exames_id)) {
+            $this->gravarfichaxml($paciente_id, $guia_id, $exames_id);
+        } else {
+            $this->loadView('ambulatorio/ficha-xml-form', $data);
+        }
     }
 
     function gravarfichaxml($paciente_id, $guia_id, $exames_id) {
         $this->guia->gravarfichaxml($exames_id);
         $xml = $this->guia->listarfichaxml($exames_id);
+        $texto = $this->guia->listarfichatexto($exames_id);
+
 
         $string = xml_convert($xml);
 
@@ -112,6 +131,15 @@ class Guia extends BaseController {
         $data['r16'] = substr($string, 459, 3);
         $data['r17'] = substr($string, 485, 3);
         $data['r18'] = substr($string, 511, 3);
+        $data['r19'] = substr($string, 537 ,3);
+        $data['r20'] = substr($string, 563 ,3);
+
+        $data['peso'] = $texto[0]->peso;
+        $data['txtp9'] = $texto[0]->txtp9;
+        $data['txtp19'] = $texto[0]->txtp19;
+        $data['txtp20'] = $texto[0]->txtp20;
+        $data['obs'] = $texto[0]->obs;
+
 
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -145,10 +173,11 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-//        var_dump($r1 ,$r2 , $r3 , $r4 , $r5 , $r6 , $r7 , $r8, $r9 , $r10,$r11,$r12,$r13,$r14,$r15,$r16,$r17,$r18);
+//        var_dump($data['r1'] ,$data['r2'] , $data['r3'] , $data['r4'], $data['r5'] , $data['r6'] , $data['r7'] , $data['r8'], $data['r9'] , $data['r10'],$data['r11'],$data['r12'],$data['r13'],$data['r14'],$data['r15'],$data['r16'],$data['r17'],$data['r18'],$data['r19'],$data['r20']);
 //        die;
 
-        $this->loadView('ambulatorio/impressaoficharm', $data);
+        $this->load->view('ambulatorio/impressaoficharm', $data);
+//        $this->load->view('ambulatorio/impressaoficharm-verso');
     }
 
     function impressaoficha($paciente_id, $guia_id, $exames_id) {
@@ -184,6 +213,7 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
+        $this->fichaxml($paciente_id, $guia_id, $exames_id);
 //HUMANA               
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
 //            $this->load->View('ambulatorio/impressaofichaus', $data);
@@ -766,6 +796,7 @@ class Guia extends BaseController {
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
         $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['valor'] = 0.00;
         $this->load->View('ambulatorio/faturar-form', $data);
     }
 
@@ -1920,6 +1951,7 @@ class Guia extends BaseController {
         $data['relatorio'] = $this->guia->relatoriocaixa();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['contador'] = $this->guia->relatoriocaixacontador();
+        $data['formapagamento'] = $this->formapagamento->listarforma();
         $this->load->View('ambulatorio/impressaorelatoriocaixa', $data);
     }
 

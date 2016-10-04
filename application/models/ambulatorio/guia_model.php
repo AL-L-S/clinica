@@ -3579,6 +3579,7 @@ ORDER BY p.nome";
         $this->db->select('forma_pagamento_id,
                             nome');
         $this->db->from('tb_forma_pagamento');
+        $this->db->where('ativo', 't');
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
@@ -3910,25 +3911,73 @@ AND data <= '$data_fim'";
 
     function gravarfaturamento() {
         try {
+
+            if ($_POST['ajuste1'] != "0") {
+                $valor1 = $_POST['valorajuste1'];
+            } else {
+                $valor1 = $_POST['valor1'];
+            }
+            if ($_POST['ajuste2'] != "0") {
+                $valor2 = $_POST['valorajuste2'];
+            } else {
+                $valor2 = $_POST['valor2'];
+            }
+            if ($_POST['ajuste3'] != "0") {
+                $valor3 = $_POST['valorajuste3'];
+            } else {
+                $valor3 = $_POST['valor3'];
+            }
+            if ($_POST['ajuste4'] != "0") {
+                $valor4 = $_POST['valorajuste4'];
+            } else {
+                $valor4 = $_POST['valor4'];
+            }
+            if ($_POST['ajuste1'] != "0" || $_POST['ajuste2'] != "0" || $_POST['ajuste3'] != "0" || $_POST['ajuste4'] != "0") {
+                if ($_POST['valor1'] > $_POST['valorajuste1']) {
+                    $desconto1 = $_POST['valor1'] - $_POST['valorajuste1'];
+                } else {
+                    $desconto1 = $_POST['valorajuste1'] - $_POST['valor1'];
+                }
+                if ($_POST['valor2'] > $_POST['valorajuste2']) {
+                    $desconto2 = $_POST['valor1'] - $_POST['valorajuste1'];
+                } else {
+                    $desconto2 = $_POST['valorajuste2'] - $_POST['valor2'];
+                }
+                if ($_POST['valor3'] > $_POST['valorajuste3']) {
+                    $desconto3 = $_POST['valor3'] - $_POST['valorajuste3'];
+                } else {
+                    $desconto3 = $_POST['valorajuste3'] - $_POST['valor3'];
+                }
+                if ($_POST['valor4'] > $_POST['valorajuste4']) {
+                    $desconto4 = $_POST['valor4'] - $_POST['valorajuste4'];
+                } else {
+                    $desconto4 = $_POST['valorajuste4'] - $_POST['valor4'];
+                }
+
+                $desconto = $desconto1 + $desconto2 + $desconto3 + $desconto4;
+            } else {
+                $desconto = $_POST['desconto'];
+            }
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             if ($_POST['formapamento1'] != '') {
                 $this->db->set('forma_pagamento', $_POST['formapamento1']);
-                $this->db->set('valor1', str_replace(",", ".", $_POST['valor1']));
+                $this->db->set('valor1', str_replace(",", ".", $valor1));
             }
             if ($_POST['formapamento2'] != '') {
                 $this->db->set('forma_pagamento2', $_POST['formapamento2']);
-                $this->db->set('valor2', str_replace(",", ".", $_POST['valor2']));
+                $this->db->set('valor2', str_replace(",", ".", $valor2));
             }
             if ($_POST['formapamento3'] != '') {
                 $this->db->set('forma_pagamento3', $_POST['formapamento3']);
-                $this->db->set('valor3', str_replace(",", ".", $_POST['valor3']));
+                $this->db->set('valor3', str_replace(",", ".", $valor3));
             }
             if ($_POST['formapamento4'] != '') {
                 $this->db->set('forma_pagamento4', $_POST['formapamento4']);
-                $this->db->set('valor4', str_replace(",", ".", $_POST['valor4']));
+                $this->db->set('valor4', str_replace(",", ".", $valor4));
             }
+            $this->db->set('desconto', $desconto);
             $this->db->set('valor_total', $_POST['novovalortotal']);
             $this->db->set('data_faturamento', $horario);
             $this->db->set('operador_faturamento', $operador_id);
@@ -4015,6 +4064,62 @@ AND data <= '$data_fim'";
 
     function gravarfaturamentototal() {
         try {
+
+            if ($_POST['ajuste1'] != "0") {
+                $valor1 = $_POST['valorajuste1'];
+            } else {
+                $valor1 = $_POST['valor1'];
+            }
+            if ($_POST['ajuste2'] != "0") {
+                $valor2 = $_POST['valorajuste2'];
+            } else {
+                $valor2 = $_POST['valor2'];
+            }
+            if ($_POST['ajuste3'] != "0") {
+                $valor3 = $_POST['valorajuste3'];
+            } else {
+                $valor3 = $_POST['valor3'];
+            }
+            if ($_POST['ajuste4'] != "0") {
+                $valor4 = $_POST['valorajuste4'];
+            } else {
+                $valor4 = $_POST['valor4'];
+            }
+            if ($_POST['ajuste1'] != "0" || $_POST['ajuste2'] != "0" || $_POST['ajuste3'] != "0" || $_POST['ajuste4'] != "0") {
+                if ($_POST['valor1'] > $_POST['valorajuste1']) {
+                    $desconto1 = $_POST['valor1'] - $_POST['valorajuste1'];
+                } else {
+                    $desconto1 = $_POST['valorajuste1'] - $_POST['valor1'];
+                }
+                if ($_POST['valor2'] > $_POST['valorajuste2']) {
+                    $desconto2 = $_POST['valor1'] - $_POST['valorajuste1'];
+                } else {
+                    $desconto2 = $_POST['valorajuste2'] - $_POST['valor2'];
+                }
+                if ($_POST['valor3'] > $_POST['valorajuste3']) {
+                    $desconto3 = $_POST['valor3'] - $_POST['valorajuste3'];
+                } else {
+                    $desconto3 = $_POST['valorajuste3'] - $_POST['valor3'];
+                }
+                if ($_POST['valor4'] > $_POST['valorajuste4']) {
+                    $desconto4 = $_POST['valor4'] - $_POST['valorajuste4'];
+                } else {
+                    $desconto4 = $_POST['valorajuste4'] - $_POST['valor4'];
+                }
+
+                $desconto = $desconto1 + $desconto2 + $desconto3 + $desconto4;
+            } else {
+                $desconto = $_POST['desconto'];
+            }
+
+//            $desconto = $_POST['desconto'];
+//            $valor1 = $_POST['valor1'];
+//            $valor2 = $_POST['valor2'];
+//            $valor3 = $_POST['valor3'];
+//            $valor4 = $_POST['valor4'];
+
+            $juros = $_POST['juros'];
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $guia = $_POST['guia_id'];
@@ -4028,7 +4133,7 @@ AND data <= '$data_fim'";
 
             $this->db->set('operador_id', $operador_id);
             $this->db->set('agenda_exames_id', $returno[0]->agenda_exames_id);
-            $this->db->set('valor_total', $_POST['desconto']);
+            $this->db->set('valor_total', $desconto);
             $this->db->set('guia_id', $returno[0]->guia_id);
             $this->db->set('paciente_id', $returno[0]->paciente_id);
             $this->db->insert('tb_ambulatorio_desconto');
@@ -4037,12 +4142,7 @@ AND data <= '$data_fim'";
             $forma2 = $_POST['formapamento2'];
             $forma3 = $_POST['formapamento3'];
             $forma4 = $_POST['formapamento4'];
-            $desconto = $_POST['desconto'];
-            $valor1 = $_POST['valor1'];
-            $valor2 = $_POST['valor2'];
-            $valor3 = $_POST['valor3'];
-            $valor4 = $_POST['valor4'];
-            $juros = $_POST['juros'];
+
             $id_juros = $returno[0]->agenda_exames_id;
             $valortotal_juros = $returno[0]->valor_total + $juros;
             $valortotal = 0;
@@ -4573,114 +4673,182 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->query($sql);
         }
 
+        $this->db->select('nome');
+        $this->db->from('tb_forma_pagamento');
+        $this->db->where("ativo", 't');
+        $return = $this->db->get();
+        $forma_pagamento = $return->result();
 
-        if ($_POST['dinheiro'] != '0,00') {
+        foreach ($forma_pagamento as $value) {
+            $tipo = "CAIXA" . $value->nome;
+            if ($_POST[$value->nome] != '0,00') {
+                if ($value->nome == 'dinheiro' || $value->nome == 'DINHEIRO') {
+                    $this->db->set('data', $_POST['data1']);
+                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                    $this->db->set('tipo', $tipo);
+                    $this->db->set('nome', 14);
+                    $this->db->set('conta', 1);
+                    $this->db->set('observacao', $observacao);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_entradas');
+                    $entradas_id = $this->db->insert_id();
 
-            $this->db->set('data', $_POST['data1']);
-            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['dinheiro'])));
-            $this->db->set('tipo', 'CAIXA DINHEIRO');
-            $this->db->set('nome', 14);
-            $this->db->set('conta', 1);
-            $this->db->set('observacao', $observacao);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_entradas');
-            $entradas_id = $this->db->insert_id();
+                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                    $this->db->set('entrada_id', $entradas_id);
+                    $this->db->set('conta', 1);
+                    $this->db->set('nome', 14);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_saldo');
+                } elseif ($value->nome == 'cheque' || $value->nome == 'CHEQUE') {
 
-            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['dinheiro'])));
-            $this->db->set('entrada_id', $entradas_id);
-            $this->db->set('conta', 1);
-            $this->db->set('nome', 14);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_saldo');
-        }
+                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                    $this->db->set('devedor', 14);
+                    $this->db->set('data', $data4);
+                    $this->db->set('tipo', $tipo);
+                    $this->db->set('conta', 1);
+                    $this->db->set('observacao', $observacao);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_financeiro_contasreceber');
+                } elseif ($value->nome == 'DEBITO' || $value->nome == 'debito' || $value->nome == 'DÉBITO' || $value->nome == 'débito') {
 
-        if ($_POST['cheque'] != '0,00') {
-
-            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['cheque'])));
-            $this->db->set('devedor', 14);
-            $this->db->set('data', $data4);
-            $this->db->set('tipo', 'CAIXA CHEQUE');
-            $this->db->set('conta', 1);
-            $this->db->set('observacao', $observacao);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_financeiro_contasreceber');
-        }
-
-        if ($_POST['debito'] != '0,00') {
-
-            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['debito'])));
-            $this->db->set('devedor', 14);
-            $this->db->set('data', $data4);
-            $this->db->set('tipo', 'CAIXA DEBITO EM CONTA');
-            $this->db->set('conta', 1);
-            $this->db->set('observacao', $observacao);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_financeiro_contasreceber');
-        }
-
-        if ($_POST['cartaovisa'] != '0,00') {
-            $cartaovisa = str_replace(",", ".", str_replace(".", "", $_POST['cartaovisa']));
+                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                    $this->db->set('devedor', 14);
+                    $this->db->set('data', $data4);
+                    $this->db->set('tipo', 'CAIXA DEBITO EM CONTA');
+                    $this->db->set('conta', 1);
+                    $this->db->set('observacao', $observacao);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_financeiro_contasreceber');
+                } else {
+                    $cartao[$value->nome] = str_replace(",", ".", str_replace(".", "", $_POST[$value->nome]));
 //            $cartaovisa = $cartaovisa * 0.965;
-            $cartaovisa = $cartaovisa * 1;
-            $this->db->set('valor', $cartaovisa);
-            $this->db->set('devedor', 14);
-            $this->db->set('data', $data30);
-            $this->db->set('tipo', 'CAIXA CARTAO VISA');
-            $this->db->set('conta', 6);
-            $this->db->set('observacao', $observacao);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_financeiro_contasreceber');
+                    $cartao[$value->nome] = $cartao[$value->nome] * 1;
+                    $this->db->set('valor', $cartao[$value->nome]);
+                    $this->db->set('devedor', 14);
+                    $this->db->set('data', $data30);
+                    $this->db->set('tipo', $tipo);
+                    $this->db->set('conta', 6);
+                    $this->db->set('observacao', $observacao);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_financeiro_contasreceber');
+                }
+            }
         }
 
-        if ($_POST['cartaocredito'] != '0,00') {
-            $cartaocredito = str_replace(",", ".", str_replace(".", "", $_POST['cartaocredito']));
-//            $cartaovisa = $cartaovisa * 0.965;
-            $cartaocredito = $cartaocredito * 1;
-            $this->db->set('valor', $cartaocredito);
-            $this->db->set('devedor', 14);
-            $this->db->set('data', $data30);
-            $this->db->set('tipo', 'CAIXA CARTAO CREDITO');
-            $this->db->set('conta', 6);
-            $this->db->set('observacao', $observacao);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_financeiro_contasreceber');
-        }
 
-        if ($_POST['cartaomaster'] != '0,00') {
-            $cartaomaster = str_replace(",", ".", str_replace(".", "", $_POST['cartaomaster']));
-//            $cartaomaster = $cartaomaster * 0.965;
-            $cartaomaster = $cartaomaster * 1;
-            $this->db->set('valor', $cartaomaster);
-            $this->db->set('devedor', 14);
-            $this->db->set('data', $data30);
-            $this->db->set('tipo', 'CAIXA CARTAO MASTER');
-            $this->db->set('conta', 6);
-            $this->db->set('observacao', $observacao);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_financeiro_contasreceber');
-        }
-
-        if ($_POST['cartaohiper'] != '0,00') {
-            $cartaohiper = str_replace(",", ".", str_replace(".", "", $_POST['cartaohiper']));
-//            $cartaohiper = $cartaohiper * 0.965;
-            $cartaohiper = $cartaohiper * 1;
-            $this->db->set('valor', $cartaomaster);
-            $this->db->set('devedor', 14);
-            $this->db->set('data', $data30);
-            $this->db->set('tipo', 'CAIXA CARTAO HIPER');
-            $this->db->set('conta', 6);
-            $this->db->set('observacao', $observacao);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_financeiro_contasreceber');
-        }
+//
+//        if ($_POST['dinheiro'] != '0,00') {
+//
+//            $this->db->set('data', $_POST['data1']);
+//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['dinheiro'])));
+//            $this->db->set('tipo', 'CAIXA DINHEIRO');
+//            $this->db->set('nome', 14);
+//            $this->db->set('conta', 1);
+//            $this->db->set('observacao', $observacao);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_entradas');
+//            $entradas_id = $this->db->insert_id();
+//
+//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['dinheiro'])));
+//            $this->db->set('entrada_id', $entradas_id);
+//            $this->db->set('conta', 1);
+//            $this->db->set('nome', 14);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_saldo');
+//        }
+//
+//        if ($_POST['cheque'] != '0,00') {
+//
+//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['cheque'])));
+//            $this->db->set('devedor', 14);
+//            $this->db->set('data', $data4);
+//            $this->db->set('tipo', 'CAIXA CHEQUE');
+//            $this->db->set('conta', 1);
+//            $this->db->set('observacao', $observacao);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_financeiro_contasreceber');
+//        }
+//
+//        if ($_POST['debito'] != '0,00') {
+//
+//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['debito'])));
+//            $this->db->set('devedor', 14);
+//            $this->db->set('data', $data4);
+//            $this->db->set('tipo', 'CAIXA DEBITO EM CONTA');
+//            $this->db->set('conta', 1);
+//            $this->db->set('observacao', $observacao);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_financeiro_contasreceber');
+//        }
+//
+//        if ($_POST['cartaovisa'] != '0,00') {
+//            $cartaovisa = str_replace(",", ".", str_replace(".", "", $_POST['cartaovisa']));
+////            $cartaovisa = $cartaovisa * 0.965;
+//            $cartaovisa = $cartaovisa * 1;
+//            $this->db->set('valor', $cartaovisa);
+//            $this->db->set('devedor', 14);
+//            $this->db->set('data', $data30);
+//            $this->db->set('tipo', 'CAIXA CARTAO VISA');
+//            $this->db->set('conta', 6);
+//            $this->db->set('observacao', $observacao);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_financeiro_contasreceber');
+//        }
+//
+//        if ($_POST['cartaocredito'] != '0,00') {
+//            $cartaocredito = str_replace(",", ".", str_replace(".", "", $_POST['cartaocredito']));
+////            $cartaovisa = $cartaovisa * 0.965;
+//            $cartaocredito = $cartaocredito * 1;
+//            $this->db->set('valor', $cartaocredito);
+//            $this->db->set('devedor', 14);
+//            $this->db->set('data', $data30);
+//            $this->db->set('tipo', 'CAIXA CARTAO CREDITO');
+//            $this->db->set('conta', 6);
+//            $this->db->set('observacao', $observacao);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_financeiro_contasreceber');
+//        }
+//
+//        if ($_POST['cartaomaster'] != '0,00') {
+//            $cartaomaster = str_replace(",", ".", str_replace(".", "", $_POST['cartaomaster']));
+////            $cartaomaster = $cartaomaster * 0.965;
+//            $cartaomaster = $cartaomaster * 1;
+//            $this->db->set('valor', $cartaomaster);
+//            $this->db->set('devedor', 14);
+//            $this->db->set('data', $data30);
+//            $this->db->set('tipo', 'CAIXA CARTAO MASTER');
+//            $this->db->set('conta', 6);
+//            $this->db->set('observacao', $observacao);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_financeiro_contasreceber');
+//        }
+//
+//        if ($_POST['cartaohiper'] != '0,00') {
+//            $cartaohiper = str_replace(",", ".", str_replace(".", "", $_POST['cartaohiper']));
+////            $cartaohiper = $cartaohiper * 0.965;
+//            $cartaohiper = $cartaohiper * 1;
+//            $this->db->set('valor', $cartaomaster);
+//            $this->db->set('devedor', 14);
+//            $this->db->set('data', $data30);
+//            $this->db->set('tipo', 'CAIXA CARTAO HIPER');
+//            $this->db->set('conta', 6);
+//            $this->db->set('observacao', $observacao);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_financeiro_contasreceber');
+//        }
 
         if ($_POST['outros'] != '0,00') {
             $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['outros'])));
@@ -5500,43 +5668,38 @@ ORDER BY ae.agenda_exames_id)";
         return $return->result();
     }
 
-    function listarfichaxml($exames_id) {
-        $this->load->dbutil();
-        $query = $this->db->query("SELECT perguntas_respostas FROM ponto.tb_respostas_xml where agenda_exames_id = $exames_id");
-        $config = array(
-            'root' => 'root',
-            'element' => 'element',
-            'newline' => "\n",
-            'tab' => "\t"
-        );
-        $return = $this->dbutil->xml_from_result($query, $config);
-        return $return;
-    }
-
-    function gravarfichaxml($exames_id) {
-        $p1 = $_POST['p1'];
-        $p2 = $_POST['p2'];
-        $p3 = $_POST['p3'];
-        $p4 = $_POST['p4'];
-        $p5 = $_POST['p5'];
-        $p6 = $_POST['p6'];
-        $p7 = $_POST['p7'];
-        $p8 = $_POST['p8'];
-        $p9 = $_POST['p9'];
-        $p10 = $_POST['p10'];
-        $p11 = $_POST['p11'];
-        $p12 = $_POST['p12'];
-        $p13 = $_POST['p13'];
-        $p14 = $_POST['p14'];
-        $p15 = $_POST['p15'];
-        $p16 = $_POST['p16'];
-        $p17 = $_POST['p17'];
-        $p18 = $_POST['p18'];
+    function gravareditarfichaxml($exames_id) {
 
         try {
-            $sql = "INSERT INTO ponto.tb_respostas_xml(agenda_exames_id,
-                    perguntas_respostas)
-                    VALUES ($exames_id, xmlelement (name perguntas ,xmlconcat (
+            $p1 = $_POST['p1'];
+            $p2 = $_POST['p2'];
+            $p3 = $_POST['p3'];
+            $p4 = $_POST['p4'];
+            $p5 = $_POST['p5'];
+            $p6 = $_POST['p6'];
+            $p7 = $_POST['p7'];
+            $p8 = $_POST['p8'];
+            $p9 = $_POST['p9'];
+            $p10 = $_POST['p10'];
+            $p11 = $_POST['p11'];
+            $p12 = $_POST['p12'];
+            $p13 = $_POST['p13'];
+            $p14 = $_POST['p14'];
+            $p15 = $_POST['p15'];
+            $p16 = $_POST['p16'];
+            $p17 = $_POST['p17'];
+            $p18 = $_POST['p18'];
+            $p19 = $_POST['p19'];
+            $p20 = $_POST['p20'];
+            $peso = $_POST['txtpeso'];
+            $txtp9 = $_POST['txtp9'];
+            $txtp19 = $_POST['txtp19'];
+            $txtp20 = $_POST['txtp20'];
+            $obs = $_POST['obs'];
+
+            $sql = "UPDATE ponto.tb_respostas_xml
+                    set  peso = $peso , txtp9 = '$txtp9' , txtp19 = '$txtp19' , txtp20 = '$txtp20' , obs = '$obs',
+                    perguntas_respostas = xmlelement (name perguntas ,xmlconcat (
                      xmlelement ( name  p1 , '$p1') , 
                      xmlelement ( name  p2 , '$p2') , 
                      xmlelement ( name  p3 , '$p3') , 
@@ -5554,12 +5717,106 @@ ORDER BY ae.agenda_exames_id)";
                      xmlelement ( name  p15 , '$p15') ,
                      xmlelement ( name  p16 , '$p16') ,
                      xmlelement ( name  p17 , '$p17') ,
-                     xmlelement ( name  p18 , '$p18')
-                     )));";
+                     xmlelement ( name  p18 , '$p18') ,
+                     xmlelement ( name  p19 , '$p19')  ,
+                     xmlelement ( name  p20 , '$p20')
+                     ))
+                     WHERE agenda_exames_id = $exames_id;";
+
 
             $this->db->query($sql);
-
             return true;
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+
+    function listarfichatexto($exames_id) {
+        $this->db->select('agenda_exames_id, peso , txtp9 , txtp19 , txtp20, obs');
+        $this->db->from('tb_respostas_xml');
+        $this->db->where('agenda_exames_id', $exames_id);
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
+    function listarfichaxml($exames_id) {
+        $this->load->dbutil();
+        $query = $this->db->query("SELECT perguntas_respostas FROM ponto.tb_respostas_xml where agenda_exames_id = $exames_id");
+        $config = array(
+            'root' => 'root',
+            'element' => 'element',
+            'newline' => "\n",
+            'tab' => "\t"
+        );
+        $return = $this->dbutil->xml_from_result($query, $config);
+        return $return;
+    }
+
+    function gravarfichaxml($exames_id) {
+
+        try {
+
+            $teste = $this->listarfichatexto($exames_id);
+
+            if (!isset($teste[0]->agenda_exames_id)) {
+
+                $p1 = $_POST['p1'];
+                $p2 = $_POST['p2'];
+                $p3 = $_POST['p3'];
+                $p4 = $_POST['p4'];
+                $p5 = $_POST['p5'];
+                $p6 = $_POST['p6'];
+                $p7 = $_POST['p7'];
+                $p8 = $_POST['p8'];
+                $p9 = $_POST['p9'];
+                $p10 = $_POST['p10'];
+                $p11 = $_POST['p11'];
+                $p12 = $_POST['p12'];
+                $p13 = $_POST['p13'];
+                $p14 = $_POST['p14'];
+                $p15 = $_POST['p15'];
+                $p16 = $_POST['p16'];
+                $p17 = $_POST['p17'];
+                $p18 = $_POST['p18'];
+                $p19 = $_POST['p19'];
+                $p20 = $_POST['p20'];
+                $peso = $_POST['txtpeso'];
+                $txtp9 = $_POST['txtp9'];
+                $txtp19 = $_POST['txtp19'];
+                $txtp20 = $_POST['txtp20'];
+                $obs = $_POST['obs'];
+
+                $sql = "INSERT INTO ponto.tb_respostas_xml(agenda_exames_id, peso , txtp9 , txtp19 , txtp20 , obs,
+                    perguntas_respostas )
+                    VALUES ($exames_id, $peso , '$txtp9' ,'$txtp19','$txtp20'  , '$obs' , xmlelement (name perguntas ,xmlconcat (
+                     xmlelement ( name  p1 , '$p1') , 
+                     xmlelement ( name  p2 , '$p2') , 
+                     xmlelement ( name  p3 , '$p3') , 
+                     xmlelement ( name  p4 , '$p4') , 
+                     xmlelement ( name  p5 , '$p5') ,
+                     xmlelement ( name  p6 , '$p6') ,
+                     xmlelement ( name  p7 , '$p7') ,
+                     xmlelement ( name  p8 , '$p8') ,
+                     xmlelement ( name  p9 , '$p9') ,
+                     xmlelement ( name  p10 , '$p10') ,
+                     xmlelement ( name  p11 , '$p11') ,
+                     xmlelement ( name  p12 , '$p12') ,
+                     xmlelement ( name  p13 , '$p13') ,
+                     xmlelement ( name  p14 , '$p14') ,
+                     xmlelement ( name  p15 , '$p15') ,
+                     xmlelement ( name  p16 , '$p16') ,
+                     xmlelement ( name  p17 , '$p17') ,
+                     xmlelement ( name  p18 , '$p18'),
+                     xmlelement ( name  p19 , '$p19')  ,
+                     xmlelement ( name  p20 , '$p20')
+                     )));";
+
+                $this->db->query($sql);
+                return true;
+            } else {
+                return true;
+            }
         } catch (Exception $ex) {
             return false;
         }

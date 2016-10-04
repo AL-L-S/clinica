@@ -7,85 +7,98 @@
 
                     <dl class="dl_desconto_lista">
                         <dt>
-                        <label>Valor total a faturar</label>
+                            <label>Valor total a faturar</label>
                         </dt>
                         <dd>
                             <input type="text" name="valorafaturar" id="valorafaturar" class="texto01" value="<?= $exame[0]->total; ?>" readonly />
                             <input type="hidden" name="guia_id" id="guia_id" class="texto01" value="<?= $guia_id; ?>"/>
                         </dd>
                         <dt>
-                        <label>Desconto</label>
+                            <label>Desconto</label>
                         </dt>
                         <dd>
                             <input type="text" name="desconto" id="desconto" value="<?= $valor; ?>" class="texto01"/>
                         </dd>
-<!--                        <dt>
-                        <label>Dinheiro</label>
-                        </dt>
-                        <dd>-->
-                            <input type="hidden" name="dinheiro" id="dinheiro" value="0"class="texto01"/>
-                            <input type="hidden" name="juroscartao" id="juroscartao" value="0"class="texto01"/>
+                        <!--                        <dt>
+                                                <label>Dinheiro</label>
+                                                </dt>
+                                                <dd>-->
+                        <input type="hidden" name="dinheiro" id="dinheiro" value="0"class="texto01"/>
+                        <input type="hidden" name="juroscartao" id="juroscartao" value="0"class="texto01"/>
 <!--                            <select  name="juroscartao" id="juroscartao" class="size1">
-                                <option value="0">NAO</option>
-                                <option value="1">SIM</option>
-                                </select>
-                        </dd>
-                        <dt>
-                        <label>Total a com cartao</label>
-                        </dt>-->
+                            <option value="0">NAO</option>
+                            <option value="1">SIM</option>
+                            </select>
+                    </dd>
+                    <dt>
+                    <label>Total a com cartao</label>
+                    </dt>-->
                         <dd>
                             <input type="hidden" name="totalpagar" id="totalpagar"  class="texto01" onblur="history.go(0)"/>
                         </dd>
+                        </br>
                         <dt>
-                        <label>Forma de pagamento1 / Valor1</label>
+                            <label >Valor1 / Forma de pagamento1 /  Ajuste1(%) /  Valor Ajustado</label>
                         </dt>
                         <dd>
+                            <input type="text" name="valor1" id="valor1" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <select  name="formapamento1" id="formapamento1" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
-                            <input type="text" name="valor1" id="valor1" class="texto01" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input type="text" name="ajuste1" id="ajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>                                                                           
+                            <input type="text" name="valorajuste1" id="valorajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                         </dd>
+                        </br>
                         <dt>
-                        <label>Forma de pagamento2 / Valor2</label>
+                            <label>Valor2/ Forma de pagamento2 / Ajuste2(%) / Valor Ajustado</label>
                         </dt>
                         <dd>
+                            <input type="text" name="valor2" id="valor2" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <select  name="formapamento2" id="formapamento2" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
-                            <input type="text" name="valor2" id="valor2" class="texto01" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input type="text" name="ajuste2" id="ajuste2" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input type="text" name="valorajuste2" id="valorajuste2" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+
                         </dd>
+                        </br>
                         <dt>
-                        <label>Forma de pagamento3 / Valor3</label>
+                            <label>Valor3/ Forma de pagamento3 / Ajuste3(%) / Valor Ajustado</label>
                         </dt>
                         <dd>
+                            <input type="text" name="valor3" id="valor3" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <select  name="formapamento3" id="formapamento3" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
-                            </select>
-                            <input type="text" name="valor3" id="valor3" class="texto01" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </select>                                   
+                            <input type="text" name="ajuste3" id="ajuste3" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>  
+                            <input type="text" name="valorajuste3" id="valorajuste3" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                         </dd>
+                        </br>
                         <dt>
-                        <label>Forma de pagamento4 / Valor4</label>
+                            <label>Valor4/ Forma de pagamento4 / Ajuste4(%) / Valor Ajustado</label>
                         </dt>
                         <dd>
+                            <input type="text" name="valor4" id="valor4" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <select  name="formapamento4" id="formapamento4" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
-                            </select>
-                            <input type="text" name="valor4" id="valor4" class="texto01" value="<?= $valor; ?>"/>
+                            </select>              
+                            <input type="text" name="ajuste4" id="ajuste4" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input type="text" name="valorajuste4" id="valorajuste4" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                         </dd>
                         <dt>
-                        <label>Diferen&ccedil;a</label>
+                            <label>Diferen&ccedil;a</label>
                         </dt>
                         <dd>
                             <input type="text" name="valortotal" id="valortotal"  onkeyup="multiplica()"  class="texto01" readonly/>
@@ -105,6 +118,8 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
                                 //    (function($){
@@ -114,7 +129,7 @@
                                 //    })(jQuery);
 
 
-                                $(document).ready(function() {
+                                $(document).ready(function () {
 
                                     function multiplica()
                                     {
@@ -134,11 +149,11 @@
                                         numer4 = parseFloat(document.form_faturar.valor4.value.replace(",", "."));
                                         total += numer1 + numer2 + numer3 + numer4;
                                         $('#totalpagar').val(totalpagarcartao);
-                                        
+
                                         valordescontado = valor * desconto;
                                         //resultado = total - valordescontado;
                                         resultado = valor - (total + valordesconto);
-                                        
+
                                         y = resultado.toFixed(2);
                                         resultado2 = total - totalpagar;
                                         y2 = resultado2.toFixed(2);
@@ -157,7 +172,120 @@
                                         //        document.form_faturar.valortotal.value = 10;
                                     }
                                     multiplica();
+                                    $(function () {
+                                        $('#formapamento1').change(function () {
+                                            if ($(this).val()) {
+                                                forma_pagamento_id = document.getElementById("formapamento1").value;
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamento/' + forma_pagamento_id + '/', {formapamento1: $(this).val(), ajax: true}, function (j) {
+                                                    options = "";
+                                                    options = j[0].ajuste;
+                                                    numer_1 = parseFloat(document.form_faturar.valor1.value.replace(",", "."));
 
+                                                    if (j[0].ajuste != null) {
+                                                        document.getElementById("ajuste1").value = options;
+                                                        valorajuste1 = (numer1 * options) / 100;
+                                                        pg1 = numer_1 + valorajuste1;
+                                                        document.getElementById("valorajuste1").value = pg1;
+//                                                        document.getElementById("desconto1").type = 'text';
+//                                                        document.getElementById("valordesconto1").type = 'text';
+                                                    } else {
+                                                        document.getElementById("ajuste1").value = '0';
+                                                        document.getElementById("valorajuste1").value = '0';
+
+                                                    }
+                                                    $('.carregando').hide();
+                                                });
+                                            } else {
+                                                $('#ajuste1').html('value=""');
+                                            }
+                                        });
+                                    });
+                                    $(function () {
+                                        $('#formapamento2').change(function () {
+                                            if ($(this).val()) {
+                                                forma_pagamento_id = document.getElementById("formapamento2").value;
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamento/' + forma_pagamento_id + '/', {formapamento2: $(this).val(), ajax: true}, function (j) {
+                                                    options = "";
+                                                    options = j[0].ajuste;
+                                                    numer_2 = parseFloat(document.form_faturar.valor2.value.replace(",", "."));
+
+                                                    if (j[0].ajuste != null) {
+                                                        document.getElementById("ajuste2").value = options;
+                                                        valorajuste2 = (numer2 * options) / 100;
+                                                        pg2 = numer_2 + valorajuste2;
+                                                        document.getElementById("valorajuste2").value = pg2;
+//                                                        document.getElementById("desconto2").type = 'text';
+//                                                        document.getElementById("valordesconto2").type = 'text';
+                                                    } else {
+//                                                        document.getElementById("desconto2").type = 'hidden';
+                                                        document.getElementById("ajuste2").value = "0";
+//                                                        document.getElementById("valordesconto2").type = 'hidden';
+                                                        document.getElementById("valorajuste2").value = "0";
+                                                    }
+
+                                                    $('.carregando').hide();
+                                                });
+                                            } else {
+                                                $('#ajuste2').html('value=""');
+                                            }
+                                        });
+                                    });
+                                    $(function () {
+                                        $('#formapamento3').change(function () {
+                                            if ($(this).val()) {
+                                                forma_pagamento_id = document.getElementById("formapamento3").value;
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamento/' + forma_pagamento_id + '/', {formapamento3: $(this).val(), ajax: true}, function (j) {
+                                                    options = "";
+                                                    options = j[0].ajuste;
+                                                    numer_3 = parseFloat(document.form_faturar.valor3.value.replace(",", "."));
+                                                    valorajuste3 = (numer3 * ajuste3) / 100;
+                                                    pg3 = numer_3 - valorajuste3;
+                                                    if (j[0].ajuste != null) {
+                                                        document.getElementById("ajuste3").value = options;
+                                                        valorajuste3 = (numer3 * options) / 100;
+                                                        pg3 = numer_3 + valorajuste3;
+                                                        document.getElementById("valorajuste3").value = pg3;
+                                                    } else {
+                                                        document.getElementById("ajuste3").value = "0";
+                                                        document.getElementById("valorajuste3").value = "0";
+                                                    }
+                                                    ;
+                                                    $('.carregando').hide();
+                                                });
+                                            } else {
+                                                $('#ajuste3').html('value=""');
+                                            }
+                                        });
+                                    });
+                                    $(function () {
+                                        $('#formapamento4').change(function () {
+                                            if ($(this).val()) {
+                                                forma_pagamento_id = document.getElementById("formapamento4").value;
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamento/' + forma_pagamento_id + '/', {formapamento4: $(this).val(), ajax: true}, function (j) {
+                                                    options = "";
+                                                    options = j[0].ajuste;
+                                                    numer_4 = parseFloat(document.form_faturar.valor4.value.replace(",", "."));
+                                                    if (j[0].ajuste != null) {
+                                                        document.getElementById("ajuste4").value = options;
+                                                        valorajuste4 = (numer4 * options) / 100;
+                                                        pg4 = numer_4 + valorajuste4;
+                                                        document.getElementById("valorajuste4").value = pg4;
+                                                    } else {
+                                                        document.getElementById("ajuste4").value = "0";
+                                                        document.getElementById("valorajuste4").value = "0";
+                                                    }
+
+                                                    $('.carregando').hide();
+                                                });
+                                            } else {
+                                                $('#ajuste4').html('value=""');
+                                            }
+                                        });
+                                    });
 
                                 });
 </script>
