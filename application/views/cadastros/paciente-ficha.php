@@ -9,22 +9,11 @@
             </div>
             <div>
                 <label>Nascimento</label>
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" onblur="retornaIdade()"/>
+                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" />
             </div>
 
 
 
-            <div>
-
-                <?php
-                if ($idade == 0) {
-                    ?>
-                    <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="0" />
-
-                    <?php
-                }
-                ?>
-            </div>
             <div>
                 <label>Nome da M&atilde;e</label>
                 <input type="text" name="nome_mae" id="txtNomeMae" class="texto06" value="<?= @$obj->_nomemae; ?>" />
@@ -153,7 +142,7 @@
                 <label>CEP</label>
 
 
-                <input type="text" id="txtCep" class="texto02" name="cep" alt="cep" value="<?= @$obj->_cep; ?>" />
+                <input type="text" id="cep" class="texto02" name="cep" alt="cep" value="<?= @$obj->_cep; ?>" />
             </div>
 
 

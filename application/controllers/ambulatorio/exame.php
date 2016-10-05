@@ -1499,7 +1499,7 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                 $contador = count($listarpacienete);
                 foreach ($listarpacienete as $value) {
-                    $i++;
+                    
                     if ($value->guiaconvenio == '') {
                         $guianumero = '0000000';
                     } else {
@@ -1513,6 +1513,7 @@ class Exame extends BaseController {
 
                     foreach ($listarexames as $item) {
                         if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
+                            $i++;
                             $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                             if ($item->medico == '') {
                                 $medico = 'ADMINISTRADOR';
@@ -1826,7 +1827,7 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                                 $contador = count($listarpacienete);
                 foreach ($listarpacienete as $value) {
-                    $i++;
+                    
                     if ($value->guiaconvenio == '') {
                         $guianumero = '0000000';
                     } else {
@@ -1840,6 +1841,7 @@ class Exame extends BaseController {
 
                     foreach ($listarexames as $item) {
                         if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
+                            $i++;
                             $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                             if ($item->medico == '') {
                                 $medico = 'ADMINISTRADOR';
