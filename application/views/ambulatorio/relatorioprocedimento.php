@@ -5,28 +5,21 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/procedimento/gerarelatorioprocedimento">
                 <dl>
                     <dt>
-                    <label>Grupo</label>
+                        <label>Grupo</label>
                     </dt>
                     <dd>
                         <select name="grupo" id="grupo" class="size1" >
                             <option value='0' >TODOS</option>
                             <option value='1' >SEM RM</option>
-                            <option value='AUDIOMETRIA'>AUDIOMETRIA</option>
-                            <option value='CONSULTA'>CONSULTA</option>
-                            <option value='DENSITOMETRIA'>DENSITOMETRIA</option>
-                            <option value='ECOCARDIOGRAMA'>ECOCARDIOGRAMA</option>
-                            <option value='ELETROCARDIOGRAMA'>ELETROCARDIOGRAMA</option>
-                            <option value='ELETROENCEFALOGRAMA'>ELETROENCEFALOGRAMA</option>
-                            <option value='ESPIROMETRIA'>ESPIROMETRIA</option>
-                            <option value='FISIOTERAPIA'>FISIOTERAPIA</option>
-                            <option value='LABORATORIAL'>LABORATORIAL</option>
-                            <option value='MAMOGRAFIA'>MAMOGRAFIA</option>
-                            <option value='RM'>RM</option>
-                            <option value='RX'>RX</option>
-                            <option value='US'>US</option>
+                            <? foreach ($grupos as $grupo) { ?>                                
+                                <option value='<?= $grupo->nome ?>' <?
+                                if (@$obj->_grupo == $grupo->nome):echo 'selected';
+                                endif;
+                                ?>><?= $grupo->nome ?></option>
+                                    <? } ?>
                         </select>
                     </dd>
-                 </dl>
+                </dl>
                 <button type="submit" >Pesquisar</button>
             </form>
 
@@ -37,7 +30,7 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -49,7 +42,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -62,7 +55,7 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

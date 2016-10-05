@@ -21,9 +21,15 @@
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: TODOS</th>
                 </tr>
-            <? } else { ?>
+            <? } else {
+                  if(isset($relatorio[0]->grupo)){
+                      $nome_grupo = $relatorio[0]->grupo;
+                  }else{
+                      $nome_grupo = $grupo;
+                  }
+                ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $relatorio[0]->grupo; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $nome_grupo; ?></th>
                 </tr>
             <? } ?>
             <? if ($convenio == "0") { ?>

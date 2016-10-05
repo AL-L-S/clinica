@@ -3,7 +3,7 @@
         <h3><a href="#">Gerar relatorio Convenio Paciente</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriopacienteconvenioexame">
-                <dl>
+                <dl>                   
                     <dt>
                     <label>Convenio</label>
                     </dt>
@@ -33,21 +33,15 @@
                     <label>Especialidade</label>
                     </dt>
                     <dd>
-                        <select name="grupo" id="grupo" class="size1" >
+                        <select name="grupo" id="grupo" class="size2" >
                             <option value='0' >TODOS</option>
                             <option value='1' >SEM RM</option>
-                            <option value='AUDIOMETRIA'>AUDIOMETRIA</option>
-                            <option value='CONSULTA'>CONSULTA</option>
-                            <option value='DENSITOMETRIA'>DENSITOMETRIA</option>
-                            <option value='ELETROCARDIOGRAMA'>ELETROCARDIOGRAMA</option>
-                            <option value='ESPIROMETRIA'>ESPIROMETRIA</option>
-                            <option value='ECOCARDIOGRAMA'>ECOCARDIOGRAMA</option>
-                            <option value='FISIOTERAPIA'>FISIOTERAPIA</option>
-                            <option value='LABORATORIAL'>LABORATORIAL</option>
-                            <option value='MAMOGRAFIA'>MAMOGRAFIA</option>
-                            <option value='RM'>RM</option>
-                            <option value='RX'>RX</option>
-                            <option value='US'>US</option>
+                            <? foreach ($grupos as $grupo) { ?>                                
+                                <option value='<?= $grupo->nome ?>' <?
+                                if (@$obj->_grupo == $grupo->nome):echo 'selected';
+                                endif;
+                                ?>><?= $grupo->nome ?></option>
+                                    <? } ?>
                         </select>
                     </dd>
                     <dt>

@@ -17,6 +17,7 @@ class Guia extends BaseController {
         parent::Controller();
         $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('cadastro/paciente_model', 'paciente');
+        $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('ambulatorio/sala_model', 'sala');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('cadastro/convenio_model', 'convenio');
@@ -81,6 +82,104 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/aafala', $data);
     }
 
+    function editarfichaxml($paciente_id ,$exames_id) {
+        $data['exames_id'] = $exames_id;
+         $data['paciente_id'] = $paciente_id;
+        $this->loadView('ambulatorio/fichaeditar-xml-form', $data);
+    }
+
+    function gravareditarfichaxml($paciente_id , $exames_id) {
+        $this->guia->gravareditarfichaxml($exames_id);
+        $this->pesquisar($paciente_id);
+    }
+
+    function fichaxml($paciente_id, $guia_id, $exames_id) {
+        $data['exames_id'] = $exames_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['guia_id'] = $guia_id;
+        $teste = $this->guia->listarfichatexto($exames_id);
+        if (isset($teste[0]->agenda_exames_id)) {
+            $this->gravarfichaxml($paciente_id, $guia_id, $exames_id);
+        } else {
+            $this->loadView('ambulatorio/ficha-xml-form', $data);
+        }
+    }
+
+    function gravarfichaxml($paciente_id, $guia_id, $exames_id) {
+        $this->guia->gravarfichaxml($exames_id);
+        $xml = $this->guia->listarfichaxml($exames_id);
+        $texto = $this->guia->listarfichatexto($exames_id);
+
+
+        $string = xml_convert($xml);
+
+        $data['r1'] = substr($string, 86, 3);
+        $data['r2'] = substr($string, 110, 3);
+        $data['r3'] = substr($string, 134, 3);
+        $data['r4'] = substr($string, 158, 3);
+        $data['r5'] = substr($string, 182, 3);
+        $data['r6'] = substr($string, 206, 3);
+        $data['r7'] = substr($string, 230, 3);
+        $data['r8'] = substr($string, 254, 3);
+        $data['r9'] = substr($string, 278, 3);
+        $data['r10'] = substr($string, 303, 3);
+        $data['r11'] = substr($string, 329, 3);
+        $data['r12'] = substr($string, 355, 3);
+        $data['r13'] = substr($string, 381, 3);
+        $data['r14'] = substr($string, 407, 3);
+        $data['r15'] = substr($string, 433, 3);
+        $data['r16'] = substr($string, 459, 3);
+        $data['r17'] = substr($string, 485, 3);
+        $data['r18'] = substr($string, 511, 3);
+        $data['r19'] = substr($string, 537 ,3);
+        $data['r20'] = substr($string, 563 ,3);
+
+        $data['peso'] = $texto[0]->peso;
+        $data['txtp9'] = $texto[0]->txtp9;
+        $data['txtp19'] = $texto[0]->txtp19;
+        $data['txtp20'] = $texto[0]->txtp20;
+        $data['obs'] = $texto[0]->obs;
+
+
+        $data['emissao'] = date("d-m-Y");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['exame'] = $this->guia->listarexame($exames_id);
+        $grupo = $data['exame'][0]->grupo;
+        $dinheiro = $data['exame'][0]->dinheiro;
+
+        $data['exames'] = $this->guia->listarexamesguia($guia_id);
+        $exames = $data['exames'];
+        $valor_total = 0;
+
+        foreach ($exames as $item) :
+            if ($dinheiro == "t") {
+                $valor_total = $valor_total + ($item->valor_total);
+            }
+        endforeach;
+
+        $data['guia'] = $this->guia->listar($paciente_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $valor = number_format($valor_total, 2, ',', '.');
+
+        $data['valor'] = $valor;
+
+        if ($valor == '0,00') {
+            $data['extenso'] = 'ZERO';
+        } else {
+
+            $valoreditado = str_replace(",", "", str_replace(".", "", $valor));
+            if ($dinheiro == "t") {
+                $data['extenso'] = GExtenso::moeda($valoreditado);
+            }
+        }
+//        var_dump($data['r1'] ,$data['r2'] , $data['r3'] , $data['r4'], $data['r5'] , $data['r6'] , $data['r7'] , $data['r8'], $data['r9'] , $data['r10'],$data['r11'],$data['r12'],$data['r13'],$data['r14'],$data['r15'],$data['r16'],$data['r17'],$data['r18'],$data['r19'],$data['r20']);
+//        die;
+
+        $this->load->view('ambulatorio/impressaoficharm', $data);
+//        $this->load->view('ambulatorio/impressaoficharm-verso');
+    }
+
     function impressaoficha($paciente_id, $guia_id, $exames_id) {
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -114,8 +213,8 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-
-//HUMANA        
+        $this->fichaxml($paciente_id, $guia_id, $exames_id);
+//HUMANA               
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
 //            $this->load->View('ambulatorio/impressaofichaus', $data);
 //        }
@@ -126,7 +225,7 @@ class Guia extends BaseController {
 //            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
 //        }
 //        if ($grupo == "RM") {
-//            $this->load->View('ambulatorio/impressaoficharm', $data);
+//            $this->fichaxml($paciente_id, $guia_id, $exames_id);        
 //        }
 //PROIMAGEM       
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
@@ -173,12 +272,8 @@ class Guia extends BaseController {
 //            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
 //            
 //      CLINICA MED
-        $this->load->View('ambulatorio/impressaofichamed', $data);
+//        $this->load->View('ambulatorio/impressaofichamed', $data);
         //RONALDO
-
-        
-
-
 //        if ($dinheiro == "t") {
 //            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
 //        } else {
@@ -701,6 +796,7 @@ class Guia extends BaseController {
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
         $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['valor'] = 0.00;
         $this->load->View('ambulatorio/faturar-form', $data);
     }
 
@@ -862,6 +958,7 @@ class Guia extends BaseController {
     function relatoriopacieneteexame() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriopacienteconvenioexame', $data);
     }
 
@@ -931,6 +1028,7 @@ class Guia extends BaseController {
     function relatoriocancelamento() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriocancelamento', $data);
     }
 
@@ -997,18 +1095,21 @@ class Guia extends BaseController {
     function relatoriogrupo() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatorioexamegrupo', $data);
     }
 
     function relatoriogrupoanalitico() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatorioexamegrupoanalitico', $data);
     }
 
     function relatoriogrupoprocedimento() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatorioexamegrupoprocedimento', $data);
     }
 
@@ -1016,6 +1117,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriogrupoprocedimentomedico', $data);
     }
 
@@ -1091,6 +1193,7 @@ class Guia extends BaseController {
     function relatoriogeralconvenio() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriogeralconvenio', $data);
     }
 
@@ -1131,6 +1234,7 @@ class Guia extends BaseController {
     function relatoriomedicosolicitante() {
         $data['medicos'] = $this->operador_m->listarmedicossolicitante();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriomedicosolicitante', $data);
     }
 
@@ -1146,6 +1250,7 @@ class Guia extends BaseController {
     function relatoriomedicosolicitantexmedico() {
         $data['medicos'] = $this->operador_m->listarmedicossolicitante();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriomedicosolicitantexmedico', $data);
     }
 
@@ -1161,6 +1266,7 @@ class Guia extends BaseController {
     function relatoriomedicosolicitantexmedicoindicado() {
         $data['medicos'] = $this->operador_m->listarmedicossolicitante();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriomedicosolicitantexmedicoindicado', $data);
     }
 
@@ -1176,6 +1282,7 @@ class Guia extends BaseController {
     function relatoriolaudopalavra() {
         $data['medicos'] = $this->operador_m->listarmedicossolicitante();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriolaudopalavra', $data);
     }
 
@@ -1233,6 +1340,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatorioconveniovalor', $data);
     }
 
@@ -1293,6 +1401,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['tecnicos'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriotecnicoconvenio', $data);
     }
 
@@ -1357,7 +1466,7 @@ class Guia extends BaseController {
 
     function gerarelatoriovalormedio() {
         $data['txtdatainicio'] = str_replace("/", "-", $_POST['txtdata_inicio']);
-        $data['txtdatafim'] = str_replace("/" , "-", $_POST['txtdata_fim']);                
+        $data['txtdatafim'] = str_replace("/", "-", $_POST['txtdata_fim']);
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriovalormedio();
         $data['convenio'] = $this->guia->relatoriovalormedioconvenio();
@@ -1368,6 +1477,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['tecnicos'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriotecnicoconveniosintetico', $data);
     }
 
@@ -1596,6 +1706,7 @@ class Guia extends BaseController {
         $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriomedicoconveniofinanceiro', $data);
     }
 
@@ -1603,6 +1714,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriomedicoconvenioprevisaofinanceiro', $data);
     }
 
@@ -1679,11 +1791,11 @@ class Guia extends BaseController {
 //        var_dump($txtdata_fim);
 //        die;
         $data['grafico'] = $this->guia->relatoriograficoalormedio($procedimento);
-        $data['valor']=$valor;
-        $data['txtdata_inicio']=$txtdata_inicio;
-        $data['txtdata_fim']=$txtdata_fim;
-        $data['procedimento']=$procedimento;
-        $this->load->View('ambulatorio/graficovalormedio', $data); 
+        $data['valor'] = $valor;
+        $data['txtdata_inicio'] = $txtdata_inicio;
+        $data['txtdata_fim'] = $txtdata_fim;
+        $data['procedimento'] = $procedimento;
+        $this->load->View('ambulatorio/graficovalormedio', $data);
     }
 
     function entregaexame($paciente_id, $agenda_exames_id) {
@@ -1763,12 +1875,14 @@ class Guia extends BaseController {
     function relatoriocaixa() {
         $data['operadores'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriocaixa', $data);
     }
 
     function relatoriocaixafaturado() {
         $data['operadores'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriocaixafaturado', $data);
     }
 
@@ -1802,12 +1916,14 @@ class Guia extends BaseController {
     function relatoriocaixacartao() {
         $data['operadores'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriocaixacartao', $data);
     }
 
     function relatoriocaixacartaoconsolidado() {
         $data['operadores'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriocaixacartaoconsolidado', $data);
     }
 
@@ -1835,6 +1951,7 @@ class Guia extends BaseController {
         $data['relatorio'] = $this->guia->relatoriocaixa();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['contador'] = $this->guia->relatoriocaixacontador();
+        $data['formapagamento'] = $this->formapagamento->listarforma();
         $this->load->View('ambulatorio/impressaorelatoriocaixa', $data);
     }
 

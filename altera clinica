@@ -622,6 +622,16 @@ INSERT INTO ponto.tb_financeiro_classe(
 
 DELETE FROM ponto.tb_tipo_entradas_saida;
 
+
+atualiza 21/09/16
+CREATE TABLE ponto.tb_financeiro_email
+(
+  financeiro_email_id serial NOT NULL,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  mensagem text
+)
+
 atualiza 13/09/16
 
 CREATE TABLE ponto.tb_lote
@@ -630,3 +640,30 @@ CREATE TABLE ponto.tb_lote
 )
 
 INSERT INTO ponto.tb_lote(lote) VALUES (7899);
+
+atualiza 28/09/16
+CREATE TABLE ponto.tb_respostas_xml
+(
+  agenda_exames_id integer,
+  perguntas_respostas xml,
+  peso integer,
+  obs character varying(2000),
+  txtp9 character varying(100),
+  txtp19 character varying(500),
+  txtp20 character varying(500)
+)
+
+atualiza 30/09/16
+CREATE TABLE ponto.tb_forma_pagamento
+(
+  forma_pagamento_id serial NOT NULL,
+  nome character varying(100) NOT NULL,
+  ativo boolean NOT NULL DEFAULT true,
+  operador_cadastro integer,
+  data_cadastro timestamp without time zone,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  conta_id integer,
+  ajuste numeric(10,2),
+  CONSTRAINT tb_forma_pagamentol_pkey PRIMARY KEY (forma_pagamento_id )
+)

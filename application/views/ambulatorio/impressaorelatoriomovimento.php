@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <? if (count($tipo) > 0) { ?>
-        <h4>TIPO<?= $tipo[0]->descricao; ?></h4>
+        <h4>TIPO: <?= $tipo[0]->descricao; ?></h4>
     <? } else { ?>
         <h4>TODOS OS TIPOS</h4>
     <? } ?>

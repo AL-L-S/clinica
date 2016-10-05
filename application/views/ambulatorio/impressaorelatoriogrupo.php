@@ -45,7 +45,7 @@
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">CONVENIOS</th>
                 </tr>
-            <?
+                <?
             } else {
                 $i = 1;
                 ?>
@@ -53,7 +53,7 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">CONVENIO: <?= $convenios[0]->nome; ?></th>
                 </tr>
 
-<? } ?>
+            <? } ?>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
@@ -108,6 +108,10 @@
                 $NUMEROFISIOTERAPIA = 0;
                 $ECOCARDIOGRAMA = 0;
                 $NUMEROECOCARDIOGRAMA = 0;
+                $TOMOGRAFIA = 0;
+                $NUMEROTOMOGRAFIA = 0;
+                $CONSULTA = 0;
+                $NUMEROCONSULTA = 0;
                 $perc = 0;
                 $perctotal = 0;
 
@@ -182,6 +186,18 @@
                         if ($item->grupo == "ECOCARDIOGRAMA") {
                             $ECOCARDIOGRAMA = $ECOCARDIOGRAMA + $item->valor;
                             $NUMEROECOCARDIOGRAMA = $NUMEROECOCARDIOGRAMA + $item->quantidade;
+                        }
+                        if ($item->grupo == "LABORATORIAL") {
+                            $LABORATORIAL = $LABORATORIAL + $item->valor;
+                            $NUMEROLABORATORIAL = $NUMEROLABORATORIAL + $item->quantidade;
+                        }
+                        if ($item->grupo == "TOMOGRAFIA") {
+                            $TOMOGRAFIA = $TOMOGRAFIA + $item->valor;
+                            $NUMEROTOMOGRAFIA = $NUMEROTOMOGRAFIA + $item->quantidade;
+                        }
+                        if ($item->grupo == "CONSULTA") {
+                            $CONSULTA = $CONSULTA + $item->valor;
+                            $NUMEROCONSULTA = $NUMEROCONSULTA + $item->quantidade;
                         }
                         $qtde = $qtde + $item->quantidade;
                         $qtdetotal = $qtdetotal + $item->quantidade;
@@ -262,6 +278,18 @@
                             $ECOCARDIOGRAMA = $ECOCARDIOGRAMA + $item->valor;
                             $NUMEROECOCARDIOGRAMA = $NUMEROECOCARDIOGRAMA + $item->quantidade;
                         }
+                        if ($item->grupo == "LABORATORIAL") {
+                            $LABORATORIAL = $LABORATORIAL + $item->valor;
+                            $NUMEROLABORATORIAL = $NUMEROLABORATORIAL + $item->quantidade;
+                        }
+                        if ($item->grupo == "TOMOGRAFIA") {
+                            $TOMOGRAFIA = $TOMOGRAFIA + $item->valor;
+                            $NUMEROTOMOGRAFIA = $NUMEROTOMOGRAFIA + $item->quantidade;
+                        }
+                        if ($item->grupo == "CONSULTA") {
+                            $CONSULTA = $CONSULTA + $item->valor;
+                            $NUMEROCONSULTA = $NUMEROCONSULTA + $item->quantidade;
+                        }
                         $qtde = 0;
                         $qtde = $qtde + $item->quantidade;
                         $qtdetotal = $qtdetotal + $item->quantidade;
@@ -284,7 +312,6 @@
         </table>
         <hr>
         <?
-
         if ($conveniotipo == '0') {
             ?>
             <table >
@@ -316,12 +343,12 @@
                     <td><font size="-2"></td>
                     <td width="200px;"><font size="-1"><?= number_format($MAMOGRAFIA, 2, ',', '.'); ?></td>
                 </tr>
-        <!--            <tr>
+                <tr>
                     <td width="140px;"><font size="-1">RM</td>
                     <td width="140px;"><font size="-1"><?= $NUMERORM; ?></td>
                     <td><font size="-2"></td>
                     <td width="200px;"><font size="-1"><?= number_format($RM, 2, ',', '.'); ?></td>
-                </tr>-->
+                </tr>
                 <tr>
                     <td width="140px;"><font size="-1">AUDIOMETRIA</td>
                     <td width="140px;"><font size="-1"><?= $NUMEROAUDIOMETRIA; ?></td>
@@ -352,18 +379,31 @@
                     <td><font size="-2"></td>
                     <td width="200px;"><font size="-1"><?= number_format($LABORATORIAL, 2, ',', '.'); ?></td>
                 </tr>
-        <!--            <tr>
+                <tr>
                     <td width="140px;"><font size="-1">FISIOTERAPIA</td>
                     <td width="140px;"><font size="-1"><?= $NUMEROFISIOTERAPIA; ?></td>
                     <td><font size="-2"></td>
                     <td width="200px;"><font size="-1"><?= number_format($FISIOTERAPIA, 2, ',', '.'); ?></td>
-                </tr>-->
+                </tr>
                 <tr>
                     <td width="140px;"><font size="-1">ECOCARDIOGRAMA</td>
                     <td width="140px;"><font size="-1"><?= $NUMEROECOCARDIOGRAMA; ?></td>
                     <td><font size="-2"></td>
                     <td width="200px;"><font size="-1"><?= number_format($ECOCARDIOGRAMA, 2, ',', '.'); ?></td>
                 </tr>
+                <tr>
+                    <td width="140px;"><font size="-1">TOMOGRAFIA</td>
+                    <td width="140px;"><font size="-1"><?= $NUMEROTOMOGRAFIA; ?></td>
+                    <td><font size="-2"></td>
+                    <td width="200px;"><font size="-1"><?= number_format($TOMOGRAFIA, 2, ',', '.'); ?></td>
+                </tr>
+                <tr>
+                    <td width="140px;"><font size="-1">CONSULTA</td>
+                    <td width="140px;"><font size="-1"><?= $NUMEROCONSULTA; ?></td>
+                    <td><font size="-2"></td>
+                    <td width="200px;"><font size="-1"><?= number_format($CONSULTA, 2, ',', '.'); ?></td>
+                </tr>
+                <tr>
                 <tr>
                     <td width="140px;" bgcolor="#C0C0C0"><font size="-1">TOTAL GERAL</td>
                     <td width="140px;" bgcolor="#C0C0C0"><font size="-1"><?= $qtdetotal; ?></td>
@@ -389,7 +429,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

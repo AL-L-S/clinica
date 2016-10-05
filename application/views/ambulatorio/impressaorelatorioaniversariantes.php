@@ -17,6 +17,7 @@
                 <tr>
                     <th class="tabela_header"><font size="-1">Data</th>
                     <th class="tabela_header"><font size="-1">Nome</th>
+                    <th class="tabela_header"><font size="-1">Telefone/Celular</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +28,7 @@
                     <tr>
                         <td><font size="-2"><?= substr($item->nascimento, 8,2) . "/" . substr($item->nascimento, 5,2) . "/" . substr($item->nascimento, 0,4); ?></td>
                         <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>
+                        <td><font size="-2"><?= utf8_decode($item->telefone). " / " . utf8_decode($item->celular);?></td>
                     </tr>
                     <?endforeach;?>
             </tbody>

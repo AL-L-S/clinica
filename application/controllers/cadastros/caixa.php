@@ -224,7 +224,136 @@ class Caixa extends BaseController {
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->caixa->relatoriosaida();
-        $this->load->View('ambulatorio/impressaorelatoriosaida', $data);
+
+        if ($_POST['email'] == "NAO") {
+            $this->load->View('ambulatorio/impressaorelatoriosaida', $data);
+        } elseif ($_POST['email'] == "SIM") {
+
+            if (count($data['tipo']) > 0) {
+                $tipo = "TIPO:" . $data['tipo'][0]->descricao;
+            } else {
+                $tipo = "TODOS OS TIPOS";
+            }
+            if (count($data['classe']) > 0) {
+                $texto = strtr(strtoupper($data['classe'][0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß");
+                $classe = "CLASSE:" . $texto;
+            } else {
+                $classe = "TODAS AS CLASSES";
+            }
+            if (count($data['forma']) > 0) {
+                $forma = "CONTA:" . $data['forma'][0]->descricao;
+            } else {
+                $forma = "TODAS AS CONTAS";
+            }
+            if (count($data['credordevedor']) > 0) {
+                $credordevedor = $data['credordevedor'][0]->razao_social;
+            } else {
+                $credordevedor = "TODOS OS CREDORES";
+            }
+
+            $cabecalho = '<div class="content"> <!-- Inicio da DIV content -->
+
+        <h4> ' . $tipo . ' </h4>
+        <h4> ' . $classe . ' </h4>
+        <h4>' . $forma . '</h4>
+        <h4>' . $credordevedor . '</h4>
+        <h4>RELATORIO DE SAIDA</h4>
+    <h4>PERIODO: ' . $data['txtdata_inicio'] . ' ate ' . $data['txtdata_fim'] . '</h4>
+    <hr>';
+
+            if (count($data['relatorio']) > 0) {
+
+                $corpo = '
+        <table border="1">
+            <thead>
+                <tr>
+                    <th width="100px;" class="tabela_header">Conta</th>
+                    <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
+                    <th class="tabela_header">Dt saida</th>
+                    <th class="tabela_header">Valor</th>
+
+                    <th class="tabela_header">Observacao</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+                $total = 0;
+                $corpo2 = '';
+                $corpo3 = '';
+                foreach ($data['relatorio'] as $item) :
+                    $total = $total + $item->valor;
+
+                    $corpo2 = $corpo2 . '
+                    <tr>
+                        <td >' . $item->conta . '</td>
+                        <td >' . $item->razao_social . '</td>
+                        <td >' . $item->tipo . '</td>
+                        <td >' . $item->classe . '</td>
+                        <td >' . substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4) . '</td>
+                        <td >' . number_format($item->valor, 2, ",", ".") . '</td>
+                        <td >' . $item->observacao . '</td>
+                    </tr>';
+                endforeach;
+                $corpo3 = '<tr>
+                    <td colspan="4"><b>TOTAL</b></td>
+                    <td colspan="2"><b>' . number_format($total, 2, ",", ".") . '</b></td>
+                </tr>
+            </tbody>';
+
+                $html = $cabecalho . $corpo . $corpo2 . $corpo3;
+            }
+            else {
+                $corpo = '
+                <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+                ';
+                $html = $cabecalho . $corpo;
+            }
+
+
+//                    var_dump($html);
+//            die;
+            $tiporelatorio = 'relatoriosaida';
+            $email_id = $this->caixa->gravaremailmensagem($html);
+            $this->formrelatorioemail($email_id, $tiporelatorio);
+        }
+    }
+
+    function formrelatorioemail($email_id, $tiporelatorio) {
+        $data['email_id'] = $email_id;
+        $data['tiporelatorio'] = $tiporelatorio;
+        $this->loadView("ambulatorio/enviaremail-form", $data);
+    }
+
+    function enviaremail($email_id) {
+        $relatorio = $_POST['tiporelatorio'];
+
+        $msg = $this->caixa->listaremailmensagem($email_id);
+        $this->load->library('email');
+
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'ssl://smtp.gmail.com';
+        $config['smtp_port'] = '465';
+        $config['smtp_user'] = 'equipe2016gcjh@gmail.com';
+        $config['smtp_pass'] = 'DUCOCOFRUTOPCE';
+        $config['validate'] = TRUE;
+        $config['mailtype'] = 'html';
+        $config['charset'] = 'utf-8';
+        $config['newline'] = "\r\n";
+
+        $this->email->initialize($config);
+        $this->email->from('equipe2016gcjh@gmail.com', $_POST['seunome']);
+        $this->email->to($_POST['destino1']);
+        $this->email->subject($_POST['assunto']);
+        $this->email->message($msg);
+        if ($this->email->send()) {
+            $data['mensagem'] = "Email enviado com sucesso.";
+        } else {
+            $data['mensagem'] = "Envio de Email malsucedido.";
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "cadastros/caixa/$relatorio/");
     }
 
     function relatoriosaidagrupo() {
@@ -245,7 +374,124 @@ class Caixa extends BaseController {
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->caixa->relatoriosaidagrupo();
         $data['contador'] = $this->caixa->relatoriosaidacontador();
-        $this->load->View('ambulatorio/impressaorelatoriosaidagrupo', $data);
+
+        if ($_POST['email'] == "NAO") {
+            $this->load->View('ambulatorio/impressaorelatoriosaidagrupo', $data);
+        } elseif ($_POST['email'] == "SIM") {
+            if (count($data['tipo']) > 0) {
+                $tipo = "TIPO:" . $data['tipo'][0]->descricao;
+            } else {
+                $tipo = "TODOS OS TIPOS";
+            }
+            if (count($data['classe']) > 0) {
+                $texto = strtr(strtoupper($data['classe'][0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß");
+                $classe = "CLASSE:" . $texto;
+            } else {
+                $classe = "TODAS AS CLASSES";
+            }
+            if (count($data['forma']) > 0) {
+                $forma = "CONTA:" . $data['forma'][0]->descricao;
+            } else {
+                $forma = "TODAS AS CONTAS";
+            }
+            if (count($data['credordevedor']) > 0) {
+                $credordevedor = $data['credordevedor'][0]->razao_social;
+            } else {
+                $credordevedor = "TODOS OS CREDORES";
+            }
+
+            $cabecalho = '<div class="content"> <!-- Inicio da DIV content -->
+
+        <h4> ' . $tipo . ' </h4>
+        <h4> ' . $classe . ' </h4>
+        <h4>' . $forma . '</h4>
+        <h4>' . $credordevedor . '</h4>
+        <h4>RELATORIO DE SAIDA</h4>
+    <h4>PERIODO: ' . $data['txtdata_inicio'] . ' ate ' . $data['txtdata_fim'] . '</h4>
+    <hr>';
+
+            if (count($data['relatorio']) > 0) {
+
+                $corpo = '
+        <table border="1">
+            <thead>
+                <tr>
+                    <th width="100px;" class="tabela_header">Conta</th>
+                    <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
+                    <th class="tabela_header">Dt saida</th>
+                    <th class="tabela_header">Valor</th>
+
+                    <th class="tabela_header">Observacao</th>
+                </tr>
+                </tr>
+            </thead>
+            <tbody>';
+
+                $totalgeral = 0;
+                $totaltipo = 0;
+                $i = 0;
+                $s = '';
+                $corpo2 = '';
+                $corpo3 = '';
+                foreach ($data['relatorio'] as $item) :
+                    $totalgeral = $totalgeral + $item->valor;
+                    if ($i == 0 || $item->tipo == $s) {
+                        $s = $item->tipo;
+                        $totaltipo = $totaltipo + $item->valor;
+                        $corpo2 = $corpo2 . '
+                    <tr>
+                        <td >' . $item->conta . '</td>
+                        <td >' . $item->razao_social . '</td>
+                        <td >' . $item->tipo . '</td>
+                        <td >' . $item->classe . '</td>
+                        <td >' . substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4) . '</td>
+                        <td >' . number_format($item->valor, 2, ",", ".") . '</td>
+                        <td >' . $item->observacao . '</td>
+                    </tr>';
+                    } else {
+                        $corpo2 = $corpo2 . '
+                        <tr>
+                            <td colspan="5" bgcolor="#C0C0C0"><b>SUB-TOTAL</b></td>
+                            <td bgcolor="#C0C0C0"><b>' . number_format($totaltipo, 2, ",", ".") . '</b></td>
+                        </tr> 
+                        <tr>
+                            <td >' . $item->conta . '</td>
+                            <td >' . $item->razao_social . '</td>
+                            <td >' . $item->tipo . '</td>
+                            <td >' . $item->classe . '</td>
+                            <td >' . substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4) . '</td>
+                            <td >' . number_format($item->valor, 2, ",", ".") . '</td>
+                            <td >' . $item->observacao . '</td>
+                        </tr>';
+                        $s = $item->tipo;
+                        $totaltipo = 0;
+                        $totaltipo = $item->valor;
+                    }
+                    $i++;
+                endforeach;
+                $corpo3 = '<tr>
+                    <td colspan="4" bgcolor="#C0C0C0"><b>TOTAL</b></td>
+                    <td colspan="2" bgcolor="#C0C0C0"><b>' . number_format($totalgeral, 2, ",", ".") . '</b></td>
+                </tr>
+            </tbody>';
+
+                $html = $cabecalho . $corpo . $corpo2 . $corpo3;
+            } else {
+                $corpo = '
+                <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+                ';
+                $html = $cabecalho . $corpo;
+            }
+
+
+//                    var_dump($html);
+//            die;
+            $tiporelatorio = 'relatoriosaidagrupo';
+            $email_id = $this->caixa->gravaremailmensagem($html);
+            $this->formrelatorioemail($email_id, $tiporelatorio);
+        }
     }
 
     function relatorioentrada() {
@@ -265,7 +511,96 @@ class Caixa extends BaseController {
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorioentrada'] = $this->caixa->relatorioentrada();
-        $this->load->View('cadastros/impressaorelatorioentrada', $data);
+
+        if ($_POST['email'] == "NAO") {
+            $this->load->View('cadastros/impressaorelatorioentrada', $data);
+        } elseif ($_POST['email'] == "SIM") {
+            if (count($data['tipo']) > 0) {
+                $tipo = "TIPO:" . $data['tipo'][0]->descricao;
+            } else {
+                $tipo = "TODOS OS TIPOS";
+            }
+            if (count($data['classe']) > 0) {
+                $texto = strtr(strtoupper($data['classe'][0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß");
+                $classe = "CLASSE:" . $texto;
+            } else {
+                $classe = "TODAS AS CLASSES";
+            }
+            if (count($data['forma']) > 0) {
+                $forma = "CONTA:" . $data['forma'][0]->descricao;
+            } else {
+                $forma = "TODAS AS CONTAS";
+            }
+            if (count($data['credordevedor']) > 0) {
+                $credordevedor = $data['credordevedor'][0]->razao_social;
+            } else {
+                $credordevedor = "TODOS OS CREDORES";
+            }
+
+            $cabecalho = '<div class="content"> <!-- Inicio da DIV content -->
+
+        <h4> ' . $tipo . ' </h4>
+        <h4> ' . $classe . ' </h4>
+        <h4>' . $forma . '</h4>
+        <h4>' . $credordevedor . '</h4>
+        <h4>RELATORIO DE SAIDA</h4>
+    <h4>PERIODO: ' . $data['txtdata_inicio'] . ' até ' . $data['txtdata_fim'] . '</h4>
+    <hr>';
+
+            if (count($data['relatorioentrada']) > 0) {
+
+                $corpo = '
+        <table border="1">
+            <thead>
+                <tr>
+                    <th width="100px;" class="tabela_header">Conta</th>
+                    <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Dt entrada</th>
+                    <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
+                    <th class="tabela_header">Valor</th>
+                    <th class="tabela_header">Observacao</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+                $total = 0;
+                $corpo2 = '';
+                $corpo3 = '';
+                foreach ($data['relatorioentrada'] as $item) :
+                    $total = $total + $item->valor;
+                    $corpo2 = $corpo2 . '
+                    <tr>
+                        <td >' . $item->conta . '</td>
+                        <td >' . $item->razao_social . '</td>
+                        <td >' . $item->tipo . '</td>
+                        <td >' . $item->classe . '</td>
+                        <td >' . substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4) . '</td>
+                        <td >' . number_format($item->valor, 2, ",", ".") . '</td>
+                        <td >' . $item->observacao . '</td>
+                    </tr>';
+                endforeach;
+                $corpo3 = '<tr>
+                    <td colspan="4" bgcolor="#C0C0C0"><b>TOTAL</b></td>
+                    <td colspan="2" bgcolor="#C0C0C0"><b>' . number_format($total, 2, ",", ".") . '</b></td>
+                </tr>
+            </tbody>';
+
+                $html = $cabecalho . $corpo . $corpo2 . $corpo3;
+            } else {
+                $corpo = '
+                <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+                ';
+                $html = $cabecalho . $corpo;
+            }
+
+
+//                    var_dump($html);
+//            die;
+            $tiporelatorio = 'relatorioentrada';
+            $email_id = $this->caixa->gravaremailmensagem($html);
+            $this->formrelatorioemail($email_id, $tiporelatorio);
+        }
     }
 
     function relatorioentradagrupo() {
@@ -286,7 +621,123 @@ class Caixa extends BaseController {
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorioentrada'] = $this->caixa->relatorioentradagrupo();
         $data['contadorentrada'] = $this->caixa->relatorioentredacontador();
-        $this->load->View('cadastros/impressaorelatorioentradagrupo', $data);
+
+
+        if ($_POST['email'] == "NAO") {
+            $this->load->View('cadastros/impressaorelatorioentradagrupo', $data);
+        } elseif ($_POST['email'] == "SIM") {
+            if (count($data['tipo']) > 0) {
+                $tipo = "TIPO:" . $data['tipo'][0]->descricao;
+            } else {
+                $tipo = "TODOS OS TIPOS";
+            }
+            if (count($data['classe']) > 0) {
+                $texto = strtr(strtoupper($data['classe'][0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß");
+                $classe = "CLASSE:" . $texto;
+            } else {
+                $classe = "TODAS AS CLASSES";
+            }
+            if (count($data['forma']) > 0) {
+                $forma = "CONTA:" . $data['forma'][0]->descricao;
+            } else {
+                $forma = "TODAS AS CONTAS";
+            }
+            if (count($data['credordevedor']) > 0) {
+                $credordevedor = $data['credordevedor'][0]->razao_social;
+            } else {
+                $credordevedor = "TODOS OS CREDORES";
+            }
+
+            $cabecalho = '<div class="content"> <!-- Inicio da DIV content -->
+
+        <h4> ' . $tipo . ' </h4>
+        <h4> ' . $classe . ' </h4>
+        <h4>' . $forma . '</h4>
+        <h4>' . $credordevedor . '</h4>
+        <h4>RELATORIO DE SAIDA</h4>
+    <h4>PERIODO: ' . $data['txtdata_inicio'] . ' até ' . $data['txtdata_fim'] . '</h4>
+    <hr>';
+
+            if (count($data['relatorioentrada']) > 0) {
+
+                $corpo = '
+        <table border="1">
+            <thead>
+                <tr>
+                    <th width="100px;" class="tabela_header">Conta</th>
+                    <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Dt entrada</th>
+                    <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
+                    <th class="tabela_header">Valor</th>
+                    <th class="tabela_header">Observacao</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+                $totalgeral = 0;
+                $totaltipo = 0;
+                $i = 0;
+                $s = '';
+                $corpo2 = '';
+                $corpo3 = '';
+                foreach ($data['relatorioentrada'] as $item) :
+                    $totalgeral = $totalgeral + $item->valor;
+                    if ($i == 0 || $item->conta == $s) {
+                        $s = $item->conta;
+                        $totaltipo = $totaltipo + $item->valor;
+                        $corpo2 = $corpo2 . '
+                    <tr>
+                        <td >' . $item->conta . '</td>
+                        <td >' . $item->razao_social . '</td>
+                        <td >' . $item->tipo . '</td>
+                        <td >' . $item->classe . '</td>
+                        <td >' . substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4) . '</td>
+                        <td >' . number_format($item->valor, 2, ",", ".") . '</td>
+                        <td >' . $item->observacao . '</td>
+                    </tr>';
+                    } else {
+                        $corpo2 = $corpo2 . '
+                        <tr>
+                            <td colspan="5" bgcolor="#C0C0C0"><b>SUB-TOTAL</b></td>
+                            <td bgcolor="#C0C0C0"><b>' . number_format($totaltipo, 2, ",", ".") . '</b></td>
+                        </tr>
+                        <tr>
+                            <td >' . $item->conta . '</td>
+                            <td >' . $item->razao_social . '</td>
+                            <td >' . $item->tipo . '</td>
+                            <td >' . $item->classe . '</td>
+                            <td >' . substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4) . '</td>
+                            <td >' . number_format($item->valor, 2, ",", ".") . '</td>
+                            <td >' . $item->observacao . '</td>
+                        </tr>';
+                        $s = $item->conta;
+                        $totaltipo = 0;
+                        $totaltipo = $item->valor;
+                    }
+                    $i++;
+                endforeach;
+                $corpo3 = '<tr>
+                    <td colspan="4" bgcolor="#C0C0C0"><b>TOTAL</b></td>
+                    <td colspan="2" bgcolor="#C0C0C0"><b>' . number_format($totalgeral, 2, ",", ".") . '</b></td>
+                </tr>
+            </tbody>';
+
+                $html = $cabecalho . $corpo . $corpo2 . $corpo3;
+            } else {
+                $corpo = '
+                <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+                ';
+                $html = $cabecalho . $corpo;
+            }
+
+
+//                    var_dump($html);
+//            die;
+            $tiporelatorio = 'relatorioentradagrupo';
+            $email_id = $this->caixa->gravaremailmensagem($html);
+            $this->formrelatorioemail($email_id, $tiporelatorio);
+        }
     }
 
     function relatoriomovitamentacao() {
@@ -301,7 +752,7 @@ class Caixa extends BaseController {
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
-        $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
+        $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
@@ -309,14 +760,125 @@ class Caixa extends BaseController {
         $data['relatorio'] = $this->caixa->relatoriomovimento();
         $data['saldoantigo'] = $this->caixa->relatoriomovimentosaldoantigo();
 
-//        echo '<pre>';
-//        var_dump($data['relatorio']);
-//        echo '<pre>';
-//        die;
-        $this->load->View('ambulatorio/impressaorelatoriomovimento', $data);
+
+        if ($_POST['email'] == "NAO") {
+            $this->load->View('ambulatorio/impressaorelatoriomovimento', $data);
+        } elseif ($_POST['email'] == "SIM") {
+            if (count($data['tipo']) > 0) {
+                $tipo = "TIPO:" . $data['tipo'][0]->descricao;
+            } else {
+                $tipo = "TODOS OS TIPOS";
+            }
+            if (count($data['classe']) > 0) {
+                $texto = strtr(strtoupper($data['classe'][0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß");
+                $classe = "CLASSE:" . $texto;
+            } else {
+                $classe = "TODAS AS CLASSES";
+            }
+            if (count($data['forma']) > 0) {
+                $forma = "CONTA:" . $data['forma'][0]->descricao;
+            } else {
+                $forma = "TODAS AS CONTAS";
+            }
+            if (count($data['credordevedor']) > 0) {
+                $credordevedor = $data['credordevedor'][0]->razao_social;
+            } else {
+                $credordevedor = "TODOS OS DEVEDORES";
+            }
+
+            $cabecalho = '<div class="content"> <!-- Inicio da DIV content -->
+
+        <h4> ' . $tipo . ' </h4>
+        <h4> ' . $classe . ' </h4>
+        <h4>' . $forma . '</h4>
+        <h4>' . $credordevedor . '</h4>
+        <h4>RELATORIO DE SAIDA</h4>
+    <h4>PERIODO: ' . $data['txtdata_inicio'] . ' até ' . $data['txtdata_fim'] . '</h4>
+    <hr>';
+
+            if (count($data['relatorio']) > 0) {
+
+                $corpo = '
+        <table border="1">
+            <thead>
+                <tr>
+                    <th width="100px;" class="tabela_header">Conta</th>
+                    <th class="tabela_header">Data</th>
+                    <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Tipo</th>
+                    <th class="tabela_header">Classe</th>
+                    <th class="tabela_header">Valor</th>
+                    <th class="tabela_header">Observa&ccedil;&atilde;o</th>
+                    <th class="tabela_header">Saldo</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+                $total = $data['saldoantigo']->total;
+                $data = 0;
+                $totalrelatorio = 0;
+                $corpo2 = '';
+                $corpo3 = '';
+                $corpo4 = '';
+                $corpo5 = '';
+                foreach ($data['relatorio'] as $item) :
+                    $total = $total + $item->valor;
+                    $totalrelatorio = $totalrelatorio + $item->valor;
+                    $dataatual = substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4);
+                        $corpo2 = $corpo2 . '
+                    <tr>
+                        <td >'.$item->contanome.'</td>
+                        <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                        <td >'.$item->razao_social.'</td>';
+                        if ($item->tiposaida != null) {
+                            $corpo3 = $corpo3 . '
+                            <td >'.$item->tiposaida.'</td>
+                            <td >'.$item->classesaida.'</td>
+                            <td ><font color="red">'. number_format($item->valor, 2, ",", ".").'</td> ';
+                        }else{
+                            $corpo3 = $corpo3 . '
+                            <td >'.$item->tipoentrada.'</td>
+                            <td >'.$item->classeentrada.'</td>                      
+                            <td ><font color="blue">'. number_format($item->valor, 2, ",", ".").'</td>';
+                        }
+                        if ($item->observacaosaida != null) {
+                            $corpo4 = $corpo4 . '
+                                <td >'.$item->observacaosaida.'</td>';
+                        }else{
+                            $corpo4 = $corpo4 . '
+                                <td >'.$item->observacaoentrada.'</td>';
+                        }
+                endforeach;
+                $corpo5 = '
+                             <td colspan="2"><b>'. number_format($total, 2, ",", ".").'</b></td>
+                    </tr>
+                <tr>
+                    <td colspan="4"><b>Saldo Final</b></td>
+                    <td ><b><?= number_format($totalrelatorio, 2, ",", "."); ?></b></td>
+                    <td ><b></b></td>
+                    <td ><b><?= number_format($total, 2, ",", "."); ?></b></td>
+                </tr>
+            </tbody>';
+
+                $html = $cabecalho . $corpo . $corpo2 . $corpo3 . $corpo4 . $corpo5;
+            } else {
+                $corpo = '
+                <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+                ';
+                $html = $cabecalho . $corpo;
+            }
+
+
+//                    var_dump($html);
+//            die;
+            $tiporelatorio = 'relatoriomovitamentacao';
+            $email_id = $this->caixa->gravaremailmensagem($html);
+            $this->formrelatorioemail($email_id, $tiporelatorio);
+        }
     }
 
-    private function carregarView($data = null, $view = null) {
+    private
+            function carregarView($data = null, $view = null) {
         if (!isset($data)) {
             $data['mensagem'] = '';
         }

@@ -51,23 +51,30 @@
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: TODOS</th>
                 </tr>
-            <? } else { ?>
+            <?
+            } else {
+                if (isset($relatorio[0]->grupo)) {
+                    $nome_grupo = $relatorio[0]->grupo;
+                } else {
+                    $nome_grupo = $grupo;
+                }
+                ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $relatorio[0]->grupo; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $nome_grupo; ?></th>
                 </tr>
-            <? } ?>
+<? } ?>
             <tr>
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></th>
             </tr>
-            <? IF (COUNT($tecnico) > 0) { ?>
+<? IF (COUNT($tecnico) > 0) { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TECNICO: <?= $tecnico[0]->operador; ?></th>
                 </tr>
-            <? } ELSE { ?>
+<? } ELSE { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TECNICO: TODOS</th>
                 </tr>
-            <? } ?>
+<? } ?>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
@@ -119,7 +126,7 @@
                             <tr>
                                 <td colspan="8"><font ><b>Tecnico:&nbsp;<?= utf8_decode($item->tecnico); ?></b></td>
                             </tr>
-                        <? } ?>
+            <? } ?>
                         <tr>
                             <td><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td>&nbsp;</td>
@@ -127,7 +134,7 @@
                                 <td>&nbsp;</td>
                             <? } else { ?>
                                 <td><?= utf8_decode($item->paciente); ?></td>
-                            <? } ?>
+            <? } ?>
                             <td style='text-align: center;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= utf8_decode($item->procedimento); ?></td>
                         </tr>
@@ -159,7 +166,7 @@
                                 <td>&nbsp;</td>
                             <? } else { ?>
                                 <td><?= utf8_decode($item->paciente); ?></td>
-                            <? } ?>
+            <? } ?>
                             <td style='text-align: center;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= $item->procedimento; ?></td>
                         </tr>
@@ -198,7 +205,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

@@ -1,4 +1,3 @@
-
 <div class="content ficha_ceatox">
 
     <?
@@ -8,8 +7,9 @@
     $diff = $date_time->diff(new DateTime($dataFuturo));
     $teste = $diff->format('%Ya %mm %dd');
     ?>
-
-
+    <head>
+        <meta charset="utf-8">
+    </head>
     <table>
         <tbody>
             <tr>
@@ -80,7 +80,7 @@
                     <td width="25%;"><font size = -1>RECEBER EM <?= substr($exame[0]->data_entrega, 8, 2) . "/" . substr($exame[0]->data_entrega, 5, 2) . "/" . substr($exame[0]->data_entrega, 0, 4); ?></td>
                 <? } else { ?>
                     <td width="25%;"><font size = -1>RECEBER EM_____/_____/_________</td>
-<? } ?>
+                <? } ?>
                 <td ><font size = -1>Horario: ____:____</font></td>
                 <td ><font size = -1>Sexo: <?= $exame[0]->sexo; ?></font></td>
             </tr>
@@ -149,23 +149,37 @@
         ?>
         </tbody>
     </table>
+    <hr>
+    <TABLE >
+        <body>
 
+        <TR>
+            <TD ><font size = -1>Anammese: </font>
+            </TD>
+        </TR>
+        <TR>
+            <TD ><font size = -1>Encaminhamento: (&nbsp;)alta   (&nbsp;)transferência </font>
+            </TD>
+        </TR>
+        </body>
+    </TABLE>
+    <hr>
     <table>
         <tr>
-            <td width="80%;"><font size = -1>*****************************QUESTIONARIO****************************</td>
-            <td ><font size = -1>S/N</td>
+            <td ><font size = -1><center><b>RESPONDA SIM OU N&Atilde;O, NOS ITENS QUE SE SEGUEM</b></center></td>            
+        <td ><font size = -1><b>Peso:<? echo $peso ?>Kg</b></td>
         </tr>
         <tr>
             <td ><font size = -1>Trabalha ou trabalhou com metais?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r1; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem ou teve fragmentos metalicos nos olhos?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r2; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem ou teve projetil de arma no corpo?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r3; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>(bala ou fragmentos metalicos de qualquer origem)</font></td>
@@ -173,43 +187,44 @@
         </tr>
         <tr>
             <td ><font size = -1>Tem marcapasso cardiaco, desfibrilador ou cardioverter?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r4; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem clipes de aneurisma no cerebro?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r5; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem pumpes ou neuroestimuladores implantados?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r6; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Fez substituicao de valvulas cardiacas?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r7; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem implantes no ouvido (coclear, estribo) ou aparelho auditivo?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r8; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem algum componente artificial no corpo?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r9; ?> &nbsp; )</td>
+
         </tr>
         <tr>
             <td ><font size = -1>Tem protese, hastes, placas ou parafuso metalicos no corpo?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r10; ?> &nbsp; )--<? echo $txtp9; ?></td>
         </tr>
         <tr>
             <td ><font size = -1>Tem protese dentaria, aparelho ortodontico ou peruca?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r11; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem implante peniano?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r12; ?> &nbsp; )</td>
         </tr>
         <tr>
-            <td ><font size = -1>Tem D.I. udispositivo contraceptivo intra-uterino?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>Tem D.I.U dispositivo contraceptivo intra-uterino?</font></td>
+            <td ><font size = -1>(&nbsp; <? echo $r13; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Consegue ficar deitado de costas e sentir-se confortavel num</font></td>
@@ -217,40 +232,297 @@
         </tr>
         <tr>
             <td ><font size = -1>espaco pequeno durante aproximadamente 1/2 hora?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r14; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Ja fez tratamento quimioterapico ou radioterapico?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r15; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Tem problema de insuficiencia renal?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r16; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Existe alguma possibilidade de voce estar gravida?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r17; ?> &nbsp; )</td>
         </tr>
         <tr>
             <td ><font size = -1>Esta amamentando?</font></td>
-            <td ><font size = -1>(&nbsp;&nbsp; )</td>
+            <td ><font size = -1>(&nbsp; <? echo $r18; ?> &nbsp; )</td>
         </tr>
         <tr>
-            <td colspan="2"><font size = -1>Tem alergia S /N (   ) A que___________________________________________________</font></td>
+            <td <font size = -1>Tem alergia</font></td>
+            <td ><font size = -1>(&nbsp;<? echo $r19; ?> &nbsp; )--<? echo $txtp19; ?> </td>
         </tr>
         <tr>
-            <td colspan="2"><font size = -1>Ja realizou cirurgias S /N (   ) Quais___________________________________________</font></td>
+            <td <font size = -1>Ja realizou cirurgias </font></td>
+            <td ><font size = -1>(&nbsp;<? echo $r20; ?> &nbsp; )--<? echo $txtp20; ?></td>
         </tr>
         <tr>
-            <td colspan="2"><font size = -1>_____________________________________________________________________________</td>
+            <td ><font size = -1>Este exame pode necessitar de contraste. O Sr. permite administra&ccedil;&atilde;o?</font></td>
+            <td ><font size = -1>(&nbsp; &nbsp; &nbsp; )</td>
         </tr>
         <tr>
-            <td colspan="2"><center><font size = -1>________________________________________</center></td>
+            <td colspan="1"><font size = -1>OBS:</font></td>
+        </tr> 
+        <tr>
+            <td colspan="-1"><font size = -1><? echo $obs ?></font></td>
         </tr>
         <tr>
-            <td colspan="2"><center>ASSINATURA</center></td>
+            <td colspan="-1"><font size = -1><b>Declaro que as informações por mim fornecidas neste formulário são verdadeiras e que estou ciente dos riscos inerentes ao exame.</br> Autorizo a realização do(s) exame(s) solicitado(s) e de injeção de produto de contraste, necessário ao(s) mesmo(s).</b></font></td>
         </tr>
-
-        </tbody>
+        <tr>
+            <td ><font size = -1><b>Fortaleza,<?= str_replace("-", "/", $emissao); ?></b></font></td>
+        </tr>
+        <!--        <table>
+                    <br>
+                    <tr>           
+                        <td>Obs:<p CLASS="western" STYLE="margin-bottom: 0cm"><SPAN ID="quadroOBS" DIR="LTR" STYLE="float: left; width: 18cm; height: 1.5cm; border: 1px solid #000000; padding: 0.15cm; background: #ffffff">
+                                </SPAN>
+                            </P>
+                        </td>
+                    </tr>
+                </table>-->
     </table>
+
+    <center><table>
+            <tr>
+                <td width="150px">_______________________________</td>
+                <td width="150px">_______________________________</td>
+                <td width="150px">_______________________________</td>
+                <td>_______________________________</td>
+            </tr>
+            <tr>
+                <td width="150px"><center>Paciente</center></td>
+                <td width="150px"><center>Técnico</center></td>
+                <td width="150px"><center>Enfermagem</center></td>
+                <td><center>Médico</center></td>
+            </tr>
+        </table></center>
+<!--    <tr>
+        <td colspan="2"><center><font size = -1>________________________________________    ________________________________________    ________________________________________    ________________________________________</center></td>
+</tr>-->
+<!--<tr>
+    <td colspan="4"><center>Paciente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        Técnico &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+    Enfermagem &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Médico</center></td>
+</tr>-->
+
+    <div style="page-break-after: always"></div>
+</tbody>
+<br/>
+<hr/>
+
+<TABLE ><CENTER>
+
+        <TD >
+            <P ><FONT SIZE=-1><B>Material</B></FONT></P>
+        </TD>
+        <TD>
+            <P ><FONT SIZE=-1><B>Qtde</B></FONT></P>
+        </TD>
+        <TD>
+            <P ><FONT SIZE=-1><B>Material</B></FONT></P>
+        </TD>
+        <TD >
+            <P><FONT SIZE=-1><B>Qtde</B></FONT></P>
+        </TD>
+        <TD>
+            <P ><FONT SIZE=-1><B>Material</B></FONT></P>
+        </TD>
+        <TD >
+            <P ><FONT SIZE=-1><B>Qtde</B></FONT></P>
+        </TD>
+        <TD ROWSPAN=4 >
+            <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Contraste: Sim (  )    
+                Não(  )</FONT></P>
+            <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Dose:_____ml</FONT></P>
+            <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Qual
+                Contraste___________</FONT></P>
+            <P CLASS="western" ALIGN=LEFT><BR>
+            </P>
+            <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Lote:_________________</FONT></P>
+        </TD>
+        </TR>
+        <TR VALIGN=TOP>
+            <TD >
+                <P ALIGN=LEFT><FONT SIZE=-1>Scalp n°</FONT></P>
+            </TD>
+            <TD >
+                <P  ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD >
+                <P  ALIGN=LEFT><FONT SIZE=-1>Contraste</FONT></P>
+            </TD>
+            <TD >
+                <P  ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD >
+                <P  ALIGN=LEFT><FONT SIZE=-1>Soro Ringer</FONT></P>
+            </TD>
+            <TD >
+                <P ALIGN=LEFT><BR>
+                </P>
+            </TD>
+        </TR>
+        <TR VALIGN=TOP>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Seringa  ml</FONT></P>
+            </TD>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Equipo n°</FONT></P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Água</FONT></P>
+            </TD>
+            <TD WIDTH=38 >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+        </TR>
+        <TR VALIGN=TOP>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Abocat   n°</FONT></P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Esparadrapo</FONT></P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Luva</FONT></P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+        </TR>
+        <TR VALIGN=TOP>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Agulha n°</FONT></P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Alcool</FONT></P>
+            </TD>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Filmes</FONT></P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD ROWSPAN=3 >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Exame finalizado:</FONT></P>
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>com intercorrencia  (  
+                    ) </FONT>
+                </P>
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>sem intercorrencia (  )
+                    </FONT>
+                </P>
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Justificativa:</FONT></P>
+            </TD>
+        </TR>
+        <TR VALIGN=TOP>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Bolas de Algodão</FONT></P>
+            </TD>
+            <TD WIDTH=41 >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD WIDTH=124 >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Soro Físico    ml</FONT></P>
+            </TD>
+            <TD WIDTH=42 >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD WIDTH=111 >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Filmes papel</FONT></P>
+            </TD>
+            <TD WIDTH=38 >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+        </TR>
+        <TR VALIGN=TOP>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Compressa Gaze</FONT></P>
+            </TD>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Soro Glico     ml</FONT></P>
+            </TD>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+            <TD >
+                <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>CD/DVD</FONT></P>
+            </TD>
+            <TD  >
+                <P CLASS="western" ALIGN=LEFT><BR>
+                </P>
+            </TD>
+        </TR>
+</TABLE>
+<br/><br/>
+<hr>
+<TABLE>
+    <TR>
+        <TD COLSPAN=7 >
+            <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>Anotações de
+                Enfermagem:</FONT></P>
+            <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>P.A PRÉ -</FONT></P>
+            <P CLASS="western" ALIGN=LEFT><FONT SIZE=-1>P.A PÓS -</FONT></P>
+        </TD>
+    </TR>
+</TABLE>
+<br/><br/>
+<hr>
+<TABLE >
+
+    <TR>
+        <TD >
+            <P CLASS="western"><FONT FACE="Serif"><FONT SIZE=1 STYLE="font-size: 8pt">
+    <center><b>Checklist</B></CENTER><br>
+    Nome
+    do paciente ( ) –  Data Nasc.( ) –  RG( ) – N° carteira( )
+    -- Validade da carteira( ) – Convênio( ) – Exame Solicitado(
+    ) 
+    Exame Autorizado( )             </FONT></FONT>
+    </P>
+    <P CLASS="western"><FONT FACE="Serif"><FONT SIZE=1 STYLE="font-size: 8pt">Médico
+        Solicitante( ) – Assinatura Paciente ( )</FONT></FONT></P>
+    </TD>
+    </TR>
+    </CENTER>
+</TABLE>
 </div>

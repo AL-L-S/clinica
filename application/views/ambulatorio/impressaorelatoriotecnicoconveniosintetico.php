@@ -51,23 +51,30 @@
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: TODOS</th>
                 </tr>
-            <? } else { ?>
+            <?
+            } else {
+                if (isset($relatorio[0]->grupo)) {
+                    $nome_grupo = $relatorio[0]->grupo;
+                } else {
+                    $nome_grupo = $grupo;
+                }
+                ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $relatorio[0]->grupo; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $nome_grupo; ?></th>
                 </tr>
-            <? } ?>
+<? } ?>
             <tr>
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></th>
             </tr>
-            <? IF (COUNT($tecnico) > 0) { ?>
+<? IF (COUNT($tecnico) > 0) { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TECNICO: <?= $tecnico[0]->operador; ?></th>
                 </tr>
-            <? } ELSE { ?>
+<? } ELSE { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TECNICO: TODOS</th>
                 </tr>
-            <? } ?>
+<? } ?>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
@@ -120,13 +127,13 @@
                             ?>
                             <tr>
                                 <td ><font >Tecnico:&nbsp;<?= utf8_decode($item->tecnico); ?></td>
-                        <? } ?>
+                            <? } ?>
 
-                        <?php
-                        $tecnicos = $item->tecnico;
-                    } else {
-                        $tecnicos = $item->tecnico;
-                        ?>
+                            <?php
+                            $tecnicos = $item->tecnico;
+                        } else {
+                            $tecnicos = $item->tecnico;
+                            ?>
                             <td width="140px;" align="Right"><?= $qtde; ?></td>
                         </tr>
                         <?
@@ -138,10 +145,10 @@
                             <td ><font >Tecnico:&nbsp;<?= utf8_decode($item->tecnico); ?></td>
 
 
-                        <?
-                    }
-                endforeach;
-                ?>
+                            <?
+                        }
+                    endforeach;
+                    ?>
                     <td width="140px;" align="Right"><?= $qtde; ?></td>
                 </tr>
 
@@ -171,7 +178,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

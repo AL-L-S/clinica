@@ -40,15 +40,12 @@
                         <select name="grupo" id="grupo" class="size2" >
                             <option value='0' >TODOS</option>
                             <option value='1' >SEM RM</option>
-                            <option value='US'>US</option>
-                            <option value='RM'>RM</option>
-                            <option value='MAMOGRAFIA'>MAMOGRAFIA</option>
-                            <option value='RX'>RX</option>
-                            <option value='DENSITOMETRIA'>DENSITOMETRIA</option>
-                            <option value='AUDIOMETRIA'>AUDIOMETRIA</option>
-                            <option value='ELETROCARDIOGRAMA'>ELETROCARDIOGRAMA</option>
-                            <option value='ESPIROMETRIA'>ESPIROMETRIA</option>
-
+                            <? foreach ($grupos as $grupo) { ?>                                
+                                <option value='<?= $grupo->nome ?>' <?
+                                if (@$obj->_grupo == $grupo->nome):echo 'selected';
+                                endif;
+                                ?>><?= $grupo->nome ?></option>
+                                    <? } ?>
                         </select>
                     </dd>
                     <dt>

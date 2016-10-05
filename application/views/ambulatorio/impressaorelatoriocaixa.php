@@ -31,6 +31,11 @@
             </thead>
             <tbody>
                 <?php
+                foreach ($formapagamento as $value) {
+                    $data[$value->nome] = 0;
+                    $numero[$value->nome] = 0;
+                }
+
                 $i = 0;
                 $b = 0;
                 $valor = 0;
@@ -49,6 +54,8 @@
                 $CARTAOCREDITO = 0;
                 $NUMEROCARTAOCREDITO;
                 $NUMEROCARTAOHIPER = 0;
+                $CARTAOELO = 0;
+                $NUMEROCARTAOELO = 0;
                 $CHEQUE = 0;
                 $NUMEROCHEQUE = 0;
                 $OUTROS = 0;
@@ -62,7 +69,7 @@
                 $paciente = "";
                 $exame = "";
 
-                foreach ($relatorio as $item) :
+                foreach ($relatorio as $item) {
 
                     $i++;
                     $b++;
@@ -105,9 +112,9 @@
                                 <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>
                             <? } ?>
                             <? if ($item->exames_id == "") { ?>
-                                <td><font color="red" size="-2"><?= utf8_decode($item->exame). " "  . $item->numero_sessao; ?></td>
+                                <td><font color="red" size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
                             <? } else { ?>
-                                <td><font size="-2"><?= utf8_decode($item->exame). " "  . $item->numero_sessao; ?></td>
+                                <td><font size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
                             <? } ?>
                             <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -122,10 +129,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
-                                    
-                                <?}?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+
+                                <? } ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -140,10 +147,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>
 
-                                    
-                                <?}?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+
+                                <? } ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -158,10 +165,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>
 
-                                    
-                                <?}?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+
+                                <? } ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -180,10 +187,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>
 
-                                    
-                               <? }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+
+                                <? } ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             } if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -202,10 +209,11 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
 
-                                    <?
-                                }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                           <? }
+                                <? }
+                                ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
+                            }
                             if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -220,10 +228,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
-                                    <?
-                                }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+                                <? }
+                                ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
@@ -239,132 +247,39 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
-                                    <?
-                                }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+                                <? }
+                                ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }
                             ?>
                         </tr>
 
                         <?php
-                        if ($item->forma_pagamento == "DINHEIRO") {
-                            $DINHEIRO = $DINHEIRO + $item->valor1;
-                            $NUMERODINHEIRO++;
+                        foreach ($formapagamento as $value) {
+                            if ($item->forma_pagamento == $value->nome) {
+                                $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                                $numero[$value->nome] ++;
+                            }
                         }
-                        if ($item->forma_pagamento == "DEBITO CONTA") {
-                            $DEBITO_CONTA = $DEBITO_CONTA + $item->valor1;
-                            $NUMERODEBITO_CONTA++;
+                        foreach ($formapagamento as $value) {
+                            if ($item->forma_pagamento_2 == $value->nome) {
+                                $data[$value->nome] = $data[$value->nome] + $item->valor2;
+                                $numero[$value->nome] ++;
+                            }
                         }
-                        if ($item->forma_pagamento == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor1;
-                            $NUMEROCARTAOVISA++;
+                        foreach ($formapagamento as $value) {
+                            if ($item->forma_pagamento_3 == $value->nome) {
+                                $data[$value->nome] = $data[$value->nome] + $item->valor3;
+                                $numero[$value->nome] ++;
+                            }
                         }
-                        if ($item->forma_pagamento == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor1;
-                            $NUMEROCARTAOMASTER++;
+                        foreach ($formapagamento as $value) {
+                            if ($item->forma_pagamento_4 == $value->nome) {
+                                $data[$value->nome] = $data[$value->nome] + $item->valor4;
+                                $numero[$value->nome] ++;
+                            }
                         }
-                        if ($item->forma_pagamento == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor1;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento == "CARTAO CREDITO") {
-                            $CARTAOCREDITO = $CARTAOCREDITO + $item->valor1;
-                            $NUMEROCARTAOCREDITO++;
-                        }
-                        if ($item->forma_pagamento == "") {
-                            $OUTROS = $OUTROS + $item->valor_total;
-                            $NUMEROOUTROS++;
-                        }
-                        if ($item->forma_pagamento == "CHEQUE") {
-                            $CHEQUE = $CHEQUE + $item->valor1;
-                            $NUMEROCHEQUE++;
-                        }
-                        if ($item->forma_pagamento_2 == "DINHEIRO") {
-                            $DINHEIRO = $DINHEIRO + $item->valor2;
-                            $NUMERODINHEIRO++;
-                        }
-                        if ($item->forma_pagamento_2 == "DEBITO CONTA") {
-                            $DEBITO_CONTA = $DEBITO_CONTA + $item->valor2;
-                            $NUMERODEBITO_CONTA++;
-                        }
-                        if ($item->forma_pagamento_2 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor2;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_2 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor2;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_2 == "CARTAO CREDITO") {
-                            $CARTAOCREDITO = $CARTAOCREDITO + $item->valor2;
-                            $NUMEROCARTAOCREDITO++;
-                        }
-                        if ($item->forma_pagamento_2 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor2;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_2 == "CHEQUE") {
-                            $CHEQUE = $CHEQUE + $item->valor2;
-                            $NUMEROCHEQUE++;
-                        }
-                        if ($item->forma_pagamento_3 == "DINHEIRO") {
-                            $DINHEIRO = $DINHEIRO + $item->valor3;
-                            $NUMERODINHEIRO++;
-                        }
-                        if ($item->forma_pagamento_3 == "DEBITO CONTA") {
-                            $DEBITO_CONTA = $DEBITO_CONTA + $item->valor3;
-                            $NUMERODEBITO_CONTA++;
-                        }
-                        if ($item->forma_pagamento_3 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor3;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_3 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor3;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_3 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor3;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_3 == "CHEQUE") {
-                            $CHEQUE = $CHEQUE + $item->valor4;
-                            $NUMEROCHEQUE++;
-                        }
-                        if ($item->forma_pagamento_3 == "CARTAO CREDITO") {
-                            $CARTAOCREDITO = $CARTAOCREDITO + $item->valor3;
-                            $NUMEROCARTAOCREDITO++;
-                        }
-                        if ($item->forma_pagamento_4 == "DINHEIRO") {
-                            $DINHEIRO = $DINHEIRO + $item->valor3;
-                            $NUMERODINHEIRO++;
-                        }
-                        if ($item->forma_pagamento_4 == "DEBITO CONTA") {
-                            $DEBITO_CONTA = $DEBITO_CONTA + $item->valor4;
-                            $NUMERODEBITO_CONTA++;
-                        }
-                        if ($item->forma_pagamento_4 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor4;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_4 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor4;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_4 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor4;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_4 == "CARTAO CREDITO") {
-                            $CARTAOCREDITO = $CARTAOCREDITO + $item->valor4;
-                            $NUMEROCARTAOCREDITO++;
-                        }
-                        if ($item->forma_pagamento_4 == "CHEQUE") {
-                            $CHEQUE = $CHEQUE + $item->valor4;
-                            $NUMEROCHEQUE++;
-                        }
-
                         $y++;
                         $valor = $valor + $item->valor_total;
                         $paciente = $item->paciente;
@@ -401,9 +316,9 @@
                                 <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>
                             <? } ?>
                             <? if ($item->exames_id == "") { ?>
-                                <td><font color="red" size="-2"><?= utf8_decode($item->exame). " "  . $item->numero_sessao; ?></td>
+                                <td><font color="red" size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
                             <? } else { ?>
-                                <td><font size="-2"><?= utf8_decode($item->exame). " "  . $item->numero_sessao; ?></td>
+                                <td><font size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
                             <? } ?>
                             <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
@@ -417,10 +332,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
-                                    <?
-                                }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+                                <? }
+                                ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
@@ -430,10 +345,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>
 
-                                    <?
-                                }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+                                <? }
+                                ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
@@ -447,10 +362,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>
 
-                                    <?
-                                }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+                                <? }
+                                ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?></td>
@@ -464,10 +379,10 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>
 
-                                    <?
-                                }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+                                <? }
+                                ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             } if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?></td>
@@ -481,145 +396,60 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
 
-                                    <?
-                                }?>
-                                    <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <?
+                                <? }
+                                ?>
+                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <?
                             }
                             ?>
                         </tr>
                         <?
-                                               if ($item->forma_pagamento == "DINHEIRO") {
-                            $DINHEIRO = $DINHEIRO + $item->valor1;
-                            $NUMERODINHEIRO++;
+                        foreach ($formapagamento as $value) {
+                            if ($item->forma_pagamento == $value->nome) {
+                                $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                                $numero[$value->nome] ++;
+                            }
                         }
-                        if ($item->forma_pagamento == "DEBITO CONTA") {
-                            $DEBITO_CONTA = $DEBITO_CONTA + $item->valor1;
-                            $NUMERODEBITO_CONTA++;
+                        foreach ($formapagamento as $value) {
+                            if ($item->forma_pagamento_2 == $value->nome) {
+                                $data[$value->nome] = $data[$value->nome] + $item->valor2;
+                                $numero[$value->nome] ++;
+                            }
                         }
-                        if ($item->forma_pagamento == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor1;
-                            $NUMEROCARTAOVISA++;
+                        foreach ($formapagamento as $value) {
+                            if ($item->forma_pagamento_3 == $value->nome) {
+                                $data[$value->nome] = $data[$value->nome] + $item->valor3;
+                                $numero[$value->nome] ++;
+                            }
                         }
-                        if ($item->forma_pagamento == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor1;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor1;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento == "CARTAO CREDITO") {
-                            $CARTAOCREDITO = $CARTAOCREDITO + $item->valor1;
-                            $NUMEROCARTAOCREDITO++;
-                        }
-                        if ($item->forma_pagamento == "") {
-                            $OUTROS = $OUTROS + $item->valor_total;
-                            $NUMEROOUTROS++;
-                        }
-                        if ($item->forma_pagamento == "CHEQUE") {
-                            $CHEQUE = $CHEQUE + $item->valor1;
-                            $NUMEROCHEQUE++;
-                        }
-                        if ($item->forma_pagamento_2 == "DINHEIRO") {
-                            $DINHEIRO = $DINHEIRO + $item->valor2;
-                            $NUMERODINHEIRO++;
-                        }
-                        if ($item->forma_pagamento_2 == "DEBITO CONTA") {
-                            $DEBITO_CONTA = $DEBITO_CONTA + $item->valor2;
-                            $NUMERODEBITO_CONTA++;
-                        }
-                        if ($item->forma_pagamento_2 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor2;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_2 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor2;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_2 == "CARTAO CREDITO") {
-                            $CARTAOCREDITO = $CARTAOCREDITO + $item->valor2;
-                            $NUMEROCARTAOCREDITO++;
-                        }
-                        if ($item->forma_pagamento_2 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor2;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_2 == "CHEQUE") {
-                            $CHEQUE = $CHEQUE + $item->valor2;
-                            $NUMEROCHEQUE++;
-                        }
-                        if ($item->forma_pagamento_3 == "DINHEIRO") {
-                            $DINHEIRO = $DINHEIRO + $item->valor3;
-                            $NUMERODINHEIRO++;
-                        }
-                        if ($item->forma_pagamento_3 == "DEBITO CONTA") {
-                            $DEBITO_CONTA = $DEBITO_CONTA + $item->valor3;
-                            $NUMERODEBITO_CONTA++;
-                        }
-                        if ($item->forma_pagamento_3 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor3;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_3 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor3;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_3 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor3;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_3 == "CHEQUE") {
-                            $CHEQUE = $CHEQUE + $item->valor4;
-                            $NUMEROCHEQUE++;
-                        }
-                        if ($item->forma_pagamento_3 == "CARTAO CREDITO") {
-                            $CARTAOCREDITO = $CARTAOCREDITO + $item->valor3;
-                            $NUMEROCARTAOCREDITO++;
-                        }
-                        if ($item->forma_pagamento_4 == "DINHEIRO") {
-                            $DINHEIRO = $DINHEIRO + $item->valor3;
-                            $NUMERODINHEIRO++;
-                        }
-                        if ($item->forma_pagamento_4 == "DEBITO CONTA") {
-                            $DEBITO_CONTA = $DEBITO_CONTA + $item->valor4;
-                            $NUMERODEBITO_CONTA++;
-                        }
-                        if ($item->forma_pagamento_4 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor4;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_4 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor4;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_4 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor4;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_4 == "CARTAO CREDITO") {
-                            $CARTAOCREDITO = $CARTAOCREDITO + $item->valor4;
-                            $NUMEROCARTAOCREDITO++;
-                        }
-                        if ($item->forma_pagamento_4 == "CHEQUE") {
-                            $CHEQUE = $CHEQUE + $item->valor4;
-                            $NUMEROCHEQUE++;
+                        foreach ($formapagamento as $value) {
+                            if ($item->forma_pagamento_4 == $value->nome) {
+                                $data[$value->nome] = $data[$value->nome] + $item->valor4;
+                                $numero[$value->nome] ++;
+                            }
                         }
                         $valor = 0;
                         $valor = $valor + $item->valor_total;
                         $y = 0;
                         $y++;
                     }
-                endforeach;
+                }
                 ?>
             <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
-                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($DINHEIRO, 2, ',', '.'); ?>" readonly/>
-                <input type="hidden" class="texto3" name="cheque" value="<?= number_format($CHEQUE, 2, ',', '.'); ?>" readonly/>
-                <input type="hidden" class="texto3" name="debito" value="<?= number_format($DEBITO_CONTA, 2, ',', '.'); ?>" readonly/>
-                <input type="hidden" class="texto3" name="cartaocredito" value="<?= number_format($CARTAOCREDITO, 2, ',', '.'); ?>" readonly/>
-                <input type="hidden" class="texto3" name="cartaovisa" value="<?= number_format($CARTAOVISA, 2, ',', '.'); ?>" readonly/>
-                <input type="hidden" class="texto3" name="cartaomaster" value="<?= number_format($CARTAOMASTER, 2, ',', '.'); ?>" readonly/>
-                <input type="hidden" class="texto3" name="cartaohiper" value="<?= number_format($CARTAOHIPER, 2, ',', '.'); ?>" readonly/>
+                <? foreach ($formapagamento as $value) { ?>
+
+                    <input type="hidden" class="texto3" name="<?= $value->nome ?>" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>" readonly/>
+
+                <? }
+                ?>
+    <!--                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($DINHEIRO, 2, ',', '.'); ?>" readonly/>
+     <input type="hidden" class="texto3" name="cheque" value="<?= number_format($CHEQUE, 2, ',', '.'); ?>" readonly/>
+     <input type="hidden" class="texto3" name="debito" value="<?= number_format($DEBITO_CONTA, 2, ',', '.'); ?>" readonly/>
+     <input type="hidden" class="texto3" name="cartaocredito" value="<?= number_format($CARTAOCREDITO, 2, ',', '.'); ?>" readonly/>
+     <input type="hidden" class="texto3" name="cartaovisa" value="<?= number_format($CARTAOVISA, 2, ',', '.'); ?>" readonly/>
+     <input type="hidden" class="texto3" name="cartaomaster" value="<?= number_format($CARTAOMASTER, 2, ',', '.'); ?>" readonly/>
+     <input type="hidden" class="texto3" name="cartaohiper" value="<?= number_format($CARTAOHIPER, 2, ',', '.'); ?>" readonly/>
+     <input type="hidden" class="texto3" name="cartaoelo" value="<?= number_format($CARTAOELO, 2, ',', '.'); ?>" readonly/>-->
                 <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
@@ -661,45 +491,24 @@
                 <tr>
                     <td colspan="4" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
             </tr>
-            <tr>
-                <td width="140px;"><font size="-1">DINHEIRO</td>
-                <td width="140px;"><font size="-1"><?= $NUMERODINHEIRO; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1"><?= number_format($DINHEIRO, 2, ',', '.'); ?></td>
-            </tr>
-            <tr>
-                <td width="140px;"><font size="-1">DEBITO_CONTA </td>
-                <td width="140px;"><font size="-1"><?= $NUMERODEBITO_CONTA; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1"><?= number_format($DEBITO_CONTA, 2, ',', '.'); ?></td>
-            </tr>
-            <tr>
-                <td width="140px;"><font size="-1">CARTAO VISA</td>
-                <td width="140px;"><font size="-1"><?= $NUMEROCARTAOVISA; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1"><?= number_format($CARTAOVISA, 2, ',', '.'); ?></td>
-            </tr>
-            <tr>
-                <td width="140px;"><font size="-1">CARTAO MASTER</td>
-                <td width="140px;"><font size="-1"><?= $NUMEROCARTAOMASTER; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1"><?= number_format($CARTAOMASTER, 2, ',', '.'); ?></td>
-            </tr>
-            <tr>
-                <td width="140px;"><font size="-1">HIPER CARD</td>
-                <td width="140px;"><font size="-1"><?= $NUMEROCARTAOHIPER; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1"><?= number_format($CARTAOHIPER, 2, ',', '.'); ?></td>
-            </tr>
-            <tr>
-                <td width="140px;"><font size="-1">PENDENCIAS</td>
-                <td width="140px;"><font size="-1"><?= $NUMEROOUTROS; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1"><?= number_format($OUTROS, 2, ',', '.'); ?></td>
-            </tr>
+            <? foreach ($formapagamento as $value) { ?>
+                <tr>
+                    <td width="140px;"><font size="-1"><?= $value->nome ?></td>
+                    <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
+                    <td><font size="-2"></td>
+                    <td width="200px;"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
+                </tr>       
+            <? } ?>
+
             <?
-            $TOTALCARTAO = $CARTAOVISA + $CARTAOMASTER + $CARTAOHIPER;
-            $QTDECARTAO = $NUMEROCARTAOVISA + $NUMEROCARTAOMASTER + $NUMEROCARTAOHIPER;
+            $TOTALCARTAO = 0;
+            $QTDECARTAO = 0;
+            foreach ($formapagamento as $value) {
+                if ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') {
+                    $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
+                    $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
+                }
+            }
             ?>
             <tr>
                 <td width="140px;"><font size="-1">TOTAL CARTAO</td>
@@ -719,29 +528,32 @@
         <h4>(*) Valores alterados.</h4>
         <?
         $PERCENTUALDINHEIRO = ($NUMERODINHEIRO * 100) / $i;
-        $PERCENTUALDEBITO_CONTA = ($NUMERODEBITO_CONTA  * 100) / $i;
+        $PERCENTUALDEBITO_CONTA = ($NUMERODEBITO_CONTA * 100) / $i;
         $PERCENTUALCARTAOVISA = ($NUMEROCARTAOVISA * 100) / $i;
         $PERCENTUALCARTAOMASTER = ($NUMEROCARTAOMASTER * 100) / $i;
         $PERCENTUALCARTAOHIPER = ($NUMEROCARTAOHIPER * 100) / $i;
+        $PERCENTUALCARTAOELO = ($NUMEROCARTAOELO * 100) / $i;
         $PERCENTUALOUTROS = ($NUMEROOUTROS * 100) / $i;
         $PERCENTUALVALORDINHEIRO = ($DINHEIRO * 100) / $valortotal;
         $PERCENTUALVALORDEBITO_CONTA = ($DEBITO_CONTA * 100) / $valortotal;
         $PERCENTUALVALORCARTAOVISA = ($CARTAOVISA * 100) / $valortotal;
         $PERCENTUALVALORCARTAOMASTER = ($CARTAOMASTER * 100) / $valortotal;
         $PERCENTUALVALORCARTAOHIPER = ($CARTAOHIPER * 100) / $valortotal;
+        $PERCENTUALVALORCARTAOELO = ($CARTAOELO * 100) / $valortotal;
         $PERCENTUALVALOROUTROS = ($OUTROS * 100) / $valortotal;
         $VALORDINHEIRO = (str_replace("", ".", str_replace("", ",", $DINHEIRO))) / 100;
         $VALORDEBITO_CONTA = (str_replace("", ".", str_replace("", ",", $DEBITO_CONTA))) / 100;
         $VALORCARTAOVISA = (str_replace("", ".", str_replace("", ",", $CARTAOVISA))) / 100;
         $VALORCARTAOMASTER = (str_replace("", ".", str_replace("", ",", $CARTAOMASTER))) / 100;
         $VALORCARTAOHIPER = (str_replace("", ".", str_replace("", ",", $CARTAOHIPER))) / 100;
+        $VALORCARTAOELO = (str_replace("", ".", str_replace("", ",", $CARTAOELO))) / 100;
         $VALOROUTROS = (str_replace("", ".", str_replace("", ",", $OUTROS))) / 100;
         ?>
 
         <!--        GRAFICO DE QUANTIDADE DE EXAMES
-                <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $NUMERODINHEIRO; ?>,<?= $NUMERODEBITO_CONTA; ?>,<?= $NUMEROCARTAOVISA; ?>,<?= $NUMEROCARTAOMASTER; ?>,<?= $NUMEROCARTAOHIPER; ?>,<?= $NUMEROOUTROS; ?>&chtt=QUANTIDADE DE EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALOUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA |CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste"/></center>
+                <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $NUMERODINHEIRO; ?>,<?= $NUMERODEBITO_CONTA; ?>,<?= $NUMEROCARTAOVISA; ?>,<?= $NUMEROCARTAOMASTER; ?>,<?= $NUMEROCARTAOHIPER; ?>,<?= $NUMEROCARTAOELO; ?>,<?= $NUMEROOUTROS; ?>&chtt=QUANTIDADE DE EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALOUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste"/></center>
                 GRAFICO DE VALOR DE EXAMES
-                <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $VALORDINHEIRO; ?>,<?= $VALORDEBITO_CONTA; ?>,<?= $VALORCARTAOVISA; ?>,<?= $VALORCARTAOMASTER; ?>,<?= $VALORCARTAOHIPER; ?>,<?= $VALOROUTROS; ?>&chtt=VALOR DOS EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALVALORDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOHIPER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALOROUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA |CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste2" /></center>-->
+                <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $VALORDINHEIRO; ?>,<?= $VALORDEBITO_CONTA; ?>,<?= $VALORCARTAOVISA; ?>,<?= $VALORCARTAOMASTER; ?>,<?= $VALORCARTAOHIPER; ?>,<?= $VALORCARTAOELO; ?>,<?= $VALOROUTROS; ?>&chtt=VALOR DOS EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALVALORDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOHIPER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALOROUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste2" /></center>-->
         <? if (count($caixa)) { ?>
             <table border="1">
                 <thead>
@@ -762,6 +574,7 @@
                     <? endforeach; ?>
                 </tbody>
             </table>
+            <? //  var_dump($data[$value->nome]);   ?>
         <? } ?>
     <? } else {
         ?>
@@ -777,8 +590,8 @@
 
 
 
-                    $(function() {
-                        $("#accordion").accordion();
-                    });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 </script>
