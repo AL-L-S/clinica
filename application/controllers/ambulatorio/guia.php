@@ -82,13 +82,13 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/aafala', $data);
     }
 
-    function editarfichaxml($paciente_id ,$exames_id) {
+    function editarfichaxml($paciente_id, $exames_id) {
         $data['exames_id'] = $exames_id;
-         $data['paciente_id'] = $paciente_id;
+        $data['paciente_id'] = $paciente_id;
         $this->loadView('ambulatorio/fichaeditar-xml-form', $data);
     }
 
-    function gravareditarfichaxml($paciente_id , $exames_id) {
+    function gravareditarfichaxml($paciente_id, $exames_id) {
         $this->guia->gravareditarfichaxml($exames_id);
         $this->pesquisar($paciente_id);
     }
@@ -131,8 +131,8 @@ class Guia extends BaseController {
         $data['r16'] = substr($string, 459, 3);
         $data['r17'] = substr($string, 485, 3);
         $data['r18'] = substr($string, 511, 3);
-        $data['r19'] = substr($string, 537 ,3);
-        $data['r20'] = substr($string, 563 ,3);
+        $data['r19'] = substr($string, 537, 3);
+        $data['r20'] = substr($string, 563, 3);
 
         $data['peso'] = $texto[0]->peso;
         $data['txtp9'] = $texto[0]->txtp9;
@@ -213,20 +213,20 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-        $this->fichaxml($paciente_id, $guia_id, $exames_id);
+//        $this->fichaxml($paciente_id, $guia_id, $exames_id);
 //HUMANA               
-//        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
-//            $this->load->View('ambulatorio/impressaofichaus', $data);
-//        }
-//        if ($grupo == "MAMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichamamografia', $data);
-//        }
-//        if ($grupo == "DENSITOMETRIA") {
-//            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
-//        }
-//        if ($grupo == "RM") {
-//            $this->fichaxml($paciente_id, $guia_id, $exames_id);        
-//        }
+        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
+            $this->load->View('ambulatorio/impressaofichaus', $data);
+        }
+        if ($grupo == "MAMOGRAFIA") {
+            $this->load->View('ambulatorio/impressaofichamamografia', $data);
+        }
+        if ($grupo == "DENSITOMETRIA") {
+            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
+        }
+        if ($grupo == "RM") {
+            $this->fichaxml($paciente_id, $guia_id, $exames_id);
+        }
 //PROIMAGEM       
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
 //            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
@@ -764,18 +764,25 @@ class Guia extends BaseController {
     }
 
     function novofisioterapia($paciente_id, $ambulatorio_guia_id = null, $i = null) {
-        $data['paciente_id'] = $paciente_id;
-        $data['convenio'] = $this->convenio->listardados();
-        $data['salas'] = $this->guia->listarsalas();
-        $data['medicos'] = $this->operador_m->listarmedicos();
-        $data['forma_pagamento'] = $this->guia->formadepagamento();
-        $data['paciente'] = $this->paciente->listardados($paciente_id);
-        $data['procedimento'] = $this->procedimento->listarprocedimentos();
-        $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
-        $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
-        $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
-        $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
-        $this->loadView('ambulatorio/guiafisioterapia-form', $data);
+//        $lista = $this->exame->autorizarsessaofisioterapia($paciente_id);
+//        if (count($lista) == 0) {
+            $data['paciente_id'] = $paciente_id;
+            $data['convenio'] = $this->convenio->listardados();
+            $data['salas'] = $this->guia->listarsalas();
+            $data['medicos'] = $this->operador_m->listarmedicos();
+            $data['forma_pagamento'] = $this->guia->formadepagamento();
+            $data['paciente'] = $this->paciente->listardados($paciente_id);
+            $data['procedimento'] = $this->procedimento->listarprocedimentos();
+            $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
+            $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+            $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
+            $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
+            $this->loadView('ambulatorio/guiafisioterapia-form', $data);
+//        } else {
+//            $data['mensagem'] = 'Paciente com sessões pendentes.';
+//            $this->session->set_flashdata('message', $data['mensagem']);
+//            redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
+//        }
     }
 
     function novoatendimento($paciente_id, $ambulatorio_guia_id = null) {

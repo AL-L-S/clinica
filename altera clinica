@@ -653,17 +653,9 @@ CREATE TABLE ponto.tb_respostas_xml
   txtp20 character varying(500)
 )
 
-atualiza 30/09/16
-CREATE TABLE ponto.tb_forma_pagamento
-(
-  forma_pagamento_id serial NOT NULL,
-  nome character varying(100) NOT NULL,
-  ativo boolean NOT NULL DEFAULT true,
-  operador_cadastro integer,
-  data_cadastro timestamp without time zone,
-  data_atualizacao timestamp without time zone,
-  operador_atualizacao integer,
-  conta_id integer,
-  ajuste numeric(10,2),
-  CONSTRAINT tb_forma_pagamentol_pkey PRIMARY KEY (forma_pagamento_id )
-)
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN operador_cadastro integer;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN data_cadastro timestamp without time zone;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN data_atualizacao timestamp without time zone;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN operador_atualizacao integer;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN conta_id integer;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN ajuste numeric(10,2);
