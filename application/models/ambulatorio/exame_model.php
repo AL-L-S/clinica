@@ -226,9 +226,11 @@ class exame_model extends Model {
                             es.nome as sala,
                             o.nome as tecnico,
                             pt.grupo,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            ag.ambulatorio_laudo_id');
         $this->db->from('tb_exames e');
         $this->db->join('tb_paciente p', 'p.paciente_id = e.paciente_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo ag', 'e.exames_id = ag.exame_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = e.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');

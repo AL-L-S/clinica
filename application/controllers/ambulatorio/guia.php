@@ -82,13 +82,47 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/aafala', $data);
     }
 
-    function editarfichaxml($paciente_id ,$exames_id) {
+    function editarfichaxml($paciente_id, $exames_id) {
         $data['exames_id'] = $exames_id;
-         $data['paciente_id'] = $paciente_id;
+        $data['paciente_id'] = $paciente_id;
+
+        $xml = $this->guia->listarfichaxml($exames_id);
+        $texto = $this->guia->listarfichatexto($exames_id);
+
+
+        $string = xml_convert($xml);
+
+        $data['r1'] = substr($string, 86, 3);
+        $data['r2'] = substr($string, 110, 3);
+        $data['r3'] = substr($string, 134, 3);
+        $data['r4'] = substr($string, 158, 3);
+        $data['r5'] = substr($string, 182, 3);
+        $data['r6'] = substr($string, 206, 3);
+        $data['r7'] = substr($string, 230, 3);
+        $data['r8'] = substr($string, 254, 3);
+        $data['r9'] = substr($string, 278, 3);
+        $data['r10'] = substr($string, 303, 3);
+        $data['r11'] = substr($string, 329, 3);
+        $data['r12'] = substr($string, 355, 3);
+        $data['r13'] = substr($string, 381, 3);
+        $data['r14'] = substr($string, 407, 3);
+        $data['r15'] = substr($string, 433, 3);
+        $data['r16'] = substr($string, 459, 3);
+        $data['r17'] = substr($string, 485, 3);
+        $data['r18'] = substr($string, 511, 3);
+        $data['r19'] = substr($string, 537, 3);
+        $data['r20'] = substr($string, 563, 3);
+
+        $data['peso'] = $texto[0]->peso;
+        $data['txtp9'] = $texto[0]->txtp9;
+        $data['txtp19'] = $texto[0]->txtp19;
+        $data['txtp20'] = $texto[0]->txtp20;
+        $data['obs'] = $texto[0]->obs;
+
         $this->loadView('ambulatorio/fichaeditar-xml-form', $data);
     }
 
-    function gravareditarfichaxml($paciente_id , $exames_id) {
+    function gravareditarfichaxml($paciente_id, $exames_id) {
         $this->guia->gravareditarfichaxml($exames_id);
         $this->pesquisar($paciente_id);
     }
@@ -131,8 +165,8 @@ class Guia extends BaseController {
         $data['r16'] = substr($string, 459, 3);
         $data['r17'] = substr($string, 485, 3);
         $data['r18'] = substr($string, 511, 3);
-        $data['r19'] = substr($string, 537 ,3);
-        $data['r20'] = substr($string, 563 ,3);
+        $data['r19'] = substr($string, 537, 3);
+        $data['r20'] = substr($string, 563, 3);
 
         $data['peso'] = $texto[0]->peso;
         $data['txtp9'] = $texto[0]->txtp9;
@@ -213,7 +247,7 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-        $this->fichaxml($paciente_id, $guia_id, $exames_id);
+//        $this->fichaxml($paciente_id, $guia_id, $exames_id);
 //HUMANA               
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
 //            $this->load->View('ambulatorio/impressaofichaus', $data);

@@ -18,6 +18,7 @@ class Exame extends BaseController {
         $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->model('ambulatorio/sala_model', 'sala');
         $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('ambulatorio/laudo_model', 'laudo');
         $this->load->model('login_model', 'login');
         $this->load->model('ambulatorio/tipoconsulta_model', 'tipoconsulta');
         $this->load->model('seguranca/operador_model', 'operador_m');
@@ -386,7 +387,7 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/examecancelamento-form', $data);
     }
 
-    function gravarexame() {
+    function gravarexame() {        
         $total = $this->exame->contadorexames();
         if ($total == 0) {
             $laudo_id = $this->exame->gravarexame();
@@ -401,6 +402,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
         }
 //        $this->session->set_flashdata('message', $data['mensagem']);
+        $this->laudo->chamada($laudo_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 

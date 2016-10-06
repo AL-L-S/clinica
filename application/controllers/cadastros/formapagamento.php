@@ -35,9 +35,10 @@ class Formapagamento extends BaseController {
     }
 
     function carregarformapagamento($formapagamento_id) {
-        $obj_formapagamento = new formapagamento_model($formapagamento_id);
+        $obj_formapagamento = new formapagamento_model($formapagamento_id);              
         $data['obj'] = $obj_formapagamento;
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarforma();                
+        $data['credor_devedor'] = $this->formapagamento->listarcredordevedor();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('cadastros/formapagamento-form', $data);
     }

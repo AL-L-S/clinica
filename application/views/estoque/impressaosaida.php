@@ -37,7 +37,7 @@
                     <td><font size="-2"><?= utf8_decode($item->unidade); ?></td>
                     <td><font size="-2"><?= utf8_decode($item->quantidade); ?></td>
                     <td><font size="-2"><?= utf8_decode($item->saldo); ?></td>
-    <!--                <td><font size="-2"></td>-->
+<!--                    <td><font size="-2"></td>-->
                     <td><font size="-2"><?= date('d/m/y', strtotime(substr($item->validade, 0, 10))); ?></td>
                 </tr>
             <? endforeach; ?>

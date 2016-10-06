@@ -24,6 +24,16 @@
                             <td>Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
                             <td>Sala:<?= @$obj->_sala ?></td>
                         </tr>
+                        <tr>
+                           
+
+                            <td width="40px;"><div class="bt_link_new">
+                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
+                                        chamar</a></div>
+                                <!--                                        impressaolaudo -->
+                            </td>
+
+                        </tr>
                     </table>
                 </fieldset>
                 <?
@@ -167,7 +177,7 @@
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
                                         <?php foreach ($linha as $item) { ?>
-                                                                                                                    <option value="<?php echo $item->nome; ?>" ><?php echo $item->nome; ?></option>
+                                                                                                                        <option value="<?php echo $item->nome; ?>" ><?php echo $item->nome; ?></option>
                                         <?php } ?>
                                         </select>-->
 
@@ -184,8 +194,8 @@
                                             <option value=0 >selecione</option>
                                             <? foreach ($operadores as $value) : ?>
                                                 <option value="<?= $value->operador_id; ?>"<?
-                                            if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
-                                            endif;
+                                                if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
+                                                endif;
                                                 ?>><?= $value->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -204,8 +214,8 @@
                                             <option value="">Selecione</option>
                                             <? foreach ($operadores as $valor) : ?>
                                                 <option value="<?= $valor->operador_id; ?>"<?
-                                            if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
-                                            endif;
+                                                if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
+                                                endif;
                                                 ?>><?= $valor->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -237,17 +247,17 @@
                                         <label>situa&ccedil;&atilde;o</label>
                                         <select name="situacao" id="situacao" class="size2" onChange="muda(this)">
                                             <option value='DIGITANDO'<?
-                                        if (@$obj->_status == 'DIGITANDO'):echo 'selected';
-                                        endif;
-                                        ?> >DIGITANDO</option>
+                                            if (@$obj->_status == 'DIGITANDO'):echo 'selected';
+                                            endif;
+                                            ?> >DIGITANDO</option>
                                             <option value='REVISAR' <?
                                             if (@$obj->_status == 'REVISAR'):echo 'selected';
                                             endif;
-                                        ?> >REVISAR</option>
+                                            ?> >REVISAR</option>
                                             <option value='FINALIZADO' <?
                                             if (@$obj->_status == 'FINALIZADO'):echo 'selected';
                                             endif;
-                                        ?> >FINALIZADO</option>
+                                            ?> >FINALIZADO</option>
                                         </select>
                                     </div>
                                     <div>

@@ -109,13 +109,18 @@
                                         </a>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" >
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha //
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                         </a>
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
+                                        
+                                        <?$teste = $this->guia->listarfichatexto($item->agenda_exames_id);
+                                        if(isset($teste[0]->agenda_exames_id)){
+                                        ?>
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>/<?= $item->agenda_exames_id ?>');"> //  Editar F. RM
                                         </a>
+                                        <?}?>
 
                                     </td>
-<!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+            <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
                                         </a>
                                     </td>-->
@@ -135,7 +140,7 @@
                                         </a>
                                     </td>
 
-                                    <? if ($perfil_id == 1 || $perfil_id == 6) { ?>
+            <? if ($perfil_id == 1 || $perfil_id == 6) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                             <a href="<?= base_url() ?>ambulatorio/guia/valorexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">valor
                                             </a>
@@ -144,17 +149,17 @@
                                         <?
                                     }
                                     ?>
-                                    <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
+            <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
 
                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">Faturar
 
                                             </a>
                                         </td>
-                                    <? } else { ?>
+            <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                         </td>
-                                    <? } ?>
+            <? } ?>
                                 </tr>
 
                             </tbody>
@@ -163,7 +168,7 @@
                     endforeach;
                     ?>
                     <br>
-                <? endforeach; ?>
+<? endforeach; ?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="11">

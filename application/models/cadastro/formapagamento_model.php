@@ -6,7 +6,9 @@ class formapagamento_model extends Model {
     var $_nome = null;
     var $_conta_id = null;
     var $_ajuste = null;
-
+    var $_dia_receber = null;
+    var $_tempo_receber = null;
+    var $_credor_devedor = null;
 
     function Formapagamento_model($forma_pagamento_id = null) {
         parent::Model();
@@ -31,6 +33,15 @@ class formapagamento_model extends Model {
         $this->db->select('forma_pagamento_id,
                             nome');
         $this->db->from('tb_forma_pagamento');
+        $this->db->where("ativo", 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarcredordevedor() {
+        $this->db->select('financeiro_credor_devedor_id,
+                            razao_social');
+        $this->db->from('tb_financeiro_credor_devedor');
         $this->db->where("ativo", 't');
         $return = $this->db->get();
         return $return->result();
@@ -70,6 +81,18 @@ class formapagamento_model extends Model {
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('conta_id', $_POST['conta']);
             $this->db->set('ajuste', $_POST['ajuste']);
+
+            $diareceber = $_POST['diareceber'];
+            $temporeceber = $_POST['temporeceber'];
+            if ($_POST['diareceber'] == '' || $_POST['diareceber'] < 0) {
+                $diareceber = null;
+            }
+            if ($_POST['temporeceber'] == '' || $_POST['temporeceber'] < 0) {
+                $temporeceber = null;
+            }
+            $this->db->set('credor_devedor', $_POST['credor_devedor']);
+            $this->db->set('dia_receber', $diareceber);
+            $this->db->set('tempo_receber', $temporeceber);
 //            $this->db->set('ativo', 't');
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -100,7 +123,7 @@ class formapagamento_model extends Model {
     private function instanciar($forma_pagamento_id) {
 
         if ($forma_pagamento_id != 0) {
-            $this->db->select('forma_pagamento_id, nome, conta_id , ajuste');
+            $this->db->select('forma_pagamento_id, nome, conta_id , ajuste , dia_receber , tempo_receber , credor_devedor');
             $this->db->from('tb_forma_pagamento');
             $this->db->where("forma_pagamento_id", $forma_pagamento_id);
             $query = $this->db->get();
@@ -109,6 +132,9 @@ class formapagamento_model extends Model {
             $this->_nome = $return[0]->nome;
             $this->_conta_id = $return[0]->conta_id;
             $this->_ajuste = $return[0]->ajuste;
+            $this->_dia_receber = $return[0]->dia_receber;
+            $this->_tempo_receber = $return[0]->tempo_receber;
+            $this->_credor_devedor = $return[0]->credor_devedor;
         } else {
             $this->_forma_pagamento_id = null;
         }
