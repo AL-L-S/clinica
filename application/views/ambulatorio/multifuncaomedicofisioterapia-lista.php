@@ -149,13 +149,17 @@
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $item->ambulatorio_laudo_id ?>');">
                                                 Arquivos</a></div>
                                     </td>
+<!--                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $item->ambulatorio_laudo_id ?> ">
+                                            Chamar</a></div>
+                                    </td>-->
                                     <? if ($operador_id == 1) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                            <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exame_id ?>/<?= $item->agenda_exames_nome_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
-                                                Cancelar
-                                            </a></div>
-                                    </td>
-                                     <? } ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exame_id ?>/<?= $item->agenda_exames_nome_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
+                                                    Cancelar
+                                                </a></div>
+                                        </td>
+                                    <? } ?>
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                         <a></a></font>
@@ -191,31 +195,31 @@
 
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
-                                                    setTimeout('delayReload()', 20000);
-                                                    function delayReload()
-                                                    {
-                                                        if (navigator.userAgent.indexOf("MSIE") != -1) {
-                                                            history.go(0);
-                                                        } else {
-                                                            window.location.reload();
-                                                        }
-                                                    }
+    setTimeout('delayReload()', 20000);
+    function delayReload()
+    {
+        if (navigator.userAgent.indexOf("MSIE") != -1) {
+            history.go(0);
+        } else {
+            window.location.reload();
+        }
+    }
 
 
-                                                    $(function() {
-                                                        $("#data").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+    $(function () {
+        $("#data").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
 
-                                                    $(function() {
-                                                        $("#accordion").accordion();
-                                                    });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 </script>

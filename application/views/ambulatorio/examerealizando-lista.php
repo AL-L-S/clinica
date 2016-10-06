@@ -1,11 +1,9 @@
-
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Exames</a></h3>
         <div>
             <?
             $salas = $this->exame->listartodassalas();
-
             ?>
             <table>
                 <thead>
@@ -21,15 +19,15 @@
                             <option value="">TODAS</option>
                             <? foreach ($salas as $value) : ?>
                                 <option value="<?= $value->exame_sala_id; ?>" <?
-                            if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
-                            endif;
+                                if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
+                                endif;
                                 ?>><?php echo $value->nome; ?></option>
                                     <? endforeach; ?>
                         </select>
                     </th>
                     <th colspan="4" class="tabela_title">
                         <input type="text" name="nome" class="texto09" value="<?php echo @$_GET['nome']; ?>" />
-                        
+
                     </th>
                     <th colspan="2" class="tabela_title">
                         <button type="submit" id="enviar">Pesquisar</button>
@@ -44,7 +42,7 @@
                     <th class="tabela_header">Sala</th>
                     <th class="tabela_header">Tecnico</th>
                     <th class="tabela_header">Procedimento</th>
-                    <th class="tabela_header" colspan="6"><center>A&ccedil;&otilde;es</center></th>
+                    <th class="tabela_header" colspan="10"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -70,8 +68,7 @@
                             $teste = $diff->format('%H:%I:%S');
 
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            
-                           ?>
+                            ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->guia_id; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
@@ -100,19 +97,26 @@
                                             Pendente
                                         </a></div>
                                 </td>
-                                <?if ($perfil_id == 1) {?>
+                                <td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
-                                            Cancelar
-                                        </a></div>
+                                        <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $item->ambulatorio_laudo_id ?> ">
+                                            chamar</a></div>
+                                    <!--                                        impressaolaudo -->
                                 </td>
-                                <?}?>
+                                </td>
+                                <? if ($perfil_id == 1) { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
+                                                Cancelar
+                                            </a></div>
+                                    </td>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/voltarexame/<?= $item->exames_id ?>/<?= $item->sala_id ?>/<?= $item->agenda_exames_id ?> ">
                                             Voltar
                                         </a></div>
                                 </td>
-<!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+        <!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/estoqueguia/<?= $item->exames_id ?>/<?= $item->sala_id ?>/<?= $item->agenda_exames_id ?> ">
                                             estoque
                                         </a></div>
@@ -126,7 +130,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="13">
+                        <th class="tabela_footer" colspan="17">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
@@ -139,8 +143,8 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
-    $(function() {
-        $( "#accordion" ).accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
 </script>

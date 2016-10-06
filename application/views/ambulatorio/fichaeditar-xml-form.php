@@ -7,7 +7,7 @@
 
                 <dt><label>Peso:</label></dt>
                 <dd>
-                    <input type="number" name="txtpeso" id="txtpeso" class="texto03">
+                    <input type="number" name="txtpeso" id="txtpeso" class="texto03" value="<? echo $peso?>">
                 </dd>
                 <dt>
                     <label>Trabalha ou trabalhou com metais?</label>
@@ -16,8 +16,14 @@
                 <dd>
                     <select name="p1" id="p1" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>
+                        <option value="SIM" <?
+                        if ($r1 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r1 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>
                     </select>               
                 </dd>
                 <br/>
@@ -27,8 +33,14 @@
                 <dd>                       
                     <select name="p2" id="p2" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>
+                        <option value="SIM" <?
+                        if ($r2 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r2 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>
 
                     </select>
                 </dd>
@@ -39,8 +51,14 @@
                 <dd>
                     <select  name="p3" id="p3" class="size1" >
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>
+                        <option value="SIM" <?
+                        if ($r3 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r3 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>
                     </select>
 
                 </dd>
@@ -51,8 +69,14 @@
                 <dd>                    
                     <select name="p4" id="p4" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>
+                        <option value="SIM" <?
+                        if ($r4 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r4 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>
                     </select>
                 </dd>
                 <br/>
@@ -62,8 +86,14 @@
                 <dd>
                     <select name="p5"  id="p5" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>
+                        <option value="SIM" <?
+                        if ($r5 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r5 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>
                     </select>
                 </dd>
                 <br/>
@@ -73,8 +103,14 @@
                 <dd>
                     <select name="p6"  id="p6" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r6 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r6 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -84,8 +120,14 @@
                 <dd>
                     <select name="p7"  id="p7" class="size1"> 
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r7 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r7 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -95,8 +137,14 @@
                 <dd>
                     <select name="p8"  id="p8" class="size1"> 
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r8 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r8 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -106,12 +154,18 @@
                 <dd>
                     <select name="p9"  id="p9" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r9 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r9 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br>                
-                <input type="text"  name="txtp9" id="txtp9" class="texto04">
+                <input type="text"  name="txtp9" id="txtp9" class="texto04" value="<?echo $txtp9?>">
                 <br/>
                 <br/>
                 <dt>
@@ -120,8 +174,14 @@
                 <dd>
                     <select name="p10"  id="p10" class="size1">  
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r10 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r10 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -131,8 +191,14 @@
                 <dd>
                     <select name="p11"  id="p11" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r11 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r11 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -142,8 +208,14 @@
                 <dd>
                     <select name="p12"  id="p12" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r12 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r12 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -153,8 +225,14 @@
                 <dd>
                     <select name="p13"  id="p13" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r13 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r13 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -165,8 +243,14 @@
                 <dd>
                     <select name="p14"  id="p14" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r14 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r14 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -176,8 +260,14 @@
                 <dd>
                     <select name="p15"  id="p15" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r15 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r15 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -187,8 +277,14 @@
                 <dd>
                     <select name="p16"  id="p16" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r16 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r16 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -198,8 +294,14 @@
                 <dd>
                     <select name="p17"  id="p17" class="size1">
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r17 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r17 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -209,8 +311,14 @@
                 <dd>
                     <select name="p18"  id="p18" class="size1">  
                         <option value="">SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r18 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r18 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                 </dd>
                 <br/>
@@ -220,11 +328,17 @@
                 <dd>
                     <select name="p19"  id="p19" class="size1">  
                         <option value="" disabled selected>SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r19 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r19 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                     <label>A que?</label>
-                    <input type="text"  name="txtp19" id="txtp19" class="texto04">
+                    <input type="text"  name="txtp19" id="txtp19" class="texto04" value="<?echo $txtp19?>">
                 </dd>
                 <br/>
                 <dt>
@@ -233,16 +347,22 @@
                 <dd>
                     <select name="p20"  id="p20" class="size1">  
                         <option value="" disabled selected>SELECIONE</option>
-                        <option value="SIM">SIM</option> 
-                        <option value="NAO">NÃO</option>                                   
+                        <option value="SIM" <?
+                        if ($r20 == "SIM"):echo 'selected';
+                        endif;
+                        ?>>SIM</option> 
+                        <option value="NAO" <?
+                        if ($r20 == "NAO"):echo 'selected';
+                        endif;
+                        ?>>NÃO</option>                                   
                     </select>
                     <label> Quais?</label>
-                    <input type="text"  name="txtp20" id="txtp20" class="texto04">
+                    <input type="text"  name="txtp20" id="txtp20" class="texto04" value="<?echo $txtp20?>">
                 </dd>
                 <br/>
                 <dt><label>OBS</label></dt>
                 <dd>
-                    <input type="text"  name="obs" id="obs" class="texto03" STYLE=" width: 18cm; height: 1.5cm;  padding: 0.15cm; ">
+                    <input type="text"  name="obs" id="obs" class="texto03" STYLE=" width: 18cm; height: 1.5cm;  padding: 0.15cm; " value="<?echo $obs?>">
                 </dd>
                 </dl>    
                 <hr/>

@@ -19,6 +19,19 @@
                     <dd>
                         <input type="text" name="ajuste" class="texto02" id="ajuste" value="<?= @$obj->_ajuste; ?>" />
                     </dd>
+
+                    <dt>
+                        <label>Dia Recebimento</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="diareceber" class="texto02" id="diareceber" value="<?= @$obj->_dia_receber; ?>"/>
+                    </dd>
+                    <dt>
+                        <label>Tempo Recebimento</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="temporeceber" class="texto02" id="temporeceber" value= "<?= @$obj->_tempo_receber; ?>" />
+                    </dd>
                     <dt>
                         <label>Conta</label>
                     </dt>
@@ -33,6 +46,20 @@
                                     <? } ?>                            
                         </select>
                     </dd>
+                    <dt>
+                        <label>Credor/Devedor</label>
+                    </dt>
+                    <dd>
+                        <select name="credor_devedor" id="credor_devedor" class="texto03">
+                            <option value="0">SELECIONE</option>
+                            <? foreach ($credor_devedor as $value) { ?>
+                                <option value="<?= $value->financeiro_credor_devedor_id ?>" <?
+                                if (@$obj->_credor_devedor == $value->financeiro_credor_devedor_id):echo 'selected';
+                                endif;
+                                ?>><?= $value->razao_social ?></option>
+                                    <? } ?>                            
+                        </select>
+                    </dd>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
@@ -44,6 +71,7 @@
 </div> <!-- Final da DIV content -->
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
     $('#btnVoltar').click(function () {
         $(location).attr('href', '<?= base_url(); ?>ponto/cargo');

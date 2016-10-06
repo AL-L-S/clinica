@@ -21,6 +21,13 @@
                         <tr><td>Idade: <?= $teste ?></td>
                             <td>Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
                             <td>Sala:<?= @$obj->_sala ?></td>
+
+                            <td width="40px;"><div class="bt_link_new">
+                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
+                                        chamar</a></div>
+                                <!--                                        impressaolaudo -->
+                            </td>
+
                         </tr>
                     </table>
                 </fieldset>
@@ -48,7 +55,7 @@
                     if ($arquivo_pasta != false):
                         foreach ($arquivo_pasta as $value) {
                             ?>
-                                                                                                                                                                                                                                                                                                                                                                        <li class="ui-state-default"> <input type="hidden"  value="<?= $value ?>" name="teste[]" class="size2" /><img  width="100px" height="100px" src="<?= base_url() . "upload/" . $exame_id . "/" . $value ?>"></li>
+                                                                                                                                                                                                                                                                                                                                                                                <li class="ui-state-default"> <input type="hidden"  value="<?= $value ?>" name="teste[]" class="size2" /><img  width="100px" height="100px" src="<?= base_url() . "upload/" . $exame_id . "/" . $value ?>"></li>
                             <?
                         }
                     endif
@@ -417,7 +424,7 @@
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
                                         <?php foreach ($linha as $item) { ?>
-                                                                                                                                                                                                            <option value="<?php echo $item->nome; ?>" ><?php echo $item->nome; ?></option>
+                                                                                                                                                                                                                <option value="<?php echo $item->nome; ?>" ><?php echo $item->nome; ?></option>
                                         <?php } ?>
                                         </select>-->
 
@@ -557,243 +564,243 @@
                             <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
                             <script type="text/javascript">
 
-                                document.getElementById('titulosenha').style.display = "none";
-                                document.getElementById('senha').style.display = "none";
+                                                            document.getElementById('titulosenha').style.display = "none";
+                                                            document.getElementById('senha').style.display = "none";
 
 
-                                $(document).ready(function() {
-                                    $('#sortable').sortable();
-                                });
+                                                            $(document).ready(function () {
+                                                                $('#sortable').sortable();
+                                                            });
 
 
-                                $(document).ready(function() {
+                                                            $(document).ready(function () {
 
-                                    function multiplica()
-                                    {
+                                                                function multiplica()
+                                                                {
 
-                                        //CALCULO DA SUPERFICIE CORPOREA
-                                        pesob1 = document.getElementById('Peso').value;
-                                        alturae1 = document.getElementById('Altura').value;
-                                        peso_altura = (pesob1 * alturae1) / 3600;
-                                        meio = 0.5;
-                                        superfh1 = Math.pow(peso_altura, meio);
-                                        document.getElementById('Superf').value = superfh1.toFixed(2);
+                                                                    //CALCULO DA SUPERFICIE CORPOREA
+                                                                    pesob1 = document.getElementById('Peso').value;
+                                                                    alturae1 = document.getElementById('Altura').value;
+                                                                    peso_altura = (pesob1 * alturae1) / 3600;
+                                                                    meio = 0.5;
+                                                                    superfh1 = Math.pow(peso_altura, meio);
+                                                                    document.getElementById('Superf').value = superfh1.toFixed(2);
 
-                                        //Relação atrío esquerdo / aorta
-                                        ao_diametro_raiz = new Number(document.getElementById('ao_diametro_raiz').value);
-                                        ae_diametro = new Number(document.getElementById('ae_diametro').value);
-                                        relacao_atrio_esquerdo = ae_diametro / ao_diametro_raiz;
-                                        document.getElementById('ao_relacao_atrio_esquerdo_aorta').value = relacao_atrio_esquerdo.toFixed(2);
+                                                                    //Relação atrío esquerdo / aorta
+                                                                    ao_diametro_raiz = new Number(document.getElementById('ao_diametro_raiz').value);
+                                                                    ae_diametro = new Number(document.getElementById('ae_diametro').value);
+                                                                    relacao_atrio_esquerdo = ae_diametro / ao_diametro_raiz;
+                                                                    document.getElementById('ao_relacao_atrio_esquerdo_aorta').value = relacao_atrio_esquerdo.toFixed(2);
 
-                                        //VOLUME INDEXADO ATRIO ESQUERDO
-                                        Superf = new Number(document.getElementById('Superf').value);
-                                        ae_volume = new Number(document.getElementById('ae_volume').value);
-                                        ae_volume_indexado = ae_volume / Superf;
-                                        document.getElementById('ae_volume_indexado').value = ae_volume_indexado.toFixed(2);
+                                                                    //VOLUME INDEXADO ATRIO ESQUERDO
+                                                                    Superf = new Number(document.getElementById('Superf').value);
+                                                                    ae_volume = new Number(document.getElementById('ae_volume').value);
+                                                                    ae_volume_indexado = ae_volume / Superf;
+                                                                    document.getElementById('ae_volume_indexado').value = ae_volume_indexado.toFixed(2);
 
-                                        //VOLUME INDEXADO ATRIO DIREITO
-                                        Superf = new Number(document.getElementById('Superf').value);
-                                        ad_volume = new Number(document.getElementById('ad_volume').value);
-                                        ad_volume_indexado = ad_volume / Superf;
-                                        document.getElementById('ad_volume_indexado').value = ad_volume_indexado.toFixed(2);
+                                                                    //VOLUME INDEXADO ATRIO DIREITO
+                                                                    Superf = new Number(document.getElementById('Superf').value);
+                                                                    ad_volume = new Number(document.getElementById('ad_volume').value);
+                                                                    ad_volume_indexado = ad_volume / Superf;
+                                                                    document.getElementById('ad_volume_indexado').value = ad_volume_indexado.toFixed(2);
 
-                                        //VOLUME DIASTOLICO VE DDVE3 *7 / 2,4+ DDVE
-                                        ve_diametro_diastolico = new Number(document.getElementById('ve_diametro_diastolico').value);
-                                        calculo_ve_diametro_diastolico = (Math.pow(ve_diametro_diastolico, 3) * 7) / (2, 4 + ve_diametro_diastolico);
-                                        document.getElementById('ve_volume_telediastolico').value = calculo_ve_diametro_diastolico.toFixed(2);
+                                                                    //VOLUME DIASTOLICO VE DDVE3 *7 / 2,4+ DDVE
+                                                                    ve_diametro_diastolico = new Number(document.getElementById('ve_diametro_diastolico').value);
+                                                                    calculo_ve_diametro_diastolico = (Math.pow(ve_diametro_diastolico, 3) * 7) / (2, 4 + ve_diametro_diastolico);
+                                                                    document.getElementById('ve_volume_telediastolico').value = calculo_ve_diametro_diastolico.toFixed(2);
 
-                                        //VOLUME SISTOLICO VE DSVE3 *7 / 2,4+ DSVE
-                                        ve_diametro_sistolico = new Number(document.getElementById('ve_diametro_sistolico').value);
-                                        calculo_ve_diametro_diastolico = (Math.pow(ve_diametro_sistolico, 3) * 7) / (2, 4 + ve_diametro_sistolico);
-                                        document.getElementById('ve_volume_telessistolico').value = calculo_ve_diametro_diastolico.toFixed(2);
+                                                                    //VOLUME SISTOLICO VE DSVE3 *7 / 2,4+ DSVE
+                                                                    ve_diametro_sistolico = new Number(document.getElementById('ve_diametro_sistolico').value);
+                                                                    calculo_ve_diametro_diastolico = (Math.pow(ve_diametro_sistolico, 3) * 7) / (2, 4 + ve_diametro_sistolico);
+                                                                    document.getElementById('ve_volume_telessistolico').value = calculo_ve_diametro_diastolico.toFixed(2);
 
-                                        //VOLUME SISTOLICO RESIDUAL -  VDF DO VE – VSF DO VE
-                                        ve_volume_telediastolico = new Number(document.getElementById('ve_volume_telediastolico').value);
-                                        ve_volume_telessistolico = new Number(document.getElementById('ve_volume_telessistolico').value);
-                                        ve_volume_sistolico_residual = ve_volume_telediastolico - ve_volume_telessistolico;
-                                        document.getElementById('ve_volume_sistolico_residual').value = ve_volume_sistolico_residual.toFixed(2);
+                                                                    //VOLUME SISTOLICO RESIDUAL -  VDF DO VE – VSF DO VE
+                                                                    ve_volume_telediastolico = new Number(document.getElementById('ve_volume_telediastolico').value);
+                                                                    ve_volume_telessistolico = new Number(document.getElementById('ve_volume_telessistolico').value);
+                                                                    ve_volume_sistolico_residual = ve_volume_telediastolico - ve_volume_telessistolico;
+                                                                    document.getElementById('ve_volume_sistolico_residual').value = ve_volume_sistolico_residual.toFixed(2);
 
-                                        //ve_volume_telediastolico_indexado
-                                        ve_volume_telediastolico = new Number(document.getElementById('ve_volume_telediastolico').value);
-                                        Superf = new Number(document.getElementById('Superf').value);
-                                        calculo_ve_volume_telediastolico_indexado = ve_volume_telediastolico / Superf;
-                                        document.getElementById('ve_volume_telediastolico_indexado').value = calculo_ve_volume_telediastolico_indexado.toFixed(2);
+                                                                    //ve_volume_telediastolico_indexado
+                                                                    ve_volume_telediastolico = new Number(document.getElementById('ve_volume_telediastolico').value);
+                                                                    Superf = new Number(document.getElementById('Superf').value);
+                                                                    calculo_ve_volume_telediastolico_indexado = ve_volume_telediastolico / Superf;
+                                                                    document.getElementById('ve_volume_telediastolico_indexado').value = calculo_ve_volume_telediastolico_indexado.toFixed(2);
 
-                                        //ve_volume_telessistolico_indexado
-                                        ve_volume_telessistolico = new Number(document.getElementById('ve_volume_telessistolico').value);
-                                        Superf = new Number(document.getElementById('Superf').value);
-                                        calculo_ve_volume_telessistolico_indexado = ve_volume_telessistolico / Superf;
-                                        document.getElementById('ve_volume_telessistolico_indexado').value = calculo_ve_volume_telessistolico_indexado.toFixed(2);
+                                                                    //ve_volume_telessistolico_indexado
+                                                                    ve_volume_telessistolico = new Number(document.getElementById('ve_volume_telessistolico').value);
+                                                                    Superf = new Number(document.getElementById('Superf').value);
+                                                                    calculo_ve_volume_telessistolico_indexado = ve_volume_telessistolico / Superf;
+                                                                    document.getElementById('ve_volume_telessistolico_indexado').value = calculo_ve_volume_telessistolico_indexado.toFixed(2);
 
-                                        //fracao_ejecao - (VDF DO VE – VSF DO VE) / VDF DO VE
-                                        ve_volume_telediastolico = new Number(document.getElementById('ve_volume_telediastolico').value);
-                                        ve_volume_telessistolico = new Number(document.getElementById('ve_volume_telessistolico').value);
-                                        calculo_fracao_ejecao = (ve_volume_telediastolico - ve_volume_telessistolico) / ve_volume_telediastolico;
-                                        document.getElementById('fracao_ejecao').value = calculo_fracao_ejecao.toFixed(2);
+                                                                    //fracao_ejecao - (VDF DO VE – VSF DO VE) / VDF DO VE
+                                                                    ve_volume_telediastolico = new Number(document.getElementById('ve_volume_telediastolico').value);
+                                                                    ve_volume_telessistolico = new Number(document.getElementById('ve_volume_telessistolico').value);
+                                                                    calculo_fracao_ejecao = (ve_volume_telediastolico - ve_volume_telessistolico) / ve_volume_telediastolico;
+                                                                    document.getElementById('fracao_ejecao').value = calculo_fracao_ejecao.toFixed(2);
 
-                                        //espessura_relativa - (2*PPVE)/DDVE 
-                                        parede_posterior = new Number(document.getElementById('parede_posterior').value);
-                                        ve_diametro_diastolico = new Number(document.getElementById('ve_diametro_diastolico').value);
-                                        calculo_espessura_relativa = ((ve_diametro_diastolico - ve_diametro_sistolico) / ve_diametro_diastolico);
-                                        document.getElementById('espessura_relativa').value = calculo_espessura_relativa.toFixed(2);
+                                                                    //espessura_relativa - (2*PPVE)/DDVE 
+                                                                    parede_posterior = new Number(document.getElementById('parede_posterior').value);
+                                                                    ve_diametro_diastolico = new Number(document.getElementById('ve_diametro_diastolico').value);
+                                                                    calculo_espessura_relativa = ((ve_diametro_diastolico - ve_diametro_sistolico) / ve_diametro_diastolico);
+                                                                    document.getElementById('espessura_relativa').value = calculo_espessura_relativa.toFixed(2);
 
-                                        //massa_ventricular - [(DDVE + SEPTO + PPVE)3 – (DDVE)3 ]* 1,04  *0,8+0,6
-                                        parede_posterior = new Number(document.getElementById('parede_posterior').value);
-                                        ve_diametro_diastolico = new Number(document.getElementById('ve_diametro_diastolico').value);
-                                        septo_interventricular = new Number(document.getElementById('septo_interventricular').value);
-                                        calculo_massa_ventricular = (Math.pow(ve_diametro_diastolico + septo_interventricular + parede_posterior, 3) - Math.pow(ve_diametro_diastolico, 3)) * 1,04 * 0,8+0,6;
-                                        document.getElementById('massa_ventricular').value = calculo_massa_ventricular.toFixed(2);
+                                                                    //massa_ventricular - [(DDVE + SEPTO + PPVE)3 – (DDVE)3 ]* 1,04  *0,8+0,6
+                                                                    parede_posterior = new Number(document.getElementById('parede_posterior').value);
+                                                                    ve_diametro_diastolico = new Number(document.getElementById('ve_diametro_diastolico').value);
+                                                                    septo_interventricular = new Number(document.getElementById('septo_interventricular').value);
+                                                                    calculo_massa_ventricular = (Math.pow(ve_diametro_diastolico + septo_interventricular + parede_posterior, 3) - Math.pow(ve_diametro_diastolico, 3)) * 1, 04 * 0, 8 + 0, 6;
+                                                                    document.getElementById('massa_ventricular').value = calculo_massa_ventricular.toFixed(2);
 
-                                    }
-                                    multiplica();
-
-
-                                });
+                                                                }
+                                                                multiplica();
 
 
-
-                                function muda(obj) {
-                                    if (obj.value != 'DIGITANDO') {
-                                        document.getElementById('titulosenha').style.display = "block";
-                                        document.getElementById('senha').style.display = "block";
-                                    } else {
-                                        document.getElementById('titulosenha').style.display = "none";
-                                        document.getElementById('senha').style.display = "none";
-                                    }
-                                }
+                                                            });
 
 
 
-                                tinyMCE.init({
-                                    // General options
-                                    mode: "textareas",
-                                    theme: "advanced",
-                                    plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                                    // Theme options
-                                    theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                                    theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-                                    theme_advanced_toolbar_location: "top",
-                                    theme_advanced_toolbar_align: "left",
-                                    theme_advanced_statusbar_location: "bottom",
-                                    theme_advanced_resizing: true,
-                                    // Example content CSS (should be your site CSS)
-                                    //                                    content_css : "css/content.css",
-                                    content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                                    // Drop lists for link/image/media/template dialogs
-                                    template_external_list_url: "lists/template_list.js",
-                                    external_link_list_url: "lists/link_list.js",
-                                    external_image_list_url: "lists/image_list.js",
-                                    media_external_list_url: "lists/media_list.js",
-                                    // Style formats
-                                    style_formats: [
-                                        {title: 'Bold text', inline: 'b'},
-                                        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                        {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                        {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                        {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                        {title: 'Table styles'},
-                                        {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                    ],
-                                    // Replace values for the template plugin
-                                    template_replace_values: {
-                                        username: "Some User",
-                                        staffid: "991234"
-                                    }
+                                                            function muda(obj) {
+                                                                if (obj.value != 'DIGITANDO') {
+                                                                    document.getElementById('titulosenha').style.display = "block";
+                                                                    document.getElementById('senha').style.display = "block";
+                                                                } else {
+                                                                    document.getElementById('titulosenha').style.display = "none";
+                                                                    document.getElementById('senha').style.display = "none";
+                                                                }
+                                                            }
 
-                                });
 
-                                $(function() {
-                                    $('#exame').change(function() {
-                                        if ($(this).val()) {
-                                            //$('#laudo').hide();
-                                            $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function(j) {
-                                                options = "";
 
-                                                options += j[0].texto;
-                                                //                                                document.getElementById("laudo").value = options
+                                                            tinyMCE.init({
+                                                                // General options
+                                                                mode: "textareas",
+                                                                theme: "advanced",
+                                                                plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                                // Theme options
+                                                                theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                                theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                                                                theme_advanced_toolbar_location: "top",
+                                                                theme_advanced_toolbar_align: "left",
+                                                                theme_advanced_statusbar_location: "bottom",
+                                                                theme_advanced_resizing: true,
+                                                                // Example content CSS (should be your site CSS)
+                                                                //                                    content_css : "css/content.css",
+                                                                content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                                // Drop lists for link/image/media/template dialogs
+                                                                template_external_list_url: "lists/template_list.js",
+                                                                external_link_list_url: "lists/link_list.js",
+                                                                external_image_list_url: "lists/image_list.js",
+                                                                media_external_list_url: "lists/media_list.js",
+                                                                // Style formats
+                                                                style_formats: [
+                                                                    {title: 'Bold text', inline: 'b'},
+                                                                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                                    {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                                    {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                                    {title: 'Table styles'},
+                                                                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                                ],
+                                                                // Replace values for the template plugin
+                                                                template_replace_values: {
+                                                                    username: "Some User",
+                                                                    staffid: "991234"
+                                                                }
 
-                                                $('#laudo').val(options)
-                                                var ed = tinyMCE.get('laudo');
-                                                ed.setContent($('#laudo').val());
+                                                            });
 
-                                                //$('#laudo').val(options);
-                                                //$('#laudo').html(options).show();
-                                                //                                                $('.carregando').hide();
-                                                //history.go(0) 
-                                            });
-                                        } else {
-                                            $('#laudo').html('value=""');
-                                        }
-                                    });
-                                });
+                                                            $(function () {
+                                                                $('#exame').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        //$('#laudo').hide();
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
 
-                                $(function() {
-                                    $('#linha').change(function() {
-                                        if ($(this).val()) {
-                                            //$('#laudo').hide();
-                                            $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function(j) {
-                                                options = "";
+                                                                            options += j[0].texto;
+                                                                            //                                                document.getElementById("laudo").value = options
 
-                                                options += j[0].texto;
-                                                //                                                document.getElementById("laudo").value = $('#laudo').val() + options
-                                                $('#laudo').val() + options
-                                                var ed = tinyMCE.get('laudo');
-                                                ed.setContent($('#laudo').val());
-                                                //$('#laudo').html(options).show();
-                                            });
-                                        } else {
-                                            $('#laudo').html('value=""');
-                                        }
-                                    });
-                                });
+                                                                            $('#laudo').val(options)
+                                                                            var ed = tinyMCE.get('laudo');
+                                                                            ed.setContent($('#laudo').val());
 
-                                $(function() {
-                                    $("#linha2").autocomplete({
-                                        source: "<?= base_url() ?>index?c=autocomplete&m=linhas",
-                                        minLength: 1,
-                                        focus: function(event, ui) {
-                                            $("#linha2").val(ui.item.label);
-                                            return false;
-                                        },
-                                        select: function(event, ui) {
-                                            $("#linha2").val(ui.item.value);
-                                            tinyMCE.triggerSave(true, true);
-                                            document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                                            $('#laudo').val() + ui.item.id
-                                            var ed = tinyMCE.get('laudo');
-                                            ed.setContent($('#laudo').val());
-                                            //$( "#laudo" ).val() + ui.item.id;
-                                            document.getElementById("linha2").value = ''
-                                            return false;
-                                        }
-                                    });
-                                });
+                                                                            //$('#laudo').val(options);
+                                                                            //$('#laudo').html(options).show();
+                                                                            //                                                $('.carregando').hide();
+                                                                            //history.go(0) 
+                                                                        });
+                                                                    } else {
+                                                                        $('#laudo').html('value=""');
+                                                                    }
+                                                                });
+                                                            });
 
-                                $(function(a) {
-                                    $('#anteriores').change(function() {
-                                        if ($(this).val()) {
-                                            //$('#laudo').hide();
-                                            $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function(i) {
-                                                option = "";
+                                                            $(function () {
+                                                                $('#linha').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        //$('#laudo').hide();
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
 
-                                                option = i[0].texto;
-                                                tinyMCE.triggerSave();
-                                                document.getElementById("laudo").value = option
-                                                //$('#laudo').val(options);
-                                                //$('#laudo').html(options).show();
-                                                $('.carregando').hide();
-                                                history.go(0)
-                                            });
-                                        } else {
-                                            $('#laudo').html('value="texto"');
-                                        }
-                                    });
-                                });
-                                //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                                $('.jqte-test').jqte();
+                                                                            options += j[0].texto;
+                                                                            //                                                document.getElementById("laudo").value = $('#laudo').val() + options
+                                                                            $('#laudo').val() + options
+                                                                            var ed = tinyMCE.get('laudo');
+                                                                            ed.setContent($('#laudo').val());
+                                                                            //$('#laudo').html(options).show();
+                                                                        });
+                                                                    } else {
+                                                                        $('#laudo').html('value=""');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#linha2").autocomplete({
+                                                                    source: "<?= base_url() ?>index?c=autocomplete&m=linhas",
+                                                                    minLength: 1,
+                                                                    focus: function (event, ui) {
+                                                                        $("#linha2").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#linha2").val(ui.item.value);
+                                                                        tinyMCE.triggerSave(true, true);
+                                                                        document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                                                                        $('#laudo').val() + ui.item.id
+                                                                        var ed = tinyMCE.get('laudo');
+                                                                        ed.setContent($('#laudo').val());
+                                                                        //$( "#laudo" ).val() + ui.item.id;
+                                                                        document.getElementById("linha2").value = ''
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function (a) {
+                                                                $('#anteriores').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        //$('#laudo').hide();
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                                                            option = "";
+
+                                                                            option = i[0].texto;
+                                                                            tinyMCE.triggerSave();
+                                                                            document.getElementById("laudo").value = option
+                                                                            //$('#laudo').val(options);
+                                                                            //$('#laudo').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                            history.go(0)
+                                                                        });
+                                                                    } else {
+                                                                        $('#laudo').html('value="texto"');
+                                                                    }
+                                                                });
+                                                            });
+                                                            //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+                                                            $('.jqte-test').jqte();
 
 
 

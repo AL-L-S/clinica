@@ -659,3 +659,6 @@ ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN data_atualizacao timestamp witho
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN operador_atualizacao integer;
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN conta_id integer;
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN ajuste numeric(10,2);
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN dia_receber integer;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN tempo_receber integer;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN credor_devedor integer;
