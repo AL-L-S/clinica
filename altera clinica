@@ -662,3 +662,19 @@ ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN ajuste numeric(10,2);
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN dia_receber integer;
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN tempo_receber integer;
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN credor_devedor integer;
+
+
+atualiza 06/10/2016
+
+
+CREATE TABLE ponto.tb_chat_mensagens
+(
+  chat_mensagens_id serial NOT NULL,
+  mensagem character varying(300),
+  operador_origem integer,
+  operador_destino integer,
+  data_envio timestamp without time zone,
+  visualizada boolean NOT NULL DEFAULT false,
+  ativo boolean NOT NULL DEFAULT true,
+  CONSTRAINT tb_chat_mensagens_pkey PRIMARY KEY (chat_mensagens_id )
+)
