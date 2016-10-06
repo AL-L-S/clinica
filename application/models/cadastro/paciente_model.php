@@ -217,14 +217,12 @@ class paciente_model extends BaseModel {
                 $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
             }
             if ($_POST['nascimento'] != '') {
-                $this->db->set('nascimento', substr($_POST['nascimento'], 6, 4) . '-' . substr($_POST['nascimento'], 3, 2) . '-' . substr($_POST['nascimento'], 0, 2));
+                $this->db->set('nascimento', $_POST['nascimento']);
             }
             if ($_POST['data_emissao'] != '') {
-                $this->db->set('data_emissao', substr($_POST['data_emissao'], 6, 4) . '-' . substr($_POST['data_emissao'], 3, 2) . '-' . substr($_POST['data_emissao'], 0, 2));
+                $this->db->set('data_emissao', $_POST['data_emissao']);
             }
-            if ($_POST['idade'] != '') {
-                $this->db->set('idade', $_POST['idade']);
-            }
+
             if ($_POST['convenio'] != '') {
                 $this->db->set('convenio_id', $_POST['convenio']);
             }
@@ -236,7 +234,7 @@ class paciente_model extends BaseModel {
             $this->db->set('uf_rg', $_POST['uf_rg']);
             $this->db->set('titulo_eleitor', $_POST['titulo_eleitor']);
             $this->db->set('sexo', $_POST['sexo']);
-            if ($_POST['estado_civil_id'] != '') {
+            if ($_POST['raca_cor'] != '') {
                 $this->db->set('raca_cor', $_POST['raca_cor']);
             }
             if ($_POST['estado_civil_id'] != '') {
@@ -264,6 +262,7 @@ class paciente_model extends BaseModel {
             $this->db->set('cep', $_POST['cep']);
 
             $horario = date("Y-m-d H:i:s");
+            $data = date("Y-m-d");
             $operador_id = $this->session->userdata('operador_id');
 
             $dia = substr($horario, 8, 2);
@@ -274,7 +273,7 @@ class paciente_model extends BaseModel {
             // $this->db->set('paciente_id',$_POST['txtPacienteId'] );
 
             if ($_POST['paciente_id'] == "") {// insert
-                $this->db->set('data_cadastro', $dataatual);
+                $this->db->set('data_cadastro', $data);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_paciente');
                 $erro = $this->db->_error_message();
@@ -285,7 +284,7 @@ class paciente_model extends BaseModel {
             }
             else { // update
                 $paciente_id = $_POST['paciente_id'];
-                $this->db->set('data_atualizacao', $dataatual);
+                $this->db->set('data_atualizacao', $data);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('paciente_id', $paciente_id);
                 $this->db->update('tb_paciente');
