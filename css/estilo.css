@@ -58,13 +58,43 @@ div .mensagem {
     float:left;
 }
 
+
+/* Icone de batepapo */
+
+.batepapo_div{
+    width: 50px;
+    height: 30px;
+    display: block;
+    float: right;
+}
+.batepapo_div a{ text-decoration: none;}
+
+.total_mensagens{
+    color: red;
+    text-decoration: none;
+    padding: 1px;
+    border-radius: 10%;
+    font-weight: bolder;
+    font-size: 11px;
+    border: 1px solid rgba(200, 20, 20,.5);
+}
+
+a#contatos_chat_lista img{
+    width: 30px;
+    height: 30px;
+    display: block;
+    float: right;
+}
+
+/* Fim do Icone de Batepapo*/
+
 /* Início do Login */
 #login{
     color: #333;
     background: #f3f3f3 url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png");
     /* background: #f3f3f3 url("images/ui-bg_highlight-soft_75_ffe45c_1x100.png"); */
     width:300px;
-    height:60px;
+    height:65px;
     float:right;
     margin-right:5px;
     margin-left:5px;
@@ -73,6 +103,7 @@ div .mensagem {
     padding: 2px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
+    
 }
 #login_controles{
     float: right;

@@ -1,0 +1,176 @@
+
+
+#principalChat {margin: 0px; padding: 0px; border-radius: 0 5px 5px 0;border: 1px solid #ccc;}
+
+/* ESTILIZANDO A BARRA DE USUARIOS */
+
+#usuarios_online{
+    position: absolute;
+    top: 80px;
+    right: 10px;
+    width: 305px;
+    max-height: 60%;
+    background-color: #eee; 
+    background: linear-gradient(to right, #aaa, #eee 30%);
+    border-left: 1px solid #999;
+    border-bottom: 1px solid #999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0px; 
+    padding: 0px;
+    border-radius: 0 0 5px 5px;
+    z-index: 10;
+}
+
+aside ul{ list-style: none;margin: 0px; padding: 0px;}
+
+#usuarios_online ul li{
+    float: left;
+    width: 95%;
+    border: 1px solid transparent;
+    margin: 0;
+    padding: 5px;
+    margin-left: -1px;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,.1); 
+    border-radius: 5px;
+}
+
+#usuarios_online ul li:hover{ 
+    border: 1px solid #aaa;
+    background: linear-gradient(to right, #ccc, #fff 70%);
+}
+
+#usuarios_online ul li a{
+    text-decoration: none;
+    float: left;
+    width: 70%;
+    font: 16px Tahoma, arial, helvetica;
+    color: #555;
+    line-height: 40px;
+    margin: 0px; padding: 0px;
+    margin-left: 10px;
+}
+
+.imgPerfil{
+    margin: 0px; padding: 0px;
+    float: left;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.imgPerfil img{ width: 100%; height: 100%; margin: 0px; padding: 0px;}
+
+.status{
+    position: absolute;
+    right: 8px;
+    top: 40%;
+    width: 10px;
+    height: 10px;
+    margin: 0px; padding: 0px;
+    border-radius: 50%;
+    background-color: #666; 
+}
+.status.off{background-color: #ccc;}
+.status.on{background-color: #090;}
+
+
+/* ESTILIZANDO OS CHATS */
+
+#chats{
+    position: absolute;
+    bottom: 26px;
+    left: 0;
+    width: 80%;
+    height: auto;
+    margin: 0px; padding: 0px;
+}
+
+.janela_chat{
+    z-index: 9;
+    float: left;
+    width: 270px;
+    height: auto;
+    margin: 0px; padding: 0px;
+    margin-left: 15px;
+    border-radius: 4px;
+    border: 1px solid #999;
+}
+
+.janela_chat .cabecalho_janela_chat{
+    float: left;
+    height: 25px;
+    background: #00ace6;
+    width: 100%;
+    margin: 0px; padding: 0px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+}
+
+.fechar{
+    margin-top: 2px;
+    text-decoration: none;
+    float: left;
+    font: 16px Tahoma, arial;
+    color: white;
+    padding: 0 10px 0 10px;
+} 
+
+.janela_chat .cabecalho_janela_chat .nome_chat{font-size: 16px; color: white;float: left; margin-top: 2px;}
+
+.janela_chat .corpo_janela_chat{ float: left; width: 100%; }
+
+.mensagens_chat {
+    float: left; 
+    width: 100%; 
+    background: #ebebeb;
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
+    height: 260px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.mensagens_chat ul{ float: left; width: 100%; }
+
+.mensagens_chat ul li{ 
+    float: right; 
+    width: 80%;
+    background: linear-gradient(to bottom, #fff, #aaa 130%);
+    border: 1px solid #999;
+    border-radius: 5px;
+    position: relative;
+    padding: 3px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.mensagens_chat ul li.eu{float: left; background: #a4e9ff}
+.mensagens_chat ul li .imgPerfil{ 
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    left: -45px;
+    top: 15%;
+
+}
+
+.mensagens_chat ul li p{font: 13px tahoma, arial; color: #444}
+
+.janela_chat .corpo_janela_chat .enviar_mensagens_chat{
+    float: left;
+    width: 99%;
+    position: relative;
+    border: 1px solid #999;
+    border-left: 2px solid #999;
+    border-right: 2px solid #999;
+}
+
+.janela_chat .corpo_janela_chat .enviar_mensagens_chat input{
+    float: left;
+    width: 100%;
+    outline: none;
+    border: 1px solid rgba(0,0,0,.2);
+}

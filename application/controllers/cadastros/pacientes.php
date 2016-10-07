@@ -218,8 +218,8 @@ class pacientes extends BaseController {
     }
 
     function procedimentoautorizarfisioterapia($paciente_id) {
-        $lista = $this->exame->autorizarsessaofisioterapia($paciente_id);
-        if (count($lista) == 0) {
+//        $lista = $this->exame->autorizarsessaofisioterapia($paciente_id);
+//        if (count($lista) == 0) {
             $data['paciente_id'] = $paciente_id;
             $data['salas'] = $this->exame->listarsalastotal();
             $data['convenio'] = $this->convenio->listardados();
@@ -229,11 +229,11 @@ class pacientes extends BaseController {
             $data['procedimento'] = $this->procedimento->listarprocedimentos();
             $data['exames'] = $this->exametemp->listaragendaspacientefisioterapia($paciente_id);
             $this->loadView('ambulatorio/procedimentoautorizarfisioterapia-form', $data);
-        } else {
-            $data['mensagem'] = 'Paciente com sessões pendentes.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
-        }
+//        } else {
+//            $data['mensagem'] = 'Paciente com sessões pendentes.';
+//            $this->session->set_flashdata('message', $data['mensagem']);
+//            redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
+//        }
     }
 
     function procedimentoautorizaratendimento($paciente_id) {
