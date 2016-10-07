@@ -133,6 +133,25 @@ function debug($object) {
                         success: function (retorno) {
                             jQuery.each(retorno, function (i, msg) {
                                 if (jQuery('#janela_' + msg.janela).length > 0) {
+                                    
+                                    if(msg.mensagem.length > 26){
+                                        var texto = "";
+                                        var inicio = 0;
+                                        var fim = 25;
+                                        var br = "<br>";
+                                        
+                                        for (var n = 0; n < msg.mensagem.length; n++){
+                                            if(n == fim){
+                                                texto += msg.mensagem.substring(inicio,fim);
+                                                texto += br;
+                                                inicio = fim;
+                                                fim += 25;
+                                            }
+                                        } 
+                                        
+                                        msg.mensagem = texto;
+                                    }
+                                    
                                     if (operadorOrigem == msg.id_origem) {
                                         jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
                                     } else {
@@ -141,7 +160,7 @@ function debug($object) {
                                 }
                             });
                             var altura = jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").height();
-                            jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: altura}, '500');
+                            jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
                 }
@@ -531,7 +550,7 @@ function debug($object) {
                 <li><span class="file"><a onclick="javascript: return confirm('Deseja realmente sair da aplicação?');"
                                           href="<?= base_url() ?>login/sair">Sair</a></span>
                 </li>
-            </ul>
+            </ul>                       
             <!-- Fim da Barra Lateral -->
         </div>
         <div class="mensagem"><?
@@ -569,7 +588,7 @@ function debug($object) {
                 });
                 
                 jQuery("#principalChat #usuarios_online").on("mouseleave", function(){
-                    $("#principalChat #usuarios_online ul li").toggle(100);
+                    $("#principalChat #usuarios_online ul li").remove();
                 });
             });
             
@@ -664,15 +683,34 @@ function debug($object) {
                                         if (jQuery("#janela_" + msg.janela).length > 0) {
 
                                             if (jQuery("#janela_" + msg.janela + " .mensagens_chat ul li#" + msg.chat_id).length == 0 && msg.janela > 0) {
+                                                
+                                                if(msg.mensagem.length > 26){
+                                                    var texto = "";
+                                                    var inicio = 0;
+                                                    var fim = 25;
+                                                    var br = "<br>";
+
+                                                    for (var n = 0; n < msg.mensagem.length; n++){
+                                                        if(n == fim){
+                                                            texto += msg.mensagem.substring(inicio,fim);
+                                                            texto += br;
+                                                            inicio = fim;
+                                                            fim += 25;
+                                                        }
+                                                    } 
+
+                                                    msg.mensagem = texto;
+                                                }
+                                                
                                                 if (operadorOrigem == msg.id_origem) {
                                                     jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
                                                 } else {
                                                     jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><div class='imgPerfil'></div><p>" + msg.mensagem + "</p></li>");
-
                                                 }
                                             }
+                                            
                                             jQuery.ajax({
-                                                url: "<?= base_url(); ?>" + "batepapo/atualizamensagens",
+                                                url: "<?= base_url(); ?>" + "batepapo/visualizacontatoaberto",
                                                 type: "GET",
                                                 data: 'operador_destino='+msg.janela,
                                                 success: function(){
@@ -683,7 +721,7 @@ function debug($object) {
                                     });
 
                                     var altura = jQuery(".corpo_janela_chat .mensagens_chat").height();
-                                    jQuery(".corpo_janela_chat .mensagens_chat").animate({scrollTop: altura}, '500');
+                                    jQuery(".corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                                 }
                             }
                         },
@@ -700,7 +738,7 @@ function debug($object) {
                     setInterval(function () {
                         verifica(0, 0,<? echo $operador_id   ?>);
                         mensagensnaolidas();
-                    }, 2500);
+                    }, 3000);
                 }
 
                 buscamensagens();

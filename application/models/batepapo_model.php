@@ -35,6 +35,17 @@ class batepapo_model extends BaseModel {
     }
     
     
+    function atualizamensagensvisualizadas($destino) {
+        $operador_id = $this->session->userdata('operador_id');
+
+        
+        $this->db->set('visualizada', 't');
+        $this->db->where('operador_origem', $destino);
+        $this->db->where('operador_destino', $operador_id);
+        $this->db->where('ativo', 't');
+        $this->db->update('tb_chat_mensagens');
+    }
+    
     function visualizacontatoaberto($destino) {
         $operador_id = $this->session->userdata('operador_id');
 
@@ -42,6 +53,7 @@ class batepapo_model extends BaseModel {
         $this->db->set('visualizada', 't');
         $this->db->where('operador_origem', $destino);
         $this->db->where('operador_destino', $operador_id);
+        $this->db->where('ativo', 't');
         $this->db->update('tb_chat_mensagens');
     }
     
@@ -63,7 +75,8 @@ class batepapo_model extends BaseModel {
         $sql = "SELECT * ";
         $sql .= "FROM ponto.tb_chat_mensagens WHERE (ativo = 't') AND ";
         $sql .= "((operador_origem = " . $_GET['operador_origem'] . " AND operador_destino = " . $_GET['operador_destino'] . ") OR ";
-        $sql .= "(operador_origem = " . $_GET['operador_destino'] . " AND operador_destino = " . $_GET['operador_origem'] . "))";
+        $sql .= "(operador_origem = " . $_GET['operador_destino'] . " AND operador_destino = " . $_GET['operador_origem'] . ")) ";
+        $sql .= " ORDER BY chat_mensagens_id";
 
         $return = $this->db->query($sql);
         return $return->result();
@@ -100,10 +113,9 @@ class batepapo_model extends BaseModel {
     }
 
     function enviarmensagem() {
-//        $horario = date("Y-m-d H:i:s");
+        $horario = date("Y-m-d H:i:s");
 //        $limite = date(" Y-m-d H:i:s", strtotime('+2 min'));
         $mensagem = utf8_encode($_GET['mensagem']);
-//        die($mensagem);
 
         //salvando mensagem no banco
         $this->db->set('mensagem', $mensagem);
