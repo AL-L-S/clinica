@@ -93,12 +93,16 @@
                             $date_time = new DateTime($dataAtual);
                             $diff = $date_time->diff(new DateTime($dataFuturo));
                             $teste = $diff->format('%d');
+                            
+                            $ano_atual = date("Y");
+                            $ano_nascimento = substr($item->nascimento, 0, 4);
+                            $idade = $ano_atual - $ano_nascimento;
 
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><?= $item->idade; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><?= $idade; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="130px;"><?= substr($item->medico, 0, 18); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->situacao; ?></td>

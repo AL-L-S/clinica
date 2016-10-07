@@ -113,7 +113,7 @@
                                 <?if($item->situacao != 'FINALIZADO'){?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->situacao ; ?></td>
                         <?}else{?>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->situacao . '<br>' . substr($item->data_atualizacao, 10, 8); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->situacao . '<br>' . substr($item->data_atualizacao, 8 , 2) .'/'. substr($item->data_atualizacao, 5 , 2) . '/' . substr($item->data_atualizacao, 0 , 4) . '<br>' . substr($item->data_atualizacao, 10 , 8); ?></td>
                         <?}?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
         <!--                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->medicorevisor; ?></td>

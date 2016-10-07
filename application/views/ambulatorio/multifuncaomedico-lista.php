@@ -155,7 +155,7 @@
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente; ?></td>
                                 <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data_atualizacao, 8, 2) . "/" . substr($item->data_atualizacao, 5, 2) . "/" . substr($item->data_atualizacao, 0, 4); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="120px;"><?= $item->sala; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>

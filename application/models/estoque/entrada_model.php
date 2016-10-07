@@ -348,11 +348,15 @@ class entrada_model extends Model {
             ef.fantasia,
             es.quantidade,
             es.valor_compra,
-            ep.descricao as produto');
+            ep.descricao as produto,
+            u.descricao as unidade,
+            es.data_atualizacao,
+            es.data_cadastro');
         $this->db->from('tb_estoque_entrada es');
         $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
         $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = es.produto_id', 'left');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = ep.unidade_id', 'left');
         $this->db->where("es.data_cadastro >=", $datahorainicio);
         $this->db->where("es.data_cadastro <=", $datahorafim);
         $this->db->where('es.ativo', 'true');
@@ -421,7 +425,10 @@ class entrada_model extends Model {
             es.data_cadastro,
             ec.nome,
             es.valor_venda,
-            ep.descricao as produto');
+            ep.descricao as produto,
+            u.descricao as unidade,
+            e.data_atualizacao,
+            e.data_cadastro data_entrada');
         $this->db->from('tb_estoque_saida es');
         $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
         $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
@@ -429,6 +436,8 @@ class entrada_model extends Model {
         $this->db->join('tb_estoque_solicitacao_itens esi', 'esi.estoque_solicitacao_itens_id = es.estoque_solicitacao_itens_id', 'left');
         $this->db->join('tb_estoque_solicitacao_cliente sc', 'sc.estoque_solicitacao_setor_id = esi.solicitacao_cliente_id', 'left');
         $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = sc.cliente_id', 'left');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = ep.unidade_id', 'left');
+        $this->db->join('tb_estoque_entrada e', 'e.estoque_entrada_id = es.estoque_entrada_id', 'left');
         $this->db->where("es.data_cadastro >=", $datahorainicio);
         $this->db->where("es.data_cadastro <=", $datahorafim);
         $this->db->where('es.ativo', 'true');
