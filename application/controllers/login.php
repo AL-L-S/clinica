@@ -35,7 +35,7 @@ class Login extends Controller {
                 $this->carregarView($data);
             }
         } else {
-            $data['mensagem'] = $this->mensagem->getMensagem('login006');
+            $data['mensagem'] = $this->mensagem->getMensagem('Navegador n&atilde;o suportado. Utilize o Firefox.');
             $this->carregarView($data);
         }
     }
