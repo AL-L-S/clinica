@@ -450,7 +450,7 @@ class CI_Session {
      * @return	void
      */
     function set_flashdata($newdata = array(), $newval = '') {
-        if (is_string($newdata)) {
+        if (is_string($newdata)) {                  
             $newdata = array($newdata => $newval);
         }
 

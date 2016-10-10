@@ -5030,6 +5030,40 @@ ORDER BY ae.agenda_exames_id)";
         return $return->result();
     }
 
+    function verificasessoesabertas($procedimento_convenio_id) {
+        $this->db->select('pt.grupo,
+                            c.nome');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
+        $return = $this->db->get();
+        $x = $return->result();
+        $especialidade = $x[0]->grupo;
+
+        if ($x[0]->nome != 'PARTICULAR') {
+            $this->db->select('confirmado , agenda_exames_id');
+            $this->db->from('tb_agenda_exames');
+            $this->db->where('tipo', $especialidade);
+//            $this->db->where('ae.tipo', 'FISIOTERAPIA');
+            $this->db->where('ativo', 'false');
+            $this->db->where('numero_sessao >=', '1');
+            $this->db->where('realizada', 'false');
+            $this->db->where('confirmado', 'false');
+            $this->db->where('cancelada', 'false');
+            $return = $this->db->get();
+            $result = $return->result();
+
+            if (isset($result)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     function gravarguia($paciente_id) {
         $horario = date("Y-m-d H:i:s");
         $data = date("Y-m-d");
