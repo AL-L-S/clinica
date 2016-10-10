@@ -5177,6 +5177,62 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
             }
+            
+            $this->db->select('ae.agenda_exames_id,
+                            ae.paciente_id,
+                            p.nome as paciente,
+                            p.nascimento,
+                            p.sexo,
+                            ae.agenda_exames_id,
+                            ae.inicio,
+                            c.nome as convenio,
+                            ae.operador_autorizacao,
+                            o.nome as tecnico,
+                            ae.data_autorizacao,
+                            pt.nome as procedimento,
+                            pt.codigo,
+                            ae.guia_id,
+                            pt.grupo,
+                            pc.procedimento_tuss_id');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+            $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
+            $this->db->where('ae.agenda_exames_id', $agenda_exames_id);
+            $query = $this->db->get();
+            $return = $query->result();
+
+
+            $grupo = $return[0]->grupo;
+            if ($grupo == 'RX' || $grupo == 'MAMOGRAFIA') {
+                $grupo = 'CR';
+            }
+            if ($grupo == 'RM') {
+                $grupo = 'MR';
+            }
+
+            $this->db->set('wkl_aetitle', "AETITLE");
+            $this->db->set('wkl_procstep_startdate', str_replace("-", "", date("Y-m-d")));
+            $this->db->set('wkl_procstep_starttime', str_replace(":", "", date("H:i:s")));
+            $this->db->set('wkl_modality', $grupo);
+            $this->db->set('wkl_perfphysname', $return[0]->tecnico);
+            $this->db->set('wkl_procstep_descr', $return[0]->procedimento);
+            $this->db->set('wkl_procstep_id', $return[0]->codigo);
+            $this->db->set('wkl_reqprocid', $return[0]->codigo);
+            $this->db->set('wkl_reqprocdescr', $return[0]->procedimento);
+            $this->db->set('wkl_studyinstuid', $agenda_exames_id);
+            $this->db->set('wkl_accnumber', $agenda_exames_id);
+            $this->db->set('wkl_reqphysician', $return[0]->convenio);
+            $this->db->set('wkl_patientid', $return[0]->paciente_id);
+            $this->db->set('wkl_patientname', $return[0]->paciente);
+            $this->db->set('wkl_patientbirthdate', str_replace("-", "", $return[0]->nascimento));
+            $this->db->set('wkl_patientsex', $return[0]->sexo);
+            $this->db->set('wkl_exame_id', $agenda_exames_id);
+
+            $this->db->insert('tb_integracao');
+
 
             return $agenda_exames_id;
         } catch (Exception $exc) {
