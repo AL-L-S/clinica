@@ -14,6 +14,13 @@
                 Nova Agenda Consulta
             </a>
         </div></th>
+
+        <th > <div class="bt_link_new" style="width: 180px">
+            <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaespecializacao" style="width: 180px">
+                Nova Agenda Especializacao
+            </a>
+        </div></th>
+        
         </tr>
 
 
