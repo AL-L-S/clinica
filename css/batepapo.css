@@ -139,6 +139,8 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
 .mensagens_chat ul li{ 
     float: right; 
     width: 80%;
+    text-align: justify;
+    overflow: hidden;
     background: linear-gradient(to bottom, #fff, #aaa 130%);
     border: 1px solid #999;
     border-radius: 5px;
@@ -147,6 +149,7 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
 .mensagens_chat ul li.eu{float: left; background: #a4e9ff}
 .mensagens_chat ul li .imgPerfil{ 
     position: absolute;
@@ -157,7 +160,7 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
 
 }
 
-.mensagens_chat ul li p{font: 13px tahoma, arial; color: #444}
+.mensagens_chat ul li p{font: 13px tahoma, arial; color: #444; width: 75%; }
 
 .janela_chat .corpo_janela_chat .enviar_mensagens_chat{
     float: left;

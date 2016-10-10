@@ -11,52 +11,52 @@
                 <thead>
                     <tr>
                         <th colspan="5" class="tabela_title">
-                <form method="get" action="<?= base_url() ?>ambulatorio/laudo/pesquisarconsulta">
-                    <tr>
-                        <th class="tabela_title">Salas</th>
-                        <th class="tabela_title">Medico</th>
-                        <th class="tabela_title">Status</th>
-                        <th class="tabela_title">Data</th>
-                        <th colspan="2" class="tabela_title">Nome</th>
-                    </tr>
-                    <tr>
-                        <th class="tabela_title">
-                            <select name="sala" id="sala" class="size1">
-                                <option value=""></option>
-                                <? foreach ($salas as $value) : ?>
-                                    <option value="<?= $value->exame_sala_id; ?>" <?
-                                    if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->nome; ?></option>
-<? endforeach; ?>
-                            </select>
-                        </th>
-                        <th class="tabela_title">
-                            <select name="medico" id="medico" class="size1">
-                                <option value=""></option>
-                                <? foreach ($medicos as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
-<? endforeach; ?>
-                            </select>
-                        </th>
-                        <th class="tabela_title">
-                            <select name="situacao" id="situacao" class="size1" >
-                                <option value='' ></option>
-                                <option value='AGUARDANDO' >AGUARDANDO</option>
-                                <option value='DIGITANDO' >DIGITANDO</option>
-                                <option value='FINALIZADO' >FINALIZADO</option>
-                            </select>
-                        </th>
-                        <th class="tabela_title">
-                            <input type="text"  id="data" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
-                        </th>
-                        <th colspan="2" class="tabela_title">
-                            <input type="text" name="nome" class="texto06 bestupper" value="<?php echo @$_GET['nome']; ?>" />
-                        </th>
-                        <th class="tabela_title">
-                            <button type="submit" id="enviar">Pesquisar</button>
-                        </th>
-                </form>
+                            <form method="get" action="<?= base_url() ?>ambulatorio/laudo/pesquisarconsulta">
+                                <tr>
+                                    <th class="tabela_title">Salas</th>
+                                    <th class="tabela_title">Medico</th>
+                                    <th class="tabela_title">Status</th>
+                                    <th class="tabela_title">Data</th>
+                                    <th colspan="2" class="tabela_title">Nome</th>
+                                </tr>
+                                <tr>
+                                    <th class="tabela_title">
+                                        <select name="sala" id="sala" class="size1">
+                                            <option value=""></option>
+                                            <? foreach ($salas as $value) : ?>
+                                                <option value="<?= $value->exame_sala_id; ?>" <?
+                                                if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
+                                                endif;
+                                                ?>><?php echo $value->nome; ?></option>
+                                                    <? endforeach; ?>
+                                        </select>
+                                    </th>
+                                    <th class="tabela_title">
+                                        <select name="medico" id="medico" class="size1">
+                                            <option value=""></option>
+                                            <? foreach ($medicos as $value) : ?>
+                                                <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
+                                            <? endforeach; ?>
+                                        </select>
+                                    </th>
+                                    <th class="tabela_title">
+                                        <select name="situacao" id="situacao" class="size1" >
+                                            <option value='' ></option>
+                                            <option value='AGUARDANDO' >AGUARDANDO</option>
+                                            <option value='DIGITANDO' >DIGITANDO</option>
+                                            <option value='FINALIZADO' >FINALIZADO</option>
+                                        </select>
+                                    </th>
+                                    <th class="tabela_title">
+                                        <input type="text"  id="data" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
+                                    </th>
+                                    <th colspan="2" class="tabela_title">
+                                        <input type="text" name="nome" class="texto06 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                                    </th>
+                                    <th class="tabela_title">
+                                        <button type="submit" id="enviar">Pesquisar</button>
+                                    </th>
+                            </form>
                 </thead>
             </table>
             <table>
@@ -71,7 +71,7 @@
                         <th class="tabela_header" width="300px;">Procedimento</th>
 <!--                            <th class="tabela_header">M&eacute;dico Revisor</th>
                         <th class="tabela_header">Status Revisor</th>-->
-                        <th class="tabela_header" colspan="2" width="140px;"><center>A&ccedil;&otilde;es</center></th>
+                        <th class="tabela_header" colspan="3" width="140px;"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -95,11 +95,15 @@
                             $diff = $date_time->diff(new DateTime($dataFuturo));
                             $teste = $diff->format('%d');
 
+                            $ano_atual = date("Y");
+                            $ano_nascimento = substr($item->nascimento, 0, 4);
+                            $idade = $ano_atual - $ano_nascimento;
+
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><?= $item->idade; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><?= $idade; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="130px;"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="130px;"><?= substr($item->medico, 0, 18); ?></td>
@@ -107,27 +111,27 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
         <!--                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->medicorevisor; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->situacao_revisor; ?></td>-->
-        <? if (($item->medico_parecer1 == $operador_id && $item->situacao == 'FINALIZADO') || $item->situacao != 'FINALIZADO' || $operador_id == 1) { ?>
+                                <? if (($item->medico_parecer1 == $operador_id && $item->situacao == 'FINALIZADO') || $item->situacao != 'FINALIZADO' || $operador_id == 1) { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaranaminese/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
                                                 Atender</a></div>
                                     </td>
-        <? } else { ?>
+                                <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="40px;"><font size="-2">
                                         <a>Bloqueado</a></font>
                                     </td>
-        <? } ?>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $item->ambulatorio_laudo_id ?>');">
                                             Arquivos</a></div>
                                 </td>
-        <? if ($operador_id == 1) { ?>
+                                <? if ($operador_id == 1) { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                             <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
                                                 Cancelar
                                             </a></div>
                                     </td>
-        <? } ?>
+                                <? } ?>
                             </tr>
 
                         </tbody>
@@ -138,7 +142,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="12">
-<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>
@@ -150,21 +154,21 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
-                                    $(function() {
-                                        $("#data").datepicker({
-                                            autosize: true,
-                                            changeYear: true,
-                                            changeMonth: true,
-                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                            dateFormat: 'dd/mm/yy'
-                                        });
-                                    });
+    $(function () {
+        $("#data").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
 
 
-                                    $(function() {
-                                        $("#accordion").accordion();
-                                    });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 </script>

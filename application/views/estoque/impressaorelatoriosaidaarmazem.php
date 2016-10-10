@@ -19,7 +19,7 @@
             }
             ?>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">SALDO PRODUTOS</th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">SAÍDA PRODUTOS</th>
             </tr>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
@@ -68,17 +68,21 @@
     <? if ($contador > 0) {
         ?>
 
-        <table>
+        <table border="1px">
             <thead>
                 <tr>
-                    <td class="tabela_teste"><font size="-2">Data</th>
-                    <td class="tabela_teste"><font size="-2">Setor</th>
-                    <td class="tabela_teste"><font size="-2">Produto</th>
-                    <td class="tabela_teste"><font size="-2">QTDE</th>
-                    <td class="tabela_teste"><font size="-2">Valor</th>
-                    <td class="tabela_teste"><font size="-2">Fonnecedor</th>
-                    <td class="tabela_teste"><font size="-2">Validade</th>
-                    <td class="tabela_teste"><font size="-2">Nota</th>
+
+                    <td class="tabela_teste"><font size="-2">Setor</td>
+                    <td class="tabela_teste"><font size="-2">Produto</td>
+                    <td class="tabela_teste"><font size="-2">Unidade</td>
+                    <td class="tabela_teste"><font size="-2">QTDE</td>
+                    <td class="tabela_teste"><font size="-2">Valor</td>
+                    <td class="tabela_teste"><font size="-2">Fonnecedor</td>
+                    <td class="tabela_teste"><font size="-2">Validade</td>
+                    <td class="tabela_teste"><font size="-2">Nota</td>
+                    <td class="tabela_teste"><font size="-2">Data</td>
+                    <td class="tabela_teste"><font size="-2">Data Entrada</td>
+
                 </tr>
             </thead>
             <hr>
@@ -102,14 +106,17 @@
                             </tr>
                         <? } ?>
                         <tr>
-                            <td><font size="-2"><?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->nome); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
+                            <td><font size="-2"><?= utf8_decode($item->unidade); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_venda, 2, ",", "."); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>
+                            <td><font size="-2"><?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
+                            <td style='text-align: right;'><font size="-2"><?= substr($item->data_entrada, 8, 2) . '/' . substr($item->data_entrada, 5, 2) . '/' . substr($item->data_entrada, 0, 4); ?></td>
+
                         </tr>
 
 
@@ -131,12 +138,14 @@
                             <td colspan="8"><font size="-2"><b>Armazem:&nbsp;<?= utf8_decode($item->armazem); ?></b></td>
                         </tr>
                         <tr>
-                            <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
+                            <td><font size="-2"><?= utf8_decode($item->unidade); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_venda, 2, ",", "."); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>
+                            <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                            <td style='text-align: right;'><font size="-2"><?= substr($item->data_entrada, 8, 2) . '/' . substr($item->data_entrada, 5, 2) . '/' . substr($item->data_entrada, 0, 4); ?></td>
                         </tr>
                         <?
                     }
@@ -172,7 +181,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
