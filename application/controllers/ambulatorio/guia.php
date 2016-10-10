@@ -669,11 +669,11 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentosfisioterapia() {
-        
+
         $i = 1;
         $paciente_id = $_POST['txtpaciente_id'];
         $resultadoguia = $this->guia->listarguia($paciente_id);
-        
+
         //verifica se existem sessões abertas
         $retorno = $this->guia->verificasessoesabertas($_POST['procedimento1']);
         if ($retorno == false) {
@@ -1365,6 +1365,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriomedicoconvenio', $data);
     }
 
@@ -1372,6 +1373,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriorecepcaomedicoconvenio', $data);
     }
 
@@ -1379,6 +1381,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatorioconvenioquantidade', $data);
     }
 
@@ -1774,6 +1777,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
         $data['tecnicos'] = $this->operador_m->listartecnicos();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatorioatendenteconvenio', $data);
     }
 
