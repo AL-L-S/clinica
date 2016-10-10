@@ -271,6 +271,7 @@ class Exametemp extends BaseController {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['consultas'] = $this->exametemp->listaragendasconsultapaciente($agenda_exames_id);
+        
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/fisioterapiapaciente-form', $data);
     }
@@ -396,6 +397,14 @@ class Exametemp extends BaseController {
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
         } else {
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
+            
+            if (isset($_POST['sessao'])){
+                echo "<pre>";
+                $data['agenda_selecionada'] = $this->exametemp->listaagendafisioterapia($agenda_exames_id);
+                $data['horarios_livres'] = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0]);
+                var_dump($data['horarios_livres']); die;
+            }
+            die("fora do if");
             $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
             $this->carregarpacientefisioterapiatemp($paciente_id);
         }

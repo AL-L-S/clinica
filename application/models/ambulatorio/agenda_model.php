@@ -34,6 +34,14 @@ class agenda_model extends Model {
         return $return->result();
     }
 
+    function listarespecialidades() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome');
+        $this->db->from('tb_ambulatorio_grupo');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocomplete($parametro = null) {
         $this->db->select('agenda_id,
                             nome');
