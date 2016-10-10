@@ -515,7 +515,7 @@ class Exametemp extends BaseController {
         if ((trim($_POST['txtNome']) == "") || ($_POST['convenio1'] == "-1")) {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente e Convenio.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            redirect(base_url() . "ambulatorio/exametemp/novopaciente");
         } else {
             $pacientetemp_id = $this->exametemp->gravarexameencaixe();
             $this->carregarpacientetemp($pacientetemp_id);
