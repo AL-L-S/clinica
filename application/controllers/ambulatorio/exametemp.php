@@ -395,23 +395,30 @@ class Exametemp extends BaseController {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            
         } else {
+            
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
             
             if (isset($_POST['sessao'])){
-                echo "<pre>";
                 $data['agenda_selecionada'] = $this->exametemp->listaagendafisioterapia($agenda_exames_id);
                 $data['horarios_livres'] = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0]);
+                
                 $tothorarios = count($data['horarios_livres']);
                 $_POST['sessao'] = (int) $_POST['sessao']; 
-            }
-            
-            if(isset($_POST['sessao']) && $tothorarios < $_POST['sessao']){
                 
-                $data['mensagem'] = "Não há horarios suficientes na agenda para o numero de sessoes escolhido";
-                $this->session->set_flashdata('message', $data['mensagem']);
-                redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+                if( $tothorarios < $_POST['sessao'] ){
+                    $data['mensagem'] = "Não há horarios suficientes na agenda para o numero de sessoes escolhido";
+                    $this->session->set_flashdata('message', $data['mensagem']);
+                    redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+                }
+                 
+                for($i = 0; $i < $_POST['sessao']; $i++){
+                    $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id);
+                }
                 
+                $this->carregarpacientefisioterapiatemp($paciente_id);
+
             } else {
                 $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
                 $this->carregarpacientefisioterapiatemp($paciente_id);

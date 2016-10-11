@@ -504,6 +504,7 @@ class exame_model extends Model {
                             ae.data_autorizacao,
                             ae.ativo,
                             ae.numero_sessao,
+                            ae.qtde_sessao,
                             ae.situacao,
                             ae.guia_id,
                             ae.data_atualizacao,
