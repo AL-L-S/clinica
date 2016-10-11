@@ -402,11 +402,20 @@ class Exametemp extends BaseController {
                 echo "<pre>";
                 $data['agenda_selecionada'] = $this->exametemp->listaagendafisioterapia($agenda_exames_id);
                 $data['horarios_livres'] = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0]);
-                var_dump($data['horarios_livres']); die;
+                $tothorarios = count($data['horarios_livres']);
+                $_POST['sessao'] = (int) $_POST['sessao']; 
             }
-            die("fora do if");
-            $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
-            $this->carregarpacientefisioterapiatemp($paciente_id);
+            
+            if(isset($_POST['sessao']) && $tothorarios < $_POST['sessao']){
+                
+                $data['mensagem'] = "Não há horarios suficientes na agenda para o numero de sessoes escolhido";
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+                
+            } else {
+                $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
+                $this->carregarpacientefisioterapiatemp($paciente_id);
+            }
         }
     }
 
