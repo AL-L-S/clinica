@@ -521,10 +521,11 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexameencaixe() {
-        if ((trim($_POST['txtNome']) == "") || ($_POST['convenio1'] == "-1")) {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente e Convenio.';
+        if (trim($_POST['txtNome']) == "" || $_POST['convenio1'] == "-1") {
+            $data['mensagem'] = 'Erro. Obrigatório Convenio e nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopaciente");
+//            redirect(base_url() . "ambulatorio/exametemp/novopaciente");
+            redirect(base_url() . "ambulatorio/exametemp/novopacienteexameencaixe");
         } else {
             $pacientetemp_id = $this->exametemp->gravarexameencaixe();
             $this->carregarpacientetemp($pacientetemp_id);

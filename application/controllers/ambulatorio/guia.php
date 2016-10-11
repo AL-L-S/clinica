@@ -692,7 +692,7 @@ class Guia extends BaseController {
             redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
         } else {
             $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            $messagem = 'Nao autorizado, sessoes abertas para essa especialidade';
+            $messagem = 'Nao autorizado, existem sessões abertas para essa especialidade';
             $this->session->set_flashdata('message', $messagem);
             redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia");
         }
