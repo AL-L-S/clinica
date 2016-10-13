@@ -52,6 +52,20 @@ class procedimentoplano_model extends Model {
         return $this->db;
     }
 
+    function listarautocompleteformapagamento($args = array()) {
+        $this->db->select('forma_pagamento_id,
+                           nome');
+        $this->db->from('tb_forma_pagamento');
+        $this->db->where("ativo", 't');
+        
+        if (isset($args['txtpagamento']) && strlen($args['txtpagamento']) > 0) {
+            $this->db->where('nome ilike', "%" . $args['txtpagamento'] . "%");
+        }
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprocedimentopercentual($args = array()) {
         $this->db->select('pm.procedimento_percentual_medico_id,
                             pm.procedimento_tuss_id,
@@ -232,6 +246,36 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function gravarformapagamentoprocedimento() {
+
+        //verifica se esse medico já está cadastrado nesse procedimento 
+        $this->db->select('procedimento_convenio_pagamento_id');
+        $this->db->from('tb_procedimento_convenio_pagamento');
+        $this->db->where('procedimento_convenio_id', $_POST['procedimento_convenio_id']);
+        $this->db->where('forma_pagamento_id', $_POST['txtpagamentoid']);
+        $return = $this->db->get();
+        $result = $return->result();
+        
+        if($result != NULL){            
+            return 2;
+        }
+
+        if ($result == NULL) {
+            try {
+                $this->db->set('procedimento_convenio_id', $_POST['procedimento_convenio_id']);
+                $this->db->set('forma_pagamento_id', $_POST['txtpagamentoid']);
+                $this->db->insert('tb_procedimento_convenio_pagamento');
+
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return 0;
+                else
+                    return 1;
+            } catch (Exception $exc) {
+                return 0;
+            }
+        } 
+    }
     function gravarnovomedico($procedimento_percentual_medico_id) {
 
         //verifica se esse medico já está cadastrado nesse procedimento 

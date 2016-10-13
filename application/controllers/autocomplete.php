@@ -465,6 +465,22 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoformapagamento() {
+
+        if (isset($_GET['txtpagamento'])) {
+            $result = $this->procedimentoplano->listarautocompleteformapagamento($_GET['txtpagamento']);
+        } else {
+            $result = $this->procedimentoplano->listarautocompleteformapagamento();
+        }
+//        var_dump($result); die;
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nome;
+            $retorno['id'] = $item->forma_pagamento_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function procedimentoconvenioconsulta() {
 
         if (isset($_GET['convenio1'])) {
