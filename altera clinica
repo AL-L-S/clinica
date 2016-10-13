@@ -678,3 +678,16 @@ CREATE TABLE ponto.tb_chat_mensagens
   ativo boolean NOT NULL DEFAULT true,
   CONSTRAINT tb_chat_mensagens_pkey PRIMARY KEY (chat_mensagens_id )
 )
+
+
+
+
+atualiza 13/10/2016
+
+CREATE TABLE ponto.tb_procedimento_convenio_pagamento
+(
+  procedimento_convenio_pagamento_id serial NOT NULL,
+  procedimento_convenio_id integer,
+  forma_pagamento_id integer,
+  CONSTRAINT tb_procedimento_convenio_pagamento_pkey PRIMARY KEY (procedimento_convenio_pagamento_id)
+);

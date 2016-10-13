@@ -50,7 +50,7 @@
                         <th class="tabela_header">Grupo</th>
                         <th class="tabela_header">codigo</th>
                         <th class="tabela_header">Valor</th>
-                        <th class="tabela_header" colspan="2">Detalhes</th>
+                        <th class="tabela_header" colspan="3"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
@@ -78,15 +78,20 @@
 
 
 
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                     <a onclick="javascript: confirm('Deseja realmente excluir o procedimento'); window.open('<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>');"
                                        >Excluir
                                     </a>
 <!--                                    href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id; ?>"-->
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> 
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"> 
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/<?= $item->procedimento_convenio_id ?>');">
                                         Editar
+                                    </a>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoformapagamento/<?= $item->procedimento_convenio_id ?>');">
+                                        Pagamento
                                     </a>
                                 </td>
                             </tr>
@@ -98,7 +103,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="7">
+                        <th class="tabela_footer" colspan="8">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
