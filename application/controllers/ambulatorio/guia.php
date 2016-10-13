@@ -844,8 +844,8 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/guiaatendimento-form', $data);
     }
 
-    function faturar($agenda_exames_id) {
-        $data['forma_pagamento'] = $this->guia->formadepagamento();
+    function faturar($agenda_exames_id , $procedimento_convenio_id) {
+        $data['forma_pagamento'] = $this->guia->formadepagamentoprocedimento($procedimento_convenio_id);
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['valor'] = 0.00;
@@ -913,7 +913,7 @@ class Guia extends BaseController {
     }
 
     function faturarguia($guia_id) {
-        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id);
         $data['exame'] = $this->guia->listarexameguia($guia_id);
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;

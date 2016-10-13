@@ -3585,6 +3585,40 @@ ORDER BY p.nome";
         return $return->result();
     }
 
+    function formadepagamentoprocedimento($procedimento_convenio_id) {
+        $this->db->select('fp.forma_pagamento_id,
+                            fp.nome as nome');
+        $this->db->from('tb_procedimento_convenio_pagamento pp');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
+        $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->orderby('fp.nome');
+        $return = $this->db->get();
+        $retorno = $return->result();
+
+        if (empty($retorno)) {
+            $this->db->select('fp.forma_pagamento_id,
+                            fp.nome as nome');
+            $this->db->from('tb_forma_pagamento fp');
+            $this->db->orderby('fp.nome');
+            $return = $this->db->get();
+            return $return->result();
+        } else {
+            return $retorno;
+        }
+    }
+
+    function formadepagamentoguia($guia_id) {
+        $this->db->select('fp.forma_pagamento_id,
+                            fp.nome');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
+        $this->db->where('ae.guia_id', $guia_id);
+        $this->db->orderby('fp.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function verificamedico($crm) {
         $this->db->select();
         $this->db->from('tb_operador');
@@ -5177,7 +5211,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
             }
-            
+
             $this->db->select('ae.agenda_exames_id,
                             ae.paciente_id,
                             p.nome as paciente,
