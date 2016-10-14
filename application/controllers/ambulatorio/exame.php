@@ -288,6 +288,7 @@ class Exame extends BaseController {
         $data['guia_id'] = $guia_id;
         $data['paciente_id'] = $paciente_id;
         $data['convenios'] = $this->convenio->listarconvenionaodinheiro();
+        $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->login->listar();
         $data['exames'] = $this->exame->listarexamesguia($guia_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
@@ -387,7 +388,7 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/examecancelamento-form', $data);
     }
 
-    function gravarexame() {        
+    function gravarexame() {
         $total = $this->exame->contadorexames();
         if ($total == 0) {
             $laudo_id = $this->exame->gravarexame();
@@ -1473,6 +1474,7 @@ class Exame extends BaseController {
         $b = $lote[0]->lote;
         $zero = '0000000000000000';
         $corpo = "";
+
         if ($modelo == 'cpf') {
             if ($listarexame[0]->grupo != 'CONSULTA') {
 
@@ -1514,9 +1516,12 @@ class Exame extends BaseController {
                     }
 
                     foreach ($listarexames as $item) {
+                        
                         if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                             $i++;
                             $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
+                            $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
+                            $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
                             if ($item->medico == '') {
                                 $medico = 'ADMINISTRADOR';
                             } else {
@@ -1548,6 +1553,8 @@ class Exame extends BaseController {
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
                   <ans:dataAutorizacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataAutorizacao>
+                  <ans:senha>" . $item->autorizacao . "</ans:senha>
+                  <ans:dataValidadeSenha>" . $dataValidadeSenha . "</ans:dataValidadeSenha> 
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>
                      <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
@@ -1622,13 +1629,12 @@ class Exame extends BaseController {
                      <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
-                  </ans:guiaSP-SADT>
-               ";
+                  </ans:guiaSP-SADT>";
                         }
                     }
                     if ($i == 80) {
                         $contador = $contador - $i;
-                        
+
                         $i = 0;
                         $rodape = "   </ans:guiasTISS>
          
@@ -1637,8 +1643,7 @@ class Exame extends BaseController {
    <ans:epilogo>
       <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
    </ans:epilogo>
-</ans:mensagemTISS>
-";
+</ans:mensagemTISS>";
 
                         $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                         $xml = $cabecalho . $corpo . $rodape;
@@ -1650,7 +1655,7 @@ class Exame extends BaseController {
                         $rodape = "";
                     }
                     if ($contador < 80 && $contador == $i) {
-                        
+
                         $i = 0;
                         $rodape = "   </ans:guiasTISS>
          
@@ -1659,8 +1664,7 @@ class Exame extends BaseController {
    <ans:epilogo>
       <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
    </ans:epilogo>
-</ans:mensagemTISS>
-";
+</ans:mensagemTISS>";
                         $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                         $xml = $cabecalho . $corpo . $rodape;
                         $fp = fopen($nome, "w+");
@@ -1699,7 +1703,7 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                 $contador = count($listarexame);
                 foreach ($listarexame as $value) {
-                    $i++;
+                    
                     if ($value->convenionumero == '') {
                         $numerodacarteira = '0000000';
                     } else {
@@ -1754,9 +1758,7 @@ class Exame extends BaseController {
                         <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
                     </ans:procedimento>
                 </ans:dadosAtendimento>
-            </ans:guiaConsulta>                     
-
-";
+            </ans:guiaConsulta>";
                     if ($i == 80) {
                         $contador = $contador - $i;
                         $b++;
@@ -1767,8 +1769,7 @@ class Exame extends BaseController {
 <ans:epilogo>
 <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
 </ans:epilogo>
-</ans:mensagemTISS>
-";
+</ans:mensagemTISS>";
 
                         $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                         $xml = $cabecalho . $corpo . $rodape;
@@ -1789,8 +1790,7 @@ class Exame extends BaseController {
 <ans:epilogo>
 <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
 </ans:epilogo>
-</ans:mensagemTISS>
-";
+</ans:mensagemTISS>";
                         $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                         $xml = $cabecalho . $corpo . $rodape;
                         $fp = fopen($nome, "w+");
@@ -1827,9 +1827,8 @@ class Exame extends BaseController {
       <ans:loteGuias>
          <ans:numeroLote>" . $b . "</ans:numeroLote>
             <ans:guiasTISS>";
-                                $contador = count($listarpacienete);
+                $contador = count($listarpacienete);
                 foreach ($listarpacienete as $value) {
-                    
                     if ($value->guiaconvenio == '') {
                         $guianumero = '0000000';
                     } else {
@@ -1845,6 +1844,8 @@ class Exame extends BaseController {
                         if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                             $i++;
                             $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
+                            $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
+                            $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
                             if ($item->medico == '') {
                                 $medico = 'ADMINISTRADOR';
                             } else {
@@ -1876,6 +1877,8 @@ class Exame extends BaseController {
                   <ans:dadosAutorizacao>
                   <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
                   <ans:dataAutorizacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataAutorizacao>
+                  <ans:senha>" . $item->autorizacao . "</ans:senha>
+                  <ans:dataValidadeSenha>" . $dataValidadeSenha . "</ans:dataValidadeSenha> 
                   </ans:dadosAutorizacao>
                   <ans:dadosBeneficiario>
                      <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
@@ -1950,13 +1953,12 @@ class Exame extends BaseController {
                      <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
-                  </ans:guiaSP-SADT>
-               ";
+                  </ans:guiaSP-SADT>";
                         }
                     }
                     if ($i == 80) {
                         $contador = $contador - $i;
-                        
+
                         $i = 0;
                         $rodape = "   </ans:guiasTISS>
          
@@ -1978,7 +1980,7 @@ class Exame extends BaseController {
                         $rodape = "";
                     }
                     if ($contador < 80 && $contador == $i) {
-                        
+
                         $i = 0;
                         $rodape = "   </ans:guiasTISS>
          
@@ -2082,9 +2084,7 @@ class Exame extends BaseController {
                         <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
                     </ans:procedimento>
                 </ans:dadosAtendimento>
-            </ans:guiaConsulta>                     
-
-";
+            </ans:guiaConsulta>";
                     if ($i == 80) {
                         $contador = $contador - $i;
                         $i = 0;

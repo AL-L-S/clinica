@@ -82,7 +82,6 @@
                             <th class="tabela_header">Hora</th>
                             <th class="tabela_header">Sala</th>
                             <th class="tabela_header">Medico</th>
-                            <th class="tabela_header">Qtde</th>
                             <th class="tabela_header">Solicitante</th>
                             <th class="tabela_header">Convenio</th>
                             <th class="tabela_header">Procedimento</th>
@@ -122,7 +121,7 @@
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>" alt="numeromask" value="1" class="texto00"/></td>
+                                
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1"/>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" >
@@ -138,7 +137,7 @@
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>" class="texto01" readonly=""/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>" alt="numeromask" value="1" class="texto00"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>
