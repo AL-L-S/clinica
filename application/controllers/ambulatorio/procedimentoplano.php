@@ -57,6 +57,11 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/procedimentoplano-form', $data);
     }
 
+    function carregarprocedimentoformapagamento($procedimento_convenio_id) {
+        $data["procedimento_convenio_id"] = $procedimento_convenio_id;
+        $this->loadView('ambulatorio/procedimentoformapagamento-form', $data);
+    }
+
     function procedimentopercentualmedico() {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento();
@@ -89,6 +94,19 @@ class Procedimentoplano extends BaseController {
         }
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimento/$procedimento_percentual_medico_id");
+    }
+
+    function gravarformapagamentoprocedimento() {
+        $return = $this->procedimentoplano->gravarformapagamentoprocedimento();
+        if ($return == 1) {
+            $mensagem = 'Sucesso ao gravar Forma de Pagamento.';
+        }if ($return == 0) {
+            $mensagem = 'Erro ao gravar Forma de Pagamento.';
+        }if ($return == 2) {
+            $mensagem = 'Erro: Forma de Pagamento já cadastrado.';
+        }
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimentoplano");
     }
 
     function excluir($procedimentoplano_tuss_id) {

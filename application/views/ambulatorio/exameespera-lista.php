@@ -102,7 +102,10 @@
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examepacientedetalhes/<?= $item->paciente_id; ?>/<?= $item->procedimento_tuss_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id; ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $item->paciente; ?></a></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $teste; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><? echo $item->sala; if(isset($item->numero_sessao)){ 
+                                    echo "<br> SESSAO: " . $item->numero_sessao . "/" . $item->qtde_sessao; 
+                                    
+                                }?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 
                                 <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $item->observacoes; ?></b></td>

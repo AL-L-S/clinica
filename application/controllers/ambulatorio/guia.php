@@ -692,7 +692,7 @@ class Guia extends BaseController {
             redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
         } else {
             $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            $messagem = 'Nao autorizado, sessoes abertas para essa especialidade';
+            $messagem = 'Nao autorizado, existem sessões abertas para essa especialidade';
             $this->session->set_flashdata('message', $messagem);
             redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia");
         }
@@ -844,8 +844,8 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/guiaatendimento-form', $data);
     }
 
-    function faturar($agenda_exames_id) {
-        $data['forma_pagamento'] = $this->guia->formadepagamento();
+    function faturar($agenda_exames_id , $procedimento_convenio_id) {
+        $data['forma_pagamento'] = $this->guia->formadepagamentoprocedimento($procedimento_convenio_id);
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['valor'] = 0.00;
@@ -913,7 +913,7 @@ class Guia extends BaseController {
     }
 
     function faturarguia($guia_id) {
-        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id);
         $data['exame'] = $this->guia->listarexameguia($guia_id);
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;

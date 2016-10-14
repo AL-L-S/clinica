@@ -271,6 +271,7 @@ class Exametemp extends BaseController {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['consultas'] = $this->exametemp->listaragendasconsultapaciente($agenda_exames_id);
+        
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/fisioterapiapaciente-form', $data);
     }
@@ -394,10 +395,34 @@ class Exametemp extends BaseController {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            
         } else {
+            
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
-            $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
-            $this->carregarpacientefisioterapiatemp($paciente_id);
+            
+            if (isset($_POST['sessao'])){
+                $data['agenda_selecionada'] = $this->exametemp->listaagendafisioterapia($agenda_exames_id);
+                $data['horarios_livres'] = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0]);
+                
+                $tothorarios = count($data['horarios_livres']);
+                $_POST['sessao'] = (int) $_POST['sessao']; 
+                
+                if( $tothorarios < $_POST['sessao'] ){
+                    $data['mensagem'] = "Não há horarios suficientes na agenda para o numero de sessoes escolhido";
+                    $this->session->set_flashdata('message', $data['mensagem']);
+                    redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+                }
+                 
+                for($i = 0; $i < $_POST['sessao']; $i++){
+                    $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id);
+                }
+                
+                $this->carregarpacientefisioterapiatemp($paciente_id);
+
+            } else {
+                $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
+                $this->carregarpacientefisioterapiatemp($paciente_id);
+            }
         }
     }
 
@@ -503,10 +528,11 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexameencaixe() {
-        if ((trim($_POST['txtNome']) == "") || ($_POST['convenio1'] == "-1")) {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente e Convenio.';
+        if (trim($_POST['txtNome']) == "" || $_POST['convenio1'] == "-1") {
+            $data['mensagem'] = 'Erro. Obrigatório Convenio e nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopaciente");
+//            redirect(base_url() . "ambulatorio/exametemp/novopaciente");
+            redirect(base_url() . "ambulatorio/exametemp/novopacienteexameencaixe");
         } else {
             $pacientetemp_id = $this->exametemp->gravarexameencaixe();
             $this->carregarpacientetemp($pacientetemp_id);

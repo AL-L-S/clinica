@@ -30,7 +30,8 @@
             </div>
             <div>
                 <label>Horarios</label>
-                <input type="time" id="horarios" name="horarios"  class="size1"  maxlength="8"  onkeypress="mascara(this)" onclick="if(this.value !=='')this.value=''" />
+                <input type="time" id="horarios" name="horarios"  class="size1"  maxlength="8"  onkeypress="mascara(this)" onclick="if (this.value !== '')
+                            this.value = ''" />
             </div>
             <div>
                 <label>Convenio *</label>
@@ -93,109 +94,112 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
+<?php if ($this->session->flashdata('message') != ''): ?>
+                        alert("<? echo $this->session->flashdata('message')?>");
+<? endif; ?>
 
-    $(function () {
-        $("#data_ficha").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
+                    $(function () {
+                        $("#data_ficha").datepicker({
+                            autosize: true,
+                            changeYear: true,
+                            changeMonth: true,
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                            dateFormat: 'dd/mm/yy'
+                        });
+                    });
 
-    $(function () {
-        $('#convenio1').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    $(function () {
+                        $('#convenio1').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+                                    $('#procedimento1').html(options).show();
+                                    $('.carregando').hide();
+                                });
+                            } else {
+                                $('#procedimento1').html('<option value="">Selecione</option>');
+                            }
+                        });
+                    });
+
+                    $(function () {
+                        $("#txtNome").autocomplete({
+                            source: "<?= base_url() ?>index?c=autocomplete&m=paciente",
+                            minLength: 3,
+                            focus: function (event, ui) {
+                                $("#txtNome").val(ui.item.label);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#txtNome").val(ui.item.value);
+                                $("#txtNomeid").val(ui.item.id);
+                                $("#telefone").val(ui.item.itens);
+                                $("#nascimento").val(ui.item.valor);
+                                return false;
+                            }
+                        });
+                    });
+
+
+                    $(function () {
+                        $("#accordion").accordion();
+                    });
+
+
+                    $(document).ready(function () {
+                        jQuery('#form_exametemp').validate({
+                            rules: {
+                                data_ficha: {
+                                    required: true
+                                },
+                                sala: {
+                                    required: true
+                                },
+                                medico: {
+                                    required: true
+                                },
+                                txtNome: {
+                                    required: true
+                                },
+                                horarios: {
+                                    required: true,
+                                    minlength: 5
+                                }
+                            },
+                            messages: {
+                                data_ficha: {
+                                    required: "*"
+                                },
+                                sala: {
+                                    required: "*"
+                                },
+                                medico: {
+                                    required: "*"
+                                },
+                                txtNome: {
+                                    required: "*"
+                                },
+                                horarios: {
+                                    required: "*",
+                                    minlength: "!"
+                                }
+                            }
+                        });
+                    });
+
+                    /* Máscaras ER */
+                    function mascara(horarios) {
+                        if (horarios.value.length == 2)
+                            horarios.value = horarios.value + ':'; //quando o campo já tiver 2 caracteres (2 números) o script irá inserir um ':'.
+
+                        if (horarios.value.length == 5)
+                            horarios.value = horarios.value + ':'; //quando o campo já tiver 5 caracteres (2 números + ':' + 2 números), o script irá inserir um ':'.      
                     }
-                    $('#procedimento1').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#procedimento1').html('<option value="">Selecione</option>');
-            }
-        });
-    });
-
-    $(function () {
-        $("#txtNome").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=paciente",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtNome").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtNome").val(ui.item.value);
-                $("#txtNomeid").val(ui.item.id);
-                $("#telefone").val(ui.item.itens);
-                $("#nascimento").val(ui.item.valor);
-                return false;
-            }
-        });
-    });
-
-
-    $(function () {
-        $("#accordion").accordion();
-    });
-
-
-    $(document).ready(function () {
-        jQuery('#form_exametemp').validate({
-            rules: {
-                data_ficha: {
-                    required: true
-                },
-                sala: {
-                    required: true
-                },
-                medico: {
-                    required: true
-                },
-                txtNome: {
-                    required: true
-                },
-                horarios: {
-                    required: true,
-                    minlength: 5
-                }
-            },
-            messages: {
-                data_ficha: {
-                    required: "*"
-                },
-                sala: {
-                    required: "*"
-                },
-                medico: {
-                    required: "*"
-                },
-                txtNome: {
-                    required: "*"
-                },
-                horarios: {
-                    required: "*",
-                    minlength: "!"
-                }
-            }
-        });
-    });
-
-    /* Máscaras ER */
-    function mascara(horarios) {
-        if (horarios.value.length == 2)
-            horarios.value = horarios.value + ':' ; //quando o campo já tiver 2 caracteres (2 números) o script irá inserir um ':'.
-
-        if (horarios.value.length == 5)
-            horarios.value = horarios.value + ':'; //quando o campo já tiver 5 caracteres (2 números + ':' + 2 números), o script irá inserir um ':'.      
-    }
 
 </script>

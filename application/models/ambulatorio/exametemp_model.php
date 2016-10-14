@@ -233,6 +233,17 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function carregasessaofisioterapia($agendaexame_id) {
+        
+        $this->db->select('tipo_consulta_id');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->where("a.tipo", 'FISIOTERAPIA');
+        $this->db->where('a.ativo', 'true');
+        $this->db->where('a.agenda_exames_id', $agendaexame_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listaragendatotalpacienteconsulta($pacientetemp_id) {
         $data = date("Y-m-d");
         $this->db->select('a.agenda_exames_id,
@@ -536,7 +547,8 @@ class exametemp_model extends Model {
                             pt.codigo,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            fp.nome as formapagamento');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -545,6 +557,8 @@ class exametemp_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.ativo', 'false');
@@ -579,6 +593,40 @@ class exametemp_model extends Model {
         $this->db->where('oi.empresa_id', $empresa_id);
         $this->db->where("oi.paciente_id", $paciente_id);
         $this->db->where("oi.data", $horario);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listaagendafisioterapia($agendaexame_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select("ae.*, h.dia");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->where("ae.agenda_exames_id", $agendaexame_id);
+        $this->db->join('tb_horarioagenda h', 'h.agenda_id = ae.horarioagenda_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listadisponibilidadefisioterapia($agenda) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $nulo = null;
+        $this->db->select('ae.*, h.dia');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_horarioagenda h', 'h.agenda_id = ae.horarioagenda_id');
+        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->where("ae.paciente_id", $nulo);
+        $this->db->where("ae.situacao", "LIVRE");
+        $this->db->where('ativo', 't');
+        $this->db->where('cancelada', 'f');
+        $this->db->where('confirmado', 'f');     
+        $this->db->where("ae.tipo", "FISIOTERAPIA");
+        $this->db->where("h.dia", $agenda->dia);
+        $this->db->where("ae.data_inicio", $agenda->data_inicio);
+        $this->db->where("ae.data_fim", $agenda->data_fim);
+        $this->db->where("ae.inicio", $agenda->inicio);
+        $this->db->where("ae.fim", $agenda->fim);
+        $this->db->where("ae.medico_agenda", $agenda->medico_agenda);
         $return = $this->db->get();
         return $return->result();
     }
@@ -1497,6 +1545,7 @@ class exametemp_model extends Model {
                 $this->db->set('celular', $_POST['celular']);
                 $this->db->set('convenio_id', $_POST['convenio']);
                 $this->db->set('telefone', $_POST['telefone']);
+                $this->db->set('numero_sessao', $_POST['sessao']);
                 $this->db->set('nome', $_POST['txtNome']);
                 $this->db->insert('tb_paciente');
                 $paciente_id = $this->db->insert_id();

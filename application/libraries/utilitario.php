@@ -66,7 +66,7 @@ class Utilitario {
     }
 
     function pmf_mensagem($mensagem='') {
-        //var_dump($mensagem);
+//        var_dump($mensagem);
         if ($mensagem && strlen(trim($mensagem)) > 0) {
             echo '<div class="div-mensagem hidden" title="Mensagem:">';
             echo $mensagem;

@@ -20,14 +20,10 @@
             </div>
             <div>
                 <label>Telefone</label>
-
-
                 <input type="text" id="telefone" class="texto02" name="telefone" alt="phone"/>
             </div>
             <div>
                 <label>Celular</label>
-
-
                 <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"/>
             </div>
             <div>
@@ -39,6 +35,12 @@
                     <? endforeach; ?>
                 </select>
             </div>
+            
+            <div>
+                <label>Sessao</label>
+                <input type="text" id="sessao" class="texto01" alt="numeromask" name="sessao"/>
+            </div>
+            
             <div>
                 <label>Observacoes</label>
 
@@ -47,6 +49,7 @@
             </div>
 
 
+            
             <div>
                 <label>&nbsp;</label>
                 <button type="submit" name="btnEnviar">Enviar</button>
