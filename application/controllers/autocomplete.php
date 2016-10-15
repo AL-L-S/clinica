@@ -951,6 +951,106 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function formapagamentoporprocedimento1() {
+
+        if (isset($_GET['procedimento1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento2() {
+
+        if (isset($_GET['procedimento2'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento2']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento3() {
+
+        if (isset($_GET['procedimento3'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento3']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento4() {
+
+        if (isset($_GET['procedimento4'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento4']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento5() {
+
+        if (isset($_GET['procedimento5'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento5']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento6() {
+
+        if (isset($_GET['procedimento6'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento6']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento7() {
+
+        if (isset($_GET['procedimento7'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento7']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento8() {
+
+        if (isset($_GET['procedimento8'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento8']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento9() {
+
+        if (isset($_GET['procedimento9'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento9']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
+    function formapagamentoporprocedimento10() {
+
+        if (isset($_GET['procedimento10'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma($_GET['procedimento10']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosforma();
+        }
+        echo json_encode($result);
+    }
+
     function credordevedor() {
 
         if (isset($_GET['term'])) {

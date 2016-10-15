@@ -3529,12 +3529,34 @@ ORDER BY p.nome";
         return $return->result();
     }
 
+    function listarexameguiaforma($guia_id, $forma_pagamento_id) {
+
+        $this->db->select('sum(valor_total) as total');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio_pagamento cp');
+        $this->db->where("guia_id", $guia_id);
+        $this->db->where("forma_pagamento_id", $forma_pagamento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarexameguianaofaturado($guia_id) {
 
         $this->db->select('sum(valor_total) as total');
         $this->db->from('tb_agenda_exames');
         $this->db->where("guia_id", $guia_id);
         $this->db->where("faturado", 'f');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarexameguianaofaturadoforma($guia_id, $forma_pagamento_id) {
+        $this->db->select('sum(ae.valor_total) as total');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio_pagamento cp' , 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
+        $this->db->where("ae.guia_id", $guia_id);
+        $this->db->where("ae.faturado", 'f');
+        $this->db->where("cp.forma_pagamento_id", $forma_pagamento_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -3607,13 +3629,14 @@ ORDER BY p.nome";
         }
     }
 
-    function formadepagamentoguia($guia_id) {
-        $this->db->select('fp.forma_pagamento_id,
-                            fp.nome');
+    function formadepagamentoguia($guia_id, $forma_pagamento_id) {
+        $this->db->select('distinct(fp.nome),
+                           fp.forma_pagamento_id');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
         $this->db->where('ae.guia_id', $guia_id);
+        $this->db->where('fp.forma_pagamento_id', $forma_pagamento_id);
         $this->db->orderby('fp.nome');
         $return = $this->db->get();
         return $return->result();
