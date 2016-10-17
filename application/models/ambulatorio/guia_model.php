@@ -3529,12 +3529,34 @@ ORDER BY p.nome";
         return $return->result();
     }
 
+    function listarexameguiaforma($guia_id, $forma_pagamento_id) {
+
+        $this->db->select('sum(valor_total) as total');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio_pagamento cp');
+        $this->db->where("guia_id", $guia_id);
+        $this->db->where("forma_pagamento_id", $forma_pagamento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarexameguianaofaturado($guia_id) {
 
         $this->db->select('sum(valor_total) as total');
         $this->db->from('tb_agenda_exames');
         $this->db->where("guia_id", $guia_id);
         $this->db->where("faturado", 'f');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarexameguianaofaturadoforma($guia_id, $forma_pagamento_id) {
+        $this->db->select('sum(ae.valor_total) as total');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio_pagamento cp' , 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
+        $this->db->where("ae.guia_id", $guia_id);
+        $this->db->where("ae.faturado", 'f');
+        $this->db->where("cp.forma_pagamento_id", $forma_pagamento_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -3581,6 +3603,41 @@ ORDER BY p.nome";
         $this->db->from('tb_forma_pagamento');
         $this->db->where('ativo', 't');
         $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function formadepagamentoprocedimento($procedimento_convenio_id) {
+        $this->db->select('fp.forma_pagamento_id,
+                            fp.nome as nome');
+        $this->db->from('tb_procedimento_convenio_pagamento pp');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
+        $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->orderby('fp.nome');
+        $return = $this->db->get();
+        $retorno = $return->result();
+
+        if (empty($retorno)) {
+            $this->db->select('fp.forma_pagamento_id,
+                            fp.nome as nome');
+            $this->db->from('tb_forma_pagamento fp');
+            $this->db->orderby('fp.nome');
+            $return = $this->db->get();
+            return $return->result();
+        } else {
+            return $retorno;
+        }
+    }
+
+    function formadepagamentoguia($guia_id, $forma_pagamento_id) {
+        $this->db->select('distinct(fp.nome),
+                           fp.forma_pagamento_id');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
+        $this->db->where('ae.guia_id', $guia_id);
+        $this->db->where('fp.forma_pagamento_id', $forma_pagamento_id);
+        $this->db->orderby('fp.nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -5177,7 +5234,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
             }
-            
+
             $this->db->select('ae.agenda_exames_id,
                             ae.paciente_id,
                             p.nome as paciente,
@@ -5641,6 +5698,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('tipo', $_POST['tipo']);
             $this->db->set('ativo', 'f');
             $this->db->set('realizada', 't');
+            $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');
             $this->db->set('guia_id', $_POST['txtguia_id']);
@@ -5662,6 +5720,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('empresa_id', $_POST['txtempresa']);
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+            $this->db->set('medico_realizador', $_POST['medicoagenda']);
             $this->db->set('situacao', 'FINALIZADO');
             $this->db->set('guia_id', $_POST['txtguia_id']);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
@@ -5673,6 +5732,7 @@ ORDER BY ae.agenda_exames_id)";
             if ($_POST['laudo'] == "on") {
                 $this->db->set('empresa_id', $_POST['txtempresa']);
                 $this->db->set('data', $_POST['txtdata']);
+                $this->db->set('medico_parecer1', $_POST['medicoagenda']);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
                 $this->db->set('exame_id', $exames_id);

@@ -18,10 +18,12 @@ class Login extends Controller {
         $empresa = $_POST['txtempresa'];
 
         //Pegando o nome e versao do navegador
-        preg_match('/Firefox.+/', $_SERVER['HTTP_USER_AGENT'], $browser);
-        $teste = count($browser);
+        preg_match('/Firefox.+/', $_SERVER['HTTP_USER_AGENT'], $browserPC);
+        preg_match('/FxiOS.+/', $_SERVER['HTTP_USER_AGENT'], $browserIOS);
+        $teste1 = count($browserPC);
+        $teste2 = count($browserIOS);
 
-        if ($teste > 0) {
+        if ($teste1 > 0 || $teste2 > 0) {
             //Pegando somente o numero da versao.
             preg_match('/[0-9].+/', $browser[0], $verificanavegador['versao']);
 

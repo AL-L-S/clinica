@@ -112,9 +112,9 @@ endif;
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>
-                                        <? foreach ($forma_pagamento as $item) : ?>
-                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                        <? endforeach; ?>
+                                        <? //foreach ($forma_pagamento as $item) : ?>
+<!--                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>-->
+                                        <?// endforeach; ?>
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="text" alt="date" name="data[<?= $i; ?>]" id="data<?= $i; ?>" class="size1" /></td>
@@ -141,7 +141,6 @@ endif;
         </form>
     </div> <!-- Final da DIV content -->
 </div> <!-- Final da DIV content -->
-
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
@@ -511,7 +510,7 @@ endif;
             }
         });
     });
-
+    
     $(function(){
         $('#convenio3').change(function(){
             if( $(this).val() ) {
@@ -783,6 +782,203 @@ endif;
             }
         });
     });
+    
+            $(function(){
+        $('#procedimento1').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1',{procedimento1:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento1').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento1').html('<option value="0">Selecione</option>');
+            }
+        });
+    });
+    
+            $(function(){
+        $('#procedimento2').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento2',{procedimento2:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento2').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento2').html('<option value="0">Selecione</option>');
+            }
+        });
+    });    
+    
+                $(function(){
+        $('#procedimento3').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento3',{procedimento3:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento3').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento3').html('<option value="0">Selecione</option>');
+            }
+        });
+    });
+    
+            $(function(){
+        $('#procedimento4').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento4',{procedimento4:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento4').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento4').html('<option value="0">Selecione</option>');
+            }
+        });
+    });    
+    
+            $(function(){
+        $('#procedimento5').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento5',{procedimento5:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento5').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento5').html('<option value="0">Selecione</option>');
+            }
+        });
+    });    
+    
+            $(function(){
+        $('#procedimento6').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento6',{procedimento6:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento6').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento6').html('<option value="0">Selecione</option>');
+            }
+        });
+    });    
+    
+            $(function(){
+        $('#procedimento7').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento7',{procedimento7:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento7').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento7').html('<option value="0">Selecione</option>');
+            }
+        });
+    }); 
+    
+            $(function(){
+        $('#procedimento8').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento8',{procedimento8:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento8').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento8').html('<option value="0">Selecione</option>');
+            }
+        });
+    });    
+    
+            $(function(){
+        $('#procedimento9').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento9',{procedimento9:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento9').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento9').html('<option value="0">Selecione</option>');
+            }
+        });
+    });    
+    
+            $(function(){
+        $('#procedimento10').change(function(){
+            if( $(this).val() ) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento10',{procedimento10:$(this).val(), ajax:true}, function(j){
+                    var options = '<option value="0">Selecione</option>';	
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                    }	
+                    $('#formapamento10').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#formapamento10').html('<option value="0">Selecione</option>');
+            }
+        });
+    });    
+//            $(function(){
+//        $('#procedimento2').change(function(){
+//            if( $(this).val() ) {
+//                $('.carregando').show();
+//                $.getJSON('<?= base_url() ?>autocomplete/listarautocompleteprocedimentosforma',{procedimento2:$(this).val(), ajax:true}, function(j){
+//                    var options = '<option value=""></option>';	
+//                    for (var c = 0; c < j.length; c++) {
+//                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+//                    }	
+//                    $('#formapamento2').html(options).show();
+//                    $('.carregando').hide();
+//                });
+//            } else {
+//                $('#formapamento2').html('<option value="0">Selecione</option>');
+//            }
+//        });
+//    });
 
     //$(function(){     
     //    $('#exame').change(function(){
