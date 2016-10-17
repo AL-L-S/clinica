@@ -4,19 +4,19 @@
         <thead>
             <tr>
                 <th >        <div class="bt_link_new">
-            <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaexame">
+            <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaexame" target="_blank">
                 Nova Agenda Exame
             </a>
         </div></th>
 
         <th >                <div class="bt_link_new">
-            <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaconsulta">
+            <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaconsulta" target="_blank">
                 Nova Agenda Consulta
             </a>
         </div></th>
 
         <th > <div class="bt_link_new" style="width: 180px">
-            <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaespecializacao" style="width: 180px">
+            <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaespecializacao" style="width: 180px" target="_blank">
                 Nova Agenda Especializacao
             </a>
         </div></th>
@@ -47,14 +47,19 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listar($_GET);
                 $total = $consulta->count_all_results();
-                $limit = 10;
+                $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->exame->listar($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
+                        if($limit != "todos"){
+                            $lista = $this->exame->listar($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
+                        } else {
+                            $lista = $this->exame->listar($_GET)->orderby('nome')->get()->result();
+
+                        }
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -87,6 +92,15 @@
                         <th class="tabela_footer" colspan="6">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
+                            <div style="display: inline">
+                                        <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>
+                                        <select style="width: 50px">
+                                            <option onclick="javascript:window.location.href=('<?= base_url()?>ambulatorio/exame/pesquisar/10');" <? if($limit == 10){ echo "selected"; } ?>> 10 </option>
+                                            <option onclick="javascript:window.location.href=('<?= base_url()?>ambulatorio/exame/pesquisar/50');" <? if($limit == 50){ echo "selected"; } ?>> 50 </option>
+                                            <option onclick="javascript:window.location.href=('<?= base_url()?>ambulatorio/exame/pesquisar/100');" <? if($limit == 100){ echo "selected"; } ?>> 100 </option>
+                                            <option onclick="javascript:window.location.href=('<?= base_url()?>ambulatorio/exame/pesquisar/todos');" <? if($limit == "todos"){ echo "selected"; } ?>> Todos </option>
+                                        </select>
+                            </div>
                         </th>
                     </tr>
                 </tfoot>

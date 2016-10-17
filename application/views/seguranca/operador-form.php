@@ -161,12 +161,20 @@
 
                     <select name="txtPerfil" id="txtPerfil" class="size4">
                         <option value="">Selecione</option>
-                        <? foreach ($listarPerfil as $item) : ?>
-                            <option value="<?= $item->perfil_id; ?>"<?
-                            if (@$obj->_perfil_id == $item->perfil_id):echo 'selected';
-                            endif;
-                            ?>><?= $item->nome; ?></option>
-                                <? endforeach; ?>
+                        <? foreach ($listarPerfil as $item) :
+                            if ($this->session->userdata('perfil_id') == 1) { ?>
+                                    <option value="<?= $item->perfil_id; ?>"<?
+                                    if (@$obj->_perfil_id == $item->perfil_id):echo 'selected';
+                                    endif;?>>
+                                    <?= $item->nome; ?></option>
+                            <?} else {
+                                if( !($item->perfil_id == 1) ){ ?>
+                                    <option value="<?= $item->perfil_id; ?>"<?
+                                    if (@$obj->_perfil_id == $item->perfil_id):echo 'selected';
+                                    endif;
+                                    ?>><?= $item->nome; ?></option>
+                            <?}}?>
+                        <? endforeach; ?>
                     </select>
                 </div>
 
@@ -267,12 +275,13 @@
                 </div>
             </fieldset>
 
+            <fieldset style="dislpay:block">
 
+                <button type="submit" name="btnEnviar">Enviar</button>
 
-            <button type="submit" name="btnEnviar">Enviar</button>
-
-            <button type="reset" name="btnLimpar">Limpar</button>
-            <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
+                <button type="reset" name="btnLimpar">Limpar</button>
+                <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
+            </fieldset>
         </form>
     </div>
 

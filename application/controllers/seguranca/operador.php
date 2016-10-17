@@ -76,8 +76,9 @@ class Operador extends BaseController {
         redirect(base_url() . "seguranca/operador", $data);
     }
 
-    function pesquisar($filtro = -1, $inicio = 0) {
-        $this->loadView('seguranca/operador-lista');
+    function pesquisar($limite = 50) {
+        $data["limite_paginacao"] = $limite;
+        $this->loadView('seguranca/operador-lista', $data);
     }
 
     function pesquisarmedicosolicitante($filtro = -1, $inicio = 0) {
@@ -88,8 +89,9 @@ class Operador extends BaseController {
         $this->loadView('seguranca/operador-listarecepcao');
     }
 
-    function operadorsetor($filtro = -1, $inicio = 0) {
-        $this->loadView('estoque/operador-lista');
+    function operadorsetor($limite = 10) {
+        $data["limite_paginacao"] = $limite;
+        $this->loadView('estoque/operador-lista',  $data);
     }
 
     function gravar() {
