@@ -42,8 +42,9 @@
                         <?php
                         $perfil_id = $this->session->userdata('perfil_id');
                         $forma_pagamento = $this->guia->formadepagamento();
-                        foreach ($forma_pagamento as $forma) {
-                            $lista = $this->exame->listarexamecaixaespera($forma->forma_pagamento_id, $_GET)->limit($limit, $pagina)->groupby('g.ambulatorio_guia_id, p.nome, ae.paciente_id, g.data_criacao')->orderby('g.data_criacao')->get()->result();
+                        $grupo_pagamento= $this->formapagamento->listargrupos();
+                        foreach ($grupo_pagamento as $grupo) {
+                            $lista = $this->exame->listarexamecaixaespera($grupo->financeiro_grupo_id, $_GET)->limit($limit, $pagina)->groupby('g.ambulatorio_guia_id, p.nome, ae.paciente_id, g.data_criacao')->orderby('g.data_criacao')->get()->result();
                             $estilo_linha = "tabela_content01";
                             foreach ($lista as $item) {
                                 ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -53,7 +54,7 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valortotal, 2, ',', '.') ?></td>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_linkf">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguiacaixa/" . $guia_id . '/' . $forma->forma_pagamento_id; ?> ');">Faturar Guia
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguiacaixa/" . $guia_id . '/' . $grupo->financeiro_grupo_id; ?> ');">Faturar Guia
 
                                             </a></div>
                                     </td>

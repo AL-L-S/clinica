@@ -1,0 +1,90 @@
+<div class="content"> <!-- Inicio da DIV content -->
+    <div id="accordion">
+        <h3 class="singular"><a href="#">Cadastro Grupo de Pagamento</a></h3>
+        <div>
+            <form name="form_formapagamento" id="form_formapagamento" action="<?= base_url() ?>cadastros/formapagamento/gravargrupoadicionar" method="post">
+
+                <dl class="dl_desconto_lista">
+                    <dt>
+                    <label>Nome</label>
+                    </dt>
+                    <dd>
+                        <input type="hidden" name="grupo_id" class="texto10" value="<?= $financeiro_grupo[0]->financeiro_grupo_id; ?>" />
+                        <input type="text" name="txtNome" class="texto05"  value="<?= $financeiro_grupo[0]->nome; ?>"/>
+                    </dd>
+                    <dt>
+                    <label>F. de Pagamento</label>
+                    </dt>
+                    <dd>
+                        <select name="formapagamento" id="formapagamento" class="texto03">
+                            <option value="">SELECIONE</option>
+                            <? foreach ($forma_pagamento as $value) { ?>
+                                <option value="<?= $value->forma_pagamento_id ?>"><?= $value->nome ?></option>
+                            <? } ?>                            
+                        </select>
+                    </dd>
+                </dl>    
+                <hr/>
+                <button type="submit" name="btnEnviar">Enviar</button>
+                <button type="reset" name="btnLimpar">Limpar</button>
+                <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
+            </form>
+            <br/><br/>
+
+
+            <? if (count($relatorio) > 0) { ?>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="tabela_header">Nome</th>
+                            <th class="tabela_header" width="70px;" colspan="2"><center>Detalhes</center></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <?
+                        $estilo_linha = "tabela_content01";
+                        foreach ($relatorio as $item) {
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            ?>
+                            <tr>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td><!--
+
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
+                                    <a href="<?= base_url() ?>cadastros/formapagamento/carregarformapagamento/<?= $item->financeiro_grupo_id ?>">Editar</a>
+                                </td>
+                                -->                                <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
+                                    <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Forma?');" href="<?= base_url() ?>cadastros/formapagamento/excluirformapagamentodogrupo/<?= $item->grupo_id ?>/<?= $item->grupo_formapagamento_id?>">Excluir</a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    <? } ?>
+
+                    <tfoot>
+                        <tr>
+                            <th class="tabela_footer" colspan="6">
+                                Valor Total: <?php echo number_format(count($relatorio)); ?>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            <? } ?>
+        </div>
+    </div>
+</div> <!-- Final da DIV content -->
+
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript">
+                                $('#btnVoltar').click(function () {
+                                    $(location).attr('href', '<?= base_url(); ?>cadastros/formapagamento/grupospagamento');
+                                });
+
+                                $(function () {
+                                    $("#accordion").accordion();
+                                });
+
+</script>
+

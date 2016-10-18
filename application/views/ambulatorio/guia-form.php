@@ -168,8 +168,8 @@
             <fieldset>
                 <?
                 if ($contador > 0) {
-                    foreach ($forma_pagamento as $forma) { //buscar exames com forma de pagamento pre-definida (inicio)
-                        $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id, $forma->forma_pagamento_id);
+                    foreach ($grupo_pagamento as $grupo) { //buscar exames com forma de pagamento pre-definida (inicio)
+                        $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id, $grupo->financeiro_grupo_id);
                         if ($exame != 0) {
                             ?>
                             <table id="table_agente_toxico" border="0">
@@ -235,7 +235,7 @@
                                             Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                         </th>
                                         <th colspan="2" align="center"><center><div class="bt_linkf">
-                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' .$item->forma_pagamento_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
 
                                         </a></div></center></th>
                                 </tr>
@@ -342,73 +342,73 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-                                    $(function () {
-                                        $("#data").datepicker({
-                                            autosize: true,
-                                            changeYear: true,
-                                            changeMonth: true,
-                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                            dateFormat: 'dd/mm/yy'
+                                        $(function () {
+                                            $("#data").datepicker({
+                                                autosize: true,
+                                                changeYear: true,
+                                                changeMonth: true,
+                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                dateFormat: 'dd/mm/yy'
+                                            });
                                         });
-                                    });
 
-                                    $(function () {
-                                        $("#accordion").accordion();
-                                    });
-
-
-                                    $(function () {
-                                        $("#medico1").autocomplete({
-                                            source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
-                                            minLength: 3,
-                                            focus: function (event, ui) {
-                                                $("#medico1").val(ui.item.label);
-                                                return false;
-                                            },
-                                            select: function (event, ui) {
-                                                $("#medico1").val(ui.item.value);
-                                                $("#crm1").val(ui.item.id);
-                                                return false;
-                                            }
+                                        $(function () {
+                                            $("#accordion").accordion();
                                         });
-                                    });
 
-                                    $(function () {
-                                        $('#convenio1').change(function () {
-                                            if ($(this).val()) {
-                                                $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                                    options = '<option value=""></option>';
-                                                    for (var c = 0; c < j.length; c++) {
-                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                    }
-                                                    $('#procedimento1').html(options).show();
-                                                    $('.carregando').hide();
-                                                });
-                                            } else {
-                                                $('#procedimento1').html('<option value="">Selecione</option>');
-                                            }
+
+                                        $(function () {
+                                            $("#medico1").autocomplete({
+                                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                                minLength: 3,
+                                                focus: function (event, ui) {
+                                                    $("#medico1").val(ui.item.label);
+                                                    return false;
+                                                },
+                                                select: function (event, ui) {
+                                                    $("#medico1").val(ui.item.value);
+                                                    $("#crm1").val(ui.item.id);
+                                                    return false;
+                                                }
+                                            });
                                         });
-                                    });
 
-
-                                    $(function () {
-                                        $('#procedimento1').change(function () {
-                                            if ($(this).val()) {
-                                                $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                    options = "";
-                                                    options += j[0].valortotal;
-                                                    document.getElementById("valor1").value = options
-                                                    $('.carregando').hide();
-                                                });
-                                            } else {
-                                                $('#valor1').html('value=""');
-                                            }
+                                        $(function () {
+                                            $('#convenio1').change(function () {
+                                                if ($(this).val()) {
+                                                    $('.carregando').show();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        for (var c = 0; c < j.length; c++) {
+                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                        }
+                                                        $('#procedimento1').html(options).show();
+                                                        $('.carregando').hide();
+                                                    });
+                                                } else {
+                                                    $('#procedimento1').html('<option value="">Selecione</option>');
+                                                }
+                                            });
                                         });
-                                    });
+
+
+                                        $(function () {
+                                            $('#procedimento1').change(function () {
+                                                if ($(this).val()) {
+                                                    $('.carregando').show();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                        options = "";
+                                                        options += j[0].valortotal;
+                                                        document.getElementById("valor1").value = options
+                                                        $('.carregando').hide();
+                                                    });
+                                                } else {
+                                                    $('#valor1').html('value=""');
+                                                }
+                                            });
+                                        });
 
 
 

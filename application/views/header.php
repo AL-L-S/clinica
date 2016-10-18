@@ -50,25 +50,25 @@ function debug($object) {
             })(jQuery);
 
 
-            function mensagensnaolidas(){
+            function mensagensnaolidas() {
                 jQuery.ajax({
                     type: "GET",
                     url: "<?= base_url(); ?>" + "batepapo/totalmensagensnaolidas",
                     dataType: "json",
                     success: function (retorno) {
-                        if(jQuery(".batepapo_div #contatos_chat_lista span").length > 0){
+                        if (jQuery(".batepapo_div #contatos_chat_lista span").length > 0) {
                             jQuery(".batepapo_div #contatos_chat_lista span").remove();
                         }
-                            
-                        if( retorno != 0 ){
+
+                        if (retorno != 0) {
                             jQuery(".batepapo_div #contatos_chat_lista").append("<span class='total_mensagens'></span>");
-                            jQuery(".batepapo_div .total_mensagens").text("+"+retorno);
+                            jQuery(".batepapo_div .total_mensagens").text("+" + retorno);
                         }
                     }
                 });
             }
             mensagensnaolidas();
-            
+
             function carregacontatos() {
                 jQuery.ajax({
                     type: "GET",
@@ -81,8 +81,8 @@ function debug($object) {
                             if (usr.operador_id != <? echo $operador_id ?> && usr.usuario != 0) {
                                 tags = "<li id='" + usr.operador_id + "'><div class='imgPerfil'></div>";
                                 tags += "<a href='#' id='<? echo $operador_id ?>:" + usr.operador_id + "' class='comecarChat'>" + usr.usuario + "</a>";
-                                if(usr.num_mensagens != 0){
-                                    tags += "<span class='total_mensagens'> +"+usr.num_mensagens+" </span>";
+                                if (usr.num_mensagens != 0) {
+                                    tags += "<span class='total_mensagens'> +" + usr.num_mensagens + " </span>";
                                 }
                                 tags += "<span id='usr.operador_id'></span></li>";
                                 jQuery("#principalChat #usuarios_online ul").append(tags);
@@ -91,79 +91,79 @@ function debug($object) {
                     }
                 });
             }
-            
+
             //abri uma nova janela
             function adicionarJanela(id, nome, status) {
 
-                    //atribui dinamicamente a posicao da janela na pagina
-                    var numeroJanelas = Number(jQuery("#chats .janela_chat").length);
-                    if (numeroJanelas < 3) {
-                        var posicaoJanela = (270 + 15) * numeroJanelas;
-                        var estiloJanela = 'float:none; position: absolute; bottom:0; right:' + posicaoJanela + 'px';
+                //atribui dinamicamente a posicao da janela na pagina
+                var numeroJanelas = Number(jQuery("#chats .janela_chat").length);
+                if (numeroJanelas < 3) {
+                    var posicaoJanela = (270 + 15) * numeroJanelas;
+                    var estiloJanela = 'float:none; position: absolute; bottom:0; right:' + posicaoJanela + 'px';
 
-                        //pega o id do operador origem e do operador destino
-                        var splitOperadores = id.split(':');
-                        var operadorDestino = Number(splitOperadores[1]);
+                    //pega o id do operador origem e do operador destino
+                    var splitOperadores = id.split(':');
+                    var operadorDestino = Number(splitOperadores[1]);
 
-                        //criando a janela de mensagem
-                        var janela;
-                        janela = "<div class='janela_chat' id='janela_" + operadorDestino + "' style='" + estiloJanela + "'>";
-                        janela += "<div class='cabecalho_janela_chat'> <a href='#' class='fechar'>X</a>";
-                        janela += "<span class='nome_chat'>" + nome + "</span><span id='" + operadorDestino + "'></span></div>";
-                        janela += "<div class='corpo_janela_chat'><div class='mensagens_chat'><ul></ul></div>";
-                        janela += "<div class='enviar_mensagens_chat' id='" + id + "'>";
-                        janela += "<input type='text' maxlength='300' name='mensagem_chat' class='mensagem_chat' id='" + id + "' /></div></div></div>";
+                    //criando a janela de mensagem
+                    var janela;
+                    janela = "<div class='janela_chat' id='janela_" + operadorDestino + "' style='" + estiloJanela + "'>";
+                    janela += "<div class='cabecalho_janela_chat'> <a href='#' class='fechar'>X</a>";
+                    janela += "<span class='nome_chat'>" + nome + "</span><span id='" + operadorDestino + "'></span></div>";
+                    janela += "<div class='corpo_janela_chat'><div class='mensagens_chat'><ul></ul></div>";
+                    janela += "<div class='enviar_mensagens_chat' id='" + id + "'>";
+                    janela += "<input type='text' maxlength='300' name='mensagem_chat' class='mensagem_chat' id='" + id + "' /></div></div></div>";
 
-                        //acrescenta a janela ao aside chats
-                        jQuery("#chats").append(janela);
-                        chatsAbertos.push(operadorDestino);
-                    } else {
-                        alert("Voce estorou o limite de janelas.")
-                    }
+                    //acrescenta a janela ao aside chats
+                    jQuery("#chats").append(janela);
+                    chatsAbertos.push(operadorDestino);
+                } else {
+                    alert("Voce estorou o limite de janelas.")
                 }
-                
-                //retornando historico de conversas
-                function retorna_historico(idJanela) {
-                    var operadorOrigem = <? echo $operador_id; ?>;
-                    jQuery.ajax({
-                        type: "GET",
-                        url: "<?= base_url(); ?>" + "batepapo/historicomensagens",
-                        data: "operador_origem="+operadorOrigem+"&operador_destino="+idJanela,
-                        dataType: 'json',
-                        success: function (retorno) {
-                            jQuery.each(retorno, function (i, msg) {
-                                if (jQuery('#janela_' + msg.janela).length > 0) {
-                                    
-                                    if(msg.mensagem.length > 26){
-                                        var texto = "";
-                                        var inicio = 0;
-                                        var fim = 25;
-                                        var br = "<br>";
-                                        
-                                        for (var n = 0; n < msg.mensagem.length; n++){
-                                            if(n == fim){
-                                                texto += msg.mensagem.substring(inicio,fim);
-                                                texto += br;
-                                                inicio = fim;
-                                                fim += 25;
-                                            }
-                                        } 
-                                        
-                                        msg.mensagem = texto;
+            }
+
+            //retornando historico de conversas
+            function retorna_historico(idJanela) {
+                var operadorOrigem = <? echo $operador_id; ?>;
+                jQuery.ajax({
+                    type: "GET",
+                    url: "<?= base_url(); ?>" + "batepapo/historicomensagens",
+                    data: "operador_origem=" + operadorOrigem + "&operador_destino=" + idJanela,
+                    dataType: 'json',
+                    success: function (retorno) {
+                        jQuery.each(retorno, function (i, msg) {
+                            if (jQuery('#janela_' + msg.janela).length > 0) {
+
+                                if (msg.mensagem.length > 26) {
+                                    var texto = "";
+                                    var inicio = 0;
+                                    var fim = 25;
+                                    var br = "<br>";
+
+                                    for (var n = 0; n < msg.mensagem.length; n++) {
+                                        if (n == fim) {
+                                            texto += msg.mensagem.substring(inicio, fim);
+                                            texto += br;
+                                            inicio = fim;
+                                            fim += 25;
+                                        }
                                     }
-                                    
-                                    if (operadorOrigem == msg.id_origem) {
-                                        jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
-                                    } else {
-                                        jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
-                                    }
+
+                                    msg.mensagem = texto;
                                 }
-                            });
-                            var altura = jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").height();
-                            jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
-                        }
-                    });
-                }
+
+                                if (operadorOrigem == msg.id_origem) {
+                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
+                                } else {
+                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
+                                }
+                            }
+                        });
+                        var altura = jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").height();
+                        jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
+                    }
+                });
+            }
 
 
         </script>
@@ -195,11 +195,11 @@ function debug($object) {
                     -->
                     <a id="login_sair" title="Sair do Sistema" onclick="javascript: return confirm('Deseja realmente sair da aplicação?');"
                        href="<?= base_url() ?>login/sair">Sair</a>
-                    
+
                     <div class="batepapo_div">
                         <a id="contatos_chat_lista" href="#">
-                        <img src="<?= base_url(); ?>img/chat_icon.png" alt="Batepapo"
-                                                              title="Batepapo"/></a>
+                            <img src="<?= base_url(); ?>img/chat_icon.png" alt="Batepapo"
+                                 title="Batepapo"/></a>
                     </div>
                 </div>
                 <!--<div id="user_foto">Imagem</div>-->
@@ -207,12 +207,12 @@ function debug($object) {
             </div>
         </div>
         <div class="decoration_header">&nbsp;</div>
-        
+
         <!-- INICIO BATEPAPO -->
         <div id="principalChat">
             <aside id="usuarios_online" >
-                    <ul>
-                    </ul>
+                <ul>
+                </ul>
             </aside>
 
             <aside id="chats">
@@ -222,7 +222,7 @@ function debug($object) {
 
         </div>
         <!-- FIM BATEPAPO -->
-        
+
         <!-- Fim do Cabeçalho -->
         <div class="barraMenus" style="float: left;">
             <ul id="menu" class="filetree">
@@ -534,9 +534,10 @@ function debug($object) {
                             <? if ($perfil_id == 1) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/tipo">Manter Tipo</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/classe">Manter Classe</a></span></ul>
-<!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->
+    <!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/forma">Manter Conta</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento">Manter Forma de Pagamento</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Forma de Pagamento Grupo</a></span></ul>
                             <? } ?>
                         </li> 
                         <li><span class="folder">Administrativas</span>
@@ -564,11 +565,11 @@ function debug($object) {
                 collapsed: true,
                 unique: true
             });
-            
-            jQuery("#contatos_chat_lista").on("click", function(){
+
+            jQuery("#contatos_chat_lista").on("click", function () {
                 //mostrando a lista de contatos
                 carregacontatos();
-                
+
                 //abrindo a janelas de batepapo
                 jQuery("#principalChat").on("click", "#usuarios_online a", function () {
                     var id = jQuery(this).attr("id");
@@ -586,20 +587,20 @@ function debug($object) {
                         jQuery(this).removeClass("comecarChat");
                     }
                 });
-                
-                jQuery("#principalChat #usuarios_online").on("mouseleave", function(){
+
+                jQuery("#principalChat #usuarios_online").on("mouseleave", function () {
                     $("#principalChat #usuarios_online ul li").remove();
                 });
             });
-            
-            
+
+
             //minimizando as janelas
             jQuery("#principalChat").on('click', '.cabecalho_janela_chat', function () {
                 var corpo_janela_chat = jQuery(this).next();
                 corpo_janela_chat.toggle(100);
             });
-            
-            
+
+
             //fechando a janela
             jQuery("#principalChat").on('click', '.fechar', function () {
 
@@ -607,7 +608,7 @@ function debug($object) {
                 var idJanela = janelaSelecionada.attr("id");
                 var janelaSplit = idJanela.split("_");
                 var janelaFechada = Number(janelaSplit[1]);
-            
+
                 var janelasAbertas = Number(jQuery(".janela_chat").length) - 1;
                 var indice = Number(jQuery(".fechar").index(this));
                 var janelasAfrente = janelasAbertas - indice;
@@ -628,46 +629,46 @@ function debug($object) {
                     }
                 }
             });
-            
+
             //Enviando mensagens
-                jQuery("#principalChat").on('keyup', '.mensagem_chat', function (tecla) {
+            jQuery("#principalChat").on('keyup', '.mensagem_chat', function (tecla) {
 
-                    if (tecla.which == 13) {
-                        var texto = jQuery(this).val();
-                        var len = Number(texto.length);
+                if (tecla.which == 13) {
+                    var texto = jQuery(this).val();
+                    var len = Number(texto.length);
 
-                        if (len > 0) {
-                            var id = jQuery(this).attr("id");
-                            var splitId = id.split(":");
-                            var operadorOrigem = Number(splitId[0]);
-                            var operadorDestino = Number(splitId[1]);
-                            jQuery.ajax({
-                                type: "GET",
-                                url: "<?= base_url(); ?>" + "batepapo/enviarmensagem",
-                                data: "mensagem="+texto+"&origem="+operadorOrigem+"&destino="+operadorDestino,
-                                success: function () {
-                                    jQuery('.mensagem_chat').val('');
-                                    verifica(0, 0, <? echo $operador_id ?>);
-                                }
-                            });
-                        }
-
+                    if (len > 0) {
+                        var id = jQuery(this).attr("id");
+                        var splitId = id.split(":");
+                        var operadorOrigem = Number(splitId[0]);
+                        var operadorDestino = Number(splitId[1]);
+                        jQuery.ajax({
+                            type: "GET",
+                            url: "<?= base_url(); ?>" + "batepapo/enviarmensagem",
+                            data: "mensagem=" + texto + "&origem=" + operadorOrigem + "&destino=" + operadorDestino,
+                            success: function () {
+                                jQuery('.mensagem_chat').val('');
+                                verifica(0, 0, <? echo $operador_id ?>);
+                            }
+                        });
                     }
-                });
-                
-                //Atualizando novas mensagens (LongPolling)
-                function verifica(timestamp, ultimoId, operadorOrigem) {
-                    var t;
 
-                    jQuery.ajax({
-                        url: "<?= base_url(); ?>" + "batepapo/atualizamensagens",
-                        type: "GET",
-                        data: 'timestamp=' + timestamp + '&ultimoid=' + ultimoId + '&usuario=' + operadorOrigem,
-                        dataType: 'json',
-                        success: function (retorno) {
-                            clearInterval(t);
+                }
+            });
 
-                            if (retorno.status == 'resultados' || retorno.status == 'vazio') {
+            //Atualizando novas mensagens (LongPolling)
+            function verifica(timestamp, ultimoId, operadorOrigem) {
+                var t;
+
+                jQuery.ajax({
+                    url: "<?= base_url(); ?>" + "batepapo/atualizamensagens",
+                    type: "GET",
+                    data: 'timestamp=' + timestamp + '&ultimoid=' + ultimoId + '&usuario=' + operadorOrigem,
+                    dataType: 'json',
+                    success: function (retorno) {
+                        clearInterval(t);
+
+                        if (retorno.status == 'resultados' || retorno.status == 'vazio') {
 
 //                                //funcao chamando a si mesma a cada 1s
 //                                t = setTimeout(function () {
@@ -675,71 +676,71 @@ function debug($object) {
 //                                }, 2000);
 
 
-                                //verifica se ha mensagens novas
-                                if (retorno.status == 'resultados') {
-                                    jQuery.each(retorno.dados, function (i, msg) {
+                            //verifica se ha mensagens novas
+                            if (retorno.status == 'resultados') {
+                                jQuery.each(retorno.dados, function (i, msg) {
 
-                                        //testando se ela ja esta aberta
-                                        if (jQuery("#janela_" + msg.janela).length > 0) {
+                                    //testando se ela ja esta aberta
+                                    if (jQuery("#janela_" + msg.janela).length > 0) {
 
-                                            if (jQuery("#janela_" + msg.janela + " .mensagens_chat ul li#" + msg.chat_id).length == 0 && msg.janela > 0) {
-                                                
-                                                if(msg.mensagem.length > 26){
-                                                    var texto = "";
-                                                    var inicio = 0;
-                                                    var fim = 25;
-                                                    var br = "<br>";
+                                        if (jQuery("#janela_" + msg.janela + " .mensagens_chat ul li#" + msg.chat_id).length == 0 && msg.janela > 0) {
 
-                                                    for (var n = 0; n < msg.mensagem.length; n++){
-                                                        if(n == fim){
-                                                            texto += msg.mensagem.substring(inicio,fim);
-                                                            texto += br;
-                                                            inicio = fim;
-                                                            fim += 25;
-                                                        }
-                                                    } 
+                                            if (msg.mensagem.length > 26) {
+                                                var texto = "";
+                                                var inicio = 0;
+                                                var fim = 25;
+                                                var br = "<br>";
 
-                                                    msg.mensagem = texto;
+                                                for (var n = 0; n < msg.mensagem.length; n++) {
+                                                    if (n == fim) {
+                                                        texto += msg.mensagem.substring(inicio, fim);
+                                                        texto += br;
+                                                        inicio = fim;
+                                                        fim += 25;
+                                                    }
                                                 }
-                                                
-                                                if (operadorOrigem == msg.id_origem) {
-                                                    jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
-                                                } else {
-                                                    jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><div class='imgPerfil'></div><p>" + msg.mensagem + "</p></li>");
-                                                }
+
+                                                msg.mensagem = texto;
                                             }
-                                            
-                                            jQuery.ajax({
-                                                url: "<?= base_url(); ?>" + "batepapo/visualizacontatoaberto",
-                                                type: "GET",
-                                                data: 'operador_destino='+msg.janela,
-                                                success: function(){
-                                                    
-                                                }
-                                            });
+
+                                            if (operadorOrigem == msg.id_origem) {
+                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
+                                            } else {
+                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><div class='imgPerfil'></div><p>" + msg.mensagem + "</p></li>");
+                                            }
                                         }
-                                    });
 
-                                    var altura = jQuery(".corpo_janela_chat .mensagens_chat").height();
-                                    jQuery(".corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
-                                }
+                                        jQuery.ajax({
+                                            url: "<?= base_url(); ?>" + "batepapo/visualizacontatoaberto",
+                                            type: "GET",
+                                            data: 'operador_destino=' + msg.janela,
+                                            success: function () {
+
+                                            }
+                                        });
+                                    }
+                                });
+
+                                var altura = jQuery(".corpo_janela_chat .mensagens_chat").height();
+                                jQuery(".corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                             }
-                        },
-                        error: function (retorno) {
-                            clearInterval(t);
-                            t = setTimeout(function () {
-                                verifica(retorno.timestamp, retorno.ultimoId, retorno.operadorOrigem);
-                            }, 10000);
                         }
-                    });
-                }
-                
-                function buscamensagens() {
-                    setInterval(function () {
-                        verifica(0, 0,<? echo $operador_id   ?>);
-                        mensagensnaolidas();
-                    }, 3000);
-                }
+                    },
+                    error: function (retorno) {
+                        clearInterval(t);
+                        t = setTimeout(function () {
+                            verifica(retorno.timestamp, retorno.ultimoId, retorno.operadorOrigem);
+                        }, 10000);
+                    }
+                });
+            }
 
-                buscamensagens();
+            function buscamensagens() {
+                setInterval(function () {
+                    verifica(0, 0,<? echo $operador_id ?>);
+                    mensagensnaolidas();
+                }, 3000);
+            }
+
+            buscamensagens();
         </script>

@@ -12,12 +12,18 @@
 
                 <dl class="dl_cadastro_teto dt">
                     <dt>
-                        <label>Forma de Pagamento</label>
+                    <label>Grupo de Pagamento</label>
                     </dt>
                     <dd>
                         <input type="hidden" name="procedimento_convenio_id" id="procedimento_convenio_id" value="<?= $procedimento_convenio_id; ?>" />
-                        <input type="hidden" name="txtpagamentoid" id="txtpagamentoid" class="texto10" value="" />
-                        <input type="text" name="txtpagamento" id="txtpagamento" class="texto10" value="" />
+<!--                        <input type="hidden" name="txtpagamentoid" id="txtpagamentoid" class="texto10" value="" />
+                        <input type="text" name="txtpagamento" id="txtpagamento" class="texto10" value="" />-->
+                        <select name="grupopagamento" id="grupopagamento" class="texto03">
+                            <option value="">SELECIONE</option>
+                            <? foreach ($formapagamento_grupo as $value) { ?>
+                                <option value="<?= $value->financeiro_grupo_id ?>"><?= $value->nome ?></option>
+                            <? } ?> 
+                        </select>
                     </dd>
                 </dl>    
 
