@@ -30,9 +30,10 @@ class Procedimentoplano extends BaseController {
         $this->pesquisar();
     }
 
-    function pesquisar($args = array()) {
+    function pesquisar($limite = 50) {
+        $data["limite_paginacao"] = $limite;
 
-        $this->loadView('ambulatorio/procedimentoplano-lista', $args);
+        $this->loadView('ambulatorio/procedimentoplano-lista', $data);
 
 //            $this->carregarView($data);
     }

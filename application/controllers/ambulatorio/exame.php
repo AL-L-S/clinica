@@ -39,9 +39,9 @@ class Exame extends BaseController {
         $this->pesquisar();
     }
 
-    function pesquisar($args = array()) {
-
-        $this->loadView('ambulatorio/exame-lista', $args);
+    function pesquisar($limite = 10) {
+        $data["limite_paginacao"] = $limite;
+        $this->loadView('ambulatorio/exame-lista', $data);
     }
 
     function gravaraudio($args = array()) {

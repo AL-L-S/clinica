@@ -29,8 +29,9 @@ class Procedimento extends BaseController {
         $this->pesquisar();
     }
 
-    function pesquisar($args = array()) {
-        $this->loadView('ambulatorio/procedimento-lista', $args);
+    function pesquisar($limite = 50) {
+        $data["limite_paginacao"] = $limite;
+        $this->loadView('ambulatorio/procedimento-lista', $data);
     }
 
     function pesquisartuss($args = array()) {

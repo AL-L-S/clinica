@@ -29,9 +29,9 @@ class Agenda extends BaseController {
         $this->pesquisar();
     }
 
-    function pesquisar($args = array()) {
-
-        $this->loadView('ambulatorio/agenda-lista', $args);
+    function pesquisar($limite = 10) {
+        $data["limite_paginacao"] = $limite;
+        $this->loadView('ambulatorio/agenda-lista', $data);
 
 //            $this->carregarView($data);
     }

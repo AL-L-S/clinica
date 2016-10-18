@@ -692,6 +692,24 @@ CREATE TABLE ponto.tb_procedimento_convenio_pagamento
   CONSTRAINT tb_procedimento_convenio_pagamento_pkey PRIMARY KEY (procedimento_convenio_pagamento_id)
 );
 
+atualiza 14/10/2016
+
+
+DELETE FROM ponto.tb_perfil WHERE perfil_id = 6;
+
+INSERT INTO ponto.tb_perfil VALUES (9, "CAIXA", TRUE);
+INSERT INTO ponto.tb_perfil VALUES (10, 'ADMINISTRADOR', TRUE);
+INSERT INTO ponto.tb_perfil VALUES (11, 'RECEPCAO', TRUE);
+
+UPDATE ponto.tb_perfil SET nome = 'ADMINISTRADOR TOTAL' WHERE perfil_id = 1;
+UPDATE ponto.tb_perfil SET nome = 'CAIXA RECEPCAO' WHERE perfil_id = 2;
+UPDATE ponto.tb_perfil SET nome = 'FATURAMENTO' WHERE perfil_id = 3;
+UPDATE ponto.tb_perfil SET nome = 'MEDICO' WHERE perfil_id = 4;
+UPDATE ponto.tb_perfil SET nome = 'GERENTE RECEPCAO' WHERE perfil_id = 5;
+UPDATE ponto.tb_perfil SET nome = 'TECNICO' WHERE perfil_id = 7;
+UPDATE ponto.tb_perfil SET nome = 'ALMOXARIFADO' WHERE perfil_id = 8;
+
+
 atualiza 18/10/2016
 
 CREATE TABLE ponto.tb_financeiro_grupo
@@ -720,3 +738,4 @@ CREATE TABLE ponto.tb_grupo_formapagamento
 )
 
 ALTER TABLE ponto.tb_procedimento_convenio_pagamento ADD COLUMN grupo_pagamento_id integer;
+

@@ -30,14 +30,18 @@
                     $url      = $this->utilitario->build_query_params(current_url(), $_GET);
                     $consulta = $this->operador_m->listar($_GET);
                     $total    = $consulta->count_all_results();
-                    $limit    = 50;
+                    $limit    = $limite_paginacao;
                     isset ($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                     if ($total > 0) {
                 ?>
                 <tbody>
                     <?php
-                        $lista = $this->operador_m->listar($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
+                        if($limit != "todos"){
+                            $lista = $this->operador_m->listar($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
+                        } else {
+                            $lista = $this->operador_m->listar($_GET)->orderby('nome')->get()->result();
+                        }
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -84,6 +88,14 @@
                         <th class="tabela_footer" colspan="9">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
+                            <div style="display: inline">
+                                <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>
+                                <select style="width: 50px">
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/50');" <? if ($limit == 50) { echo "selected"; } ?>> 50 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/100');" <? if ($limit == 100) { echo "selected"; } ?>> 100 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/todos');" <? if ($limit == "todos") { echo "selected"; } ?>> Todos </option>
+                                </select>
+                            </div>
                         </th>
                     </tr>
                 </tfoot>
