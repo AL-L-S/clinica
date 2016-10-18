@@ -29,11 +29,46 @@ class formapagamento_model extends Model {
         return $this->db;
     }
 
+    function listargrupo($args = array()) {
+        $this->db->select('financeiro_grupo_id,
+                            nome 
+                            ');
+        $this->db->from('tb_financeiro_grupo');
+        $this->db->where('ativo', 'true');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('nome ilike', "%" . $args['nome'] . "%");
+        }
+        return $this->db;
+    }
+
     function listarforma() {
         $this->db->select('forma_pagamento_id,
                             nome');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listargrupos() {
+        $this->db->select('financeiro_grupo_id,
+                            nome');
+        $this->db->from('tb_financeiro_grupo');
+        $this->db->where('ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarformapagamentonogrupo($financeiro_grupo_id) {
+        $this->db->select('fp.nome,
+                           fp.forma_pagamento_id,
+                           gf.grupo_formapagamento_id,
+                           gf.grupo_id');
+        $this->db->from('tb_grupo_formapagamento gf');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
+        $this->db->where('gf.grupo_id', $financeiro_grupo_id);
+        $this->db->where('gf.ativo', 'true');
+        $this->db->where('fp.ativo', 'true');
         $return = $this->db->get();
         return $return->result();
     }
@@ -58,6 +93,16 @@ class formapagamento_model extends Model {
         return $return->result();
     }
 
+    function buscargrupo($financeiro_grupo_id) {
+        $this->db->select('financeiro_grupo_id,
+                            nome');
+        $this->db->from('tb_financeiro_grupo');
+        $this->db->where('ativo', 'true');
+        $this->db->where('financeiro_grupo_id', "$financeiro_grupo_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function excluir($forma_pagamento_id) {
 
         $horario = date("Y-m-d H:i:s");
@@ -72,6 +117,93 @@ class formapagamento_model extends Model {
             return -1;
         else
             return 0;
+    }
+
+    function excluirformapagamentodogrupo($grupo_formapagamento_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('grupo_formapagamento_id', $grupo_formapagamento_id);
+        $this->db->update('tb_grupo_formapagamento');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return -1;
+        else
+            return 0;
+    }
+
+    function excluirgrupo($grupo_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('financeiro_grupo_id', $grupo_id);
+        $this->db->update('tb_financeiro_grupo');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('grupo_id', $grupo_id);
+        $this->db->update('tb_grupo_formapagamento');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return -1;
+        else
+            return 0;
+    }
+
+    function gravargruponome() {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->insert('tb_financeiro_grupo');
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            } else {
+                return $this->db->insert_id();
+            }
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravargrupoadicionar() {
+        try {
+            $this->db->select('forma_pagamento_id');
+            $this->db->from('tb_grupo_formapagamento');
+            $this->db->where('forma_pagamento_id', $_POST['formapagamento']);
+            $this->db->where('grupo_id ', $_POST['grupo_id']);
+            $return = $this->db->get();
+
+            if (count($return->result()) == 0) {
+                /* inicia o mapeamento no banco */
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->set('forma_pagamento_id', $_POST['formapagamento']);
+                $this->db->set('grupo_id ', $_POST['grupo_id']);
+                $this->db->insert('tb_grupo_formapagamento');
+                if (trim($erro) != "") { // erro de banco
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } catch (Exception $exc) {
+            return false;
+        }
     }
 
     function gravar() {

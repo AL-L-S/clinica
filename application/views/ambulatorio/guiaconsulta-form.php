@@ -183,8 +183,8 @@
                 $guia = 0;
                 if ($contador > 0) {
 
-                    foreach ($forma_pagamento as $forma) { //buscar exames com forma de pagamento pre-definida (inicio)
-                        $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id, $forma->forma_pagamento_id);
+                    foreach ($grupo_pagamento as $grupo) { //buscar exames com forma de pagamento pre-definida (inicio)
+                        $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id, $grupo->financeiro_grupo_id);
                         if ($exame != 0) {
                             ?>
                             <table id="table_agente_toxico" border="0">
@@ -244,7 +244,7 @@
                                             Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                         </th>
                                         <th colspan="2" align="center"><center><div class="bt_linkf">
-                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->forma_pagamento_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
 
                                         </a></div></center></th>
                                 </tr>

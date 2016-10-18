@@ -57,11 +57,11 @@ class procedimentoplano_model extends Model {
                            nome');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
-
+        
         if (isset($args['txtpagamento']) && strlen($args['txtpagamento']) > 0) {
             $this->db->where('nome ilike', "%" . $args['txtpagamento'] . "%");
         }
-
+        
         $return = $this->db->get();
         return $return->result();
     }
@@ -252,18 +252,18 @@ class procedimentoplano_model extends Model {
         $this->db->select('procedimento_convenio_pagamento_id');
         $this->db->from('tb_procedimento_convenio_pagamento');
         $this->db->where('procedimento_convenio_id', $_POST['procedimento_convenio_id']);
-        $this->db->where('forma_pagamento_id', $_POST['txtpagamentoid']);
+        $this->db->where('grupo_pagamento_id ', $_POST['grupopagamento']);
         $return = $this->db->get();
         $result = $return->result();
-
-        if ($result != NULL) {
+        
+        if($result != NULL){            
             return 2;
         }
 
         if ($result == NULL) {
             try {
                 $this->db->set('procedimento_convenio_id', $_POST['procedimento_convenio_id']);
-                $this->db->set('forma_pagamento_id', $_POST['txtpagamentoid']);
+                $this->db->set('grupo_pagamento_id', $_POST['grupopagamento']);
                 $this->db->insert('tb_procedimento_convenio_pagamento');
 
                 $erro = $this->db->_error_message();
@@ -274,9 +274,8 @@ class procedimentoplano_model extends Model {
             } catch (Exception $exc) {
                 return 0;
             }
-        }
+        } 
     }
-
     function gravarnovomedico($procedimento_percentual_medico_id) {
 
         //verifica se esse medico já está cadastrado nesse procedimento 
@@ -286,8 +285,8 @@ class procedimentoplano_model extends Model {
         $this->db->where('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
         $return = $this->db->get();
         $result = $return->result();
-
-        if ($result != NULL) {
+        
+        if($result != NULL){            
             return 2;
         }
 
@@ -314,7 +313,7 @@ class procedimentoplano_model extends Model {
             } catch (Exception $exc) {
                 return 0;
             }
-        }
+        } 
     }
 
     function gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id) {
@@ -485,8 +484,6 @@ class procedimentoplano_model extends Model {
             $medico = $_POST['medico'];
             $procediemento = $_POST['procedimento'];
 
-            var_dump($convenio, $grupo, $procediemento, $medico);
-
 
 
             if ($grupo == "SELECIONE") {  // inicio grupo=selecione
@@ -550,13 +547,11 @@ class procedimentoplano_model extends Model {
                 } // fim grupo=selecione
             } elseif ($grupo == "TODOS") {  // inicio grupo=todos 
                 if ($procediemento == "") {
-                    $this->db->select('distinct(pc.procedimento_tuss_id),                                       
-                                        pc.convenio_id');
-                    $this->db->from('tb_procedimento_convenio pc');
-                    $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
-                    $this->db->where('pc.convenio_id', $convenio);
-                    $this->db->where('pc.ativo', 't');
-                    $this->db->where('pt.ativo', 't');
+                    $this->db->select('procedimento_convenio_id,
+                                    procedimento_tuss_id ');
+                    $this->db->from('tb_procedimento_convenio');
+                    $this->db->where('convenio_id', $convenio);
+                    $this->db->where('ativo', 't');
                     $return = $this->db->get();
                     $procedimentos = $return->result();
 
@@ -570,8 +565,10 @@ class procedimentoplano_model extends Model {
                         $medicos = $return->result();
 
 
+
+
                         foreach ($procedimentos as $value) {
-                            $dados = $this->retornaprocedimentoconvenioid($value->procedimento_tuss_id, $value->convenio_id);
+                            $dados = $value->procedimento_convenio_id;
                             $this->db->set('procedimento_tuss_id', $dados);
 //                        $this->db->set('medico', $operador);
 //                        $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
@@ -602,7 +599,7 @@ class procedimentoplano_model extends Model {
                     } //fim grupo=todos medico=todos
                     else {
                         foreach ($procedimentos as $value) {
-                            $dados = $this->retornaprocedimentoconvenioid($value->procedimento_tuss_id, $value->convenio_id);
+                            $dados = $value->procedimento_convenio_id;
                             /* inicia o mapeamento no banco */
                             $this->db->set('procedimento_tuss_id', $dados);
 //                        $this->db->set('medico', $_POST['medico']);
@@ -626,7 +623,7 @@ class procedimentoplano_model extends Model {
                             $this->db->insert('tb_procedimento_percentual_medico_convenio');
                         }
                     }
-                } elseif ($procediemento != "") {
+                } elseif ($procediemento !== "") {
                     if ($medico == "TODOS") { // inicio grupo=selecione  medico=todos
                         $this->db->select('operador_id,
                                        nome');
@@ -688,14 +685,16 @@ class procedimentoplano_model extends Model {
                 }
             } // fim grupo todos
             else { //inicio grupo especifico
-                $this->db->select('distinct(pt.procedimento_tuss_id),
-                                   pc.convenio_id');
-                $this->db->from('tb_procedimento_convenio pc');
-                $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                $this->db->select('pt.procedimento_tuss_id,
+                                   pc.procedimento_convenio_id
+                                      ');
+                $this->db->from('tb_procedimento_tuss pt');
+                $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
                 $this->db->where('pc.convenio_id', $convenio);
                 $this->db->where('pt.grupo', $grupo);
+                $this->db->where('pc.ativo', 't');
                 $this->db->where('pt.ativo', 't');
-                $this->db->orderby("pt.procedimento_tuss_id");
+                $this->db->orderby("pt.nome");
                 $return = $this->db->get();
                 $procedimentos2 = $return->result();
 
@@ -710,7 +709,7 @@ class procedimentoplano_model extends Model {
 
 
                     foreach ($procedimentos2 as $value) {
-                        $dados = $this->retornaprocedimentoconvenioid($value->procedimento_tuss_id, $value->convenio_id);
+                        $dados = $value->procedimento_convenio_id;
 
                         $this->db->set('procedimento_tuss_id', $dados);
 //                        $this->db->set('medico', $operador);
@@ -741,7 +740,7 @@ class procedimentoplano_model extends Model {
                 } // fim medico=todos
                 else {
                     foreach ($procedimentos2 as $value) {
-                        $dados = $this->retornaprocedimentoconvenioid($value->procedimento_tuss_id, $value->convenio_id);
+                        $dados = $value->procedimento_convenio_id;
                         /* inicia o mapeamento no banco */
                         $this->db->set('procedimento_tuss_id', $dados);
 //                        $this->db->set('medico', $_POST['medico']);
@@ -778,17 +777,6 @@ class procedimentoplano_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
-    }
-
-    function retornaprocedimentoconvenioid($procedimento_tuss_id, $convenio_id) {
-        $this->db->select('distinct(pc.procedimento_convenio_id)');
-        $this->db->from('tb_procedimento_convenio pc');
-        $this->db->where('pc.convenio_id', $convenio_id);
-        $this->db->where('pc.procedimento_tuss_id', $procedimento_tuss_id);
-        $this->db->where('pc.ativo', 't');
-        $return = $this->db->get();
-        $retorno = $return->result();
-        return $retorno[0]->procedimento_convenio_id;
     }
 
     private function instanciar($procedimento_convenio_id) {

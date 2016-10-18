@@ -785,6 +785,7 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
@@ -808,6 +809,7 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
@@ -930,16 +932,17 @@ class Guia extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
 
-    function faturarguia($guia_id, $forma_pagamento_id = null) {
-
-        if (isset($forma_pagamento_id)) {
-            $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id, $forma_pagamento_id);
-            $data['exame'] = $this->guia->listarexameguia($guia_id , $forma_pagamento_id);
+    function faturarguia($guia_id, $financeiro_grupo_id = null) {
+        if (isset($financeiro_grupo_id)) {
+            $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id, $financeiro_grupo_id);
+            $data['exame'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
         } else {
             $data['forma_pagamento'] = $this->guia->formadepagamento();
-            $data['exame'] = $this->guia->listarexameguia($guia_id);
+            $data['exame1'] = $this->guia->listarexameguia($guia_id);
+            $data['exame2'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
+            $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
-        
+
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
         $this->load->View('ambulatorio/faturarguia-form', $data);
@@ -953,14 +956,16 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/faturarguiaconvenio-form', $data);
     }
 
-    function faturarguiacaixa($guia_id, $forma_pagamento_id = null) {
+    function faturarguiacaixa($guia_id, $financeiro_grupo_id = null) {
 
-        if (isset($forma_pagamento_id)) {
-            $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id, $forma_pagamento_id);
-            $data['exame'] = $this->guia->listarexameguianaofaturadoforma($guia_id , $forma_pagamento_id);
+        if (isset($financeiro_grupo_id)) {
+            $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id, $financeiro_grupo_id);
+            $data['exame'] = $this->guia->listarexameguianaofaturadoforma($guia_id, $financeiro_grupo_id);
         } else {
             $data['forma_pagamento'] = $this->guia->formadepagamento();
-            $data['exame'] = $this->guia->listarexameguianaofaturado($guia_id);
+            $data['exame1'] = $this->guia->listarexameguia($guia_id);
+            $data['exame2'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
+            $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
         $data['paciente'] = $this->guia->listarexameguiacaixa($guia_id);
         $data['guia_id'] = $guia_id;

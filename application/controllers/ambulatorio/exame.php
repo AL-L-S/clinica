@@ -28,6 +28,7 @@ class Exame extends BaseController {
         $this->load->model('ambulatorio/agenda_model', 'agenda');
         $this->load->model('ponto/Competencia_model', 'competencia');
         $this->load->model('cadastro/convenio_model', 'convenio');
+        $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');

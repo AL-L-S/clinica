@@ -692,7 +692,6 @@ CREATE TABLE ponto.tb_procedimento_convenio_pagamento
   CONSTRAINT tb_procedimento_convenio_pagamento_pkey PRIMARY KEY (procedimento_convenio_pagamento_id)
 );
 
-
 atualiza 14/10/2016
 
 
@@ -709,3 +708,34 @@ UPDATE ponto.tb_perfil SET nome = 'MEDICO' WHERE perfil_id = 4;
 UPDATE ponto.tb_perfil SET nome = 'GERENTE RECEPCAO' WHERE perfil_id = 5;
 UPDATE ponto.tb_perfil SET nome = 'TECNICO' WHERE perfil_id = 7;
 UPDATE ponto.tb_perfil SET nome = 'ALMOXARIFADO' WHERE perfil_id = 8;
+
+
+atualiza 18/10/2016
+
+CREATE TABLE ponto.tb_financeiro_grupo
+(
+  financeiro_grupo_id serial NOT NULL,
+  nome character varying(40),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_financeiro_grupo_pkey PRIMARY KEY (financeiro_grupo_id )
+)
+
+CREATE TABLE ponto.tb_grupo_formapagamento
+(
+  grupo_formapagamento_id serial NOT NULL,
+  grupo_id integer,
+  forma_pagamento_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_grupo_formapagamento_pkey PRIMARY KEY (grupo_formapagamento_id )
+)
+
+ALTER TABLE ponto.tb_procedimento_convenio_pagamento ADD COLUMN grupo_pagamento_id integer;
+

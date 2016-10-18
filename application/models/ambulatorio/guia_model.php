@@ -3523,19 +3523,20 @@ ORDER BY p.nome";
     function listarexameguia($guia_id) {
 
         $this->db->select('sum(valor_total) as total');
-        $this->db->from('tb_agenda_exames');
+        $this->db->from('tb_agenda_exames ae');
         $this->db->where("guia_id", $guia_id);
         $return = $this->db->get();
         return $return->result();
     }
 
-    function listarexameguiaforma($guia_id, $forma_pagamento_id) {
-
+    function listarexameguiaforma($guia_id, $financeiro_grupo_id) {
         $this->db->select('sum(valor_total) as total');
         $this->db->from('tb_agenda_exames ae');
-        $this->db->join('tb_procedimento_convenio_pagamento cp');
+        $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("guia_id", $guia_id);
-        $this->db->where("forma_pagamento_id", $forma_pagamento_id);
+        if ($financeiro_grupo_id != null) {
+            $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
+        }
         $return = $this->db->get();
         return $return->result();
     }
@@ -3550,13 +3551,15 @@ ORDER BY p.nome";
         return $return->result();
     }
 
-    function listarexameguianaofaturadoforma($guia_id, $forma_pagamento_id) {
+    function listarexameguianaofaturadoforma($guia_id, $financeiro_grupo_id) {
         $this->db->select('sum(ae.valor_total) as total');
         $this->db->from('tb_agenda_exames ae');
-        $this->db->join('tb_procedimento_convenio_pagamento cp' , 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
+        $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("ae.guia_id", $guia_id);
         $this->db->where("ae.faturado", 'f');
-        $this->db->where("cp.forma_pagamento_id", $forma_pagamento_id);
+        if ($financeiro_grupo_id != null) {
+            $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
+        }
         $return = $this->db->get();
         return $return->result();
     }
@@ -3611,7 +3614,8 @@ ORDER BY p.nome";
         $this->db->select('fp.forma_pagamento_id,
                             fp.nome as nome');
         $this->db->from('tb_procedimento_convenio_pagamento pp');
-        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
+        $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
         $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
         $this->db->orderby('fp.nome');
         $return = $this->db->get();
@@ -3629,14 +3633,16 @@ ORDER BY p.nome";
         }
     }
 
-    function formadepagamentoguia($guia_id, $forma_pagamento_id) {
+    function formadepagamentoguia($guia_id, $financeiro_grupo_id) {
+
         $this->db->select('distinct(fp.nome),
                            fp.forma_pagamento_id');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
-        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
+        $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
         $this->db->where('ae.guia_id', $guia_id);
-        $this->db->where('fp.forma_pagamento_id', $forma_pagamento_id);
+        $this->db->where('gf.grupo_id', $financeiro_grupo_id);
         $this->db->orderby('fp.nome');
         $return = $this->db->get();
         return $return->result();
