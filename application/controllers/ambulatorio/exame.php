@@ -1596,6 +1596,7 @@ class Exame extends BaseController {
         }
         $i = 0;
         $b = $lote[0]->lote;
+        $j = $b - 53;
         $zero = '0000000000000000';
         $corpo = "";
 
@@ -1607,7 +1608,7 @@ class Exame extends BaseController {
    <ans:cabecalho>
       <ans:identificacaoTransacao>
          <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-         <ans:sequencialTransacao>7569</ans:sequencialTransacao>
+         <ans:sequencialTransacao>". $j ."</ans:sequencialTransacao>
          <ans:dataRegistroTransacao>" . $horario . "</ans:dataRegistroTransacao>
          <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
       </ans:identificacaoTransacao>
@@ -1807,7 +1808,7 @@ class Exame extends BaseController {
    <ans:cabecalho>
       <ans:identificacaoTransacao>
          <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-         <ans:sequencialTransacao>7569</ans:sequencialTransacao>
+         <ans:sequencialTransacao>". $j ."</ans:sequencialTransacao>
          <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
          <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
       </ans:identificacaoTransacao>
@@ -1904,7 +1905,7 @@ class Exame extends BaseController {
                         $rodape = "";
                     }
                     if ($contador < 80 && $contador == $i) {
-                        $b++;
+                        
                         $i = 0;
                         $rodape = "   </ans:guiasTISS>
          
@@ -1920,6 +1921,7 @@ class Exame extends BaseController {
                         $fp = fopen($nome, "w+");
                         fwrite($fp, $xml . "\n");
                         fclose($fp);
+                        $b++;
                         $corpo = "";
                         $rodape = "";
                     }
@@ -1933,7 +1935,7 @@ class Exame extends BaseController {
    <ans:cabecalho>
       <ans:identificacaoTransacao>
          <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-         <ans:sequencialTransacao>7569</ans:sequencialTransacao>
+         <ans:sequencialTransacao>". $j ."</ans:sequencialTransacao>
          <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
          <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
       </ans:identificacaoTransacao>
@@ -2081,6 +2083,8 @@ class Exame extends BaseController {
                         }
                     }
                     if ($i == 80) {
+                        var_dump($corpo);
+                        die;
                         $contador = $contador - $i;
 
                         $i = 0;
@@ -2104,7 +2108,8 @@ class Exame extends BaseController {
                         $rodape = "";
                     }
                     if ($contador < 80 && $contador == $i) {
-
+                        var_dump($corpo);
+                        die;
                         $i = 0;
                         $rodape = "   </ans:guiasTISS>
          
@@ -2133,7 +2138,7 @@ class Exame extends BaseController {
    <ans:cabecalho>
       <ans:identificacaoTransacao>
          <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-         <ans:sequencialTransacao>7569</ans:sequencialTransacao>
+         <ans:sequencialTransacao>". $j ."</ans:sequencialTransacao>
          <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
          <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
       </ans:identificacaoTransacao>
