@@ -2636,7 +2636,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where("c.dinheiro", 'f');
-        $this->db->where('ae.ativo', 'false');
+        $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
         if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
             $this->db->where('ae.data >=', $_POST['datainicio']);
