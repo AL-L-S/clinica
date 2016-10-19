@@ -133,6 +133,20 @@ class laudo_model extends Model {
         return $result[0]->cns;
     }
 
+    function listarempresatipoxml() {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('t.nome');
+        $this->db->from('tb_empresa e');
+        $this->db->join('tb_empresa_tipo_xml t', 't.tipo_xml_id = e.tipo_xml_id', 'left');
+        $this->db->where("t.ativo", 't');
+        $this->db->where("e.ativo", 't');
+        $this->db->where("e.empresa_id", $empresa_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listar($args = array()) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -447,7 +461,9 @@ class laudo_model extends Model {
                             g.guiaconvenio,
                             ae.paciente_id,
                             al.texto_laudo,
-                            al.ambulatorio_laudo_id');
+                            al.ambulatorio_laudo_id,
+                            i.wkl_accnumber,
+                            i.wkl_procstep_descr');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -461,6 +477,7 @@ class laudo_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_integracao_naja i', 'i.wkl_exame_id = ae.agenda_exames_id', 'left');
         $this->db->where("c.dinheiro", 'f');
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.cancelada', 'false');
@@ -521,7 +538,9 @@ class laudo_model extends Model {
                             g.guiaconvenio,
                             ae.paciente_id,
                             al.texto_laudo,
-                            al.ambulatorio_laudo_id');
+                            al.ambulatorio_laudo_id,
+                            i.wkl_accnumber,
+                            i.wkl_procstep_descr');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -535,6 +554,7 @@ class laudo_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_integracao_naja i', 'i.wkl_exame_id = ae.agenda_exames_id', 'left');
         $this->db->where("c.dinheiro", 'f');
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.cancelada', 'false');
