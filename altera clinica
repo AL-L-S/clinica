@@ -758,3 +758,42 @@ UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'RX';
 UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'US';
 UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'MEDICAMENTO' WHERE nome = 'MEDICAMENTO';
 
+
+
+
+atualiza 19/10/16
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN tipo_xml_id integer;
+
+CREATE TABLE ponto.tb_empresa_tipo_xml
+(
+  tipo_xml_id serial NOT NULL,
+  nome character varying(20),
+  descricao character varying(200),
+  ativo boolean NOT NULL DEFAULT true,
+  CONSTRAINT tb_empresa_tipo_xml_pkey PRIMARY KEY (tipo_xml_id )
+)
+
+CREATE TABLE ponto.tb_integracao_naja
+(
+  wkl_aetitle character varying(16),
+  wkl_procstep_startdate character varying(10),
+  wkl_procstep_starttime character varying(8),
+  wkl_modality character varying(20),
+  wkl_perfphysname character varying(200),
+  wkl_procstep_descr character varying(300),
+  wkl_procstep_id character varying(50),
+  wkl_reqprocid character varying(50),
+  wkl_reqprocdescr character varying(200),
+  wkl_studyinstuid character varying(50),
+  wkl_accnumber character varying(50),
+  wkl_reqphysician character varying(200),
+  wkl_refphysname character varying(200),
+  wkl_patientid character varying(50),
+  wkl_patientname character varying(200),
+  wkl_patientbirthdate character varying(10),
+  wkl_patientsex character varying(2),
+  wkl_id serial NOT NULL,
+  wkl_exame_id integer
+)
+
