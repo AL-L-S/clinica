@@ -99,7 +99,7 @@
                                 </td>
                                 <td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $item->ambulatorio_laudo_id ?> ">
+                                        <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente2/<?= $item->ambulatorio_laudo_id ?> ">
                                             chamar</a></div>
                                     <!--                                        impressaolaudo -->
                                 </td>

@@ -107,9 +107,11 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
         width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                        <?if (empty($faltou)) { ?>
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatempgeral/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
                                     excluir</a></td></div>
+                        <? } ?>    
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/reservartempgeral/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>/<?= $item->data; ?>">
                                     reservar</a></td></div>

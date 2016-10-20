@@ -247,7 +247,7 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-//        $this->fichaxml($paciente_id, $guia_id, $exames_id);
+        $this->fichaxml($paciente_id, $guia_id, $exames_id);
 //HUMANA               
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
 //            $this->load->View('ambulatorio/impressaofichaus', $data);
@@ -289,19 +289,19 @@ class Guia extends BaseController {
 //            }
 //        }
         // COT CLINICA
-        if ($grupo == "CONSULTA") {
-            $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
-        }
-        if ($grupo == "FISIOTERAPIA") {
-            $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
-        }
-        if ($data['exame'][0]->tipo == "EXAME") {
-            if ($dinheiro == "t") {
-                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-            } else {
-                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-            }
-        }
+//        if ($grupo == "CONSULTA") {
+//            $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
+//        }
+//        if ($grupo == "FISIOTERAPIA") {
+//            $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
+//        }
+//        if ($data['exame'][0]->tipo == "EXAME") {
+//            if ($dinheiro == "t") {
+//                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+//            } else {
+//                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+//            }
+//        }
         // CLINICA dez
 //            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
 //            

@@ -227,6 +227,21 @@ class procedimento_model extends Model {
      * @access public
      * @return Resposta true/false da conexão com o banco
      */
+    function verificaexistenciaprocedimento($nome) {
+        $this->db->select('procedimento_tuss_id');
+        $this->db->from('tb_procedimento_tuss');
+        $this->db->where('ativo', 't');
+        $this->db->where('nome ', $nome);
+        $return = $this->db->get();
+        $result = $return->result();
+
+        if (empty($result)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     function gravar() {
         try {
 
@@ -256,14 +271,23 @@ class procedimento_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
 
             if ($_POST['txtprocedimentotussid'] == "") {// insert
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_procedimento_tuss');
-                $erro = $this->db->_error_message();
-                if (trim($erro) != "") // erro de banco
-                    return -1;
-                else
-                    $procedimento_tuss_id = $this->db->insert_id();
+                
+                $nome = str_replace("     ", " ", $_POST['txtNome']);
+                $nome = str_replace("    ", " ", $nome);
+                $nome = str_replace("   ", " ", $nome);
+                $nome = str_replace("  ", " ", $nome);
+                if ($this->verificaexistenciaprocedimento($nome) == false) {
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_procedimento_tuss');
+                    $erro = $this->db->_error_message();
+                    if (trim($erro) != "") // erro de banco
+                        return -1;
+                    else
+                        $procedimento_tuss_id = $this->db->insert_id();
+                }else{
+                    return 0;
+                }
             }
             else { // update
                 $this->db->set('data_atualizacao', $horario);

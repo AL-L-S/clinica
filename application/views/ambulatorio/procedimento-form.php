@@ -6,7 +6,7 @@
 
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Horario</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Procedimento</a></h3>
         <div>
             <form name="form_procedimento" id="form_procedimento" action="<?= base_url() ?>ambulatorio/procedimento/gravar" method="post">
 

@@ -137,6 +137,7 @@
                             $teste = $diff->format('%H:%I:%S');
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
 
+                            $faltou = false;
                             if ($item->paciente == "" && $item->bloqueado == 't') {
                                 $situacao = "Bloqueado";
                                 $paciente = "Bloqueado";
@@ -154,8 +155,16 @@
                                     $situacao = "agenda";
                                     $verifica = 1;
                                 } elseif ($item->confirmado == 'f' && $item->operador_atualizacao != null) {
-                                    $situacao = "agendado";
                                     $verifica = 6;
+                                    date_default_timezone_set('America/Fortaleza');
+                                    $data_atual = date('Y-m-d');
+                                    $hora_atual = date('H:i:s');
+                                    if ($item->data <= $data_atual && $item->inicio < $hora_atual) {
+                                        $situacao = "<font color='gray'>faltou";
+                                        $faltou = true;
+                                    }else{
+                                        $situacao = "agendado";
+                                    }                                    
                                 } else {
                                     $situacao = "espera";
                                     $verifica = 3;
@@ -284,7 +293,7 @@
                         } elseif ($item->bloqueado == 'f') {
                             ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
-                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarpacientetempgeral/<?= $item->paciente_id ?>');">Atendimento
+                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarpacientetempgeral/<?= $item->paciente_id ?>/<?= $faltou; ?>');">Atendimento
                                     </a>
 
 
@@ -311,7 +320,7 @@
                         } else {
                             ?>
             <? if ($item->telefonema == 't') { ?>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><font color="green"><b>Confirmado</b></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><font color="green" title="<?= $item->telefonema_operador; ?>"><b>Confirmado</b></td>
             <? } else { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/telefonema/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Confirma
