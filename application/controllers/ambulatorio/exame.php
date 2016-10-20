@@ -2084,8 +2084,6 @@ class Exame extends BaseController {
                         }
                     }
                     if ($i == 80) {
-                        var_dump($corpo);
-                        die;
                         $contador = $contador - $i;
 
                         $i = 0;

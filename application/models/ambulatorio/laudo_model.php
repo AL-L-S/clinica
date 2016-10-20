@@ -1575,7 +1575,7 @@ class laudo_model extends Model {
         return $return->result();
     }
 
-    function atualizacaolaudosintegracao($ambulatorio_laudo_id) {
+    function atualizacaolaudosintegracao($agenda_exames_id) {
 
 
         $this->db->select('il.integracao_laudo_id,
@@ -1588,7 +1588,7 @@ class laudo_model extends Model {
         $this->db->from('tb_integracao_laudo il');
         $this->db->join('tb_operador o', 'o.conselho = il.laudo_conselho_medico', 'left');
         $this->db->join('tb_operador op', 'op.conselho = il.laudo_conselho_medico_revisor', 'left');
-        $this->db->where('il.exame_id', $ambulatorio_laudo_id);
+        $this->db->where('il.exame_id', $agenda_exames_id);
         $this->db->where('il.laudo_status', 'PUBLICADO');
         $this->db->orderby('il.integracao_laudo_id');
         $query = $this->db->get();
