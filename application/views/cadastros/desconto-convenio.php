@@ -17,8 +17,18 @@
                         <label>Convenio</label>
                     </dt>
                     <dd>
-                        <select name="convenio" id="convenio" class="size2">
-                            <option value="<?= $convenio[0]->convenio_id; ?>"><?php echo $convenio[0]->nome; ?></option>
+                        <input class="hidden" name="convenio" id="convenio" class="texto02" value="<?= $convenio[0]->convenio_id; ?>" />
+                        <input  value="<?php echo $convenio[0]->nome; ?>" readonly/>
+                    </dd>
+                    <dt>
+                        <label>Grupo de Pagamento</label>
+                    </dt>
+                    <dd>
+                        <select name="grupo" id="grupo" class="size1">
+                            <option value="TODOS">TODOS</option>
+                            <? foreach ($financeiro_grupos as $value) { ?>
+                                <option value="<?= $value->financeiro_grupo_id; ?>"><?php echo $value->nome; ?></option>
+                            <? } ?>                           
                         </select>
                     </dd>
                     <dt>
@@ -45,12 +55,12 @@
                     <dd>
                         <input type="number" name="ajusteuco" id="ajusteuco" class="number"  />
                     </dd>
-<!--                    <dt>
+                    <dt>
                         <label>Desconto TOTAL (%)</label>
                     </dt>
                     <dd>
-                        <input type="number" name="ajustetotal" onclick="multiplica()" id="ajustetotal" class="number"  />
-                    </dd>-->
+                        <input type="number" name="ajustetotal" id="ajustetotal" class="number"  />
+                    </dd>
                     <dt>
                 </dl>    
 
@@ -66,13 +76,13 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
 <script type="text/javascript">
-                            $('#btnVoltar').click(function () {
-                                $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-                            });
+                                                $('#btnVoltar').click(function () {
+                                                    $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+                                                });
 
-                            $(function () {
-                                $("#accordion").accordion();
-                            });
+                                                $(function () {
+                                                    $("#accordion").accordion();
+                                                });
 
 //                            $(document).ready(function () {
 //

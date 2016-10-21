@@ -18,6 +18,7 @@ class Convenio extends BaseController {
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('cadastro/grupoconvenio_model', 'grupoconvenio');
+        $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -49,6 +50,7 @@ class Convenio extends BaseController {
 
     function desconto($convenio_id) {
         $data['convenio'] = $this->convenio->listarconveniodesconto($convenio_id);
+        $data['financeiro_grupos'] = $this->formapagamento->listargrupos();
         $data['convenioid'] = $convenio_id;
         $this->loadView('cadastros/desconto-convenio', $data);
     }

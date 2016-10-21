@@ -146,28 +146,71 @@ class Convenio_model extends Model {
         $ajustefilme = $_POST['ajustefilme'] / 100;
         $ajusteporte = $_POST['ajusteporte'] / 100;
         $ajusteuco = $_POST['ajusteuco'] / 100;
+        $ajustetotal = $_POST['ajustetotal'];
 //        $ajustetotal = $_POST['ajustetotal'] / 100;
         $convenioid = $_POST['convenio'];
         $operador_id = $this->session->userdata('operador_id');
         $data = date('Y-m-d H:i:s');
 //        var_dump($data);
 //        die; 
-        try { 
-            
-            $sql = "update ponto.tb_procedimento_convenio
+        try {
+
+            if ($_POST['grupo'] != 'TODOS') {
+                $this->db->select('procedimento_convenio_id');
+                $this->db->from('tb_procedimento_convenio_pagamento');
+                $this->db->where('grupo_pagamento_id', $_POST['grupo']);
+                $return = $this->db->get();
+                $result = $return->result();
+
+                foreach ($result as $value) {
+
+                    $procedimento_convenio_id = $value->procedimento_convenio_id;
+                    $sql = "update ponto.tb_procedimento_convenio
                     set valorch = (valorch * $ajustech) + valorch, 
                     valorfilme = (valorfilme * $ajustefilme) + valorfilme,
                     valorporte = (valorporte * $ajusteporte) + valorporte,                        
                     valoruco = (valoruco * $ajusteuco) + valoruco,
                     operador_atualizacao = $operador_id,
                     data_atualizacao = '$data'                    
-                    where convenio_id = $convenioid;";            
-            $this->db->query($sql);
-            
-            $sqll =  "update ponto.tb_procedimento_convenio
+                    where convenio_id = $convenioid and procedimento_convenio_id = $procedimento_convenio_id;";
+                    $this->db->query($sql);
+                    if ($_POST['ajustetotal'] == '') {
+                        $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = (valorch * qtdech) + (valorfilme * qtdefilme) + (valorporte * qtdeporte) + (valoruco * qtdeuco)
-                      where convenio_id = convenio_id ;";
-            $this->db->query($sqll);
+                      where convenio_id = convenio_id and procedimento_convenio_id = $procedimento_convenio_id;";
+                        $this->db->query($sqll);
+                    } else {
+                        $sqll = "update ponto.tb_procedimento_convenio
+                      set valortotal = (valortotal * $ajustetotal) + valortotal
+                      where convenio_id = convenio_id and procedimento_convenio_id = $procedimento_convenio_id;";
+                        $this->db->query($sqll);
+                    }
+                }
+            } else {
+                $procedimento_convenio_id = $value->procedimento_convenio_id;
+                $sql = "update ponto.tb_procedimento_convenio
+                    set valorch = (valorch * $ajustech) + valorch, 
+                    valorfilme = (valorfilme * $ajustefilme) + valorfilme,
+                    valorporte = (valorporte * $ajusteporte) + valorporte,                        
+                    valoruco = (valoruco * $ajusteuco) + valoruco,
+                    operador_atualizacao = $operador_id,
+                    data_atualizacao = '$data'                    
+                    where convenio_id = $convenioid;";
+                $this->db->query($sql);
+
+                if ($_POST['ajustetotal'] == '') {
+                    $sqll = "update ponto.tb_procedimento_convenio
+                      set valortotal = (valorch * qtdech) + (valorfilme * qtdefilme) + (valorporte * qtdeporte) + (valoruco * qtdeuco)
+                      where convenio_id = convenio_id;";
+                    $this->db->query($sqll);
+                } else {
+                    $sqll = "update ponto.tb_procedimento_convenio
+                      set valortotal = (valortotal * $ajustetotal) + valortotal
+                      where convenio_id = convenio_id;";
+                    $this->db->query($sqll);
+                }
+            }
+
 
             return 1;
         } catch (Exception $exc) {
