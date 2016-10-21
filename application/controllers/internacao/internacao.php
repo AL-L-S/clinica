@@ -155,7 +155,7 @@ class internacao extends BaseController {
 
     function gravarleito() {
 
-        if ($this->leito_m->gravarleito($_POST)) {
+        if ($this->leito_m->gravarleito()) {
             $data['mensagem'] = 'Leito gravada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar leito';
@@ -166,7 +166,7 @@ class internacao extends BaseController {
 
     function gravarenfermaria() {
 
-        if ($this->enfermaria_m->gravarenfermaria($_POST)) {
+        if ($this->enfermaria_m->gravarenfermaria()) {
             $data['mensagem'] = 'Enfermaria gravada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar enfermaria';
@@ -177,7 +177,7 @@ class internacao extends BaseController {
 
     function gravarunidade() {
 
-        if ($this->unidade_m->gravarunidade($_POST)) {
+        if ($this->unidade_m->gravarunidade()) {
             $data['mensagem'] = 'Unidade gravada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar unidade';

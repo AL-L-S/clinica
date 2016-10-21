@@ -687,7 +687,7 @@ class Guia extends BaseController {
                 $this->guia->gravarfisioterapia($ambulatorio_guia);
             }
 //        $this->gerardicom($ambulatorio_guia);
-            $this->session->set_flashdata('message', $data['mensagem']);
+//            $this->session->set_flashdata('message', $data['mensagem']);
 //        $this->novo($paciente_id, $ambulatorio_guia);
             redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
         } else {

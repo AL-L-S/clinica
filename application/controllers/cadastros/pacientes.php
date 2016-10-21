@@ -267,15 +267,15 @@ class pacientes extends BaseController {
     }
 
     function gravar() {
-        $contador = $this->paciente->contador($_POST);
+        $contador = $this->paciente->contador();
        if ($_POST['cpf'] != ""){
-        $contadorcpf = $this->paciente->contadorcpf($_POST);
+        $contadorcpf = $this->paciente->contadorcpf();
         }else{
             $contadorcpf = 0;
         }
         
         if ($contador == 0 && $contadorcpf == 0) {
-            if ($paciente_id = $this->paciente->gravar($_POST)) {
+            if ($paciente_id = $this->paciente->gravar()) {
                 $data['mensagem'] = 'Paciente gravado com sucesso';
             } else {
                 $data['mensagem'] = 'Erro ao gravar paciente';
@@ -283,13 +283,13 @@ class pacientes extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
         } elseif ($contador > 0 && $_POST['paciente_id'] != "") {
-            if ($paciente_id = $this->paciente->gravar($_POST)) {
+            if ($paciente_id = $this->paciente->gravar()) {
                 $data['mensagem'] = 'Paciente gravado com sucesso';
             } else {
                 $data['mensagem'] = 'Erro ao gravar paciente';
             }
         } elseif ($contador == 0 && $contadorcpf == 1 && $_POST['paciente_id'] != "") {
-            if ($paciente_id = $this->paciente->gravar($_POST)) {
+            if ($paciente_id = $this->paciente->gravar()) {
                 $data['mensagem'] = 'Paciente gravado com sucesso';
             } else {
                 $data['mensagem'] = 'Erro ao gravar paciente';
@@ -590,7 +590,7 @@ class pacientes extends BaseController {
 
     function gravardemanda() {
 
-        if ($this->paciente->gravardemanda($_POST)) {
+        if ($this->paciente->gravardemanda()) {
             $data['mensagem'] = 'Demanda gravado com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar demanda';
@@ -606,7 +606,7 @@ class pacientes extends BaseController {
     }
 
     function gravarpacientecenso() {
-        if ($this->paciente->gravarpacientecenso($_POST)) {
+        if ($this->paciente->gravarpacientecenso()) {
             $data['mensagem'] = 'Paciente gravado com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar paciente';
@@ -658,7 +658,7 @@ class pacientes extends BaseController {
 
     function atualizaprocedimento() {
 
-        if ($this->paciente->atualizaProcedimentos($_POST)) {
+        if ($this->paciente->atualizaProcedimentos()) {
             $data['mensagem'] = 'Erro ao gravar procedimento';
         } else {
             $data['mensagem'] = 'Procedimento gravado com sucesso';

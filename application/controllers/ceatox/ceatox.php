@@ -135,12 +135,12 @@ class Ceatox extends BaseController
 
         if ($_POST['acao'] == 0) {
             $ficha_id = $this->ceatox_m->criaFicha();
-            $paciente_id = $this->paciente_m->gravarPaciente($_POST);
-            $solicitante_id = $this->ceatox_m->gravarSolicitante($_POST);
+            $paciente_id = $this->paciente_m->gravarPaciente();
+            $solicitante_id = $this->ceatox_m->gravarSolicitante();
         } else {
             $ficha_id = $_POST['fichaId'];
-            $paciente_id = $this->paciente_m->gravarPaciente($_POST);
-            $solicitante_id = $this->ceatox_m->gravarSolicitante($_POST);
+            $paciente_id = $this->paciente_m->gravarPaciente();
+            $solicitante_id = $this->ceatox_m->gravarSolicitante();
         }
         if ($this->ceatox_m->gravar($ficha_id, $paciente_id, $solicitante_id) && $this->ceatox_m->gravarAgente($ficha_id) && $this->ceatox_m->gravarTratamento($ficha_id)) {
             if ($_POST['acao'] == 0)
