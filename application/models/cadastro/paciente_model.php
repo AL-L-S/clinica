@@ -52,6 +52,8 @@ class paciente_model extends BaseModel {
     }
 
     function contador() {
+	$_POST['nascimento'] = date("Y-m-d", strtotime($_POST['nascimento']));
+
         $this->db->select();
         $this->db->from('tb_paciente');
         $this->db->where('nome', $_POST['nome']);

@@ -161,8 +161,8 @@ class Entrada extends BaseController {
         $armazem = $_POST['armazem'];
         $estoque_fornecedor_id = $_POST['txtfornecedor'];
         $estoque_produto_id = $_POST['txtproduto'];
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         if ($armazem == 0) {
             $data['armazem'] = 0;
         } else {
@@ -194,8 +194,8 @@ class Entrada extends BaseController {
 
     function gerarelatoriosaidaarmazem() {
         $armazem = $_POST['armazem'];
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $estoque_fornecedor_id = $_POST['txtfornecedor'];
         $estoque_produto_id = $_POST['txtproduto'];
         if ($armazem == 0) {

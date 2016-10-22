@@ -101,8 +101,8 @@ class Exame extends BaseController {
     function gerarelatoriomedicoagendaconsultas() {
         $medicos = $_POST['medicos'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaconsulta();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaconsulta', $data);
@@ -132,8 +132,8 @@ class Exame extends BaseController {
         if ($_POST['salas'] != '0') {
             $data['salas'] = $this->sala->listarsala($_POST['salas']);
         }
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaordem();
         $data['relatorioprioridade'] = $this->exame->listaragendaordemprioridade();
@@ -149,8 +149,8 @@ class Exame extends BaseController {
         $salas = $_POST['salas'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
         $data['salas'] = $this->sala->listarsala($salas);
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaexame();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexame', $data);
@@ -253,8 +253,8 @@ class Exame extends BaseController {
 
     function faturamentoexamelista() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
