@@ -44,7 +44,7 @@ class laboratorio extends BaseController {
         }
 
         function gravar() {
-        $paciente_id = $this->laboratorio_m->gravar($_POST);
+        $paciente_id = $this->laboratorio_m->gravar();
 
         if ($paciente_id != false) {
 
