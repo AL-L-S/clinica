@@ -52,6 +52,8 @@ class paciente_model extends BaseModel {
     }
 
     function contador() {
+	$_POST['nascimento'] = date("Y-m-d", strtotime($_POST['nascimento']));
+
         $this->db->select();
         $this->db->from('tb_paciente');
         $this->db->where('nome', $_POST['nome']);
@@ -329,7 +331,7 @@ class paciente_model extends BaseModel {
      * @author Vicente Armando
      * @return <type>
      */
-    function gravarPaciente($_POST) {
+    function gravarPaciente() {
         try {
             $this->db->set('nome', $_POST['nome_paciente']);
             if ($_POST['idade'] == '')
@@ -370,7 +372,7 @@ class paciente_model extends BaseModel {
         }
     }
 
-    function gravardemanda($_POST) {
+    function gravardemanda() {
         try {
             $this->db->set('demanda', $_POST['txtDemanda']);
             $this->db->set('diretoria', $_POST['txtDiretoria']);
@@ -420,7 +422,7 @@ class paciente_model extends BaseModel {
         return true;
     }
 
-    function gravarpacientecenso($_POST) {
+    function gravarpacientecenso() {
         try {
             $verificador = $this->instanciarpacientecenso($_POST['txtProntuario']);
             $this->db->set('prontuario', $_POST['txtProntuario']);

@@ -797,3 +797,12 @@ CREATE TABLE ponto.tb_integracao_naja
   wkl_exame_id integer
 )
 
+atualiza 20/10/16
+
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN parcelas integer;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN taxa_juros integer;
+
+atualiza 21/10/16
+
+ALTER TABLE ponto.tb_financeiro_grupo ADD COLUMN ajuste numeric(10,2);
+

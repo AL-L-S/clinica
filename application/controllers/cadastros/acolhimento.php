@@ -28,7 +28,7 @@ class acolhimento extends BaseController {
 
     function gravar() {
 
-        if ($this->acolhimento->gravar($_POST)) {
+        if ($this->acolhimento->gravar()) {
             $data['mensagem'] = 'Paciente gravado com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar paciente';

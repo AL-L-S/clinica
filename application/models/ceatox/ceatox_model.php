@@ -60,7 +60,7 @@ class Ceatox_model extends BaseModel
      * @author Vicente Armando
      * @return <type>
      */
-    function gravarSolicitante($_POST)
+    function gravarSolicitante()
     {
         try {
             $this->db->set('nome', $_POST['nome_solicitante']);

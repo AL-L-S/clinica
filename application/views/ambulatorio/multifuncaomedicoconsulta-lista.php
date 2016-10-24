@@ -94,6 +94,7 @@
                         <th class="tabela_header" width="250px;">Nome</th>
                         <th class="tabela_header" width="250px;">Espera</th>
                         <th class="tabela_header" width="60px;">Convenio</th>
+                        <th class="tabela_header" width="60px;">Data</th>                        
                         <th class="tabela_header" width="60px;">Agenda</th>
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">OBS</th>
@@ -164,11 +165,12 @@
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $teste; ?></td>
                                 <? } ?>
-                                            <? if ($item->convenio != '') { ?>
-                                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
-                                            <? } else { ?>
-                                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente; ?></td>
-                                            <? } ?>
+                                <? if ($item->convenio != '') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente; ?></td>
+                                <? } ?>
+                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
@@ -225,31 +227,31 @@
 
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
-                                                    setTimeout('delayReload()', 20000);
-                                                    function delayReload()
-                                                    {
-                                                        if (navigator.userAgent.indexOf("MSIE") != -1) {
-                                                            history.go(0);
-                                                        } else {
-                                                            window.location.reload();
-                                                        }
-                                                    }
+    setTimeout('delayReload()', 20000);
+    function delayReload()
+    {
+        if (navigator.userAgent.indexOf("MSIE") != -1) {
+            history.go(0);
+        } else {
+            window.location.reload();
+        }
+    }
 
 
-                                                    $(function() {
-                                                        $("#data").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+    $(function () {
+        $("#data").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
 
-                                                    $(function() {
-                                                        $("#accordion").accordion();
-                                                    });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 </script>

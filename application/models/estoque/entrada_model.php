@@ -338,8 +338,8 @@ class entrada_model extends Model {
     }
 
     function relatorioentradaarmazem() {
-        $datainicio = $_POST['txtdata_inicio'];
-        $datafim = $_POST['txtdata_fim'];
+        $datainicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $datafim = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -378,8 +378,8 @@ class entrada_model extends Model {
     }
 
     function relatorioentradaarmazemcontador() {
-        $datainicio = $_POST['txtdata_inicio'];
-        $datafim = $_POST['txtdata_fim'];
+        $datainicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $datafim = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -413,8 +413,8 @@ class entrada_model extends Model {
     }
 
     function relatoriosaidaarmazem() {
-        $datainicio = $_POST['txtdata_inicio'];
-        $datafim = $_POST['txtdata_fim'];
+        $datainicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $datafim = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -462,8 +462,8 @@ class entrada_model extends Model {
     }
 
     function relatoriosaidaarmazemcontador() {
-        $datainicio = $_POST['txtdata_inicio'];
-        $datafim = $_POST['txtdata_fim'];
+        $datainicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $datafim = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,

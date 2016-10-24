@@ -6,14 +6,14 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                    <label>Nome</label>
+                        <label>Nome</label>
                     </dt>
                     <dd>
                         <input type="hidden" name="grupo_id" class="texto10" value="<?= $financeiro_grupo[0]->financeiro_grupo_id; ?>" />
                         <input type="text" name="txtNome" class="texto05"  value="<?= $financeiro_grupo[0]->nome; ?>"/>
                     </dd>
                     <dt>
-                    <label>F. de Pagamento</label>
+                        <label>F. de Pagamento</label>
                     </dt>
                     <dd>
                         <select name="formapagamento" id="formapagamento" class="texto03">
@@ -22,6 +22,12 @@
                                 <option value="<?= $value->forma_pagamento_id ?>"><?= $value->nome ?></option>
                             <? } ?>                            
                         </select>
+                    </dd>
+                    <dt>
+                        <label>Ajuste (%)</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="ajuste" class="texto03"  value="<?= $financeiro_grupo[0]->ajuste; ?>"/>
                     </dd>
                 </dl>    
                 <hr/>
@@ -54,7 +60,7 @@
                                     <a href="<?= base_url() ?>cadastros/formapagamento/carregarformapagamento/<?= $item->financeiro_grupo_id ?>">Editar</a>
                                 </td>
                                 -->                                <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
-                                    <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Forma?');" href="<?= base_url() ?>cadastros/formapagamento/excluirformapagamentodogrupo/<?= $item->grupo_id ?>/<?= $item->grupo_formapagamento_id?>">Excluir</a>
+                                    <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Forma?');" href="<?= base_url() ?>cadastros/formapagamento/excluirformapagamentodogrupo/<?= $item->grupo_id ?>/<?= $item->grupo_formapagamento_id ?>">Excluir</a>
                                 </td>
                             </tr>
 
@@ -78,13 +84,13 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-                                $('#btnVoltar').click(function () {
-                                    $(location).attr('href', '<?= base_url(); ?>cadastros/formapagamento/grupospagamento');
-                                });
+                                        $('#btnVoltar').click(function () {
+                                            $(location).attr('href', '<?= base_url(); ?>cadastros/formapagamento/grupospagamento');
+                                        });
 
-                                $(function () {
-                                    $("#accordion").accordion();
-                                });
+                                        $(function () {
+                                            $("#accordion").accordion();
+                                        });
 
 </script>
 

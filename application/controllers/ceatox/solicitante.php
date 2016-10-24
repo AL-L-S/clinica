@@ -44,7 +44,7 @@ class solicitante extends BaseController {
 
         function gravar() {
 
-        if ($this->solicitante_m->gravar($_POST)) {
+        if ($this->solicitante_m->gravar()) {
             $data['mensagem'] = 'Solicitante gravado com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar solicitante';

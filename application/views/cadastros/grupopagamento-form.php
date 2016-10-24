@@ -12,17 +12,23 @@
 <!--                        <input type="hidden" name="txtcadastrosformapagamentoid" class="texto10" value="<?= @$obj->_forma_pagamento_id; ?>" />-->
                         <input type="text" name="txtNome" class="texto05"  />
                     </dd>
-<!--                    <dt>
-                        <label>F. de Pagamento</label>
+                    <dt>
+                        <label>Ajuste (%)</label>
                     </dt>
                     <dd>
-                        <select name="formapagamento" id="formapagamento" class="texto03">
-                            <option value="">SELECIONE</option>
-                            <? foreach ($forma_pagamento as $value) { ?>
-                                <option value="<?= $value->forma_pagamento_id ?>"><?= $value->nome ?></option>
-                                    <? } ?>                            
-                        </select>
-                    </dd>-->
+                        <input type="text" name="ajuste" class="texto03"  />
+                    </dd>
+                    <!--                    <dt>
+                                            <label>F. de Pagamento</label>
+                                        </dt>
+                                        <dd>
+                                            <select name="formapagamento" id="formapagamento" class="texto03">
+                                                <option value="">SELECIONE</option>
+                    <? foreach ($forma_pagamento as $value) { ?>
+                                                            <option value="<?= $value->forma_pagamento_id ?>"><?= $value->nome ?></option>
+                    <? } ?>                            
+                                            </select>
+                                        </dd>-->
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

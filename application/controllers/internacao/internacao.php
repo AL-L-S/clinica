@@ -155,7 +155,7 @@ class internacao extends BaseController {
 
     function gravarleito() {
 
-        if ($this->leito_m->gravarleito($_POST)) {
+        if ($this->leito_m->gravarleito()) {
             $data['mensagem'] = 'Leito gravada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar leito';
@@ -166,7 +166,7 @@ class internacao extends BaseController {
 
     function gravarenfermaria() {
 
-        if ($this->enfermaria_m->gravarenfermaria($_POST)) {
+        if ($this->enfermaria_m->gravarenfermaria()) {
             $data['mensagem'] = 'Enfermaria gravada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar enfermaria';
@@ -177,7 +177,7 @@ class internacao extends BaseController {
 
     function gravarunidade() {
 
-        if ($this->unidade_m->gravarunidade($_POST)) {
+        if ($this->unidade_m->gravarunidade()) {
             $data['mensagem'] = 'Unidade gravada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar unidade';
@@ -286,8 +286,8 @@ class internacao extends BaseController {
 
     function gerarelatoriointernacao() {
         $data['prescricao'] = $this->internacao_m->listaprescricoesdata();
-        $data['data_inicio'] = $_POST['txtdata_inicio'];
-        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['data_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['data_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['tipo'] = $_POST['tipo'];
         if ($_POST['unidade'] != 0){
         $unidade = $this->internacao_m->pesquisarunidade($_POST['unidade']);
