@@ -83,6 +83,11 @@ class Laudo extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
+    function chamarpaciente2($ambulatorio_laudo_id) {
+        $this->laudo->chamada($ambulatorio_laudo_id);
+        redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+    }
+
     function calcularvolume($args = array()) {
         (int)
                 $valor1 = str_replace(",", ".", $_POST['valor1']);
@@ -174,7 +179,7 @@ class Laudo extends BaseController {
 
         $data['integracao'] = $this->laudo->listarlaudosintegracao($ambulatorio_laudo_id);
         if (count($data['integracao']) > 0) {
-            $this->laudo->atualizacaolaudosintegracao($ambulatorio_laudo_id);
+            $this->laudo->atualizacaolaudosintegracao($agenda_exames_id);
         }
         $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
@@ -1745,11 +1750,11 @@ class Laudo extends BaseController {
                                 <NJ_NomeMedicoLaudante>" . $item->medicosolicitante . "</NJ_NomeMedicoLaudante>
                                 <NJ_Detalhes>";
 
-                    $corpo = $corpo . "<NJ_Exame>
+                $corpo = $corpo . "<NJ_Exame>
                                             <NJ_Accessionnumber>" . $item->wkl_accnumber . "</NJ_Accessionnumber>                            
                                             <NJ_NomeExame>" . $item->wkl_procstep_descr . "</NJ_NomeExame>
                                         </NJ_Exame>";
-                    $texto = $texto . $value->texto_laudo;
+                $texto = $texto . $value->texto_laudo;
 
                 $rodape = "</NJ_Detalhes>
                        </NAJA>";

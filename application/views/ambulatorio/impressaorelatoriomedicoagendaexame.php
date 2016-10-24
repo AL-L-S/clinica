@@ -19,6 +19,7 @@
                 <th class="tabela_header" >Status</th>
                 <th class="tabela_header" width="250px;">Nome</th>
                 <th class="tabela_header" width="70px;">Resp.</th>
+                <th class="tabela_header" width="70px;">Procedimento</th>
                 <th class="tabela_header" width="70px;">Data</th>
                 <th class="tabela_header" width="50px;">Dia</th>
                 <th class="tabela_header" width="70px;">Agenda</th>
@@ -106,7 +107,8 @@
                         <? } else { ?>
                             <td >&nbsp;</td>
                         <? } ?>
-
+                        
+                        <td><?= utf8_decode($item->procedimento); ?></td>    
                         <td><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
 
                         <td ><?= substr($dia, 0, 3); ?></td>

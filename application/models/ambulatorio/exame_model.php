@@ -713,7 +713,8 @@ class exame_model extends Model {
                             pt.codigo,
                             c.nome as convenio,
                             co.nome as convenio_paciente,
-                            al.situacao as situacaolaudo');
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -725,6 +726,7 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         if ($contador == 0) {
@@ -853,7 +855,8 @@ class exame_model extends Model {
                             pt.codigo,
                             c.nome as convenio,
                             co.nome as convenio_paciente,
-                            al.situacao as situacaolaudo');
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -865,6 +868,7 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         if ($contador == 0) {
@@ -1104,7 +1108,8 @@ class exame_model extends Model {
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
-                            al.situacao as situacaolaudo');
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -1117,6 +1122,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         if ($contador == 0) {
@@ -1491,7 +1497,8 @@ class exame_model extends Model {
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
-                            al.situacao as situacaolaudo');
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -1503,6 +1510,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         $this->db->where('ae.data >=', $data);

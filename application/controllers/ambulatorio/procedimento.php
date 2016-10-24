@@ -123,7 +123,9 @@ class Procedimento extends BaseController {
 
     function gravar() {
         $procedimento_tuss_id = $this->procedimento->gravar();
-        if ($procedimento_tuss_id == "-1") {
+        if($procedimento_tuss_id == "0") {
+            $data['mensagem'] = 'Erro ao gravar o Procedimento. Procedimento ja cadastrado.';
+        }elseif ($procedimento_tuss_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Procedimento. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimento.';

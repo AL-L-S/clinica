@@ -3,15 +3,15 @@
 
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarfisioterapiapacientetemp" method="post">
         <fieldset>
-                <div>
-            <td width="100px;"><center>
-                <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/exametemp/novopacientefisioterapia">
-            Nova Fisioterapia
-        </a>
-                </div>
-        </td>
-        </div>
+            <div>
+                <td width="100px;"><center>
+                    <div class="bt_link_new">
+                        <a href="<?php echo base_url() ?>ambulatorio/exametemp/novopacientefisioterapia">
+                            Nova Fisioterapia
+                        </a>
+                    </div>
+                    </td>
+            </div>
         </fieldset>
         <fieldset>
             <legend>Marcar Fisioterapia</legend>
@@ -104,10 +104,12 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-width=500,height=230');">=><?= $item->observacoes; ?></a></td>
-                        <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                <a href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
-                                    excluir</a></td></div>
+        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                            <? if (empty($faltou)) { ?>
+                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
+                                        excluir</a></td></div>
+                        <? } ?>
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/reservarfisioterapiatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>/<?= $item->data; ?>">
                                     reservar</a></td></div>
@@ -127,21 +129,20 @@ width=500,height=230');">=><?= $item->observacoes; ?></a></td>
         </tfoot>
     </table> 
     <?
-    if(count($consultasanteriores) > 0){
-    foreach ($consultasanteriores as $value) {
-        ?>
-             <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
-            
+    if (count($consultasanteriores) > 0) {
+        foreach ($consultasanteriores as $value) {
+            ?>
+            <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
+
             <?
-        
-    }
-    }else{
+        }
+    } else {
         ?>
-             <h6>NENHUMA CONSULTA ENCONTRADA</h6>
-            <?
+        <h6>NENHUMA CONSULTA ENCONTRADA</h6>
+        <?
     }
-?>
-   
+    ?>
+
 
 </fieldset>
 </div> <!-- Final da DIV content -->
@@ -151,83 +152,83 @@ width=500,height=230');">=><?= $item->observacoes; ?></a></td>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-    $(function() {
-        $("#data_ficha").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
+                            $(function () {
+                                $("#data_ficha").datepicker({
+                                    autosize: true,
+                                    changeYear: true,
+                                    changeMonth: true,
+                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                    dateFormat: 'dd/mm/yy'
+                                });
+                            });
 
-    $(function() {
-        $('#exame').change(function() {
-            if ($(this).val()) {
-                $('#horarios').hide();
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorioconsulta', {exame: $(this).val(), teste: $("#data_ficha").val()}, function(j) {
-                    var options = '<option value=""></option>';
-                    for (var i = 0; i < j.length; i++) {
-                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '</option>';
-                    }
-                    $('#horarios').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#horarios').html('<option value="">-- Escolha um hora --</option>');
-            }
-        });
-    });
-
-
-
-
-
-    //$(function(){     
-    //    $('#exame').change(function(){
-    //        exame = $(this).val();
-    //        if ( exame === '')
-    //            return false;
-    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-    //            var option = new Array();
-    //            $.each(data, function(i, obj){
-    //                console.log(obl);
-    //                option[i] = document.createElement('option');
-    //                $( option[i] ).attr( {value : obj.id} );
-    //                $( option[i] ).append( obj.nome );
-    //                $("select[name='horarios']").append( option[i] );
-    //            });
-    //        });
-    //    });
-    //});
+                            $(function () {
+                                $('#exame').change(function () {
+                                    if ($(this).val()) {
+                                        $('#horarios').hide();
+                                        $('.carregando').show();
+                                        $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorioconsulta', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
+                                            var options = '<option value=""></option>';
+                                            for (var i = 0; i < j.length; i++) {
+                                                options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '</option>';
+                                            }
+                                            $('#horarios').html(options).show();
+                                            $('.carregando').hide();
+                                        });
+                                    } else {
+                                        $('#horarios').html('<option value="">-- Escolha um hora --</option>');
+                                    }
+                                });
+                            });
 
 
 
 
 
-    $(function() {
-        $("#accordion").accordion();
-    });
+                            //$(function(){     
+                            //    $('#exame').change(function(){
+                            //        exame = $(this).val();
+                            //        if ( exame === '')
+                            //            return false;
+                            //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
+                            //            var option = new Array();
+                            //            $.each(data, function(i, obj){
+                            //                console.log(obl);
+                            //                option[i] = document.createElement('option');
+                            //                $( option[i] ).attr( {value : obj.id} );
+                            //                $( option[i] ).append( obj.nome );
+                            //                $("select[name='horarios']").append( option[i] );
+                            //            });
+                            //        });
+                            //    });
+                            //});
 
 
-    $(document).ready(function() {
-        jQuery('#form_exametemp').validate({
-            rules: {
-                txtNome: {
-                    required: true,
-                    minlength: 3
-                }
-            },
-            messages: {
-                txtNome: {
-                    required: "*",
-                    minlength: "!"
-                }
-            }
-        });
-    });
+
+
+
+                            $(function () {
+                                $("#accordion").accordion();
+                            });
+
+
+                            $(document).ready(function () {
+                                jQuery('#form_exametemp').validate({
+                                    rules: {
+                                        txtNome: {
+                                            required: true,
+                                            minlength: 3
+                                        }
+                                    },
+                                    messages: {
+                                        txtNome: {
+                                            required: "*",
+                                            minlength: "!"
+                                        }
+                                    }
+                                });
+                            });
 
 </script>
