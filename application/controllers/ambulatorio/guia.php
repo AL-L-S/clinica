@@ -675,7 +675,8 @@ class Guia extends BaseController {
         $resultadoguia = $this->guia->listarguia($paciente_id);
 
         //verifica se existem sessões abertas
-        $retorno = $this->guia->verificasessoesabertas($_POST['procedimento1']);
+        $retorno = $this->guia->verificasessoesabertas($_POST['procedimento1'], $_POST['txtpaciente_id']);
+
         if ($retorno == false) {
             if ($_POST['medicoagenda'] != '') {
 //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];

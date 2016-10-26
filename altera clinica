@@ -806,3 +806,41 @@ atualiza 21/10/16
 
 ALTER TABLE ponto.tb_financeiro_grupo ADD COLUMN ajuste numeric(10,2);
 
+atualiza 22/10/16
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN parcelas1 integer;
+ALTER TABLE ponto.tb_agenda_exames ALTER COLUMN parcelas1 SET DEFAULT 1;
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN parcelas2 integer;
+ALTER TABLE ponto.tb_agenda_exames ALTER COLUMN parcelas2 SET DEFAULT 1;
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN parcelas3 integer;
+ALTER TABLE ponto.tb_agenda_exames ALTER COLUMN parcelas3 SET DEFAULT 1;
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN parcelas4 integer;
+ALTER TABLE ponto.tb_agenda_exames ALTER COLUMN parcelas4 SET DEFAULT 1;
+
+atualiza 26/10/16
+
+CREATE TABLE ponto.tb_financeiro_contasreceber_temp
+(
+  financeiro_contasreceber_temp_id serial NOT NULL,
+  valor numeric(10,2),
+  devedor integer,
+  parcela character varying(3),
+  numero_parcela character varying(3),
+  observacao character varying(2000),
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  data date,
+  tipo character varying(60),
+  tipo_numero character varying(40),
+  ativo boolean DEFAULT true,
+  excluido boolean DEFAULT false,
+  entrada_id integer,
+  conta integer,
+  classe character varying(60),
+  CONSTRAINT tb_financeiro_contasreceber_temp_pkey PRIMARY KEY (financeiro_contasreceber_temp_id )
+)

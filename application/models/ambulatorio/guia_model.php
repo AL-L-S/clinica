@@ -2865,7 +2865,11 @@ ORDER BY p.nome";
                             f4.nome as forma_pagamento_4,
                             pt.descricao as procedimento,
                             pt.codigo,
-                            ae.desconto');
+                            ae.desconto,
+                            ae.parcelas1,
+                            ae.parcelas2,
+                            ae.parcelas3,
+                            ae.parcelas4');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -4027,18 +4031,22 @@ AND data <= '$data_fim'";
             if ($_POST['formapamento1'] != '') {
                 $this->db->set('forma_pagamento', $_POST['formapamento1']);
                 $this->db->set('valor1', str_replace(",", ".", $valor1));
+                $this->db->set('parcelas1', $_POST['parcela1']);
             }
             if ($_POST['formapamento2'] != '') {
                 $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                 $this->db->set('valor2', str_replace(",", ".", $valor2));
+                $this->db->set('parcelas2', $_POST['parcela2']);
             }
             if ($_POST['formapamento3'] != '') {
                 $this->db->set('forma_pagamento3', $_POST['formapamento3']);
                 $this->db->set('valor3', str_replace(",", ".", $valor3));
+                $this->db->set('parcelas3', $_POST['parcela3']);
             }
             if ($_POST['formapamento4'] != '') {
                 $this->db->set('forma_pagamento4', $_POST['formapamento4']);
                 $this->db->set('valor4', str_replace(",", ".", $valor4));
+                $this->db->set('parcelas4', $_POST['parcela4']);
             }
             $this->db->set('desconto', $desconto);
             $this->db->set('valor_total', $_POST['novovalortotal']);
@@ -4227,6 +4235,7 @@ AND data <= '$data_fim'";
                     $valor1 = $valor1 - $valortotal;
                     $this->db->set('forma_pagamento', $_POST['formapamento1']);
                     $this->db->set('valor1', str_replace(",", ".", $valortotal));
+                    $this->db->set('parcelas1', $_POST['parcela1']);
                     $this->db->set('valor_total', str_replace(",", ".", $valortotal));
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
@@ -4240,12 +4249,15 @@ AND data <= '$data_fim'";
                     if ($valor1 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
                     }
                     if ($valor1 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento2']);
                         $this->db->set('valor1', str_replace(",", ".", $restovalor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
                     }
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
@@ -4261,26 +4273,34 @@ AND data <= '$data_fim'";
                     if ($valor1 > 0 && $valor2 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                         $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento3']);
                         $this->db->set('valor3', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas3', $_POST['parcela3']);
                     }
                     if ($valor1 == 0 && $valor2 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento2']);
                         $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento3']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                     }
                     if ($valor2 == 0 && $valor1 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento3']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                     }
                     if ($valor2 == 0 && $valor1 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento3']);
                         $this->db->set('valor1', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas1', $_POST['parcela3']);
                     }
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
@@ -4297,58 +4317,78 @@ AND data <= '$data_fim'";
                     if ($valor1 > 0 && $valor2 > 0 && $valor3 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                         $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento3']);
                         $this->db->set('valor3', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                         $this->db->set('forma_pagamento4', $_POST['formapamento4']);
                         $this->db->set('valor4', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas4', $_POST['parcela4']);
                     }
                     if ($valor1 == 0 && $valor2 > 0 && $valor3 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento2']);
                         $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento3']);
                         $this->db->set('valor2', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento4']);
                         $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
                     }
                     if ($valor2 == 0 && $valor1 > 0 && $valor3 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento3']);
                         $this->db->set('valor2', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento4']);
                         $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
                     }
                     if ($valor2 > 0 && $valor1 > 0 && $valor3 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                         $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento4']);
                         $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
                     }
                     if ($valor2 == 0 && $valor1 == 0 && $valor3 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento3']);
                         $this->db->set('valor1', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas1', $_POST['parcela3']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento4']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
                     }
                     if ($valor2 == 0 && $valor1 > 0 && $valor3 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento4']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
                     }
                     if ($valor2 > 0 && $valor1 == 0 && $valor3 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento2']);
                         $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento4']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
                     }
                     if ($valor2 == 0 && $valor1 == 0 && $valor3 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento4']);
                         $this->db->set('valor1', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas1', $_POST['parcela4']);
                     }
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
@@ -4452,6 +4492,7 @@ AND data <= '$data_fim'";
                     $valor1 = $valor1 - $valortotal;
                     $this->db->set('forma_pagamento', $_POST['formapamento1']);
                     $this->db->set('valor1', str_replace(",", ".", $valortotal));
+                    $this->db->set('parcelas1', $_POST['parcela1']);
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('faturado', 't');
@@ -4465,12 +4506,15 @@ AND data <= '$data_fim'";
                     if ($valor1 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
                     }
                     if ($valor1 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento2']);
                         $this->db->set('valor1', str_replace(",", ".", $restovalor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
                     }
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
@@ -4486,26 +4530,34 @@ AND data <= '$data_fim'";
                     if ($valor1 > 0 && $valor2 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                         $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento3']);
                         $this->db->set('valor3', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas3', $_POST['parcela3']);
                     }
                     if ($valor1 == 0 && $valor2 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento2']);
                         $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento3']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                     }
                     if ($valor2 == 0 && $valor1 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento3']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                     }
                     if ($valor2 == 0 && $valor1 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento3']);
                         $this->db->set('valor1', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas1', $_POST['parcela3']);
                     }
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
@@ -4522,58 +4574,78 @@ AND data <= '$data_fim'";
                     if ($valor1 > 0 && $valor2 > 0 && $valor3 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                         $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento3']);
                         $this->db->set('valor3', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas3', $_POST['parcela3']);
                         $this->db->set('forma_pagamento4', $_POST['formapamento4']);
                         $this->db->set('valor4', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas4', $_POST['parcela4']);
                     }
                     if ($valor1 == 0 && $valor2 > 0 && $valor3 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento2']);
                         $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento3']);
                         $this->db->set('valor2', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento4']);
                         $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
                     }
                     if ($valor2 == 0 && $valor1 > 0 && $valor3 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento3']);
                         $this->db->set('valor2', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento4']);
                         $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
                     }
                     if ($valor2 > 0 && $valor1 > 0 && $valor3 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento2']);
                         $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
                         $this->db->set('forma_pagamento3', $_POST['formapamento4']);
                         $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
                     }
                     if ($valor2 == 0 && $valor1 == 0 && $valor3 > 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento3']);
                         $this->db->set('valor1', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas1', $_POST['parcela3']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento4']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
                     }
                     if ($valor2 == 0 && $valor1 > 0 && $valor3 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento1']);
                         $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento4']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
                     }
                     if ($valor2 > 0 && $valor1 == 0 && $valor3 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento2']);
                         $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
                         $this->db->set('forma_pagamento2', $_POST['formapamento4']);
                         $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
                     }
                     if ($valor2 == 0 && $valor1 == 0 && $valor3 == 0) {
                         $this->db->set('forma_pagamento', $_POST['formapamento4']);
                         $this->db->set('valor1', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas1', $_POST['parcela4']);
                     }
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
@@ -4589,6 +4661,7 @@ AND data <= '$data_fim'";
                     $valor1 = $valor1 - $valortotal;
                     $this->db->set('forma_pagamento', $_POST['formapamento1']);
                     $this->db->set('valor1', str_replace(",", ".", $valortotal));
+                    $this->db->set('parcelas1', $_POST['parcela1']);
                     $this->db->set('valor_total', str_replace(",", ".", $valortotal));
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
@@ -4664,7 +4737,69 @@ AND data <= '$data_fim'";
         }
     }
 
+    function relatoriocaixaforma($formapagamento_id) {
+//        var_dump($formapagamento_id);die;
+        $this->db->select('ae.agenda_exames_id,
+                            ae.valor1,
+                            ae.parcelas1,
+                            ae.forma_pagamento,
+                            ae.valor2,
+                            ae.parcelas2,
+                            ae.forma_pagamento2,
+                            ae.valor3,
+                            ae.parcelas3,
+                            ae.forma_pagamento3,
+                            ae.valor4,
+                            ae.parcelas4,
+                            ae.forma_pagamento4');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where('ae.forma_pagamento', $formapagamento_id);
+        $this->db->orwhere('ae.forma_pagamento2', $formapagamento_id);
+        $this->db->orwhere('ae.forma_pagamento3', $formapagamento_id);
+        $this->db->orwhere('ae.forma_pagamento4', $formapagamento_id);
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.confirmado', 'true');
+        $this->db->where('ae.operador_autorizacao >', 0);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function burcarcontasrecebertemp() {
+        $this->db->select('distinct(data)');
+        $this->db->from('tb_financeiro_contasreceber_temp');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function burcarcontasrecebertemp2($data) {
+        $this->db->select('sum(valor)                           
+                           valor,
+                           devedor,
+                           parcela,
+                           observacao,
+                           data_cadastro,
+                           operador_cadastro,
+                           entrada_id,
+                           conta,
+                           classe');
+        $this->db->from('tb_financeiro_contasreceber_temp');
+        $this->db->where('data', $data);
+        $this->db->groupby('devedor');
+        $this->db->groupby('parcela');
+        $this->db->groupby('observacao');
+        $this->db->groupby('data_cadastro');
+        $this->db->groupby('operador_cadastro');
+        $this->db->groupby('entrada_id');
+        $this->db->groupby('conta');
+        $this->db->groupby('classe');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function fecharcaixa() {
+//        echo '<pre>';
+//        var_dump($this->burcarcontasrecebertemp2('2016-11-25'));
+//        die;
 //        try {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
@@ -4736,37 +4871,42 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->query($sql);
         }
 
-        $this->db->select('nome , conta , credor_devedor , tempo_receber , dia_receber');
+        $this->db->select('forma_pagamento_id, nome , conta_id , credor_devedor , tempo_receber , dia_receber');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
         $return = $this->db->get();
         $forma_pagamento = $return->result();
 
+        $teste = $_POST['qtde'];
+        $w = 0;
         foreach ($forma_pagamento as $value) {
-            $classe = "CAIXA" . $value->nome;
-
-            if ($_POST[$value->nome] != '0,00') {
+            $classe = "CAIXA" . " " . $value->nome;
+            $w++;
+            $valor_total = (str_replace(".", "", $teste[$w]));
+            $valor_total = (str_replace(",", ".", $valor_total));
+            if ($valor_total != '0.00') {
+                
                 if (!isset($value->tempo_receber) || $value->tempo_receber == 0) {
                     $this->db->set('data', $_POST['data1']);
-                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                    $this->db->set('valor', $valor_total);
                     $this->db->set('classe', $classe);
                     $this->db->set('nome', $value->credor_devedor);
-                    $this->db->set('conta', $value->conta);
+                    $this->db->set('conta', $value->conta_id);
                     $this->db->set('observacao', $observacao);
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_entradas');
                     $entradas_id = $this->db->insert_id();
 
-                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                    $this->db->set('valor', $valor_total);
                     $this->db->set('entrada_id', $entradas_id);
-                    $this->db->set('conta', $value->conta);
+                    $this->db->set('conta', $value->conta_id);
                     $this->db->set('nome', $value->credor_devedor);
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_saldo');
                 } else {
-                    if (isset($value->dia_receber) && $value->dia_receber > 0) {
+                    if (isset($value->dia_receber) && $value->dia_receber > 0) {                                           
                         $data_atual = date("Y-m-d");
                         $dia_atual = substr(date("Y-m-d"), 8);
                         $mes_atual = substr(date("Y-m-d"), 5, 2);
@@ -4779,33 +4919,149 @@ ORDER BY ae.agenda_exames_id)";
                             $data_receber = date("Y-m-d", strtotime("+1 month", strtotime($data_passada)));
                         }
 
-                        $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                        $valor_n_parcelado = $valor_total;
+                        $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
+
+                        foreach ($agenda_exames_id as $item) {
+                            if ($item->forma_pagamento == $value->forma_pagamento_id) {
+                                $parcelas = $item->parcelas1;
+                                $valor = $item->valor1;
+//                                    $retorno = $this->parcelas1($item->agenda_exames_id);
+                            } elseif ($item->forma_pagamento2 == $value->forma_pagamento_id) {
+                                $parcelas = $item->parcelas2;
+                                $valor = $item->valor2;
+//                                    $retorno = $this->parcelas2($item->agenda_exames_id);
+                            } elseif ($item->forma_pagamento3 == $value->forma_pagamento_id) {
+                                $parcelas = $item->parcelas3;
+                                $valor = $item->valor3;
+//                                    $retorno = $this->parcelas3($item->agenda_exames_id);
+                            } elseif ($item->forma_pagamento4 == $value->forma_pagamento_id) {
+                                $parcelas = $item->parcelas4;
+                                $valor = $item->valor4;
+//                                    $retorno = $this->parcelas4($item->agenda_exames_id);
+                            }
+                            $mes = 1;
+                            $valor_parcelado = $valor / $parcelas;
+                            if ($parcelas > 1) {
+                                for ($i = 2; $i <= $parcelas; $i++) {
+                                    $data_receber_p = date("Y-m-d", strtotime("+$mes month", strtotime($data_receber)));
+
+                                    $this->db->set('valor', $valor_parcelado);
+                                    $this->db->set('devedor', $value->credor_devedor);
+                                    $this->db->set('parcela', $i);
+                                    $this->db->set('data', $data_receber_p);
+                                    $this->db->set('classe', $classe);
+                                    $this->db->set('conta', $value->conta_id);
+                                    $this->db->set('observacao', $observacao);
+                                    $this->db->set('data_cadastro', $horario);
+                                    $this->db->set('operador_cadastro', $operador_id);
+                                    $this->db->insert('tb_financeiro_contasreceber_temp');
+                                    $mes++;
+                                }
+                                $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
+                            }
+                        }
+
+                        $this->db->set('valor', $valor_n_parcelado);
                         $this->db->set('devedor', $value->credor_devedor);
                         $this->db->set('data', $data_receber);
                         $this->db->set('classe', $classe);
-                        $this->db->set('conta', $value->conta);
+                        $this->db->set('conta', $value->conta_id);
                         $this->db->set('observacao', $observacao);
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);
                         $this->db->insert('tb_financeiro_contasreceber');
-                    } else {
-                        if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
-                            $data_atual = date("Y-m-d");
-                            $data_receber = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
 
-                            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
-                            $this->db->set('devedor', $value->credor_devedor);
-                            $this->db->set('data', $data_receber);
-                            $this->db->set('classe', $classe);
-                            $this->db->set('conta', $value->conta);
-                            $this->db->set('observacao', $observacao);
-                            $this->db->set('data_cadastro', $horario);
-                            $this->db->set('operador_cadastro', $operador_id);
+                        $receber_temp = $this->burcarcontasrecebertemp();
+                        foreach ($receber_temp as $temp) {
+                            $receber_temp2 = $this->burcarcontasrecebertemp2($temp->data);
+                            $this->db->set('valor', $receber_temp2[0]->valor);
+                            $this->db->set('devedor', $receber_temp2[0]->devedor);
+                            $this->db->set('data', $temp->data);
+                            $this->db->set('parcela', $receber_temp2[0]->parcela);
+                            $this->db->set('classe', $receber_temp2[0]->classe);
+                            $this->db->set('conta', $receber_temp2[0]->conta);
+                            $this->db->set('observacao', $receber_temp2[0]->observacao);
+                            $this->db->set('data_cadastro', $receber_temp2[0]->data_cadastro);
+                            $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
+                            $this->db->insert('tb_financeiro_contasreceber');
+                        }                   
+                } else {
+                    if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
+                        $valor_n_parcelado = $valor_total;
+                        $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
+
+                        foreach ($agenda_exames_id as $item) {
+                            if ($item->forma_pagamento == $value->forma_pagamento_id) {
+                                $parcelas = $item->parcelas1;
+                                $valor = $item->valor1;
+//                                    $retorno = $this->parcelas1($item->agenda_exames_id);
+                            } elseif ($item->forma_pagamento2 == $value->forma_pagamento_id) {
+                                $parcelas = $item->parcelas2;
+                                $valor = $item->valor2;
+//                                    $retorno = $this->parcelas2($item->agenda_exames_id);
+                            } elseif ($item->forma_pagamento3 == $value->forma_pagamento_id) {
+                                $parcelas = $item->parcelas3;
+                                $valor = $item->valor3;
+//                                    $retorno = $this->parcelas3($item->agenda_exames_id);
+                            } elseif ($item->forma_pagamento4 == $value->forma_pagamento_id) {
+                                $parcelas = $item->parcelas4;
+                                $valor = $item->valor4;
+//                                    $retorno = $this->parcelas4($item->agenda_exames_id);
+                            }
+                            $tempo_receber = $value->tempo_receber;
+                            $valor_parcelado = $valor / $parcelas;
+                            if ($parcelas > 1) {
+                                for ($i = 2; $i <= $parcelas; $i++) {
+                                    $tempo_receber = $tempo_receber + $value->tempo_receber;
+                                    $data_atual = date("Y-m-d");
+                                    $data_receber_p = date("Y-m-d", strtotime("+$tempo_receber days", strtotime($data_atual)));
+
+                                    $this->db->set('valor', $valor_parcelado);
+                                    $this->db->set('devedor', $value->credor_devedor);
+                                    $this->db->set('parcela', $i);
+                                    $this->db->set('data', $data_receber_p);
+                                    $this->db->set('classe', $classe);
+                                    $this->db->set('conta', $value->conta_id);
+                                    $this->db->set('observacao', $observacao);
+                                    $this->db->set('data_cadastro', $horario);
+                                    $this->db->set('operador_cadastro', $operador_id);
+                                    $this->db->insert('tb_financeiro_contasreceber_temp');
+                                }
+                                $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
+                            }
+                        }
+                        $data_atual = date("Y-m-d");
+                        $data_receber = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
+
+                        $this->db->set('valor', $valor_n_parcelado);
+                        $this->db->set('devedor', $value->credor_devedor);
+                        $this->db->set('data', $data_receber);
+                        $this->db->set('classe', $classe);
+                        $this->db->set('conta', $value->conta_id);
+                        $this->db->set('observacao', $observacao);
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_financeiro_contasreceber');
+
+                        $receber_temp = $this->burcarcontasrecebertemp();
+                        foreach ($receber_temp as $temp) {
+                            $receber_temp2 = $this->burcarcontasrecebertemp2($temp->data);
+                            $this->db->set('valor', $receber_temp2[0]->valor);
+                            $this->db->set('devedor', $receber_temp2[0]->devedor);
+                            $this->db->set('data', $temp->data);
+                            $this->db->set('parcela', $receber_temp2[0]->parcela);
+                            $this->db->set('classe', $receber_temp2[0]->classe);
+                            $this->db->set('conta', $receber_temp2[0]->conta);
+                            $this->db->set('observacao', $receber_temp2[0]->observacao);
+                            $this->db->set('data_cadastro', $receber_temp2[0]->data_cadastro);
+                            $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                             $this->db->insert('tb_financeiro_contasreceber');
                         }
                     }
                 }
             }
+        }
 
 
 
@@ -4978,17 +5234,17 @@ ORDER BY ae.agenda_exames_id)";
 //            $this->db->insert('tb_financeiro_contasreceber');
 //        }
 
-        if ($_POST['outros'] != '0,00') {
-            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['outros'])));
-            $this->db->set('devedor', 14);
-            $this->db->set('data', $data2);
-            $this->db->set('tipo', 'CAIXA OUTROS');
-            $this->db->set('conta', 1);
-            $this->db->set('observacao', $observacao);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_financeiro_contasreceber');
-        }
+//        if ($_POST['outros'] != '0,00') {
+//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['outros'])));
+//            $this->db->set('devedor', 14);
+//            $this->db->set('data', $data2);
+//            $this->db->set('tipo', 'CAIXA OUTROS');
+//            $this->db->set('conta', 1);
+//            $this->db->set('observacao', $observacao);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_financeiro_contasreceber');
+//        }
     }
 
     function fecharmedico() {
@@ -5093,7 +5349,7 @@ ORDER BY ae.agenda_exames_id)";
         return $return->result();
     }
 
-    function verificasessoesabertas($procedimento_convenio_id) {
+    function verificasessoesabertas($procedimento_convenio_id, $paciente_id) {
         $this->db->select('pt.grupo,
                             c.nome');
         $this->db->from('tb_procedimento_convenio pc');
@@ -5105,19 +5361,72 @@ ORDER BY ae.agenda_exames_id)";
         $especialidade = $x[0]->grupo;
 
         if ($x[0]->nome != 'PARTICULAR') {
-            $this->db->select('confirmado , agenda_exames_id');
-            $this->db->from('tb_agenda_exames');
-            $this->db->where('tipo', $especialidade);
-//            $this->db->where('ae.tipo', 'FISIOTERAPIA');
-            $this->db->where('ativo', 'false');
-            $this->db->where('numero_sessao >=', '1');
-            $this->db->where('realizada', 'false');
-            $this->db->where('confirmado', 'false');
-            $this->db->where('cancelada', 'false');
+//            $this->db->select('confirmado , agenda_exames_id');
+//            $this->db->from('tb_agenda_exames');
+//            $this->db->where('tipo', $especialidade);
+////            $this->db->where('tipo', 'FISIOTERAPIA');
+//            $this->db->where('ativo', 'false');
+//            $this->db->where('numero_sessao >=', '1');
+//            $this->db->where('realizada', 'false');
+//            $this->db->where('confirmado', 'false');
+//            $this->db->where('cancelada', 'false');
+//            $return = $this->db->get();
+//            $result = $return->result();
+
+            $data = date("Y-m-d");
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.inicio,
+                            ae.fim,
+                            ae.ativo,
+                            ae.situacao,
+                            ae.guia_id,
+                            ae.realizada,
+                            ae.confirmado,
+                            ae.data_atualizacao,
+                            ae.paciente_id,
+                            ae.telefonema,
+                            ae.numero_sessao,
+                            ae.observacoes,
+                            p.celular,
+                            ae.bloqueado,
+                            p.telefone,
+                            c.nome as convenio,
+                            o.nome as medicoagenda,
+                            an.nome as sala,
+                            tc.descricao as tipoconsulta,
+                            p.nome as paciente,
+                            op.nome as secretaria,
+                            ae.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            al.situacao as situacaolaudo');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+            $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+            $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+            $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+            $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+            $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
+            $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+            $this->db->orderby('ae.data');
+            $this->db->orderby('ae.numero_sessao');
+            $this->db->where('ae.empresa_id', $empresa_id);
+            $this->db->where('ae.paciente_id', $paciente_id);
+            $this->db->where('ae.tipo', 'FISIOTERAPIA');
+            $this->db->where('ae.ativo', 'false');
+            $this->db->where('ae.numero_sessao >=', '1');
+            $this->db->where('ae.realizada', 'false');
+            $this->db->where('ae.confirmado', 'false');
+            $this->db->where('ae.cancelada', 'false');
             $return = $this->db->get();
             $result = $return->result();
 
-            if (isset($result)) {
+            if (count($result) != 0) {
                 return true;
             } else {
                 return false;
