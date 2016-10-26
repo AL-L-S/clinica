@@ -677,8 +677,8 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = i.hospital');
         $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito');
-        $this->db->where('ip.data >=', $_POST['txtdata_inicio']);
-        $this->db->where('ip.data <=', $_POST['txtdata_fim']);
+        $this->db->where('ip.data >=', date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
+        $this->db->where('ip.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
         $this->db->where('ipp.tipo', $_POST['tipo']);
         if ($_POST['unidade'] != 0) {
             $this->db->where('i.hospital_id', $_POST['unidade']);
@@ -706,8 +706,8 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id ');
         $this->db->join('tb_internacao_precricao ip', 'ip.internacao_precricao_id = ipp.internacao_precricao_id ');
         $this->db->join('tb_internacao i', 'i.internacao_id = ip.internacao_id');
-        $this->db->where('ip.data >=', $_POST['txtdata_inicio']);
-        $this->db->where('ip.data <=', $_POST['txtdata_fim']);
+        $this->db->where('ip.data >=', date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
+        $this->db->where('ip.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
         $this->db->where('ipp.tipo', $_POST['tipo']);
         if ($_POST['unidade'] != 0) {
             $this->db->where('i.hospital_id', $_POST['unidade']);

@@ -61,7 +61,7 @@ class pacientes extends BaseController {
             chmod($destino, 0777);
         }
 //        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$paciente_id/");
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/paciente/$paciente_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/paciente//$paciente_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
         }
@@ -77,7 +77,7 @@ class pacientes extends BaseController {
             chmod($destino, 0777);
         }
 
-        $config['upload_path'] = "/home/sisprod/projetos/clinica/upload/paciente/" . $paciente_id . "/";
+        $config['upload_path'] = "./upload/paciente/" . $paciente_id . "/";
 //        $config['upload_path'] = "/home/sisprod/projetos/clinica/upload/paciente/" . $paciente_id . "/";
         $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt';
         $config['max_size'] = '0';

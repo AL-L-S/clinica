@@ -25,7 +25,7 @@ class Login extends Controller {
 
         if ($teste1 > 0 || $teste2 > 0) {
             //Pegando somente o numero da versao.
-//            preg_match('/[0-9].+/', $browser[0], $verificanavegador['versao']);
+            preg_match('/[0-9].+/', $browserPC[0], $verificanavegador['versao']);
 
             if (($this->login->autenticar($usuario, $senha, $empresa)) &&
                     ($this->session->userdata('autenticado') == true)) {

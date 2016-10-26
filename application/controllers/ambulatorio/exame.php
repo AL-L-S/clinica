@@ -101,8 +101,8 @@ class Exame extends BaseController {
     function gerarelatoriomedicoagendaconsultas() {
         $medicos = $_POST['medicos'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaconsulta();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaconsulta', $data);
@@ -132,8 +132,8 @@ class Exame extends BaseController {
         if ($_POST['salas'] != '0') {
             $data['salas'] = $this->sala->listarsala($_POST['salas']);
         }
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaordem();
         $data['relatorioprioridade'] = $this->exame->listaragendaordemprioridade();
@@ -149,8 +149,8 @@ class Exame extends BaseController {
         $salas = $_POST['salas'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
         $data['salas'] = $this->sala->listarsala($salas);
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaexame();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexame', $data);
@@ -253,8 +253,8 @@ class Exame extends BaseController {
 
     function faturamentoexamelista() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['txtdata_fim'] = $_POST['txtdata_fim'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
@@ -1389,7 +1389,7 @@ class Exame extends BaseController {
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
-        
+
         foreach ($horarioagenda as $item) {
 
             $tempoconsulta = $item->tempoconsulta;
@@ -1491,7 +1491,7 @@ class Exame extends BaseController {
                 }
             }
         }
-        
+
         $data['mensagem'] = 'Sucesso ao gravar a Agenda.';
 
         $this->session->set_flashdata('message', $data['mensagem']);
@@ -1609,7 +1609,7 @@ class Exame extends BaseController {
    <ans:cabecalho>
       <ans:identificacaoTransacao>
          <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-         <ans:sequencialTransacao>". $j ."</ans:sequencialTransacao>
+         <ans:sequencialTransacao>" . $j . "</ans:sequencialTransacao>
          <ans:dataRegistroTransacao>" . $horario . "</ans:dataRegistroTransacao>
          <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
       </ans:identificacaoTransacao>
@@ -1629,7 +1629,7 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                 $contador = count($listarpacienete);
                 foreach ($listarpacienete as $value) {
-                    
+
                     if ($value->guiaconvenio == '') {
                         $guianumero = '0000000';
                     } else {
@@ -1642,7 +1642,7 @@ class Exame extends BaseController {
                     }
 
                     foreach ($listarexames as $item) {
-                        
+
                         if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                             $i++;
                             $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
@@ -1756,49 +1756,46 @@ class Exame extends BaseController {
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
+                            if ($i == 80) {
+                                $contador = $contador - $i;
+
+                                $i = 0;
+                                $rodape = "   </ans:guiasTISS>
+      </ans:loteGuias>
+   </ans:prestadorParaOperadora>
+   <ans:epilogo>
+      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
+   </ans:epilogo>
+</ans:mensagemTISS>";
+
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $b++;
+                                $corpo = "";
+                                $rodape = "";
+                            }
+                            if ($contador < 80 && $contador == $i) {
+                                $i = 0;
+                                $rodape = "   </ans:guiasTISS>
+      </ans:loteGuias>
+   </ans:prestadorParaOperadora>
+   <ans:epilogo>
+      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
+   </ans:epilogo>
+</ans:mensagemTISS>";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $b++;
+                                $corpo = "";
+                                $rodape = "";
+                            }
                         }
-                    }
-                    if ($i == 80) {
-                        $contador = $contador - $i;
-
-                        $i = 0;
-                        $rodape = "   </ans:guiasTISS>
-         
-      </ans:loteGuias>
-   </ans:prestadorParaOperadora>
-   <ans:epilogo>
-      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
-   </ans:epilogo>
-</ans:mensagemTISS>";
-
-                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                        $xml = $cabecalho . $corpo . $rodape;
-                        $fp = fopen($nome, "w+");
-                        fwrite($fp, $xml . "\n");
-                        fclose($fp);
-                        $b++;
-                        $corpo = "";
-                        $rodape = "";
-                    }
-                    if ($contador < 80 && $contador == $i) {
-
-                        $i = 0;
-                        $rodape = "   </ans:guiasTISS>
-         
-      </ans:loteGuias>
-   </ans:prestadorParaOperadora>
-   <ans:epilogo>
-      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
-   </ans:epilogo>
-</ans:mensagemTISS>";
-                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                        $xml = $cabecalho . $corpo . $rodape;
-                        $fp = fopen($nome, "w+");
-                        fwrite($fp, $xml . "\n");
-                        fclose($fp);
-                        $b++;
-                        $corpo = "";
-                        $rodape = "";
                     }
                 }
             } else {
@@ -1809,7 +1806,7 @@ class Exame extends BaseController {
    <ans:cabecalho>
       <ans:identificacaoTransacao>
          <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-         <ans:sequencialTransacao>". $j ."</ans:sequencialTransacao>
+         <ans:sequencialTransacao>" . $j . "</ans:sequencialTransacao>
          <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
          <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
       </ans:identificacaoTransacao>
@@ -1829,7 +1826,7 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                 $contador = count($listarexame);
                 foreach ($listarexame as $value) {
-                    
+
                     if ($value->convenionumero == '') {
                         $numerodacarteira = '0000000';
                     } else {
@@ -1906,7 +1903,7 @@ class Exame extends BaseController {
                         $rodape = "";
                     }
                     if ($contador < 80 && $contador == $i) {
-                        
+
                         $i = 0;
                         $rodape = "   </ans:guiasTISS>
          
@@ -1929,14 +1926,14 @@ class Exame extends BaseController {
                 }
             }
         } else {
-            if ($listarexame[0]->grupo != 'CONSULTA') {
 
+            if ($listarexame[0]->grupo != 'CONSULTA') {
                 $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
 <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
    <ans:cabecalho>
       <ans:identificacaoTransacao>
          <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-         <ans:sequencialTransacao>". $j ."</ans:sequencialTransacao>
+         <ans:sequencialTransacao>" . $j . "</ans:sequencialTransacao>
          <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
          <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
       </ans:identificacaoTransacao>
@@ -1956,6 +1953,7 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                 $contador = count($listarpacienete);
                 foreach ($listarpacienete as $value) {
+
                     if ($value->guiaconvenio == '') {
                         $guianumero = '0000000';
                     } else {
@@ -2081,63 +2079,61 @@ class Exame extends BaseController {
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
+                            if ($i == 80) {
+                                $contador = $contador - $i;
+
+                                $i = 0;
+                                $rodape = "   </ans:guiasTISS>
+         
+      </ans:loteGuias>
+   </ans:prestadorParaOperadora>
+   <ans:epilogo>
+      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
+   </ans:epilogo>
+</ans:mensagemTISS>
+";
+
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $b++;
+                                $corpo = "";
+                                $rodape = "";
+                            }
+
+                            if ($contador < 80 && $contador == $i) {
+                                $i = 0;
+                                $rodape = "   </ans:guiasTISS>
+         
+      </ans:loteGuias>
+   </ans:prestadorParaOperadora>
+   <ans:epilogo>
+      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
+   </ans:epilogo>
+</ans:mensagemTISS>
+";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $b++;
+                                $corpo = "";
+                                $rodape = "";
+                            }
                         }
-                    }
-                    if ($i == 80) {
-                        $contador = $contador - $i;
-
-                        $i = 0;
-                        $rodape = "   </ans:guiasTISS>
-         
-      </ans:loteGuias>
-   </ans:prestadorParaOperadora>
-   <ans:epilogo>
-      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
-   </ans:epilogo>
-</ans:mensagemTISS>
-";
-
-                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                        $xml = $cabecalho . $corpo . $rodape;
-                        $fp = fopen($nome, "w+");
-                        fwrite($fp, $xml . "\n");
-                        fclose($fp);
-                        $b++;
-                        $corpo = "";
-                        $rodape = "";
-                    }
-                    if ($contador < 80 && $contador == $i) {
-                        var_dump($corpo);
-                        die;
-                        $i = 0;
-                        $rodape = "   </ans:guiasTISS>
-         
-      </ans:loteGuias>
-   </ans:prestadorParaOperadora>
-   <ans:epilogo>
-      <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
-   </ans:epilogo>
-</ans:mensagemTISS>
-";
-                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                        $xml = $cabecalho . $corpo . $rodape;
-                        $fp = fopen($nome, "w+");
-                        fwrite($fp, $xml . "\n");
-                        fclose($fp);
-                        $b++;
-                        $corpo = "";
-                        $rodape = "";
                     }
                 }
             } else {
-
 
                 $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
 <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
    <ans:cabecalho>
       <ans:identificacaoTransacao>
          <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-         <ans:sequencialTransacao>". $j ."</ans:sequencialTransacao>
+         <ans:sequencialTransacao>" . $j . "</ans:sequencialTransacao>
          <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
          <ans:horaRegistroTransacao>18:40:50</ans:horaRegistroTransacao>
       </ans:identificacaoTransacao>
@@ -2156,6 +2152,7 @@ class Exame extends BaseController {
          <ans:numeroLote>" . $b . "</ans:numeroLote>
             <ans:guiasTISS>";
                 $contador = count($listarexame);
+
                 foreach ($listarexame as $value) {
                     $i++;
                     if ($value->convenionumero == '') {
@@ -2278,7 +2275,6 @@ class Exame extends BaseController {
             }
         }
         $data['mensagem'] = 'Sucesso ao gerar arquivo.';
-
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/faturamentoexamexml", $data);
     }

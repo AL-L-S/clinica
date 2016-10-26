@@ -67,7 +67,7 @@
 
                             <th class="tabela_header"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">F. Guia
-
+                                 
                                     </a></div></th>
                             <th class="tabela_header"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/anexarimagem/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">Arquivos
@@ -93,6 +93,7 @@
                         $estilo_linha = "tabela_content01";
                         foreach ($exames as $item) :
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+
                             if ($test->ambulatorio_guia_id == $item->guia_id) {
                                 ?>
                                 <tr>
