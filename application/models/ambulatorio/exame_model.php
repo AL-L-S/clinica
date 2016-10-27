@@ -278,8 +278,8 @@ class exame_model extends Model {
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('e.cancelada', 'false');
         if ($_POST['txtdata_inicio'] != '' && $_POST['txtdata_fim'] != '') {
-            $this->db->where("e.data_cadastro >=", date("Y-m-d", strtotime($_POST['txtdata_inicio']) ) . ' 00:00:00');
-            $this->db->where("e.data_cadastro <=", date("Y-m-d", strtotime($_POST['txtdata_fim']) ) . ' 23:59:59');
+            $this->db->where("e.data_cadastro >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ) . ' 00:00:00');
+            $this->db->where("e.data_cadastro <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ) . ' 23:59:59');
         }
         if ($_POST['convenio'] != '') {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
@@ -327,8 +327,8 @@ class exame_model extends Model {
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
         if ($_POST['txtdata_inicio'] != '' && $_POST['txtdata_fim'] != '') {
-            $this->db->where("ae.data_autorizacao >=", date("Y-m-d", strtotime($_POST['txtdata_inicio']) ) . ' 00:00:00');
-            $this->db->where("ae.data_autorizacao <=", date("Y-m-d", strtotime($_POST['txtdata_fim']) ) . ' 23:59:59');
+            $this->db->where("ae.data_autorizacao >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ) . ' 00:00:00');
+            $this->db->where("ae.data_autorizacao <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ) . ' 23:59:59');
         }
         if ($_POST['convenio'] != '') {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
@@ -1195,8 +1195,8 @@ class exame_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
         $this->db->where('ae.medico_consulta_id', $_POST['medicos']);
         $return = $this->db->get();
         return $return->result();
@@ -1261,8 +1261,8 @@ class exame_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
         if ($_POST['medicos'] != "0") {
             $this->db->where('ae.medico_consulta_id', $_POST['medicos']);
         }
@@ -1338,8 +1338,8 @@ class exame_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
         if ($_POST['medicos'] != "0") {
             $this->db->where('ae.medico_consulta_id', $_POST['medicos']);
         }
@@ -1409,8 +1409,8 @@ class exame_model extends Model {
         if ($_POST['salas'] != "0") {
             $this->db->where('ae.agenda_exames_nome_id', $_POST['salas']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
 
         $return = $this->db->get();
         return $return->result();
@@ -2519,8 +2519,8 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id= al.medico_parecer1', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
         $this->db->where("c.dinheiro", 'f');
         $this->db->where("ae.confirmado", 't');
 //        $this->db->where('ae.ativo', 'false');

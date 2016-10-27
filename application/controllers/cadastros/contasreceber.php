@@ -109,8 +109,8 @@ class Contasreceber extends BaseController {
     }
 
     function gerarelatoriocontasreceber() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);

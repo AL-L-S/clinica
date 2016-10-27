@@ -286,8 +286,8 @@ class internacao extends BaseController {
 
     function gerarelatoriointernacao() {
         $data['prescricao'] = $this->internacao_m->listaprescricoesdata();
-        $data['data_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['data_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['data_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $data['data_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $data['tipo'] = $_POST['tipo'];
         if ($_POST['unidade'] != 0){
         $unidade = $this->internacao_m->pesquisarunidade($_POST['unidade']);

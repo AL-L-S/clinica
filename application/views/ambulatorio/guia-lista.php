@@ -59,7 +59,6 @@
             <?
             foreach ($guia as $test) :
                 $guia_id = $test->ambulatorio_guia_id;
-                $cancelado = 0;
                 ?>
                 <table >
                     <thead>
@@ -96,7 +95,6 @@
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
 
                             if ($test->ambulatorio_guia_id == $item->guia_id) {
-                                $cancelado++;
                                 ?>
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>" width="100px;"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');"><?= $item->procedimento ?></a></td>
@@ -123,18 +121,6 @@
                                         <?}?>
 
                                     </td>
-                                    <? if(isset($item->atendente) || isset($item->medicorealizou)){ ?>
-                                        <td class="<?php echo $estilo_linha; ?>" >
-                                            <? if(isset($item->atendente)): ?>
-                                                <span>Atendente: <? echo $item->atendente; ?></span><br>
-                                            <?
-                                            endif;
-                                            if(isset($item->atendente)):?>
-                                                <span>Medico: <? echo $item->medicorealizou; ?></span>
-                                            <? endif; ?>
-                                        </td>
-                                    <?}?>
-
             <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
                                         </a>
@@ -177,16 +163,11 @@
             <? } ?>
                                 </tr>
 
-
+                            </tbody>
                             <?
                         }
                     endforeach;
-                    if($cancelado == 0){?>
-                        <tr>
-                            <td colspan="6"><center><span style="color: red; font-weight: bold; font-size: 17px;">EXAME CANCELADO</span></center></td>
-                        </tr>
-                    <? } ?>
-                </tbody>                                
+                    ?>
                     <br>
 <? endforeach; ?>
                 <tfoot>
