@@ -4737,68 +4737,71 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->query($sql);
         }
 
-        $this->db->select('nome , conta , credor_devedor , tempo_receber , dia_receber');
+        $this->db->select('nome , conta_id , credor_devedor , tempo_receber , dia_receber');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
         $return = $this->db->get();
         $forma_pagamento = $return->result();
 
-        foreach ($forma_pagamento as $value) {
-            $classe = "CAIXA" . $value->nome;
+        $tetes = $_POST['qtde'];
+        $w =0;
+        foreach ($forma_pagamento as $item) {
+            $classe = "CAIXA" . " " . $item->nome;
+            $w ++;
 
-            if ($_POST[$value->nome] != '0,00') {
-                if (!isset($value->tempo_receber) || $value->tempo_receber == 0) {
+            if ($tetes[$w] != '0,00') {
+                if (!isset($item->tempo_receber) || $item->tempo_receber == 0) {
                     $this->db->set('data', $_POST['data1']);
-                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $tetes[$w])));
                     $this->db->set('classe', $classe);
-                    $this->db->set('nome', $value->credor_devedor);
-                    $this->db->set('conta', $value->conta);
+                    $this->db->set('nome', $item->credor_devedor);
+                    $this->db->set('conta', $item->conta_id);
                     $this->db->set('observacao', $observacao);
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_entradas');
                     $entradas_id = $this->db->insert_id();
 
-                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
+                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $tetes[$w])));
                     $this->db->set('entrada_id', $entradas_id);
-                    $this->db->set('conta', $value->conta);
-                    $this->db->set('nome', $value->credor_devedor);
+                    $this->db->set('conta', $item->conta_id);
+                    $this->db->set('nome', $item->credor_devedor);
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_saldo');
                 } else {
-                    if (isset($value->dia_receber) && $value->dia_receber > 0) {
+                    if (isset($item->dia_receber) && $item->dia_receber > 0) {
                         $data_atual = date("Y-m-d");
                         $dia_atual = substr(date("Y-m-d"), 8);
                         $mes_atual = substr(date("Y-m-d"), 5, 2);
                         $ano_atual = substr(date("Y-m-d"), 0, 4);
 
-                        if ($dia_atual < $value->dia_receber) {
-                            $data_receber = $ano_atual . '-' . $mes_atual . '-' . $value->dia_receber;
+                        if ($dia_atual < $item->dia_receber) {
+                            $data_receber = $ano_atual . '-' . $mes_atual . '-' . $item->dia_receber;
                         } else {
-                            $data_passada = $ano_atual . '-' . $mes_atual . '-' . $value->dia_receber;
+                            $data_passada = $ano_atual . '-' . $mes_atual . '-' . $item->dia_receber;
                             $data_receber = date("Y-m-d", strtotime("+1 month", strtotime($data_passada)));
                         }
 
-                        $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
-                        $this->db->set('devedor', $value->credor_devedor);
+                        $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $tetes[$w])));
+                        $this->db->set('devedor', $item->credor_devedor);
                         $this->db->set('data', $data_receber);
                         $this->db->set('classe', $classe);
-                        $this->db->set('conta', $value->conta);
+                        $this->db->set('conta', $item->conta_id);
                         $this->db->set('observacao', $observacao);
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);
                         $this->db->insert('tb_financeiro_contasreceber');
                     } else {
-                        if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
+                        if (isset($item->tempo_receber) && $item->tempo_receber > 0) {
                             $data_atual = date("Y-m-d");
-                            $data_receber = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
+                            $data_receber = date("Y-m-d", strtotime("+$item->tempo_receber days", strtotime($data_atual)));
 
-                            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
-                            $this->db->set('devedor', $value->credor_devedor);
+                            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $tetes[$w])));
+                            $this->db->set('devedor', $item->credor_devedor);
                             $this->db->set('data', $data_receber);
                             $this->db->set('classe', $classe);
-                            $this->db->set('conta', $value->conta);
+                            $this->db->set('conta', $item->conta_id);
                             $this->db->set('observacao', $observacao);
                             $this->db->set('data_cadastro', $horario);
                             $this->db->set('operador_cadastro', $operador_id);

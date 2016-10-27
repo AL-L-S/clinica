@@ -434,11 +434,13 @@
                         $y++;
                     }
                 }
-                ?>
+                
+                        $w=0;?>
             <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
-                <? foreach ($formapagamento as $value) { ?>
-
-                    <input type="hidden" class="texto3" name="<?= $value->nome ?>" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>" readonly/>
+                <? foreach ($formapagamento as $item) { 
+$w++;
+$nome = $item->nome;?>
+                    <input type="text" class="texto3" name="qtde[<?= $w;?>]" id="qtde<?= $w; ?>" value="<?= number_format($data[$nome], 2, ',', '.'); ?>" readonly/>
 
                 <? }
                 ?>
