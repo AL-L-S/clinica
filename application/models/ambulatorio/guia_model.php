@@ -64,6 +64,7 @@ class guia_model extends Model {
                             ae.ativo,
                             ae.situacao,
                             ae.cancelada,
+                            ae.medico_agenda,
                             e.exames_id,
                             pc.convenio_id,
                             c.nome as convenio,
@@ -80,6 +81,8 @@ class guia_model extends Model {
                             p.indicacao,
                             p.nascimento,
                             ae.entregue_telefone,
+                            oz.nome as atendente,
+                            om.nome as medicorealizou,
                             o.nome as operadorrecebido,
                             op.nome as operadorentregue,
                             ae.procedimento_tuss_id,
@@ -93,6 +96,8 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_recebido', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_entregue', 'left');
+        $this->db->join('tb_operador om', 'om.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_operador oz', 'oz.operador_id = ae.operador_autorizacao', 'left');
         $this->db->where('ae.confirmado', 't');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where("ae.paciente_id", $paciente_id);

@@ -247,7 +247,6 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-        $this->fichaxml($paciente_id, $guia_id, $exames_id);
 //HUMANA               
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
 //            $this->load->View('ambulatorio/impressaofichaus', $data);
@@ -308,11 +307,11 @@ class Guia extends BaseController {
 //      CLINICA MED
 //        $this->load->View('ambulatorio/impressaofichamed', $data);
         //RONALDO
-//        if ($dinheiro == "t") {
-//            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-//        } else {
-//            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-//        }
+        if ($dinheiro == "t") {
+            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+        } else {
+            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+        }
         // CLINICA SAO PAULO
 //        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
     }
