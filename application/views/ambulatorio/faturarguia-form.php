@@ -50,6 +50,7 @@
                             </select>
                             <input type="text" name="ajuste1" id="ajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>                                                                           
                             <input type="text" name="valorajuste1" id="valorajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input style="width: 60px;" type="number" name="parcela1" id="parcela1"  value="1" min="1" />
                         </dd>
                         </br>
                         <dt>
@@ -65,6 +66,7 @@
                             </select>
                             <input type="text" name="ajuste2" id="ajuste2" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <input type="text" name="valorajuste2" id="valorajuste2" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input style="width: 60px;" type="number" name="parcela2" id="parcela2"  value="1" min="1" />
 
                         </dd>
                         </br>
@@ -81,6 +83,7 @@
                             </select>                                   
                             <input type="text" name="ajuste3" id="ajuste3" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>  
                             <input type="text" name="valorajuste3" id="valorajuste3" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input style="width: 60px;" type="number" name="parcela3" id="parcela3"  value="1" min="1" />
                         </dd>
                         </br>
                         <dt>
@@ -96,6 +99,7 @@
                             </select>              
                             <input type="text" name="ajuste4" id="ajuste4" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <input type="text" name="valorajuste4" id="valorajuste4" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input style="width: 60px;" type="number" name="parcela4" id="parcela4"  value="1" min="1" />
                         </dd>
                         <dt>
                             <label>Diferen&ccedil;a</label>
@@ -179,8 +183,11 @@
                                                 $('.carregando').show();
                                                 $.getJSON('<?= base_url() ?>autocomplete/formapagamento/' + forma_pagamento_id + '/', {formapamento1: $(this).val(), ajax: true}, function (j) {
                                                     options = "";
+                                                    parcelas = "";
                                                     options = j[0].ajuste;
+                                                    parcelas = j[0].parcelas;
                                                     numer_1 = parseFloat(document.form_faturar.valor1.value.replace(",", "."));
+                                                    document.getElementById("parcela1").max = parcelas;
 
                                                     if (j[0].ajuste != null) {
                                                         document.getElementById("ajuste1").value = options;
@@ -208,8 +215,11 @@
                                                 $('.carregando').show();
                                                 $.getJSON('<?= base_url() ?>autocomplete/formapagamento/' + forma_pagamento_id + '/', {formapamento2: $(this).val(), ajax: true}, function (j) {
                                                     options = "";
+                                                    parcelas = "";
                                                     options = j[0].ajuste;
+                                                    parcelas = j[0].parcelas;
                                                     numer_2 = parseFloat(document.form_faturar.valor2.value.replace(",", "."));
+                                                    document.getElementById("parcela2").max = parcelas;
 
                                                     if (j[0].ajuste != null) {
                                                         document.getElementById("ajuste2").value = options;
@@ -239,8 +249,11 @@
                                                 $('.carregando').show();
                                                 $.getJSON('<?= base_url() ?>autocomplete/formapagamento/' + forma_pagamento_id + '/', {formapamento3: $(this).val(), ajax: true}, function (j) {
                                                     options = "";
+                                                    parcelas = "";
                                                     options = j[0].ajuste;
+                                                    parcelas = j[0].parcelas;
                                                     numer_3 = parseFloat(document.form_faturar.valor3.value.replace(",", "."));
+                                                    document.getElementById("parcela3").max = parcelas;
                                                     valorajuste3 = (numer3 * ajuste3) / 100;
                                                     pg3 = numer_3 - valorajuste3;
                                                     if (j[0].ajuste != null) {
@@ -267,8 +280,11 @@
                                                 $('.carregando').show();
                                                 $.getJSON('<?= base_url() ?>autocomplete/formapagamento/' + forma_pagamento_id + '/', {formapamento4: $(this).val(), ajax: true}, function (j) {
                                                     options = "";
+                                                    parcelas = "";
                                                     options = j[0].ajuste;
+                                                    parcelas = j[0].parcelas;
                                                     numer_4 = parseFloat(document.form_faturar.valor4.value.replace(",", "."));
+                                                    document.getElementById("parcela4").max = parcelas;
                                                     if (j[0].ajuste != null) {
                                                         document.getElementById("ajuste4").value = options;
                                                         valorajuste4 = (numer4 * options) / 100;

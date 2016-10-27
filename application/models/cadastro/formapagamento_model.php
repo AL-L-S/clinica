@@ -87,7 +87,8 @@ class formapagamento_model extends Model {
     function buscarforma($forma_pagamento_id) {
         $this->db->select('forma_pagamento_id,
                             nome,
-                            ajuste');
+                            ajuste,
+                            parcelas');
         $this->db->from('tb_forma_pagamento');
         $this->db->where('ativo', 'true');
         $this->db->where('forma_pagamento_id', "$forma_pagamento_id");
