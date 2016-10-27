@@ -406,7 +406,7 @@
                         <?
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento == $value->nome) {
-                                $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                                $data[$value->nome] = $data[$value->nome] + $item->valor1;            
                                 $numero[$value->nome] ++;
                             }
                         }
@@ -434,12 +434,14 @@
                         $y++;
                     }
                 }
-                ?>
+                
+                $w = 0;?>                       
             <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
-                <? foreach ($formapagamento as $value) { ?>
+                <? foreach ($formapagamento as $value) { 
+                    
+$w++;?>
 
-                    <input type="hidden" class="texto3" name="<?= $value->nome ?>" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>" readonly/>
-
+                <input type="hidden" class="texto3" name="qtde[<?=$w?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
                 <? }
                 ?>
     <!--                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($DINHEIRO, 2, ',', '.'); ?>" readonly/>
@@ -450,7 +452,7 @@
      <input type="hidden" class="texto3" name="cartaomaster" value="<?= number_format($CARTAOMASTER, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="cartaohiper" value="<?= number_format($CARTAOHIPER, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="cartaoelo" value="<?= number_format($CARTAOELO, 2, ',', '.'); ?>" readonly/>-->
-                <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>
+<!--                <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>-->
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
                 <input type="hidden" class="texto3" name="grupo" value="<?= $grupo; ?>"/>

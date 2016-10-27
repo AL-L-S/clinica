@@ -264,7 +264,7 @@ class paciente_model extends BaseModel {
             $this->db->set('cep', $_POST['cep']);
 
             $horario = date("Y-m-d H:i:s");
-            $data = date("Y-m-d");
+            $data = date("Y-d-m");
             $operador_id = $this->session->userdata('operador_id');
 
             $dia = substr($horario, 8, 2);
