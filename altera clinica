@@ -630,14 +630,14 @@ CREATE TABLE ponto.tb_financeiro_email
   data_cadastro timestamp without time zone,
   operador_cadastro integer,
   mensagem text
-)
+);
 
 atualiza 13/09/16
 
 CREATE TABLE ponto.tb_lote
 (
   lote character varying(100)
-)
+);
 
 INSERT INTO ponto.tb_lote(lote) VALUES (7899);
 

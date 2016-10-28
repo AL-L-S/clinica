@@ -837,6 +837,7 @@ class exametemp_model extends Model {
 
     function listadisponibilidadefisioterapia($agenda) {
         $empresa_id = $this->session->userdata('empresa_id');
+        $horario = date("Y-m-d");
         $nulo = null;
         $this->db->select('ae.*, h.dia');
         $this->db->from('tb_agenda_exames ae');
@@ -849,8 +850,8 @@ class exametemp_model extends Model {
         $this->db->where('confirmado', 'f');
         $this->db->where("ae.tipo", "FISIOTERAPIA");
         $this->db->where("h.dia", $agenda->dia);
-        $this->db->where("ae.data_inicio", $agenda->data_inicio);
-        $this->db->where("ae.data_fim", $agenda->data_fim);
+        $this->db->where("ae.data >=", $horario);
+        $this->db->where("ae.data >=", $agenda->data);
         $this->db->where("ae.inicio", $agenda->inicio);
         $this->db->where("ae.fim", $agenda->fim);
         $this->db->where("ae.medico_agenda", $agenda->medico_agenda);

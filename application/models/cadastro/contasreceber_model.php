@@ -90,8 +90,8 @@ class contasreceber_model extends Model {
         if ($_POST['conta'] != 0) {
             $this->db->where('fc.conta', $_POST['conta']);
         }
-        $this->db->where('fc.data >=', date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
-        $this->db->where('fc.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
+        $this->db->where('fc.data >=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+        $this->db->where('fc.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
         $this->db->orderby('fc.data');
         $this->db->orderby('fcd.razao_social');
         $return = $this->db->get();
@@ -113,8 +113,8 @@ class contasreceber_model extends Model {
         if ($_POST['conta'] != 0) {
             $this->db->where('fc.conta', $_POST['conta']);
         }
-        $this->db->where('fc.data >=', date("Y-m-d", strtotime($_POST['txtdata_inicio']) ));
-        $this->db->where('fc.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim']) ));
+        $this->db->where('fc.data >=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+        $this->db->where('fc.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
         $return = $this->db->count_all_results();
         return $return;
     }
