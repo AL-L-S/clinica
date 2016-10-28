@@ -99,8 +99,8 @@ class Contaspagar extends BaseController {
     }
 
     function gerarelatoriocontaspagar() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
@@ -167,7 +167,7 @@ class Contaspagar extends BaseController {
                 $corpo3 = '';
                 foreach ($data['relatorio'] as $item) :
                     $total = $total + $item->valor;
-                        $corpo2 = $corpo2 . '
+                    $corpo2 = $corpo2 . '
                     <tr>
                         <td >' . $item->conta . '</td>
                         <td >' . $item->razao_social . '</td>
@@ -308,6 +308,11 @@ class Contaspagar extends BaseController {
             $data = array('upload_data' => $this->upload->data());
         }
         $data['financeiro_contaspagar_id'] = $financeiro_contaspagar_id;
+        $this->anexarimagemcontasapagar($financeiro_contaspagar_id);
+    }
+
+    function ecluirimagemcontaspagar($financeiro_contaspagar_id, $value) {
+        unlink("./upload/contasapagar/$financeiro_contaspagar_id/$value");
         $this->anexarimagemcontasapagar($financeiro_contaspagar_id);
     }
 

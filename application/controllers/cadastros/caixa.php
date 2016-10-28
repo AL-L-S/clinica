@@ -204,8 +204,8 @@ class Caixa extends BaseController {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['relatoriosaida'] = $this->caixa->relatoriosaidaacompanhamentodecontas();
 //        echo '<pre>';
 //        var_dump($data['relatoriosaida']);
@@ -216,8 +216,8 @@ class Caixa extends BaseController {
     }
 
     function gerarelatoriosaida() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
@@ -365,8 +365,8 @@ class Caixa extends BaseController {
     }
 
     function gerarelatoriosaidagrupo() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
@@ -503,8 +503,8 @@ class Caixa extends BaseController {
     }
 
     function gerarelatorioentrada() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
@@ -612,8 +612,8 @@ class Caixa extends BaseController {
     }
 
     function gerarelatorioentradagrupo() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartiporelatorio($_POST['tipo']);
         $data['classe'] = $this->tipo->buscartiporelatorio($_POST['classe']);
@@ -749,8 +749,8 @@ class Caixa extends BaseController {
     }
 
     function gerarelatoriomovitamentacao() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
@@ -825,32 +825,32 @@ class Caixa extends BaseController {
                     $total = $total + $item->valor;
                     $totalrelatorio = $totalrelatorio + $item->valor;
                     $dataatual = substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4);
-                        $corpo2 = $corpo2 . '
+                    $corpo2 = $corpo2 . '
                     <tr>
-                        <td >'.$item->contanome.'</td>
+                        <td >' . $item->contanome . '</td>
                         <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                        <td >'.$item->razao_social.'</td>';
-                        if ($item->tiposaida != null) {
-                            $corpo3 = $corpo3 . '
-                            <td >'.$item->tiposaida.'</td>
-                            <td >'.$item->classesaida.'</td>
-                            <td ><font color="red">'. number_format($item->valor, 2, ",", ".").'</td> ';
-                        }else{
-                            $corpo3 = $corpo3 . '
-                            <td >'.$item->tipoentrada.'</td>
-                            <td >'.$item->classeentrada.'</td>                      
-                            <td ><font color="blue">'. number_format($item->valor, 2, ",", ".").'</td>';
-                        }
-                        if ($item->observacaosaida != null) {
-                            $corpo4 = $corpo4 . '
-                                <td >'.$item->observacaosaida.'</td>';
-                        }else{
-                            $corpo4 = $corpo4 . '
-                                <td >'.$item->observacaoentrada.'</td>';
-                        }
+                        <td >' . $item->razao_social . '</td>';
+                    if ($item->tiposaida != null) {
+                        $corpo3 = $corpo3 . '
+                            <td >' . $item->tiposaida . '</td>
+                            <td >' . $item->classesaida . '</td>
+                            <td ><font color="red">' . number_format($item->valor, 2, ",", ".") . '</td> ';
+                    } else {
+                        $corpo3 = $corpo3 . '
+                            <td >' . $item->tipoentrada . '</td>
+                            <td >' . $item->classeentrada . '</td>                      
+                            <td ><font color="blue">' . number_format($item->valor, 2, ",", ".") . '</td>';
+                    }
+                    if ($item->observacaosaida != null) {
+                        $corpo4 = $corpo4 . '
+                                <td >' . $item->observacaosaida . '</td>';
+                    } else {
+                        $corpo4 = $corpo4 . '
+                                <td >' . $item->observacaoentrada . '</td>';
+                    }
                 endforeach;
                 $corpo5 = '
-                             <td colspan="2"><b>'. number_format($total, 2, ",", ".").'</b></td>
+                             <td colspan="2"><b>' . number_format($total, 2, ",", ".") . '</b></td>
                     </tr>
                 <tr>
                     <td colspan="4"><b>Saldo Final</b></td>
@@ -977,6 +977,17 @@ class Caixa extends BaseController {
             $data = array('upload_data' => $this->upload->data());
         }
         $data['saidas_id'] = $saidas_id;
+        $this->anexarimagemsaida($saidas_id);
+    }
+
+    function ecluirimagementrada($entradas_id, $value) {
+        unlink("./upload/entrada/$entradas_id/$value");
+        $this->anexarimagementrada($entradas_id);
+    }
+
+    function ecluirimagemsaida($saidas_id, $value) {
+       
+        unlink("./upload/saida/$saidas_id/$value");
         $this->anexarimagemsaida($saidas_id);
     }
 

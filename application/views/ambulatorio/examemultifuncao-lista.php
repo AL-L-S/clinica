@@ -218,8 +218,14 @@
                                         <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                        
+                                        <?if($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou"){?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="150px;"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedico/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></b></td>
+                                       <?}else{?>
                                         <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
-                                        <? if ($item->convenio != "") { ?>
+                                        
+                                            <?}?>
+                                            <? if ($item->convenio != "") { ?>
                                             <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . " - " . $item->procedimento . " - " . $item->codigo; ?></td>
                                             <? } else { ?>
                                             <td class="<?php echo $estilo_linha; ?>"><?=

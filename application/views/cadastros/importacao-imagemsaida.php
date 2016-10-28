@@ -22,7 +22,8 @@
                     $i++;
                         ?>
                 
-                <td width="10px"><img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/saida/" . $saidas_id . "/" . $value ?>','_blank','toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "upload/saida/" . $saidas_id . "/" . $value ?>"><br><? echo substr($value, 0, 10)?></td>
+                <td width="10px"><img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/saida/" . $saidas_id . "/" . $value ?>','_blank','toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "upload/saida/" . $saidas_id . "/" . $value ?>"><br><? echo substr($value, 0, 10)?>
+                <br/><a onclick="javascript: return confirm('Deseja realmente excluir o arquivo <?= $value; ?>');" href="<?= base_url() ?>cadastros/caixa/ecluirimagemsaida/<?=$saidas_id?>/<?=$value?>">Excluir</a></td>
                     <?
                     if($i == 8){
                         ?>

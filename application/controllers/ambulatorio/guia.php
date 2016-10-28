@@ -247,7 +247,7 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-        $this->fichaxml($paciente_id, $guia_id, $exames_id);
+
 //HUMANA               
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
 //            $this->load->View('ambulatorio/impressaofichaus', $data);
@@ -744,6 +744,7 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['selecionado'] = $this->guia->editarexamesselect($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $data['guia_id'] = $guia_id;
         $this->loadView('ambulatorio/editarexame-form', $data);

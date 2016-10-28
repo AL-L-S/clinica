@@ -17,11 +17,11 @@
                         <label>Ajuste</label>
                     </dt>
                     <dd>
-                        <input type="text" name="ajuste" class="texto02" id="ajuste" value="<?= @$obj->_ajuste; ?>" />
+                        <input type="text" name="ajuste" class="texto02" id="ajuste" value="<?= @$obj->_ajuste; ?>" />%
                     </dd>
 
                     <dt>
-                        <label>Dia Recebimento</label>
+                        <label>Data de Recebimento</label>
                     </dt>
                     <dd>
                         <input type="text" name="diareceber" class="texto02" id="diareceber" value="<?= @$obj->_dia_receber; ?>"/>
@@ -33,7 +33,7 @@
                         <input type="text" name="temporeceber" class="texto02" id="temporeceber" value= "<?= @$obj->_tempo_receber; ?>" />
                     </dd>
                     <dt>
-                        <label>Parcelas</label>
+                        <label>N° Maximo de Parcelas</label>
                     </dt>
                     <dd>
                         <input type="text" name="parcelas" class="texto02" id="parcelas" value= "<?= @$obj->_parcelas; ?>" />

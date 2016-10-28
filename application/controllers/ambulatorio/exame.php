@@ -101,8 +101,8 @@ class Exame extends BaseController {
     function gerarelatoriomedicoagendaconsultas() {
         $medicos = $_POST['medicos'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaconsulta();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaconsulta', $data);
@@ -132,8 +132,8 @@ class Exame extends BaseController {
         if ($_POST['salas'] != '0') {
             $data['salas'] = $this->sala->listarsala($_POST['salas']);
         }
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaordem();
         $data['relatorioprioridade'] = $this->exame->listaragendaordemprioridade();
@@ -149,8 +149,8 @@ class Exame extends BaseController {
         $salas = $_POST['salas'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
         $data['salas'] = $this->sala->listarsala($salas);
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaexame();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexame', $data);
@@ -253,8 +253,8 @@ class Exame extends BaseController {
 
     function faturamentoexamelista() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime($_POST['txtdata_fim']));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
@@ -334,6 +334,27 @@ class Exame extends BaseController {
     function agendadoauditoria($agenda_exames_id) {
         $data['guia'] = $this->exame->listaragendadoauditoria($agenda_exames_id);
         $this->load->View('ambulatorio/agendadoauditoria-form', $data);
+    }
+
+    function trocarmedico($agenda_exames_id) {
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['medico_atual'] = $this->exame->buscarmedicotroca($agenda_exames_id);
+        $data['medicos'] = $this->exame->listarmedico();
+        $data['tipo'] = 1; // exame ou consulta ou fisio
+        $this->load->View('ambulatorio/trocarmedico-form', $data);
+    }
+
+    function trocarmedicoconsulta($agenda_exames_id) {
+        var_dump($agenda_exames_id);die;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['medico_atual'] = $this->exame->buscarmedicotrocaconsulta($agenda_exames_id);
+        $data['medicos'] = $this->exame->listarmedico();
+        $data['tipo'] = 2; // exame ou consulta ou fisio        
+        $this->load->View('ambulatorio/trocarmedico-form', $data);
+    }
+
+    function gravartrocarmedico() {
+        $this->exame->trocarmedico();
     }
 
     function gravarpacientedetalhes() {

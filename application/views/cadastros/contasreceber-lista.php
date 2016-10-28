@@ -40,10 +40,18 @@
                             </select>
                         </th>
                         <th class="tabela_title">
+                            <?if(isset($_GET['datainicio'])){?>
                             <input type="text"  id="datainicio" alt="date" name="datainicio" class="size1"  value="<?php echo @$_GET['datainicio']; ?>" />
+                            <?}else{?>
+                               <input type="text"  id="datainicio" alt="date" name="datainicio" class="size1"  value="<?php echo date('01/m/Y'); ?>" /> 
+                            <?}?>
                         </th>
                         <th class="tabela_title">
+                            <?if(isset($_GET['datafim'])){?>
                             <input type="text"  id="datafim" alt="date" name="datafim" class="size1"  value="<?php echo @$_GET['datafim']; ?>" />
+                            <?}else{?>
+                            <input type="text"  id="datafim" alt="date" name="datafim" class="size1"  value="<?php echo date('t/m/Y'); ?>" /> 
+                            <?}?>
                         </th>
                         <th class="tabela_title">
                             <select name="nome" id="nome" class="size2">
