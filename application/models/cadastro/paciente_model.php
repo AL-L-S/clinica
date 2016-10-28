@@ -52,12 +52,11 @@ class paciente_model extends BaseModel {
     }
 
     function contador() {
-	$_POST['nascimento'] = date("Y-m-d", strtotime($_POST['nascimento']));
 
         $this->db->select();
         $this->db->from('tb_paciente');
         $this->db->where('nome', $_POST['nome']);
-        $this->db->where('nascimento', $_POST['nascimento']);
+        $this->db->where('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
         $this->db->where('nome_mae', $_POST['nome_mae']);
         $return = $this->db->count_all_results();
         return $return;
@@ -219,7 +218,7 @@ class paciente_model extends BaseModel {
                 $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
             }
             if ($_POST['nascimento'] != '') {
-                $this->db->set('nascimento', $_POST['nascimento']);
+                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
             }
             if ($_POST['data_emissao'] != '') {
                 $this->db->set('data_emissao', $_POST['data_emissao']);

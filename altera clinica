@@ -844,3 +844,9 @@ CREATE TABLE ponto.tb_financeiro_contasreceber_temp
   classe character varying(60),
   CONSTRAINT tb_financeiro_contasreceber_temp_pkey PRIMARY KEY (financeiro_contasreceber_temp_id )
 )
+
+atualiza 28/1016
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN observacao_faturamento character varying(8000);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_obs_faturamento integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_obs_faturamento timestamp without time zone;

@@ -2143,9 +2143,13 @@ class Laudo extends BaseController {
 
     function importarimagem() {
         $ambulatorio_laudo_id = $_POST['paciente_id'];
-        //        $data = $_FILES['userfile'];
-        //        var_dump($data);
-        //        die;
+//        echo '<pre>';
+//        foreach ($_FILES['arquivos'] as $arquivo) {
+//            $_FILES['userfile'] = $arquivo;
+//            $data = $_FILES['userfile'];
+//            var_dump($data);
+//        }
+//        die;
         if (!is_dir("./upload/consulta/$ambulatorio_laudo_id")) {
             mkdir("./upload/consulta/$ambulatorio_laudo_id");
             $destino = "./upload/consulta/$ambulatorio_laudo_id";

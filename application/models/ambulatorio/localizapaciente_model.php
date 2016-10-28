@@ -96,7 +96,7 @@ class localizapaciente_model extends Model {
     function gravarexames() {
         try {
             $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('nascimento', $_POST['nascimento']);
+            $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
             $this->db->set('idade', $_POST['idade']);
             $this->db->set('celular', $_POST['telefone']);
             $this->db->set('telefone', $_POST['celular']);

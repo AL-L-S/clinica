@@ -966,7 +966,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', $_POST['nascimento']);
+                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1005,7 +1005,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', $_POST['nascimento']);
+                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1043,7 +1043,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', $_POST['nascimento']);
+                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1091,7 +1091,7 @@ class exametemp_model extends Model {
 
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', $_POST['nascimento']);
+                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -1147,7 +1147,7 @@ class exametemp_model extends Model {
 
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', $_POST['nascimento']);
+                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -1203,7 +1203,7 @@ class exametemp_model extends Model {
 
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', $_POST['nascimento']);
+                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -1344,7 +1344,7 @@ class exametemp_model extends Model {
 
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', $_POST['nascimento']);
+                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -1442,7 +1442,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', $_POST['nascimento']);
+                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1480,7 +1480,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', $_POST['nascimento']);
+                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1518,7 +1518,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', $_POST['nascimento']);
+                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1645,7 +1645,7 @@ class exametemp_model extends Model {
 
                 if ($_POST['txtNomeid'] == '') {
                     if ($_POST['nascimento'] != '') {
-                        $this->db->set('nascimento', $_POST['nascimento']);
+                        $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
                     }
                     if ($_POST['idade'] != 0) {
                         $this->db->set('idade', $_POST['idade']);
@@ -1723,7 +1723,7 @@ class exametemp_model extends Model {
 
                 if ($_POST['txtNomeid'] == '') {
                     if ($_POST['nascimento'] != '') {
-                        $this->db->set('nascimento', $_POST['nascimento']);
+                        $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
                     }
                     if ($_POST['idade'] != 0) {
                         $this->db->set('idade', $_POST['idade']);
@@ -1765,7 +1765,7 @@ class exametemp_model extends Model {
         try {
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', $_POST['nascimento']);
+                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);

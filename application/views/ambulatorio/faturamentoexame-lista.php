@@ -69,6 +69,7 @@
                     <th width="90px;">Medico</th>
                     <th width="60px;">Data</th>
                     <th width="300px;">Nome</th>
+                    <th >Obs.</th>
                     <th width="60px;">Valor Fatur.</th>
                     
                     <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
@@ -114,7 +115,8 @@
                                 <td><font color="c60000"><?= $item->paciente; ?></td>
                             <? } ?>
 
-                            
+                            <td ><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/alterarobservacaofaturar/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,\n\width=500,height=230');">
+                                    =><?= $item->observacao_faturamento; ?></a></td>
                             <td ><?= number_format($item->valortotal, 2, ",", "."); ?></td>
                             <?
                             if ($item->faturado != "t") {

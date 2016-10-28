@@ -101,8 +101,8 @@ class Exame extends BaseController {
     function gerarelatoriomedicoagendaconsultas() {
         $medicos = $_POST['medicos'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaconsulta();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaconsulta', $data);
@@ -132,8 +132,8 @@ class Exame extends BaseController {
         if ($_POST['salas'] != '0') {
             $data['salas'] = $this->sala->listarsala($_POST['salas']);
         }
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaordem();
         $data['relatorioprioridade'] = $this->exame->listaragendaordemprioridade();
@@ -149,8 +149,8 @@ class Exame extends BaseController {
         $salas = $_POST['salas'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
         $data['salas'] = $this->sala->listarsala($salas);
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaexame();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexame', $data);
@@ -253,8 +253,8 @@ class Exame extends BaseController {
 
     function faturamentoexamelista() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
@@ -345,7 +345,8 @@ class Exame extends BaseController {
     }
 
     function trocarmedicoconsulta($agenda_exames_id) {
-        var_dump($agenda_exames_id);die;
+        var_dump($agenda_exames_id);
+        die;
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['medico_atual'] = $this->exame->buscarmedicotrocaconsulta($agenda_exames_id);
         $data['medicos'] = $this->exame->listarmedico();
@@ -495,9 +496,20 @@ class Exame extends BaseController {
         $this->load->View('ambulatorio/alterarobservacao-form', $data);
     }
 
+    function alterarobservacaofaturar($agenda_exame_id) {
+        $data['agenda_exame_id'] = $agenda_exame_id;
+        $data['observacao'] = $this->exame->listarobservacoesfaturar($agenda_exame_id);
+        $this->load->View('ambulatorio/alteracaoobservacaofaturamento-form', $data);
+    }
+
     function observacaogravar($agenda_exame_id) {
         $verificar = $this->exame->observacao($agenda_exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function observacaofaturargravar($agenda_exame_id) {
+         $this->exame->observacaofaturamento($agenda_exame_id);
+         echo '<script type="text/javascript">window.close();</script>';
     }
 
     function desbloquear($agenda_exame_id, $inicio) {
