@@ -338,8 +338,8 @@ class inventario_model extends Model {
     }
 
     function relatorioentradaarmazem() {
-        $datainicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $datafim = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -374,8 +374,8 @@ class inventario_model extends Model {
     }
 
     function relatorioentradaarmazemcontador() {
-        $datainicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $datafim = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -409,8 +409,8 @@ class inventario_model extends Model {
     }
 
     function relatoriosaidaarmazem() {
-        $datainicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $datafim = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -453,8 +453,8 @@ class inventario_model extends Model {
     }
 
     function relatoriosaidaarmazemcontador() {
-        $datainicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']) );
-        $datafim = date("Y-m-d", strtotime($_POST['txtdata_fim']) );
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
