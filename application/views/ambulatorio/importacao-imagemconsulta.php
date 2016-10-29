@@ -7,7 +7,7 @@ $convenios = $this->convenio->listarconvenionaodinheiro();
         <div >
             <?= form_open_multipart(base_url() . 'ambulatorio/laudo/importarimagem'); ?>
             <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
-            <input type="file" multiple name="arquivos[]"/>
+            <input type="file" multiple="" name="arquivos[]"/>
             <button type="submit" name="btnEnviar">Enviar</button>
             <input type="hidden" name="paciente_id" value="<?= $ambulatorio_laudo_id; ?>" />
             <?= form_close(); ?>

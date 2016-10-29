@@ -2143,33 +2143,37 @@ class Laudo extends BaseController {
 
     function importarimagem() {
         $ambulatorio_laudo_id = $_POST['paciente_id'];
-//        echo '<pre>';
-//        foreach ($_FILES['arquivos'] as $arquivo) {
-//            $_FILES['userfile'] = $arquivo;
-//            $data = $_FILES['userfile'];
-//            var_dump($data);
-//        }
-//        die;
-        if (!is_dir("./upload/consulta/$ambulatorio_laudo_id")) {
-            mkdir("./upload/consulta/$ambulatorio_laudo_id");
-            $destino = "./upload/consulta/$ambulatorio_laudo_id";
-            chmod($destino, 0777);
+
+        for ($i = 0; $i < count($_FILES['arquivos']['name']); $i++) {
+            $_FILES['userfile']['name'] = $_FILES['arquivos']['name'][$i];
+            $_FILES['userfile']['type'] = $_FILES['arquivos']['type'][$i];
+            $_FILES['userfile']['tmp_name'] = $_FILES['arquivos']['tmp_name'][$i];
+            $_FILES['userfile']['error'] = $_FILES['arquivos']['error'][$i];
+            $_FILES['userfile']['size'] = $_FILES['arquivos']['size'][$i];
+
+            if (!is_dir("./upload/consulta/$ambulatorio_laudo_id")) {
+                mkdir("./upload/consulta/$ambulatorio_laudo_id");
+                $destino = "./upload/consulta/$ambulatorio_laudo_id";
+                chmod($destino, 0777);
+            }
+
+            //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
+            $config['upload_path'] = "./upload/consulta/" . $ambulatorio_laudo_id . "/";
+            $config['allowed_types'] = 'gif|jpg|BMP|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar';
+            $config['max_size'] = '0';
+            $config['overwrite'] = FALSE;
+            $config['encrypt_name'] = FALSE;
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) {
+                $error = array('error' => $this->upload->display_errors());
+            } else {
+                $error = null;
+                $data = array('upload_data' => $this->upload->data());
+            }
         }
 
-        //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
-        $config['upload_path'] = "./upload/consulta/" . $ambulatorio_laudo_id . "/";
-        $config['allowed_types'] = 'gif|jpg|BMP|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar';
-        $config['max_size'] = '0';
-        $config['overwrite'] = FALSE;
-        $config['encrypt_name'] = FALSE;
-        $this->load->library('upload', $config);
 
-        if (!$this->upload->do_upload()) {
-            $error = array('error' => $this->upload->display_errors());
-        } else {
-            $error = null;
-            $data = array('upload_data' => $this->upload->data());
-        }
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->anexarimagem($ambulatorio_laudo_id);
     }
