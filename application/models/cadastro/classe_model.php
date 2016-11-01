@@ -32,6 +32,7 @@ class classe_model extends Model {
                             descricao');
         $this->db->from('tb_financeiro_classe');
         $this->db->where('ativo', 'true');
+        $this->db->orderby('descricao');
         $return = $this->db->get();
         return $return->result();
     }

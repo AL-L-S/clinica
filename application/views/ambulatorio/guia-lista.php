@@ -104,11 +104,11 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->inicio ?></td>
 
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaodeclaracao/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Declaracao
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/escolherdeclaracao/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Declaracao
                                         </a>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaorecibo/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Recibo
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/reciboounota/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=300,height=150');">Recibo
                                         </a>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" >

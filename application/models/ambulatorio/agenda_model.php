@@ -30,6 +30,7 @@ class agenda_model extends Model {
                             tipo');
         $this->db->from('tb_agenda');
         $this->db->where('ativo', 'true');
+        $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
     }

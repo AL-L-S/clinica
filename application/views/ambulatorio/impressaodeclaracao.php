@@ -46,7 +46,11 @@ switch ($MES) {
 }
 ?>
 <p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
-<p><center><u><b><?= $empresa[0]->razao_social; ?></b></u></center></p>
+
+
+<?echo $modelo[0]->texto?>
+
+<!--<p><center><u><b><?= $empresa[0]->razao_social; ?></b></u></center></p>
 <br>
 <br>
 <br>
@@ -73,7 +77,7 @@ switch ($MES) {
 <br>
 <br>
 <br>
-<!--<p><center><?= $exame[0]->logradouro; ?><?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?> - <?= $exame[0]->municipio ?></center></p>
+<p><center><?= $exame[0]->logradouro; ?><?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?> - <?= $exame[0]->municipio ?></center></p>
 <p><center>Fone: (85) <?= $exame[0]->telefone; ?> - (85) <?= $exame[0]->celular; ?></center></p>-->
 <p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p>
 

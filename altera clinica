@@ -850,3 +850,19 @@ atualiza 28/1016
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN observacao_faturamento character varying(8000);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_obs_faturamento integer;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_obs_faturamento timestamp without time zone;
+
+atualiza 01/11/16
+
+CREATE TABLE ponto.tb_ambulatorio_modelo_declaracao
+(
+  ambulatorio_modelo_declaracao_id serial NOT NULL,
+  medico_id integer,
+  nome character varying(200),
+  texto text,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_modelo_declaracao_pkey PRIMARY KEY (ambulatorio_modelo_declaracao_id )
+)

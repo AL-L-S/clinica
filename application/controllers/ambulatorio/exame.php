@@ -345,8 +345,6 @@ class Exame extends BaseController {
     }
 
     function trocarmedicoconsulta($agenda_exames_id) {
-        var_dump($agenda_exames_id);
-        die;
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['medico_atual'] = $this->exame->buscarmedicotrocaconsulta($agenda_exames_id);
         $data['medicos'] = $this->exame->listarmedico();

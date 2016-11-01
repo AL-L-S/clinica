@@ -29,7 +29,7 @@
                     </dd>
                     <hr>
                     <dd>                    
-                        <button type="submit" id="enviar" >Enviar</button>
+                        <button type="submit" id="enviar" onclick="javascrip:window.close();">Enviar</button>
                     </dd>
 
             </form>
