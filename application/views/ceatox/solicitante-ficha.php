@@ -87,7 +87,7 @@
     });
     $(function() {
             $( "#txtCidade" ).autocomplete({
-                source: "<?= base_url() ?>index?c=autocomplete&m=cidade",
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
                 minLength: 3,
                 focus: function( event, ui ) {
                     $( "#txtCidade" ).val( ui.item.label );

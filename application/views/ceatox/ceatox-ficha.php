@@ -643,7 +643,7 @@
                                                                                         /*
                                                                                 $(function() {
                                                                                             $( "#nome_solicitante" ).autocomplete({
-                                                                                                source: "<?= base_url() ?>index?c=autocomplete&m=ceatox1",
+                                                                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=ceatox1",
                                                                                                 minLength: 3,
                                                                                                 focus: function( event, ui ) {
                                                                                                     $( "#nome_solicitante" ).val( ui.item.label );
@@ -667,7 +667,7 @@
                                                                                          */
                                                                                         //$(function() {
                                                                                         //            $( "#nome_paciente" ).autocomplete({
-                                                                                        //                source: "<?= base_url() ?>index?c=autocomplete&m=pacienteceatox",
+                                                                                        //                source: "<?= base_url() ?>index.php?c=autocomplete&m=pacienteceatox",
                                                                                         //                minLength: 3,
                                                                                         //                focus: function( event, ui ) {
                                                                                         //                    $( "#nome_paciente" ).val( ui.item.label );
@@ -694,7 +694,7 @@
 
                                                                                         $(function() {
                                                                                             $( "#municipio_paciente" ).autocomplete({
-                                                                                                source: "<?= base_url() ?>index?c=autocomplete&m=cidade",
+                                                                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
                                                                                                 minLength: 3,
                                                                                                 focus: function( event, ui ) {
                                                                                                     $( "#municipio_paciente" ).val( ui.item.label );
@@ -710,7 +710,7 @@
 
                                                                                         $(function() {
                                                                                             $( "#municipio_solicitante" ).autocomplete({
-                                                                                                source: "<?= base_url() ?>index?c=autocomplete&m=cidade",
+                                                                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
                                                                                                 minLength: 3,
                                                                                                 focus: function( event, ui ) {
                                                                                                     $( "#municipio_solicitante" ).val( ui.item.label );
@@ -726,7 +726,7 @@
 
                                                                                         $(function() {
                                                                                             $( "#cidLabel" ).autocomplete({
-                                                                                                source: "<?= base_url() ?>index?c=autocomplete&m=cid10",
+                                                                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cid10",
                 minLength: 3,
                 focus: function( event, ui ) {
                     $( "#cidLabel" ).val( ui.item.label );

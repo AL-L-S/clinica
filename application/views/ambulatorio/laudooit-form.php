@@ -937,7 +937,7 @@
 
     $(function() {
         $("#txtcbo").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cboprofissionais",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
             minLength: 3,
             focus: function(event, ui) {
                 $("#txtcbo").val(ui.item.label);
@@ -953,7 +953,7 @@
 
     $(function() {
         $("#txtCidade").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cidade",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
             minLength: 3,
             focus: function(event, ui) {
                 $("#txtCidade").val(ui.item.label);
@@ -968,7 +968,7 @@
     });
     $(function() {
         $("#txtEstado").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=estado",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
             minLength: 2,
             focus: function(event, ui) {
                 $("#txtEstado").val(ui.item.label);

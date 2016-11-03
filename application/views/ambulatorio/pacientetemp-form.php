@@ -141,7 +141,7 @@ $(function() {
 
     $(function() {
         $("#txtNome").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=paciente",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
             minLength: 3,
             focus: function(event, ui) {
                 $("#txtNome").val(ui.item.label);
@@ -159,7 +159,7 @@ $(function() {
 
     $(function() {
         $("#nascimento").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=pacientenascimento",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientenascimento",
             minLength: 3,
             focus: function(event, ui) {
                 $("#nascimento").val(ui.item.label);

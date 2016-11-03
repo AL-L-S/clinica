@@ -100,7 +100,7 @@
     });
     $(function() {
         $( "#txtmedico" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=medicosaida",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicosaida",
             minLength: 4,
             focus: function( event, ui ) {
                 $( "#txtmedico" ).val( ui.item.label );

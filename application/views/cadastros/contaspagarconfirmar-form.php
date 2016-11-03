@@ -84,7 +84,7 @@
     
     $(function() {
         $( "#credorlabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=credordevedor",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=credordevedor",
             minLength: 1,
             focus: function( event, ui ) {
                 $( "#credorlabel" ).val( ui.item.label );
