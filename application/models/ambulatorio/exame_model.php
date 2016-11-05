@@ -961,6 +961,9 @@ class exame_model extends Model {
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('ae.situacao', $args['situacao']);
         }
+        if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
+            $this->db->where('pt.medico', $args['c_s_medico']);
+        }
         return $this->db;
     }
 

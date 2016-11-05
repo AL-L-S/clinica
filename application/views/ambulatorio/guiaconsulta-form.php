@@ -118,8 +118,8 @@
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $item) : ?>
                                             <option value="<?= $item->exame_sala_id; ?>"<?
-                                        if ($sala == $item->nome):echo 'selected';
-                                        endif;
+                                            if ($sala == $item->nome):echo 'selected';
+                                            endif;
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
@@ -128,8 +128,8 @@
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
                                             <option value="<?= $item->operador_id; ?>"<?
-                                        if ($medico == $item->nome):echo 'selected';
-                                        endif;
+                                            if ($medico == $item->nome):echo 'selected';
+                                            endif;
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
@@ -413,6 +413,25 @@
                                     });
                                 });
 
+                                $(function () {
+                                    $('#procedimento1').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                var options = '<option value="0">Selecione</option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    if (j[c].forma_pagamento_id != null) {
+                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                    }
+                                                }
+                                                $('#formapamento').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                        } else {
+                                            $('#formapamento').html('<option value="0">Selecione</option>');
+                                        }
+                                    });
+                                });
 
 
 

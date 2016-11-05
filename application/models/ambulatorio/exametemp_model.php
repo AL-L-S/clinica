@@ -68,10 +68,12 @@ class exametemp_model extends Model {
                             es.nome as sala,
                             a.medico_agenda,
                             o.nome as medico,
-                            a.observacoes');
+                            a.observacoes,
+                            p.convenio_id');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
         $this->db->where("a.confirmado", 'false');
         $this->db->where("a.tipo", 'EXAME');
         $this->db->where('a.data', $data);
@@ -80,6 +82,8 @@ class exametemp_model extends Model {
         $this->db->orderby("a.data desc");
         $this->db->orderby("a.inicio desc");
         $return = $this->db->get();
+//        echo '<pre>';
+//        var_dump($return->result());die;
         return $return->result();
     }
 
@@ -97,10 +101,12 @@ class exametemp_model extends Model {
                             es.nome as sala,
                             a.medico_agenda,
                             o.nome as medico,
-                            a.observacoes');
+                            a.observacoes,
+                            p.convenio_id');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
         $this->db->where("a.confirmado", 'false');
         $this->db->where("a.tipo", 'CONSULTA');
         $this->db->where('a.data', $data);
@@ -157,12 +163,14 @@ class exametemp_model extends Model {
                             a.medico_agenda,
                             pt.nome as procedimento,
                             o.nome as medico,
-                            a.observacoes');
+                            a.observacoes,
+                            p.convenio_id');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
         $this->db->where("a.confirmado", 'false');
         $this->db->where("a.guia_id", null);
         $this->db->where('a.data', $data);
@@ -966,7 +974,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1005,7 +1013,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1043,7 +1051,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1091,7 +1099,7 @@ class exametemp_model extends Model {
 
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -1147,7 +1155,7 @@ class exametemp_model extends Model {
 
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -1203,7 +1211,7 @@ class exametemp_model extends Model {
 
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -1221,9 +1229,13 @@ class exametemp_model extends Model {
             if ($_POST['horarios'] != "") {
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
-                if (isset($_POST['tipo'])) {
-                    $this->db->set('tipo', $_POST['tipo']);
+
+                $tipo = $this->buscartipo($_POST['procedimento1']);
+
+                if (isset($tipo)) {
+                    $this->db->set('tipo', $tipo);
                 }
+
                 $this->db->set('agenda_exames_nome_id', $_POST['sala']);
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
@@ -1254,6 +1266,17 @@ class exametemp_model extends Model {
         } catch (Exception $exc) {
             return $paciente_id;
         }
+    }
+
+    function buscartipo($procedimento_id) {
+        $this->db->select('ag.tipo');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
+        $this->db->where('pt.procedimento_tuss_id', $procedimento_id);
+        $this->db->where('ag.tipo !=', 'ESPECIALIDADE');
+        $return = $this->db->get();
+
+        return $return->result();
     }
 
     function gravarhorarioencaixe() {
@@ -1344,7 +1367,7 @@ class exametemp_model extends Model {
 
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -1442,7 +1465,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1480,7 +1503,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1518,7 +1541,7 @@ class exametemp_model extends Model {
         try {
             $this->db->set('nome', $_POST['txtNome']);
             if ($_POST['nascimento'] != '//' && $_POST['nascimento'] != '') {
-                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
@@ -1645,7 +1668,7 @@ class exametemp_model extends Model {
 
                 if ($_POST['txtNomeid'] == '') {
                     if ($_POST['nascimento'] != '') {
-                        $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                        $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
                     }
                     if ($_POST['idade'] != 0) {
                         $this->db->set('idade', $_POST['idade']);
@@ -1723,7 +1746,7 @@ class exametemp_model extends Model {
 
                 if ($_POST['txtNomeid'] == '') {
                     if ($_POST['nascimento'] != '') {
-                        $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                        $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
                     }
                     if ($_POST['idade'] != 0) {
                         $this->db->set('idade', $_POST['idade']);
@@ -1765,7 +1788,7 @@ class exametemp_model extends Model {
         try {
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
                 }
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
@@ -2542,6 +2565,18 @@ class exametemp_model extends Model {
         }
     }
 
+    function verificaexamemedicamento($procedimento_convenio_id) {
+
+        $this->db->select('ag.tipo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("pc.procedimento_convenio_id", $procedimento_convenio_id);
+        $query = $this->db->get();
+        $tipo = $query->result();
+        return $tipo[0]->tipo;
+    }
+
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
 //            $testemedico = $_POST['medico_id'];
@@ -2566,6 +2601,12 @@ class exametemp_model extends Model {
                 $h = 0;
                 $j = 0;
                 $i++;
+
+
+                $tipo = $this->verificaexamemedicamento($procedimento_tuss_id);
+                if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO') && $_POST['medico'][$i] == '') {
+                    return 2;
+                }
 
                 foreach ($_POST['sala'] as $itemnome) {
                     $c++;
@@ -2982,8 +3023,18 @@ class exametemp_model extends Model {
 //        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = cp.forma_pagamento_id', 'left');
         $this->db->where('cp.procedimento_convenio_id', $parametro);
         $return = $this->db->get();
-//        var_dump($return->result());die;
-        return $return->result();
+        $result = $return->result();
+
+        if (empty($result)) {
+            $this->db->select('fp.nome,
+                           fp.forma_pagamento_id');
+            $this->db->from('tb_forma_pagamento fp');
+            $return2 = $this->db->get();
+            $result2 = $return2->result();
+            return $result2;
+        } else {
+            return $result;
+        }
     }
 
     function listarautocompletemodelos($parametro = null) {

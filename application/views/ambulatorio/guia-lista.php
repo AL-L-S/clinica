@@ -108,7 +108,7 @@
                                         </a>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/reciboounota/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=300,height=150');">Recibo
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/reciboounota/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Recibo
                                         </a>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" >

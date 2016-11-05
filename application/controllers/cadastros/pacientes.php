@@ -176,8 +176,12 @@ class pacientes extends BaseController {
         if ($teste == 0) {
 //            $this->gerardicom($ambulatorio_guia_id);
             $data['mensagem'] = 'Paciente gravado com sucesso';
-        } else {
+        } elseif ($teste == -1) {
             $data['mensagem'] = 'Erro ao gravar paciente';
+        } elseif ($teste == 2) {
+            $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
@@ -220,15 +224,15 @@ class pacientes extends BaseController {
     function procedimentoautorizarfisioterapia($paciente_id) {
 //        $lista = $this->exame->autorizarsessaofisioterapia($paciente_id);
 //        if (count($lista) == 0) {
-            $data['paciente_id'] = $paciente_id;
-            $data['salas'] = $this->exame->listarsalastotal();
-            $data['convenio'] = $this->convenio->listardados();
-            $data['forma_pagamento'] = $this->guia->formadepagamento();
-            $data['paciente'] = $this->paciente->listardados($data['paciente_id']);
-            $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
-            $data['procedimento'] = $this->procedimento->listarprocedimentos();
-            $data['exames'] = $this->exametemp->listaragendaspacientefisioterapia($paciente_id);
-            $this->loadView('ambulatorio/procedimentoautorizarfisioterapia-form', $data);
+        $data['paciente_id'] = $paciente_id;
+        $data['salas'] = $this->exame->listarsalastotal();
+        $data['convenio'] = $this->convenio->listardados();
+        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['paciente'] = $this->paciente->listardados($data['paciente_id']);
+        $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
+        $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        $data['exames'] = $this->exametemp->listaragendaspacientefisioterapia($paciente_id);
+        $this->loadView('ambulatorio/procedimentoautorizarfisioterapia-form', $data);
 //        } else {
 //            $data['mensagem'] = 'Paciente com sessões pendentes.';
 //            $this->session->set_flashdata('message', $data['mensagem']);
@@ -238,17 +242,16 @@ class pacientes extends BaseController {
 
     function procedimentoautorizaratendimento($paciente_id) {
         $lista = $this->exame->autorizarsessaofisioterapia($paciente_id);
-            $data['paciente_id'] = $paciente_id;
-            $data['salas'] = $this->exame->listarsalastotal();
-            $data['convenio'] = $this->convenio->listardados();
-            $data['medicos'] = $this->operador_m->listarmedicos();
-            $data['forma_pagamento'] = $this->guia->formadepagamento();
-            $data['paciente'] = $this->paciente->listardados($data['paciente_id']);
-            $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
-            $data['procedimento'] = $this->procedimento->listarprocedimentos();
-            $data['exames'] = $this->exametemp->listaragendaspacienteatendimento($paciente_id);
-            $this->loadView('ambulatorio/procedimentoautorizaratendimento-form', $data);
-        
+        $data['paciente_id'] = $paciente_id;
+        $data['salas'] = $this->exame->listarsalastotal();
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['paciente'] = $this->paciente->listardados($data['paciente_id']);
+        $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
+        $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        $data['exames'] = $this->exametemp->listaragendaspacienteatendimento($paciente_id);
+        $this->loadView('ambulatorio/procedimentoautorizaratendimento-form', $data);
     }
 
     function novosubstituir() {
@@ -268,15 +271,15 @@ class pacientes extends BaseController {
 
     function gravar() {
         $contador = $this->paciente->contador();
-        
-	$_POST['nascimento'] = date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) );
-        
-       if ($_POST['cpf'] != ""){
+
+        $_POST['nascimento'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento'])));
+
+        if ($_POST['cpf'] != "") {
             $contadorcpf = $this->paciente->contadorcpf();
-        }else{
+        } else {
             $contadorcpf = 0;
         }
-        
+
         if ($contador == 0 && $contadorcpf == 0) {
             if ($paciente_id = $this->paciente->gravar()) {
                 $data['mensagem'] = 'Paciente gravado com sucesso';
@@ -669,13 +672,12 @@ class pacientes extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/pacientes/pesquisarprocedimento");
     }
-    
-    
+
     function gerardicom($guia_id) {
         $exame = $this->exame->listardicom($guia_id);
 
         $grupo = $exame[0]->grupo;
-        if ($grupo == 'RX' ||$grupo == 'MAMOGRAFIA') {
+        if ($grupo == 'RX' || $grupo == 'MAMOGRAFIA') {
             $grupo = 'CR';
         }
         if ($grupo == 'RM') {
