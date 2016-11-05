@@ -106,7 +106,7 @@
         $( "#accordion" ).accordion();
 
         $( "#txtTipodesconto" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=tipodesconto",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=tipodesconto",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtTipodesconto" ).val( ui.item.label );

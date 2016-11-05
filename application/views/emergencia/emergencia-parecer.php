@@ -88,7 +88,7 @@
             });
 
             $( "#txtmedicolabel" ).autocomplete({
-                source: "<?= base_url() ?>index?c=autocomplete&m=medico",
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=medico",
             minLength: 1,
             focus: function( event, ui ) {
                 $( "#txtmedicolabel" ).val( ui.item.label );

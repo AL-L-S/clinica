@@ -182,7 +182,7 @@
 <? endif; ?>
                         $(function () {
                             $("#medico1").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico1").val(ui.item.label);
@@ -198,7 +198,7 @@
 
                         $(function () {
                             $("#medico2").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico2").val(ui.item.label);
@@ -214,7 +214,7 @@
 
                         $(function () {
                             $("#medico3").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico3").val(ui.item.label);
@@ -230,7 +230,7 @@
 
                         $(function () {
                             $("#medico4").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico4").val(ui.item.label);
@@ -246,7 +246,7 @@
 
                         $(function () {
                             $("#medico5").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico5").val(ui.item.label);
@@ -262,7 +262,7 @@
 
                         $(function () {
                             $("#medico6").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico6").val(ui.item.label);
@@ -278,7 +278,7 @@
 
                         $(function () {
                             $("#medico7").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico7").val(ui.item.label);
@@ -294,7 +294,7 @@
 
                         $(function () {
                             $("#medico8").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico8").val(ui.item.label);
@@ -310,7 +310,7 @@
 
                         $(function () {
                             $("#medico9").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico9").val(ui.item.label);
@@ -326,7 +326,7 @@
 
                         $(function () {
                             $("#medico10").autocomplete({
-                                source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                 minLength: 3,
                                 focus: function (event, ui) {
                                     $("#medico10").val(ui.item.label);

@@ -63,7 +63,7 @@
 
     $(function() {
         $("#txtprocedimentolabel").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=procedimentotuss",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotuss",
             minLength: 3,
             focus: function(event, ui) {
                 $("#txtprocedimentolabel").val(ui.item.label);

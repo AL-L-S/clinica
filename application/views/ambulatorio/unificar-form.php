@@ -68,7 +68,7 @@ endif;
             
         $(function() {
             $( "#txtpaciente" ).autocomplete({
-                source: "<?= base_url() ?>index?c=autocomplete&m=paciente",
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
                 minLength: 6,
                 focus: function( event, ui ) {
                     $( "#txtpaciente" ).val( ui.item.label );

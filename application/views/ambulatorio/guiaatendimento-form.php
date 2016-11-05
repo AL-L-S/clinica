@@ -359,9 +359,10 @@
                                 });
 
 
+
                                 $(function () {
                                     $("#medico1").autocomplete({
-                                        source: "<?= base_url() ?>index?c=autocomplete&m=medicos",
+                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
                                         minLength: 3,
                                         focus: function (event, ui) {
                                             $("#medico1").val(ui.item.label);
@@ -374,6 +375,7 @@
                                         }
                                     });
                                 });
+
 
                                 $(function () {
                                     $('#exame').change(function () {

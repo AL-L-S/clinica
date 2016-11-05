@@ -103,7 +103,7 @@
 
         $(function() {
             $( "#txtPlacaLabel" ).autocomplete({
-                source: "<?= base_url() ?>index?c=autocomplete&m=estacionamento",
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=estacionamento",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtPlacaLabel" ).val( ui.item.label );

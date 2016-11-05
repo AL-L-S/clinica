@@ -159,7 +159,7 @@
 
                                                         $(function () {
                                                             $("#paciente").autocomplete({
-                                                                source: "<?= base_url() ?>index?c=autocomplete&m=pacientes",
+                                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientes",
                                                                 minLength: 3,
                                                                 focus: function (event, ui) {
                                                                     $("#paciente").val(ui.item.label);

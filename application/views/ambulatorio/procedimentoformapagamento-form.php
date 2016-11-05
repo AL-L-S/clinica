@@ -47,7 +47,7 @@
 
     $(function () {
         $("#txtpagamento").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=procedimentoformapagamento",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentoformapagamento",
             minLength: 3,
             focus: function (event, ui) {
                 $("#txtpagamento").val(ui.item.label);

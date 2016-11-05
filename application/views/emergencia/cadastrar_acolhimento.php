@@ -220,7 +220,7 @@
     });
     $(function() {
         $( "#txtmotivo" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=motivo_atendimento",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=motivo_atendimento",
             minLength: 4,
             focus: function( event, ui ) {
                 $( "#txtmotivo" ).val( ui.item.label );
@@ -236,7 +236,7 @@
     
     $(function() {
         $( "#txtCidade" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cidade",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
             minLength: 3,
             focus: function( event, ui ) {
                 $( "#txtCidade" ).val( ui.item.label );

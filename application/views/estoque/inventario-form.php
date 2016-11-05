@@ -61,7 +61,7 @@
     
     $(function() {
         $( "#txtfornecedorlabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=fornecedor",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=fornecedor",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtfornecedorlabel" ).val( ui.item.label );
@@ -77,7 +77,7 @@
 
     $(function() {
         $( "#txtprodutolabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=produto",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=produto",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtprodutolabel" ).val( ui.item.label );
