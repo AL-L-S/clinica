@@ -17,6 +17,7 @@ class Exametemp extends BaseController {
         parent::Controller();
         $this->load->model('ambulatorio/exametemp_model', 'exametemp');
         $this->load->model('ambulatorio/exame_model', 'exame');
+        $this->load->model('ambulatorio/laudo_model', 'laudo');
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->library('mensagem');
@@ -533,61 +534,96 @@ class Exametemp extends BaseController {
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
         } else {
             $pacientetemp_id = $this->exametemp->gravarconsultasencaixe();
+
+            //enviar email
+            $texto = "Consulta agendada para o dia ".$_POST['data_ficha'].", com início às ". $_POST['horarios'].".";
+            $email = $this->laudo->email($pacientetemp_id);
+            if (isset($email)) {
+                $this->email($email , $texto);
+            }
+            //fim eviafr email
+
             $this->carregarpacienteconsultatemp($pacientetemp_id);
         }
     }
 
-    function gravarpacienteexameencaixe() {
-        if (trim($_POST['txtNome']) == "" || $_POST['convenio1'] == "-1") {
-            $data['mensagem'] = 'Erro. Obrigatório Convenio e nome do Paciente.';
-            $this->session->set_flashdata('message', $data['mensagem']);
+
+
+function email($email , $texto) {
+    $this->load->library('email');
+
+    $config['protocol'] = 'smtp';
+    $config['smtp_host'] = 'ssl://smtp.gmail.com';
+    $config['smtp_port'] = '465';
+    $config['smtp_user'] = 'equipe2016gcjh@gmail.com';
+    $config['smtp_pass'] = 'DUCOCOFRUTOPCE';
+    $config['validate'] = TRUE;
+    $config['mailtype'] = 'text';
+    $config['charset'] = 'utf-8';
+    $config['newline'] = "\r\n";
+    $this->email->initialize($config);
+
+    $this->email->from('equipe2016gcjh@gmail.com', 'STG Saúde');
+    $this->email->to($email);
+    $this->email->subject('Consulta Agendada');
+    $this->email->message($texto);
+    $this->email->send();
+//    echo $this->email->print_debugger();
+}
+
+function gravarpacienteexameencaixe() {
+    if (trim($_POST['txtNome']) == "" || $_POST['convenio1'] == "-1") {
+        $data['mensagem'] = 'Erro. Obrigatório Convenio e nome do Paciente.';
+        $this->session->set_flashdata('message', $data['mensagem']);
 //            redirect(base_url() . "ambulatorio/exametemp/novopaciente");
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteexameencaixe");
-        } else {
-            $pacientetemp_id = $this->exametemp->gravarexameencaixe();
-            $this->carregarpacientetemp($pacientetemp_id);
-        }
+        redirect(base_url() . "ambulatorio/exametemp/novopacienteexameencaixe");
+    } else {
+        $pacientetemp_id = $this->exametemp->gravarexameencaixe();
+        $this->carregarpacientetemp($pacientetemp_id);
+    }
+}
+
+function gravarpacienteencaixegeral() {
+    if (trim($_POST['txtNome']) == "") {
+        $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exametemp/novopacienteencaixegeral");
+    } else {
+        $pacientetemp_id = $this->exametemp->gravarexameencaixegeral();
+        $this->carregarpacientetempgeral($pacientetemp_id);
+    }
+}
+
+function gravarhorarioexameencaixe() {
+    $this->exametemp->gravarhorarioencaixe();
+    redirect(base_url() . "ambulatorio/exame/listarmultifuncao");
+}
+
+function gravarhorarioexameencaixegeral() {
+    $this->exametemp->gravarhorarioencaixegeral();
+    redirect(base_url() . "ambulatorio/exame/listarmultifuncaogeral");
+}
+
+function gravarpacientefisioterapiaencaixe() {
+    if (trim($_POST['txtNome']) == "") {
+        $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+    } else {
+        $pacientetemp_id = $this->exametemp->gravarfisioterapiaencaixe();
+        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+    }
+}
+
+function gravapacienteconsultaencaixe() {
+    $pacientetemp_id = $_POST['txtpaciente_id'];
+    $this->exametemp->gravaconsultasencaixe($pacientetemp_id);
+    $this->carregarpacienteconsultatemp($pacientetemp_id);
     }
 
-    function gravarpacienteencaixegeral() {
-        if (trim($_POST['txtNome']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteencaixegeral");
-        } else {
-            $pacientetemp_id = $this->exametemp->gravarexameencaixegeral();
-            $this->carregarpacientetempgeral($pacientetemp_id);
-        }
-    }
+    private
 
-    function gravarhorarioexameencaixe() {
-        $this->exametemp->gravarhorarioencaixe();
-        redirect(base_url() . "ambulatorio/exame/listarmultifuncao");
-    }
-
-    function gravarhorarioexameencaixegeral() {
-        $this->exametemp->gravarhorarioencaixegeral();
-        redirect(base_url() . "ambulatorio/exame/listarmultifuncaogeral");
-    }
-
-    function gravarpacientefisioterapiaencaixe() {
-        if (trim($_POST['txtNome']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
-        } else {
-            $pacientetemp_id = $this->exametemp->gravarfisioterapiaencaixe();
-            $this->carregarpacientefisioterapiatemp($pacientetemp_id);
-        }
-    }
-
-    function gravapacienteconsultaencaixe() {
-        $pacientetemp_id = $_POST['txtpaciente_id'];
-        $this->exametemp->gravaconsultasencaixe($pacientetemp_id);
-        $this->carregarpacienteconsultatemp($pacientetemp_id);
-    }
-
-    private function carregarView($data = null, $view = null) {
+    function carregarView($data = null, $view = null) {
         if (!isset($data)) {
             $data['mensagem'] = '';
         }

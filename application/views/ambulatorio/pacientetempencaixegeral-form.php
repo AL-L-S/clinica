@@ -44,13 +44,13 @@
                     <option value="">Selecione</option>
                 </select>
             </div>
-            <div>
+<!--            <div>
                 <label>Tipo</label>
                 <select  name="tipo" id="tipo" class="size1" >
                     <option value="EXAME">Exame</option>
                     <option value="CONSULTA">Consulta</option>
                 </select>
-            </div>
+            </div>-->
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
                 <input type="text" id="observacoes" class="size3" name="observacoes" />
