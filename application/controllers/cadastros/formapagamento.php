@@ -55,6 +55,13 @@ class Formapagamento extends BaseController {
         $this->loadView('cadastros/formapagamento-form', $data);
     }
 
+    function formapagamentoparcelas($formapagamento_id) {
+        $data['formapagamento_id'] = $formapagamento_id;
+        $data['formapagamento'] = $this->formapagamento->buscarforma($formapagamento_id);
+        $data['faixas_parcelas'] = $this->formapagamento->buscafaixasparcelas($formapagamento_id);
+        $this->loadView('cadastros/formapagamentoparcelas-form', $data);
+    }
+
     function excluir($formapagamento_id) {
         $valida = $this->formapagamento->excluir($formapagamento_id);
         if ($valida == 0) {

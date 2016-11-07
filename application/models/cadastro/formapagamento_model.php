@@ -84,6 +84,15 @@ class formapagamento_model extends Model {
         return $return->result();
     }
 
+    function buscafaixasparcelas($forma_pagamento_id) {
+        $this->db->select('*');
+        $this->db->from('tb_formapagamento_pacela_juros');
+        $this->db->where("ativo", 't');
+        $this->db->where("forma_pagamento_id", $forma_pagamento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function buscarforma($forma_pagamento_id) {
         $this->db->select('forma_pagamento_id,
                             nome,

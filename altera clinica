@@ -866,3 +866,25 @@ CREATE TABLE ponto.tb_ambulatorio_modelo_declaracao
   ativo boolean DEFAULT true,
   CONSTRAINT tb_ambulatorio_modelo_declaracao_pkey PRIMARY KEY (ambulatorio_modelo_declaracao_id )
 )
+
+atualiza 07/11/16
+
+
+CREATE TABLE ponto.tb_formapagamento_pacela_juros
+(
+  formapagamento_pacela_juros_id serial NOT NULL,
+  forma_pagamento_id integer,
+  taxa_juros numeric(10,2),
+  parcelas_inicio integer,
+  parcelas_fim integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT formapagamento_pacela_juros_id_pkey PRIMARY KEY (formapagamento_pacela_juros_id)
+); 
+
+
+ALTER TABLE ponto.tb_forma_pagamento DROP COLUMN taxa_juros;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN taxa_juros numeric(10,2);
