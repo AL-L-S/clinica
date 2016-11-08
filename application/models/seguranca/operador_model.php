@@ -313,6 +313,7 @@ class Operador_model extends BaseModel {
                                ');
         $this->db->from('tb_perfil');
         $this->db->where('ativo', 't');
+        $this->db->orderby('nome');
 
         $return = $this->db->get();
         return $return->result();

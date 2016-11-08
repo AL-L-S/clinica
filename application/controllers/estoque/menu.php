@@ -29,6 +29,9 @@ class Menu extends BaseController {
     function criarmenu($estoque_menu_id) {
 
         $data['menu'] = $this->menu->listarmenu($estoque_menu_id);
+        $data['tipo'] = $this->menu->listartipos();
+//        $data['classe'] = $this->menu->listarclasses();
+//        $data['sub_classe'] = $this->menu->listarsubclasses();
         $data['produto'] = $this->menu->listarprodutos();
         $data['contador'] = $this->menu->contador($estoque_menu_id);
         if ($data['contador'] > 0) {

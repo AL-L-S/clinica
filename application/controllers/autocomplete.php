@@ -29,6 +29,7 @@ class Autocomplete extends Controller {
         $this->load->model('internacao/leito_model', 'leito_m');
         $this->load->model('ponto/horariostipo_model', 'horariostipo');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
+        $this->load->model('estoque/menu_model', 'menu');
     }
 
     function index() {
@@ -261,6 +262,36 @@ class Autocomplete extends Controller {
             $result = $this->procedimentoplano->listarautocompleteprocedimentos($_GET['covenio']);
         } else {
             $result = $this->procedimentoplano->listarautocompleteprocedimentos();
+        }
+        echo json_encode($result);
+    }
+
+    function estoqueclasseportipo() {
+
+        if (isset($_GET['tipo_id'])) {
+            $result = $this->menu->listarautocompleteclasseportipo($_GET['tipo_id']);
+        } else {
+            $result = $this->menu->listarautocompleteclasseportipo();
+        }
+        echo json_encode($result);
+    }
+
+    function estoquesubclasseporclasse() {
+
+        if (isset($_GET['classe_id'])) {
+            $result = $this->menu->listarautocompletesubclasseporclasse($_GET['classe_id']);
+        } else {
+            $result = $this->menu->listarautocompletesubclasseporclasse();
+        }
+        echo json_encode($result);
+    }
+
+    function estoqueprodutosporsubclasse() {
+
+        if (isset($_GET['subclasse_id'])) {
+            $result = $this->menu->listarautocompleteprodutosporsubclasse($_GET['subclasse_id']);
+        } else {
+            $result = $this->menu->listarautocompleteprodutosporsubclasse();
         }
         echo json_encode($result);
     }

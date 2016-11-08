@@ -85,7 +85,8 @@ class guia_model extends Model {
                             oz.nome as atendente,
                             om.nome as medicorealizou,
                             ae.procedimento_tuss_id,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            ');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -5155,7 +5156,15 @@ ORDER BY ae.agenda_exames_id)";
 //                                    $retorno = $this->parcelas4($item->agenda_exames_id);
                             }
                             $mes = 1;
-                            $valor_parcelado = $valor / $parcelas;
+
+                            if ($parcelas > 1) {
+                                $taxa_juros = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
+                                $valor_com_juros = $valor + ($valor * ($taxa_juros[0]->taxa_juros / 100));
+                                $valor_parcelado = $valor_com_juros / $parcelas;
+                            } else {
+                                $valor_parcelado = $valor / $parcelas;
+                            }
+
                             if ($parcelas > 1) {
                                 for ($i = 2; $i <= $parcelas; $i++) {
                                     $data_receber_p = date("Y-m-d", strtotime("+$mes month", strtotime($data_receber)));
@@ -5223,8 +5232,16 @@ ORDER BY ae.agenda_exames_id)";
                                     $valor = $item->valor4;
 //                                    $retorno = $this->parcelas4($item->agenda_exames_id);
                                 }
+
+                                if ($parcelas > 1) {
+                                    $taxa_juros = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
+                                    $valor_com_juros = $valor + ($valor * ($taxa_juros[0]->taxa_juros / 100));
+                                    $valor_parcelado = $valor_com_juros / $parcelas;
+                                } else {
+                                    $valor_parcelado = $valor / $parcelas;
+                                }
+
                                 $tempo_receber = $value->tempo_receber;
-                                $valor_parcelado = $valor / $parcelas;
                                 if ($parcelas > 1) {
                                     for ($i = 2; $i <= $parcelas; $i++) {
                                         $tempo_receber = $tempo_receber + $value->tempo_receber;
@@ -5458,6 +5475,17 @@ ORDER BY ae.agenda_exames_id)";
 //            $this->db->set('operador_cadastro', $operador_id);
 //            $this->db->insert('tb_financeiro_contasreceber');
 //        }
+    }
+
+    function jurosporparcelas($formapagamento_id, $parcelas) {
+        $this->db->select('taxa_juros');
+        $this->db->from('tb_formapagamento_pacela_juros');
+        $this->db->where('forma_pagamento_id', $formapagamento_id);
+        $this->db->where('parcelas_inicio <=', $parcelas);
+        $this->db->where('parcelas_fim >=', $parcelas);
+        $query = $this->db->get();
+
+        return $query->result();
     }
 
     function fecharmedico() {
