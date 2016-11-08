@@ -146,7 +146,7 @@ class Convenio_model extends Model {
         $ajustefilme = $_POST['ajustefilme'] / 100;
         $ajusteporte = $_POST['ajusteporte'] / 100;
         $ajusteuco = $_POST['ajusteuco'] / 100;
-        $ajustetotal = $_POST['ajustetotal'];
+        $ajustetotal = $_POST['ajustetotal']/ 100;
 //        $ajustetotal = $_POST['ajustetotal'] / 100;
         $convenioid = $_POST['convenio'];
         $operador_id = $this->session->userdata('operador_id');

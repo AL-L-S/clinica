@@ -75,7 +75,7 @@ class Formapagamento extends BaseController {
                 }
             }
         } else {
-            $data['ultima_parcela'] = 1;
+            $data['ultima_parcela'] = 0;
         }
         $this->loadView('cadastros/formapagamentoparcelas-form', $data);
     }
@@ -97,6 +97,11 @@ class Formapagamento extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/formapagamento");
+    }
+    
+    function excluirparcela($parcela_id, $formapagamento_id) {
+        $this->formapagamento->excluirparcela($parcela_id);
+        $this->formapagamentoparcelas($formapagamento_id);
     }
 
     function excluirgrupo($grupo_id) {

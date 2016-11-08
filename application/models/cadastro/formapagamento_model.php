@@ -132,6 +132,17 @@ class formapagamento_model extends Model {
             return 0;
     }
 
+    function excluirparcela($parcela_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('formapagamento_pacela_juros_id', $parcela_id);
+        $this->db->update('tb_formapagamento_pacela_juros');
+    }
+
     function excluirformapagamentodogrupo($grupo_formapagamento_id) {
 
         $horario = date("Y-m-d H:i:s");

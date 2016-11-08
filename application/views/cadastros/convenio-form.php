@@ -169,11 +169,11 @@
                     <?php
                     if (@$obj->_dinheiro == "t") {
                         ?>
-                        <input type="checkbox" name="txtdinheiro" checked ="true" />Dinheiro
+                        <input type="checkbox" name="txtdinheiro" checked ="true" />Recebimento em Caixa
                         <?php
                     } else {
                         ?>
-                        <input type="checkbox" name="txtdinheiro"  />Dinheiro
+                        <input type="checkbox" name="txtdinheiro"  />Recebimento em Caixa
                         <?php
                     }
                     ?>
