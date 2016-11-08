@@ -59,7 +59,33 @@ class Formapagamento extends BaseController {
         $data['formapagamento_id'] = $formapagamento_id;
         $data['formapagamento'] = $this->formapagamento->buscarforma($formapagamento_id);
         $data['faixas_parcelas'] = $this->formapagamento->buscafaixasparcelas($formapagamento_id);
+        
+        if(count($data['faixas_parcelas']) > 0){
+            
+            $ind_ultima_parcela = count($data['faixas_parcelas']) - 1;
+            $data['ultima_parcela'] = (int) $data['faixas_parcelas'][$ind_ultima_parcela]->parcelas_fim;
+            
+            foreach ($data['faixas_parcelas'] as $item) {
+                $item->parcelas_fim = (int)$item->parcelas_fim;
+                if( $data['ultima_parcela'] >= $item->parcelas_fim){
+                    continue;
+                }
+                else {
+                    $data['ultima_parcela'] = $item->parcelas_fim;
+                }
+            }
+        } else {
+            $data['ultima_parcela'] = 1;
+        }
         $this->loadView('cadastros/formapagamentoparcelas-form', $data);
+    }
+    
+    
+    function gravarparcelas() {
+        $formapagamento_id = $_POST['formapagamento_id'];
+        $_POST['taxa'] = str_replace(",", ".", $_POST['taxa']);
+        $this->formapagamento->gravarparcelas();
+        redirect(base_url() . "cadastros/formapagamento/formapagamentoparcelas/$formapagamento_id");
     }
 
     function excluir($formapagamento_id) {
@@ -123,6 +149,7 @@ class Formapagamento extends BaseController {
 //        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/formapagamento/grupoadicionar/$financeiro_grupo_id");
     }
+
 
     function gravargruponome() {
         $financeiro_grupo_id = $this->formapagamento->gravargruponome();

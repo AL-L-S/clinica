@@ -170,6 +170,20 @@ class formapagamento_model extends Model {
             return 0;
     }
 
+    function gravarparcelas() {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            
+            $this->db->set('forma_pagamento_id', $_POST['formapagamento_id']);
+            $this->db->set('taxa_juros', $_POST['taxa']);
+            $this->db->set('parcelas_inicio', $_POST['parcela_inicio']);
+            $this->db->set('parcelas_fim', $_POST['parcela_fim']);
+            $this->db->insert('tb_formapagamento_pacela_juros');   
+    }
+
     function gravargruponome() {
         try {
             /* inicia o mapeamento no banco */
