@@ -12,7 +12,7 @@
                         <input type="hidden" name="txtcadastrosformapagamentoid" class="texto10" value="<?= @$obj->_forma_pagamento_id; ?>" />
                         <input type="text" name="txtNome" class="texto05" value="<?= @$obj->_nome; ?>" />
                     </dd>
-                    <dt>
+
                     <dt>
                         <label>Ajuste</label>
                     </dt>
