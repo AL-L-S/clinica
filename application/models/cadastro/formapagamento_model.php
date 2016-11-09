@@ -263,16 +263,16 @@ class formapagamento_model extends Model {
 
 
             $parcelas = $_POST['parcelas'];
-            if ($_POST['parcelas'] == "" || $_POST['parcelas'] == null) {
+            if ($_POST['parcelas'] == "" || $_POST['parcelas'] == 0) {
                 $parcelas = 1;
             }
             $diareceber = $_POST['diareceber'];
             $temporeceber = $_POST['temporeceber'];
             if ($_POST['diareceber'] == '' || $_POST['diareceber'] < 0) {
-                $diareceber = null;
+                $diareceber = 0;
             }
             if ($_POST['temporeceber'] == '' || $_POST['temporeceber'] < 0) {
-                $temporeceber = null;
+                $temporeceber = 0;
             }
             $ajuste = $_POST['ajuste'];
             if ($_POST['ajuste'] == '') {

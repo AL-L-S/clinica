@@ -50,7 +50,7 @@ class Convenio extends BaseController {
 
     function desconto($convenio_id) {
         $data['convenio'] = $this->convenio->listarconveniodesconto($convenio_id);
-        $data['financeiro_grupos'] = $this->formapagamento->listargrupos();
+        $data['grupos'] = $this->convenio->listargrupos();
         $data['convenioid'] = $convenio_id;
         $this->loadView('cadastros/desconto-convenio', $data);
     }

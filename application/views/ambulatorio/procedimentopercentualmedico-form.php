@@ -94,7 +94,7 @@
                     if ($(this).val()) {
                         $('.carregando').show();
                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $(this).val(), ajax: true}, function(j) {
-                            options = '<option value=""></option>';
+                            options = '<option value="">TODOS</option>';
                             for (var c = 0; c < j.length; c++) {
                                 options += '<option value="' + j[c].procedimento_convenio_id+ '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                             }

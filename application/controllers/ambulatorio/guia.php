@@ -578,7 +578,10 @@ class Guia extends BaseController {
         $caixa = $this->guia->fecharcaixa();
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
-        } else {
+        }elseif($caixa == 10){
+            $data['mensagem'] = 'Erro ao fechar caixa. Forma de pagamento não configurada corretamente.';
+        }
+        else {
             $data['mensagem'] = 'Sucesso ao fechar caixa.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);

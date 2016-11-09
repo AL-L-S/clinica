@@ -4974,6 +4974,7 @@ AND data <= '$data_fim'";
         $this->db->orwhere('ae.forma_pagamento4', $formapagamento_id);
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
+        $this->db->where('ae.financeiro', 'f');
         $this->db->where('ae.operador_autorizacao >', 0);
         $return = $this->db->get();
         return $return->result();
@@ -5012,9 +5013,7 @@ AND data <= '$data_fim'";
     }
 
     function fecharcaixa() {
-//        echo '<pre>';
-//        var_dump($this->burcarcontasrecebertemp2('2016-11-25'));
-//        die;
+
 //        try {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
@@ -5027,66 +5026,15 @@ AND data <= '$data_fim'";
         $data30 = date('Y-m-d', strtotime("+30 days", strtotime($data_cauculo)));
         $data4 = date('Y-m-d', strtotime("+4 days", strtotime($data_cauculo)));
         $data2 = date('Y-m-d', strtotime("+2 days", strtotime($data_cauculo)));
-        if ($_POST['grupo'] == 0) {
 
-            $sql = "UPDATE ponto.tb_agenda_exames
-SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
-where agenda_exames_id in (SELECT ae.agenda_exames_id
-FROM ponto.tb_agenda_exames ae 
-LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
-LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
-LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
-LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
-LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
-WHERE e.cancelada = 'false' 
-AND ae.data >= '$data_inicio' 
-AND ae.data <= '$data_fim' 
-AND c.dinheiro = true 
-ORDER BY ae.agenda_exames_id)";
-            $this->db->query($sql);
-        }
 
-        if ($_POST['grupo'] == 1) {
-
-            $sql = "UPDATE ponto.tb_agenda_exames
-SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
-where agenda_exames_id in (SELECT ae.agenda_exames_id
-FROM ponto.tb_agenda_exames ae 
-LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
-LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
-LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
-LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
-LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
-WHERE e.cancelada = 'false' 
-AND ae.data >= '$data_inicio' 
-AND ae.data <= '$data_fim' 
-AND pt.grupo != 'RM'
-AND c.dinheiro = true  
-ORDER BY ae.agenda_exames_id)";
-            $this->db->query($sql);
-        }
-
-        if ($_POST['grupo'] == "RM") {
-
-            $sql = "UPDATE ponto.tb_agenda_exames
-SET operador_financeiro = $operador_id, data_financeiro= '$horario',financeiro = 't'
-where agenda_exames_id in (SELECT ae.agenda_exames_id
-FROM ponto.tb_agenda_exames ae 
-LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
-LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
-LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
-LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
-LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
-WHERE e.cancelada = 'false' 
-AND ae.data >= '$data_inicio' 
-AND ae.data <= '$data_fim' 
-AND pt.grupo = 'RM'
-AND c.dinheiro = true  
-ORDER BY ae.agenda_exames_id)";
-            $this->db->query($sql);
-        }
-
-        $this->db->select('forma_pagamento_id, nome , conta_id , credor_devedor , tempo_receber , dia_receber');
+        $this->db->select('forma_pagamento_id,
+                            nome, 
+                            conta_id, 
+                            credor_devedor,
+                            tempo_receber, 
+                            dia_receber,
+                            parcelas');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
         $return = $this->db->get();
@@ -5100,6 +5048,10 @@ ORDER BY ae.agenda_exames_id)";
             $valor_total = (str_replace(".", "", $teste[$w]));
             $valor_total = (str_replace(",", ".", $valor_total));
             if ($valor_total != '0.00') {
+
+                if (empty($value->nome) || empty($value->conta_id) || empty($value->credor_devedor) || empty($value->parcelas)) {
+                    return 10;
+                }
 
                 if (!isset($value->tempo_receber) || $value->tempo_receber == 0) {
                     $this->db->set('data', $_POST['data1']);
@@ -5158,8 +5110,15 @@ ORDER BY ae.agenda_exames_id)";
                             $mes = 1;
 
                             if ($parcelas > 1) {
-                                $taxa_juros = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-                                $valor_com_juros = $valor + ($valor * ($taxa_juros[0]->taxa_juros / 100));
+                                $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
+
+                                if ($jurosporparcelas[0]->taxa_juros > 0) {
+                                    $taxa_juros = $jurosporparcelas[0]->taxa_juros;
+                                } else {
+                                    $taxa_juros = 0;
+                                }
+
+                                $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
                                 $valor_parcelado = $valor_com_juros / $parcelas;
                             } else {
                                 $valor_parcelado = $valor / $parcelas;
@@ -5234,8 +5193,14 @@ ORDER BY ae.agenda_exames_id)";
                                 }
 
                                 if ($parcelas > 1) {
-                                    $taxa_juros = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-                                    $valor_com_juros = $valor + ($valor * ($taxa_juros[0]->taxa_juros / 100));
+                                    $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
+
+                                    if ($jurosporparcelas[0]->taxa_juros > 0) {
+                                        $taxa_juros = $jurosporparcelas[0]->taxa_juros;
+                                    } else {
+                                        $taxa_juros = 0;
+                                    }
+                                    $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
                                     $valor_parcelado = $valor_com_juros / $parcelas;
                                 } else {
                                     $valor_parcelado = $valor / $parcelas;
@@ -5353,6 +5318,65 @@ ORDER BY ae.agenda_exames_id)";
 //                    $this->db->insert('tb_financeiro_contasreceber');
 //                }
 //            }
+        }
+
+        if ($_POST['grupo'] == 0) {
+
+            $sql = "UPDATE ponto.tb_agenda_exames
+SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
+where agenda_exames_id in (SELECT ae.agenda_exames_id
+FROM ponto.tb_agenda_exames ae 
+LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
+LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
+LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+WHERE e.cancelada = 'false' 
+AND ae.data >= '$data_inicio' 
+AND ae.data <= '$data_fim' 
+AND c.dinheiro = true 
+ORDER BY ae.agenda_exames_id)";
+            $this->db->query($sql);
+        }
+
+        if ($_POST['grupo'] == 1) {
+
+            $sql = "UPDATE ponto.tb_agenda_exames
+SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
+where agenda_exames_id in (SELECT ae.agenda_exames_id
+FROM ponto.tb_agenda_exames ae 
+LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
+LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
+LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+WHERE e.cancelada = 'false' 
+AND ae.data >= '$data_inicio' 
+AND ae.data <= '$data_fim' 
+AND pt.grupo != 'RM'
+AND c.dinheiro = true  
+ORDER BY ae.agenda_exames_id)";
+            $this->db->query($sql);
+        }
+
+        if ($_POST['grupo'] == "RM") {
+
+            $sql = "UPDATE ponto.tb_agenda_exames
+SET operador_financeiro = $operador_id, data_financeiro= '$horario',financeiro = 't'
+where agenda_exames_id in (SELECT ae.agenda_exames_id
+FROM ponto.tb_agenda_exames ae 
+LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
+LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
+LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+WHERE e.cancelada = 'false' 
+AND ae.data >= '$data_inicio' 
+AND ae.data <= '$data_fim' 
+AND pt.grupo = 'RM'
+AND c.dinheiro = true  
+ORDER BY ae.agenda_exames_id)";
+            $this->db->query($sql);
         }
 
 

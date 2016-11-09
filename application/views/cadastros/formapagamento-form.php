@@ -38,12 +38,12 @@
                     <dd>
                         <input type="text" name="parcelas" class="texto02" id="parcelas" value= "<?= @$obj->_parcelas; ?>" />
                     </dd>
-                    <dt>
-                        <label>Taxa de Juros</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="taxa_juros" class="texto02" id="taxa_juros" value= "<?= @$obj->_taxa_juros; ?>" />
-                    </dd>
+                    <!--                    <dt>
+                                            <label>Taxa de Juros</label>
+                                        </dt>
+                                        <dd>
+                                            <input type="text" name="taxa_juros" class="texto02" id="taxa_juros" value= "<?= @$obj->_taxa_juros; ?>" />
+                                        </dd>-->
                     <dt>
                         <label>Conta</label>
                     </dt>
@@ -63,7 +63,7 @@
                     </dt>
                     <dd>
                         <select name="credor_devedor" id="credor_devedor" class="texto03">
-                            <option value="0">SELECIONE</option>
+                            <option value="">SELECIONE</option>
                             <? foreach ($credor_devedor as $value) { ?>
                                 <option value="<?= $value->financeiro_credor_devedor_id ?>" <?
                                 if (@$obj->_credor_devedor == $value->financeiro_credor_devedor_id):echo 'selected';
@@ -102,8 +102,14 @@
                     minlength: 3
                 },
                 conta: {
-                    required: true,
-                    equal: ""
+                    required: true
+
+                },
+                credor_devedor: {
+                    required: true
+                },
+                parcelas: {
+                    required: true
                 }
 
             },
@@ -113,8 +119,14 @@
                     minlength: "!"
                 },
                 conta: {
-                    required: "*",
-                    equal: "*"
+                    required: "*"
+
+                },
+                credor_devedor: {
+                    required: "*"
+                },
+                parcelas: {
+                    required: "*"
                 }
             }
         });
