@@ -3,7 +3,7 @@
 </HEAD>
 <center><table>
         <tbody>
-            <tr>
+        <tr>
                 <td colspan="2"  ><font size = -1>SETOR : <? echo $nome[0]->nome ?>  </font></td>
                 <td ><font size = -1><center></center></font></td>
         <td width="30px">&nbsp;</td>
@@ -13,6 +13,10 @@
         <td width="30px">&nbsp;</td>
         <tr>
             <td colspan="2"  ><font size = -1>SOL.: <? echo $nome[0]->solicitante ?></font></td>
+            <td ><font size = -1><center></center></font></td>
+        <td width="30px">&nbsp;</td>
+        <tr>
+            <td colspan="2"  ><font size = -1>LIB.: <? echo $nome[0]->liberou ?></font></td>
             <td ><font size = -1><center></center></font></td>
         <td width="30px">&nbsp;</td>
         </tbody>

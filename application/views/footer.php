@@ -8,13 +8,13 @@
 
 <!-- end .container -->
 
-    <script type="text/javascript">
+<script type="text/javascript">
             (function($){
                 $(function(){
-                    $('input:text').setMask();
-                });
-            })(jQuery);
-        </script>
+            $('input:text').setMask();
+        });
+    })(jQuery);
+</script>
 
 </body>
 </html>

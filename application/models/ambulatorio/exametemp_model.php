@@ -2916,6 +2916,19 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompleteconveniopaciente($parametro) {
+        $this->db->select(' c.convenio_id,
+                            c.nome');
+        $this->db->from('tb_paciente p');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->where("p.ativo", 't');
+        $this->db->where("c.ativo", 't');
+        $this->db->where('p.paciente_id', $parametro);
+        $this->db->orderby("c.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompleteprocedimentos($parametro) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,

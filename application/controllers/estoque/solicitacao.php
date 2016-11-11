@@ -43,6 +43,8 @@ class Solicitacao extends BaseController {
 
         $data['estoque_solicitacao_id'] = $estoque_solicitacao_id;
         $data['nome'] = $this->solicitacao->solicitacaonome($estoque_solicitacao_id);
+//        echo '<pre>';
+//        var_dump($data['nome']);die;
         $data['contador'] = $this->solicitacao->contador($estoque_solicitacao_id);
         if ($data['contador'] > 0) {
             $data['produtos'] = $this->solicitacao->listarsolicitacaos($estoque_solicitacao_id);
