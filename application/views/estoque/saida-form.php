@@ -17,6 +17,7 @@
 
                 <tr>
                     <th class="tabela_header">Produtos Solicitados</th>
+                    <th class="tabela_header">Solicitante</th>
                     <th class="tabela_header">Qtde</th>
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
@@ -29,6 +30,7 @@
                 <tbody>
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><? echo $nome[0]->solicitante ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
                             <a href="<?= base_url() ?>estoque/solicitacao/saidaitens/<?= $item->estoque_solicitacao_itens_id; ?>/<?=$estoque_solicitacao_id?>"> produtos
