@@ -1669,7 +1669,7 @@ class exametemp_model extends Model {
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 'f');
-                if ($_POST['medico'] != '') {
+                if (isset($_POST['medico']) && $_POST['medico'] != '') {
                     $this->db->set('medico_consulta_id', $_POST['medico']);
                     $this->db->set('medico_agenda', $_POST['medico']);
                 }
@@ -1681,8 +1681,11 @@ class exametemp_model extends Model {
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
-
-                $medico_consulta_id = $_POST['medico'];
+                if (isset($_POST['medico']) && $_POST['medico'] != '') {
+                    $medico_consulta_id = $_POST['medico'];
+                }else{
+                $medico_consulta_id = 0;
+                }
 
                 if ($retorno[0]->medico == 't') {
                     $this->db->set('ocupado', 't');
