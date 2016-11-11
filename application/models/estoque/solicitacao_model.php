@@ -36,10 +36,11 @@ class solicitacao_model extends Model {
     }
 
     function solicitacaonome($estoque_solicitacao_id) {
-        $this->db->select('ec.nome  , esc.data_fechamento , o.nome as solicitante');
+        $this->db->select('ec.nome  , esc.data_fechamento , o.nome as liberou, op.nome as solicitante');
         $this->db->from('tb_estoque_solicitacao_cliente esc');
         $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = esc.cliente_id');
         $this->db->join('tb_operador o', 'o.operador_id = esc.operador_fechamento', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = esc.operador_liberacao', 'left');
         $this->db->where('esc.estoque_solicitacao_setor_id', $estoque_solicitacao_id);
         $return = $this->db->get();
         return $return->result();
@@ -206,9 +207,10 @@ class solicitacao_model extends Model {
                             es.situacao');
         $this->db->from('tb_estoque_solicitacao_cliente es');
         $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = es.cliente_id');
-        $this->db->join('tb_estoque_operador_cliente oc', 'oc.cliente_id = ec.estoque_cliente_id');
+        $this->db->join('tb_estoque_operador_cliente oc', 'oc.cliente_id = es.cliente_id');
         $this->db->where('es.ativo', 'true');
         $this->db->where('oc.operador_id', $operador_id);
+        $this->db->where('oc.ativo', 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('ec.nome ilike', "%" . $args['nome'] . "%");
         }
