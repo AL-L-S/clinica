@@ -16,6 +16,7 @@ class Guia extends BaseController {
     function Guia() {
         parent::Controller();
         $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('ambulatorio/modelodeclaracao_model', 'modelodeclaracao');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('ambulatorio/sala_model', 'sala');
@@ -582,7 +583,10 @@ class Guia extends BaseController {
         $caixa = $this->guia->fecharcaixa();
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
-        } else {
+        }elseif($caixa == 10){
+            $data['mensagem'] = 'Erro ao fechar caixa. Forma de pagamento não configurada corretamente.';
+        }
+        else {
             $data['mensagem'] = 'Sucesso ao fechar caixa.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
@@ -632,7 +636,13 @@ class Guia extends BaseController {
                 $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
             }
 //            $this->gerardicom($ambulatorio_guia);
-            $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id);
+            $tipo = $this->guia->verificaexamemedicamento($_POST['procedimento1']);
+            if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO') && $medico_id == '') {
+                $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
+                $this->session->set_flashdata('message', $data['mensagem']);
+            } else {
+                $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id);
+            }
         }
 //        $this->novo($paciente_id, $ambulatorio_guia);
         redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
@@ -749,6 +759,7 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['selecionado'] = $this->guia->editarexamesselect($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $data['guia_id'] = $guia_id;
         $this->loadView('ambulatorio/editarexame-form', $data);
@@ -842,10 +853,20 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+
+        $data['x'] = 0;
+        foreach ($data['exames'] as $value) {
+            $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
+            if (empty($teste)) {
+                $data['x'] ++;
+            }
+        }
+
         $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $this->loadView('ambulatorio/guiafisioterapia-form', $data);
@@ -862,9 +883,19 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+
+        $data['x'] = 0;
+        foreach ($data['exames'] as $value) {
+            $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
+            if (empty($teste)) {
+                $data['x'] ++;
+            }
+        }
+
         $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $this->loadView('ambulatorio/guiaatendimento-form', $data);
@@ -949,6 +980,7 @@ class Guia extends BaseController {
             $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
 
+        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
         $this->load->View('ambulatorio/faturarguia-form', $data);
@@ -973,6 +1005,8 @@ class Guia extends BaseController {
             $data['exame2'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
             $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
+        
+        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['paciente'] = $this->guia->listarexameguiacaixa($guia_id);
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
@@ -1059,8 +1093,8 @@ class Guia extends BaseController {
     function gerarelatorioexame() {
         $data['convenio'] = $_POST['convenio'];
         $data['procedimentos'] = $_POST['procedimentos'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $medicos = $_POST['medico'];
         if ($medicos != 0) {
@@ -1080,8 +1114,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatorioexamesala() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['salas'] = $_POST['salas'];
         if ($_POST['salas'] != '0') {
             $data['sala'] = $this->sala->listarsala($_POST['salas']);
@@ -1107,8 +1141,8 @@ class Guia extends BaseController {
 
     function gerarelatorioexamech() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
@@ -1138,8 +1172,8 @@ class Guia extends BaseController {
 
     function gerarelatoriotempoesperaexame() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
         } else {
@@ -1151,8 +1185,8 @@ class Guia extends BaseController {
 
     function gerarelatoriotemposalaespera() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
         } else {
@@ -1164,8 +1198,8 @@ class Guia extends BaseController {
 
     function gerarelatoriocancelamento() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
@@ -1178,8 +1212,8 @@ class Guia extends BaseController {
 
     function gerarelatoriopacienteconvenioexame() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatorioexamescontador();
         $data['relatorio'] = $this->guia->relatorioexames();
@@ -1217,8 +1251,8 @@ class Guia extends BaseController {
 
     function gerarelatoriogrupo() {
         $data['conveniotipo'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
@@ -1231,8 +1265,8 @@ class Guia extends BaseController {
 
     function gerarelatoriogrupoprocedimento() {
         $data['conveniotipo'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
@@ -1245,8 +1279,8 @@ class Guia extends BaseController {
 
     function gerarelatoriogrupoprocedimentomedico() {
         $data['conveniotipo'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
@@ -1258,8 +1292,8 @@ class Guia extends BaseController {
 
     function gerarelatoriogrupoanalitico() {
         $data['conveniotipo'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
@@ -1277,8 +1311,8 @@ class Guia extends BaseController {
 
     function gerarelatoriofaturamentorm() {
         $data['convenio'] = $_POST['convenio'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['contador'] = $this->guia->relatorioexamesfaturamentormcontador();
         $data['relatorio'] = $this->guia->relatorioexamesfaturamentorm();
         $this->load->View('ambulatorio/impressaorelatoriofaturamentorm', $data);
@@ -1295,8 +1329,8 @@ class Guia extends BaseController {
         $data['listarconvenio'] = $this->convenio->listardadosconvenios();
         $data['convenio'] = $_POST['convenio'];
         $data['grupo'] = $_POST['grupo'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
@@ -1314,8 +1348,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatorioresumogeral() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['medico'] = $this->guia->relatorioresumogeral();
         $data['medicorecebido'] = $this->guia->relatorioresumogeralmedico();
@@ -1333,8 +1367,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriomedicosolicitante() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicosolicitantecontador();
         $data['relatorio'] = $this->guia->relatoriomedicosolicitante();
@@ -1349,8 +1383,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriomedicosolicitantexmedico() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicosolicitantecontadorxmedico();
         $data['relatorio'] = $this->guia->relatoriomedicosolicitantexmedico();
@@ -1365,8 +1399,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriomedicosolicitantexmedicoindicado() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicosolicitantecontadorxmedicoindicado();
         $data['relatorio'] = $this->guia->relatoriomedicosolicitantexmedicoindicado();
@@ -1381,8 +1415,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriolaudopalavra() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['palavra'] = $_POST['palavra'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriolaudopalavracontador();
@@ -1396,8 +1430,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriomedicosolicitanterm() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['contador'] = $this->guia->relatoriomedicosolicitantecontadorrm();
         $data['relatorio'] = $this->guia->relatoriomedicosolicitanterm();
         $this->load->View('ambulatorio/impressaorelatoriomedicosolicitanterm', $data);
@@ -1466,8 +1500,8 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicoconveniocontador();
         $data['relatorio'] = $this->guia->relatoriomedicoconvenio();
@@ -1486,8 +1520,8 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicoconveniocontador();
         $data['relatorio'] = $this->guia->relatoriomedicoconvenio();
@@ -1529,8 +1563,8 @@ class Guia extends BaseController {
         $data['convenio'] = $_POST['convenio'];
         $data['grupo'] = $_POST['grupo'];
         $data['tecnico'] = $this->operador_m->listarCada($tecnicos);
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriotecnicoconveniocontador();
         $data['relatorio'] = $this->guia->relatoriotecnicoconvenio();
@@ -1544,8 +1578,8 @@ class Guia extends BaseController {
         } else {
             $data['indicacao'] = '0';
         }
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatorioindicacao();
         $data['consolidado'] = $this->guia->relatorioindicacaoconsolidado();
@@ -1554,8 +1588,8 @@ class Guia extends BaseController {
 
     function gerarelatorionotafiscal() {
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatorionotafiscal();
         $this->load->View('ambulatorio/impressaorelatorionotafiscal', $data);
@@ -1589,8 +1623,8 @@ class Guia extends BaseController {
         $data['convenio'] = $_POST['convenio'];
         $data['grupo'] = $_POST['grupo'];
         $data['tecnico'] = $this->operador_m->listarCada($tecnicos);
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriotecnicoconveniocontador();
         $data['relatorio'] = $this->guia->relatoriotecnicoconvenio();
@@ -1609,8 +1643,8 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
         $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
@@ -1656,8 +1690,8 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
         $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
@@ -1695,8 +1729,8 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatorioconsultaconveniocontador();
         $data['relatorio'] = $this->guia->relatorioconsultaconvenio();
@@ -1706,8 +1740,8 @@ class Guia extends BaseController {
     function gerarelatoriomedicoconveniorm() {
         $medicos = $_POST['medicos'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
 
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorrm();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniorm();
@@ -1719,19 +1753,27 @@ class Guia extends BaseController {
     function gerarelatorioaniversariantes() {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['relatorio'] = $this->guia->relatorioaniversariantes();
         $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
     }
 
-    function impressaodeclaracao($paciente_id, $guia_id, $exames_id) {
+    function escolherdeclaracao($paciente_id, $guia_id, $exames_id) {
+        $data['paciente_id'] = $paciente_id;
+        $data['guia_id'] = $guia_id;
+        $data['exames_id'] = $exames_id;
+        $data['modelos'] = $this->modelodeclaracao->listarmodelo();
+        $this->loadView('ambulatorio/escolhermodelo', $data);
+    }
 
+    function impressaodeclaracao($paciente_id, $guia_id, $exames_id) {
         $this->load->plugin('mpdf');
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['exame'] = $this->guia->listarexame($exames_id);
         $data['exames'] = $this->guia->listarexamesguia($guia_id);
+        $data['modelo'] = $this->modelodeclaracao->buscarmodelo($_POST['modelo']);
         $exames = $data['exames'];
         $valor_total = 0;
 
@@ -1759,7 +1801,28 @@ class Guia extends BaseController {
         $this->load->View('impressaodeclaracaoguia', $data);
     }
 
+    function reciboounota($paciente_id, $guia_id, $exames_id) {
+        $data['paciente_id'] = $paciente_id;
+        $data['guia_id'] = $guia_id;
+        $data['exames_id'] = $exames_id;
+        $this->loadView('ambulatorio/reciboounota', $data);
+    }
+
+    function reciboounotaindicador() {
+//        var_dump($_POST['escolha']);die;
+        $paciente_id = $_POST['paciente_id'];
+        $guia_id = $_POST['guia_id'];
+        $exames_id = $_POST['exames_id'];
+
+        if ($_POST['escolha'] == 'R') {
+            $this->impressaorecibo($paciente_id, $guia_id, $exames_id);
+        } else {
+            
+        }
+    }
+
     function impressaorecibo($paciente_id, $guia_id, $exames_id) {
+
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
@@ -1832,8 +1895,8 @@ class Guia extends BaseController {
         } else {
             $data['medico'] = 0;
         }
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
@@ -1852,16 +1915,16 @@ class Guia extends BaseController {
         }
 //        var_dump($data['medico']);
 //        die;
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriomedicoconvenioprevisaofinanceiro();
         $this->load->View('ambulatorio/impressaorelatoriomedicoconvenioprevisaofinanceiro', $data);
     }
 
     function gerarelatorioatendenteconvenio() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->gerarelatorioatendenteconvenio();
         $this->load->View('ambulatorio/impressaorelatorioatendenteconvenio', $data);
@@ -1872,8 +1935,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriogruporm() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->guia->relatoriogrupo();
         $data['contador'] = $this->guia->relatoriogrupocontador();
         $this->load->View('ambulatorio/impressaorelatoriorm', $data);
@@ -1991,8 +2054,8 @@ class Guia extends BaseController {
     }
 
     function gerarrelatoriovalorprocedimento() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriovalorprocedimento();
         $data['contador'] = $this->guia->relatoriovalorprocedimentocontador();
@@ -2027,8 +2090,8 @@ class Guia extends BaseController {
 
     function gerarelatoriocaixacartaoconsolidado() {
         $data['operador'] = $_POST['operador'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixa();
@@ -2042,8 +2105,8 @@ class Guia extends BaseController {
 
     function gerarelatoriocaixa() {
         $data['operador'] = $_POST['operador'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixa();
@@ -2055,8 +2118,8 @@ class Guia extends BaseController {
 
     function gerarelatoriocaixafaturado() {
         $data['operador'] = $_POST['operador'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixafaturado();
@@ -2066,8 +2129,8 @@ class Guia extends BaseController {
 
     function gerarelatoriocaixacartao() {
         $data['operador'] = $_POST['operador'];
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixa();
@@ -2076,8 +2139,8 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriophmetria() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->guia->relatoriophmetria();
         $data['contador'] = $this->guia->relatoriophmetriacontador();
         $this->load->View('ambulatorio/impressaorelatoriophmetria', $data);

@@ -59,6 +59,7 @@
             <?
             foreach ($guia as $test) :
                 $guia_id = $test->ambulatorio_guia_id;
+                $cancelado = 0;
                 ?>
                 <table >
                     <thead>
@@ -67,7 +68,7 @@
 
                             <th class="tabela_header"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">F. Guia
-                                 
+
                                     </a></div></th>
                             <th class="tabela_header"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/anexarimagem/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">Arquivos
@@ -85,7 +86,8 @@
                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenio/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=250');">N. Guia
 
                                     </a></div></th>
-                            <th class="tabela_header" colspan="7"></th>
+                                    <th class="tabela_header" style="width: 100px;"></th>
+                            <th class="tabela_header" colspan="7"></th>                         
                         </tr>
                     </thead>
                     <tbody>
@@ -95,6 +97,7 @@
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
 
                             if ($test->ambulatorio_guia_id == $item->guia_id) {
+                                $cancelado++;
                                 ?>
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>" width="100px;"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');"><?= $item->procedimento ?></a></td>
@@ -102,29 +105,51 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->inicio ?></td>
 
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaodeclaracao/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Declaracao
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/escolherdeclaracao/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Declaracao
                                         </a>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaorecibo/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Recibo
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/reciboounota/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Recibo
                                         </a>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" >
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                         </a>
-                                        
-                                        <?$teste = $this->guia->listarfichatexto($item->agenda_exames_id);
-                                        if(isset($teste[0]->agenda_exames_id)){
-                                        ?>
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>/<?= $item->agenda_exames_id ?>');"> //  Editar F. RM
-                                        </a>
-                                        <?}?>
+
+                                        <?
+                                        $teste = $this->guia->listarfichatexto($item->agenda_exames_id);
+                                        if (isset($teste[0]->agenda_exames_id)) {
+                                            ?>
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>/<?= $item->agenda_exames_id ?>');"> //  Editar F. RM
+                                            </a>
+                                        <? } ?>
 
                                     </td>
-            <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
-                                        </a>
-                                    </td>-->
+                                    <?
+                                    $data_atual = date('Y-m-d');
+                                    $data1 = new DateTime($data_atual);
+                                    $data2 = new DateTime($item->data);
+
+                                    $intervalo = $data1->diff($data2);
+                                    ?>
+                                    <td class="<?php echo $estilo_linha; ?>" ><?= $intervalo->d . ' dias' ?></td>
+                                    <? if (isset($item->atendente) || isset($item->medicorealizou)) { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" >
+                                            <? if (isset($item->atendente)): ?>
+                                                <span>Atendente: <? echo $item->atendente; ?></span><br>
+                                                <?
+                                            endif;
+                                            if (isset($item->atendente)):
+                                                ?>
+                                                <span>Medico: <? echo $item->medicorealizou; ?></span>
+                                            <? endif; ?>
+                                        </td>
+                                    <? } ?>
+
+                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
+                                                                            </a>
+                                                                        </td>-->
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                         </a>
@@ -141,7 +166,7 @@
                                         </a>
                                     </td>
 
-            <? if ($perfil_id == 1 || $perfil_id == 6) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 6) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                             <a href="<?= base_url() ?>ambulatorio/guia/valorexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">valor
                                             </a>
@@ -150,26 +175,32 @@
                                         <?
                                     }
                                     ?>
-            <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
+                                    <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
 
                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
 
                                             </a>
                                         </td>
-            <? } else { ?>
+                                    <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                         </td>
-            <? } ?>
+                                    <? } ?>
                                 </tr>
 
-                            </tbody>
-                            <?
-                        }
-                    endforeach;
-                    ?>
+
+                                <?
+                            }
+                        endforeach;
+                        if ($cancelado == 0) {
+                            ?>
+                            <tr>
+                                <td colspan="6"><center><span style="color: red; font-weight: bold; font-size: 17px;">EXAME CANCELADO</span></center></td>
+                        </tr>
+                    <? } ?>
+                    </tbody>                                
                     <br>
-<? endforeach; ?>
+                <? endforeach; ?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="11">

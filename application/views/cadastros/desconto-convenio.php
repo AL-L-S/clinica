@@ -21,13 +21,13 @@
                         <input  value="<?php echo $convenio[0]->nome; ?>" readonly/>
                     </dd>
                     <dt>
-                        <label>Grupo de Pagamento</label>
+                        <label>Grupo</label>
                     </dt>
                     <dd>
                         <select name="grupo" id="grupo" class="size1">
                             <option value="TODOS">TODOS</option>
-                            <? foreach ($financeiro_grupos as $value) { ?>
-                                <option value="<?= $value->financeiro_grupo_id; ?>"><?php echo $value->nome; ?></option>
+                            <? foreach ($grupos as $value) { ?>
+                                <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
                             <? } ?>                           
                         </select>
                     </dd>

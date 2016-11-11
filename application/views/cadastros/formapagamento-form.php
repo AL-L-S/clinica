@@ -12,16 +12,16 @@
                         <input type="hidden" name="txtcadastrosformapagamentoid" class="texto10" value="<?= @$obj->_forma_pagamento_id; ?>" />
                         <input type="text" name="txtNome" class="texto05" value="<?= @$obj->_nome; ?>" />
                     </dd>
-                    <dt>
+
                     <dt>
                         <label>Ajuste</label>
                     </dt>
                     <dd>
-                        <input type="text" name="ajuste" class="texto02" id="ajuste" value="<?= @$obj->_ajuste; ?>" />
+                        <input type="text" name="ajuste" class="texto02" id="ajuste" value="<?= @$obj->_ajuste; ?>" />%
                     </dd>
 
                     <dt>
-                        <label>Dia Recebimento</label>
+                        <label>Data de Recebimento</label>
                     </dt>
                     <dd>
                         <input type="text" name="diareceber" class="texto02" id="diareceber" value="<?= @$obj->_dia_receber; ?>"/>
@@ -33,17 +33,17 @@
                         <input type="text" name="temporeceber" class="texto02" id="temporeceber" value= "<?= @$obj->_tempo_receber; ?>" />
                     </dd>
                     <dt>
-                        <label>Parcelas</label>
+                        <label>N° Maximo de Parcelas</label>
                     </dt>
                     <dd>
                         <input type="text" name="parcelas" class="texto02" id="parcelas" value= "<?= @$obj->_parcelas; ?>" />
                     </dd>
-                    <dt>
-                        <label>Taxa de Juros</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="taxa_juros" class="texto02" id="taxa_juros" value= "<?= @$obj->_taxa_juros; ?>" />
-                    </dd>
+                    <!--                    <dt>
+                                            <label>Taxa de Juros</label>
+                                        </dt>
+                                        <dd>
+                                            <input type="text" name="taxa_juros" class="texto02" id="taxa_juros" value= "<?= @$obj->_taxa_juros; ?>" />
+                                        </dd>-->
                     <dt>
                         <label>Conta</label>
                     </dt>
@@ -63,7 +63,7 @@
                     </dt>
                     <dd>
                         <select name="credor_devedor" id="credor_devedor" class="texto03">
-                            <option value="0">SELECIONE</option>
+                            <option value="">SELECIONE</option>
                             <? foreach ($credor_devedor as $value) { ?>
                                 <option value="<?= $value->financeiro_credor_devedor_id ?>" <?
                                 if (@$obj->_credor_devedor == $value->financeiro_credor_devedor_id):echo 'selected';
@@ -102,8 +102,14 @@
                     minlength: 3
                 },
                 conta: {
-                    required: true,
-                    equal: ""
+                    required: true
+
+                },
+                credor_devedor: {
+                    required: true
+                },
+                parcelas: {
+                    required: true
                 }
 
             },
@@ -113,8 +119,14 @@
                     minlength: "!"
                 },
                 conta: {
-                    required: "*",
-                    equal: "*"
+                    required: "*"
+
+                },
+                credor_devedor: {
+                    required: "*"
+                },
+                parcelas: {
+                    required: "*"
                 }
             }
         });

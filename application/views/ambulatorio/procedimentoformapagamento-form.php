@@ -21,7 +21,7 @@
                         <select name="grupopagamento" id="grupopagamento" class="texto03">
                             <option value="">SELECIONE</option>
                             <? foreach ($formapagamento_grupo as $value) { ?>
-                                <option value="<?= $value->financeiro_grupo_id ?>"><?= $value->nome ?></option>
+                            <option value="<?= $value->financeiro_grupo_id ?>" selected><?= $value->nome ?></option>
                             <? } ?> 
                         </select>
                     </dd>
@@ -47,7 +47,7 @@
 
     $(function () {
         $("#txtpagamento").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=procedimentoformapagamento",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentoformapagamento",
             minLength: 3,
             focus: function (event, ui) {
                 $("#txtpagamento").val(ui.item.label);

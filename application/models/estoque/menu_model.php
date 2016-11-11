@@ -29,12 +29,74 @@ class menu_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    
+
     function listarprodutos() {
         $this->db->select('p.estoque_produto_id,
                             p.descricao');
         $this->db->from('tb_estoque_produto p');
+        $this->db->where('p.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listartipos() {
+        $this->db->select('t.estoque_tipo_id,
+                            t.descricao');
+        $this->db->from('tb_estoque_tipo t');
+        $this->db->where('t.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarclasses() {
+        $this->db->select('estoque_classe_id,
+                            descricao');
+        $this->db->from('tb_estoque_classe');
+        $this->db->where('ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarsubclasses() {
+        $this->db->select('estoque_sub_classe_id,
+                            descricao');
+        $this->db->from('tb_estoque_sub_classe');
+        $this->db->where('ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompleteclasseportipo($tipo_id) {
+        $this->db->select('c.estoque_classe_id,
+                            c.descricao');
+        $this->db->from('tb_estoque_tipo t');
+        $this->db->join('tb_estoque_classe c', 'c.tipo_id = t.estoque_tipo_id', 'left');
+        $this->db->where('t.estoque_tipo_id', $tipo_id);
+        $this->db->where('t.ativo', 'true');
+        $this->db->where('c.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletesubclasseporclasse($classe_id) {
+        $this->db->select('sc.estoque_sub_classe_id,
+                            sc.descricao');
+        $this->db->from('tb_estoque_classe c');
+        $this->db->join('tb_estoque_sub_classe sc', 'sc.classe_id = c.estoque_classe_id', 'left');
+        $this->db->where('c.estoque_classe_id', $classe_id);
+        $this->db->where('sc.ativo', 'true');
+        $this->db->where('c.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompleteprodutosporsubclasse($subclasse_id) {
+        $this->db->select('p.estoque_produto_id,
+                            p.descricao');
+        $this->db->from('tb_estoque_sub_classe sc');
+        $this->db->join('tb_estoque_produto p', 'p.sub_classe_id = sc.estoque_sub_classe_id', 'left');
+        $this->db->where('sc.estoque_sub_classe_id', $subclasse_id);
+        $this->db->where('sc.ativo', 'true');
         $this->db->where('p.ativo', 'true');
         $return = $this->db->get();
         return $return->result();
@@ -60,7 +122,7 @@ class menu_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function carregarmenu($estoque_menu_id) {
         $this->db->select('estoque_menu_id,
                             descricao');
@@ -117,7 +179,6 @@ class menu_model extends Model {
         }
     }
 
-    
     function excluirmenu($estoque_menu_produtos_id) {
 
         $horario = date("Y-m-d H:i:s");
@@ -133,7 +194,7 @@ class menu_model extends Model {
         else
             return 0;
     }
-    
+
     function gravaritens() {
         try {
             /* inicia o mapeamento no banco */
@@ -141,14 +202,14 @@ class menu_model extends Model {
             $this->db->set('produto', $_POST['produto_id']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_estoque_menu_produtos');
-                $erro = $this->db->_error_message();
-                if (trim($erro) != "") // erro de banco
-                    return -1;
-                else
-                    $estoque_menu_produtos_id = $this->db->insert_id();
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_estoque_menu_produtos');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                $estoque_menu_produtos_id = $this->db->insert_id();
 
             return $estoque_menu_produtos_id;
         } catch (Exception $exc) {

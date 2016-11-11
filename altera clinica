@@ -697,12 +697,13 @@ atualiza 14/10/2016
 
 DELETE FROM ponto.tb_perfil WHERE perfil_id = 6;
 
-INSERT INTO ponto.tb_perfil VALUES (9, "CAIXA", TRUE);
+UPDATE ponto.tb_perfil SET nome = 'ADMINISTRADOR TOTAL' WHERE perfil_id = 1;
+UPDATE ponto.tb_perfil SET nome = 'CAIXA RECEPCAO' WHERE perfil_id = 2;
+
+INSERT INTO ponto.tb_perfil VALUES (9, 'CAIXA', TRUE);
 INSERT INTO ponto.tb_perfil VALUES (10, 'ADMINISTRADOR', TRUE);
 INSERT INTO ponto.tb_perfil VALUES (11, 'RECEPCAO', TRUE);
 
-UPDATE ponto.tb_perfil SET nome = 'ADMINISTRADOR TOTAL' WHERE perfil_id = 1;
-UPDATE ponto.tb_perfil SET nome = 'CAIXA RECEPCAO' WHERE perfil_id = 2;
 UPDATE ponto.tb_perfil SET nome = 'FATURAMENTO' WHERE perfil_id = 3;
 UPDATE ponto.tb_perfil SET nome = 'MEDICO' WHERE perfil_id = 4;
 UPDATE ponto.tb_perfil SET nome = 'GERENTE RECEPCAO' WHERE perfil_id = 5;
@@ -844,3 +845,47 @@ CREATE TABLE ponto.tb_financeiro_contasreceber_temp
   classe character varying(60),
   CONSTRAINT tb_financeiro_contasreceber_temp_pkey PRIMARY KEY (financeiro_contasreceber_temp_id )
 )
+
+atualiza 28/1016
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN observacao_faturamento character varying(8000);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_obs_faturamento integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_obs_faturamento timestamp without time zone;
+
+atualiza 01/11/16
+
+CREATE TABLE ponto.tb_ambulatorio_modelo_declaracao
+(
+  ambulatorio_modelo_declaracao_id serial NOT NULL,
+  medico_id integer,
+  nome character varying(200),
+  texto text,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_modelo_declaracao_pkey PRIMARY KEY (ambulatorio_modelo_declaracao_id )
+)
+
+atualiza 07/11/16
+
+
+CREATE TABLE ponto.tb_formapagamento_pacela_juros
+(
+  formapagamento_pacela_juros_id serial NOT NULL,
+  forma_pagamento_id integer,
+  taxa_juros numeric(10,2),
+  parcelas_inicio integer,
+  parcelas_fim integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT formapagamento_pacela_juros_id_pkey PRIMARY KEY (formapagamento_pacela_juros_id)
+); 
+
+
+ALTER TABLE ponto.tb_forma_pagamento DROP COLUMN taxa_juros;
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN taxa_juros numeric(10,2);
