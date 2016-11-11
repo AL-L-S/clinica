@@ -6293,6 +6293,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('ativo', 'f');
             $this->db->set('realizada', 't');
             $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+            $this->db->set('medico_solicitante', $_POST['medicoagenda']);
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');
             $this->db->set('guia_id', $_POST['txtguia_id']);
