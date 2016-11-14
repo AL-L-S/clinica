@@ -16,6 +16,7 @@ class Menu extends BaseController {
     function Menu() {
         parent::Controller();
         $this->load->model('estoque/menu_model', 'menu');
+        $this->load->model('estoque/cliente_model', 'cliente');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -48,7 +49,11 @@ class Menu extends BaseController {
 
     function excluirmenu($estoque_menu_produtos_id, $estoque_menu_id) {
         $this->cliente->excluirclientes($estoque_menu_produtos_id);
-        $this->clientesetor($estoque_menu_id);
+        
+        $data['mensagem'] = 'Sucesso ao excluir a Menu';
+        
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "estoque/menu/criarmenu/$estoque_menu_id");
     }
 
     function pesquisar($args = array()) {
