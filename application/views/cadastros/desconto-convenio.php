@@ -62,6 +62,12 @@
                         <input type="number" name="ajustetotal" id="ajustetotal" class="number"  />
                     </dd>
                     <dt>
+                        <label>Arredondar p/ cima</label>
+                    </dt>
+                    <dd>
+                        <input type="checkbox" name="arrendondamento" id="arrendondamento"  />
+                    </dd>
+                    <dt>
                 </dl>    
 
                 <hr/>
@@ -76,13 +82,13 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
 <script type="text/javascript">
-                                                $('#btnVoltar').click(function () {
-                                                    $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-                                                });
+    $('#btnVoltar').click(function () {
+        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+    });
 
-                                                $(function () {
-                                                    $("#accordion").accordion();
-                                                });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 //                            $(document).ready(function () {
 //

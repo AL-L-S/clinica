@@ -24,7 +24,7 @@
                         <label>Data de Recebimento</label>
                     </dt>
                     <dd>
-                        <input type="text" name="diareceber" class="texto02" id="diareceber" value="<?= @$obj->_dia_receber; ?>"/>
+                        <input type="text" name="diareceber" class="texto02" id="diareceber" value="<?= @$obj->_dia_receber; ?>"/><input type="checkbox" name="arrendondamento" id="arrendondamento"  />Fixar
                     </dd>
                     <dt>
                         <label>Tempo Recebimento</label>

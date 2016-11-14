@@ -13,10 +13,10 @@
                         <select name="covenio" id="covenio" class="size4">
                             <option>SELECIONE</option>
                             <? foreach ($convenio as $value) : ?>
-                            <option  value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>                            
-                            <? endforeach;?>                                                                                             
+                                <option  value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>                            
+                            <? endforeach; ?>                                                                                             
                         </select>               
-                        
+
                     </dd>                                                           
                     <dt>                         
                         <label>Grupo</label>
@@ -26,18 +26,18 @@
                             <option>SELECIONE</option>
                             <option>TODOS</option>                           
                             <? foreach ($grupo as $value) : ?>
-                                <option value="<?= $value->nome;  ?>"><?php echo $value->nome; ?></option>
-                            <? endforeach; /*$value->ambulatorio_grupo_id;*/?>
-                                
+                                <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
+                            <? endforeach; /* $value->ambulatorio_grupo_id; */ ?>
+
                         </select>
                     </dd>
                     <dt>
                         <label>Procedimento</label>
                     </dt>
                     <dd>
-                                    <select  name="procedimento" id="procedimento" class="size4" >
-                                        <option value="">SELECIONE</option>
-                                    </select>
+                        <select  name="procedimento" id="procedimento" class="size4" >
+                            <option value="">SELECIONE</option>
+                        </select>
 
                     </dd>
                     <dt>
@@ -73,7 +73,7 @@
                 <button type="reset" name="btnLimpar">Limpar</button>
                 <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
             </form>
-           
+
         </div>
     </div>
 </div> <!-- Final da DIV content -->
@@ -88,24 +88,24 @@
     $(function () {
         $("#accordion").accordion();
     });
-    
-                $(function() {
-                $('#covenio').change(function() {
-                    if ($(this).val()) {
-                        $('.carregando').show();
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $(this).val(), ajax: true}, function(j) {
-                            options = '<option value="">TODOS</option>';
-                            for (var c = 0; c < j.length; c++) {
-                                options += '<option value="' + j[c].procedimento_convenio_id+ '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                            }
-                            $('#procedimento').html(options).show();
-                            $('.carregando').hide();
-                        });
-                    } else {
-                        $('#procedimento').html('<option value="">SELECIONE</option>');
+
+    $(function () {
+        $('#covenio').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value="">TODOS</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                     }
+                    $('#procedimento').html(options).show();
+                    $('.carregando').hide();
                 });
-            });
+            } else {
+                $('#procedimento').html('<option value="">SELECIONE</option>');
+            }
+        });
+    });
 
 
 </script>
