@@ -1603,11 +1603,14 @@ class laudo_model extends Model {
                             il.laudo_texto,
                             il.laudo_data_hora,
                             il.laudo_status,
+                            al.ambulatorio_laudo_id,
                             o.operador_id as medico,
                             op.operador_id as revisor');
         $this->db->from('tb_integracao_laudo il');
         $this->db->join('tb_operador o', 'o.conselho = il.laudo_conselho_medico', 'left');
         $this->db->join('tb_operador op', 'op.conselho = il.laudo_conselho_medico_revisor', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = il.exame_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->where('il.exame_id', $agenda_exames_id);
         $this->db->where('il.laudo_status', 'PUBLICADO');
         $this->db->orderby('il.integracao_laudo_id');
@@ -1617,6 +1620,7 @@ class laudo_model extends Model {
         foreach ($return as $value) {
             $laudo_texto = $value->laudo_texto;
             $laudo_data_hora = $value->laudo_data_hora;
+            $ambulatorio_laudo_id = $value->ambulatorio_laudo_id;
             $medico = $value->medico;
             $revisor = $value->revisor;
             $laudo_status = $value->laudo_status;
@@ -1630,7 +1634,7 @@ class laudo_model extends Model {
         }
 
         $this->db->set('laudo_status', 'LIDO');
-        $this->db->where('exame_id', $ambulatorio_laudo_id);
+        $this->db->where('exame_id', $agenda_exames_id);
         $this->db->update('tb_integracao_laudo');
     }
 

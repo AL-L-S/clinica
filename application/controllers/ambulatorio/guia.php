@@ -307,7 +307,7 @@ class Guia extends BaseController {
 //            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
 //            
 //      CLINICA MED
-//        $this->load->View('ambulatorio/impressaofichamed', $data);
+        $this->load->View('ambulatorio/impressaofichamed', $data);
         //RONALDO
 //        if ($dinheiro == "t") {
 //            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
@@ -315,11 +315,11 @@ class Guia extends BaseController {
 //            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
 //        }
         //RONALDO
-        if ($grupo == "CONSULTA") {
-            $this->load->View('ambulatorio/impressaofichamedlabrecibo', $data);
-        }else{
-            $this->load->View('ambulatorio/impressaofichamedlab', $data);
-        }
+//        if ($grupo == "CONSULTA") {
+//            $this->load->View('ambulatorio/impressaofichamedlabrecibo', $data);
+//        }else{
+//            $this->load->View('ambulatorio/impressaofichamedlab', $data);
+//        }
         // CLINICA SAO PAULO
 //        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
     }
@@ -365,18 +365,18 @@ class Guia extends BaseController {
             }
         }
 //HUMANA        
-        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA") {
-            $this->load->View('ambulatorio/impressaofichaus', $data);
-        }
-        if ($grupo == "MAMOGRAFIA") {
-            $this->load->View('ambulatorio/impressaofichamamografia', $data);
-        }
-        if ($grupo == "DENSITOMETRIA") {
-            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
-        }
-        if ($grupo == "RM") {
-            $this->load->View('ambulatorio/impressaoficharm', $data);
-        }
+//        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA") {
+//            $this->load->View('ambulatorio/impressaofichaus', $data);
+//        }
+//        if ($grupo == "MAMOGRAFIA") {
+//            $this->load->View('ambulatorio/impressaofichamamografia', $data);
+//        }
+//        if ($grupo == "DENSITOMETRIA") {
+//            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
+//        }
+//        if ($grupo == "RM") {
+//            $this->load->View('ambulatorio/impressaoficharm', $data);
+//        }
 //PROIMAGEM       
 //        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
 //            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
@@ -1858,8 +1858,8 @@ class Guia extends BaseController {
 
         $dataFuturo = date("Y-m-d");
 
-//        $this->load->View('ambulatorio/impressaorecibomed', $data);
-        $this->load->View('ambulatorio/impressaorecibo', $data);
+        $this->load->View('ambulatorio/impressaorecibomed', $data);
+//        $this->load->View('ambulatorio/impressaorecibo', $data);
     }
 
     function relatoriomedicoconveniofinanceiro() {
