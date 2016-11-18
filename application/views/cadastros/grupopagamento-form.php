@@ -12,12 +12,7 @@
 <!--                        <input type="hidden" name="txtcadastrosformapagamentoid" class="texto10" value="<?= @$obj->_forma_pagamento_id; ?>" />-->
                         <input type="text" name="txtNome" class="texto05"  />
                     </dd>
-                    <dt>
-                        <label>Ajuste (%)</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="ajuste" class="texto03"  />
-                    </dd>
+                    
                     <!--                    <dt>
                                             <label>F. de Pagamento</label>
                                         </dt>
