@@ -218,7 +218,7 @@ class paciente_model extends BaseModel {
                 $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
             }
             if ($_POST['nascimento'] != '') {
-                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+                $this->db->set('nascimento',  str_replace("/","-",$_POST['nascimento']));
             }
             if ($_POST['data_emissao'] != '') {
                 $this->db->set('data_emissao', $_POST['data_emissao']);

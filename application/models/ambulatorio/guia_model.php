@@ -86,6 +86,7 @@ class guia_model extends Model {
                             om.nome as medicorealizou,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
+                            ae.data_antiga
                             ');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -3463,6 +3464,7 @@ ORDER BY p.nome";
 
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
+                            pt.procedimento_tuss_id,
                             ae.data,
                             ae.operador_autorizacao,
                             op.nome as operador,
@@ -4276,6 +4278,13 @@ AND data <= '$data_fim'";
             $dataautorizacao = $_POST['data'] . " " . $hora;
 //            var_dump($dataautorizacao);
 //            die;
+            $sql = "UPDATE ponto.tb_agenda_exames
+                    SET data_antiga = data
+                    WHERE agenda_exames_id = $agenda_exames_id;";
+            
+            $this->db->query($sql);
+            
+//            $this->db->set('data_antiga', 'data');
             $this->db->set('data_aterardatafaturamento', $horario);
             $this->db->set('data_autorizacao', $dataautorizacao);
             $this->db->set('operador_aterardatafaturamento', $operador_id);

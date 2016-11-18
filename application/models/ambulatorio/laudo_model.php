@@ -226,7 +226,8 @@ class laudo_model extends Model {
                             age.agenda_exames_nome_id,
                             ag.medico_parecer2,
                             p.nome as paciente,
-                            c.nome as convenio');
+                            c.nome as convenio,
+                            ag.data_antiga');
         $this->db->from('tb_ambulatorio_laudo ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
@@ -2609,6 +2610,36 @@ class laudo_model extends Model {
             if (trim($erro) != "") // erro de banco
                 return -1;
             return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravaralterardata($ambulatorio_laudo_id) {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $hora = date("H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $dataautorizacao = $_POST['data'] . " " . $hora;
+//            var_dump($dataautorizacao);
+//            die;
+            $sql = "UPDATE ponto.tb_ambulatorio_laudo
+                    SET data_antiga = data_cadastro
+                    WHERE ambulatorio_laudo_id = $ambulatorio_laudo_id;";
+
+            $this->db->query($sql);
+
+//            $this->db->set('data_antiga', 'data');
+//            $this->db->set('data_aterardatafaturamento', $horario);
+//            $this->db->set('data_autorizacao', $dataautorizacao);
+            $this->db->set('operador_alteradata', $operador_id);
+            $this->db->set('data_cadastro', $_POST['data']);
+            $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);
+            $this->db->update('tb_ambulatorio_laudo');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
         } catch (Exception $exc) {
             return -1;
         }

@@ -262,13 +262,30 @@ class Guia extends BaseController {
 //        if ($grupo == "RM") {
 //            $this->fichaxml($paciente_id, $guia_id, $exames_id);
 //        }
-//PROIMAGEM       
-//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
+//PROIMAGEM    
+        // criar codigo de barras (inicio)
+
+//        foreach ($exames as $value) {
+//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/")) {
+//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/");
+//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/", 0777);
+//            }
+//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->procedimento_tuss_id")) {
+//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->procedimento_tuss_id");
+//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->procedimento_tuss_id", 0777);
+//            }
+//            $this->utilitario->barcode($value->codigo, "/home/sisprod/projetos/clinica/upload/barcodeimg/$value->procedimento_tuss_id/$value->codigo.png", $size = "20", "horizontal", "code128", true, 1);
+//        }
+//
+//        // criar codigo de barras (fim)
+//
+//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
 //            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
 //        }
 //        if ($grupo == "MAMOGRAFIA") {
 //            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
 //        }
+
 //         CLINICAS PACAJUS
 //        if ($grupo == "CONSULTA") {
 //            $this->load->View('ambulatorio/impressaofichaconsulta', $data);
@@ -315,13 +332,14 @@ class Guia extends BaseController {
 //            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
 //        }
         //RONALDO
-        if ($grupo == "CONSULTA") {
-            $this->load->View('ambulatorio/impressaofichamedlabrecibo', $data);
-        }else{
-            $this->load->View('ambulatorio/impressaofichamedlab', $data);
-        }
+//        if ($grupo == "CONSULTA") {
+//            $this->load->View('ambulatorio/impressaofichamedlabrecibo', $data);
+//        }else{
+//            $this->load->View('ambulatorio/impressaofichamedlab', $data);
+//        }
         // CLINICA SAO PAULO
 //        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
+        // CLINICA MEDLAB
     }
 
     function impressaoorcamento($orcamento) {
@@ -584,10 +602,9 @@ class Guia extends BaseController {
         $caixa = $this->guia->fecharcaixa();
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
-        }elseif($caixa == 10){
+        } elseif ($caixa == 10) {
             $data['mensagem'] = 'Erro ao fechar caixa. Forma de pagamento não configurada corretamente.';
-        }
-        else {
+        } else {
             $data['mensagem'] = 'Sucesso ao fechar caixa.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
@@ -1006,7 +1023,7 @@ class Guia extends BaseController {
             $data['exame2'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
             $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
-        
+
         $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['paciente'] = $this->guia->listarexameguiacaixa($guia_id);
         $data['guia_id'] = $guia_id;

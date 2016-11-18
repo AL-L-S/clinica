@@ -101,7 +101,12 @@
                                 ?>
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>" width="100px;"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');"><?= $item->procedimento ?></a></td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                                   <?if(isset($item->data_antiga)){
+                                       $data_alterada = 'alterada';
+                                   }else{
+                                       $data_alterada = '';
+                                   }?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?><br/><?= $data_alterada?></td>
                                     <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->inicio ?></td>
 
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
