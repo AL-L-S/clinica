@@ -86,6 +86,7 @@ class solicitacao_model extends Model {
         $this->db->join('tb_estoque_solicitacao_cliente esc', 'esc.cliente_id = ec.estoque_cliente_id');
         $this->db->where('esc.estoque_solicitacao_setor_id', $estoque_solicitacao_id);
         $this->db->where('ep.ativo', 'true');
+        $this->db->where('emp.ativo', 'true');
         $return = $this->db->get();
         return $return->result();
     }

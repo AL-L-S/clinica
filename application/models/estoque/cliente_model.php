@@ -99,8 +99,8 @@ class cliente_model extends Model {
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('estoque_operador_cliente_id', $operado_cliente);
-        $this->db->update('tb_estoque_operador_cliente');
+        $this->db->where('estoque_menu_produtos_id', $operado_cliente);
+        $this->db->update('tb_estoque_menu_produtos');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return -1;
