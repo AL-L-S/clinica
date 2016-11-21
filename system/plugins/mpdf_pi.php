@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-function pdf($html, $filename = null, $cabecalho = null, $rodape=null, $grupo ) {
+function pdf($html, $filename = null, $cabecalho = null, $rodape=null, $grupo = '' ) {
     require_once("mpdf_lib/mpdf.php");
     
 //    $mpdf = new mPDF('UTF-8', array (210,148));
