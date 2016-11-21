@@ -889,3 +889,10 @@ CREATE TABLE ponto.tb_formapagamento_pacela_juros
 
 ALTER TABLE ponto.tb_forma_pagamento DROP COLUMN taxa_juros;
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN taxa_juros numeric(10,2);
+
+atualiza 16/11/16
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_antiga date;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_antiga timestamp without time zone;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN operador_alteradata integer;
+

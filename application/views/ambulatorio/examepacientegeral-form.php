@@ -20,6 +20,10 @@
 
             </div>
             <div>
+                <label>End.</label>
+                <input type="text" id="txtEnd" class="texto06" name="txtEnd"   />
+            </div>
+            <div>
                 <label>Telefone</label>
 
 
@@ -139,12 +143,13 @@
                                 $("#txtNomeid").val(ui.item.id);
                                 $("#telefone").val(ui.item.itens);
                                 $("#nascimento").val(ui.item.valor);
+                                $("#txtEnd").val(ui.item.endereco);
                                 return false;
                             }
                         });
                     });
 
-    $(function() {
+                    $(function () {
                         $("#nascimento").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientenascimento",
                             minLength: 3,

@@ -272,7 +272,7 @@ class pacientes extends BaseController {
     function gravar() {
         $contador = $this->paciente->contador();
 
-        $_POST['nascimento'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento'])));
+        $_POST['nascimento'] = str_replace("/", "-", $_POST['nascimento']);
 
         if ($_POST['cpf'] != "") {
             $contadorcpf = $this->paciente->contadorcpf();
