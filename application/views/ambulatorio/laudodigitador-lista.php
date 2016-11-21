@@ -173,7 +173,7 @@
                         <? } ?>
                             
                                             <? if ($item->recebido == 'f') { ?>
-                <td class="<?php echo $estilo_linha; ?>" width="50px;"><a href="<?= base_url() ?>ambulatorio/guia/recebidoresultado/<?= $item->paciente_id; ?>/<?= $item->agenda_exames_id ?>">N&Atilde;O
+                <td class="<?php echo $estilo_linha; ?>" width="50px;"><a href="<?= base_url() ?>ambulatorio/guia/recebidoresultado/<?= $item->paciente_id; ?>/<?= $item->agenda_exames_id ?>">ENTREGAR
                     </a></td>
                 <? } else {
                 ?>
@@ -184,10 +184,10 @@
         if ($item->entregue == "") {
         ?>
         <td class="<?php echo $estilo_linha; ?>" width="100px;"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/entregaexame/$item->paciente_id/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
-                N&Atilde;O
+                ENTREGUE
             </a></td>
 <? } else { ?>
-            <td class="<?php echo $estilo_linha; ?>" width="50px;"><center><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarobservacao/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');"><?= substr($item->entregue, 0, 12)?></b>  <?= substr($item->data_entregue, 8, 2) . "/" . substr($item->data_entregue, 5, 2) . "/" . substr($item->data_entregue, 0, 4) ?></a></center>
+            <td class="<?php echo $estilo_linha; ?>" width="50px;"><center><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarobservacao/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');"> SIM <br/> <?= substr($item->data_entregue, 8, 2) . "/" . substr($item->data_entregue, 5, 2) . "/" . substr($item->data_entregue, 0, 4) ?></a></center>
         </td>
 <?} ?></tr>
 

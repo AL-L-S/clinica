@@ -47,6 +47,10 @@
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask"/>
             </div>
             <div>
+                <label>End.</label>
+                <input type="text" id="txtEnd" class="texto06" name="txtEnd"  />
+            </div>
+            <div>
                 <label>Telefone</label>
                 <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone"/>
             </div>
@@ -77,7 +81,7 @@
 <script type="text/javascript">
 
 
-    $(function() {
+    $(function () {
         $("#data_ficha").datepicker({
             autosize: true,
             changeYear: true,
@@ -89,32 +93,33 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
             minLength: 3,
-            focus: function(event, ui) {
+            focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
                 $("#telefone").val(ui.item.itens);
                 $("#nascimento").val(ui.item.valor);
+                $("#txtEnd").val(ui.item.endereco);
                 return false;
             }
         });
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
 
-    $(document).ready(function(){
-        jQuery('#form_exametemp').validate( {
+    $(document).ready(function () {
+        jQuery('#form_exametemp').validate({
             rules: {
                 data_ficha: {
                     required: true

@@ -14,19 +14,19 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/exame/gerarxml">
                 <dl>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text"  id="datainicio" alt="date" name="datainicio" class="size1" />
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text"  id="datafim" alt="date" name="datafim" class="size1"/>
                     </dd>
                     <dt>
-                    <label>Convenio</label>
+                        <label>Convenio</label>
                     </dt>
                     <dd>
                         <select name="convenio" id="convenio" class="size2">
@@ -37,7 +37,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Tipo</label>
+                        <label>Tipo</label>
                     </dt>
                     <dd>
                         <select name="tipo" id="tipo" class="size2">
@@ -49,7 +49,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Ra&ccedil;a / Cor</label>
+                        <label>Ra&ccedil;a / Cor</label>
                     </dt>
                     <dd>
                         <select name="raca_cor" id="txtRacaCor" class="size2">
@@ -63,7 +63,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Apagar</label>
+                        <label>Apagar</label>
                     </dt>
                     <dd>
                         <select name="apagar" id="apagar" class="size2">
@@ -72,7 +72,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Vers&atilde;o XML</label>
+                        <label>Vers&atilde;o XML</label>
                     </dt>
                     <dd>
                         <select name="xml" id="xml" class="size2">
@@ -81,7 +81,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Modelo</label>
+                        <label>Modelo</label>
                     </dt>
                     <dd>
                         <select name="modelo" id="modelo" class="size2">
@@ -90,8 +90,17 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Autorização</label>
+                    </dt>
+                    <dd>
+                        <select name="autorizacao" id="autorizacao" class="size2">
+                            <option value='NAO'>NÃO</option>
+                            <option value='SIM' >SIM</option>
+                        </select>
+                    </dd>
                     <dt>
-                    <label>Medico</label>
+                    <dt>
+                        <label>Medico</label>
                     </dt>
                     <dd>
                         <select name="medico" id="medico" class="size2">
@@ -104,7 +113,7 @@
                     </dd>
 
                     <dt>
-                    <label>Empresa</label>
+                        <label>Empresa</label>
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
@@ -140,9 +149,9 @@
                                                 <td width="10px"> <img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/cr/" . $covenionome . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "upload/cr/" . $covenionome . "/" . $value ?>"><br><? echo $value ?></td>
                                                 <td>&nbsp;</td>        
                                             <br><?
-                                }
-                            }
-                                        ?>
+                                        }
+                                    }
+                                    ?>
                                     </tr>
                                     <?
                                 endforeach;
@@ -158,32 +167,32 @@
                         <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
                         <script type="text/javascript">
 
-                                        $(function() {
-                                            $("#datainicio").datepicker({
-                                                autosize: true,
-                                                changeYear: true,
-                                                changeMonth: true,
-                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                dateFormat: 'dd/mm/yy'
-                                            });
-                                        });
+                                                    $(function () {
+                                                        $("#datainicio").datepicker({
+                                                            autosize: true,
+                                                            changeYear: true,
+                                                            changeMonth: true,
+                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                            dateFormat: 'dd/mm/yy'
+                                                        });
+                                                    });
 
-                                        $(function() {
-                                            $("#datafim").datepicker({
-                                                autosize: true,
-                                                changeYear: true,
-                                                changeMonth: true,
-                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                dateFormat: 'dd/mm/yy'
-                                            });
-                                        });
+                                                    $(function () {
+                                                        $("#datafim").datepicker({
+                                                            autosize: true,
+                                                            changeYear: true,
+                                                            changeMonth: true,
+                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                            dateFormat: 'dd/mm/yy'
+                                                        });
+                                                    });
 
-                                        $(function() {
-                                            $("#accordion").accordion();
-                                        });
+                                                    $(function () {
+                                                        $("#accordion").accordion();
+                                                    });
 
                         </script>

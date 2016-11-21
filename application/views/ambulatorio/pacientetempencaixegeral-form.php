@@ -21,7 +21,7 @@
             </div>
             <div>
                 <label>Medico</label>
-                <select name="medico" id="exame" class="size2">
+                <select name="medico" id="medico" class="size2">
                     <option value="" >Selecione</option>
                     <? foreach ($medico as $item) : ?>
                         <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
@@ -44,13 +44,13 @@
                     <option value="">Selecione</option>
                 </select>
             </div>
-<!--            <div>
-                <label>Tipo</label>
-                <select  name="tipo" id="tipo" class="size1" >
-                    <option value="EXAME">Exame</option>
-                    <option value="CONSULTA">Consulta</option>
-                </select>
-            </div>-->
+            <!--            <div>
+                            <label>Tipo</label>
+                            <select  name="tipo" id="tipo" class="size1" >
+                                <option value="EXAME">Exame</option>
+                                <option value="CONSULTA">Consulta</option>
+                            </select>
+                        </div>-->
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
                 <input type="text" id="observacoes" class="size3" name="observacoes" />
@@ -72,6 +72,10 @@
             <div>
 
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask"/>
+            </div>
+            <div>
+                <label>End.</label>
+                <input type="text" id="txtEnd" class="texto06" name="txtEnd" alt="phone"/>
             </div>
             <div>
                 <label>Telefone</label>
@@ -100,7 +104,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#data_ficha").datepicker({
             autosize: true,
             changeYear: true,
@@ -112,11 +116,11 @@
         });
     });
 
-    $(function() {
-        $('#exame').change(function() {
+    $(function () {
+        $('#medico').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function(j) {
+                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                     var options = '<option value=""></option>';
                     for (var i = 0; i < j.length; i++) {
                         options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -130,11 +134,11 @@
         });
     });
 
-    $(function() {
-        $('#convenio1').change(function() {
+    $(function () {
+        $('#convenio1').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#exame").val()}, function(j) {
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#exame").val()}, function (j) {
                     options = '<option value=""></option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -148,26 +152,27 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
             minLength: 3,
-            focus: function(event, ui) {
+            focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
                 $("#telefone").val(ui.item.itens);
                 $("#nascimento").val(ui.item.valor);
+                $("#txtEnd").val(ui.item.endereco);
                 return false;
             }
         });
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
