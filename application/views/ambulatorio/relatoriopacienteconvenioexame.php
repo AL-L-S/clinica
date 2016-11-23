@@ -30,32 +30,6 @@
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Especialidade</label>
-                    </dt>
-                    <dd>
-                        <select name="grupo" id="grupo" class="size2" >
-                            <option value='0' >TODOS</option>
-                            <option value='1' >SEM RM</option>
-                            <? foreach ($grupos as $grupo) { ?>                                
-                                <option value='<?= $grupo->nome ?>' <?
-                                if (@$obj->_grupo == $grupo->nome):echo 'selected';
-                                endif;
-                                ?>><?= $grupo->nome ?></option>
-                                    <? } ?>
-                        </select>
-                    </dd>
-                    <dt>
-                    <label>Empresa</label>
-                    </dt>
-                    <dd>
-                        <select name="empresa" id="empresa" class="size2">
-                            <? foreach ($empresa as $value) : ?>
-                                <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
-                            <? endforeach; ?>
-                            <option value="0">TODOS</option>
-                        </select>
-                    </dd>
-                    <dt>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>

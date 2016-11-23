@@ -60,7 +60,7 @@ class Operador_model extends BaseModel {
         $this->db->from('tb_operador')
                 ->join('tb_perfil', 'tb_perfil.perfil_id = tb_operador.perfil_id', 'left')
                 ->select('"tb_operador".*, tb_perfil.nome as nomeperfil');
-        $this->db->orderby('tb_operador.ativo desc, tb_operador.nome, tb_perfil.nome');
+        $this->db->orderby('tb_operador.ativo desc, tb_perfil.nome, tb_operador.nome');
         $this->db->groupby('tb_operador.operador_id, tb_perfil.nome, tb_operador.nome, tb_operador.ativo');
 
         if ($args) {

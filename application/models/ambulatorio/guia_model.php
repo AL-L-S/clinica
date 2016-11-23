@@ -286,44 +286,17 @@ class guia_model extends Model {
 
     function relatorioexames() {
 
-        $this->db->select('ae.agenda_exames_id,
-                            ae.agenda_exames_nome_id,
-                            ae.data,
-                            ae.inicio,
-                            ae.fim,
-                            ae.ativo,
-                            al.ambulatorio_laudo_id as laudo,
-                            ae.situacao,
-                            c.nome as convenio,
-                            ae.guia_id,
-                            pc.valortotal,
-                            ae.quantidade,
-                            ae.valor_total,
-                            ae.autorizacao,
-                            pc.qtdech,
-                            pc.valorch,
-                            ae.paciente_id,
+        $this->db->select('p.paciente_id,
                             p.nome as paciente,
-                            ae.procedimento_tuss_id,
-                            pt.nome as exame,
-                            pt.grupo,
-                            o.nome as medico,
-                            pt.descricao as procedimento,
-                            pt.codigo');
-        $this->db->from('tb_agenda_exames ae');
-        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
-        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
-        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
-        $this->db->where('ae.cancelada', 'false');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+                            p.data_cadastro,
+                            c.nome as convenio,
+                            p.nascimento');
+        $this->db->from('tb_paciente p');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
-            $this->db->where("pc.convenio_id", $_POST['convenio']);
+            $this->db->where("p.convenio_id", $_POST['convenio']);
         }
         if ($_POST['convenio'] == "") {
             $this->db->where("c.dinheiro", "f");
@@ -331,29 +304,9 @@ class guia_model extends Model {
         if ($_POST['convenio'] == "-1") {
             $this->db->where("c.dinheiro", "t");
         }
-        if (isset($_POST['tipo']) && $_POST['tipo'] != "0" && $_POST['tipo'] != "") {
-            $this->db->where("tu.classificacao", $_POST['tipo']);
-        }
-        if (isset($_POST['tipo']) && $_POST['tipo'] == "") {
-            $this->db->where("tu.classificacao !=", "2");
-        }
-        if ($_POST['empresa'] != "0") {
-            $this->db->where('ae.empresa_id', $_POST['empresa']);
-        }
-        if (isset($_POST['procedimentos']) && $_POST['procedimentos'] != "0") {
-            $this->db->where('pt.procedimento_tuss_id', $_POST['procedimentos']);
-        }
-        if ($_POST['grupo'] == "1") {
-            $this->db->where('pt.grupo !=', 'RM');
-            $this->db->where('pt.grupo !=', 'TOMOGRAFIA');
-        }
-        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
-            $this->db->where('pt.grupo', $_POST['grupo']);
-        }
         $this->db->orderby('c.convenio_id');
-        $this->db->orderby('ae.guia_id');
-        $this->db->orderby('ae.data');
         $this->db->orderby('p.nome');
+        $this->db->orderby('p.data_cadastro');
         $return = $this->db->get();
         return $return->result();
     }
