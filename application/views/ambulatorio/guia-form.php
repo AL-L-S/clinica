@@ -108,7 +108,7 @@
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
-                                <td > 
+                                <td >
                                     <select  name="medicoagenda" id="medicoagenda" class="size1" >
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
@@ -357,6 +357,53 @@
                                 $(function () {
                                     $("#accordion").accordion();
                                 });
+
+
+                    $(document).ready(function() {
+                        jQuery('#form_guia').validate({
+                            rules: {
+                                sala1: {
+                                    required: true
+                                },
+                                medicoagenda: {
+                                    required: true
+                                },
+                                qtde1: {
+                                    required: true
+                                },
+                                medico1: {
+                                    required: true
+                                },
+                                convenio1: {
+                                    required: true
+                                },
+                                procedimento1: {
+                                    required: true
+                                }
+
+                            },
+                            messages: {
+                                sala1: {
+                                    required: "*"
+                                },
+                                medicoagenda: {
+                                    required: "*"
+                                },
+                                qtde1: {
+                                    required: "*"
+                                },
+                                medico1: {
+                                    required: "*"
+                                },
+                                convenio1: {
+                                    required: "*"
+                                },
+                                procedimento1: {
+                                    required: "*"
+                                }
+                            }
+                        });
+                    });
 
 
                                         $(function () {

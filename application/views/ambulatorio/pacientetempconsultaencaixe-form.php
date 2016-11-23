@@ -40,7 +40,7 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date"/>
             </div>
             <div>
 
@@ -104,7 +104,7 @@
             select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
-                $("#telefone").val(ui.item.itens);
+                $("#txtTelefone").val(ui.item.itens);
                 $("#nascimento").val(ui.item.valor);
                 $("#txtEnd").val(ui.item.endereco);
                 return false;
