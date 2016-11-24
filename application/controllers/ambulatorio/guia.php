@@ -265,26 +265,26 @@ class Guia extends BaseController {
 //PROIMAGEM    
         // criar codigo de barras (inicio)
 
-        foreach ($exames as $value) {
-            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/")) {
-                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/");
-                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/", 0777);
-            }
-            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/")) {
-                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/");
-                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/", 0777);
-            }
-            $this->utilitario->barcode($value->agenda_exames_id, "/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/$value->agenda_exames_id.png", $size = "20", "horizontal", "code128", true, 1);
-        }
+//        foreach ($exames as $value) {
+//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/")) {
+//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/");
+//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/", 0777);
+//            }
+//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/")) {
+//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/");
+//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/", 0777);
+//            }
+//            $this->utilitario->barcode($value->agenda_exames_id, "/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/$value->agenda_exames_id.png", $size = "20", "horizontal", "code128", true, 1);
+//        }
 //
 //        // criar codigo de barras (fim)
 //
-        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
-            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
-        }
-        if ($grupo == "MAMOGRAFIA") {
-            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
-        }
+//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
+//            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
+//        }
+//        if ($grupo == "MAMOGRAFIA") {
+//            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
+//        }
 
 //         CLINICAS PACAJUS
 //        if ($grupo == "CONSULTA") {
@@ -324,7 +324,7 @@ class Guia extends BaseController {
 //            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
 //            
 //      CLINICA MED
-//        $this->load->View('ambulatorio/impressaofichamed', $data);
+        $this->load->View('ambulatorio/impressaofichamed', $data);
         //RONALDO
 //        if ($dinheiro == "t") {
 //            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
@@ -1770,7 +1770,7 @@ class Guia extends BaseController {
     function gerarelatorioaniversariantes() {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['relatorio'] = $this->guia->relatorioaniversariantes();
         $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
     }

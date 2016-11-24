@@ -2450,13 +2450,11 @@ ORDER BY p.nome";
 
     function relatorioaniversariantes() {
 
-        $mes = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
-
-        $mes = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $mes = $_POST['txtdata_inicio'];
 
         $sql = "SELECT p.nome as paciente, p.nascimento , p.celular , p.telefone from ponto.tb_paciente p
                 left join ponto.tb_convenio c on c.convenio_id = p.convenio_id
-                Where Extract(Month From p.nascimento) = $mes ";
+                Where Extract(Month From p.nascimento) = $mes order by Extract(Day From p.nascimento)";
         $return = $this->db->query($sql)->result();
         return $return;
     }
