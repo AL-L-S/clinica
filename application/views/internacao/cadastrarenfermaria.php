@@ -73,7 +73,7 @@
 
     $(function() {
         $( "#txtUnidade" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=unidade",
+            source: "<?= base_url() ?>index?c=autocomplete&m=unidade",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtUnidade" ).val( ui.item.label );
