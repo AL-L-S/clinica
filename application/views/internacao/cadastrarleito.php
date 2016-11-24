@@ -67,10 +67,10 @@
                             if (@$obj->_tipo == 'Fechado'):echo 'selected';
                             endif;
 ?>>Fechado</option>
-                    <option value=Ocupado <?
-                            if (@$obj->_tipo == 'Ocupado'):echo 'selected';
+                    <option value=Cirurgico <?
+                            if (@$obj->_tipo == 'Cirurgico'):echo 'selected';
                             endif;
-?>>Ocupado</option>
+?>>Cirurgico</option>
                 </select>
             </div>
         </fieldset>
@@ -86,7 +86,7 @@
 
     $(function() {
         $( "#txtEnfermaria" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=enfermaria",
+            source: "<?= base_url() ?>index?c=autocomplete&m=enfermaria",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtEnfermaria" ).val( ui.item.label );

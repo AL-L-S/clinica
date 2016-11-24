@@ -1,0 +1,66 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+/*Tabela*/
+
+table#tabelaspec  {
+    
+    border-spacing: 0;
+    margin-left: auto;
+    margin-right: auto;
+	width:100%;
+    
+}
+
+table#tabelaspec td {
+	
+	padding: 0pt;
+	text-align: left;
+	vertical-align: middle;
+	font-size: 9pt;
+	font-weight: normal;
+}
+
+table#tabelaspec .ti {
+	border-bottom: 0px;
+	padding: 0pt;
+	text-align: left;
+	font-size: 9px;
+}
+
+
+table#tabelaspec .tc {
+    border-top:0px ;
+    padding: 0px;
+    text-align: left;
+    	}
+table#tabelaspec .tm {
+    border-top:0px ;
+    padding: 0px;
+    text-align: center;
+	font-weight:bold;
+    	}
+				
+table#tabelaspec .ttl {
+    border-left:0px ;
+    padding: 0px;
+    text-align: center;
+	font-weight:bold;
+    	}
+		table#tabelaspec .ttr {
+    border-right:0px ;
+    padding: 0px;
+    text-align: center;
+	font-weight:bold;
+    	}
+		table#tabelaspec .ttrl {
+    
+	
+	border-left:1px #606060 ;
+	border-right:1px #606060;
+    padding: 0px;
+    text-align: center;
+	font-weight:bold;
+    	}

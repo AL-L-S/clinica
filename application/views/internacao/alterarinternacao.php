@@ -1,7 +1,3 @@
-<?
-$unidade= $this->internacao_m->listaunidade();
-?>
-
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <h3 class="h3_title">Internacao</h3>
     <form name="form_unidade" id="form_unidade" action="<?= base_url() ?>internacao/internacao/gravarinternacao/<?= $paciente_id; ?>" method="post">
@@ -36,7 +32,8 @@ $unidade= $this->internacao_m->listaunidade();
             <legend>Dados da internacao</legend>
             <div>
                 <label>Leito</label>
-                
+                <input type="hidden" id="txtinternacao_id" name="internacao_id"  class="texto01" value="<?= @$obj->_internacao_id; ?>" readonly/>
+                <input type="hidden" id="txtleitoID" class="texto_id" name="leitoID" value="<?= @$obj->_leito; ?>" />
                 <input type="text" id="txtleito" class="texto08" name="txtleito" value="<?= @$obj->_leito_nome; ?>" />
             </div>
             <br>
@@ -65,7 +62,7 @@ $unidade= $this->internacao_m->listaunidade();
             </div>
             <div>
                 <label>Forma de entrada</label>
-                <select name="forma" id="txtforma" class="texto06" selected="<?= @$obj->_forma_de_entrada; ?>">
+                <select name="forma" id="txtforma" class="texto08" selected="<?= @$obj->_forma_de_entrada; ?>">
                     <option value=Residencia <?
 if (@$obj->_tipo == 'Residencia'):echo 'selected';
 endif;
@@ -118,19 +115,6 @@ endif;
 ?>>Emergencia</option>
                 </select>
             </div>
-            
-            <div>
-                <label>Hospital </label>
-                <select name="hospital" id="txthospital" class="texto06" selected="<?= @$obj->_hospital; ?>">
-                    
-                    <? foreach ($unidade as $value){?>
-                
-            
-                    <option value="<?=$value->internacao_unidade_id?>"> <?=$value->nome?></option>
-                    <?}?>
-                    
-                </select>
-            </div>
             <div>
                 <label>Procedimento</label>
                 <input type="hidden" id="txtprocedimentoID" class="texto_id" name="procedimentoID" value="<?= @$obj->_procedimento_id; ?>" />
@@ -161,7 +145,21 @@ endif;
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-    
+    $(function() {
+        $( "#txtleito" ).autocomplete({
+            source: "<?= base_url() ?>index?c=autocomplete&m=leito",
+            minLength: 2,
+            focus: function( event, ui ) {
+                $( "#txtleito" ).val( ui.item.label );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( "#txtleito" ).val( ui.item.value );
+                $( "#txtleitoID" ).val( ui.item.id );
+                return false;
+            }
+        });
+    });
     
     $(document).ready(function() {
                         jQuery('#form_unidade').validate({
