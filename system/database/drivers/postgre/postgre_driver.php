@@ -328,8 +328,7 @@ class CI_DB_postgre_driver extends CI_DB {
 	function insert_id()
 	{
 		$v = $this->_version();
-//		$v = $v['server'];
-                $v = pg_version($this->conn_id); $v = isset($v['server']) ? $v['server'] : 0;
+		$v = pg_version($this->conn_id); $v = isset($v['server']) ? $v['server'] : 0;
 		
 		$table	= func_num_args() > 0 ? func_get_arg(0) : null;
 		$column	= func_num_args() > 1 ? func_get_arg(1) : null;

@@ -24,13 +24,13 @@
                         <label>Data de Recebimento</label>
                     </dt>
                     <dd>
-                        <input type="text" name="diareceber" class="texto02" id="diareceber" value="<?= @$obj->_dia_receber; ?>"/><input type="checkbox" name="arrendondamento" id="arrendondamento"  />Fixar
+                        <input type="text" name="diareceber" class="texto02" id="diareceber" value="<?= @$obj->_dia_receber; ?>"/>
                     </dd>
                     <dt>
                         <label>Tempo Recebimento</label>
                     </dt>
                     <dd>
-                        <input type="text" name="temporeceber" class="texto02" id="temporeceber" value= "<?= @$obj->_tempo_receber; ?>" />
+                        <input type="text" name="temporeceber" class="texto02" id="temporeceber" value= "<?= @$obj->_tempo_receber; ?>" /><input type="checkbox" name="arrendondamento" id="arrendondamento"  />Fixar
                     </dd>
                     <dt>
                         <label>N° Maximo de Parcelas</label>

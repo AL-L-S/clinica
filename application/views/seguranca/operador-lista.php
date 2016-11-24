@@ -38,9 +38,9 @@
                 <tbody>
                     <?php
                         if($limit != "todos"){
-                            $lista = $this->operador_m->listar($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
+                            $lista = $this->operador_m->listar($_GET)->orderby('ativo desc')->orderby('nomeperfil')->orderby('nome')->limit($limit, $pagina)->get()->result();
                         } else {
-                            $lista = $this->operador_m->listar($_GET)->orderby('nome')->get()->result();
+                            $lista = $this->operador_m->listar($_GET)->orderby('ativo desc')->orderby('nomeperfil')->orderby('nome')->get()->result();
                         }
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {

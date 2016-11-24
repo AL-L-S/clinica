@@ -203,7 +203,6 @@ class formapagamento_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('ajuste', $_POST['ajuste']);
             $this->db->insert('tb_financeiro_grupo');
             if (trim($erro) != "") { // erro de banco
                 return false;

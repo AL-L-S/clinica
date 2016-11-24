@@ -1,47 +1,31 @@
 <div class="content"> <!-- Inicio da DIV content -->
-    <?if (count($empresa)>0){?>
-    <h4><?= $empresa[0]->razao_social; ?></h4>
-    <?}else{?>
-    <h4>TODAS AS CLINICAS</h4>
-    <?}?>
     <h4>CONFERENCIA DOS CONVENIOS</h4>
     <h4>PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></h4>
     <hr>
-        <?if($contador > 0){
+        <?if(count($relatorio) > 0){
         ?>
     <table>
         <thead>
             <tr>
-                <th class="tabela_header">Num.</th>
+                <th class="tabela_header">Prontuario</th>
                 <th class="tabela_header">Convenio</th>
-                <th class="tabela_header">Emissao</th>
+                <th class="tabela_header">Nascimento</th>
                 <th class="tabela_header">Paciente</th>
-                <th class="tabela_header">Autorizacao</th>
-                <th class="tabela_header">Exame</th>
-                <th class="tabela_header">Codigo</th>
-                <th class="tabela_header">QTDE</th>
+                <th class="tabela_header">Data de Casdatro</th>
             </tr>
         </thead>
         <tbody>
             <?php
             $i = 0;
-            $valor = 0;
-            $valortotal = 0;
             foreach ($relatorio as $item) :
                 $i++;
-                $valortotal = $valortotal + $item->valor_total;
-                $valor = $valor + $item->valortotal;
                 ?>
                 <tr>
-                    <td><?= $item->agenda_exames_id; ?></td>
+                    <td><?= $item->paciente_id; ?></td>
                     <td><?= $item->convenio; ?></td>
-                    <td><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4) ; ?></td>
-                    <td><?= $item->agenda_exames_id; ?></td>
+                    <td><?= substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4) ; ?></td>
                     <td><?= $item->paciente; ?></td>
-                    <td><?= $item->autorizacao; ?></td>
-                    <td><?= utf8_decode($item->exame); ?></td>
-                    <td><?= $item->codigo; ?></td>
-                    <td><?= $item->quantidade; ?></td>
+                    <td><?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4) ; ?></td>
                 </tr>
 
 
@@ -55,7 +39,7 @@
             <tbody>
         <tr>
             <td width="140px;">TOTAL GERAL</td>
-            <td width="140px;">Nr. Exa: <?= $i; ?></td>
+            <td width="140px;">Nr. Pacientes: <?= $i; ?></td>
             <td></td>
         </tr>
         </tbody>

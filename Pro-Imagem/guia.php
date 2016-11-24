@@ -250,26 +250,6 @@ class Guia extends BaseController {
         }
 
 
-//        foreach ($exames as $value) {
-//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/")) {
-//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/");
-//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/", 0777);
-//            }
-//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/")) {
-//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/");
-//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/", 0777);
-//            }
-//            $this->utilitario->barcode($value->agenda_exames_id, "/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/$value->agenda_exames_id.png", $size = "20", "horizontal", "code128", true, 1);
-//        }
-//
-//        // criar codigo de barras (fim)
-//
-//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
-//        }
-//        if ($grupo == "MAMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
-//        }
         if ($data['empresa'][0]->impressao_tipo == 1) { //HUMANA 
             if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
                 $this->load->View('ambulatorio/impressaofichaus', $data);
@@ -1312,6 +1292,8 @@ class Guia extends BaseController {
         $data['convenio'] = $_POST['convenio'];
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['contador'] = $this->guia->relatorioexamescontador();
         $data['relatorio'] = $this->guia->relatorioexames();
         $this->load->View('ambulatorio/impressaorelatoriopacienteconvenioexame', $data);
     }
@@ -1849,7 +1831,7 @@ class Guia extends BaseController {
     function gerarelatorioaniversariantes() {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['relatorio'] = $this->guia->relatorioaniversariantes();
         $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
     }

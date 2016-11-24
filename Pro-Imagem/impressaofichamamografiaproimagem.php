@@ -3,7 +3,6 @@
     <?
     $exame_id = $exame[0]->agenda_exames_id;
     $dataatualizacao = $exame[0]->data_autorizacao;
-    $datarealizacao = $exame[0]->data_realizacao;
     $inicio = $exame[0]->inicio;
     $operador_autorizacao = $exame[0]->atendente;
     ?>
@@ -98,14 +97,12 @@
             <td ><font size = -1>Codigo de Barras</td>
         </tr>
         <?
-        $i = 20;
         foreach ($exames as $item) :
             if ($item->grupo == $exame[0]->grupo) {
-                $i = $i - 2;
                 ?>
                 <tr>
                     <td ><font size = -1><?= $item->quantidade ?></td>
-                    <td ><font size = -1><?= utf8_decode($item->agenda_exames_id) ?></td>
+                    <td ><font size = -1><?= utf8_decode($item->codigo) ?></td>
                     <td width="40%;"><font size = -1><?= utf8_decode($item->procedimento) ?></td>
                     <td ><font size = -1><?= $item->convenio ?></td>
                     <td width="25%;"><font size = -1>Dr(a). <?= utf8_decode($item->medicosolicitante) ?></td>
@@ -116,12 +113,36 @@
         endforeach;
         ?>
         </tbody>
+    <table>
+        <tbody>
+        <td rowspan="3" width="70%;"><img align = 'left'  width='400px' height='200px' src=<?= base_url() . "img/seios.jpg" ?>></td>
+        <td>Exame anterior</td>
+        </tr>
+        <tr>
+            <td>MAMOGRAFIA</td>
+        </tr>
+        <tr>
+            <td>USG MAMAS</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Motivo:</td>
+        </tr>
+        <tr>
+            <td>Rotina (&nbsp; )&nbsp;Rastrea (&nbsp; )</td>
+        </tr>
+        <tr>
+            <td>Dados clinicos: __________________________________________________</td>
+        </tr>
+        </tbody>
     </table>
-    <?
-    for ($i; $i >= 0; $i--) {
-        ?><br><?
-    }
-    ?>
+
+
+
+
+
+
+
     <hr>
     <table>
         <tbody>
@@ -129,7 +150,7 @@
                 <td colspan="3"><CENTER><font size = -1>PROTOCOLO DE ENTREGA DE RESULTADO DE EXAMES</CENTER></td>
         </tr>
         <tr>
-            <td colspan="2"><CENTER><font size = -1>PR&Oacute;-IMAGEM DIGITAL / 3230-5900</CENTER></td><td ><?= substr($exame[0]->sala, 0, 10); ?></td>
+            <td colspan="3"><CENTER><font size = -1>PR&Oacute;-IMAGEM DIGITAL / 3230-5900</CENTER></td>
         </tr>
         <tr>
             <td colspan="3"><font size = -1>UNIDADE I - AV. JO&Atilde;O PINHEIRO, 847 / UNIDADE II - RUA QUITINO BOCAIUVA, 254 - CENTRO</td>
@@ -138,15 +159,13 @@
             <td colspan="2"><font size = -1><?= $paciente['0']->paciente_id; ?></td>
             <td><font size = -1>Exames Realizados</td>
         </tr>
-
-
+       
         <?
         $DT_ENTREGA = "";
         $b = 0;
         foreach ($exames as $item) :
 
             $b++;
-
             $data = $item->data_autorizacao;
             $dia = strftime("%A", strtotime($data));
 
@@ -185,13 +204,13 @@
                         ?>
                     <tr>
                         <td ><font size = -1>&nbsp;</td><? }
-                    ?>
+        ?>
                     <td width="40%;"><font size = -1>1 - <?= utf8_decode($item->procedimento) ?></td>
-                    <td ><font size = -1>Data de Entrega: <?= $DT_ENTREGA ?></td>
-                    <?
-                }
-            endforeach;
-            ?>
+                    <td ><font size = -1><?= $DT_ENTREGA ?></td>
+                <?
+            }
+        endforeach;
+        ?>
 
 
 

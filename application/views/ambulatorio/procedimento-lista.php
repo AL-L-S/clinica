@@ -39,9 +39,9 @@
                     <tbody>
                         <?php
                         if ($limit != "todos") {
-                            $lista = $this->procedimento->listar($_GET)->orderby('nome')->orderby('grupo')->limit($limit, $pagina)->get()->result();
+                            $lista = $this->procedimento->listar($_GET)->orderby('grupo')->orderby('nome')->limit($limit, $pagina)->get()->result();
                         } else {
-                            $lista = $this->procedimento->listar($_GET)->orderby('nome')->orderby('grupo')->get()->result();
+                            $lista = $this->procedimento->listar($_GET)->orderby('grupo')->orderby('nome')->get()->result();
 
                         }
                         $estilo_linha = "tabela_content01";
