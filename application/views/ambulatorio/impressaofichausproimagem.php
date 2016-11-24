@@ -109,7 +109,7 @@
                     <td width="40%;"><font size = -1><?= utf8_decode($item->procedimento) ?></td>
                     <td ><font size = -1><?= $item->convenio ?></td>
                     <td width="25%;"><font size = -1>Dr(a). <?= utf8_decode($item->medicosolicitante) ?></td>
-                    <td ><img src="<?= base_url() . "upload/barcodeimg/$item->procedimento_tuss_id/$item->codigo.png"?>"</td>
+                    <td ><img src="<?= base_url() . "upload/barcodeimg/$item->paciente_id/$item->agenda_exames_id.png"?>"</td>
                 </tr>
                 <?
             }
