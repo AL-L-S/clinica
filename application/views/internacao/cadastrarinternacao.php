@@ -1,3 +1,7 @@
+<?
+$unidade= $this->internacao_m->listaunidade();
+?>
+
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <h3 class="h3_title">Internacao</h3>
     <form name="form_unidade" id="form_unidade" action="<?= base_url() ?>internacao/internacao/gravarinternacao/<?= $paciente_id; ?>" method="post">
@@ -32,8 +36,7 @@
             <legend>Dados da internacao</legend>
             <div>
                 <label>Leito</label>
-                <input type="hidden" id="txtinternacao_id" name="internacao_id"  class="texto01" value="<?= @$obj->_internacao_id; ?>" readonly/>
-                <input type="hidden" id="txtleitoID" class="texto_id" name="leitoID" value="<?= @$obj->_leito; ?>" />
+                
                 <input type="text" id="txtleito" class="texto08" name="txtleito" value="<?= @$obj->_leito_nome; ?>" />
             </div>
             <br>
@@ -62,7 +65,7 @@
             </div>
             <div>
                 <label>Forma de entrada</label>
-                <select name="forma" id="txtforma" class="texto08" selected="<?= @$obj->_forma_de_entrada; ?>">
+                <select name="forma" id="txtforma" class="texto06" selected="<?= @$obj->_forma_de_entrada; ?>">
                     <option value=Residencia <?
 if (@$obj->_tipo == 'Residencia'):echo 'selected';
 endif;
@@ -115,9 +118,22 @@ endif;
 ?>>Emergencia</option>
                 </select>
             </div>
+            
+            <div>
+                <label>Hospital </label>
+                <select name="hospital" id="txthospital" class="texto06" selected="<?= @$obj->_hospital; ?>">
+                    
+                    <? foreach ($unidade as $value){?>
+                
+            
+                    <option value="<?=$value->internacao_unidade_id?>"> <?=$value->nome?></option>
+                    <?}?>
+                    
+                </select>
+            </div>
             <div>
                 <label>Procedimento</label>
-                <input type="hidden" id="txtprocedimentoID" class="texto_id" name="procedimentoID" value="<?= @$obj->_procedimento; ?>" />
+                <input type="hidden" id="txtprocedimentoID" class="texto_id" name="procedimentoID" value="<?= @$obj->_procedimento_id; ?>" />
                 <input type="text" id="txtprocedimento" class="texto10" name="txtprocedimento" value="<?= @$obj->_procedimento_nome; ?>" />
             </div>
             <div>
@@ -145,25 +161,71 @@ endif;
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-    $(function() {
-        $( "#txtleito" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=leito",
-            minLength: 2,
-            focus: function( event, ui ) {
-                $( "#txtleito" ).val( ui.item.label );
-                return false;
-            },
-            select: function( event, ui ) {
-                $( "#txtleito" ).val( ui.item.value );
-                $( "#txtleitoID" ).val( ui.item.id );
-                return false;
-            }
-        });
-    });
+    
+    
+    $(document).ready(function() {
+                        jQuery('#form_unidade').validate({
+                            rules: {
+                                nome: {
+                                    required: true,
+                                },
+                                txtleito: {
+                                    required: true
+                                },
+                                txtoperador: {
+                                    required: true
+                                },
+                                txtcid1: {
+                                    required: true
+                                },
+                                sisreg: {
+                                    required: true
+                                },
+                                aih: {
+                                    required: true
+                                },
+                                txtprocedimento: {
+                                    required: true
+                                },
+                                data: {
+                                    required: true
+                                },
+                                
+
+                            },
+                            messages: {
+                                nome: {
+                                    required: "*"
+                                },
+                                txtleito: {
+                                    required: "*"
+                                },
+                                txtoperador: {
+                                    required: "*"
+                                },
+                                txtcid1: {
+                                    required: "*"
+                                },
+                                sisreg: {
+                                    required: "*"
+                                },
+                                aih: {
+                                    required: "*"
+                                },
+                                txtprocedimento: {
+                                    required: "*"
+                                },
+                                data: {
+                                    required: "*"
+                                },
+                                
+                            }
+                        });
+                    });
 
     $(function() {
         $( "#txtoperador" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=operador",
+            source: "<?= base_url() ?>index?c=autocomplete&m=operador",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtoperador" ).val( ui.item.label );
@@ -179,7 +241,7 @@ endif;
 
     $(function() {
         $( "#txtprocedimento" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimento",
+            source: "<?= base_url() ?>index?c=autocomplete&m=procedimento",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtprocedimento" ).val( ui.item.label );
@@ -195,7 +257,7 @@ endif;
 
     $(function() {
         $( "#txtcid1" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+            source: "<?= base_url() ?>index?c=autocomplete&m=cid1",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtcid1" ).val( ui.item.label );
@@ -211,7 +273,7 @@ endif;
 
     $(function() {
         $( "#txtcid2" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid2",
+            source: "<?= base_url() ?>index?c=autocomplete&m=cid2",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtcid2" ).val( ui.item.label );

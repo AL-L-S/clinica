@@ -2450,13 +2450,11 @@ ORDER BY p.nome";
 
     function relatorioaniversariantes() {
 
-        $mes = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
-
-        $mes = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $mes = $_POST['txtdata_inicio'];
 
         $sql = "SELECT p.nome as paciente, p.nascimento , p.celular , p.telefone from ponto.tb_paciente p
                 left join ponto.tb_convenio c on c.convenio_id = p.convenio_id
-                Where Extract(Month From p.nascimento) = $mes ";
+                Where Extract(Month From p.nascimento) = $mes order by Extract(Day From p.nascimento)";
         $return = $this->db->query($sql)->result();
         return $return;
     }
@@ -4234,9 +4232,9 @@ AND data <= '$data_fim'";
             $sql = "UPDATE ponto.tb_agenda_exames
                     SET data_antiga = data
                     WHERE agenda_exames_id = $agenda_exames_id;";
-            
+
             $this->db->query($sql);
-            
+
 //            $this->db->set('data_antiga', 'data');
             $this->db->set('data_aterardatafaturamento', $horario);
             $this->db->set('data_autorizacao', $dataautorizacao);
@@ -5004,18 +5002,18 @@ AND data <= '$data_fim'";
 
         $teste = $_POST['qtde'];
         $w = 0;
-        foreach ($forma_pagamento as $value) {
+        foreach ($forma_pagamento as $value) { 
             $classe = "CAIXA" . " " . $value->nome;
             $w++;
             $valor_total = (str_replace(".", "", $teste[$w]));
             $valor_total = (str_replace(",", ".", $valor_total));
             if ($valor_total != '0.00') {
-
+                
                 if (empty($value->nome) || empty($value->conta_id) || empty($value->credor_devedor) || empty($value->parcelas)) {
                     return 10;
                 }
 
-                if (!isset($value->tempo_receber) || $value->tempo_receber == 0) {
+                if ((empty($value->tempo_receber) || $value->tempo_receber == 0) && (empty($value->dia_receber) || $value->dia_receber == 0)) {
                     $this->db->set('data', $_POST['data1']);
                     $this->db->set('valor', $valor_total);
                     $this->db->set('classe', $classe);
@@ -5027,6 +5025,7 @@ AND data <= '$data_fim'";
                     $this->db->insert('tb_entradas');
                     $entradas_id = $this->db->insert_id();
 
+                    $this->db->set('data', $_POST['data1']);
                     $this->db->set('valor', $valor_total);
                     $this->db->set('entrada_id', $entradas_id);
                     $this->db->set('conta', $value->conta_id);
@@ -5083,7 +5082,7 @@ AND data <= '$data_fim'";
                                 $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
                                 $valor_parcelado = $valor_com_juros / $parcelas;
                             } else {
-                                $valor_parcelado = $valor / $parcelas;
+                                $valor_parcelado = $valor;
                             }
 
                             if ($parcelas > 1) {
@@ -5165,7 +5164,7 @@ AND data <= '$data_fim'";
                                     $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
                                     $valor_parcelado = $valor_com_juros / $parcelas;
                                 } else {
-                                    $valor_parcelado = $valor / $parcelas;
+                                    $valor_parcelado = $valor;
                                 }
 
                                 $tempo_receber = $value->tempo_receber;
@@ -5558,7 +5557,7 @@ ORDER BY ae.agenda_exames_id)";
         return $return->result();
     }
 
-    function listarempresa($empresa_id) {
+    function listarempresa($empresa_id = null) {
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('razao_social,
@@ -5568,7 +5567,8 @@ ORDER BY ae.agenda_exames_id)";
                             telefone,
                             producaomedicadinheiro,
                             celular,
-                            bairro');
+                            bairro,
+                            impressao_tipo');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->orderby('empresa_id');
@@ -5586,6 +5586,8 @@ ORDER BY ae.agenda_exames_id)";
         $return = $this->db->get();
         $x = $return->result();
         $especialidade = $x[0]->grupo;
+
+//        var_dump($x); die;
 
         if ($x[0]->nome != 'PARTICULAR') {
 //            $this->db->select('confirmado , agenda_exames_id');
@@ -5628,6 +5630,7 @@ ORDER BY ae.agenda_exames_id)";
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
+                            pt.grupo ,
                             al.situacao as situacaolaudo');
             $this->db->from('tb_agenda_exames ae');
             $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -5644,7 +5647,8 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->orderby('ae.numero_sessao');
             $this->db->where('ae.empresa_id', $empresa_id);
             $this->db->where('ae.paciente_id', $paciente_id);
-            $this->db->where('ae.tipo', $especialidade);
+//            $this->db->where('ae.tipo ', $especialidade);
+            $this->db->where('pt.grupo ', $especialidade);
             $this->db->where('ae.ativo', 'false');
             $this->db->where('ae.numero_sessao >=', '1');
             $this->db->where('ae.realizada', 'false');
@@ -5652,6 +5656,20 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->where('ae.cancelada', 'false');
             $return = $this->db->get();
             $result = $return->result();
+
+
+//            $contador = 0;
+//            foreach ($result as $item) {
+//                $data_atual = date('Y-m-d');
+//                $data1 = new DateTime($data_atual);
+//                $data2 = new DateTime($item->data);
+//                $intervalo = $data1->diff($data2);
+//
+//                if ($intervalo->d == 0) {
+//                    $contador++;
+//                }
+//            }
+
 
             if (count($result) != 0) {
                 return true;
@@ -6254,8 +6272,10 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('tipo', $_POST['tipo']);
             $this->db->set('ativo', 'f');
             $this->db->set('realizada', 't');
-            $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
-            $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+            if ($_POST['medicoagenda'] != "") {
+                $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+                $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+            }
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');
             $this->db->set('guia_id', $_POST['txtguia_id']);

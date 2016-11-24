@@ -54,10 +54,11 @@
                                         </center></a>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                    <a href="<?= base_url() ?>emergencia/filaacolhimento/novo/<?= $item->internacao_enfermaria_id ?>"><center>
-                                            <img border="0" title="Solicitar acolhimento" alt="Detalhes"
-                                                 src="<?= base_url() ?>img/form/page_white_gear.png" />
-                                        </center></a>
+                                    <a onclick="javascript: return confirm('Deseja realmente excluir a Enfermaria?');"
+                                       href="<?=base_url()?>internacao/internacao/excluirenfermaria/<?= $item->internacao_enfermaria_id ?>">
+                                        <center><img border="0" title="Excluir" alt="Excluir"
+                                                    src="<?=  base_url()?>img/form/page_white_delete.png" /></center>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>

@@ -2996,9 +2996,9 @@ class exametemp_model extends Model {
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
-        $this->db->where("ag.tipo !=", 'EXAME');
-        $this->db->where("ag.tipo !=", 'CONSULTA');
+//        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+//        $this->db->where("ag.tipo !=", 'EXAME');
+//        $this->db->where("ag.tipo !=", 'CONSULTA');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
         $this->db->orderby("pt.nome");
