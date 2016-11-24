@@ -77,7 +77,7 @@
 
                 <? endforeach; ?>
                 <tr>
-                    <td colspan="4"><b>Saldo Final</b></td>
+                    <td colspan="5"><b>Saldo Final</b></td>
                     <td ><b><?= number_format($totalrelatorio, 2, ",", "."); ?></b></td>
                     <td ><b></b></td>
                     <td ><b><?= number_format($total, 2, ",", "."); ?></b></td>
