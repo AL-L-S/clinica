@@ -92,7 +92,10 @@ class pacientes extends BaseController {
             $data = array('upload_data' => $this->upload->data());
         }
         $data['paciente_id'] = $paciente_id;
-        $this->anexarimagem($paciente_id);
+        
+        redirect(base_url() . "cadastros/pacientes/anexarimagem/$paciente_id");
+
+//        $this->anexarimagem($paciente_id);
     }
 
     function excluirimagem($paciente_id, $nome) {
@@ -108,7 +111,10 @@ class pacientes extends BaseController {
         $destino = "./uploadopm/paciente/$paciente_id/$nome";
         copy($origem, $destino);
         unlink($origem);
-        $this->anexarimagem($paciente_id);
+        
+        redirect(base_url() . "cadastros/pacientes/anexarimagem/$paciente_id");
+
+//        $this->anexarimagem($paciente_id);
     }
 
     function autorizarambulatoriotemp($paciente_id) {

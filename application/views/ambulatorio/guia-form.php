@@ -32,7 +32,7 @@
         ?>
         <h3 class="singular"><a href="#">Marcar exames</a></h3>
         <div>
-            <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos" method="post">
+            <form name="form_guia" id="form_guia" onsubmit="return valida(this)" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos" method="post">
                 <fieldset>
                     <legend>Dados do Pacienete</legend>
                     <div>
@@ -82,12 +82,12 @@
                         <thead>
 
                             <tr>
-                                <th width="70px;" class="tabela_header">Sala</th>
-                                <th class="tabela_header">Medico</th>
-                                <th class="tabela_header">Qtde</th>
-                                <th colspan="2" class="tabela_header">Solicitante</th>
-                                <th class="tabela_header">Convenio</th>
-                                <th class="tabela_header">Procedimento</th>
+                                <th width="70px;" class="tabela_header">Sala *</th>
+                                <th class="tabela_header">Medico *</th>
+                                <th class="tabela_header">Qtde*</th>
+                                <th colspan="2" class="tabela_header">Solicitante*</th>
+                                <th class="tabela_header">Convenio *</th>
+                                <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Pagamento</th>
@@ -162,7 +162,7 @@
                         </tfoot>
                     </table> 
                     <hr/>
-                    <button type="submit" name="btnEnviar">Adicionar</button>
+                    <button onclick="valida()" name="btnEnviar">Adicionar</button>
                 </fieldset>
             </form>
             <fieldset>
@@ -342,6 +342,31 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
+function valida(){
+    var sala = $("#sala1").val();
+    var medicoagenda = $("#medicoagenda").val();
+    var qtde = $("#qtde1").val();
+    var medico = $("#medico1").val();
+    var convenio = $("#convenio1").val();
+    var procedimento = $("#procedimento1").val();
+    var validado == true;
+    
+    if(sala == '' || medicoagenda == '' || qtde == '' || medico == '' || convenio == '' || procedimento == ''){
+        validado = false;
+    }
+    if (validado  == false){
+        if(event.preventDefault){
+            event.preventDefault();
+        } 
+        else {
+            event.returnValue = false; // for IE as dont support preventDefault;
+        }
+        alert("Preencha os campos obrigatorios.");
+    }
+    return validado;
+//    action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos";
+}
+
                                 $(function () {
                                     $("#data").datepicker({
                                         autosize: true,
@@ -357,53 +382,6 @@
                                 $(function () {
                                     $("#accordion").accordion();
                                 });
-
-
-                    $(document).ready(function() {
-                        jQuery('#form_guia').validate({
-                            rules: {
-                                sala1: {
-                                    required: true
-                                },
-                                medicoagenda: {
-                                    required: true
-                                },
-                                qtde1: {
-                                    required: true
-                                },
-                                medico1: {
-                                    required: true
-                                },
-                                convenio1: {
-                                    required: true
-                                },
-                                procedimento1: {
-                                    required: true
-                                }
-
-                            },
-                            messages: {
-                                sala1: {
-                                    required: "*"
-                                },
-                                medicoagenda: {
-                                    required: "*"
-                                },
-                                qtde1: {
-                                    required: "*"
-                                },
-                                medico1: {
-                                    required: "*"
-                                },
-                                convenio1: {
-                                    required: "*"
-                                },
-                                procedimento1: {
-                                    required: "*"
-                                }
-                            }
-                        });
-                    });
 
 
                                         $(function () {
