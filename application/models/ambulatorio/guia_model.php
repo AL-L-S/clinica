@@ -5026,6 +5026,7 @@ AND data <= '$data_fim'";
                     $entradas_id = $this->db->insert_id();
 
                     $this->db->set('valor', $valor_total);
+                    $this->db->set('data', $_POST['data1']);
                     $this->db->set('entrada_id', $entradas_id);
                     $this->db->set('conta', $value->conta_id);
                     $this->db->set('nome', $value->credor_devedor);
@@ -5081,7 +5082,7 @@ AND data <= '$data_fim'";
                                 $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
                                 $valor_parcelado = $valor_com_juros / $parcelas;
                             } else {
-                                $valor_parcelado = $valor / $parcelas;
+                                $valor_parcelado = $valor;
                             }
 
                             if ($parcelas > 1) {
