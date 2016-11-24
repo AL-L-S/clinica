@@ -2854,6 +2854,43 @@ class exame_model extends Model {
             return true;
     }
 
+    function verificadiasessao($agenda_exames_id) {
+
+        $this->db->select('agrupador_fisioterapia,
+                            numero_sessao,
+                            qtde_sessao');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $query = $this->db->get();
+        $retorno = $query->result();
+
+        $sessao = $retorno[0]->numero_sessao;
+        $agrupador = $retorno[0]->agrupador_fisioterapia;
+        $qtde_sessao = $retorno[0]->qtde_sessao;
+
+
+        $i = 1;
+        $x = 0;
+        while ($i < $qtde_sessao) {
+
+            $data = date("Y-m-d");
+            $this->db->select('data');
+            $this->db->from('tb_agenda_exames');
+            $this->db->where('agrupador_fisioterapia', $agrupador);
+            $this->db->where('numero_sessao', $i);
+            $this->db->where('data', $data);
+            $query2 = $this->db->get();
+            $retorno2 = $query2->result();
+
+            if (count($retorno2) != 0) {
+                $x++;
+            }
+            $i++;
+        }
+
+        return $x;
+    }
+
     function autorizarsessao($agenda_exames_id) {
 
         $horario = date("Y-m-d H:i:s");

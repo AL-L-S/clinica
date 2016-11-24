@@ -4232,9 +4232,9 @@ AND data <= '$data_fim'";
             $sql = "UPDATE ponto.tb_agenda_exames
                     SET data_antiga = data
                     WHERE agenda_exames_id = $agenda_exames_id;";
-            
+
             $this->db->query($sql);
-            
+
 //            $this->db->set('data_antiga', 'data');
             $this->db->set('data_aterardatafaturamento', $horario);
             $this->db->set('data_autorizacao', $dataautorizacao);
@@ -5556,7 +5556,7 @@ ORDER BY ae.agenda_exames_id)";
         return $return->result();
     }
 
-    function listarempresa($empresa_id) {
+    function listarempresa($empresa_id = null) {
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('razao_social,
@@ -5566,7 +5566,8 @@ ORDER BY ae.agenda_exames_id)";
                             telefone,
                             producaomedicadinheiro,
                             celular,
-                            bairro');
+                            bairro,
+                            impressao_tipo');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->orderby('empresa_id');
@@ -5584,6 +5585,8 @@ ORDER BY ae.agenda_exames_id)";
         $return = $this->db->get();
         $x = $return->result();
         $especialidade = $x[0]->grupo;
+
+//        var_dump($x); die;
 
         if ($x[0]->nome != 'PARTICULAR') {
 //            $this->db->select('confirmado , agenda_exames_id');
@@ -5626,6 +5629,7 @@ ORDER BY ae.agenda_exames_id)";
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
+                            pt.grupo ,
                             al.situacao as situacaolaudo');
             $this->db->from('tb_agenda_exames ae');
             $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -5642,7 +5646,8 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->orderby('ae.numero_sessao');
             $this->db->where('ae.empresa_id', $empresa_id);
             $this->db->where('ae.paciente_id', $paciente_id);
-            $this->db->where('ae.tipo', $especialidade);
+//            $this->db->where('ae.tipo ', $especialidade);
+            $this->db->where('pt.grupo ', $especialidade);
             $this->db->where('ae.ativo', 'false');
             $this->db->where('ae.numero_sessao >=', '1');
             $this->db->where('ae.realizada', 'false');
@@ -5650,6 +5655,20 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->where('ae.cancelada', 'false');
             $return = $this->db->get();
             $result = $return->result();
+
+
+//            $contador = 0;
+//            foreach ($result as $item) {
+//                $data_atual = date('Y-m-d');
+//                $data1 = new DateTime($data_atual);
+//                $data2 = new DateTime($item->data);
+//                $intervalo = $data1->diff($data2);
+//
+//                if ($intervalo->d == 0) {
+//                    $contador++;
+//                }
+//            }
+            
 
             if (count($result) != 0) {
                 return true;
