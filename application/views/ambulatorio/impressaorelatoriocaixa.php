@@ -441,7 +441,7 @@
                     
 $w++;?>
 
-                <input type="hidden" class="texto3" name="qtde[<?=$w?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
+                <input type="text" class="texto3" name="qtde[<?=$w?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
                 <? }
                 ?>
     <!--                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($DINHEIRO, 2, ',', '.'); ?>" readonly/>
@@ -471,16 +471,16 @@ $w++;?>
                 </tr>
                 <tr>
                     <td colspan="5"></td>
-                    <? if ($faturado == 't' && $exame == "") { ?>
-                        <? if ($operador == 0 && $financeiro == 'f') { ?>
+                    <? //if ($faturado == 't' && $exame == "") { ?>
+                        <?// if ($operador == 0 && $financeiro == 'f') { ?>
                             <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
-                        <? } else {
+                        <? //} else {
                             ?>
                             <td colspan="2" ><b>Caixa Fechado</b></td>
-                        <? } ?>
-                    <? } else { ?>
+                        <?// } ?>
+                    <? //} else { ?>
                         <td colspan="3" ><b>Pendencias de Faturamento / Finalizar exame</b></td>
-                    <? } ?>
+                    <?// } ?>
                 </tr>
 
 
