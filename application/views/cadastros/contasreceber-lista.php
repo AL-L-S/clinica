@@ -40,18 +40,22 @@
                             </select>
                         </th>
                         <th class="tabela_title">
-                            <?if(isset($_GET['datainicio'])){?>
-                            <input type="text"  id="datainicio" alt="date" name="datainicio" class="size1"  value="<?php echo @$_GET['datainicio']; ?>" />
-                            <?}else{?>
-                               <input type="text"  id="datainicio" alt="date" name="datainicio" class="size1"  value="<?php echo date('01/m/Y'); ?>" /> 
-                            <?}?>
+                            <? if (isset($_GET['datainicio'])) { ?>
+                                <input type="text"  id="datainicio" alt="date" name="datainicio" class="size1"  value="<?php echo @$_GET['datainicio']; ?>" />
+                            <? } else { ?>
+    <!--                                <input type="text"  id="datainicio" alt="date" name="datainicio" class="size1"  value="<?php echo @date('01/m/Y'); ?>" /> -->
+                                <input type="text"  id="datainicio" alt="date" name="datainicio" class="size1"  value="<?php echo @$_GET['datainicio']; ?>" />
+
+                            <? } ?>
                         </th>
                         <th class="tabela_title">
-                            <?if(isset($_GET['datafim'])){?>
-                            <input type="text"  id="datafim" alt="date" name="datafim" class="size1"  value="<?php echo @$_GET['datafim']; ?>" />
-                            <?}else{?>
-                            <input type="text"  id="datafim" alt="date" name="datafim" class="size1"  value="<?php echo date('t/m/Y'); ?>" /> 
-                            <?}?>
+                            <? if (isset($_GET['datafim'])) { ?>
+                                <input type="text"  id="datafim" alt="date" name="datafim" class="size1"  value="<?php echo @$_GET['datafim']; ?>" />
+                            <? } else { ?>
+    <!--                                <input type="text"  id="datafim" alt="date" name="datafim" class="size1"  value="<?php echo @date('t/m/Y'); ?>" /> -->
+                                <input type="text"  id="datafim" alt="date" name="datafim" class="size1"  value="<?php echo @$_GET['datafim']; ?>" />
+
+                            <? } ?>
                         </th>
                         <th class="tabela_title">
                             <select name="nome" id="nome" class="size2">
@@ -204,25 +208,48 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-                                            $(function () {
-                                                $("#accordion").accordion();
-                                            });
+                                    $(function () {
+                                        $("#datainicio").datepicker({
+                                            autosize: true,
+                                            changeYear: true,
+                                            changeMonth: true,
+                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                                            dateFormat: 'dd/mm/yy'
+                                        });
+                                    });
+                                    $(function () {
+                                        $("#datafim").datepicker({
+                                            autosize: true,
+                                            changeYear: true,
+                                            changeMonth: true,
+                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                                            dateFormat: 'dd/mm/yy'
+                                        });
+                                    });
 
-                                            $(function () {
-                                                $('#nome').change(function () {
-                                                    if ($(this).val()) {
-                                                        $('.carregando').show();
-                                                        $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
-                                                            options = '<option value=""></option>';
-                                                            for (var c = 0; c < j.length; c++) {
-                                                                options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
-                                                            }
-                                                            $('#nome_classe').html(options).show();
-                                                            $('.carregando').hide();
-                                                        });
-                                                    } else {
-                                                        $('#nome_classe').html('<option value="">TODOS</option>');
+                                    $(function () {
+                                        $("#accordion").accordion();
+                                    });
+
+                                    $(function () {
+                                        $('#nome').change(function () {
+                                            if ($(this).val()) {
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
                                                     }
+                                                    $('#nome_classe').html(options).show();
+                                                    $('.carregando').hide();
                                                 });
-                                            });
+                                            } else {
+                                                $('#nome_classe').html('<option value="">TODOS</option>');
+                                            }
+                                        });
+                                    });
 </script>

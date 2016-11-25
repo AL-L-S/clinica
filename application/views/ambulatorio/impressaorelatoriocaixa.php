@@ -83,7 +83,7 @@
                         $faturado = 'f';
                     }
 
-                    $valortotal = $valortotal + $item->valor_total;
+                    $valortotal = $valortotal + $item->valor_total + $item->desconto;
 
                     if ($i == 1 || $item->nome == $operadorexames) {
 
