@@ -996,3 +996,7 @@ CREATE TABLE ponto.tb_internacao_evolucao
   CONSTRAINT tb_internacao_evolucao_pkey PRIMARY KEY (internacao_evolucao_id )
 );
 
+-- Dia 25/11/16
+
+INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+    VALUES ('PROCEDIMENTO', 'EXAME');

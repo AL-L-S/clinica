@@ -417,6 +417,10 @@ class Exametemp extends BaseController {
                 $data['horarios_livres'] = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0]);
 
                 $tothorarios = count($data['horarios_livres']);
+                if($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 0){
+                    $_POST['sessao'] = 1;
+                }
+                
                 $_POST['sessao'] = (int) $_POST['sessao'];
 
                 if ($tothorarios < $_POST['sessao']) {
