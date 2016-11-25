@@ -7,29 +7,31 @@
 
                     <dl class="dl_desconto_lista">
                         <dt>
-                        <label>Valor total a faturar</label>
+                            <label>Valor total a faturar</label>
                         </dt>
                         <dd>
                             <input type="text" name="valorafaturar" id="valorafaturar" class="texto01" value="<?= $exame[0]->total; ?>" readonly />
                             <input type="hidden" name="paciente" id="paciente" class="texto01" value="<?= $paciente[0]->paciente_id; ?>" />
                             <input type="hidden" name="exame" id="exame" class="texto01" value="<?= $paciente[0]->agenda_exames_id; ?>"/>
                             <input type="hidden" name="guia_id" id="guia_id" class="texto01" value="<?= $guia_id; ?>"/>
+                            <input type="hidden" name="financeiro_grupo_id" id="financeiro_grupo_id" class="texto01" value="<?= $financeiro_grupo_id; ?>"/>
+
                         </dd>
                         <dt>
-                        <label>Desconto</label>
+                            <label>Desconto</label>
                         </dt>
                         <dd>
                             <input type="text" name="desconto" id="desconto" value="<?= $valor; ?>" class="texto01"/>
                         </dd>
-<!--                         <dt>
-                        <label>Dinheiro</label>
-                        </dt>-->
+                        <!--                         <dt>
+                                                <label>Dinheiro</label>
+                                                </dt>-->
                         <dd>
                             <input type="hidden" name="dinheiro" id="dinheiro" value="0" onblur="history.go(0)"  class="texto01"/>
                         </dd>
-<!--                        <dt>
-                        <label>Total a com cartao</label>
-                        </dt>-->
+                        <!--                        <dt>
+                                                <label>Total a com cartao</label>
+                                                </dt>-->
                         <dd>
                             <input type="hidden" name="totalpagar" id="totalpagar"  class="texto01"/>
                         </dd>
@@ -98,7 +100,7 @@
                             <input style="width: 60px;" type="number" name="parcela4" id="parcela4"  value="1" min="1" />
                         </dd>
                         <dt>
-                        <label>Diferen&ccedil;a</label>
+                            <label>Diferen&ccedil;a</label>
                         </dt>
                         <dd>
                             <input type="text" name="valortotal" id="valortotal"  onkeyup="multiplica()"  class="texto01" readonly/>
@@ -120,14 +122,14 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-        
-    //    (function($){
-    //        $(function(){
-    //            $('input:text').setMask();
-    //        });
-    //    })(jQuery);
-    
- $(document).ready(function() {
+
+                                //    (function($){
+                                //        $(function(){
+                                //            $('input:text').setMask();
+                                //        });
+                                //    })(jQuery);
+
+                                $(document).ready(function () {
 
                                     function multiplica()
                                     {
@@ -146,7 +148,7 @@
                                         numer4 = parseFloat(document.form_faturar.valor4.value.replace(",", "."));
                                         total += numer1 + numer2 + numer3 + numer4;
                                         $('#totalpagar').val(totalpagarcartao);
-                                        
+
                                         valordescontado = valor * desconto;
                                         //resultado = total - valordescontado;
                                         resultado = valor - (total + valordesconto);
@@ -179,7 +181,11 @@
                                                     options = j[0].ajuste;
                                                     parcelas = j[0].parcelas;
                                                     numer_1 = parseFloat(document.form_faturar.valor1.value.replace(",", "."));
-                                                    document.getElementById("parcela1").max = parcelas;
+                                                    if (j[0].parcelas != null) {
+                                                        document.getElementById("parcela1").max = parcelas;
+                                                    } else {
+                                                        document.getElementById("parcela1").max = '1';
+                                                    }
 
                                                     if (j[0].ajuste != null) {
                                                         document.getElementById("ajuste1").value = options;
@@ -211,7 +217,11 @@
                                                     options = j[0].ajuste;
                                                     parcelas = j[0].parcelas;
                                                     numer_2 = parseFloat(document.form_faturar.valor2.value.replace(",", "."));
-                                                    document.getElementById("parcela2").max = parcelas;
+                                                    if (j[0].parcelas != null) {
+                                                        document.getElementById("parcela2").max = parcelas;
+                                                    } else {
+                                                        document.getElementById("parcela2").max = '1';
+                                                    }
 
                                                     if (j[0].ajuste != null) {
                                                         document.getElementById("ajuste2").value = options;
@@ -245,7 +255,11 @@
                                                     options = j[0].ajuste;
                                                     parcelas = j[0].parcelas;
                                                     numer_3 = parseFloat(document.form_faturar.valor3.value.replace(",", "."));
-                                                    document.getElementById("parcela3").max = parcelas;
+                                                    if (j[0].parcelas != null) {
+                                                        document.getElementById("parcela3").max = parcelas;
+                                                    } else {
+                                                        document.getElementById("parcela3").max = '1';
+                                                    }
                                                     valorajuste3 = (numer3 * ajuste3) / 100;
                                                     pg3 = numer_3 - valorajuste3;
                                                     if (j[0].ajuste != null) {
@@ -276,7 +290,11 @@
                                                     options = j[0].ajuste;
                                                     parcelas = j[0].parcelas;
                                                     numer_4 = parseFloat(document.form_faturar.valor4.value.replace(",", "."));
-                                                    document.getElementById("parcela4").max = parcelas;
+                                                    if (j[0].parcelas != null) {
+                                                        document.getElementById("parcela4").max = parcelas;
+                                                    } else {
+                                                        document.getElementById("parcela4").max = '1';
+                                                    }
                                                     if (j[0].ajuste != null) {
                                                         document.getElementById("ajuste4").value = options;
                                                         valorajuste4 = (numer4 * options) / 100;

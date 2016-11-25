@@ -62,7 +62,7 @@
     });
     $(function() {
         $( "#txtNomeLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=funcionario",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=funcionario",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtNomeLabel" ).val( ui.item.label );

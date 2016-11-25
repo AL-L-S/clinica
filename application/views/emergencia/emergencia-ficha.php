@@ -338,7 +338,7 @@
 
         $(function() {
         $( "#txtmedicolabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=medico",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=medico",
             minLength: 1,
             focus: function( event, ui ) {
                 $( "#txtmedicolabel" ).val( ui.item.label );
@@ -354,7 +354,7 @@
 
         $(function() {
         $( "#paciente" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=pacientebe",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientebe",
             minLength: 4,
             focus: function( event, ui ) {
                 $( "#paciente" ).val( ui.item.label );
@@ -373,7 +373,7 @@
 
         $(function() {
         $( "#txtCICPrimariolabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cid10",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid10",
             minLength: 3,
             focus: function( event, ui ) {
                 $( "#txtCICPrimariolabel" ).val( ui.item.label );
@@ -389,7 +389,7 @@
 
         $(function() {
         $( "#txtCICsecundariolabel1" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cid10",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid10",
             minLength: 3,
             focus: function( event, ui ) {
                 $( "#txtCICsecundariolabel1" ).val( ui.item.label );
@@ -405,7 +405,7 @@
 
         $(function() {
         $( "#txtCICsecundariolabel2" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cid10",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid10",
             minLength: 3,
             focus: function( event, ui ) {
                 $( "#txtCICsecundariolabel2" ).val( ui.item.label );
@@ -421,7 +421,7 @@
 
         $(function() {
         $( "#txtCICsecundariolabel3" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cid10",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid10",
             minLength: 3,
             focus: function( event, ui ) {
                 $( "#txtCICsecundariolabel3" ).val( ui.item.label );

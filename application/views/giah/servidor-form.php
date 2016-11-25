@@ -138,7 +138,7 @@
 
     $(function() {
         $( "#txtUOContratoLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=uo",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=uo",
             minLength: 1,
             focus: function( event, ui ) {
                 $( "#txtUOContratoLabel" ).val( ui.item.label );
@@ -154,7 +154,7 @@
 
     $(function() {
         $( "#txtUOLotacaoLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=uo",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=uo",
             minLength: 1,
             focus: function( event, ui ) {
                 $( "#txtUOLotacaoLabel" ).val( ui.item.label );
@@ -170,7 +170,7 @@
 
     $(function() {
         $( "#txtFuncaoLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=funcao",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=funcao",
             minLength: 1,
             focus: function( event, ui ) {
                 $( "#txtFuncaoLabel" ).val( ui.item.label );
@@ -186,7 +186,7 @@
 
     $(function() {
         $( "#txtClassificacaoLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=classificacao",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=classificacao",
             minLength: 1,
             focus: function( event, ui ) {
                 $( "#txtClassificacaoLabel" ).val( ui.item.label );

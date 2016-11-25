@@ -19,7 +19,7 @@
 <script type="text/javascript">
         $(function() {
         $( "#labeldescricao" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=procedimento",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimento",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#labeldescricao" ).val( ui.item.label );

@@ -47,7 +47,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->unidade; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                     <a href="<?= base_url() ?>internacao/internacao/novointernacao/<?= $item->paciente_id ?>"><center>
-                                            <img border="0" title="Solicitar acolhimento" alt="Detalhes"
+                                            <img border="0" title="Solicitar Internação" alt="Detalhes"
                                                  src="<?= base_url() ?>img/form/page_white_gear.png" />
                                         </center></a>
                                 </td>

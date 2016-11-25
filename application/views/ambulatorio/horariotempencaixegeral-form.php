@@ -57,7 +57,7 @@
 <script type="text/javascript">
 
 
-    $(function() {
+    $(function () {
         $("#data_ficha").datepicker({
             autosize: true,
             changeYear: true,
@@ -70,15 +70,15 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#txtNome").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=paciente",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
             minLength: 3,
-            focus: function(event, ui) {
+            focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
                 $("#telefone").val(ui.item.itens);
@@ -89,12 +89,12 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         jQuery('#form_exametemp').validate({
             rules: {
                 data_ficha: {

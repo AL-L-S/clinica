@@ -37,7 +37,9 @@ class exame_model extends Model {
                             nome,
                             telefone,
                             nascimento,
-                            cpf');
+                            cpf,
+                            logradouro,
+                            numero');
         $this->db->from('tb_paciente');
         $this->db->where('ativo', 'true');
         if ($parametro != null) {
@@ -961,6 +963,9 @@ class exame_model extends Model {
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('ae.situacao', $args['situacao']);
         }
+        if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
+            $this->db->where('pt.medico', $args['c_s_medico']);
+        }
         return $this->db;
     }
 
@@ -1819,8 +1824,9 @@ class exame_model extends Model {
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where('ae.tipo', 'EXAME');
+        $this->db->where('ag.tipo', 'EXAME');
 //        $this->db->where('pt.grupo !=', 'CONSULTA');
 //        $this->db->where('pt.grupo !=', 'LABORATORIAL');
         $this->db->orderby('ae.data');
@@ -2165,8 +2171,9 @@ class exame_model extends Model {
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where('ae.tipo', 'CONSULTA');
+        $this->db->where('ag.tipo', 'CONSULTA');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         $this->db->orderby('al.situacao');
@@ -2845,6 +2852,43 @@ class exame_model extends Model {
             return false;
         else
             return true;
+    }
+
+    function verificadiasessao($agenda_exames_id) {
+
+        $this->db->select('agrupador_fisioterapia,
+                            numero_sessao,
+                            qtde_sessao');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $query = $this->db->get();
+        $retorno = $query->result();
+
+        $sessao = $retorno[0]->numero_sessao;
+        $agrupador = $retorno[0]->agrupador_fisioterapia;
+        $qtde_sessao = $retorno[0]->qtde_sessao;
+
+
+        $i = 1;
+        $x = 0;
+        while ($i < $qtde_sessao) {
+
+            $data = date("Y-m-d");
+            $this->db->select('data');
+            $this->db->from('tb_agenda_exames');
+            $this->db->where('agrupador_fisioterapia', $agrupador);
+            $this->db->where('numero_sessao', $i);
+            $this->db->where('data', $data);
+            $query2 = $this->db->get();
+            $retorno2 = $query2->result();
+
+            if (count($retorno2) != 0) {
+                $x++;
+            }
+            $i++;
+        }
+
+        return $x;
     }
 
     function autorizarsessao($agenda_exames_id) {

@@ -174,7 +174,7 @@
     
         $(function() {
         $( "#txtSetorLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=setor",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=setor",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtSetorLabel" ).val( ui.item.label );
@@ -189,7 +189,7 @@
     });
     $(function() {
         $( "#txtHorariostipoLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=horariostipo",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=horariostipo",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtHorariostipoLabel" ).val( ui.item.label );
@@ -205,7 +205,7 @@
 
     $(function() {
         $( "#txtCargoLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cargo",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cargo",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtCargoLabel" ).val( ui.item.label );
@@ -221,7 +221,7 @@
 
     $(function() {
         $( "#txtFuncaoLabel" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=funcao",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=funcao",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtFuncaoLabel" ).val( ui.item.label );

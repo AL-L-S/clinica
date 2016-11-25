@@ -249,73 +249,140 @@ class Guia extends BaseController {
             }
         }
 
-//HUMANA               
-//        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
-//            $this->load->View('ambulatorio/impressaofichaus', $data);
+
+//        foreach ($exames as $value) {
+//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/")) {
+//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/");
+//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/", 0777);
+//            }
+//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/")) {
+//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/");
+//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/", 0777);
+//            }
+//            $this->utilitario->barcode($value->agenda_exames_id, "/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/$value->agenda_exames_id.png", $size = "20", "horizontal", "code128", true, 1);
 //        }
-//        if ($grupo == "MAMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichamamografia', $data);
-//        }
-//        if ($grupo == "DENSITOMETRIA") {
-//            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
-//        }
-//        if ($grupo == "RM") {
-//            $this->fichaxml($paciente_id, $guia_id, $exames_id);
-//        }
-//PROIMAGEM       
-//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA"  || $grupo == "TOMOGRAFIA") {
+//
+//        // criar codigo de barras (fim)
+//
+//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
 //            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
 //        }
 //        if ($grupo == "MAMOGRAFIA") {
 //            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
 //        }
-//         CLINICAS PACAJUS
-//        if ($grupo == "CONSULTA") {
-//            $this->load->View('ambulatorio/impressaofichaconsulta', $data);
-//        } else {
-//            if ($dinheiro == "t") {
-//                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-//            } else {
-//                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-//            }
-//        }
-//         CLINICAS FISIOCLINICA
-//        if ($grupo == "CONSULTA") {
-//            $this->load->View('ambulatorio/impressaofichaconsultafisioclinica', $data);
-//        } else {
-//            if ($dinheiro == "t") {
-//                $this->load->View('ambulatorio/impressaofichafisioclinicaparticular', $data);
-//            } else {
-//                $this->load->View('ambulatorio/impressaofichafisioclinica', $data);
-//            }
-//        }
-        // COT CLINICA
-//        if ($grupo == "CONSULTA") {
-//            $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
-//        }
-//        if ($grupo == "FISIOTERAPIA") {
-//            $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
-//        }
-//        if ($data['exame'][0]->tipo == "EXAME") {
-//            if ($dinheiro == "t") {
-//                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-//            } else {
-//                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-//            }
-//        }
-        // CLINICA dez
-//            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
+        if ($data['empresa'][0]->impressao_tipo == 1) { //HUMANA 
+            if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
+                $this->load->View('ambulatorio/impressaofichaus', $data);
+            }
+            if ($grupo == "MAMOGRAFIA") {
+                $this->load->View('ambulatorio/impressaofichamamografia', $data);
+            }
+            if ($grupo == "DENSITOMETRIA") {
+                $this->load->View('ambulatorio/impressaofichadensitometria', $data);
+            }
+            if ($grupo == "RM") {
+                $this->fichaxml($paciente_id, $guia_id, $exames_id);
+            }
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 2) { //PROIMAGEM 
+            //criar codigo de barras (inicio)
+            foreach ($exames as $value) {
+                if (!is_dir("./upload/barcodeimg/")) {
+                    mkdir("./upload/barcodeimg/");
+                    chmod("./upload/barcodeimg/", 0777);
+                }
+                if (!is_dir("./upload/barcodeimg/$value->paciente_id/")) {
+                    mkdir("./upload/barcodeimg/$value->paciente_id/");
+                    chmod("./upload/barcodeimg/$value->paciente_id/", 0777);
+                }
+                $this->utilitario->barcode($value->agenda_exames_id, "./upload/barcodeimg/$value->paciente_id/$value->agenda_exames_id.png", $size = "20", "horizontal", "code128", true, 1);
+            }
+            // criar codigo de barras (fim)
+
+            if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
+                $this->load->View('ambulatorio/impressaofichausproimagem', $data);
+            }
+            if ($grupo == "MAMOGRAFIA") {
+                $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
+            }
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 3) {// CLINICAS PACAJUS
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsulta', $data);
+            } else {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+                }
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 4) {// CLINICAS FISIOCLINICA
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsultafisioclinica', $data);
+            } else {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaofichafisioclinicaparticular', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaofichafisioclinica', $data);
+                }
+            }
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 5) {// COT CLINICA
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
+            }
+            if ($grupo == "FISIOTERAPIA") {
+                $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
+            }
+            if ($data['exame'][0]->tipo == "EXAME") {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+                }
+            }
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////       
+        elseif ($data['empresa'][0]->impressao_tipo == 6) {// CLINICA dez
+            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
+        }
 //            
-//      CLINICA MED
-//        $this->load->View('ambulatorio/impressaofichamed', $data);
-        //RONALDO
-//        if ($dinheiro == "t") {
-//            $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-//        } else {
-//            $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-//        }
-        // CLINICA SAO PAULO
-//        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
+        if ($data['empresa'][0]->impressao_tipo == 7) {//      CLINICA MED
+            $this->load->View('ambulatorio/impressaofichamed', $data);
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 8) { //RONALDO
+            if ($dinheiro == "t") {
+                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+            }
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 14) {//MedLab
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichamedlabrecibo', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaofichamedlab', $data);
+            }
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 9) { // CLINICA SAO PAULO
+            $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
+        }
     }
 
     function impressaoorcamento($orcamento) {
@@ -326,7 +393,7 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaoorcamento', $data);
     }
 
-    function impressaofichaconvenio($paciente_id, $guia_id, $exames_id) {
+    function impressaofichaconvenio($paciente_id, $guia_id, $exames_id) {        
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
@@ -358,79 +425,116 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-//HUMANA        
-//        if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA") {
-//            $this->load->View('ambulatorio/impressaofichaus', $data);
-//        }
-//        if ($grupo == "MAMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichamamografia', $data);
-//        }
-//        if ($grupo == "DENSITOMETRIA") {
-//            $this->load->View('ambulatorio/impressaofichadensitometria', $data);
-//        }
-//        if ($grupo == "RM") {
-//            $this->load->View('ambulatorio/impressaoficharm', $data);
-//        }
-//PROIMAGEM       
-        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
-            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
+        if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
+            if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaus', $data);
+            }
+            if ($grupo == "MAMOGRAFIA") {
+                $this->load->View('ambulatorio/impressaofichamamografia', $data);
+            }
+            if ($grupo == "DENSITOMETRIA") {
+                $this->load->View('ambulatorio/impressaofichadensitometria', $data);
+            }
+            if ($grupo == "RM") {
+                $this->load->View('ambulatorio/impressaoficharm', $data);
+            }
         }
-        if ($grupo == "MAMOGRAFIA") {
-            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
+
+////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 2) {//PROIMAGEM 
+            //criar codigo de barras (inicio)
+            foreach ($exames as $value) {
+                if (!is_dir("./upload/barcodeimg/")) {
+                    mkdir("./upload/barcodeimg/");
+                    chmod("./upload/barcodeimg/", 0777);
+                }
+                if (!is_dir("./upload/barcodeimg/$value->paciente_id/")) {
+                    mkdir("./upload/barcodeimg/$value->paciente_id/");
+                    chmod("./upload/barcodeimg/$value->paciente_id/", 0777);
+                }
+                $this->utilitario->barcode($value->agenda_exames_id, "./upload/barcodeimg/$value->paciente_id/$value->agenda_exames_id.png", $size = "20", "horizontal", "code128", true, 1);
+            }
+            // criar codigo de barras (fim)
+
+            if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
+                $this->load->View('ambulatorio/impressaofichausproimagem', $data);
+            }
+            if ($grupo == "MAMOGRAFIA") {
+                $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
+            }
         }
-//         CLINICAS PACAJUS
-//        if ($grupo == "CONSULTA") {
-//            $this->load->View('ambulatorio/impressaofichaconsulta', $data);
-//        } else {
-//            if ($dinheiro == "t") {
-//                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-//            } else {
-//                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-//            }
-//        }
-//         CLINICAS FISIOCLINICA
-//        if ($grupo == "CONSULTA") {
-//            $this->load->View('ambulatorio/impressaofichaconsultafisioclinica', $data);
-//        } else {
-//            if ($dinheiro == "t") {
-//                $this->load->View('ambulatorio/impressaofichafisioclinicaparticular', $data);
-//            } else {
-//                $this->load->View('ambulatorio/impressaofichafisioclinica', $data);
-//            }
-//        }        
-        // COT CLINICA
-//        if ($grupo == "CONSULTA") {
-//            $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
-//        }
-//        if ($grupo == "FISIOTERAPIA") {
-//            $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
-//        }
-//        if ($data['exame'][0]->tipo == "EXAME") {
-//            if ($dinheiro == "t") {
-//                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-//            } else {
-//                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-//            }
-//        }
-        // CLINICA dez
-//        if ($grupo == "CONSULTA") {
-//            $this->load->View('ambulatorio/impressaofichaconsultadez', $data);
-//        }
-//        if ($data['exame'][0]->tipo == "EXAME") {
-//            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
-//        }
-        // CLINICA dez
-//            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
-//                    // CLINICA MED
-//        $this->load->View('ambulatorio/impressaofichamed', $data);
-        // RONALDO
-//            if ($dinheiro == "t") {
-//                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
-//            } else {
-//                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
-//            }
-//         CLINICA SAO PAULO
-//        $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
+
+/////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 3) {//CLINICAS PACAJUS
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsulta', $data);
+            } else {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+                }
+            }
+        }
+
+////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 4) {//  CLINICAS FISIOCLINICA
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsultafisioclinica', $data);
+            } else {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaofichafisioclinicaparticular', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaofichafisioclinica', $data);
+                }
+            }
+        }
+
+/////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 5) {// COT CLINICA
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
+            }
+            if ($grupo == "FISIOTERAPIA") {
+                $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
+            }
+            if ($data['exame'][0]->tipo == "EXAME") {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+                }
+            }
+        }
+
+/////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 6) {// CLINICA dez
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsultadez', $data);
+            }
+            if ($data['exame'][0]->tipo == "EXAME") {
+                $this->load->View('ambulatorio/impressaofichaexamedez', $data);
+            }
+        }
+
+////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 7) {// CLINICA MED
+            $this->load->View('ambulatorio/impressaofichamed', $data);
+        }
+
+////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 8) {// RONALDO
+            if ($dinheiro == "t") {
+                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+            }
+        }
+
+////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 9) {//CLINICA SAO PAULO
+            $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
+        }
     }
 
     function impressaoetiiqueta($paciente_id, $guia_id, $exames_id) {
@@ -578,6 +682,8 @@ class Guia extends BaseController {
         $caixa = $this->guia->fecharcaixa();
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
+        } elseif ($caixa == 10) {
+            $data['mensagem'] = 'Erro ao fechar caixa. Forma de pagamento não configurada corretamente.';
         } else {
             $data['mensagem'] = 'Sucesso ao fechar caixa.';
         }
@@ -628,7 +734,13 @@ class Guia extends BaseController {
                 $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
             }
 //            $this->gerardicom($ambulatorio_guia);
-            $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id);
+            $tipo = $this->guia->verificaexamemedicamento($_POST['procedimento1']);
+            if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO') && $medico_id == '') {
+                $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
+                $this->session->set_flashdata('message', $data['mensagem']);
+            } else {
+                $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id);
+            }
         }
 //        $this->novo($paciente_id, $ambulatorio_guia);
         redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
@@ -694,7 +806,7 @@ class Guia extends BaseController {
             redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
         } else {
             $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            $messagem = 'Nao autorizado, existem sessões abertas para essa especialidade';
+            $messagem = 'Não autorizado, existem sessões abertas para essa especialidade';
             $this->session->set_flashdata('message', $messagem);
             redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia");
         }
@@ -839,10 +951,20 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+
+        $data['x'] = 0;
+        foreach ($data['exames'] as $value) {
+            $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
+            if (empty($teste)) {
+                $data['x'] ++;
+            }
+        }
+
         $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $this->loadView('ambulatorio/guiafisioterapia-form', $data);
@@ -859,9 +981,19 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+
+        $data['x'] = 0;
+        foreach ($data['exames'] as $value) {
+            $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
+            if (empty($teste)) {
+                $data['x'] ++;
+            }
+        }
+
         $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $this->loadView('ambulatorio/guiaatendimento-form', $data);
@@ -946,6 +1078,7 @@ class Guia extends BaseController {
             $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
 
+        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
         $this->load->View('ambulatorio/faturarguia-form', $data);
@@ -970,6 +1103,8 @@ class Guia extends BaseController {
             $data['exame2'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
             $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
+
+        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['paciente'] = $this->guia->listarexameguiacaixa($guia_id);
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
@@ -1177,8 +1312,6 @@ class Guia extends BaseController {
         $data['convenio'] = $_POST['convenio'];
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
-        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-        $data['contador'] = $this->guia->relatorioexamescontador();
         $data['relatorio'] = $this->guia->relatorioexames();
         $this->load->View('ambulatorio/impressaorelatoriopacienteconvenioexame', $data);
     }
@@ -1716,7 +1849,7 @@ class Guia extends BaseController {
     function gerarelatorioaniversariantes() {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['relatorio'] = $this->guia->relatorioaniversariantes();
         $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
     }
@@ -1729,7 +1862,7 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/escolhermodelo', $data);
     }
 
-    function impressaodeclaracao($paciente_id, $guia_id, $exames_id) {       
+    function impressaodeclaracao($paciente_id, $guia_id, $exames_id) {
         $this->load->plugin('mpdf');
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -1768,30 +1901,24 @@ class Guia extends BaseController {
         $data['paciente_id'] = $paciente_id;
         $data['guia_id'] = $guia_id;
         $data['exames_id'] = $exames_id;
-        $this->load->view('ambulatorio/reciboounota', $data);
+        $this->loadView('ambulatorio/reciboounota', $data);
     }
 
     function reciboounotaindicador() {
+//        var_dump($_POST['escolha']);die;
         $paciente_id = $_POST['paciente_id'];
         $guia_id = $_POST['guia_id'];
         $exames_id = $_POST['exames_id'];
-        if ((isset($_POST['recibo']) && isset($_POST['nota'])) || empty($_POST['recibo']) && empty($_POST['nota'])) {
-            $this->reciboounota($paciente_id, $guia_id, $exames_id);
+
+        if ($_POST['escolha'] == 'R') {
+            $this->impressaorecibo($paciente_id, $guia_id, $exames_id);
         } else {
-            if (isset($_POST['recibo'])) {
-                echo "<script type='text/javascript'>
-                        window.close();
-                  </script>";
-                echo "<script type='text/javascript'>
-                        window.open('impressaorecibo/$paciente_id/$guia_id/$exames_id');
-                  </script>";
-            } elseif (isset($_POST['nota'])) {
-                
-            }
+            
         }
     }
 
     function impressaorecibo($paciente_id, $guia_id, $exames_id) {
+
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);

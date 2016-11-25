@@ -20,7 +20,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header" width="70px;" colspan="2"><center>Detalhes</center></th>
+                        <th class="tabela_header" width="70px;" colspan="3"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
@@ -39,15 +39,18 @@
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                      ?>
-                            <tr>
+                            <tr >
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a href="<?= base_url() ?>cadastros/formapagamento/carregarformapagamento/<?= $item->forma_pagamento_id ?>">Editar</a>
-                            </td>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Forma?');" href="<?= base_url() ?>cadastros/formapagamento/excluir/<?= $item->forma_pagamento_id ?>">Excluir</a>
-                            </td>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
+                                    <a href="<?= base_url() ?>cadastros/formapagamento/formapagamentoparcelas/<?= $item->forma_pagamento_id ?>">Parcelas</a>
+                                </td>
                         </tr>
 
                         </tbody>

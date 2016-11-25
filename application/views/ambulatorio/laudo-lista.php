@@ -93,7 +93,7 @@
                             $date_time = new DateTime($dataAtual);
                             $diff = $date_time->diff(new DateTime($dataFuturo));
                             $teste = $diff->format('%d');
-                            
+
                             $ano_atual = date("Y");
                             $ano_nascimento = substr($item->nascimento, 0, 4);
                             $idade = $ano_atual - $ano_nascimento;
@@ -103,7 +103,18 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><?= $idade; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
+
+                                <?
+                                if (isset($item->data_antiga)) {
+                                    $data_alterada = 'alterada';
+                                } else {
+                                    $data_alterada = '';
+                                }
+                                ?>
+
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/alterardata/<?= $item->ambulatorio_laudo_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">
+                                        <?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?><br/><?= $data_alterada?></a></td>
+
                                 <td class="<?php echo $estilo_linha; ?>" width="130px;"><?= substr($item->medico, 0, 18); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->situacao; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
@@ -134,9 +145,9 @@
                                 <? }
                                 ?>
         <!--                                    <td class="<?php echo $estilo_linha; ?>" width="70px;">
-                    <a href="<?= base_url() ?>ambulatorio/laudo/carregarrevisao/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">
-                        Revis&atilde;o</a>
-                </td>-->
+            <a href="<?= base_url() ?>ambulatorio/laudo/carregarrevisao/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">
+                Revis&atilde;o</a>
+        </td>-->
 
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
@@ -151,7 +162,7 @@
                                             Etiqueta</a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/listarxml/<?= $item->convenio?>/<?= $item->paciente_id?>');">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/listarxml/<?= $item->convenio ?>/<?= $item->paciente_id ?>');">
                                             XML</a></div>
                                 </td>
                             </tr>

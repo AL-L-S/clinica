@@ -49,7 +49,7 @@
 
     $(function() {
         $("#txtprocedimentolabel").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=paciente",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
             minLength: 3,
             focus: function(event, ui) {
                 $("#txtpacientelabel").val(ui.item.label);

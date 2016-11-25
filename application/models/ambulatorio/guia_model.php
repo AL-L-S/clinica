@@ -85,7 +85,9 @@ class guia_model extends Model {
                             oz.nome as atendente,
                             om.nome as medicorealizou,
                             ae.procedimento_tuss_id,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            ae.data_antiga
+                            ');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -194,8 +196,8 @@ class guia_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         if ($_POST['grupoconvenio'] != "0") {
             $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
         }
@@ -271,8 +273,8 @@ class guia_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         if ($_POST['salas'] != "0") {
             $this->db->where("ae.agenda_exames_nome_id", $_POST['salas']);
         }
@@ -284,44 +286,17 @@ class guia_model extends Model {
 
     function relatorioexames() {
 
-        $this->db->select('ae.agenda_exames_id,
-                            ae.agenda_exames_nome_id,
-                            ae.data,
-                            ae.inicio,
-                            ae.fim,
-                            ae.ativo,
-                            al.ambulatorio_laudo_id as laudo,
-                            ae.situacao,
-                            c.nome as convenio,
-                            ae.guia_id,
-                            pc.valortotal,
-                            ae.quantidade,
-                            ae.valor_total,
-                            ae.autorizacao,
-                            pc.qtdech,
-                            pc.valorch,
-                            ae.paciente_id,
+        $this->db->select('p.paciente_id,
                             p.nome as paciente,
-                            ae.procedimento_tuss_id,
-                            pt.nome as exame,
-                            pt.grupo,
-                            o.nome as medico,
-                            pt.descricao as procedimento,
-                            pt.codigo');
-        $this->db->from('tb_agenda_exames ae');
-        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
-        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
-        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
-        $this->db->where('ae.cancelada', 'false');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+                            p.data_cadastro,
+                            c.nome as convenio,
+                            p.nascimento');
+        $this->db->from('tb_paciente p');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
-            $this->db->where("pc.convenio_id", $_POST['convenio']);
+            $this->db->where("p.convenio_id", $_POST['convenio']);
         }
         if ($_POST['convenio'] == "") {
             $this->db->where("c.dinheiro", "f");
@@ -329,29 +304,9 @@ class guia_model extends Model {
         if ($_POST['convenio'] == "-1") {
             $this->db->where("c.dinheiro", "t");
         }
-        if (isset($_POST['tipo']) && $_POST['tipo'] != "0" && $_POST['tipo'] != "") {
-            $this->db->where("tu.classificacao", $_POST['tipo']);
-        }
-        if (isset($_POST['tipo']) && $_POST['tipo'] == "") {
-            $this->db->where("tu.classificacao !=", "2");
-        }
-        if ($_POST['empresa'] != "0") {
-            $this->db->where('ae.empresa_id', $_POST['empresa']);
-        }
-        if (isset($_POST['procedimentos']) && $_POST['procedimentos'] != "0") {
-            $this->db->where('pt.procedimento_tuss_id', $_POST['procedimentos']);
-        }
-        if ($_POST['grupo'] == "1") {
-            $this->db->where('pt.grupo !=', 'RM');
-            $this->db->where('pt.grupo !=', 'TOMOGRAFIA');
-        }
-        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
-            $this->db->where('pt.grupo', $_POST['grupo']);
-        }
         $this->db->orderby('c.convenio_id');
-        $this->db->orderby('ae.guia_id');
-        $this->db->orderby('ae.data');
         $this->db->orderby('p.nome');
+        $this->db->orderby('p.data_cadastro');
         $return = $this->db->get();
         return $return->result();
     }
@@ -367,8 +322,8 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -416,8 +371,8 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_ambulatorio_cancelamento ca', 'ca.ambulatorio_cancelamento_id = ac.ambulatorio_cancelamento_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ac.operador_cadastro', 'left');
-        $this->db->where("ac.data_cadastro >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ) . ' 00:00:00');
-        $this->db->where("ac.data_cadastro <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ) . ' 23:59:59');
+        $this->db->where("ac.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00');
+        $this->db->where("ac.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
         }
@@ -451,8 +406,8 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ac.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where("ac.data_cadastro >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ) . ' 00:00:00');
-        $this->db->where("ac.data_cadastro <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ) . ' 23:59:59');
+        $this->db->where("ac.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00');
+        $this->db->where("ac.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
         }
@@ -504,8 +459,8 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('ae.empresa_id', $_POST['empresa']);
         $this->db->where("ae.procedimento_tuss_id", $_POST['procedimento1']);
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('ae.data');
         $this->db->orderby('p.nome');
         $return = $this->db->get();
@@ -522,8 +477,8 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('ae.empresa_id', $_POST['empresa']);
         $this->db->where("ae.procedimento_tuss_id", $_POST['procedimento1']);
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $return = $this->db->count_all_results();
         return $return;
     }
@@ -562,8 +517,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('pt.grupo');
         $this->db->groupby('c.nome');
         $this->db->orderby('c.nome');
@@ -605,8 +560,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('pt.procedimento_tuss_id');
         $this->db->groupby('pt.nome');
         $this->db->groupby('c.nome');
@@ -638,8 +593,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('pt.procedimento_tuss_id');
         $this->db->groupby('pt.nome');
         $this->db->groupby('c.nome');
@@ -686,8 +641,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('pt.procedimento_tuss_id');
         $this->db->groupby('pt.nome');
         $this->db->groupby('c.nome');
@@ -734,8 +689,8 @@ class guia_model extends Model {
         }
         $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio'])));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim'])));
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('pc.convenio_id');
         $this->db->orderby('pt.grupo');
         $this->db->orderby('ae.data');
@@ -771,8 +726,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0") {
             $this->db->where('pt.grupo !=', 'RM');
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('pt.grupo');
         $return = $this->db->count_all_results();
         return $return;
@@ -797,8 +752,8 @@ class guia_model extends Model {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
         }
         $this->db->where('pt.grupo', 'RM');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('pt.grupo');
         $this->db->groupby('c.nome');
         $this->db->orderby('c.nome');
@@ -822,8 +777,8 @@ class guia_model extends Model {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
         }
         $this->db->where('pt.grupo', 'RM');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('pt.grupo');
         $return = $this->db->count_all_results();
         return $return;
@@ -861,8 +816,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('c.nome');
         $this->db->orderby('c.nome');
         $return = $this->db->get();
@@ -886,8 +841,8 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('c.nome');
         $this->db->orderby('c.nome');
         $return = $this->db->get();
@@ -924,8 +879,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('c.nome');
         $return = $this->db->count_all_results();
         return $return;
@@ -957,8 +912,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->get();
@@ -991,8 +946,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->count_all_results();
@@ -1029,8 +984,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
@@ -1060,8 +1015,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->count_all_results();
@@ -1098,8 +1053,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
@@ -1129,8 +1084,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->count_all_results();
@@ -1172,8 +1127,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();
@@ -1203,8 +1158,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->count_all_results();
@@ -1229,8 +1184,8 @@ class guia_model extends Model {
         if ($_POST['medicos'] != "0") {
             $this->db->where('o.operador_id', $_POST['medicos']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->get();
@@ -1255,8 +1210,8 @@ class guia_model extends Model {
         if ($_POST['medicos'] != "0") {
             $this->db->where('o.operador_id', $_POST['medicos']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->count_all_results();
@@ -1306,8 +1261,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data_realizacao >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ) . " 00:00:01");
-        $this->db->where("ae.data_realizacao <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ) . " 23:59:59");
+        $this->db->where("ae.data_realizacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:01");
+        $this->db->where("ae.data_realizacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
         $this->db->orderby('c.nome');
         $this->db->orderby('ae.data');
         $this->db->orderby('p.nome');
@@ -1348,8 +1303,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data_realizacao >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ) . " 00:00:01");
-        $this->db->where("ae.data_realizacao <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ) . " 23:59:59");
+        $this->db->where("ae.data_realizacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:01");
+        $this->db->where("ae.data_realizacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
         $return = $this->db->count_all_results();
         return $return;
     }
@@ -1390,8 +1345,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('o.nome');
         $this->db->orderby('ae.data');
         $this->db->orderby('p.nome');
@@ -1415,8 +1370,8 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('pi.nome');
         $this->db->orderby('ae.data');
         $return = $this->db->get();
@@ -1424,8 +1379,8 @@ class guia_model extends Model {
     }
 
     function relatorionotafiscal() {
-        $inicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $fim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
 
         $sql = "SELECT distinct(g.ambulatorio_guia_id ),  p.nome as paciente FROM ponto.tb_ambulatorio_guia g 
 JOIN ponto.tb_agenda_exames ae ON ae.guia_id = g.ambulatorio_guia_id 
@@ -1452,11 +1407,11 @@ ORDER BY p.nome";
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->groupby('pi.nome');
         $this->db->orderby('pi.nome');
@@ -1476,11 +1431,11 @@ ORDER BY p.nome";
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->groupby('pt.nome');
         $this->db->orderby('pt.nome');
@@ -1501,11 +1456,11 @@ ORDER BY p.nome";
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->orderby('c.convenio_id');
         $this->db->orderby('pt.nome');
@@ -1609,11 +1564,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $return = $this->db->count_all_results();
         return $return;
@@ -1656,11 +1611,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->orderby('e.tecnico_realizador');
         $this->db->orderby('ae.data');
@@ -1702,11 +1657,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $return = $this->db->get();
         return $return->result();
@@ -1733,9 +1688,9 @@ ORDER BY p.nome";
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
 
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
 
         $this->db->where('ae.data <=', $data);
         $this->db->where('ae.empresa_id', $empresa_id);
@@ -1785,9 +1740,9 @@ ORDER BY p.nome";
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
 
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
 
         $this->db->where('ae.data <=', $data);
         $this->db->where('ae.empresa_id', $empresa_id);
@@ -1843,7 +1798,7 @@ ORDER BY p.nome";
 
         $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
 
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -1895,7 +1850,7 @@ ORDER BY p.nome";
 
         $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
 
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -1947,11 +1902,11 @@ ORDER BY p.nome";
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
 
-        
+
         $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -2000,11 +1955,11 @@ ORDER BY p.nome";
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
 
-        
+
         $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -2056,9 +2011,9 @@ ORDER BY p.nome";
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
 
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
 
         $this->db->where('ae.data <=', $data);
         $this->db->where('ae.empresa_id', $empresa_id);
@@ -2108,9 +2063,9 @@ ORDER BY p.nome";
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
 
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
 
         $this->db->where('ae.data <=', $data);
         $this->db->where('ae.empresa_id', $empresa_id);
@@ -2166,7 +2121,7 @@ ORDER BY p.nome";
 
         $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
 
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -2219,7 +2174,7 @@ ORDER BY p.nome";
 
         $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
 
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -2271,11 +2226,11 @@ ORDER BY p.nome";
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
 
-        
+
         $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -2325,11 +2280,11 @@ ORDER BY p.nome";
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
 
-        
+
         $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -2400,11 +2355,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->orderby('pc.convenio_id');
         $this->db->orderby('ae.data');
@@ -2445,11 +2400,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $return = $this->db->count_all_results();
         return $return;
@@ -2480,11 +2435,11 @@ ORDER BY p.nome";
         }
         $this->db->where('pt.grupo', 'RM');
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->orderby('pc.convenio_id');
         $this->db->orderby('ae.data');
@@ -2495,13 +2450,11 @@ ORDER BY p.nome";
 
     function relatorioaniversariantes() {
 
-        $mes = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
-
-        $mes = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $mes = $_POST['txtdata_inicio'];
 
         $sql = "SELECT p.nome as paciente, p.nascimento , p.celular , p.telefone from ponto.tb_paciente p
                 left join ponto.tb_convenio c on c.convenio_id = p.convenio_id
-                Where Extract(Month From p.nascimento) = $mes ";
+                Where Extract(Month From p.nascimento) = $mes order by Extract(Day From p.nascimento)";
         $return = $this->db->query($sql)->result();
         return $return;
     }
@@ -2525,11 +2478,11 @@ ORDER BY p.nome";
         }
         $this->db->where('pt.grupo', 'RM');
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $return = $this->db->count_all_results();
         return $return;
@@ -2617,11 +2570,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
 
         $this->db->orderby('al.medico_parecer1');
@@ -2672,11 +2625,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->groupby('op.nome');
         $this->db->orderby('op.nome');
@@ -2735,11 +2688,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
 
         $this->db->orderby('al.medico_parecer1');
@@ -2764,11 +2717,11 @@ ORDER BY p.nome";
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->groupby('op.nome');
         $this->db->orderby('op.nome');
@@ -2798,11 +2751,11 @@ ORDER BY p.nome";
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->orderby('op.nome');
         $return = $this->db->get();
@@ -2849,11 +2802,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
 
         $this->db->orderby('ae.operador_autorizacao');
@@ -2896,11 +2849,11 @@ ORDER BY p.nome";
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $return = $this->db->count_all_results();
         return $return;
@@ -2942,11 +2895,11 @@ ORDER BY p.nome";
         $this->db->where('e.situacao', 'FINALIZADO');
         $this->db->where("pt.grupo", $_POST['grupo']);
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->orderby('pc.convenio_id');
         $this->db->orderby('ae.data');
@@ -2969,11 +2922,11 @@ ORDER BY p.nome";
         $this->db->where('e.situacao', 'FINALIZADO');
         $this->db->where("pt.grupo", $_POST['grupo']);
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $return = $this->db->count_all_results();
         return $return;
@@ -3045,11 +2998,11 @@ ORDER BY p.nome";
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.operador_autorizacao >', 0);
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
@@ -3131,11 +3084,11 @@ ORDER BY p.nome";
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.operador_autorizacao >', 0);
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
@@ -3239,11 +3192,11 @@ ORDER BY p.nome";
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.operador_autorizacao >', 0);
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
@@ -3275,11 +3228,11 @@ ORDER BY p.nome";
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.operador_autorizacao >', 0);
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
@@ -3334,11 +3287,11 @@ ORDER BY p.nome";
         $this->db->where('e.cancelada', 'false');
         $this->db->where('e.situacao', 'FINALIZADO');
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('pt.grupo', 'RX');
         $this->db->where('pc.convenio_id', '38');
@@ -3364,11 +3317,11 @@ ORDER BY p.nome";
         $this->db->where('e.cancelada', 'false');
         $this->db->where('e.situacao', 'FINALIZADO');
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('pt.grupo', 'RX');
         $this->db->where('pc.convenio_id', '38');
@@ -3396,11 +3349,11 @@ ORDER BY p.nome";
         }
         $this->db->where('pt.grupo', 'RM');
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
@@ -3428,11 +3381,11 @@ ORDER BY p.nome";
         }
         $this->db->where('pt.grupo', 'RM');
 
-        
-        
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
@@ -3462,6 +3415,7 @@ ORDER BY p.nome";
 
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
+                            pt.procedimento_tuss_id,
                             ae.data,
                             ae.operador_autorizacao,
                             op.nome as operador,
@@ -3929,8 +3883,8 @@ ORDER BY p.nome";
         $data_inicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
         $data_fim = date("Y-m-d", strtotime($_POST['txtdata_fim']));
 
-        $data_inicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data_fim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
 
         $valor = str_replace(",", ".", $_POST['valor']);
         $horario = date("Y-m-d H:i:s");
@@ -4275,6 +4229,13 @@ AND data <= '$data_fim'";
             $dataautorizacao = $_POST['data'] . " " . $hora;
 //            var_dump($dataautorizacao);
 //            die;
+            $sql = "UPDATE ponto.tb_agenda_exames
+                    SET data_antiga = data
+                    WHERE agenda_exames_id = $agenda_exames_id;";
+
+            $this->db->query($sql);
+
+//            $this->db->set('data_antiga', 'data');
             $this->db->set('data_aterardatafaturamento', $horario);
             $this->db->set('data_autorizacao', $dataautorizacao);
             $this->db->set('operador_aterardatafaturamento', $operador_id);
@@ -4398,8 +4359,13 @@ AND data <= '$data_fim'";
             $operador_id = $this->session->userdata('operador_id');
             $guia = $_POST['guia_id'];
 
-            $this->db->select('agenda_exames_id, valor_total, guia_id, paciente_id');
-            $this->db->from('tb_agenda_exames');
+            $this->db->select('ae.agenda_exames_id, ae.valor_total, ae.guia_id, ae.paciente_id');
+            $this->db->from('tb_agenda_exames ae');
+            if ($_POST['financeiro_grupo_id'] != '') {
+                $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+                $this->db->join('tb_financeiro_grupo fg', 'fg.financeiro_grupo_id = pp.grupo_pagamento_id', 'left');
+                $this->db->where("financeiro_grupo_id", $_POST['financeiro_grupo_id']);
+            }
             $this->db->where("guia_id", $guia);
             $this->db->where('confirmado', 'true');
             $query = $this->db->get();
@@ -4650,8 +4616,14 @@ AND data <= '$data_fim'";
             $operador_id = $this->session->userdata('operador_id');
             $guia = $_POST['guia_id'];
 
-            $this->db->select('agenda_exames_id, valor_total, guia_id, paciente_id');
-            $this->db->from('tb_agenda_exames');
+//            var_dump($_POST['financeiro_grupo_id']);die;
+            $this->db->select('ae.agenda_exames_id, ae.valor_total, ae.guia_id, ae.paciente_id');
+            $this->db->from('tb_agenda_exames ae');
+            if ($_POST['financeiro_grupo_id'] != '') {
+                $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+                $this->db->join('tb_financeiro_grupo fg', 'fg.financeiro_grupo_id = pp.grupo_pagamento_id', 'left');
+                $this->db->where("fg.financeiro_grupo_id", $_POST['financeiro_grupo_id']);
+            }
             $this->db->where("guia_id", $guia);
             $this->db->where("faturado", 'f');
             $this->db->where('confirmado', 'true');
@@ -4962,6 +4934,7 @@ AND data <= '$data_fim'";
         $this->db->orwhere('ae.forma_pagamento4', $formapagamento_id);
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
+        $this->db->where('ae.financeiro', 'f');
         $this->db->where('ae.operador_autorizacao >', 0);
         $return = $this->db->get();
         return $return->result();
@@ -4970,6 +4943,7 @@ AND data <= '$data_fim'";
     function burcarcontasrecebertemp() {
         $this->db->select('distinct(data)');
         $this->db->from('tb_financeiro_contasreceber_temp');
+        $this->db->where('ativo', 't');
         $return = $this->db->get();
         return $return->result();
     }
@@ -4987,6 +4961,7 @@ AND data <= '$data_fim'";
                            classe');
         $this->db->from('tb_financeiro_contasreceber_temp');
         $this->db->where('data', $data);
+        $this->db->where('ativo', 't');
         $this->db->groupby('devedor');
         $this->db->groupby('parcela');
         $this->db->groupby('observacao');
@@ -5000,9 +4975,7 @@ AND data <= '$data_fim'";
     }
 
     function fecharcaixa() {
-//        echo '<pre>';
-//        var_dump($this->burcarcontasrecebertemp2('2016-11-25'));
-//        die;
+
 //        try {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
@@ -5015,66 +4988,15 @@ AND data <= '$data_fim'";
         $data30 = date('Y-m-d', strtotime("+30 days", strtotime($data_cauculo)));
         $data4 = date('Y-m-d', strtotime("+4 days", strtotime($data_cauculo)));
         $data2 = date('Y-m-d', strtotime("+2 days", strtotime($data_cauculo)));
-        if ($_POST['grupo'] == 0) {
 
-            $sql = "UPDATE ponto.tb_agenda_exames
-SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
-where agenda_exames_id in (SELECT ae.agenda_exames_id
-FROM ponto.tb_agenda_exames ae 
-LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
-LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
-LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
-LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
-LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
-WHERE e.cancelada = 'false' 
-AND ae.data >= '$data_inicio' 
-AND ae.data <= '$data_fim' 
-AND c.dinheiro = true 
-ORDER BY ae.agenda_exames_id)";
-            $this->db->query($sql);
-        }
 
-        if ($_POST['grupo'] == 1) {
-
-            $sql = "UPDATE ponto.tb_agenda_exames
-SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
-where agenda_exames_id in (SELECT ae.agenda_exames_id
-FROM ponto.tb_agenda_exames ae 
-LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
-LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
-LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
-LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
-LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
-WHERE e.cancelada = 'false' 
-AND ae.data >= '$data_inicio' 
-AND ae.data <= '$data_fim' 
-AND pt.grupo != 'RM'
-AND c.dinheiro = true  
-ORDER BY ae.agenda_exames_id)";
-            $this->db->query($sql);
-        }
-
-        if ($_POST['grupo'] == "RM") {
-
-            $sql = "UPDATE ponto.tb_agenda_exames
-SET operador_financeiro = $operador_id, data_financeiro= '$horario',financeiro = 't'
-where agenda_exames_id in (SELECT ae.agenda_exames_id
-FROM ponto.tb_agenda_exames ae 
-LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
-LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
-LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
-LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
-LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
-WHERE e.cancelada = 'false' 
-AND ae.data >= '$data_inicio' 
-AND ae.data <= '$data_fim' 
-AND pt.grupo = 'RM'
-AND c.dinheiro = true  
-ORDER BY ae.agenda_exames_id)";
-            $this->db->query($sql);
-        }
-
-        $this->db->select('forma_pagamento_id, nome , conta_id , credor_devedor , tempo_receber , dia_receber');
+        $this->db->select('forma_pagamento_id,
+                            nome, 
+                            conta_id, 
+                            credor_devedor,
+                            tempo_receber, 
+                            dia_receber,
+                            parcelas');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
         $return = $this->db->get();
@@ -5089,7 +5011,11 @@ ORDER BY ae.agenda_exames_id)";
             $valor_total = (str_replace(",", ".", $valor_total));
             if ($valor_total != '0.00') {
 
-                if (!isset($value->tempo_receber) || $value->tempo_receber == 0) {
+                if (empty($value->nome) || empty($value->conta_id) || empty($value->credor_devedor) || empty($value->parcelas)) {
+                    return 10;
+                }
+
+                if ((empty($value->tempo_receber) || $value->tempo_receber == 0) && (empty($value->dia_receber) || $value->dia_receber == 0)) {
                     $this->db->set('data', $_POST['data1']);
                     $this->db->set('valor', $valor_total);
                     $this->db->set('classe', $classe);
@@ -5101,6 +5027,7 @@ ORDER BY ae.agenda_exames_id)";
                     $this->db->insert('tb_entradas');
                     $entradas_id = $this->db->insert_id();
 
+                    $this->db->set('data', $_POST['data1']);
                     $this->db->set('valor', $valor_total);
                     $this->db->set('entrada_id', $entradas_id);
                     $this->db->set('conta', $value->conta_id);
@@ -5144,7 +5071,22 @@ ORDER BY ae.agenda_exames_id)";
 //                                    $retorno = $this->parcelas4($item->agenda_exames_id);
                             }
                             $mes = 1;
-                            $valor_parcelado = $valor / $parcelas;
+
+                            if ($parcelas > 1) {
+                                $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
+
+                                if ($jurosporparcelas[0]->taxa_juros > 0) {
+                                    $taxa_juros = $jurosporparcelas[0]->taxa_juros;
+                                } else {
+                                    $taxa_juros = 0;
+                                }
+
+                                $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
+                                $valor_parcelado = $valor_com_juros / $parcelas;
+                            } else {
+                                $valor_parcelado = $valor;
+                            }
+
                             if ($parcelas > 1) {
                                 for ($i = 2; $i <= $parcelas; $i++) {
                                     $data_receber_p = date("Y-m-d", strtotime("+$mes month", strtotime($data_receber)));
@@ -5189,6 +5131,8 @@ ORDER BY ae.agenda_exames_id)";
                             $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                             $this->db->insert('tb_financeiro_contasreceber');
                         }
+                        $this->db->set('ativo', 'f');
+                        $this->db->update('tb_financeiro_contasreceber_temp');
                     } else {
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
                             $valor_n_parcelado = $valor_total;
@@ -5212,8 +5156,22 @@ ORDER BY ae.agenda_exames_id)";
                                     $valor = $item->valor4;
 //                                    $retorno = $this->parcelas4($item->agenda_exames_id);
                                 }
+
+                                if ($parcelas > 1) {
+                                    $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
+
+                                    if ($jurosporparcelas[0]->taxa_juros > 0) {
+                                        $taxa_juros = $jurosporparcelas[0]->taxa_juros;
+                                    } else {
+                                        $taxa_juros = 0;
+                                    }
+                                    $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
+                                    $valor_parcelado = $valor_com_juros / $parcelas;
+                                } else {
+                                    $valor_parcelado = $valor;
+                                }
+
                                 $tempo_receber = $value->tempo_receber;
-                                $valor_parcelado = $valor / $parcelas;
                                 if ($parcelas > 1) {
                                     for ($i = 2; $i <= $parcelas; $i++) {
                                         $tempo_receber = $tempo_receber + $value->tempo_receber;
@@ -5261,6 +5219,8 @@ ORDER BY ae.agenda_exames_id)";
                                 $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                                 $this->db->insert('tb_financeiro_contasreceber');
                             }
+                            $this->db->set('ativo', 'f');
+                            $this->db->update('tb_financeiro_contasreceber_temp');
                         }
                     }
                 }
@@ -5325,6 +5285,65 @@ ORDER BY ae.agenda_exames_id)";
 //                    $this->db->insert('tb_financeiro_contasreceber');
 //                }
 //            }
+        }
+
+        if ($_POST['grupo'] == 0) {
+
+            $sql = "UPDATE ponto.tb_agenda_exames
+SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
+where agenda_exames_id in (SELECT ae.agenda_exames_id
+FROM ponto.tb_agenda_exames ae 
+LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
+LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
+LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+WHERE e.cancelada = 'false' 
+AND ae.data >= '$data_inicio' 
+AND ae.data <= '$data_fim' 
+AND c.dinheiro = true 
+ORDER BY ae.agenda_exames_id)";
+            $this->db->query($sql);
+        }
+
+        if ($_POST['grupo'] == 1) {
+
+            $sql = "UPDATE ponto.tb_agenda_exames
+SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
+where agenda_exames_id in (SELECT ae.agenda_exames_id
+FROM ponto.tb_agenda_exames ae 
+LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
+LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
+LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+WHERE e.cancelada = 'false' 
+AND ae.data >= '$data_inicio' 
+AND ae.data <= '$data_fim' 
+AND pt.grupo != 'RM'
+AND c.dinheiro = true  
+ORDER BY ae.agenda_exames_id)";
+            $this->db->query($sql);
+        }
+
+        if ($_POST['grupo'] == "RM") {
+
+            $sql = "UPDATE ponto.tb_agenda_exames
+SET operador_financeiro = $operador_id, data_financeiro= '$horario',financeiro = 't'
+where agenda_exames_id in (SELECT ae.agenda_exames_id
+FROM ponto.tb_agenda_exames ae 
+LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
+LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
+LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+WHERE e.cancelada = 'false' 
+AND ae.data >= '$data_inicio' 
+AND ae.data <= '$data_fim' 
+AND pt.grupo = 'RM'
+AND c.dinheiro = true  
+ORDER BY ae.agenda_exames_id)";
+            $this->db->query($sql);
         }
 
 
@@ -5449,6 +5468,17 @@ ORDER BY ae.agenda_exames_id)";
 //        }
     }
 
+    function jurosporparcelas($formapagamento_id, $parcelas) {
+        $this->db->select('taxa_juros');
+        $this->db->from('tb_formapagamento_pacela_juros');
+        $this->db->where('forma_pagamento_id', $formapagamento_id);
+        $this->db->where('parcelas_inicio <=', $parcelas);
+        $this->db->where('parcelas_fim >=', $parcelas);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     function fecharmedico() {
 //        try {
         /* inicia o mapeamento no banco */
@@ -5533,7 +5563,7 @@ ORDER BY ae.agenda_exames_id)";
         return $return->result();
     }
 
-    function listarempresa($empresa_id) {
+    function listarempresa($empresa_id = null) {
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('razao_social,
@@ -5543,7 +5573,8 @@ ORDER BY ae.agenda_exames_id)";
                             telefone,
                             producaomedicadinheiro,
                             celular,
-                            bairro');
+                            bairro,
+                            impressao_tipo');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->orderby('empresa_id');
@@ -5561,6 +5592,8 @@ ORDER BY ae.agenda_exames_id)";
         $return = $this->db->get();
         $x = $return->result();
         $especialidade = $x[0]->grupo;
+
+//        var_dump($x); die;
 
         if ($x[0]->nome != 'PARTICULAR') {
 //            $this->db->select('confirmado , agenda_exames_id');
@@ -5603,6 +5636,7 @@ ORDER BY ae.agenda_exames_id)";
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
+                            pt.grupo ,
                             al.situacao as situacaolaudo');
             $this->db->from('tb_agenda_exames ae');
             $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -5619,7 +5653,8 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->orderby('ae.numero_sessao');
             $this->db->where('ae.empresa_id', $empresa_id);
             $this->db->where('ae.paciente_id', $paciente_id);
-            $this->db->where('ae.tipo', 'FISIOTERAPIA');
+//            $this->db->where('ae.tipo ', $especialidade);
+            $this->db->where('pt.grupo ', $especialidade);
             $this->db->where('ae.ativo', 'false');
             $this->db->where('ae.numero_sessao >=', '1');
             $this->db->where('ae.realizada', 'false');
@@ -5627,6 +5662,20 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->where('ae.cancelada', 'false');
             $return = $this->db->get();
             $result = $return->result();
+
+
+//            $contador = 0;
+//            foreach ($result as $item) {
+//                $data_atual = date('Y-m-d');
+//                $data1 = new DateTime($data_atual);
+//                $data2 = new DateTime($item->data);
+//                $intervalo = $data1->diff($data2);
+//
+//                if ($intervalo->d == 0) {
+//                    $contador++;
+//                }
+//            }
+
 
             if (count($result) != 0) {
                 return true;
@@ -5639,6 +5688,7 @@ ORDER BY ae.agenda_exames_id)";
     }
 
     function gravarguia($paciente_id) {
+//        var_dump($paciente_id);die;
         $horario = date("Y-m-d H:i:s");
         $data = date("Y-m-d");
         $operador_id = $this->session->userdata('operador_id');
@@ -5814,6 +5864,18 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
+    function verificaexamemedicamento($procedimento_convenio_id) {
+
+        $this->db->select('ag.tipo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("pc.procedimento_convenio_id", $procedimento_convenio_id);
+        $query = $this->db->get();
+        $tipo = $query->result();
+        return $tipo[0]->tipo;
+    }
+
     function gravaratendimemto($ambulatorio_guia_id, $medico_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -5897,6 +5959,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('operador_autorizacao', $operador_id);
                 $this->db->insert('tb_agenda_exames');
             }
+            $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco
                 return -1;
             } else {
@@ -6215,7 +6278,10 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('tipo', $_POST['tipo']);
             $this->db->set('ativo', 'f');
             $this->db->set('realizada', 't');
-            $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+            if ($_POST['medicoagenda'] != "") {
+                $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+                $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+            }
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');
             $this->db->set('guia_id', $_POST['txtguia_id']);
@@ -6297,14 +6363,14 @@ ORDER BY ae.agenda_exames_id)";
     }
 
     function editarexamesselect($ambulatorio_guia_id) {
-        
-            $this->db->select('ae.autorizacao,
+
+        $this->db->select('ae.autorizacao,
                               ae.medico_solicitante,
                               ae.agenda_exames_nome_id');
-            $this->db->from('tb_agenda_exames ae');           
-            $this->db->where("ae.agenda_exames_id", $ambulatorio_guia_id);
-            $query = $this->db->get();
-            return $query->result();
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where("ae.agenda_exames_id", $ambulatorio_guia_id);
+        $query = $this->db->get();
+        return $query->result();
     }
 
     function valorexames() {

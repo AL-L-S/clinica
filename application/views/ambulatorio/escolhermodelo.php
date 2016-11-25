@@ -11,7 +11,7 @@
             <form name="form_procedimento" id="form_procedimento" action="<?= base_url() ?>ambulatorio/guia/impressaodeclaracao/<?=$paciente_id?>/<?=$guia_id?>/<?=$exames_id?>" method="post">
                 <dl class="dl_desconto_lista">
                     <dt>
-                        <label>Nome</label>
+                        <label>Modelo</label>
                     </dt>
                     <dd>
                         <select name="modelo" id="modelo" class="size2" >

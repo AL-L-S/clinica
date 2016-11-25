@@ -75,6 +75,7 @@ class Operador_model extends BaseModel {
         $this->db->select('operador_id, nome, conselho');
         $this->db->from('tb_operador');
         $this->db->where('medico', 'true');
+        
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 // $this->db->like('tb_operador.nome', $args['nome'], 'left');
@@ -313,6 +314,7 @@ class Operador_model extends BaseModel {
                                ');
         $this->db->from('tb_perfil');
         $this->db->where('ativo', 't');
+        $this->db->orderby('nome');
 
         $return = $this->db->get();
         return $return->result();

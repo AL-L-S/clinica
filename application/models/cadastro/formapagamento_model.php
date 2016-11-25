@@ -84,6 +84,15 @@ class formapagamento_model extends Model {
         return $return->result();
     }
 
+    function buscafaixasparcelas($forma_pagamento_id) {
+        $this->db->select('*');
+        $this->db->from('tb_formapagamento_pacela_juros');
+        $this->db->where("ativo", 't');
+        $this->db->where("forma_pagamento_id", $forma_pagamento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function buscarforma($forma_pagamento_id) {
         $this->db->select('forma_pagamento_id,
                             nome,
@@ -121,6 +130,17 @@ class formapagamento_model extends Model {
             return -1;
         else
             return 0;
+    }
+
+    function excluirparcela($parcela_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('formapagamento_pacela_juros_id', $parcela_id);
+        $this->db->update('tb_formapagamento_pacela_juros');
     }
 
     function excluirformapagamentodogrupo($grupo_formapagamento_id) {
@@ -161,6 +181,20 @@ class formapagamento_model extends Model {
             return 0;
     }
 
+    function gravarparcelas() {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            
+            $this->db->set('forma_pagamento_id', $_POST['formapagamento_id']);
+            $this->db->set('taxa_juros', $_POST['taxa']);
+            $this->db->set('parcelas_inicio', $_POST['parcela_inicio']);
+            $this->db->set('parcelas_fim', $_POST['parcela_fim']);
+            $this->db->insert('tb_formapagamento_pacela_juros');   
+    }
+
     function gravargruponome() {
         try {
             /* inicia o mapeamento no banco */
@@ -169,7 +203,6 @@ class formapagamento_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('ajuste', $_POST['ajuste']);
             $this->db->insert('tb_financeiro_grupo');
             if (trim($erro) != "") { // erro de banco
                 return false;
@@ -229,16 +262,16 @@ class formapagamento_model extends Model {
 
 
             $parcelas = $_POST['parcelas'];
-            if ($_POST['parcelas'] == "" || $_POST['parcelas'] == null) {
+            if ($_POST['parcelas'] == "" || $_POST['parcelas'] == 0) {
                 $parcelas = 1;
             }
             $diareceber = $_POST['diareceber'];
             $temporeceber = $_POST['temporeceber'];
             if ($_POST['diareceber'] == '' || $_POST['diareceber'] < 0) {
-                $diareceber = null;
+                $diareceber = 0;
             }
             if ($_POST['temporeceber'] == '' || $_POST['temporeceber'] < 0) {
-                $temporeceber = null;
+                $temporeceber = 0;
             }
             $ajuste = $_POST['ajuste'];
             if ($_POST['ajuste'] == '') {

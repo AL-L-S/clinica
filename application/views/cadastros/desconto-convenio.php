@@ -21,13 +21,13 @@
                         <input  value="<?php echo $convenio[0]->nome; ?>" readonly/>
                     </dd>
                     <dt>
-                        <label>Grupo de Pagamento</label>
+                        <label>Grupo</label>
                     </dt>
                     <dd>
                         <select name="grupo" id="grupo" class="size1">
                             <option value="TODOS">TODOS</option>
-                            <? foreach ($financeiro_grupos as $value) { ?>
-                                <option value="<?= $value->financeiro_grupo_id; ?>"><?php echo $value->nome; ?></option>
+                            <? foreach ($grupos as $value) { ?>
+                                <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
                             <? } ?>                           
                         </select>
                     </dd>
@@ -62,6 +62,12 @@
                         <input type="number" name="ajustetotal" id="ajustetotal" class="number"  />
                     </dd>
                     <dt>
+                        <label>Arredondar p/ cima</label>
+                    </dt>
+                    <dd>
+                        <input type="checkbox" name="arrendondamento" id="arrendondamento"  />
+                    </dd>
+                    <dt>
                 </dl>    
 
                 <hr/>
@@ -76,13 +82,13 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
 <script type="text/javascript">
-                                                $('#btnVoltar').click(function () {
-                                                    $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-                                                });
+    $('#btnVoltar').click(function () {
+        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+    });
 
-                                                $(function () {
-                                                    $("#accordion").accordion();
-                                                });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 //                            $(document).ready(function () {
 //

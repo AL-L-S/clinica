@@ -20,6 +20,10 @@
 
             </div>
             <div>
+                <label>End.</label>
+                <input type="text" id="txtEnd" class="texto06" name="txtEnd"   />
+            </div>
+            <div>
                 <label>Telefone</label>
 
 
@@ -86,13 +90,12 @@
                     <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
                 </tr>
 
-            
-            <?
-        }
-        
-        ?>
+
+                <?
+            }
+            ?>
         </tbody>
-            <tfoot>
+        <tfoot>
             <tr>
                 <th class="tabela_footer" colspan="4">
                 </th>
@@ -108,83 +111,83 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-
-    $(function() {
-        $('#convenio1').change(function() {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#medico").val()}, function(j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                    }
-                    $('#procedimento1').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#procedimento1').html('<option value="">Selecione</option>');
-            }
-        });
-    });
-
-
-    $(function() {
-        $("#txtNome").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=paciente",
-            minLength: 3,
-            focus: function(event, ui) {
-                $("#txtNome").val(ui.item.label);
-                return false;
-            },
-            select: function(event, ui) {
-                $("#txtNome").val(ui.item.value);
-                $("#txtNomeid").val(ui.item.id);
-                $("#telefone").val(ui.item.itens);
-                $("#nascimento").val(ui.item.valor);
-                return false;
-            }
-        });
-    });
-
-    $(function() {
-        $("#nascimento").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=pacientenascimento",
-            minLength: 3,
-            focus: function(event, ui) {
-                $("#nascimento").val(ui.item.label);
-                return false;
-            },
-            select: function(event, ui) {
-                $("#txtNome").val(ui.item.value);
-                $("#txtNomeid").val(ui.item.id);
-                $("#telefone").val(ui.item.itens);
-                $("#nascimento").val(ui.item.valor);
-                return false;
-            }
-        });
-    });
+                    $(function () {
+                        $('#convenio1').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#medico").val()}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+                                    $('#procedimento1').html(options).show();
+                                    $('.carregando').hide();
+                                });
+                            } else {
+                                $('#procedimento1').html('<option value="">Selecione</option>');
+                            }
+                        });
+                    });
 
 
+                    $(function () {
+                        $("#txtNome").autocomplete({
+                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+                            minLength: 3,
+                            focus: function (event, ui) {
+                                $("#txtNome").val(ui.item.label);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#txtNome").val(ui.item.value);
+                                $("#txtNomeid").val(ui.item.id);
+                                $("#telefone").val(ui.item.itens);
+                                $("#nascimento").val(ui.item.valor);
+                                $("#txtEnd").val(ui.item.endereco);
+                                return false;
+                            }
+                        });
+                    });
+
+                    $(function () {
+                        $("#nascimento").autocomplete({
+                            source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientenascimento",
+                            minLength: 3,
+                            focus: function (event, ui) {
+                                $("#nascimento").val(ui.item.label);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#txtNome").val(ui.item.value);
+                                $("#txtNomeid").val(ui.item.id);
+                                $("#telefone").val(ui.item.itens);
+                                $("#nascimento").val(ui.item.valor);
+                                return false;
+                            }
+                        });
+                    });
 
 
 
-    //$(function(){     
-    //    $('#exame').change(function(){
-    //        exame = $(this).val();
-    //        if ( exame === '')
-    //            return false;
-    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-    //            var option = new Array();
-    //            $.each(data, function(i, obj){
-    //                console.log(obl);
-    //                option[i] = document.createElement('option');
-    //                $( option[i] ).attr( {value : obj.id} );
-    //                $( option[i] ).append( obj.nome );
-    //                $("select[name='horarios']").append( option[i] );
-    //            });
-    //        });
-    //    });
-    //});
+
+
+                    //$(function(){     
+                    //    $('#exame').change(function(){
+                    //        exame = $(this).val();
+                    //        if ( exame === '')
+                    //            return false;
+                    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
+                    //            var option = new Array();
+                    //            $.each(data, function(i, obj){
+                    //                console.log(obl);
+                    //                option[i] = document.createElement('option');
+                    //                $( option[i] ).attr( {value : obj.id} );
+                    //                $( option[i] ).append( obj.nome );
+                    //                $("select[name='horarios']").append( option[i] );
+                    //            });
+                    //        });
+                    //    });
+                    //});
 
 
 

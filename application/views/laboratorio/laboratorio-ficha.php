@@ -77,7 +77,7 @@
 
      $(function() {
         $( "#paciente" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=pacientebe",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientebe",
             minLength: 4,
             focus: function( event, ui ) {
                 $( "#paciente" ).val( ui.item.label );

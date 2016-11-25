@@ -23,12 +23,12 @@
                             <? } ?>                            
                         </select>
                     </dd>
-                    <dt>
+<!--                    <dt>
                         <label>Ajuste (%)</label>
                     </dt>
                     <dd>
                         <input type="text" name="ajuste" class="texto03"  value="<?= $financeiro_grupo[0]->ajuste; ?>"/>
-                    </dd>
+                    </dd>-->
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

@@ -240,9 +240,18 @@ class Exame extends BaseController {
     }
 
     function autorizarsessao($agenda_exames_id, $paciente_id, $guia_id) {
-        $this->exame->autorizarsessao($agenda_exames_id);
-        $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
-        redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
+        $intervalo = $this->exame->verificadiasessao($agenda_exames_id);
+
+        if ($intervalo == 0) {
+            $this->exame->autorizarsessao($agenda_exames_id);
+            $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
+            redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
+        } else {
+            $data['mensagem'] = 'Essa sessao só poderá ser autorizada amanhã.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
+        }
+        
     }
 
     function autorizarsessaocadapsicologia($agenda_exames_id, $paciente_id, $guia_id) {
@@ -450,11 +459,15 @@ class Exame extends BaseController {
     }
 
     function cancelarespera() {
-        $verificar = $this->exame->cancelarespera();
-        if ($verificar == "-1") {
-            $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+        if ($this->session->userdata('perfil_id') != 12) {
+            $verificar = $this->exame->cancelarespera();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            }
         } else {
-            $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            $data['mensagem'] = 'Erro ao cancelar o Exame. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarsalasespera");
@@ -506,8 +519,8 @@ class Exame extends BaseController {
     }
 
     function observacaofaturargravar($agenda_exame_id) {
-         $this->exame->observacaofaturamento($agenda_exame_id);
-         echo '<script type="text/javascript">window.close();</script>';
+        $this->exame->observacaofaturamento($agenda_exame_id);
+        echo '<script type="text/javascript">window.close();</script>';
     }
 
     function desbloquear($agenda_exame_id, $inicio) {
@@ -533,12 +546,17 @@ class Exame extends BaseController {
     }
 
     function cancelarexame() {
-        $verificar = $this->exame->cancelarexame();
-        if ($verificar == "-1") {
-            $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+        if ($this->session->userdata('perfil_id') != 12) {
+            $verificar = $this->exame->cancelarexame();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            }
         } else {
-            $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            $data['mensagem'] = 'Erro ao cancelar o Exame. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
         }
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
     }
@@ -1700,7 +1718,9 @@ class Exame extends BaseController {
                                 $conselhosolicitante = $item->conselhosolicitante;
                             }
 
-                            $corpo = $corpo . "
+
+                            if ($_POST['autorizacao'] == 'SIM') {
+                                $corpo = $corpo . "
                                                       <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
@@ -1787,6 +1807,94 @@ class Exame extends BaseController {
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
+                            } else {
+                                $corpo = $corpo . "
+                                                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>" . $registroans . "</ans:registroANS>
+                     <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                                                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
+                        <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
+                        <ans:conselhoProfissional>6</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
+                     <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>" . $cnes . "</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
+                            <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
+                            <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                        <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >" . $item->valor_total . "</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
+                  </ans:valorTotal>
+                  </ans:guiaSP-SADT>";
+                            }
+
                             if ($i == 80) {
                                 $contador = $contador - $i;
 
@@ -2023,7 +2131,8 @@ class Exame extends BaseController {
                                 $conselhosolicitante = $item->conselhosolicitante;
                             }
 
-                            $corpo = $corpo . "
+                            if ($_POST['autorizacao'] == 'SIM') {
+                                $corpo = $corpo . "
                                                       <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
@@ -2110,6 +2219,95 @@ class Exame extends BaseController {
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
+                            } else {
+                                $corpo = $corpo . "
+                                                      <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                        <ans:registroANS>" . $registroans . "</ans:registroANS>
+                     <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                     <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                  </ans:cabecalhoGuia>
+                  <ans:dadosAutorizacao>
+                  <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
+                  <ans:dataAutorizacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataAutorizacao>
+                  </ans:dadosAutorizacao>
+                  <ans:dadosBeneficiario>
+                     <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
+                     <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
+                  </ans:dadosBeneficiario>
+                                                  <ans:dadosSolicitante>
+                     <ans:contratadoSolicitante>
+                           <ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>
+                        <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                     </ans:contratadoSolicitante>
+                     <ans:profissionalSolicitante>
+                        <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
+                        <ans:conselhoProfissional>6</ans:conselhoProfissional>
+                        <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
+                            <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                     </ans:profissionalSolicitante>
+                  </ans:dadosSolicitante>
+                  <ans:dadosSolicitacao>
+                     <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
+                     <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                     <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                  </ans:dadosSolicitacao>
+                  <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                        <ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>
+                     <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                     </ans:contratadoExecutante>
+                     <ans:CNES>" . $cnes . "</ans:CNES>
+                  </ans:dadosExecutante>
+                  <ans:dadosAtendimento>
+                  <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                  <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                  <ans:tipoConsulta>1</ans:tipoConsulta>
+                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  </ans:dadosAtendimento>
+                  <ans:procedimentosExecutados>
+                     <ans:procedimentoExecutado>
+                            <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
+                            <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
+                            <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
+                            <ans:procedimento>
+                            <ans:codigoTabela>22</ans:codigoTabela>
+                           <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                           <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                           </ans:procedimento>                        
+                    <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                        <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                        <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                        <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                        <ans:equipeSadt>
+                        <ans:codProfissional>
+                        <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                        </ans:codProfissional>
+                        <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                        <ans:conselho>1</ans:conselho>
+                        <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                        <ans:UF>23</ans:UF>
+                        <ans:CBOS>999999</ans:CBOS>
+                        </ans:equipeSadt>
+                  </ans:procedimentoExecutado>
+                  </ans:procedimentosExecutados>
+                  <ans:observacao>III</ans:observacao>
+                     <ans:valorTotal >
+                     <ans:valorProcedimentos >" . $item->valor_total . "</ans:valorProcedimentos >
+                     <ans:valorDiarias>0.00</ans:valorDiarias>
+                     <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                     <ans:valorMateriais>0.00</ans:valorMateriais>
+                     <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                     <ans:valorOPME>0.00</ans:valorOPME>
+                     <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                     <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
+                  </ans:valorTotal>
+                  </ans:guiaSP-SADT>";
+                            }
+
+
                             if ($i == 80) {
                                 $contador = $contador - $i;
 

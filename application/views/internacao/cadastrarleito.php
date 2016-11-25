@@ -67,10 +67,10 @@
                             if (@$obj->_tipo == 'Fechado'):echo 'selected';
                             endif;
 ?>>Fechado</option>
-                    <option value=Ocupado <?
-                            if (@$obj->_tipo == 'Ocupado'):echo 'selected';
+                    <option value=Cirurgico <?
+                            if (@$obj->_tipo == 'Cirurgico'):echo 'selected';
                             endif;
-?>>Ocupado</option>
+?>>Cirurgico</option>
                 </select>
             </div>
         </fieldset>

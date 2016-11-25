@@ -7,11 +7,11 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>Medico Convenios</h4>
-    <h4>PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></h4>
+    <h4>PERIODO: <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4);?> ate <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?></h4>
     <? if ($medico == 0) { ?>
         <h4>TODOS</h4>
     <? } else { ?>
-        <h4>Medico: <?= $medico[0]->operador; ?></h4>
+        <h4>Medico: <?= utf8_decode($medico[0]->operador); ?></h4>
     <? } ?>
     <hr>
     <? if ($contador > 0) {
@@ -28,8 +28,9 @@
                     <? if ($clinica == 'SIM') { ?>
                         <th class="tabela_header" ><font size="-1">Valor</th>
                     <? } ?>
+                        <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
-                    <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
+                    
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
                     <? } ?>
@@ -99,8 +100,9 @@
                             $totalgeral = $totalgeral + $item->valor_total;
                         }
                         ?>
+                            <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
                         <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
-                        <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
+                        
                         <? if ($solicitante == 'SIM') { ?>
                             <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
                         <? } ?>
@@ -116,11 +118,11 @@
                     <td ><font size="-1">TOTAL</td>
                     <td style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
                     <? if ($clinica == 'SIM') { ?>
-                        <td colspan="3" style='text-align: right;'><font size="-1">VALOR TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
+                        <td colspan="5" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
                     <? } else { ?>
-                        <td colspan="3" style='text-align: right;'><font size="-1">&nbsp;</td>
+                        <td colspan="4" style='text-align: right;'><font size="-1">&nbsp;</td>
                     <? } ?>
-                    <td colspan="3" style='text-align: right;'><font size="-1">VALOR TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
+                    <td colspan="2" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
                 </tr>
             </tbody>
         </table>
