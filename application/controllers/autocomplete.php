@@ -28,7 +28,8 @@ class Autocomplete extends Controller {
         $this->load->model('internacao/enfermaria_model', 'enfermaria_m');
         $this->load->model('internacao/leito_model', 'leito_m');
         $this->load->model('ponto/horariostipo_model', 'horariostipo');
-        ;
+        $this->load->model('cadastro/formapagamento_model', 'formapagamento');
+        $this->load->model('estoque/menu_model', 'menu');
     }
 
     function index() {
@@ -1241,6 +1242,7 @@ class Autocomplete extends Controller {
             $retorno['itens'] = $item->telefone;
             $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
             $retorno['id'] = $item->paciente_id;
+            $retorno['endereco'] = $item->logradouro." - ".$item->numero;           
             $var[] = $retorno;
         }
         echo json_encode($var);

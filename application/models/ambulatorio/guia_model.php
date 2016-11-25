@@ -4943,6 +4943,7 @@ AND data <= '$data_fim'";
     function burcarcontasrecebertemp() {
         $this->db->select('distinct(data)');
         $this->db->from('tb_financeiro_contasreceber_temp');
+        $this->db->where('ativo', 't');
         $return = $this->db->get();
         return $return->result();
     }
@@ -4960,6 +4961,7 @@ AND data <= '$data_fim'";
                            classe');
         $this->db->from('tb_financeiro_contasreceber_temp');
         $this->db->where('data', $data);
+        $this->db->where('ativo', 't');
         $this->db->groupby('devedor');
         $this->db->groupby('parcela');
         $this->db->groupby('observacao');
@@ -5129,6 +5131,8 @@ AND data <= '$data_fim'";
                             $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                             $this->db->insert('tb_financeiro_contasreceber');
                         }
+                        $this->db->set('ativo', 'f');
+                        $this->db->update('tb_financeiro_contasreceber_temp');
                     } else {
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
                             $valor_n_parcelado = $valor_total;
@@ -5215,6 +5219,8 @@ AND data <= '$data_fim'";
                                 $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                                 $this->db->insert('tb_financeiro_contasreceber');
                             }
+                            $this->db->set('ativo', 'f');
+                            $this->db->update('tb_financeiro_contasreceber_temp');
                         }
                     }
                 }

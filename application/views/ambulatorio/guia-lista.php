@@ -141,12 +141,12 @@
                                     <? if (isset($item->atendente) || isset($item->medicorealizou)) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" >
                                             <? if (isset($item->atendente)): ?>
-                                                <span>Atendente: <? echo $item->atendente; ?></span><br>
+                                            <span style="font-weigth:bolder; text-decoration: underline; color: rgb(255,50,0);">Atendente:</span> <? echo $item->atendente; ?><br>
                                                 <?
                                             endif;
                                             if (isset($item->atendente)):
                                                 ?>
-                                                <span>Medico: <? echo $item->medicorealizou; ?></span>
+                                                <span style="font-weigth:bolder; text-decoration: underline; color: rgb(255,50,0);">Medico:</span> <? echo $item->medicorealizou; ?>
                                             <? endif; ?>
                                         </td>
                                     <? } ?>
