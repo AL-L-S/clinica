@@ -160,6 +160,7 @@ class exame_model extends Model {
                             nome');
         $this->db->from('tb_exame_sala');
         $this->db->where('empresa_id', $empresa_id);
+        $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -962,6 +963,9 @@ class exame_model extends Model {
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('ae.situacao', $args['situacao']);
+        }
+        if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
+            $this->db->where('pt.medico', $args['c_s_medico']);
         }
         if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
             $this->db->where('pt.medico', $args['c_s_medico']);

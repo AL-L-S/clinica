@@ -62,7 +62,7 @@
                 <label>UF Expedidor</label>
 
 
-                <input type="text" id="txtuf_rg" class="texto02" name="uf_rg" value="<?= @$obj->_uf_rg; ?>"/>
+                <input type="text" id="txtuf_rg" class="texto02" name="uf_rg" maxlength="20" value="<?= @$obj->_uf_rg; ?>"/>
             </div>
             <div>
                 <div>
@@ -150,7 +150,7 @@
                 <label>Telefone</label>
 
 
-                <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone" value="<?= @$obj->_telefone; ?>" />
+                <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="(99) 9999-9999" value="<?= @$obj->_telefone; ?>" />
             </div>
             <div>
                 <label>Celular</label>

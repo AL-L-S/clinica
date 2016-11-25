@@ -5,7 +5,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>ambulatorio/agenda/carregar/0">
-            Nova Agenda
+            Novo Horario
         </a>
     </div>
     <div id="accordion">

@@ -4943,6 +4943,7 @@ AND data <= '$data_fim'";
     function burcarcontasrecebertemp() {
         $this->db->select('distinct(data)');
         $this->db->from('tb_financeiro_contasreceber_temp');
+        $this->db->where('ativo', 't');
         $return = $this->db->get();
         return $return->result();
     }
@@ -4960,6 +4961,7 @@ AND data <= '$data_fim'";
                            classe');
         $this->db->from('tb_financeiro_contasreceber_temp');
         $this->db->where('data', $data);
+        $this->db->where('ativo', 't');
         $this->db->groupby('devedor');
         $this->db->groupby('parcela');
         $this->db->groupby('observacao');
@@ -5002,18 +5004,18 @@ AND data <= '$data_fim'";
 
         $teste = $_POST['qtde'];
         $w = 0;
-        foreach ($forma_pagamento as $value) {
+        foreach ($forma_pagamento as $value) { 
             $classe = "CAIXA" . " " . $value->nome;
             $w++;
             $valor_total = (str_replace(".", "", $teste[$w]));
             $valor_total = (str_replace(",", ".", $valor_total));
             if ($valor_total != '0.00') {
-
+                
                 if (empty($value->nome) || empty($value->conta_id) || empty($value->credor_devedor) || empty($value->parcelas)) {
                     return 10;
                 }
 
-                if (!isset($value->tempo_receber) || $value->tempo_receber == 0) {
+                if ((empty($value->tempo_receber) || $value->tempo_receber == 0) && (empty($value->dia_receber) || $value->dia_receber == 0)) {
                     $this->db->set('data', $_POST['data1']);
                     $this->db->set('valor', $valor_total);
                     $this->db->set('classe', $classe);
@@ -5025,6 +5027,7 @@ AND data <= '$data_fim'";
                     $this->db->insert('tb_entradas');
                     $entradas_id = $this->db->insert_id();
 
+                    $this->db->set('data', $_POST['data1']);
                     $this->db->set('valor', $valor_total);
                     $this->db->set('entrada_id', $entradas_id);
                     $this->db->set('conta', $value->conta_id);
@@ -5081,7 +5084,7 @@ AND data <= '$data_fim'";
                                 $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
                                 $valor_parcelado = $valor_com_juros / $parcelas;
                             } else {
-                                $valor_parcelado = $valor / $parcelas;
+                                $valor_parcelado = $valor;
                             }
 
                             if ($parcelas > 1) {
@@ -5128,6 +5131,8 @@ AND data <= '$data_fim'";
                             $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                             $this->db->insert('tb_financeiro_contasreceber');
                         }
+                        $this->db->set('ativo', 'f');
+                        $this->db->update('tb_financeiro_contasreceber_temp');
                     } else {
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
                             $valor_n_parcelado = $valor_total;
@@ -5163,7 +5168,7 @@ AND data <= '$data_fim'";
                                     $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
                                     $valor_parcelado = $valor_com_juros / $parcelas;
                                 } else {
-                                    $valor_parcelado = $valor / $parcelas;
+                                    $valor_parcelado = $valor;
                                 }
 
                                 $tempo_receber = $value->tempo_receber;
@@ -5214,6 +5219,8 @@ AND data <= '$data_fim'";
                                 $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                                 $this->db->insert('tb_financeiro_contasreceber');
                             }
+                            $this->db->set('ativo', 'f');
+                            $this->db->update('tb_financeiro_contasreceber_temp');
                         }
                     }
                 }
@@ -5668,7 +5675,7 @@ ORDER BY ae.agenda_exames_id)";
 //                    $contador++;
 //                }
 //            }
-            
+
 
             if (count($result) != 0) {
                 return true;
@@ -6271,9 +6278,9 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('tipo', $_POST['tipo']);
             $this->db->set('ativo', 'f');
             $this->db->set('realizada', 't');
-            if ($_POST['medicoagenda'] != ""){
-            $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
-            $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+            if ($_POST['medicoagenda'] != "") {
+                $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+                $this->db->set('medico_solicitante', $_POST['medicoagenda']);
             }
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');
