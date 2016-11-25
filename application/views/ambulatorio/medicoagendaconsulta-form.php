@@ -11,6 +11,7 @@
                     <dd>
                         <select name="txtacao" size="1" class="texto03" id="teste"  >
                             <option value="Bloquear">Bloquear</option>
+                            <option value="Alterarmedico">Alterar medico</option>
                             <option value="Excluir">Excluir hor&aacute;rios</option>
                         </select>
                     </dd>
@@ -22,6 +23,17 @@
                             <option value=""></option>
                             <? foreach ($medicos as $value) : ?>
                                 <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
+                    <label>Salas</label>
+                    </dt>
+                    <dd>
+                        <select name="sala" id="sala" class="size2">
+                            <option value=""></option>
+                            <? foreach ($salas as $value) : ?>
+                                <option value="<?= $value->exame_sala_id; ?>"><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
                         </select>
                     </dd>
