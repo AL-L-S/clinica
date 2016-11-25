@@ -1,13 +1,15 @@
 <div class="content"> <!-- Inicio da DIV content -->
 
     <table>
-        <tr><td width="60px;"><center>
-            <div class="bt_link">
+        <tr>
+            <td width="60px;">
+                <div class="bt_link">
                 <a href="<?php echo base_url() ?>cadastros/pacientes/novo">
                     Cadastro
                 </a>
             </div>
             </td>
+<!--            
             <td width="100px;"><center>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>ambulatorio/exametemp/novopaciente">
@@ -36,7 +38,8 @@
                                     Encaixar Consulta
                                 </a>
                             </div>
-                            </td>
+                            </td>-->
+                            
                             </table>
                             <div id="accordion">
                                 <h3><a href="#">Manter pacientes</a></h3>

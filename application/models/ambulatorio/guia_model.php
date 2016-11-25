@@ -5004,13 +5004,13 @@ AND data <= '$data_fim'";
 
         $teste = $_POST['qtde'];
         $w = 0;
-        foreach ($forma_pagamento as $value) {
+        foreach ($forma_pagamento as $value) { 
             $classe = "CAIXA" . " " . $value->nome;
             $w++;
             $valor_total = (str_replace(".", "", $teste[$w]));
             $valor_total = (str_replace(",", ".", $valor_total));
             if ($valor_total != '0.00') {
-
+                
                 if (empty($value->nome) || empty($value->conta_id) || empty($value->credor_devedor) || empty($value->parcelas)) {
                     return 10;
                 }

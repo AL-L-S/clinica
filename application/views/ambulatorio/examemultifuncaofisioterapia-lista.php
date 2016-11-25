@@ -2,7 +2,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novopacientefisioterapiaencaixe');">
-            Encaixar Fisioterapia
+            Encaixar Especialidade
         </a>
     </div>
     <div id="accordion">
