@@ -97,6 +97,7 @@ class leito_model extends BaseModel {
         $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->where('il.ativo', 't');
+        $this->db->where('il.excluido', 'f');
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('il.nome ilike', "%" . $args['nome'] . "%");
@@ -117,11 +118,12 @@ class leito_model extends BaseModel {
         from ponto.tb_internacao_leito il
         join ponto.tb_internacao_enfermaria as ie on ie.internacao_enfermaria_id = il.enfermaria_id
         join ponto.tb_internacao_unidade as iu on iu.internacao_unidade_id = ie.unidade_id
-        where il.ativo = true
+        where il.ativo = true and il.condicao != 'Cirurgico'
+        and il.excluido = 'f' 
         and (il.nome ilike '%$parametro%'
         or ie.nome ilike '%$parametro%'
         or iu.nome ilike '%$parametro%')
-        order by iu.nome as unidade, ie.nome as enfermaria, il.nome";
+        order by iu.nome, ie.nome, il.nome";
         
         
 //        $this->db->select(' il.internacao_leito_id,
@@ -140,6 +142,17 @@ class leito_model extends BaseModel {
 //        }
         $return = $this->db->query($sql);
         return $return->result();
+    }
+    
+    
+    function excluirleito($leito_id) {
+        $this->db->set('excluido', 't');
+        $this->db->where('internacao_leito_id', $leito_id);
+        $this->db->update('tb_internacao_leito');
+        $erro = $this->db->_error_message();
+                if (trim($erro) != "") { // erro de banco
+                    return false;
+                }
     }
 
 }

@@ -23,15 +23,19 @@ class login_model extends Model {
         $return = $this->db->get()->result();
 
         $this->db->select('empresa_id,
-                            nome');
+                            nome,
+                            internacao
+                            ');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa);
         $retorno = $this->db->get()->result();
 
         if(count($retorno) > 0){
             $empresanome = $retorno[0]->nome;
+            $internacao = $retorno[0]->internacao;
         }else{
             $empresanome = "";
+            $internacao = false;
         }
         
         if (isset($return) && count($return) > 0) {
@@ -48,8 +52,10 @@ class login_model extends Model {
                 'perfil_id' => $return[0]->perfil_id,
                 'perfil' => $return[0]->perfil,
                 'modulo' => $modulo,
+                'internacao' => $internacao,
                 'empresa_id' => $empresa,
                 'empresa' => $empresanome
+                
             );
             $this->session->set_userdata($p);
             return true;

@@ -118,6 +118,16 @@ class enfermaria_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function excluirenfermaria($enfermaria_id) {
+        $this->db->set('ativo', 'f');
+        $this->db->where('internacao_enfermaria_id', $enfermaria_id);
+        $this->db->update('tb_internacao_enfermaria');
+        $erro = $this->db->_error_message();
+                if (trim($erro) != "") { // erro de banco
+                    return false;
+                }
+    }
 
 }
 

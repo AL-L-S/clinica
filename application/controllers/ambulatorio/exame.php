@@ -240,9 +240,18 @@ class Exame extends BaseController {
     }
 
     function autorizarsessao($agenda_exames_id, $paciente_id, $guia_id) {
-        $this->exame->autorizarsessao($agenda_exames_id);
-        $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
-        redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
+        $intervalo = $this->exame->verificadiasessao($agenda_exames_id);
+
+        if ($intervalo == 0) {
+            $this->exame->autorizarsessao($agenda_exames_id);
+            $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
+            redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
+        } else {
+            $data['mensagem'] = 'Essa sessao só poderá ser autorizada amanhã.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
+        }
+        
     }
 
     function autorizarsessaocadapsicologia($agenda_exames_id, $paciente_id, $guia_id) {

@@ -160,6 +160,7 @@ class exame_model extends Model {
                             nome');
         $this->db->from('tb_exame_sala');
         $this->db->where('empresa_id', $empresa_id);
+        $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -962,6 +963,9 @@ class exame_model extends Model {
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('ae.situacao', $args['situacao']);
+        }
+        if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
+            $this->db->where('pt.medico', $args['c_s_medico']);
         }
         if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
             $this->db->where('pt.medico', $args['c_s_medico']);
@@ -2852,6 +2856,43 @@ class exame_model extends Model {
             return false;
         else
             return true;
+    }
+
+    function verificadiasessao($agenda_exames_id) {
+
+        $this->db->select('agrupador_fisioterapia,
+                            numero_sessao,
+                            qtde_sessao');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $query = $this->db->get();
+        $retorno = $query->result();
+
+        $sessao = $retorno[0]->numero_sessao;
+        $agrupador = $retorno[0]->agrupador_fisioterapia;
+        $qtde_sessao = $retorno[0]->qtde_sessao;
+
+
+        $i = 1;
+        $x = 0;
+        while ($i < $qtde_sessao) {
+
+            $data = date("Y-m-d");
+            $this->db->select('data');
+            $this->db->from('tb_agenda_exames');
+            $this->db->where('agrupador_fisioterapia', $agrupador);
+            $this->db->where('numero_sessao', $i);
+            $this->db->where('data', $data);
+            $query2 = $this->db->get();
+            $retorno2 = $query2->result();
+
+            if (count($retorno2) != 0) {
+                $x++;
+            }
+            $i++;
+        }
+
+        return $x;
     }
 
     function autorizarsessao($agenda_exames_id) {
