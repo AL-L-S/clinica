@@ -3005,6 +3005,18 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarautocompletemedicoespecialidade($parametro) {
+        $this->db->select(' o.nome,
+                            o.operador_id,
+                            ');
+        $this->db->from('tb_cbo_ocupacao co');
+        $this->db->join('tb_operador o', 'co.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+        $this->db->where('co.descricao', $parametro);
+        $this->db->orderby("o.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarautocompleteprocedimentospsicologia($parametro) {
         $this->db->select(' pc.procedimento_convenio_id,
