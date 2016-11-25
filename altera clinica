@@ -910,3 +910,89 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_tipo integer;
 atualiza 23/11/16
 
 INSERT INTO ponto.tb_perfil VALUES (12, 'RECEPCAO AGENDAMENTO', TRUE);
+
+
+-- Internação na Clínica
+
+ -- Dia 22/11/16
+CREATE TABLE ponto.tb_internacao_motivosaida
+(
+  internacao_motivosaida_id serial NOT NULL,
+  nome character varying(100) NOT NULL,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  hospital integer,
+  CONSTRAINT tb_internacao_motivosaida_pkey PRIMARY KEY (internacao_motivosaida_id )
+);
+
+ALTER TABLE ponto.tb_internacao ADD COLUMN hospital_transferencia character varying(100);
+
+ALTER TABLE ponto.tb_internacao_leito ADD COLUMN excluido boolean DEFAULT false;
+
+
+ALTER TABLE ponto.tb_internacao DROP COLUMN procedimentosolicitado;
+ALTER TABLE ponto.tb_internacao ADD COLUMN procedimentosolicitado integer;
+
+CREATE TABLE ponto.tb_internacao_prescricao
+(
+  internacao_prescricao_id serial NOT NULL,
+  internacao_id integer,
+  operador_cadastro integer,
+  data_cadastro timestamp without time zone,
+  data date,
+  CONSTRAINT tb_internacao_prescricao_pkey PRIMARY KEY (internacao_prescricao_id )
+);
+
+CREATE TABLE ponto.tb_internacao_prescricao_medicamento
+(
+  internacao_prescricao_medicamento_id serial NOT NULL,
+  internacao_prescricao_id integer,
+  internacao_id integer,
+  medicamento_id integer,
+  aprasamento integer,
+  dias integer,
+  volume integer,
+  operador_cadastro integer,
+  data_cadastro timestamp without time zone,
+  operador_atualizacao integer,
+  data_atualizacao timestamp without time zone,
+  ativo boolean NOT NULL DEFAULT true,
+  CONSTRAINT tb_internacao_prescricao_medicamento_pkey PRIMARY KEY (internacao_prescricao_medicamento_id )
+);
+
+ALTER TABLE ponto.tb_internacao_prescricao_medicamento DROP COLUMN volume;
+
+ALTER TABLE ponto.tb_internacao_enfermaria ADD COLUMN aprasamento_enfermagem integer;
+
+
+
+
+ALTER TABLE ponto.tb_internacao ALTER COLUMN leito TYPE character varying(50);
+
+ -- Dia 23/11/16
+
+ALTER TABLE ponto.tb_internacao ALTER COLUMN motivo_saida TYPE character varying(50);
+
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN internacao boolean DEFAULT false;
+
+
+
+CREATE TABLE ponto.tb_internacao_evolucao
+(
+  internacao_evolucao_id serial NOT NULL,
+  internacao_id integer,
+  diagnostico character varying(500),
+  conduta character varying(500),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  
+  CONSTRAINT tb_internacao_evolucao_pkey PRIMARY KEY (internacao_evolucao_id )
+);
+
