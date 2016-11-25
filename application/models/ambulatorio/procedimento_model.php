@@ -23,8 +23,8 @@ class procedimento_model extends Model {
             $this->instanciar($procedimento_tuss_id);
         }
     }
-
-    function listar($args = array()) {
+    
+ function listar($args = array()) {
         $this->db->select('procedimento_tuss_id,
                             nome,
                             codigo,
@@ -35,9 +35,11 @@ class procedimento_model extends Model {
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', "%" . $args['nome'] . "%");
             $this->db->orwhere('grupo ilike', "%" . $args['nome'] . "%");
+            $this->db->where("ativo", 't');
             $this->db->orwhere('codigo ilike', "%" . $args['nome'] . "%");
+            $this->db->where("ativo", 't');
         }
-        
+
         return $this->db;
     }
 
