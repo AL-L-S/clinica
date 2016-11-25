@@ -901,6 +901,7 @@ atualiza 24/11/16
 update ponto.tb_saldo
 set data = to_date(to_char(data_cadastro, 'YYYY/MM/DD'), 'YYYY/MM/DD')
 where data is null
+
 atualiza 21/11/16
 
 ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_tipo integer;
