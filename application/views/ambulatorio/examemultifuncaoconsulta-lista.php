@@ -287,10 +287,10 @@
     $(document).ready(function () {
         
         
-        var txtcboID = $("#txtcbo");
-txtcboID.focusout( function(){
+        var txtcbo = $("#txtcbo");
+        txtcbo.focusout( function(){
    
-});
+        });
 
         $(function () {
             $("#txtcbo").autocomplete({
@@ -310,15 +310,15 @@ txtcboID.focusout( function(){
 
 
         $(function () {
-            txtcboID.change(function () {
+            txtcbo.change(function () {
                  
                 if ($(this).val()) {
   
-                    teste_parada = txtcboID.val();
+                    especialidade_medico = txtcbo.val();
 //                     alert(teste_parada);
                     $('.carregando').show();
 //                     alert(teste_parada);
-                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade' , {txtcbo: teste_parada, ajax: true}, function (j) {
+                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade' , {txtcbo: especialidade_medico, ajax: true}, function (j) {
                         options = '<option value=""></option>';
                         console.log(j);
                         

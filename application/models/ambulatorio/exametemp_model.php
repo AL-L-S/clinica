@@ -3013,6 +3013,8 @@ class exametemp_model extends Model {
         $this->db->from('tb_cbo_ocupacao co');
         $this->db->join('tb_operador o', 'co.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
         $this->db->where('co.descricao', $parametro);
+        $this->db->where('o.ativo', 't');
+        $this->db->where('o.medico', 't');
         $this->db->orderby("o.nome");
         $return = $this->db->get();
         return $return->result();

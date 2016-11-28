@@ -344,15 +344,7 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    function classeportiposaidalista() {
-
-        if (isset($_GET['nome'])) {
-            $result = $this->financeiro_classe->listarautocompleteclassessaida($_GET['nome']);
-        } else {
-            $result = $this->financeiro_classe->listarautocompleteclassessaida();
-        }
-        echo json_encode($result);
-    }
+    
 
     function medicoconvenio() {
 

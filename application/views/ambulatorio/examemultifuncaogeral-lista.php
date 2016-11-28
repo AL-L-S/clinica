@@ -32,6 +32,7 @@
                 <form method="get" action="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">
 
                     <tr>
+                        <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
                         <th class="tabela_title">Salas</th>
                         <th class="tabela_title">SITUA&Ccedil;&Atilde;O</th>
@@ -42,14 +43,14 @@
                     </tr>
                     <tr>
                         <th class="tabela_title">
+                            <input type="text" id="txtcbo" class="texto02" name="txtcbo" value="<?= @$obj->_cbo_nome; ?>" />
+                        </th>
+                      
+
+                        <th class="tabela_title">
                             <select name="medico" id="medico" class="size1">
-                                <option value=""></option>
-                                <? foreach ($medico as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>" <?
-                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
+                                <option value=""> </option>
+
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -81,7 +82,7 @@
                             <input type="text"  id="data" alt="date" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
                         </th>
                         <th colspan="2" class="tabela_title">
-                            <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                            <input type="text" name="nome" class="texto02 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
                         <th  class="tabela_title">
                             <input type="text" name="nascimento" class="texto02" alt="date" value="<?php echo @$_GET['nascimento']; ?>" />
@@ -361,21 +362,84 @@
 
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
-
-    $(function () {
-        $("#data").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
+    $(document).ready(function () {
+        
+        
+        var txtcbo = $("#txtcbo");
+        txtcbo.focusout( function(){
+   
         });
-    });
 
-    $(function () {
-        $("#accordion").accordion();
+        $(function () {
+            $("#txtcbo").autocomplete({
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionaismultifuncao",
+                minLength: 3,
+                focus: function (event, ui) {
+                    $("#txtcbo").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#txtcbo").val(ui.item.value);
+                    $("#txtcboID").val(ui.item.id);
+                    return false;
+                }
+            });
+        });
+
+
+        $(function () {
+            txtcbo.change(function () {
+                 
+                if ($(this).val()) {
+  
+                    especialidade_medico = txtcbo.val();
+//                     alert(teste_parada);
+                    $('.carregando').show();
+//                     alert(teste_parada);
+                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade' , {txtcbo: especialidade_medico, ajax: true}, function (j) {
+                        options = '<option value=""></option>';
+                        console.log(j);
+                        
+                        for (var c = 0; c < j.length; c++) {
+                          
+                            
+                            if (j[0].operador_id != undefined){
+                       options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+
+                        }
+                        }
+                        $('#medico').html(options).show();
+                        $('.carregando').hide();
+
+                          
+                        
+                    });
+                } else {
+                    $('#medico').html('<option value="">Selecione</option>');
+                }
+            });
+        });
+
+
+
+        $(function () {
+            $("#data").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+
+        $(function () {
+            $("#accordion").accordion();
+        });
+
+        
+
     });
 
 </script>
