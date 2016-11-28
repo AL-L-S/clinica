@@ -3013,6 +3013,9 @@ ORDER BY p.nome";
         if ($_POST['operador'] != "0") {
             $this->db->where('ae.operador_autorizacao', $_POST['operador']);
         }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -3206,6 +3209,9 @@ ORDER BY p.nome";
         }
         if ($_POST['operador'] != "0") {
             $this->db->where('ae.operador_autorizacao', $_POST['operador']);
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);

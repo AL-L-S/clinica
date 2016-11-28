@@ -2217,6 +2217,7 @@ class Guia extends BaseController {
 
     function relatoriocaixacartao() {
         $data['operadores'] = $this->operador_m->listartecnicos();
+        $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
         $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriocaixacartao', $data);
