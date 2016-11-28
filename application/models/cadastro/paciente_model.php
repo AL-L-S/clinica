@@ -79,14 +79,21 @@ class paciente_model extends BaseModel {
         if ($args) {
             if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
                 $this->db->where('paciente_id', $args['prontuario']);
+//                $this->db->where('ativo', 'true');
             } elseif (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('tb_paciente.nome ilike', '%' . $args['nome'] . '%');
+//                $this->db->where('ativo', 'true');
                 $this->db->orwhere('tb_paciente.nome_mae ilike', '%' . $args['nome'] . '%');
+                $this->db->where('ativo', 'true');
                 $this->db->orwhere('tb_paciente.celular ilike', '%' . $args['nome'] . '%');
+                $this->db->where('ativo', 'true');
                 $this->db->orwhere('tb_paciente.telefone ilike', '%' . $args['nome'] . '%');
+                $this->db->where('ativo', 'true');
                 $this->db->orwhere('tb_paciente.cpf ilike', '%' . $args['nome'] . '%');
+                $this->db->where('ativo', 'true');
             } elseif (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
                 $this->db->where('tb_paciente.nascimento', $args['nascimento']);
+                $this->db->where('ativo', 'true');
             }
         }
 

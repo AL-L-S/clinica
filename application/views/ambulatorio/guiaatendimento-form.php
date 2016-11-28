@@ -84,7 +84,7 @@
                                 <th width="70px;" class="tabela_header">Sala*</th>
                                 <th class="tabela_header">Medico*</th>
                                 <th class="tabela_header">Qtde*</th>
-                                <th colspan="2" class="tabela_header">Solicitante*</th>
+                                <th colspan="2" class="tabela_header">Solicitante</th>
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
