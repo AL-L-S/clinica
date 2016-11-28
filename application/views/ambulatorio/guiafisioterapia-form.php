@@ -104,10 +104,10 @@
                         <thead>
 
                             <tr>
-                                <th width="70px;" class="tabela_header">Sala</th>
-                                <th class="tabela_header">Medico</th>
-                                <th class="tabela_header">Convenio</th>
-                                <th class="tabela_header">Procedimento</th>
+                                <th width="70px;" class="tabela_header">Sala*</th>
+                                <th class="tabela_header">Medico*</th>
+                                <th class="tabela_header">Convenio*</th>
+                                <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Qtde</th>

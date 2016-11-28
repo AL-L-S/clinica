@@ -393,7 +393,7 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaoorcamento', $data);
     }
 
-    function impressaofichaconvenio($paciente_id, $guia_id, $exames_id) {        
+    function impressaofichaconvenio($paciente_id, $guia_id, $exames_id) {
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
@@ -703,47 +703,68 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentos() {
-
-        $medico_id = $_POST['crm1'];
         $paciente_id = $_POST['txtpaciente_id'];
-        $resultadoguia = $this->guia->listarguia($paciente_id);
-        if ($_POST['medicoagenda'] != '') {
-//        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+        if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+            $data['mensagem'] = 'Insira os campos obrigatorios.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            if (isset($_POST['guia_id'])) {
+                $guia_id = $_POST['guia_id'];
+                redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$guia_id");
             } else {
-                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                redirect(base_url() . "ambulatorio/guia/novo/$paciente_id");
             }
-//            $this->gerardicom($ambulatorio_guia);
-            $this->guia->gravarexames($ambulatorio_guia, $medico_id);
+        } else {
+            $medico_id = $_POST['crm1'];
+            $paciente_id = $_POST['txtpaciente_id'];
+            $resultadoguia = $this->guia->listarguia($paciente_id);
+            if ($_POST['medicoagenda'] != '') {
+                if ($resultadoguia == null) {
+                    $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+                } else {
+                    $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                }
+                $this->guia->gravarexames($ambulatorio_guia, $medico_id);
+            }
+            redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");
         }
-//        $this->novo($paciente_id, $ambulatorio_guia);
-        redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");
     }
 
     function gravarprocedimentosgeral() {
-
-        $medico_id = $_POST['crm1'];
+        
         $paciente_id = $_POST['txtpaciente_id'];
-        $resultadoguia = $this->guia->listarguia($paciente_id);
-        if ($_POST['medicoagenda'] != '') {
+        if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+            $data['mensagem'] = 'Insira os campos obrigatorios.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            if( isset($_POST['guia_id']) ){
+                $guia_id = $_POST['guia_id'];
+                redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$guia_id");
+            }
+            else {
+                redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id");
+
+            }
+        } else {
+            $medico_id = $_POST['crm1'];
+            $resultadoguia = $this->guia->listarguia($paciente_id);
+            if ($_POST['medicoagenda'] != '') {
 //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
-            } else {
-                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            }
+                if ($resultadoguia == null) {
+                    $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+                } else {
+                    $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                }
 //            $this->gerardicom($ambulatorio_guia);
-            $tipo = $this->guia->verificaexamemedicamento($_POST['procedimento1']);
-            if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO') && $medico_id == '') {
-                $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
-                $this->session->set_flashdata('message', $data['mensagem']);
-            } else {
-                $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id);
+                $tipo = $this->guia->verificaexamemedicamento($_POST['procedimento1']);
+                if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO') && $medico_id == '') {
+                    $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
+                    $this->session->set_flashdata('message', $data['mensagem']);
+                } else {
+                    $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id);
+                }
             }
-        }
 //        $this->novo($paciente_id, $ambulatorio_guia);
-        redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
+            redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
+        }
     }
 
     function gravarorcamento() {
@@ -765,50 +786,74 @@ class Guia extends BaseController {
     function gravarprocedimentosconsulta() {
 
         $paciente_id = $_POST['txtpaciente_id'];
-        $resultadoguia = $this->guia->listarguia($paciente_id);
-        if ($_POST['medicoagenda'] != '') {
-//        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+
+        if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+
+            $data['mensagem'] = 'Insira os campos obrigatorios.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            if (isset($_POST['guia_id'])) {
+                $guia_id = $_POST['guia_id'];
+                redirect(base_url() . "ambulatorio/guia/novoconsulta/$paciente_id/$guia_id");
             } else {
-                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                redirect(base_url() . "ambulatorio/guia/novoconsulta/$paciente_id");
             }
-            $this->guia->gravarconsulta($ambulatorio_guia);
+        } else {
+            $resultadoguia = $this->guia->listarguia($paciente_id);
+            if ($_POST['medicoagenda'] != '') {
+                //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                if ($resultadoguia == null) {
+                    $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+                } else {
+                    $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                }
+                $this->guia->gravarconsulta($ambulatorio_guia);
+            }
+            //        $this->gerardicom($ambulatorio_guia);
+            $this->session->set_flashdata('message', $data['mensagem']);
+            //        $this->novo($paciente_id, $ambulatorio_guia);
+            redirect(base_url() . "ambulatorio/guia/novoconsulta/$paciente_id/$ambulatorio_guia");
         }
-//        $this->gerardicom($ambulatorio_guia);
-        $this->session->set_flashdata('message', $data['mensagem']);
-//        $this->novo($paciente_id, $ambulatorio_guia);
-        redirect(base_url() . "ambulatorio/guia/novoconsulta/$paciente_id/$ambulatorio_guia/$messagem");
     }
 
     function gravarprocedimentosfisioterapia() {
 
         $i = 1;
         $paciente_id = $_POST['txtpaciente_id'];
-        $resultadoguia = $this->guia->listarguia($paciente_id);
-
-        //verifica se existem sessões abertas
-        $retorno = $this->guia->verificasessoesabertas($_POST['procedimento1'], $_POST['txtpaciente_id']);
-
-        if ($retorno == false) {
-            if ($_POST['medicoagenda'] != '') {
-//        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-                if ($resultadoguia == null) {
-                    $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
-                } else {
-                    $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-                }
-                $this->guia->gravarfisioterapia($ambulatorio_guia);
+        if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+            $data['mensagem'] = 'Insira os campos obrigatorios.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            if (isset($_POST['guia_id'])) {
+                $guia_id = $_POST['guia_id'];
+                redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$guia_id");
+            } else {
+                redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id");
             }
-//        $this->gerardicom($ambulatorio_guia);
-//            $this->session->set_flashdata('message', $data['mensagem']);
-//        $this->novo($paciente_id, $ambulatorio_guia);
-            redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
         } else {
-            $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            $messagem = 'Não autorizado, existem sessões abertas para essa especialidade';
-            $this->session->set_flashdata('message', $messagem);
-            redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia");
+            $resultadoguia = $this->guia->listarguia($paciente_id);
+
+            //verifica se existem sessões abertas
+            $retorno = $this->guia->verificasessoesabertas($_POST['procedimento1'], $_POST['txtpaciente_id']);
+
+            if ($retorno == false) {
+                if ($_POST['medicoagenda'] != '') {
+                    //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                    if ($resultadoguia == null) {
+                        $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+                    } else {
+                        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                    }
+                    $this->guia->gravarfisioterapia($ambulatorio_guia);
+                }
+                //        $this->gerardicom($ambulatorio_guia);
+                //            $this->session->set_flashdata('message', $data['mensagem']);
+                //        $this->novo($paciente_id, $ambulatorio_guia);
+                redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
+            } else {
+                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                $messagem = 'Não autorizado, existem sessões abertas para essa especialidade';
+                $this->session->set_flashdata('message', $messagem);
+                redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia");
+            }
         }
     }
 
