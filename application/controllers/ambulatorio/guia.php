@@ -1899,11 +1899,18 @@ class Guia extends BaseController {
     }
 
     function gerarelatorioaniversariantes() {
-        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        if( !($_POST["txtdata_inicio"] == "") ){
+            $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['relatorio'] = $this->guia->relatorioaniversariantes();
-        $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
+            $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+            $data['relatorio'] = $this->guia->relatorioaniversariantes();
+            $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
+        }
+        else {
+            $data['mensagem'] = 'Insira um mês válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
+        }
     }
 
     function escolherdeclaracao($paciente_id, $guia_id, $exames_id) {

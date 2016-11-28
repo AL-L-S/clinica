@@ -106,7 +106,7 @@ class paciente_model extends BaseModel {
         $this->db->join('tb_municipio c', 'c.municipio_id = p.municipio_id', 'left');
         $this->db->join('tb_convenio co', 'co.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_tipo_logradouro tp', 'p.tipo_logradouro = tp.tipo_logradouro_id', 'left');
-        $this->db->where("paciente_id", $paciente_id);
+        $this->db->where("p.paciente_id", $paciente_id);
         $return = $this->db->get();
         return $return->result();
     }
