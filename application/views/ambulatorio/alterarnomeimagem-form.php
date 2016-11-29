@@ -5,6 +5,14 @@
     Utilitario::pmf_mensagem($this->session->flashdata('message'));
     ?>
 
+<script>
+    
+<?php 
+    if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
+    
+</script>
 <body bgcolor="#C0C0C0">
     <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Alterar Nome Imegem</h3>

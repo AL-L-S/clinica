@@ -8,7 +8,7 @@
                     <label>Mes</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="integer"/>
+                        <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="integer" />
                     </dd>
                     <dt>
                     <label>Empresa</label>
@@ -33,9 +33,9 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-
     $(function() {
         $("#accordion").accordion();
     });
+    
 
 </script>

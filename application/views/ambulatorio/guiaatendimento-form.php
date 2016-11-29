@@ -81,12 +81,12 @@
                         <thead>
 
                             <tr>
-                                <th width="70px;" class="tabela_header">Sala</th>
-                                <th class="tabela_header">Medico</th>
-                                <th class="tabela_header">Qtde</th>
+                                <th width="70px;" class="tabela_header">Sala*</th>
+                                <th class="tabela_header">Medico*</th>
+                                <th class="tabela_header">Qtde*</th>
                                 <th colspan="2" class="tabela_header">Solicitante</th>
-                                <th class="tabela_header">Convenio</th>
-                                <th class="tabela_header">Procedimento</th>
+                                <th class="tabela_header">Convenio*</th>
+                                <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Qtde</th>
@@ -338,8 +338,10 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-<?php if ($this->session->flashdata('message') != ''): ?>
-                                    alert("<? echo $this->session->flashdata('message') ?>");
+
+<?php 
+    if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
 <? endif; ?>
 
                                 $(function () {

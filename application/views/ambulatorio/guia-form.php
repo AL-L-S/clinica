@@ -1,3 +1,4 @@
+
 <div class="content ficha_ceatox">
     <div class="bt_link_new">
         <a onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
@@ -32,7 +33,7 @@
         ?>
         <h3 class="singular"><a href="#">Marcar exames</a></h3>
         <div>
-            <form name="form_guia" id="form_guia" onsubmit="return valida(this)" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos" method="post">
+            <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos" method="post">
                 <fieldset>
                     <legend>Dados do Pacienete</legend>
                     <div>
@@ -82,11 +83,11 @@
                         <thead>
 
                             <tr>
-                                <th width="70px;" class="tabela_header">Sala *</th>
-                                <th class="tabela_header">Medico *</th>
+                                <th width="70px;" class="tabela_header">Sala*</th>
+                                <th class="tabela_header">Medico*</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th colspan="2" class="tabela_header">Solicitante*</th>
-                                <th class="tabela_header">Convenio *</th>
+                                <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
@@ -108,7 +109,7 @@
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
-                                <td >
+                                <td > 
                                     <select  name="medicoagenda" id="medicoagenda" class="size1" >
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
@@ -162,7 +163,7 @@
                         </tfoot>
                     </table> 
                     <hr/>
-                    <button onclick="valida()" name="btnEnviar">Adicionar</button>
+                    <button type="submit" name="btnEnviar">Adicionar</button>
                 </fieldset>
             </form>
             <fieldset>
@@ -245,7 +246,6 @@
                             <?
                         }
                     }//buscar exames com forma de pagamento pre-definida (fim)
-
                     if ($x > 0) {
                         ?>
                         <table id="table_agente_toxico" border="0">
@@ -264,13 +264,10 @@
                             $total = 0;
                             $guia = 0;
                             foreach ($exames as $value) {
-
                                 $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
                                 if (empty($teste)) {
                                     $exames_sem_formapagamento = $this->exametemp->listarprocedimentosemformapagamento($ambulatorio_guia_id, $value->procedimento_tuss_id);
-
                                     foreach ($exames_sem_formapagamento as $item) {
-
                                         $estilo_linha = "tabela_content01";
                                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                                         $total = $total + $item->valor_total;
@@ -340,32 +337,12 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript">
+<script type="text/javascript"> 
 
-function valida(){
-    var sala = $("#sala1").val();
-    var medicoagenda = $("#medicoagenda").val();
-    var qtde = $("#qtde1").val();
-    var medico = $("#medico1").val();
-    var convenio = $("#convenio1").val();
-    var procedimento = $("#procedimento1").val();
-    var validado == true;
-    
-    if(sala == '' || medicoagenda == '' || qtde == '' || medico == '' || convenio == '' || procedimento == ''){
-        validado = false;
-    }
-    if (validado  == false){
-        if(event.preventDefault){
-            event.preventDefault();
-        } 
-        else {
-            event.returnValue = false; // for IE as dont support preventDefault;
-        }
-        alert("Preencha os campos obrigatorios.");
-    }
-    return validado;
-//    action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos";
-}
+<?php 
+    if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
                                 $(function () {
                                     $("#data").datepicker({
                                         autosize: true,
@@ -377,24 +354,9 @@ function valida(){
                                         dateFormat: 'dd/mm/yy'
                                     });
                                 });
-
-                                $(function () {
-                                    $("#data").datepicker({
-                                        autosize: true,
-                                        changeYear: true,
-                                        changeMonth: true,
-                                        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                        dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                        buttonImage: '<?= base_url() ?>img/form/date.png',
-                                        dateFormat: 'dd/mm/yy'
-                                    });
-                                });
-
                                 $(function () {
                                     $("#accordion").accordion();
                                 });
-
-
                                         $(function () {
                                             $("#medico1").autocomplete({
                                                 source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
@@ -410,7 +372,6 @@ function valida(){
                                                 }
                                             });
                                         });
-
                                 $(function () {
                                     $('#convenio1').change(function () {
                                         if ($(this).val()) {
@@ -428,8 +389,6 @@ function valida(){
                                         }
                                     });
                                 });
-
-
                                 $(function () {
                                     $('#procedimento1').change(function () {
                                         if ($(this).val()) {
@@ -445,7 +404,6 @@ function valida(){
                                         }
                                     });
                                 });
-
                                 $(function () {
                                     $('#procedimento1').change(function () {
                                         if ($(this).val()) {
@@ -465,8 +423,4 @@ function valida(){
                                         }
                                     });
                                 });
-
-
-
-
 </script>

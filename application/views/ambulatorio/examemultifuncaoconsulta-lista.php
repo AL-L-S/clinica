@@ -17,6 +17,7 @@
                 <form method="get" action="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsulta">
 
                     <tr>
+                        <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medicos</th>
                         <th class="tabela_title">SITUA&Ccedil;&Atilde;O</th>
                         <th class="tabela_title">Data</th>
@@ -24,14 +25,14 @@
                     </tr>
                     <tr>
                         <th class="tabela_title">
-                            <select name="medico" id="medico" class="size2">
-                                <option value=""></option>
-                                <? foreach ($medico as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>" <?
-                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
+                            <input type="text" id="txtcbo" class="texto02" name="txtcbo" value="<?= @$obj->_cbo_nome; ?>" />
+                        </th>
+                      
+
+                        <th class="tabela_title">
+                            <select name="medico" id="medico" class="size1">
+                                <option value=""> </option>
+
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -203,7 +204,7 @@
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -276,32 +277,99 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-
-    $(function () {
-        $("#data").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
+    $(document).ready(function () {
+        
+        
+        var txtcbo = $("#txtcbo");
+        txtcbo.focusout( function(){
+   
         });
-    });
 
-    $(function () {
-        $("#accordion").accordion();
-    });
+        $(function () {
+            $("#txtcbo").autocomplete({
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionaismultifuncao",
+                minLength: 3,
+                focus: function (event, ui) {
+                    $("#txtcbo").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#txtcbo").val(ui.item.value);
+                    $("#txtcboID").val(ui.item.id);
+                    return false;
+                }
+            });
+        });
 
-    setTimeout('delayReload()', 20000);
-    function delayReload()
-    {
-        if (navigator.userAgent.indexOf("MSIE") != -1) {
-            history.go(0);
-        } else {
-            window.location.reload();
+
+        $(function () {
+            txtcbo.change(function () {
+                 
+                if ($(this).val()) {
+  
+                    especialidade_medico = txtcbo.val();
+//                     alert(teste_parada);
+                    $('.carregando').show();
+//                     alert(teste_parada);
+                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade' , {txtcbo: especialidade_medico, ajax: true}, function (j) {
+                        options = '<option value=""></option>';
+                        console.log(j);
+                        
+                        for (var c = 0; c < j.length; c++) {
+                          
+                            
+                            if (j[0].operador_id != undefined){
+                       options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+
+                        }
+                        }
+                        $('#medico').html(options).show();
+                        $('.carregando').hide();
+
+                          
+                        
+                    });
+                } else {
+                    $('#medico').html('<option value="">Selecione</option>');
+                }
+            });
+        });
+
+
+
+        $(function () {
+            $("#data").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+
+        $(function () {
+            $("#accordion").accordion();
+        });
+
+        setTimeout('delayReload()', 20000);
+        function delayReload()
+        {
+            if (navigator.userAgent.indexOf("MSIE") != -1) {
+                history.go(0);
+            } else {
+                window.location.reload();
+            }
         }
-    }
+
+    });
 
 </script>

@@ -189,6 +189,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -209,6 +210,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -226,9 +228,10 @@ class agenda_model extends Model {
                         $this->db->set('data_medico_agenda', $horario);
                         if ($_POST['txtobservacao'] != ''){
                         $this->db->set('observacoes', $_POST['txtobservacao']);
-                        };
+                        }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -249,6 +252,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -269,6 +273,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -289,6 +294,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -309,6 +315,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -353,6 +360,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -374,6 +382,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -395,6 +404,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -416,6 +426,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -437,6 +448,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -458,6 +470,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -478,6 +491,7 @@ class agenda_model extends Model {
                         $this->db->set('bloqueado', 't');
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -521,6 +535,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -537,6 +552,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -553,6 +569,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -569,6 +586,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -585,6 +603,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -601,6 +620,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -617,6 +637,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
+                        $this->db->where('tipo', 'EXAME');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -634,7 +655,7 @@ class agenda_model extends Model {
         }
     }
 
-    function gravarmedicoconsulta() {
+    function gravarmedicogeral() {
         try {
 
             $datainicial = str_replace("/", "-", $_POST['datainicio']);
@@ -748,7 +769,7 @@ class agenda_model extends Model {
                         $this->db->set('data_medico_agenda', $horario);
                         if ($_POST['txtobservacao'] != ''){
                         $this->db->set('observacoes', $_POST['txtobservacao']);
-                        };
+                        }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
                         $this->db->where('inicio >=', $_POST['horainicio']);
@@ -1127,6 +1148,1066 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                }
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravarmedicoconsulta() {
+        try {
+
+            $datainicial = str_replace("/", "-", $_POST['datainicio']);
+            $datafinal = str_replace("/", "-", $_POST['datafim']);
+
+            if (isset($_POST['txtdomingo'])) {
+                $Domingo = 'Domingo';
+            } else {
+                $Domingo = '';
+            }
+            if (isset($_POST['txtsegunda'])) {
+                $Segunda = 'Segunda';
+            } else {
+                $Segunda = '';
+            }
+            if (isset($_POST['txtterca'])) {
+                $Terça = 'Terça';
+            } else {
+                $Terça = '';
+            }
+            if (isset($_POST['txtquarta'])) {
+                $Quarta = 'Quarta';
+            } else {
+                $Quarta = '';
+            }
+            if (isset($_POST['txtquinta'])) {
+                $Quinta = 'Quinta';
+            } else {
+                $Quinta = '';
+            }
+            if (isset($_POST['txtsexta'])) {
+                $Sexta = 'Sexta';
+            } else {
+                $Sexta = '';
+            }
+            if (isset($_POST['txtsabado'])) {
+                $Sabado = 'Sabado';
+            } else {
+                $Sabado = '';
+            }
+            
+            if ($_POST['txtacao'] == 'Alterarmedico') {
+
+                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+
+                    $data = strftime("%A", strtotime($index));
+
+                    switch ($data) {
+                        case"Sunday": $data = "Domingo";
+                            break;
+                        case"Monday": $data = "Segunda";
+                            break;
+                        case"Tuesday": $data = "Terça";
+                            break;
+                        case"Wednesday": $data = "Quarta";
+                            break;
+                        case"Thursday": $data = "Quinta";
+                            break;
+                        case"Friday": $data = "Sexta";
+                            break;
+                        case"Saturday": $data = "Sabado";
+                            break;
+                    }
+
+                    if ($data == $Domingo) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Segunda) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Terça) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quarta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quinta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sexta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sabado) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                }
+            }
+
+            if ($_POST['txtacao'] == 'Bloquear') {
+
+                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+
+                    $data = strftime("%A", strtotime($index));
+
+                    switch ($data) {
+                        case"Sunday": $data = "Domingo";
+                            break;
+                        case"Monday": $data = "Segunda";
+                            break;
+                        case"Tuesday": $data = "Terça";
+                            break;
+                        case"Wednesday": $data = "Quarta";
+                            break;
+                        case"Thursday": $data = "Quinta";
+                            break;
+                        case"Friday": $data = "Sexta";
+                            break;
+                        case"Saturday": $data = "Sabado";
+                            break;
+                    }
+
+                    if ($data == $Domingo) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Segunda) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Terça) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quarta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quinta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sexta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sabado) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('bloqueado', 't');
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                }
+            }
+            if ($_POST['txtacao'] == 'Excluir') {
+
+
+                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+
+                    $data = strftime("%A", strtotime($index));
+
+                    switch ($data) {
+                        case"Sunday": $data = "Domingo";
+                            break;
+                        case"Monday": $data = "Segunda";
+                            break;
+                        case"Tuesday": $data = "Terça";
+                            break;
+                        case"Wednesday": $data = "Quarta";
+                            break;
+                        case"Thursday": $data = "Quinta";
+                            break;
+                        case"Friday": $data = "Sexta";
+                            break;
+                        case"Saturday": $data = "Sabado";
+                            break;
+                    }
+
+                    if ($data == $Domingo) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Segunda) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Terça) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quarta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quinta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sexta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sabado) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'CONSULTA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                }
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravarmedicoespecialidade() {
+        try {
+
+            $datainicial = str_replace("/", "-", $_POST['datainicio']);
+            $datafinal = str_replace("/", "-", $_POST['datafim']);
+
+            if (isset($_POST['txtdomingo'])) {
+                $Domingo = 'Domingo';
+            } else {
+                $Domingo = '';
+            }
+            if (isset($_POST['txtsegunda'])) {
+                $Segunda = 'Segunda';
+            } else {
+                $Segunda = '';
+            }
+            if (isset($_POST['txtterca'])) {
+                $Terça = 'Terça';
+            } else {
+                $Terça = '';
+            }
+            if (isset($_POST['txtquarta'])) {
+                $Quarta = 'Quarta';
+            } else {
+                $Quarta = '';
+            }
+            if (isset($_POST['txtquinta'])) {
+                $Quinta = 'Quinta';
+            } else {
+                $Quinta = '';
+            }
+            if (isset($_POST['txtsexta'])) {
+                $Sexta = 'Sexta';
+            } else {
+                $Sexta = '';
+            }
+            if (isset($_POST['txtsabado'])) {
+                $Sabado = 'Sabado';
+            } else {
+                $Sabado = '';
+            }
+            
+            if ($_POST['txtacao'] == 'Alterarmedico') {
+
+                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+
+                    $data = strftime("%A", strtotime($index));
+
+                    switch ($data) {
+                        case"Sunday": $data = "Domingo";
+                            break;
+                        case"Monday": $data = "Segunda";
+                            break;
+                        case"Tuesday": $data = "Terça";
+                            break;
+                        case"Wednesday": $data = "Quarta";
+                            break;
+                        case"Thursday": $data = "Quinta";
+                            break;
+                        case"Friday": $data = "Sexta";
+                            break;
+                        case"Saturday": $data = "Sabado";
+                            break;
+                    }
+
+                    if ($data == $Domingo) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Segunda) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Terça) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quarta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quinta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sexta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sabado) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('data_medico_agenda', $horario);
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                }
+            }
+
+            if ($_POST['txtacao'] == 'Bloquear') {
+
+                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+
+                    $data = strftime("%A", strtotime($index));
+
+                    switch ($data) {
+                        case"Sunday": $data = "Domingo";
+                            break;
+                        case"Monday": $data = "Segunda";
+                            break;
+                        case"Tuesday": $data = "Terça";
+                            break;
+                        case"Wednesday": $data = "Quarta";
+                            break;
+                        case"Thursday": $data = "Quinta";
+                            break;
+                        case"Friday": $data = "Sexta";
+                            break;
+                        case"Saturday": $data = "Sabado";
+                            break;
+                    }
+
+                    if ($data == $Domingo) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Segunda) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Terça) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quarta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quinta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sexta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->set('bloqueado', 't');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sabado) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+                        if ($_POST['txtobservacao'] != ''){
+                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        }
+                        $this->db->set('bloqueado', 't');
+                        $this->db->set('operador_medico_agenda', $operador_id);
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->update('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                }
+            }
+            if ($_POST['txtacao'] == 'Excluir') {
+
+
+                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+
+                    $data = strftime("%A", strtotime($index));
+
+                    switch ($data) {
+                        case"Sunday": $data = "Domingo";
+                            break;
+                        case"Monday": $data = "Segunda";
+                            break;
+                        case"Tuesday": $data = "Terça";
+                            break;
+                        case"Wednesday": $data = "Quarta";
+                            break;
+                        case"Thursday": $data = "Quinta";
+                            break;
+                        case"Friday": $data = "Sexta";
+                            break;
+                        case"Saturday": $data = "Sabado";
+                            break;
+                    }
+
+                    if ($data == $Domingo) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Segunda) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Terça) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quarta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Quinta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sexta) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where('inicio >=', $_POST['horainicio']);
+                        $this->db->where('inicio <=', $_POST['horafim']);
+                        $this->db->where('medico_consulta_id', $_POST['medico']);
+                        $this->db->delete('tb_agenda_exames');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                    }
+                    if ($data == $Sabado) {
+                        /* inicia o mapeamento no banco */
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+
+                        $this->db->where('paciente_id is null');
+                        $this->db->where('data', $index);
+                        $this->db->where('tipo', 'FISIOTERAPIA');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('medico_consulta_id', $_POST['medico']);
