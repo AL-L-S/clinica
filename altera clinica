@@ -1000,3 +1000,9 @@ CREATE TABLE ponto.tb_internacao_evolucao
 
 INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
     VALUES ('PROCEDIMENTO', 'EXAME');
+
+
+-- Dia 28/11/16
+
+
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN fixar boolean DEFAULT false;

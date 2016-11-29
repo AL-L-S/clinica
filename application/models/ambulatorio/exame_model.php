@@ -142,6 +142,17 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarespecialidade() {
+        $this->db->select('distinct(co.cbo_ocupacao_id),
+                               co.descricao');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_cbo_ocupacao co', 'co.cbo_ocupacao_id = o.cbo_ocupacao_id');
+        $this->db->where('consulta', 'true');
+        $this->db->where('o.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarsalas() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,

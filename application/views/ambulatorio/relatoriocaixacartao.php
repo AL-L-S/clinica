@@ -16,6 +16,20 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
+                    
+                    <dt>
+                        <label>Médico</label>
+                    </dt>
+                    <dd>
+                        <select name="medico" id="medico" class="size2">
+                            <option value="0">TODOS</option>
+                            <? foreach ($medicos as $value) : ?>
+                                <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    
+
                     <dt>
                         <label>Data inicio</label>
                     </dt>

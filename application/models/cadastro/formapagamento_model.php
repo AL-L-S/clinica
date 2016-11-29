@@ -281,10 +281,20 @@ class formapagamento_model extends Model {
             if ($_POST['taxa_juros'] == '') {
                 $taxa_juros = 0;
             }
-
+            
+            
+            if ($_POST['arrendondamento'] == 'on') {
+                $arredondamento = 't';
+            }
+            else {
+                $arredondamento = 'f';
+            }
+//            var_dump($arredondamento); die;
+            
             $this->db->set('ajuste', $ajuste);
             $this->db->set('parcelas', $parcelas);
             $this->db->set('taxa_juros', $taxa_juros);
+            $this->db->set('fixar', $arredondamento);
             $this->db->set('credor_devedor', $_POST['credor_devedor']);
             $this->db->set('dia_receber', $diareceber);
             $this->db->set('tempo_receber', $temporeceber);
@@ -325,6 +335,7 @@ class formapagamento_model extends Model {
                                dia_receber, 
                                tempo_receber, 
                                credor_devedor,
+                               fixar,
                                taxa_juros,
                                parcelas');
             $this->db->from('tb_forma_pagamento');
@@ -336,6 +347,7 @@ class formapagamento_model extends Model {
             $this->_conta_id = $return[0]->conta_id;
             $this->_ajuste = $return[0]->ajuste;
             $this->_dia_receber = $return[0]->dia_receber;
+            $this->_fixar = $return[0]->fixar;
             $this->_tempo_receber = $return[0]->tempo_receber;
             $this->_credor_devedor = $return[0]->credor_devedor;
             $this->_taxa_juros = $return[0]->taxa_juros;
