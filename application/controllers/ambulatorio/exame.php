@@ -495,7 +495,7 @@ class Exame extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
-    function observacao($agenda_exame_id, $paciente) {
+    function observacao($agenda_exame_id, $paciente = '') {
         $data['agenda_exame_id'] = $agenda_exame_id;
         $data['paciente'] = $paciente;
         $this->load->View('ambulatorio/observacao-form', $data);

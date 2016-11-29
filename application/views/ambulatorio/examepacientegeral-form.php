@@ -8,6 +8,10 @@
                 <label>Nome</label>
                 <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
                 <input type="text" id="txtNome" name="txtNome" class="texto10"/>
+                <div style="display: none">
+                    <input type="text" id="medicoid" name="medicoid" class="texto_id" value="<?= $medico; ?>"/>
+                    <input type="text" id="agendaid" name="agendaid" class="texto_id" value="<?= $agenda_exames_id; ?>"/>
+                </div>
             </div>
             <div>
                 <label>Dt de nascimento</label>
@@ -110,6 +114,12 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+    
+    
+<?php 
+    if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
 
                     $(function () {
                         $('#convenio1').change(function () {

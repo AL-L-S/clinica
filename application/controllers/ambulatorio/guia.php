@@ -732,7 +732,7 @@ class Guia extends BaseController {
     function gravarprocedimentosgeral() {
         
         $paciente_id = $_POST['txtpaciente_id'];
-        if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+        if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             if( isset($_POST['guia_id']) ){
@@ -770,17 +770,24 @@ class Guia extends BaseController {
     function gravarorcamento() {
 
         $paciente_id = $_POST['txtpaciente_id'];
-        $resultadoorcamento = $this->guia->listarorcamento($paciente_id);
-//        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-        if ($resultadoorcamento == null) {
-            $ambulatorio_orcamento = $this->guia->gravarorcamento($paciente_id);
-        } else {
-            $ambulatorio_orcamento = $resultadoorcamento['ambulatorio_orcamento_id'];
+        if($_POST['procedimento1'] == '' || $_POST['convenio1'] == '-1' || $_POST['qtde1'] == ''){
+            $data['mensagem'] = 'Informe o convenio, o procedimento e a quantidade.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id");
         }
-//            $this->gerardicom($ambulatorio_guia);
-        $this->guia->gravarorcamentoitem($ambulatorio_orcamento);
-//        $this->novo($paciente_id, $ambulatorio_guia);
-        redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id/$ambulatorio_orcamento");
+        else {
+            $resultadoorcamento = $this->guia->listarorcamento($paciente_id);
+    //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+            if ($resultadoorcamento == null) {
+                $ambulatorio_orcamento = $this->guia->gravarorcamento($paciente_id);
+            } else {
+                $ambulatorio_orcamento = $resultadoorcamento['ambulatorio_orcamento_id'];
+            }
+    //            $this->gerardicom($ambulatorio_guia);
+            $this->guia->gravarorcamentoitem($ambulatorio_orcamento);
+    //        $this->novo($paciente_id, $ambulatorio_guia);
+            redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id/$ambulatorio_orcamento");
+        }
     }
 
     function gravarprocedimentosconsulta() {
@@ -1892,11 +1899,18 @@ class Guia extends BaseController {
     }
 
     function gerarelatorioaniversariantes() {
-        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        if( !($_POST["txtdata_inicio"] == "") ){
+            $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
-        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
-        $data['relatorio'] = $this->guia->relatorioaniversariantes();
-        $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
+            $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+            $data['relatorio'] = $this->guia->relatorioaniversariantes();
+            $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
+        }
+        else {
+            $data['mensagem'] = 'Insira um mês válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
+        }
     }
 
     function escolherdeclaracao($paciente_id, $guia_id, $exames_id) {
