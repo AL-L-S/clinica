@@ -2,7 +2,7 @@
     <div id="accordion">
         <h3><a href="#">Gerar relatorio Entrada</a></h3>
         <div>
-            <form method="post" action="<?= base_url() ?>cadastros/caixa/gerarelatorioentrada">
+            <form name="form_entrada" id="form_entrada" method="post" action="<?= base_url() ?>cadastros/caixa/gerarelatorioentrada">
                 <dl>
                     <dt>
                         <label>Conta</label>
@@ -49,7 +49,7 @@
                         <label>Data inicio</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
+                        <input type="text" name="txtdata_inicio" id="txtdata_inicio"/>
                     </dd>
                     <dt>
                         <label>Data fim</label>
@@ -87,6 +87,7 @@
 
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
@@ -113,8 +114,8 @@
             dateFormat: 'dd/mm/yy'
         });
     });
-
-
+    
+    
     $(function () {
         $("#accordion").accordion();
     });

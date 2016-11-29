@@ -502,7 +502,7 @@ class Caixa extends BaseController {
         $this->loadView('ambulatorio/relatorioentrada', $data);
     }
 
-    function gerarelatorioentrada() {
+    function gerarelatorioentrada() {    
         $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
         $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);

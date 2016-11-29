@@ -8,8 +8,8 @@
                 <fieldset>
                     <table>
                         <tr>
-                            <th>
-                                Nota Fiscal <br> <?php
+                            <td style="text-align: left">
+                                Nota Fiscal<?php
                                 if ($guia_id[0]->nota_fiscal == "t") {
                                     ?>
                                     <input type="checkbox" name="nota_fiscal" checked ="true" />
@@ -20,11 +20,11 @@
                                     <?php
                                 }
                                 ?>
-                            </th>
+                            </td>
                         </tr>
                         <tr>
-                            <th>
-                                Recibo <br><?php
+                            <td style="text-align: left">
+                                Recibo <?php
                                 if ($guia_id[0]->recibo == "t") {
                                     ?>
                                     <input type="checkbox" name="recibo" checked ="true" />
@@ -35,14 +35,21 @@
                                     <?php
                                 }
                                 ?>
-                            </th>
+                                    <br>
+                        <br>
+                            </td>
                         </tr>
                         
                         <tr>
-                            <th>
+                            <td style="text-align: left">
                                 Obsevação
-                                 
-                            </th>
+                                   
+                            </td>
+                          
+                        </tr>
+                        
+                        <tr>
+                            
                             <td>
                                 <textarea id="observacoes" name="observacoes" cols="50" rows="3" ><?= $guia_id[0]->observacoes ?></textarea>
                             </td>

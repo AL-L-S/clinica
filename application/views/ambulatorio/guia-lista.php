@@ -67,7 +67,7 @@
                             <th class="tabela_header">Guia: <?= $test->ambulatorio_guia_id ?></th>
 
                             <th class="tabela_header"><div class="bt_link">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1000,height=800');">F. Guia
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1000,height=600');">F. Guia
 
                                     </a></div></th>
                             <th class="tabela_header"><div class="bt_link">
