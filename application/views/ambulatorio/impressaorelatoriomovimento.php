@@ -21,7 +21,7 @@
         <h4>TODAS OS DEVEDORES</h4>
     <? } ?>
     <h4>RELATORIO MOVIMENTA&Ccedil;&Atilde;O</h4>
-    <h4>PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></h4>
+    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     <hr>
     <h4>Saldo anterior: <?= number_format($saldoantigo[0]->total, 2, ",", "."); ?></h4>
     <?

@@ -52,7 +52,7 @@
                 <? } ?>
 
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="7">PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="7">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
                 </tr>
                 <tr>
                     <th style='width:10pt;border:solid windowtext 1.0pt;

@@ -12,7 +12,7 @@
 
             <table>
                 <thead>
-                <form method="get" action="<?= base_url() ?>ambulatorio/exame/multifuncaomedicogeral">
+                <form method="get" action="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicogeral">
 
                     <tr>
                         <th class="tabela_title">Salas</th>
