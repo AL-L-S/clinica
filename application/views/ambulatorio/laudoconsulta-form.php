@@ -65,7 +65,9 @@
                             </tr>
                             <tr>
                                 <td><font size = -1>Diabetes:</font></td>
-                                <td colspan="2"><font size = -1>                            <select name="diabetes" id="diabetes" class="size1">
+                                <td colspan="2"><font size = -1>                            
+                                    <select name="diabetes" id="diabetes" class="size1">
+                                        <option value=''>SELECIONE</option>
                                         <option value='nao'<?
                                         if (@$obj->_diabetes == 'nao'):echo 'selected';
                                         endif;
@@ -76,7 +78,9 @@
                                         ?> >sim</option>
                                     </select><font></td>
                                 <td><font size = -1>Hipertens&atilde;o:</font></td>
-                                <td colspan="2"><font size = -1>                            <select name="hipertensao" id="hipertensao" class="size1">
+                                <td colspan="2"><font size = -1>                            
+                                    <select name="hipertensao" id="hipertensao" class="size1">
+                                        <option value=''>SELECIONE</option>
                                         <option value='nao'<?
                                         if (@$obj->_diabetes == 'nao'):echo 'selected';
                                         endif;
@@ -93,7 +97,7 @@
                 <div>
 
                     <fieldset>
-                        <legend>Queixa Principal</legend>
+                        <legend>Anamnese</legend>
                         <label>Laudo</label>
                         <select name="exame" id="exame" class="size2" >
                             <option value='' >selecione</option>
@@ -111,7 +115,7 @@
                                 $cabecalho = @$obj->_cabecalho;
                             }
                             ?>
-                            <label>Anamnese</label>
+                            <label>Queixa Principal</label>
                             <input type="text" id="cabecalho" class="texto7" name="cabecalho" value="<?= $cabecalho ?>"/>
 
                             <label>CID</label>

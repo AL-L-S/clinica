@@ -682,7 +682,7 @@ CREATE TABLE ponto.tb_chat_mensagens
 
 
 
-atualiza 13/10/2016
+-- atualiza 13/10/2016
 
 CREATE TABLE ponto.tb_procedimento_convenio_pagamento
 (
@@ -692,7 +692,7 @@ CREATE TABLE ponto.tb_procedimento_convenio_pagamento
   CONSTRAINT tb_procedimento_convenio_pagamento_pkey PRIMARY KEY (procedimento_convenio_pagamento_id)
 );
 
-atualiza 14/10/2016
+-- atualiza 14/10/2016
 
 
 DELETE FROM ponto.tb_perfil WHERE perfil_id = 6;
@@ -711,7 +711,7 @@ UPDATE ponto.tb_perfil SET nome = 'TECNICO' WHERE perfil_id = 7;
 UPDATE ponto.tb_perfil SET nome = 'ALMOXARIFADO' WHERE perfil_id = 8;
 
 
-atualiza 18/10/2016
+-- atualiza 18/10/2016
 
 CREATE TABLE ponto.tb_financeiro_grupo
 (
@@ -723,7 +723,7 @@ CREATE TABLE ponto.tb_financeiro_grupo
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
   CONSTRAINT tb_financeiro_grupo_pkey PRIMARY KEY (financeiro_grupo_id )
-)
+);
 
 CREATE TABLE ponto.tb_grupo_formapagamento
 (
@@ -736,7 +736,7 @@ CREATE TABLE ponto.tb_grupo_formapagamento
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
   CONSTRAINT tb_grupo_formapagamento_pkey PRIMARY KEY (grupo_formapagamento_id )
-)
+);
 
 ALTER TABLE ponto.tb_procedimento_convenio_pagamento ADD COLUMN grupo_pagamento_id integer;
 
@@ -762,7 +762,7 @@ UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'MEDICAMENTO' WHERE nome = 'MEDICAM
 
 
 
-atualiza 19/10/16
+-- atualiza 19/10/16
 
 ALTER TABLE ponto.tb_empresa ADD COLUMN tipo_xml_id integer;
 
@@ -773,7 +773,7 @@ CREATE TABLE ponto.tb_empresa_tipo_xml
   descricao character varying(200),
   ativo boolean NOT NULL DEFAULT true,
   CONSTRAINT tb_empresa_tipo_xml_pkey PRIMARY KEY (tipo_xml_id )
-)
+);
 
 CREATE TABLE ponto.tb_integracao_naja
 (
@@ -796,7 +796,7 @@ CREATE TABLE ponto.tb_integracao_naja
   wkl_patientsex character varying(2),
   wkl_id serial NOT NULL,
   wkl_exame_id integer
-)
+);
 
 atualiza 20/10/16
 

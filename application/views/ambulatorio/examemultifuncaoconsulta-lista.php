@@ -86,8 +86,8 @@
                 $total = $consulta->count_all_results();
                 $limit = 50;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
-                $l = $this->exame->listarestatisticapaciente($_GET);
-                $p = $this->exame->listarestatisticasempaciente($_GET);
+                $l = $this->exame->listarestatisticapacienteconsulta($_GET);
+                $p = $this->exame->listarestatisticasempacienteconsulta($_GET);
 
                 if ($total > 0) {
                     ?>
