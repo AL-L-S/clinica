@@ -82,7 +82,7 @@
                 <tr>
                     <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
                     <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                    <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . $item->medico_agenda; ?></td>
+                    <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td> <!-- . $item->medico_agenda -->
                     <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
                 </tr>
 
