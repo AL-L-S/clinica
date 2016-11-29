@@ -67,11 +67,11 @@
                             <th class="tabela_header">Guia: <?= $test->ambulatorio_guia_id ?></th>
 
                             <th class="tabela_header"><div class="bt_link">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">F. Guia
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1000,height=800');">F. Guia
 
                                     </a></div></th>
                             <th class="tabela_header"><div class="bt_link">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/anexarimagem/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">Arquivos
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/anexarimagem/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Arquivos
 
                                     </a></div></th>
                             <th class="tabela_header"><div class="bt_link">
@@ -79,11 +79,11 @@
 
                                     </a></div></th>
                             <th class="tabela_header"><div class="bt_link">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaobservacao/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">Observa&ccedil;&atilde;o
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaobservacao/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Observa&ccedil;&atilde;o
 
                                     </a></div></th>
                             <th class="tabela_header"><div class="bt_link">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenio/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=250');">N. Guia
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenio/" . $guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=250');">N. Guia
 
                                     </a></div></th>
                                     <th class="tabela_header" style="width: 100px;"></th>

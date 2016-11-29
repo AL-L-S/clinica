@@ -1,114 +1,213 @@
+<meta charset="utf-8">
 <body bgcolor="#C0C0C0">
     <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Faturar</h3>
         <div>
             <form name="form_faturar" id="form_faturar" action="<?= base_url() ?>ambulatorio/guia/gravarfaturadoguia" method="post">
                 <fieldset>
-
-                    <dl class="dl_desconto_lista">
-                        <dt>
-                            <label>Valor total a faturar</label>
-                        </dt>
-                        <dd>
+                    <table>
+                        <tr>
+                            <th>
+                               Valor total a faturar 
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <th>
                             <input type="text" name="valorafaturar" id="valorafaturar" class="texto01" value="<?= $exame[0]->total; ?>" readonly />
                             <input type="hidden" name="guia_id" id="guia_id" class="texto01" value="<?= $guia_id; ?>"/>
                             <input type="hidden" name="financeiro_grupo_id" id="financeiro_grupo_id" class="texto01" value="<?= $financeiro_grupo_id; ?>"/>
-                        </dd>
-                        <dt>
-                            <label>Desconto</label>
-                        </dt>
-                        <dd>
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <th>
+                               Desconto 
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <td>
                             <input type="text" name="desconto" id="desconto" value="<?= $valor; ?>" class="texto01"/>
-                        </dd>
-                        <!--                        <dt>
-                                                <label>Dinheiro</label>
-                                                </dt>
-                                                <dd>-->
-                        <input type="hidden" name="dinheiro" id="dinheiro" value="0"class="texto01"/>
-                        <input type="hidden" name="juroscartao" id="juroscartao" value="0"class="texto01"/>
-<!--                            <select  name="juroscartao" id="juroscartao" class="size1">
-                            <option value="0">NAO</option>
-                            <option value="1">SIM</option>
-                            </select>
-                    </dd>
-                    <dt>
-                    <label>Total a com cartao</label>
-                    </dt>-->
-                        <dd>
-                            <input type="hidden" name="totalpagar" id="totalpagar"  class="texto01" onblur="history.go(0)"/>
-                        </dd>
-                        </br>
-                        <dt>
-                            <label >Valor1 / Forma de pagamento1 /  Ajuste1(%) /  Valor Ajustado</label>
-                        </dt>
-                        <dd>
-                            <input type="text" name="valor1" id="valor1" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            <input type="hidden" name="dinheiro" id="dinheiro" value="0"class="texto01"/>
+                            <input type="hidden" name="juroscartao" id="juroscartao" value="0"class="texto01"/>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <th>
+                               Valor1 
+                            </th>
+                            <th>
+                               Forma de pagamento1 
+                            </th>
+                            
+                            <th>
+                               Ajuste1(%) 
+                            </th>
+                            <th>
+                               Valor Ajustado
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                            <input type="text" name="valor1" id="valor1"  value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            <td>
                             <select  name="formapamento1" id="formapamento1" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
-                            <input type="text" name="ajuste1" id="ajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>                                                                           
+                            </td>
+                            <td>
+                            <input type="text" name="ajuste1" id="ajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            <td>
                             <input type="text" name="valorajuste1" id="valorajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <input style="width: 60px;" type="number" name="parcela1" id="parcela1"  value="1" min="1" />
-                        </dd>
-                        </br>
-                        <dt>
-                            <label>Valor2/ Forma de pagamento2 / Ajuste2(%) / Valor Ajustado</label>
-                        </dt>
-                        <dd>
-                            <input type="text" name="valor2" id="valor2" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            
+                            <input type="hidden" name="totalpagar" id="totalpagar"  class="texto01" onblur="history.go(0)"/>
+                        </tr>
+                        <tr>
+                            <th>
+                               Valor2
+                            </th>
+                            <th>
+                               Forma de pagamento2 
+                            </th>
+                            
+                            <th>
+                               Ajuste2(%) 
+                            </th>
+                            <th>
+                               Valor Ajustado
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                            <input type="text" name="valor2" id="valor2"  value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            <td>
                             <select  name="formapamento2" id="formapamento2" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
+                            </td>
+                            <td>
                             <input type="text" name="ajuste2" id="ajuste2" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            <td>
                             <input type="text" name="valorajuste2" id="valorajuste2" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <input style="width: 60px;" type="number" name="parcela2" id="parcela2"  value="1" min="1" />
-
-                        </dd>
-                        </br>
-                        <dt>
-                            <label>Valor3/ Forma de pagamento3 / Ajuste3(%) / Valor Ajustado</label>
-                        </dt>
-                        <dd>
-                            <input type="text" name="valor3" id="valor3" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <th>
+                               Valor3
+                            </th>
+                            <th>
+                               Forma de pagamento3 
+                            </th>
+                            
+                            <th>
+                               Ajuste3(%) 
+                            </th>
+                            <th>
+                               Valor Ajustado
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                            <input type="text" name="valor3" id="valor3"  value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            <td>
                             <select  name="formapamento3" id="formapamento3" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
-                            </select>                                   
+                            </select>   
+                            </td>
+                            <td>
                             <input type="text" name="ajuste3" id="ajuste3" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>  
+                            </td>
+                            <td>
                             <input type="text" name="valorajuste3" id="valorajuste3" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <input style="width: 60px;" type="number" name="parcela3" id="parcela3"  value="1" min="1" />
-                        </dd>
-                        </br>
-                        <dt>
-                            <label>Valor4/ Forma de pagamento4 / Ajuste4(%) / Valor Ajustado</label>
-                        </dt>
-                        <dd>
-                            <input type="text" name="valor4" id="valor4" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            
+                        </tr>
+                        
+                        <tr>
+                            <th>
+                               Valor4
+                            </th>
+                            <th>
+                               Forma de pagamento4 
+                            </th>
+                            
+                            <th>
+                               Ajuste4(%) 
+                            </th>
+                            <th>
+                               Valor Ajustado
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                            <input type="text" name="valor4" id="valor4"  value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            <td>
                             <select  name="formapamento4" id="formapamento4" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
-                            </select>              
+                            </select>  
+                            </td>
+                            <td>
                             <input type="text" name="ajuste4" id="ajuste4" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                            </td>
+                            <td>
                             <input type="text" name="valorajuste4" id="valorajuste4" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             <input style="width: 60px;" type="number" name="parcela4" id="parcela4"  value="1" min="1" />
-                        </dd>
-                        <dt>
-                            <label>Diferen&ccedil;a</label>
-                        </dt>
-                        <dd>
+                            </td>
+                            
+                        </tr>
+                        
+                       <tr>
+                            <th>
+                               Diferença 
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <th>
                             <input type="text" name="valortotal" id="valortotal"  onkeyup="multiplica()"  class="texto01" readonly/>
                             <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->total; ?>"/>
                             <input type="hidden" name="juros" id="juros" value="0">
+                            </th>
+                        </tr>
+                        
+                    </table>
+                    <dl class="dl_desconto_lista">
+ 
+                        
+                        
+                        
+                        <dd>
+                            
                         </dd>
                     </dl>    
 
