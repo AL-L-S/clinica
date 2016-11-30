@@ -54,7 +54,9 @@ class procedimento_model extends Model {
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('descricao ilike', "%" . $args['nome'] . "%");
             $this->db->orwhere('codigo ilike', "%" . $args['nome'] . "%");
+            $this->db->where("ativo", 't');
             $this->db->orwhere('ans ilike', "%" . $args['nome'] . "%");
+            $this->db->where("ativo", 't');
         }
         return $this->db;
     }

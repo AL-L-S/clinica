@@ -25,7 +25,7 @@
         <div>
             <?
             $salas = $this->exame->listartodassalas();
-            $medico = $this->exame->listarmedico();
+            $medico = $this->exame->listarespecialidade();
             ?>
             <table>
                 <thead>
@@ -43,7 +43,15 @@
                     </tr>
                     <tr>
                         <th class="tabela_title">
-                            <input type="text" id="txtcbo" class="texto02" name="txtcbo" value="<?= @$obj->_cbo_nome; ?>" />
+                            <select name="especialidade" id="especialidade" class="size1">
+                                <option value=""></option>
+                                <? foreach ($medico as $value) : ?>
+                                    <option value="<?= $value->descricao; ?>" <?
+                                    if (@$_GET['sala'] == $value->descricao):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->descricao; ?></option>
+                                        <? endforeach; ?>
+                            </select>
                         </th>
                       
 
@@ -404,7 +412,7 @@
 
 
         $(function () {
-            txtcbo.change(function () {
+            $('#especialidade').change(function () {
                  
                 if ($(this).val()) {
   
@@ -412,7 +420,7 @@
 //                     alert(teste_parada);
                     $('.carregando').show();
 //                     alert(teste_parada);
-                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade' , {txtcbo: especialidade_medico, ajax: true}, function (j) {
+                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade' , {txtcbo: $(this).val(), ajax: true}, function (j) {
                         options = '<option value=""></option>';
                         console.log(j);
                         

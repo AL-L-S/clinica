@@ -52,7 +52,7 @@
                                         </a>
                                     </div>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
                                         <a href="<?= base_url() ?>cadastros/convenio/desconto/<?= $item->convenio_id ?>">
                                             Desconto(%)
                                         </a>

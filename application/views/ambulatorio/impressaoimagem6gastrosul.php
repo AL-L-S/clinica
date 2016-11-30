@@ -13,7 +13,7 @@
     if ($i < 2){
 $i++;
 
-$imagem = $nomeimagem[$y]->nome;
+$imagem = $nomeimagem[$y];
             ?>
     
                 <td><img  width="240px" height="190px" src="<?= base_url() . "upload/" . $exame_id . "/" . $value; ?>"><br><br><?=$imagem; ?></td>

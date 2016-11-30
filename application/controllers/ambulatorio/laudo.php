@@ -1325,7 +1325,23 @@ class Laudo extends BaseController {
 
     function impressaoimagem($ambulatorio_laudo_id, $exame_id) {
         $this->load->plugin('mpdf');
-        $data['nomeimagem'] = $this->laudo->listarnomeimagem($exame_id);
+        $sort= $this->laudo->listarnomeimagem($exame_id);
+        
+        $sort_array = array ();
+        for ($i=0; $i<count($sort);$i++){
+            if(substr($sort[$i]->nome, 0, 7) == 'Foto 10' ){
+               $c = $i;
+               continue;
+            }
+            $sort_array[] = $sort[$i]->nome;   
+        }    
+        if(isset($c)){
+            $sort_array[] = $sort[$c]->nome;
+        }
+        
+        $data['nomeimagem']= $sort_array;
+
+        
         $data['empresa'] = $this->guia->listarempresa();
 
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
@@ -1418,29 +1434,29 @@ class Laudo extends BaseController {
             $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
         }
 
-        if ($verificador == 1) {
-            $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
-        }
-        if ($verificador == 2) {
-            $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
-        }
-        if ($verificador == 3) {
-            $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
-        }
-        if ($verificador == 4) {
-            $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
-        }
-        if ($verificador == 5) {
-            $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
-        }
-        if ($verificador == 6 || $verificador == "") {
-
-            $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
-        }
+//        if ($verificador == 1) {
+//            $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
+//        }
+//        if ($verificador == 2) {
+//            $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
+//        }
+//        if ($verificador == 3) {
+//            $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
+//        }
+//        if ($verificador == 4) {
+//            $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
+//        }
+//        if ($verificador == 5) {
+//            $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
+//        }
+//        if ($verificador == 6 || $verificador == "") {
+//
+//            $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
+//        }
         $grupo = $data['laudo']['0']->grupo;
-
+//
         pdf($html, $filename, $cabecalho, $rodape, $grupo);
-        //        pdf($html, $filename, $cabecalho, $rodape);
+//                pdf($html, $filename, $cabecalho, $rodape);
     }
 
     function gerarxml() {

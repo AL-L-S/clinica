@@ -7,7 +7,7 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>Medico Convenios</h4>
-    <h4>PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></h4>
+    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     <? if ($medico == 0) { ?>
         <h4>TODOS</h4>
     <? } else { ?>
