@@ -345,8 +345,6 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    
-
     function medicoconvenio() {
 
         if (isset($_GET['exame'])) {
@@ -1120,6 +1118,18 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function modelosdeclaracao() {
+
+        if (isset($_GET['modelo'])) {
+            //$result = 'oi';
+            $result = $this->exametemp->listarautocompletemodelosdeclaracao($_GET['modelo']);
+        } else {
+            $result = $this->exametemp->listarautocompletemodelosdeclaracao();
+            //$result = 'oi nao';
+        }
+        echo json_encode($result);
+    }
+
     function modelosreceita() {
 
         if (isset($_GET['exame'])) {
@@ -1180,7 +1190,6 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    
     function medicoespecialidade() {
 
         if (isset($_GET['txtcbo'])) {
@@ -1188,12 +1197,10 @@ class Autocomplete extends Controller {
         } else {
             $result = $this->exametemp->listarautocompletemedicoespecialidade();
         }
-    
-        
+
+
         echo json_encode($result);
     }
-
-
 
     function cboprofissionaismultifuncao() {
         if (isset($_GET['term'])) {
@@ -1208,7 +1215,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
+
     function linhas() {
 
         if (isset($_GET['term'])) {
@@ -1517,7 +1524,7 @@ class Autocomplete extends Controller {
             $retorno['itens'] = $item->telefone;
             $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
             $retorno['id'] = $item->paciente_id;
-            $retorno['endereco'] = $item->logradouro." - ".$item->numero;
+            $retorno['endereco'] = $item->logradouro . " - " . $item->numero;
             $var[] = $retorno;
         }
         echo json_encode($var);

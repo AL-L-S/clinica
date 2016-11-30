@@ -2138,6 +2138,7 @@ class Guia extends BaseController {
 
     function guiadeclaracao($guia_id) {
         $data['guia_id'] = $this->guia->verificaodeclaracao($guia_id);
+        $data['modelos'] = $this->modelodeclaracao->listarmodelo();
         $this->load->View('ambulatorio/guiadeclaracao-form', $data);
     }
 

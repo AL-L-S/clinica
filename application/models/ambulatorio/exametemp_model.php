@@ -2708,8 +2708,8 @@ class exametemp_model extends Model {
                         $this->db->set('medico_agenda', $medico_id);
                         $this->db->set('medico_consulta_id', $medico_id);
                     }
-                    if($crmsolicitante !=""){
-                    $this->db->set('medico_solicitante', $crmsolicitante);
+                    if ($crmsolicitante != "") {
+                        $this->db->set('medico_solicitante', $crmsolicitante);
                     }
                     $this->db->set('autorizacao', $autorizacao);
                     $this->db->set('guia_id', $ambulatorio_guia_id);
@@ -3099,6 +3099,20 @@ class exametemp_model extends Model {
         $this->db->orderby('nome');
         if ($parametro != null) {
             $this->db->where('ambulatorio_modelo_laudo_id', $parametro);
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletemodelosdeclaracao($parametro = null) {
+        $this->db->select('ambulatorio_modelo_declaracao_id,
+                            nome,
+                            texto');
+        $this->db->from('tb_ambulatorio_modelo_declaracao');
+        $this->db->where('ativo', 'true');
+        $this->db->orderby('nome');
+        if ($parametro != null) {
+            $this->db->where('ambulatorio_modelo_declaracao_id', $parametro);
         }
         $return = $this->db->get();
         return $return->result();
