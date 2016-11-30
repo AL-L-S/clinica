@@ -1827,7 +1827,7 @@ class Guia extends BaseController {
     }
 
     function gerarelatorioconveniovalor() {
-        $database = date("d-m-Y");
+        $database = date("Y-m-d");
         $data['listarconvenio'] = $this->convenio->listardadosconvenios();
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
@@ -1843,7 +1843,6 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
         $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
-
         if ((strtotime($datainicio) < strtotime($database)) && (strtotime($datafim) > strtotime($database))) {
             $data['atendidos'] = $this->guia->relatorioconvenioexamesatendidos();
             $data['naoatendidos'] = $this->guia->relatorioconvenioexamesnaoatendidos();
