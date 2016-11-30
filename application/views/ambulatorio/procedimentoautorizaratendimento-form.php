@@ -128,6 +128,7 @@
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1"/>
+                                    <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" >
                                         <option value="">Selecione</option>

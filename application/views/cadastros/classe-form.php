@@ -10,13 +10,13 @@
                     </dt>
                     <dd>
                         <input type="hidden" name="txtfinanceiroclasseid" class="texto10" value="<?= @$obj->_financeiro_classe_id; ?>" />
-                        <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_descricao; ?>" />
+                        <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_descricao; ?>" required/>
                     </dd>
                     <dt>
                     <label>Tipo</label>
                     </dt>
                     <dd>
-                        <select name="txttipo_id" id="txttipo_id" class="size4">
+                        <select name="txttipo_id" id="txttipo_id" class="size4" required>
                             <? foreach ($tipo as $value) : ?>
                                 <option value="<?= $value->tipo_id; ?>"<? if (@$obj->_tipo_id == $value->tipo_id):echo 'selected';
                     endif;

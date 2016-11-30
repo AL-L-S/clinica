@@ -42,7 +42,6 @@ class Contaspagar extends BaseController {
         $data['obj'] = $obj_contaspagar;
         $data['conta'] = $this->forma->listarforma();
         $data['tipo'] = $this->tipo->listartipo();
-//        $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
         $this->loadView('cadastros/contaspagar-form', $data);
     }
