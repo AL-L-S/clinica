@@ -13,6 +13,7 @@ class contaspagar_model extends Model {
     var $_tipo_numero = null;
     var $_conta = null;
     var $_conta_id = null;
+    var $_classe = null;
 
     function Contaspagar_model($financeiro_contaspagar_id = null) {
         parent::Model();
@@ -272,7 +273,8 @@ class contaspagar_model extends Model {
                             fe.descricao,
                             fe.forma_entradas_saida_id,
                             cd.razao_social,
-                            fc.tipo_numero');
+                            fc.tipo_numero,
+                            fc.classe');
             $this->db->from('tb_financeiro_contaspagar fc');
             $this->db->where('fc.ativo', 'true');
             $this->db->join('tb_financeiro_credor_devedor cd', 'cd.financeiro_credor_devedor_id = fc.credor', 'left');
@@ -292,6 +294,7 @@ class contaspagar_model extends Model {
             $this->_tipo_numero = $return[0]->tipo_numero;
             $this->_conta = $return[0]->descricao;
             $this->_conta_id = $return[0]->forma_entradas_saida_id;
+            $this->_classe = $return[0]->classe;
         } else {
             $this->_estoque_produto_id = null;
         }

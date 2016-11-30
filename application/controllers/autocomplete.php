@@ -29,6 +29,7 @@ class Autocomplete extends Controller {
         $this->load->model('internacao/leito_model', 'leito_m');
         $this->load->model('ponto/horariostipo_model', 'horariostipo');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
+        $this->load->model('cadastro/classe_model', 'financeiro_classe');
         $this->load->model('estoque/menu_model', 'menu');
     }
 

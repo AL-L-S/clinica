@@ -10,6 +10,7 @@ class caixa_model extends Model {
     var $_observacao = null;
     var $_tipo = null;
     var $_forma = null;
+    var $_classe = null;
 
     function caixa_model($saida_id = null) {
         parent::Model();
@@ -912,7 +913,8 @@ class caixa_model extends Model {
                             fcd.razao_social,
                             s.conta,
                             fe.descricao as contadescricao,
-                            s.tipo');
+                            s.tipo,
+                            s.classe');
             $this->db->from('tb_saidas s');
             $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
             $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
@@ -927,6 +929,7 @@ class caixa_model extends Model {
             $this->_data = $return[0]->data;
             $this->_razao_social = $return[0]->razao_social;
             $this->_forma = $return[0]->conta;
+            $this->_classe = $return[0]->classe;
         } else {
             $this->_estoque_produto_id = null;
         }
