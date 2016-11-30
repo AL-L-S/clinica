@@ -714,6 +714,12 @@ class Guia extends BaseController {
                 redirect(base_url() . "ambulatorio/guia/novo/$paciente_id");
             }
         } else {
+            
+            if ($_POST["valor1"] == 'null'){
+                $_POST["valor1"] = 0;
+            }
+                
+            
             $medico_id = $_POST['crm1'];
             $paciente_id = $_POST['txtpaciente_id'];
             $resultadoguia = $this->guia->listarguia($paciente_id);
