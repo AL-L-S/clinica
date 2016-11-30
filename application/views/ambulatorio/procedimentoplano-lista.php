@@ -65,9 +65,9 @@
                     <tbody>
                         <?php
                         if ($limit != "todos") {
-                            $lista = $this->procedimentoplano->listar($_GET)->orderby('c.nome')->orderby('pt.nome')->orderby('pt.grupo')->limit($limit, $pagina)->get()->result();
+                            $lista = $this->procedimentoplano->listar($_GET)->orderby('pt.grupo')->orderby('pt.nome')->orderby('c.nome')->limit($limit, $pagina)->get()->result();
                         } else {
-                            $lista = $this->procedimentoplano->listar($_GET)->orderby('c.nome')->orderby('pt.nome')->orderby('pt.grupo')->get()->result();
+                            $lista = $this->procedimentoplano->listar($_GET)->orderby('pt.grupo')->orderby('pt.nome')->orderby('c.nome')->get()->result();
                         }
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {

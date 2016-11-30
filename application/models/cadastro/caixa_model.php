@@ -366,10 +366,10 @@ class caixa_model extends Model {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
         if ($_POST['tipo'] != 0) {
-            $this->db->where('tipo_id', $_POST['tipo']);
+            $this->db->where('fc.tipo_id', $_POST['tipo']);
         }
         if ($_POST['classe'] != '') {
-            $this->db->where('classe', $_POST['classe']);
+            $this->db->where('s.classe', $_POST['classe']);
         }
         if ($_POST['conta'] != 0) {
             $this->db->where('s.conta', $_POST['conta']);

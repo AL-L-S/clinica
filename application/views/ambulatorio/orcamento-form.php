@@ -62,9 +62,9 @@
                         <thead>
 
                             <tr>
-                                <th class="tabela_header">Convenio</th>
-                                <th class="tabela_header">Procedimento</th>
-                                <th class="tabela_header">Qtde</th>
+                                <th class="tabela_header">Convenio*</th>
+                                <th class="tabela_header">Procedimento*</th>
+                                <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
@@ -160,6 +160,10 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
+<?php 
+    if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
                             $(function() {
                                 $("#data").datepicker({
                                     autosize: true,

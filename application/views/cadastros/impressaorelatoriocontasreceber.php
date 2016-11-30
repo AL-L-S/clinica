@@ -21,7 +21,7 @@
         <h4>TODAS OS CREDORES</h4>
     <? } ?>
     <h4>RELATORIO DE SAIDA</h4>
-    <h4>PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></h4>
+    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     <hr>
     <?
     if ($contador > 0) {

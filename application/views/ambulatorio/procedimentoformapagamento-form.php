@@ -21,7 +21,7 @@
                         <select name="grupopagamento" id="grupopagamento" class="texto03">
                             <option value="">SELECIONE</option>
                             <? foreach ($formapagamento_grupo as $value) { ?>
-                            <option value="<?= $value->financeiro_grupo_id ?>" selected><?= $value->nome ?></option>
+                            <option value="<?= $value->financeiro_grupo_id ?>" ><?= $value->nome ?></option>
                             <? } ?> 
                         </select>
                     </dd>

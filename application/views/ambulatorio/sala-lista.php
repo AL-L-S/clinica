@@ -12,7 +12,7 @@
                 <thead>
                     <tr>
                         <th colspan="5" class="tabela_title">
-                            <form method="get" action="<?= base_url() ?>ambulatorio/Sala/pesquisar">
+                            <form method="get" action="<?= base_url() ?>ambulatorio/sala/pesquisar">
                                 <input type="text" name="nome" class="texto10 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                                 <button type="submit" id="enviar">Pesquisar</button>
                             </form>

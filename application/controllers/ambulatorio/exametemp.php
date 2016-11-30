@@ -135,14 +135,22 @@ class Exametemp extends BaseController {
 
     function gravarunificar() {
         $pacientetemp_id = $_POST['paciente_id'];
-        $verifica = $this->exametemp->gravarunificacao();
-        if ($verifica == "-1") {
-            $data['mensagem'] = 'Erro ao unificar Paciente. Opera&ccedil;&atilde;o cancelada.';
-        } else {
-            $data['mensagem'] = 'Sucesso ao unificar Paciente.';
+        
+        if($_POST['txtpaciente'] == '' || $_POST['pacienteid'] == ''){
+            $data['mensagem'] = 'Paciente que sera unificado nao informado ou invalido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/unificar/$pacientetemp_id");
         }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exametemp/unificar/$pacientetemp_id");
+        else {
+            $verifica = $this->exametemp->gravarunificacao();
+            if ($verifica == "-1") {
+                $data['mensagem'] = 'Erro ao unificar Paciente. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao unificar Paciente.';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/unificar/$pacientetemp_id");
+        }
     }
 
     function carregarpacientetempgeral($pacientetemp_id, $faltou = null) {
@@ -352,11 +360,23 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexametemp($agenda_exames_id) {
+        $agenda_id = $_POST['agendaid'];
         if (trim($_POST['txtNome']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopaciente");
-        } else {
+        }
+        elseif (trim($_POST['convenio1']) == "-1") {
+            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio selecionar o convenio.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/carregarexame/$agenda_id");
+        }
+        elseif (trim($_POST['procedimento1']) == "") {
+            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio selecionar o procedimento.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/carregarexame/$agenda_id");
+        } 
+        else {
             $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id);
             if ($paciente_id != 0) {
                 $this->carregarpacientetemp($paciente_id);
@@ -369,11 +389,25 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexametempgeral($agenda_exames_id) {
+        $agenda = $_POST['agendaid'];
+        $medico = $_POST['medicoid'];
         if (trim($_POST['txtNome']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopaciente");
-        } else {
+        }
+        elseif (trim($_POST['convenio1']) == "-1") {
+            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio seleionar um convenio.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
+        }
+        elseif (trim($_POST['procedimento1']) == "") {
+            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio selecionar um procedimento.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
+        }
+        
+        else {
             $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id);
             if ($paciente_id != 0) {
                 $this->carregarpacientetempgeral($paciente_id);
@@ -417,6 +451,10 @@ class Exametemp extends BaseController {
                 $data['horarios_livres'] = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0]);
 
                 $tothorarios = count($data['horarios_livres']);
+                if($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 0){
+                    $_POST['sessao'] = 1;
+                }
+                
                 $_POST['sessao'] = (int) $_POST['sessao'];
 
                 if ($tothorarios < $_POST['sessao']) {

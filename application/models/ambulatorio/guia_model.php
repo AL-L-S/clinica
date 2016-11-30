@@ -1882,9 +1882,11 @@ ORDER BY p.nome";
     }
 
     function relatorioconvenioexamesatendidos2() {
-        $data = date("d-m-Y");
-        $empresa_id = $this->session->userdata('empresa_id');
-
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+       $empresa_id = $this->session->userdata('empresa_id');
+        $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
+        $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
         // EXAMES ATENDIDOS
 
         $this->db->select('ae.agenda_exames_id,
@@ -1903,10 +1905,10 @@ ORDER BY p.nome";
         $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
 
 
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
+        $this->db->where('ae.data <=', $datafim);
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("ae.data >=", $datainicio);
+        $this->db->where('ae.data <=', $datafim);
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -1938,8 +1940,11 @@ ORDER BY p.nome";
     }
 
     function relatorioconvenioexamesnaoatendidos2() {
-        $data = date("d-m-Y");
-        $empresa_id = $this->session->userdata('empresa_id');
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+       $empresa_id = $this->session->userdata('empresa_id');
+        $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
+        $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
 
         // EXAMES ATENDIDOS
         $this->db->select('ae.agenda_exames_id,
@@ -1956,10 +1961,10 @@ ORDER BY p.nome";
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
 
 
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
+        $this->db->where('ae.data <=', $datafim);
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("ae.data >=", $datainicio);
+        $this->db->where('ae.data <=', $datafim);
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -2206,8 +2211,11 @@ ORDER BY p.nome";
     }
 
     function relatorioconvenioconsultasatendidos2() {
-        $data = date("d-m-Y");
-        $empresa_id = $this->session->userdata('empresa_id');
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+       $empresa_id = $this->session->userdata('empresa_id');
+        $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
+        $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
 
         // EXAMES ATENDIDOS
 
@@ -2227,10 +2235,10 @@ ORDER BY p.nome";
         $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
 
 
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
+        $this->db->where('ae.data <=', $datafim);
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("ae.data >=", $datainicio);
+        $this->db->where('ae.data <=', $datafim);
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -2263,8 +2271,11 @@ ORDER BY p.nome";
     }
 
     function relatorioconvenioconsultasnaoatendidos2() {
-        $data = date("d-m-Y");
-        $empresa_id = $this->session->userdata('empresa_id');
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+       $empresa_id = $this->session->userdata('empresa_id');
+        $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
+        $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
 
         // EXAMES ATENDIDOS
         $this->db->select('ae.agenda_exames_id,
@@ -2281,10 +2292,10 @@ ORDER BY p.nome";
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
 
 
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime($_POST['txtdata_fim'])));
+        $this->db->where('ae.data <=', $datafim);
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("ae.data >=", $datainicio);
+        $this->db->where('ae.data <=', $datafim);
 
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -3013,6 +3024,9 @@ ORDER BY p.nome";
         if ($_POST['operador'] != "0") {
             $this->db->where('ae.operador_autorizacao', $_POST['operador']);
         }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -3206,6 +3220,9 @@ ORDER BY p.nome";
         }
         if ($_POST['operador'] != "0") {
             $this->db->where('ae.operador_autorizacao', $_POST['operador']);
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
@@ -5029,6 +5046,7 @@ AND data <= '$data_fim'";
 
                     $this->db->set('data', $_POST['data1']);
                     $this->db->set('valor', $valor_total);
+                    $this->db->set('data', $_POST['data1']);
                     $this->db->set('entrada_id', $entradas_id);
                     $this->db->set('conta', $value->conta_id);
                     $this->db->set('nome', $value->credor_devedor);

@@ -1,7 +1,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <h4>HUMANA IMAGEM</h4>
     <h4>Medico Convenios RM</h4>
-    <h4>PERIODO: <?= $txtdata_inicio; ?> ate <?= $txtdata_fim; ?></h4>
+    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     <h4>Medico: <?= $medico[0]->operador; ?></h4>
     <hr>
     <? if ($contador > 0) {

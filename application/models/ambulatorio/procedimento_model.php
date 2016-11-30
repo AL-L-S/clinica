@@ -23,8 +23,8 @@ class procedimento_model extends Model {
             $this->instanciar($procedimento_tuss_id);
         }
     }
-
-    function listar($args = array()) {
+    
+ function listar($args = array()) {
         $this->db->select('procedimento_tuss_id,
                             nome,
                             codigo,
@@ -35,9 +35,11 @@ class procedimento_model extends Model {
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', "%" . $args['nome'] . "%");
             $this->db->orwhere('grupo ilike', "%" . $args['nome'] . "%");
+            $this->db->where("ativo", 't');
             $this->db->orwhere('codigo ilike', "%" . $args['nome'] . "%");
+            $this->db->where("ativo", 't');
         }
-        
+
         return $this->db;
     }
 
@@ -52,7 +54,9 @@ class procedimento_model extends Model {
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('descricao ilike', "%" . $args['nome'] . "%");
             $this->db->orwhere('codigo ilike', "%" . $args['nome'] . "%");
+            $this->db->where("ativo", 't');
             $this->db->orwhere('ans ilike', "%" . $args['nome'] . "%");
+            $this->db->where("ativo", 't');
         }
         return $this->db;
     }
@@ -271,7 +275,6 @@ class procedimento_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
 
             if ($_POST['txtprocedimentotussid'] == "") {// insert
-                
                 $nome = str_replace("     ", " ", $_POST['txtNome']);
                 $nome = str_replace("    ", " ", $nome);
                 $nome = str_replace("   ", " ", $nome);
@@ -285,11 +288,10 @@ class procedimento_model extends Model {
                         return -1;
                     else
                         $procedimento_tuss_id = $this->db->insert_id();
-                }else{
+                }else {
                     return 0;
                 }
-            }
-            else { // update
+            } else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $procedimento_tuss_id = $_POST['txtprocedimentotussid'];

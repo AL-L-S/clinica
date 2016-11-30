@@ -1706,8 +1706,8 @@ class exametemp_model extends Model {
                 $this->db->update('tb_agenda_exames');
                 if (isset($_POST['medico']) && $_POST['medico'] != '') {
                     $medico_consulta_id = $_POST['medico'];
-                }else{
-                $medico_consulta_id = 0;
+                } else {
+                    $medico_consulta_id = 0;
                 }
 
                 if ($retorno[0]->medico == 't') {
@@ -3013,6 +3013,32 @@ class exametemp_model extends Model {
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
         $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletemedicoespecialidade($parametro) {
+        $this->db->select(' o.nome,
+                            o.operador_id,
+                            ');
+        $this->db->from('tb_cbo_ocupacao co');
+        $this->db->join('tb_operador o', 'co.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+        $this->db->where('co.descricao', $parametro);
+        $this->db->where('o.ativo', 't');
+        $this->db->where('o.medico', 't');
+        $this->db->orderby("o.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarespecialidade() {
+        $this->db->select('distinct(co.cbo_ocupacao_id),
+                               co.descricao');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $this->db->join('tb_cbo_ocupacao co', 'co.cbo_ocupacao_id = o.cbo_ocupacao_id');
+        $this->db->where('consulta', 'true');
+        $this->db->where('o.ativo', 'true');
         $return = $this->db->get();
         return $return->result();
     }

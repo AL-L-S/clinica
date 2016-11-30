@@ -307,7 +307,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get('tb_cbo');
         return $return->result();
     }
-
+    
     function listarPerfil() {
         $this->db->select('perfil_id,
                                nome,
