@@ -86,9 +86,6 @@
 
 
 
-
-
-
                     //$(function(){     
                     //    $('#exame').change(function(){
                     //        exame = $(this).val();
