@@ -42,6 +42,20 @@
                         
                         <tr>
                             <td style="text-align: left">
+                                Valor da Nota
+                                   
+                            </td>
+                          
+                        </tr>
+                        
+                        <tr>
+                            
+                            <td>
+                                <input type="integer" name="txtvalorguia" id="txtvalorguia" value="<?=$guia_id[0]->valor_guia?>" alt="decimal"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left">
                                 Obsevação
                                    
                             </td>
@@ -72,6 +86,8 @@
     </div> <!-- Final da DIV content -->
 </body>
 <script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
     /* Máscaras ER */
     function mascara(telefone) {
