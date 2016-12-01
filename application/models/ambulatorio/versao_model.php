@@ -18,5 +18,5 @@ class versao_model extends Model {
 
         return $this->db;
     }
-
+    
 }

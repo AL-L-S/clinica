@@ -714,6 +714,12 @@ class Guia extends BaseController {
                 redirect(base_url() . "ambulatorio/guia/novo/$paciente_id");
             }
         } else {
+            
+            if ($_POST["valor1"] == 'null'){
+                $_POST["valor1"] = 0;
+            }
+                
+            
             $medico_id = $_POST['crm1'];
             $paciente_id = $_POST['txtpaciente_id'];
             $resultadoguia = $this->guia->listarguia($paciente_id);
@@ -1827,7 +1833,7 @@ class Guia extends BaseController {
     }
 
     function gerarelatorioconveniovalor() {
-        $database = date("d-m-Y");
+        $database = date("Y-m-d");
         $data['listarconvenio'] = $this->convenio->listardadosconvenios();
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
@@ -1843,7 +1849,6 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
         $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
-
         if ((strtotime($datainicio) < strtotime($database)) && (strtotime($datafim) > strtotime($database))) {
             $data['atendidos'] = $this->guia->relatorioconvenioexamesatendidos();
             $data['naoatendidos'] = $this->guia->relatorioconvenioexamesnaoatendidos();
@@ -2133,6 +2138,7 @@ class Guia extends BaseController {
 
     function guiadeclaracao($guia_id) {
         $data['guia_id'] = $this->guia->verificaodeclaracao($guia_id);
+        $data['modelos'] = $this->modelodeclaracao->listarmodelo();
         $this->load->View('ambulatorio/guiadeclaracao-form', $data);
     }
 

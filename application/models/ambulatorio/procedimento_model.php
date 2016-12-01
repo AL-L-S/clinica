@@ -23,8 +23,8 @@ class procedimento_model extends Model {
             $this->instanciar($procedimento_tuss_id);
         }
     }
-
-    function listar($args = array()) {
+    
+ function listar($args = array()) {
         $this->db->select('procedimento_tuss_id,
                             nome,
                             codigo,

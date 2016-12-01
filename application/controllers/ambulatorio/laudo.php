@@ -560,9 +560,9 @@ class Laudo extends BaseController {
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
 
-        $data['integracao'] = $this->laudo->listarlaudosintegracao($ambulatorio_laudo_id);
+        $data['integracao'] = $this->laudo->listarlaudosintegracao($agenda_exames_id);
         if (count($data['integracao']) > 0) {
-            $this->laudo->atualizacaolaudosintegracao($ambulatorio_laudo_id);
+            $this->laudo->atualizacaolaudosintegracao($agenda_exames_id);
         }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

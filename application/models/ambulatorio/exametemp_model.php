@@ -2603,6 +2603,7 @@ class exametemp_model extends Model {
                 $g = 0;
                 $h = 0;
                 $j = 0;
+                $t = 0;
                 $i++;
 
 
@@ -2673,6 +2674,13 @@ class exametemp_model extends Model {
                         break;
                     }
                 }
+                foreach ($_POST['crm'] as $crmsolicitante) {
+                    $t++;
+                    if ($i == $t) {
+                        $solicitante = $crmsolicitante;
+                        break;
+                    }
+                }
                 foreach ($_POST['confimado'] as $key => $itemconfimado) {
                     $y++;
                     if ($i == $key) {
@@ -2699,6 +2707,9 @@ class exametemp_model extends Model {
                     if ($medico_id != "") {
                         $this->db->set('medico_agenda', $medico_id);
                         $this->db->set('medico_consulta_id', $medico_id);
+                    }
+                    if ($crmsolicitante != "") {
+                        $this->db->set('medico_solicitante', $crmsolicitante);
                     }
                     $this->db->set('autorizacao', $autorizacao);
                     $this->db->set('guia_id', $ambulatorio_guia_id);
@@ -3088,6 +3099,20 @@ class exametemp_model extends Model {
         $this->db->orderby('nome');
         if ($parametro != null) {
             $this->db->where('ambulatorio_modelo_laudo_id', $parametro);
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletemodelosdeclaracao($parametro = null) {
+        $this->db->select('ambulatorio_modelo_declaracao_id,
+                            nome,
+                            texto');
+        $this->db->from('tb_ambulatorio_modelo_declaracao');
+        $this->db->where('ativo', 'true');
+        $this->db->orderby('nome');
+        if ($parametro != null) {
+            $this->db->where('ambulatorio_modelo_declaracao_id', $parametro);
         }
         $return = $this->db->get();
         return $return->result();

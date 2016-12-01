@@ -41,7 +41,7 @@ class Contasreceber extends BaseController {
         $obj_contasreceber = new contasreceber_model($financeiro_contasreceber_id);
         $data['obj'] = $obj_contasreceber;
         $data['conta'] = $this->forma->listarforma();
-//        $data['tipo'] = $this->tipo->listartipo();
+        $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
         $this->loadView('cadastros/contasreceber-form', $data);
     }
