@@ -474,11 +474,15 @@ class Exame extends BaseController {
     }
 
     function cancelarguia() {
-        $verificar = $this->exame->cancelarespera();
-        if ($verificar == "-1") {
-            $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+        if ($this->session->userdata('perfil_id') != 12) {
+            $verificar = $this->exame->cancelarespera();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            }
         } else {
-            $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            $data['mensagem'] = 'Erro ao cancelar o Exame. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
