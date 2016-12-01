@@ -43,7 +43,10 @@
         <table border="1">
             <thead>
                 <tr>
-                    <td class="tabela_teste">Nome</th>
+                    <td class="tabela_teste">Guia</td>
+                    <td class="tabela_teste">Nome</td>
+                    <td class="tabela_teste">Valor da Nota</td>
+                    <td class="tabela_teste">Data da Guia</td>
                 </tr>
             </thead>
             <hr>
@@ -63,13 +66,16 @@
                     ?>
                     <tr>
 
+                        <td><?= utf8_decode($item->ambulatorio_guia_id); ?></td>
                         <td><?= utf8_decode($item->paciente); ?></td>
+                        <td><?= number_format($item->valor_guia, 2, ',', '.'); ?></td>
+                        <td><?= str_replace("-","/",date("d-m-Y", strtotime($item->data_criacao) ) ); ?></td>
 
                     </tr>
                 <? endforeach; ?>
 
                 <tr>
-                    <td width="140px;" align="Right" colspan="2"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
+                    <td width="140px;" align="center" colspan="5"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
                 </tr>
             </tbody>
         </table>
