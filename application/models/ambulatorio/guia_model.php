@@ -1385,6 +1385,7 @@ class guia_model extends Model {
         $this->db->select('distinct(g.ambulatorio_guia_id ),
                             data_criacao,
                             g.valor_guia,
+                            sum(ae.valor_total) as total,
                             p.nome as paciente');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
@@ -1393,6 +1394,8 @@ class guia_model extends Model {
         $this->db->where('ae.empresa_id', '1');
         $this->db->where('ae.data >=', $inicio);
         $this->db->where('ae.data <=', $fim);
+        $this->db->groupby('g.ambulatorio_guia_id');
+        $this->db->groupby('p.nome');
         $this->db->orderby('p.nome');
         
         $return = $this->db->get();
