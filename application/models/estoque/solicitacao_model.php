@@ -123,6 +123,24 @@ class solicitacao_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function saidaprodutositemverificacao($produto_id) {
+        $this->db->select('ep.estoque_entrada_id,
+                            p.descricao,
+                            ep.validade,
+                            ea.descricao as armazem,
+                            sum(ep.quantidade) as total');
+        $this->db->from('tb_estoque_saldo ep');
+        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
+        $this->db->join('tb_estoque_solicitacao_itens esi', 'esi.produto_id = ep.produto_id');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = ep.armazem_id');
+        $this->db->where('esi.estoque_solicitacao_itens_id', $estoque_solicitacao_itens_id);
+        $this->db->where('ep.ativo', 'true');
+        $this->db->groupby('ep.estoque_entrada_id, p.descricao, ep.validade, ea.descricao');
+        $this->db->orderby('ep.validade');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarsaidaprodutositem($estoque_solicitacao_itens_id) {
         $this->db->select('ep.estoque_saida_id,

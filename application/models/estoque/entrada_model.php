@@ -508,6 +508,22 @@ class entrada_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('estoque_entrada_id', $estoque_entrada_id);
         $this->db->update('tb_estoque_entrada');
+        
+        //atualizando tabela estoque_saldo
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('estoque_entrada_id', $estoque_entrada_id);
+        $this->db->update('tb_estoque_saldo');
+        
+        //atualizando tabela estoque_saida
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('estoque_entrada_id', $estoque_entrada_id);
+        $this->db->update('tb_estoque_saida');
+        
+        
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return -1;

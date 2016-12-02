@@ -110,14 +110,37 @@ class Solicitacao extends BaseController {
     function gravarsaidaitens() {
         $estoque_solicitacao_id = $_POST['txtestoque_solicitacao_id'];
         $estoque_solicitacao_itens_id = $_POST['txtestoque_solicitacao_itens_id'];
-        $this->solicitacao->gravarsaidaitens();
+        if($_POST['produto_id'] == ''){
+            $data['mensagem'] = 'Insira um produto valido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+        }
+        elseif($_POST['txtqtde'] == ''){
+            $data['mensagem'] = 'Insira uma quantidade valida.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+        }
+        else{
+            //nao permitir quantidades maiores que o que tem
+            $data['produtos'] = $this->solicitacao->listarprodutositem($estoque_solicitacao_itens_id);
+            $this->solicitacao->gravarsaidaitens();
+        }
         redirect(base_url() . "estoque/solicitacao/saidaitens/$estoque_solicitacao_itens_id/$estoque_solicitacao_id");
     }
 
     function gravaritens() {
         $estoque_solicitacao_id = $_POST['txtestoque_solicitacao_id'];
-        $this->solicitacao->gravaritens();
-        $this->carregarsolicitacao($estoque_solicitacao_id);
+        if($_POST['produto_id'] == '' ){
+            $data['mensagem'] = 'Insira um produto valido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+        }
+        elseif($_POST['txtqtde'] == ''){
+            $data['mensagem'] = 'Insira uma quantidade valida.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+        }
+        else {
+            $this->solicitacao->gravaritens();
+        }
+        
+        redirect(base_url() . "estoque/solicitacao/carregarsolicitacao/$estoque_solicitacao_id");
     }
 
     function excluirsolicitacao($estoque_solicitacao_itens_id, $estoque_solicitacao_id) {

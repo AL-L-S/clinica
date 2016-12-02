@@ -69,7 +69,7 @@
             </div>
             <div>
                 <label>Quantidade</label>
-                <input type="text" name="txtqtde" class="size1" alt="integer"/>
+                <input type="text" name="txtqtde" id="txtqtde" class="size1" alt="integer"/>
             </div>
             <div>
                 <label>&nbsp;</label>
@@ -173,6 +173,12 @@
                         },
                         idade: {
                             required: true
+                        },
+                        produto_id: {
+                            required: true
+                        },
+                        txtqtde: {
+                            required: true
                         }
                     },
                     messages: {
@@ -184,6 +190,12 @@
                             required: "*"
                         },
                         idade: {
+                            required: "*"
+                        },
+                        produto_id: {
+                            required: "*"
+                        },
+                        txtqtde: {
                             required: "*"
                         }
                     }
