@@ -193,7 +193,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15) .'//' . $item->agenda_exames_id; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15) ;?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\

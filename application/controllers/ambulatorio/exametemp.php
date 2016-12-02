@@ -456,8 +456,6 @@ class Exametemp extends BaseController {
                 $data['agenda_selecionada'] = $this->exametemp->listaagendafisioterapia($agenda_exames_id);
                 $data['horarios_livres'] = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0]);
                 
-                echo "<pre>";
-                var_dump($data['horarios_livres'][0], $data['agenda_selecionada'][0]); die;
 
                 $tothorarios = count($data['horarios_livres']);
                 
