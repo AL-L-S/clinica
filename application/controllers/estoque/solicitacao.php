@@ -110,12 +110,21 @@ class Solicitacao extends BaseController {
     function gravarsaidaitens() {
         $estoque_solicitacao_id = $_POST['txtestoque_solicitacao_id'];
         $estoque_solicitacao_itens_id = $_POST['txtestoque_solicitacao_itens_id'];
+//        
+//        $_POST['txtqtde'] = (int) $_POST['txtqtde'];
+//        $_POST['qtdedisponivel'] = (int) $_POST['qtdedisponivel'];
+//        var_dump($_POST['qtdedisponivel']); die;
+        
         if($_POST['produto_id'] == ''){
             $data['mensagem'] = 'Insira um produto valido.';
             $this->session->set_flashdata('message', $data['mensagem']);
-        }
-        elseif($_POST['txtqtde'] == ''){
+        }                
+        elseif( $_POST['txtqtde'] == ''){
             $data['mensagem'] = 'Insira uma quantidade valida.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+        }
+        elseif( isset($_POST['qtdedisponivel']) && ( (int)$_POST['txtqtde'] > (int)$_POST['qtdedisponivel']) ){
+            $data['mensagem'] = 'Quantidade selecionada excede o saldo disponivel.';
             $this->session->set_flashdata('message', $data['mensagem']);
         }
         else{

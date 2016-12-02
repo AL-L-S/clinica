@@ -902,7 +902,7 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN operador_alteradata integer;
 
 update ponto.tb_saldo
 set data = to_date(to_char(data_cadastro, 'YYYY/MM/DD'), 'YYYY/MM/DD')
-where data is null
+where data is null;
 
 -- atualiza 21/11/16
 
