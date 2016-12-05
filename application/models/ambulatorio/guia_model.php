@@ -5602,7 +5602,8 @@ ORDER BY ae.agenda_exames_id)";
 
     function verificasessoesabertas($procedimento_convenio_id, $paciente_id) {
         $this->db->select('pt.grupo,
-                            c.nome');
+                            c.nome,
+                            c.dinheiro');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
@@ -5611,9 +5612,9 @@ ORDER BY ae.agenda_exames_id)";
         $x = $return->result();
         $especialidade = $x[0]->grupo;
 
-//        var_dump($x); die;
+//        var_dump($return->result()); die;
 
-        if ($x[0]->nome != 'PARTICULAR') {
+        if ($x[0]->nome == 'f') {
 //            $this->db->select('confirmado , agenda_exames_id');
 //            $this->db->from('tb_agenda_exames');
 //            $this->db->where('tipo', $especialidade);
