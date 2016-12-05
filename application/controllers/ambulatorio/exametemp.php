@@ -396,6 +396,16 @@ class Exametemp extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopaciente");
         }
+        elseif (trim($_POST['txtNomeid']) == "") {
+            $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
+        }
+        elseif (trim($_POST['telefone']) == "") {
+            $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
+        }
         elseif (trim($_POST['convenio1']) == "-1") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio seleionar um convenio.';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -542,10 +552,18 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacientetempgeral() {
-
+        
         $pacientetemp_id = $_POST['txtpaciente_id'];
-        $this->exametemp->gravarpacienteexistentegeral($pacientetemp_id);
-        $this->carregarpacientetempgeral($pacientetemp_id);
+        
+        if($_POST['txtNome'] == '' || $_POST['data_ficha'] == '' || $_POST['exame'] == '' || $_POST['convenio1'] == '' || $_POST['procedimento1'] == '' ||  $_POST['horarios'] == ''){
+            $data['mensagem'] = 'Insira os campos obrigatorios.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
+        }
+        else {
+            $this->exametemp->gravarpacienteexistentegeral($pacientetemp_id);
+            $this->carregarpacientetempgeral($pacientetemp_id);
+        }
     }
 
     function gravarconsultapacientetemp() {

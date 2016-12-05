@@ -1001,8 +1001,8 @@ class exametemp_model extends Model {
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
             }
-            $this->db->set('celular', $_POST['telefone']);
-            $this->db->set('telefone', $_POST['celular']);
+            $this->db->set('celular', $_POST['celular']);
+            $this->db->set('telefone', $_POST['telefone']);
             $this->db->where('paciente_id', $ambulatorio_pacientetemp_id);
             $this->db->update('tb_paciente');
             if ($_POST['procedimento1'] != '') {
@@ -1530,8 +1530,8 @@ class exametemp_model extends Model {
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
             }
-            $this->db->set('celular', $_POST['telefone']);
-            $this->db->set('telefone', $_POST['celular']);
+            $this->db->set('celular', $_POST['celular']);
+            $this->db->set('telefone', $_POST['telefone']);
 //            $this->db->set('convenio_id', $_POST['convenio']);
             $this->db->where('paciente_id', $ambulatorio_pacientetemp_id);
             $this->db->update('tb_paciente');
