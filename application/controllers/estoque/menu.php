@@ -43,8 +43,15 @@ class Menu extends BaseController {
 
     function gravaritens() {
         $estoque_menu_id = $_POST['txtestoque_menu_id'];
-        $this->menu->gravaritens();
-        $this->criarmenu($estoque_menu_id);
+        if ($_POST['produto_id'] == '') {
+            $data['mensagem'] = 'Selecione um produto.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+        }
+        else {
+            $this->menu->gravaritens();        
+        }
+        redirect(base_url() . "estoque/menu/criarmenu/$estoque_menu_id");
+//        $this->criarmenu($estoque_menu_id);
     }
 
     function excluirmenu($estoque_menu_produtos_id, $estoque_menu_id) {

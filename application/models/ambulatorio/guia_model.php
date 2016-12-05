@@ -1382,13 +1382,25 @@ class guia_model extends Model {
         $inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
 
-        $sql = "SELECT distinct(g.ambulatorio_guia_id ),  p.nome as paciente FROM ponto.tb_ambulatorio_guia g 
-JOIN ponto.tb_agenda_exames ae ON ae.guia_id = g.ambulatorio_guia_id 
-JOIN ponto.tb_paciente p ON p.paciente_id = g.paciente_id 
-WHERE g.nota_fiscal = true AND ae.empresa_id = '1' 
-AND ae.data >= '$inicio' AND ae.data <= '$fim'
-ORDER BY p.nome";
-        return $return = $this->db->query($sql)->result();
+        $this->db->select('distinct(g.ambulatorio_guia_id ),
+                            data_criacao,
+                            g.valor_guia,
+                            sum(ae.valor_total) as total,
+                            p.nome as paciente');
+        $this->db->from('tb_ambulatorio_guia g');
+        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = g.paciente_id', 'left');
+        $this->db->where('g.nota_fiscal', 't');
+        $this->db->where('ae.empresa_id', '1');
+        $this->db->where('ae.data >=', $inicio);
+        $this->db->where('ae.data <=', $fim);
+        $this->db->groupby('g.ambulatorio_guia_id');
+        $this->db->groupby('p.nome');
+        $this->db->orderby('p.nome');
+        
+        $return = $this->db->get();
+        return $return->result();
+         
     }
 
     function relatorioindicacaoconsolidado() {
@@ -3166,6 +3178,7 @@ ORDER BY p.nome";
         $this->db->select('ambulatorio_guia_id,
                             nota_fiscal,
                             recibo,
+                            valor_guia,
                             observacoes');
         $this->db->from('tb_ambulatorio_guia');
         $this->db->where("ambulatorio_guia_id", $guia_id);
@@ -4137,6 +4150,7 @@ AND data <= '$data_fim'";
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('observacoes', $_POST['observacoes']);
         $this->db->set('nota_fiscal', $_POST['nota_fiscal']);
+        $this->db->set('valor_guia', str_replace(",", ".", $_POST['txtvalorguia']));
         $this->db->set('recibo', $_POST['recibo']);
         $this->db->set('data_observacoes', $horario);
         $this->db->set('operador_observacoes', $operador_id);

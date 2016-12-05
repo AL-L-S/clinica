@@ -56,6 +56,11 @@
                                                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><?php echo substr($item->nascimento, 8, 2) . '/' . substr($item->nascimento, 5, 2) . '/' . substr($item->nascimento, 0, 4); ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><?php echo $telefone; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>" width="50px;" ><div class="bt_link">
+                                                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacirurgia/<?= $item->internacao_id ?>">
+                                                                    <b>Cirurgia</b>
+                                                                </a></div>
+                                                        </td>
+                                                        <td class="<?php echo $estilo_linha; ?>" width="50px;" ><div class="bt_link">
                                                                 <a href="<?= base_url() ?>internacao/internacao/mostrarnovasaidapaciente/<?= $item->internacao_id ?>">
                                                                     <b>Saida</b>
                                                                 </a></div>

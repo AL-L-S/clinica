@@ -420,7 +420,7 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteconsultatemp($agenda_exames_id) {
-        if (trim($_POST['txtNome']) == "") {
+        if (trim($_POST['txtNome']) == "" || trim($_POST['txtNomeid']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
@@ -442,31 +442,70 @@ class Exametemp extends BaseController {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
-        } else {
+        } 
+        elseif (trim($_POST['txtNomeid']) == "") {
+            $data['mensagem'] = 'Erro ao marcar consulta. Paciente Inválido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+        } 
+        else {
 
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
 
-            if (isset($_POST['sessao'])) {
+            if ( isset( $_POST['sessao'] ) ) {
                 $data['agenda_selecionada'] = $this->exametemp->listaagendafisioterapia($agenda_exames_id);
-                $data['horarios_livres'] = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0]);
-
-                $tothorarios = count($data['horarios_livres']);
+                $contaHorarios = count($this->exametemp->contadordisponibilidadefisioterapia($data['agenda_selecionada'][0]));
+                
+                //tratando o numero que veio nas sessoes
                 if($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 0){
                     $_POST['sessao'] = 1;
                 }
-                
                 $_POST['sessao'] = (int) $_POST['sessao'];
-
+                
+                //pegando os dias da semana disponiveis
+                $diaSemana = date("Y-m-d", strtotime($data['agenda_selecionada'][0]->data));
+                $contador = 0;
+                
+                //definindo array que recebera os selects
+                $horarios_livres = array();
+                
+                //definindo array que tera os valores filtrados de $horarios_livres
+                $data['horarios_livres'] = array();
+                
+                do{
+                    $horarios_livres = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0], $diaSemana);
+                    $diaSemana = date( "Y-m-d", strtotime( "+1 week", strtotime($diaSemana) ) );
+                    $contador++;
+                    
+                    //verificando se a busca veio vazia, caso nao, adciona essa busca a $data['horarios_livres']
+                    if(count($horarios_livres) != 0){
+                        $data['horarios_livres'][] = $horarios_livres[0];
+                    }
+                    
+                } while ($contador < $contaHorarios);
+                
+                //limpando o array
+                $data['horarios_livres'] = array_filter($data['horarios_livres']);
+                
+                //testando se ha disponibilidade de horario para todas as sessoes
+                $tothorarios = count($data['horarios_livres']);
+                
                 if ($tothorarios < $_POST['sessao']) {
                     $data['mensagem'] = "Não há horarios suficientes na agenda para o numero de sessoes escolhido";
                     $this->session->set_flashdata('message', $data['mensagem']);
                     redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
                 }
-
-                for ($i = 0; $i < $_POST['sessao']; $i++) {
-                    $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id);
+                
+                //marcando sessoes
+                if($_POST['sessao'] == 1){
+                    $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['agenda_selecionada'][0]->agenda_exames_id);
                 }
-
+                else {
+                    for ($i = 0; $i < $_POST['sessao']; $i++) {
+                        $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id);
+                    }
+                }
+                
                 $this->carregarpacientefisioterapiatemp($paciente_id);
             } else {
                 $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
