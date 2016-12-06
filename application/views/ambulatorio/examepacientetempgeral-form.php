@@ -154,6 +154,11 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
+<?php 
+    if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
+
                     $(function() {
                         $("#data_ficha").datepicker({
                             autosize: true,
@@ -255,12 +260,36 @@
                                 txtNome: {
                                     required: true,
                                     minlength: 3
+                                },
+                                data_ficha: {
+                                    required: true
+                                },
+                                exame: {
+                                    required: true
+                                },
+                                convenio1: {
+                                    required: true
+                                },
+                                procedimento1: {
+                                    required: true
                                 }
                             },
                             messages: {
                                 txtNome: {
                                     required: "*",
                                     minlength: "!"
+                                },
+                                data_ficha: {
+                                    required: "*"
+                                },
+                                exame: {
+                                    required: "*"
+                                },
+                                convenio1: {
+                                    required: "*"
+                                },
+                                procedimento1: {
+                                    required: "*"
                                 }
                             }
                         });

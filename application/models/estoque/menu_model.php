@@ -132,6 +132,24 @@ class menu_model extends Model {
         return $return->result();
     }
 
+    
+    function excluirmenuproduto($menu_produto_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('estoque_menu_produtos_id', $menu_produto_id);
+        $this->db->update('tb_estoque_menu_produtos');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return -1;
+        else
+            return 0;
+    }
+    
     function excluir($estoque_menu_id) {
 
         $horario = date("Y-m-d H:i:s");

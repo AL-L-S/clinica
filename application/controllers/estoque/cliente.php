@@ -64,8 +64,12 @@ class Cliente extends BaseController {
     }
 
     function gravarclientes() {
-        $operador_id = $_POST['txtoperador_id'];
-        $this->cliente->gravarclientes();
+        $operador_id = $_POST['txtoperador_id'];        
+        $clientes_id = $_POST['clientes_id'];
+        $data['cliente'] = $this->cliente->testaclienterepetidos($clientes_id);
+        if ( count($data['cliente']) == 0 ){
+            $this->cliente->gravarclientes();
+        }
         $this->clientesetor($operador_id);
     }
 
