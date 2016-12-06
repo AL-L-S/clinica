@@ -617,7 +617,7 @@ class laudo_model extends Model {
 
     function listarconsultahistoricoantigo($paciente_id) {
 
-        $this->db->select('laudo');
+        $this->db->select('laudo, data_cadastro');
         $this->db->from('tb_laudoantigo');
         $this->db->where('paciente_id', $paciente_id);
         $this->db->orderby('data_cadastro desc');
