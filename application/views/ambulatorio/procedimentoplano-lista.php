@@ -83,8 +83,9 @@
 
 
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                    <a onclick="javascript: confirm('Deseja realmente excluir o procedimento'); window.open('<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>');"
-                                       >Excluir
+                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');"
+                                       href="<?=base_url()?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
+                                        Excluir
                                     </a>
 <!--                                    href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id; ?>"-->
                                 </td>

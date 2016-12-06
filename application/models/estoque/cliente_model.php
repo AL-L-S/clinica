@@ -60,6 +60,19 @@ class cliente_model extends Model {
         return $return->result();
     }
 
+    function testaclienterepetidos($cliente_id) {
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->select('estoque_operador_cliente_id');
+        $this->db->from('tb_estoque_operador_cliente oc');
+        $this->db->join('tb_operador o', 'o.operador_id = oc.operador_id');
+        $this->db->where('oc.operador_id', $operador_id);
+        $this->db->where('oc.cliente_id', $cliente_id);
+        $this->db->where('oc.ativo', 't');
+        $this->db->where('o.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listaroperadores($operador_id) {
         $this->db->select('operador_id,
                             usuario');
@@ -99,8 +112,8 @@ class cliente_model extends Model {
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('estoque_menu_produtos_id', $operado_cliente);
-        $this->db->update('tb_estoque_menu_produtos');
+        $this->db->where('estoque_operador_cliente_id', $operado_cliente);
+        $this->db->update('tb_estoque_operador_cliente');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return -1;

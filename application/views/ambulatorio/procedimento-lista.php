@@ -57,8 +57,10 @@
 
 
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                    <a onclick="javascript: confirm('Deseja realmente excluir o procedimento <?= $item->nome; ?>'); window.open('<?= base_url() . "ambulatorio/procedimento/excluir/$item->procedimento_tuss_id"; ?>', '_blanck')"
-                                       ><img border="0" title="Excluir" alt="Excluir"
+                                    
+                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');"
+                                       href="<?=base_url()?>ambulatorio/procedimento/excluir/<?= $item->procedimento_tuss_id; ?>">
+                                        <img border="0" title="Excluir" alt="Excluir"
                                           src="<?= base_url() ?>img/form/page_white_delete.png" />
                                     </a>
         <!--                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento <?= $item->nome; ?>');"

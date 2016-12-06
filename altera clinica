@@ -902,7 +902,7 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN operador_alteradata integer;
 
 update ponto.tb_saldo
 set data = to_date(to_char(data_cadastro, 'YYYY/MM/DD'), 'YYYY/MM/DD')
-where data is null
+where data is null;
 
 -- atualiza 21/11/16
 
@@ -1008,3 +1008,48 @@ INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
 
 
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN fixar boolean DEFAULT false;
+
+-- Dia 01/12/16 Centro Cirurgico
+
+CREATE TABLE ponto.tb_solicitacao_cirurgia
+(
+  solicitacao_cirurgia_id serial NOT NULL,
+  internacao_id integer,
+  procedimento_id character varying(20),
+  data_solicitacao timestamp without time zone,
+  operador_solicitacao integer,
+  data_autorizacao timestamp without time zone,
+  operador_autorizacao integer,
+  excluido boolean NOT NULL DEFAULT false,
+  ativo boolean NOT NULL DEFAULT true,
+  data_prevista timestamp without time zone,
+  data_realizou timestamp without time zone,
+  medico_agendado integer,
+  medico_relizou integer,
+  sala_agendada integer,
+  sala_realizou integer,
+  
+
+  CONSTRAINT tb_solicitacao_cirurgia_pkey PRIMARY KEY (solicitacao_cirurgia_id )
+);
+
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN autorizado boolean DEFAULT false;
+
+-- Valor da Nota Fiscal 
+
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN valor_guia numeric(10,2);
+
+
+atualiza 06/12/16
+
+CREATE TABLE ponto.tb_agrupador_fisioterapia_temp
+(
+  agrupador_fisioterapia_temp_id integer NOT NULL DEFAULT nextval('ponto.tb_agrupador_fisioterapia_tem_agrupador_fisioterapia_temp_i_seq'::regclass),
+  qtde_sessoes integer,
+  ativo boolean NOT NULL DEFAULT true,
+  CONSTRAINT agrupador_fisioterapia_temp_id_pkey PRIMARY KEY (agrupador_fisioterapia_temp_id )
+)
+
+ALTER TABLE ponto.tb_horarioagenda ADD COLUMN empresa_id integer;
+ALTER TABLE ponto.tb_horarioagenda ADD COLUMN observacoes character varying(1000);

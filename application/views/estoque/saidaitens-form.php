@@ -57,11 +57,12 @@
             <div>
                 <label>Produtos</label>
                 <select name="produto_id" id="produto_id" class="size4">
+                    <option value=''>SELECIONE</option>
                     <?
                     foreach ($produtos as $value) :
                         if ($value->total != 0) {
                             ?>
-                            <option value="<?= $value->estoque_entrada_id; ?>"><?php echo $value->descricao; ?> - QTDE: <?php echo $value->total; ?> - Armazem: <?php echo $value->armazem; ?> - VALIDADE: <?php echo substr($value->validade, 8, 2) . "/" . substr($value->validade, 5, 2) . "/" . substr($value->validade, 0, 4); ?></option>
+                            <option onclick="verificacao(<?= $value->total ?>)" value="<?= $value->estoque_entrada_id; ?>"><?php echo $value->descricao; ?> - QTDE: <?php echo $value->total; ?> - Armazem: <?php echo $value->armazem; ?> - VALIDADE: <?php echo substr($value->validade, 8, 2) . "/" . substr($value->validade, 5, 2) . "/" . substr($value->validade, 0, 4); ?></option>
                         <? }
                     endforeach;
                     ?>
@@ -69,8 +70,13 @@
             </div>
             <div>
                 <label>Quantidade</label>
-                <input type="text" name="txtqtde" class="size1" alt="integer"/>
+                <input type="text" name="txtqtde" id="txtqtde" class="size1" alt="integer"/>
             </div>
+            
+            <div style="display: none">
+                <input type="hidden" name="qtdedisponivel" id="qtdedisponivel" class="size1" alt="integer" value=''>
+            </div>
+            
             <div>
                 <label>&nbsp;</label>
                 <button type="submit" name="btnEnviar">Adicionar</button>
@@ -129,7 +135,9 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-
+function verificacao(valor){
+    document.getElementById("qtdedisponivel").value = valor;
+}
 
 
 
@@ -173,6 +181,12 @@
                         },
                         idade: {
                             required: true
+                        },
+                        produto_id: {
+                            required: true
+                        },
+                        txtqtde: {
+                            required: true
                         }
                     },
                     messages: {
@@ -184,6 +198,12 @@
                             required: "*"
                         },
                         idade: {
+                            required: "*"
+                        },
+                        produto_id: {
+                            required: "*"
+                        },
+                        txtqtde: {
                             required: "*"
                         }
                     }

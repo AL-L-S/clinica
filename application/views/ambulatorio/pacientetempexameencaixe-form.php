@@ -95,7 +95,7 @@
 <script type="text/javascript">
 
 <?php if ($this->session->flashdata('message') != ''): ?>
-                        alert("<? echo $this->session->flashdata('message')?>");
+                        alert("<? echo $this->session->flashdata('message') ?>");
 <? endif; ?>
 
                     $(function () {
