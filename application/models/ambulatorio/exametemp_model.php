@@ -846,7 +846,7 @@ class exametemp_model extends Model {
     function contadordisponibilidadefisioterapia($agenda) {
         $empresa_id = $this->session->userdata('empresa_id');
         $horario = date("Y-m-d");
-        
+
         $nulo = null;
         $this->db->select('ae.*');
         $this->db->from('tb_agenda_exames ae');
@@ -865,11 +865,45 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
+    function contadorhorariosdisponiveisfisioterapia($data, $inicio, $medico) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $horario = date("Y-m-d");
+
+        $data = str_replace("/", "-", $data);
+        $data_es = date("Y-m-d", strtotime($data));
+
+        $x = 0;
+        for ($i = 1; $i <= $_POST['qtde']; $i++) {
+            if ($i > 1) {
+                $data_es = date("Y-m-d", strtotime("+1 week", strtotime($data_es)));
+            }
+            $this->db->select('agenda_exames_id');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where("situacao", "OK");
+//            $this->db->orwhere("situacao", "LIVRE");
+            $this->db->where('empresa_id', $empresa_id);
+            $this->db->where('ativo', 'f');
+            $this->db->where('cancelada', 'f');
+            $this->db->where('confirmado', 'f');
+            $this->db->where("tipo", "FISIOTERAPIA");
+            $this->db->where("data >=", $horario);
+            $this->db->where("data >=", $data_es);
+            $this->db->where("inicio", $inicio);
+            $this->db->where("medico_consulta_id", $medico);
+            $return = $this->db->get();
+            $count = count($return->result());
+            if ($count > 0) {
+                $x++;
+            }
+        }
+        return $x;
+    }
+
     function listadisponibilidadefisioterapia($agenda, $diaSemana) {
         $empresa_id = $this->session->userdata('empresa_id');
         $horario = date("Y-m-d");
-        
+
         $nulo = null;
         $this->db->select('ae.*');
         $this->db->from('tb_agenda_exames ae');
@@ -1405,34 +1439,52 @@ class exametemp_model extends Model {
             }
 
 
-
+            $agrupador = 0;
             if ($_POST['horarios'] != "") {
-                $empresa_id = $this->session->userdata('empresa_id');
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('tipo', 'FISIOTERAPIA');
-                $this->db->set('medico_consulta_id', $_POST['medico']);
-                $this->db->set('nome', $nome);
-                $this->db->set('ativo', 'f');
-                $this->db->set('cancelada', 'f');
-                $this->db->set('confirmado', 'f');
-                $this->db->set('situacao', 'OK');
-                $this->db->set('observacoes', $_POST['observacoes']);
-                $data = date("Y-m-d");
-                $hora = date("H:i:s");
-                $horario = date("Y-m-d H:i:s");
-                $operador_id = $this->session->userdata('operador_id');
 
-                $this->db->set('paciente_id', $paciente_id);
-                $this->db->set('data_inicio', $_POST['data_ficha']);
-                $this->db->set('fim', $_POST['horarios']);
-                $this->db->set('inicio', $_POST['horarios']);
-                $this->db->set('data_fim', $_POST['data_ficha']);
-                $this->db->set('data', $_POST['data_ficha']);
-                $this->db->set('data_atualizacao', $horario);
-                $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_agenda_exames');
+                $data_ficha = $_POST['data_ficha'];
+                for ($i = 1; $i <= $_POST['qtde']; $i++) {
+                    if ($i > 1) {
+                        $data_ficha = date("Y-m-d", strtotime("+1 week", strtotime($data_ficha)));
+                        //criar agrfupador temp
+                        $this->db->set('qtde_sessoes', $_POST['qtde']);
+                        $this->db->insert('tb_agrupador_fisioterapia_temp');
+                        $agrupador = $this->db->insert_id();
+                        //
+                    }
+                    $empresa_id = $this->session->userdata('empresa_id');
+
+                    if ($agrupador != 0) {
+                        $this->db->set('agrupador_fisioterapia', $agrupador);
+                    }
+
+                    $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('tipo', 'FISIOTERAPIA');
+                    $this->db->set('medico_consulta_id', $_POST['medico']);
+                    $this->db->set('nome', $nome);
+                    $this->db->set('ativo', 'f');
+                    $this->db->set('cancelada', 'f');
+                    $this->db->set('confirmado', 'f');
+                    $this->db->set('situacao', 'OK');
+                    $this->db->set('observacoes', $_POST['observacoes']);
+                    $data = date("Y-m-d");
+                    $hora = date("H:i:s");
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+
+                    $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+                    $this->db->set('paciente_id', $paciente_id);
+                    $this->db->set('data_inicio', $data_ficha);
+                    $this->db->set('fim', $_POST['horarios']);
+                    $this->db->set('inicio', $_POST['horarios']);
+                    $this->db->set('data_fim', $data_ficha);
+                    $this->db->set('data', $_POST['data_ficha']);
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_agenda_exames');
+                }
             }
             return $paciente_id;
         } catch (Exception $exc) {

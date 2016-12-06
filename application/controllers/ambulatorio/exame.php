@@ -1210,6 +1210,9 @@ class Exame extends BaseController {
             $tempoconsulta = $item->tempoconsulta;
             $qtdeconsulta = $item->qtdeconsulta;
             $qtdeconsulta = (int) $qtdeconsulta;
+            
+            $empresa_id = $item->empresa_id;
+            $obs = $item->observacoes;
 
             if (($qtdeconsulta != 0) && ($item->intervaloinicio == "00:00:00")) {
                 $entrada = $item->horaentrada1;
@@ -1275,13 +1278,13 @@ class Exame extends BaseController {
                                 if ($id == 0) {
                                     $id = $this->exame->gravarnome($nome);
                                 }
-                                $this->exame->gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id);
+                                $this->exame->gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs);
                             }
                             if (( $horaverifica < $item->horasaida1)) {
                                 $x = 1;
                                 $horaconsulta = $horaverifica;
                                 $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
-                                $this->exame->gravar($agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id);
+                                $this->exame->gravar($agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs);
                             }
                             $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
                         } else {
@@ -1292,13 +1295,13 @@ class Exame extends BaseController {
                                 if ($id == 0) {
                                     $id = $this->exame->gravarnome($nome);
                                 }
-                                $this->exame->gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id);
+                                $this->exame->gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs);
                             }
                             if ((($horaverifica < $item->intervaloinicio) || ($horaverifica >= $item->intervalofim)) && ( $horaverifica < $item->horasaida1)) {
                                 $x = 1;
                                 $horaconsulta = $horaverifica;
                                 $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
-                                $this->exame->gravar($agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id);
+                                $this->exame->gravar($agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs);
                             }
                             $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
                         }

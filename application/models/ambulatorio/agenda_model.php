@@ -24,6 +24,16 @@ class agenda_model extends Model {
         return $this->db;
     }
 
+    function listarempresa() {
+        $this->db->select('empresa_id,
+                            nome');
+        $this->db->from('tb_empresa');
+        $this->db->where('ativo', 't');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     function listaragenda() {
         $this->db->select('agenda_id,
                             nome, 
@@ -184,8 +194,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -205,8 +215,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -226,8 +236,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -247,8 +257,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -268,8 +278,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -289,8 +299,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -310,8 +320,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -355,8 +365,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -377,8 +387,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -399,8 +409,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -421,8 +431,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -443,8 +453,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -465,8 +475,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -485,8 +495,8 @@ class agenda_model extends Model {
                         /* inicia o mapeamento no banco */
                         $horario = date("Y-m-d H:i:s");
                         $operador_id = $this->session->userdata('operador_id');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('bloqueado', 't');
                         $this->db->set('operador_medico_agenda', $operador_id);
@@ -696,7 +706,7 @@ class agenda_model extends Model {
             } else {
                 $Sabado = '';
             }
-            
+
             if ($_POST['txtacao'] == 'Alterarmedico') {
 
                 for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
@@ -727,8 +737,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -747,8 +757,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -767,8 +777,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -787,8 +797,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -807,8 +817,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -827,8 +837,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -847,8 +857,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -892,8 +902,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -912,8 +922,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -932,8 +942,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -952,8 +962,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -972,8 +982,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -992,8 +1002,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1010,8 +1020,8 @@ class agenda_model extends Model {
                         /* inicia o mapeamento no banco */
                         $horario = date("Y-m-d H:i:s");
                         $operador_id = $this->session->userdata('operador_id');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('bloqueado', 't');
                         $this->db->set('operador_medico_agenda', $operador_id);
@@ -1163,7 +1173,7 @@ class agenda_model extends Model {
             return -1;
         }
     }
-    
+
     function gravarmedicoconsulta() {
         try {
 
@@ -1205,7 +1215,7 @@ class agenda_model extends Model {
             } else {
                 $Sabado = '';
             }
-            
+
             if ($_POST['txtacao'] == 'Alterarmedico') {
 
                 for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
@@ -1236,8 +1246,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1257,8 +1267,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1278,8 +1288,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1299,8 +1309,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1320,8 +1330,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1341,8 +1351,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1362,8 +1372,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1408,8 +1418,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1429,8 +1439,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1450,8 +1460,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1471,8 +1481,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1492,8 +1502,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1513,8 +1523,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1532,8 +1542,8 @@ class agenda_model extends Model {
                         /* inicia o mapeamento no banco */
                         $horario = date("Y-m-d H:i:s");
                         $operador_id = $this->session->userdata('operador_id');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('bloqueado', 't');
                         $this->db->set('operador_medico_agenda', $operador_id);
@@ -1693,7 +1703,7 @@ class agenda_model extends Model {
             return -1;
         }
     }
-    
+
     function gravarmedicoespecialidade() {
         try {
 
@@ -1735,7 +1745,7 @@ class agenda_model extends Model {
             } else {
                 $Sabado = '';
             }
-            
+
             if ($_POST['txtacao'] == 'Alterarmedico') {
 
                 for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
@@ -1766,8 +1776,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1787,8 +1797,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1808,8 +1818,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1829,8 +1839,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1850,8 +1860,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1871,8 +1881,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1892,8 +1902,8 @@ class agenda_model extends Model {
 
                         $this->db->set('medico_agenda', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1938,8 +1948,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1959,8 +1969,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -1980,8 +1990,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -2001,8 +2011,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -2022,8 +2032,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -2043,8 +2053,8 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('bloqueado', 't');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
@@ -2062,8 +2072,8 @@ class agenda_model extends Model {
                         /* inicia o mapeamento no banco */
                         $horario = date("Y-m-d H:i:s");
                         $operador_id = $this->session->userdata('operador_id');
-                        if ($_POST['txtobservacao'] != ''){
-                        $this->db->set('observacoes', $_POST['txtobservacao']);
+                        if ($_POST['txtobservacao'] != '') {
+                            $this->db->set('observacoes', $_POST['txtobservacao']);
                         }
                         $this->db->set('bloqueado', 't');
                         $this->db->set('operador_medico_agenda', $operador_id);
@@ -2254,6 +2264,8 @@ class agenda_model extends Model {
             $this->db->set('intervalofim', $_POST['txtFimintervalo']);
             $this->db->set('tempoconsulta', $_POST['txtTempoconsulta']);
             $this->db->set('qtdeconsulta', $_POST['txtQtdeconsulta']);
+            $this->db->set('empresa_id', $_POST['empresa']);
+            $this->db->set('observacoes', $_POST['obs']);
 
             $this->db->insert('tb_horarioagenda');
             $erro = $this->db->_error_message();

@@ -65,6 +65,16 @@
                 </select>
             </div>
             <div>
+                <label>Procedimento</label>
+                <select  name="procedimento" id="procedimento" class="size1" >
+                    <option value="">Selecione</option>
+                </select>
+            </div>
+            <div>
+                <label>Qtde Sessões</label>
+                <input type="text" name="qtde" id="qtde" class="texto01" readonly=""/>
+            </div>
+            <div>
                 <label>&nbsp;</label>
                 <button type="submit" name="btnEnviar">Adicionar</button>
             </div>
@@ -73,11 +83,15 @@
 
 
 </div> <!-- Final da DIV content -->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+<? if ($this->session->flashdata('message') != ""): ?>
+        alert("<? echo $this->session->flashdata('message'); ?>");
+<? endif; ?>
 
-
-    $(function() {
+    $(function () {
         $("#data_ficha").datepicker({
             autosize: true,
             changeYear: true,
@@ -88,7 +102,7 @@
             dateFormat: 'dd/mm/yy'
         });
     });
-    $(function() {
+    $(function () {
         $("#txtNascimento").datepicker({
             autosize: true,
             changeYear: true,
@@ -100,15 +114,33 @@
         });
     });
 
-    $(function() {
+    $(function () {
+        $('#convenio').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    }
+                    $('#procedimento').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#procedimento').html('<option value="">Selecione</option>');
+            }
+        });
+    });
+
+    $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
             minLength: 3,
-            focus: function(event, ui) {
+            focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
                 $("#telefone").val(ui.item.itens);
@@ -118,14 +150,30 @@
         });
     });
 
+    $(function () {
+        $('#procedimento').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                    qtde = "";
+                    qtde += j[0].qtde;
+                    document.getElementById("qtde").value = qtde;
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#qtde').html('value=""');
+            }
+        });
+    });
 
-    $(function() {
+
+    $(function () {
         $("#accordion").accordion();
     });
 
 
-    $(document).ready(function(){
-        jQuery('#form_exametemp').validate( {
+    $(document).ready(function () {
+        jQuery('#form_exametemp').validate({
             rules: {
                 data_ficha: {
                     required: true
