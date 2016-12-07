@@ -2295,8 +2295,8 @@ class Guia extends BaseController {
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-        $data['relatorio'] = $this->guia->relatoriocaixa();
-        $data['contador'] = $this->guia->relatoriocaixacontador();
+        $data['relatorio'] = $this->guia->relatoriocaixacartao();
+        $data['contador'] = $this->guia->relatoriocaixacontadorcartao();
         $this->load->View('ambulatorio/impressaorelatoriocaixacartao', $data);
     }
 

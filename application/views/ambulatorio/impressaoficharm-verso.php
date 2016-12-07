@@ -220,7 +220,7 @@
             <COL WIDTH=779>
 	<TR>
 		<TD WIDTH=779 HEIGHT=31 VALIGN=TOP STYLE="border-top: none; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding-top: 0cm; padding-bottom: 0.1cm; padding-left: 0.1cm; padding-right: 0.1cm">
-			<P CLASS="western"><FONT FACE="Serif"><FONT SIZE=1 STYLE="font-size: 8pt">
+			<P CLASS="western"><FONT FACE="Serif"><FONT SIZE=1 STYLE="font-size: 50pt">
                                     <center><b>Checklist</B></CENTER><br>
                                     Nome
 			do paciente ( ) –  Data Nasc.( ) –  RG( ) – N° carteira( )
@@ -228,7 +228,7 @@
 			) 
                         Exame Autorizado( )             </FONT></FONT>
 			</P>
-			<P CLASS="western"><FONT FACE="Serif"><FONT SIZE=1 STYLE="font-size: 8pt">Médico
+			<P CLASS="western"><FONT FACE="Serif"><FONT SIZE=1 STYLE="font-size: 10pt">Médico
 			Solicitante( ) – Assinatura Paciente ( )</FONT></FONT></P>
 		</TD>
 	</TR>
