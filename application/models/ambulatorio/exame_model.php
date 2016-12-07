@@ -205,12 +205,16 @@ class exame_model extends Model {
     }
 
     function listarsalaagenda($agenda_exames_id) {
-        $this->db->select('agenda_exames_nome_id, tipo');
-        $this->db->from('tb_agenda_exames');
+        $this->db->select('ae.agenda_exames_nome_id, ag.tipo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $return = $this->db->get();
         return $return->result();
     }
+
 
     function listartodassalas() {
         $empresa_id = $this->session->userdata('empresa_id');
@@ -732,6 +736,7 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
@@ -1446,6 +1451,7 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
@@ -1842,6 +1848,7 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,

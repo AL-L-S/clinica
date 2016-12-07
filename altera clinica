@@ -1041,15 +1041,18 @@ ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN autorizado boolean DEFAULT 
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN valor_guia numeric(10,2);
 
 
-atualiza 06/12/16
+-- atualiza 06/12/16
 
 CREATE TABLE ponto.tb_agrupador_fisioterapia_temp
 (
-  agrupador_fisioterapia_temp_id integer NOT NULL DEFAULT nextval('ponto.tb_agrupador_fisioterapia_tem_agrupador_fisioterapia_temp_i_seq'::regclass),
+  agrupador_fisioterapia_temp_id serial NOT NULL,
   qtde_sessoes integer,
   ativo boolean NOT NULL DEFAULT true,
   CONSTRAINT agrupador_fisioterapia_temp_id_pkey PRIMARY KEY (agrupador_fisioterapia_temp_id )
-)
+);
 
 ALTER TABLE ponto.tb_horarioagenda ADD COLUMN empresa_id integer;
 ALTER TABLE ponto.tb_horarioagenda ADD COLUMN observacoes character varying(1000);
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN encaixe boolean;
+

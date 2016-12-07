@@ -1183,6 +1183,7 @@ class exametemp_model extends Model {
                 $this->db->set('confirmado', 'f');
                 $this->db->set('situacao', 'OK');
                 $this->db->set('observacoes', $_POST['observacoes']);
+                
                 $data = date("Y-m-d");
                 $hora = date("H:i:s");
                 $horario = date("Y-m-d H:i:s");
@@ -1194,6 +1195,7 @@ class exametemp_model extends Model {
                 $this->db->set('inicio', $_POST['horarios']);
                 $this->db->set('data_fim', $_POST['data_ficha']);
                 $this->db->set('data', $_POST['data_ficha']);
+                $this->db->set('encaixe', 't');
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->set('data_cadastro', $horario);
@@ -1361,6 +1363,7 @@ class exametemp_model extends Model {
                 $this->db->set('inicio', $_POST['horarios']);
                 $this->db->set('data_fim', $_POST['data_ficha']);
                 $this->db->set('data', $_POST['data_ficha']);
+                $this->db->set('encaixe', 't');
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_agenda_exames');
@@ -1466,6 +1469,7 @@ class exametemp_model extends Model {
                     $this->db->set('cancelada', 'f');
                     $this->db->set('confirmado', 'f');
                     $this->db->set('situacao', 'OK');
+                    $this->db->set('encaixe', 't');
                     $this->db->set('observacoes', $_POST['observacoes']);
                     $data = date("Y-m-d");
                     $hora = date("H:i:s");
