@@ -123,6 +123,7 @@
                         <th class="tabela_header" width="70px;">Data</th>
                         <th class="tabela_header" width="50px;">Dia</th>
                         <th class="tabela_header" width="70px;">Agenda</th>
+                        <th class="tabela_header" width="70px;">   </th>
                         <th class="tabela_header" width="150px;">Sala</th>
                         <th class="tabela_header" width="150px;">Convenio</th>
                         <th class="tabela_header">Telefone</th>
@@ -245,7 +246,9 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-
+                                <td class="<?php echo $estilo_linha; ?>"><? if( isset($item->encaixe) ){
+                                    echo '<span class="vermelho">Encaixe</span>';
+                                } ?></td>
                                 <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="150px;"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedico/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></b></td>
                                 <? } else { ?>
@@ -323,7 +326,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="13">
+                        <th class="tabela_footer" colspan="14">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total . " - Vago: " . $l . " - Marcado: " . $p; ?>
                         </th>
@@ -334,6 +337,11 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<style>
+    .vermelho{
+        color: red;
+    }
+</style>
 <script type="text/javascript">
 
     $(document).ready(function () {

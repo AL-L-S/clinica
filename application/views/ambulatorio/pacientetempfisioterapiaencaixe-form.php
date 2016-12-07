@@ -143,8 +143,8 @@
             select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
-                $("#telefone").val(ui.item.itens);
-                $("#nascimento").val(ui.item.valor);
+                $("#txtTelefone").val(ui.item.itens);
+                $("#txtNascimento").val(ui.item.valor);
                 return false;
             }
         });

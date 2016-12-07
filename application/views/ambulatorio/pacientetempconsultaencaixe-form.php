@@ -51,10 +51,6 @@
                 <input type="text" id="txtEnd" class="texto06" name="txtEnd"  />
             </div>
             <div>
-                <label>End.</label>
-                <input type="text" id="txtEnd" class="texto06" name="txtEnd"  />
-            </div>
-            <div>
                 <label>Telefone</label>
                 <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone"/>
             </div>

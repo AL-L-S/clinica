@@ -91,6 +91,7 @@
                         <th class="tabela_header" width="70px;">Data</th>
                         <th class="tabela_header" width="50px;">Dia</th>
                         <th class="tabela_header" width="70px;">Agenda</th>
+                        <th class="tabela_header" width="70px;">    </th>
                         <th class="tabela_header" width="150px;">Sala</th>
                         <th class="tabela_header" width="150px;">Convenio</th>
                         <th class="tabela_header">Telefone</th>
@@ -211,6 +212,9 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><? if( isset($item->encaixe) ){
+                                    echo '<span class="vermelho">Encaixe</span>';
+                                } ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
@@ -288,6 +292,11 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<style>
+    .vermelho{
+        color: red;
+    }
+</style>
 <script type="text/javascript">
     $(document).ready(function () {
 
