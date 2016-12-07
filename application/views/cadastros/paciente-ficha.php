@@ -3,12 +3,12 @@
         <fieldset>
             <legend>Dados do Paciente</legend>
             <div>
-                <label>Nome</label>                      
+                <label>Nome*</label>                      
                 <input type ="hidden" name ="paciente_id"  value ="<?= @$obj->_paciente_id; ?>" id ="txtPacienteId">
                 <input type="text" id="txtNome" name="nome" class="texto10"  value="<?= @$obj->_nome; ?>" />
             </div>
             <div>
-                <label>Nascimento</label>
+                <label>Nascimento*</label>
                 <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" />
             </div>
 
@@ -147,13 +147,13 @@
 
 
             <div>
-                <label>Telefone</label>
+                <label>Telefone 1*</label>
 
 
                 <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="(99) 9999-9999" value="<?= @$obj->_telefone; ?>" />
             </div>
             <div>
-                <label>Celular</label>
+                <label>Telefone 2</label>
                 <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" value="<?= @$obj->_celular; ?>" />
             </div>
             <div>
