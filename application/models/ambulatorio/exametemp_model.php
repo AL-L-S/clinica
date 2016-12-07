@@ -1445,7 +1445,9 @@ class exametemp_model extends Model {
             $agrupador = 0;
             if ($_POST['horarios'] != "") {
 
-                $data_ficha = $_POST['data_ficha'];
+                $data = str_replace("/", "-", $_POST['data_ficha']);
+                $data_ficha = date("Y-m-d", strtotime($data));
+
                 for ($i = 1; $i <= $_POST['qtde']; $i++) {
                     if ($i > 1) {
                         $data_ficha = date("Y-m-d", strtotime("+1 week", strtotime($data_ficha)));
@@ -1482,7 +1484,7 @@ class exametemp_model extends Model {
                     $this->db->set('fim', $_POST['horarios']);
                     $this->db->set('inicio', $_POST['horarios']);
                     $this->db->set('data_fim', $data_ficha);
-                    $this->db->set('data', $_POST['data_ficha']);
+                    $this->db->set('data', $data_ficha);
                     $this->db->set('data_atualizacao', $horario);
                     $this->db->set('operador_atualizacao', $operador_id);
                     $this->db->set('data_cadastro', $horario);
