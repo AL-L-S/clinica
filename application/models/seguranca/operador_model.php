@@ -75,7 +75,7 @@ class Operador_model extends BaseModel {
         $this->db->select('operador_id, nome, conselho');
         $this->db->from('tb_operador');
         $this->db->where('medico', 'true');
-        
+
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 // $this->db->like('tb_operador.nome', $args['nome'], 'left');
@@ -307,7 +307,67 @@ class Operador_model extends BaseModel {
         $return = $this->db->get('tb_cbo');
         return $return->result();
     }
-    
+
+    function listarempresas() {
+        $this->db->select('empresa_id,
+                            nome');
+        $this->db->from('tb_empresa');
+
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
+    function listarempresasoperador($operador) {
+        $this->db->select('oe.operador_empresa_id,
+                            oe.empresa_id,
+                            oe.operador_id,
+                            e.nome');
+        $this->db->from('tb_operador_empresas oe');
+        $this->db->join('tb_empresa e', 'e.empresa_id = oe.empresa_id', 'left');
+        $this->db->where('operador_id', $operador);
+        $this->db->where('oe.ativo', 't');
+        $this->db->where('e.ativo', 't');
+
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
+    function gravarassociarempresas() {
+        try {
+            $this->db->set('operador_id', $_POST['txtoperador_id']);
+            $this->db->set('empresa_id', $_POST['empresa_id']);
+            $this->db->insert('tb_operador_empresas');
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+
+    function excluirassociarempresas($operador_empresa_id) {
+        try {
+            $this->db->set('ativo', 'f');
+            $this->db->where('operador_empresa_id', $operador_empresa_id);
+            $this->db->update('tb_operador_empresas');
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+
     function listarPerfil() {
         $this->db->select('perfil_id,
                                nome,

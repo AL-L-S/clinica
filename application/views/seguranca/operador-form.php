@@ -7,7 +7,7 @@
 
     <h3 class="singular"><a href="#">Cadastro de Operador</a></h3>
     <div>
-        <form name="form_operador" id="form_operador" action="<?= base_url() ?>seguranca/operador/gravar" method="post">
+        <form name="form_operador" id="form_operador" action="<?= base_url() ?>seguranca/operador/gravar" method="post" style="margin-bottom: 50px;">
             <fieldset>
                 <legend>Dados do Profissional</legend>
                 <div>
@@ -161,20 +161,28 @@
 
                     <select name="txtPerfil" id="txtPerfil" class="size4">
                         <option value="">Selecione</option>
-                        <? foreach ($listarPerfil as $item) :
-                            if ($this->session->userdata('perfil_id') == 1) { ?>
-                                    <option value="<?= $item->perfil_id; ?>"<?
-                                    if (@$obj->_perfil_id == $item->perfil_id):echo 'selected';
-                                    endif;?>>
+                        <?
+                        foreach ($listarPerfil as $item) :
+                            if ($this->session->userdata('perfil_id') == 1) {
+                                ?>
+                                <option value="<?= $item->perfil_id; ?>"<?
+                                if (@$obj->_perfil_id == $item->perfil_id):echo 'selected';
+                                endif;
+                                ?>>
                                     <?= $item->nome; ?></option>
-                            <?} else {
-                                if( !($item->perfil_id == 1) ){ ?>
+                                <?
+                            } else {
+                                if (!($item->perfil_id == 1)) {
+                                    ?>
                                     <option value="<?= $item->perfil_id; ?>"<?
                                     if (@$obj->_perfil_id == $item->perfil_id):echo 'selected';
                                     endif;
                                     ?>><?= $item->nome; ?></option>
-                            <?}}?>
-                        <? endforeach; ?>
+                                            <?
+                                        }
+                                    }
+                                    ?>
+                                <? endforeach; ?>
                     </select>
                 </div>
 
@@ -183,11 +191,11 @@
                 <legend>Financeiro</legend>
                 <div>
                     <label>Criar Credor</label>
-                <input type="checkbox" name="criarcredor"/></div>
-                
+                    <input type="checkbox" name="criarcredor"/></div>
+
                 <div>
 
-                        
+
 
                     <label>Credor / Devedor</label>
 
@@ -274,7 +282,6 @@
                     <input type="text" id="valor_base" class="texto02" name="valor_base" alt="decimal" value="<?= @$obj->_valor_base; ?>" />
                 </div>
             </fieldset>
-
             <fieldset style="dislpay:block">
 
                 <button type="submit" name="btnEnviar">Enviar</button>
@@ -289,20 +296,20 @@
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-                        $('#btnVoltar').click(function() {
+                        $('#btnVoltar').click(function () {
                             $(location).attr('href', '<?= base_url(); ?>sca/operador');
                         });
 
 
-                        $(function() {
+                        $(function () {
                             $("#txtCidade").autocomplete({
                                 source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
                                 minLength: 3,
-                                focus: function(event, ui) {
+                                focus: function (event, ui) {
                                     $("#txtCidade").val(ui.item.label);
                                     return false;
                                 },
-                                select: function(event, ui) {
+                                select: function (event, ui) {
                                     $("#txtCidade").val(ui.item.value);
                                     $("#txtCidadeID").val(ui.item.id);
                                     return false;
@@ -310,15 +317,15 @@
                             });
                         });
 
-                        $(function() {
+                        $(function () {
                             $("#txtcbo").autocomplete({
                                 source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
                                 minLength: 3,
-                                focus: function(event, ui) {
+                                focus: function (event, ui) {
                                     $("#txtcbo").val(ui.item.label);
                                     return false;
                                 },
-                                select: function(event, ui) {
+                                select: function (event, ui) {
                                     $("#txtcbo").val(ui.item.value);
                                     $("#txtcboID").val(ui.item.id);
                                     return false;
@@ -326,7 +333,7 @@
                             });
                         });
 
-                        $(document).ready(function() {
+                        $(document).ready(function () {
                             jQuery('#form_operador').validate({
                                 rules: {
                                     nome: {
