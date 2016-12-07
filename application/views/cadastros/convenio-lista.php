@@ -59,7 +59,8 @@
                                     </div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>cadastros/convenio/excluir/<?= $item->convenio_id ?>">
+                                        <a onclick="javascript: return confirm('Deseja realmente excluir o convenio?\n\nObs: Irá excluir também os procedimentos associados ao convenio  ');" href="<?= base_url() ?>cadastros/convenio/excluir/<?= $item->convenio_id ?>">
+                                            
                                             Excluir
                                         </a>
                                     </div>

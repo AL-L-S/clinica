@@ -10,7 +10,8 @@
         <h3 class="singular"><a href="#">Multifuncao Especialidade Recep&ccedil;&atilde;o</a></h3>
         <div>
             <?
-            $medico = $this->exame->listarespecialidade();
+            $especialidade = $this->exame->listarespecialidade();
+            $medicos = $this->operador_m->listarmedicos();
             ?>
             <table>
                 <thead>
@@ -27,7 +28,7 @@
                         <th class="tabela_title">
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
-                                <? foreach ($medico as $value) : ?>
+                                <? foreach ($especialidade as $value) : ?>
                                     <option value="<?= $value->descricao; ?>" <?
                                     if (@$_GET['sala'] == $value->descricao):echo 'selected';
                                     endif;
@@ -35,11 +36,17 @@
                                         <? endforeach; ?>
                             </select>
                         </th>
-                      
+
 
                         <th class="tabela_title">
                             <select name="medico" id="medico" class="size1">
                                 <option value=""> </option>
+                                <? foreach ($medicos as $value) : ?>
+                                    <option value="<?= $value->operador_id; ?>" <?
+                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
+                                        <? endforeach; ?>
 
                             </select>
                         </th>
@@ -193,12 +200,12 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15) ;?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                width=500,height=230');">=><?= $item->observacoes; ?></td>
-                                                                            <? if ($item->paciente_id != "") { ?>
+                        width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                    <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
                                             </a></div>
@@ -272,11 +279,11 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
     $(document).ready(function () {
-        
-        
+
+
         var txtcbo = $("#txtcbo");
-        txtcbo.focusout( function(){
-   
+        txtcbo.focusout(function () {
+
         });
 
         $(function () {
@@ -296,32 +303,32 @@
         });
 
 
-       $(function () {
+        $(function () {
             $('#especialidade').change(function () {
-                 
+
                 if ($(this).val()) {
-  
+
                     especialidade_medico = txtcbo.val();
 //                     alert(teste_parada);
                     $('.carregando').show();
 //                     alert(teste_parada);
-                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade' , {txtcbo: $(this).val(), ajax: true}, function (j) {
+                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
                         options = '<option value=""></option>';
                         console.log(j);
-                        
-                        for (var c = 0; c < j.length; c++) {
-                          
-                            
-                            if (j[0].operador_id != undefined){
-                       options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
 
-                        }
+                        for (var c = 0; c < j.length; c++) {
+
+
+                            if (j[0].operador_id != undefined) {
+                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+
+                            }
                         }
                         $('#medico').html(options).show();
                         $('.carregando').hide();
 
-                          
-                        
+
+
                     });
                 } else {
                     $('#medico').html('<option value="">Selecione</option>');

@@ -15,7 +15,8 @@
                 <fieldset>
                     <legend>Dados</legend>
                     <table> 
-                        <tr><td width="400px;">Paciente:<?= @$obj->_nome ?></td>
+                        <tr><td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="100" /></td>
+                            <td width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <td width="400px;">Exame: <?= @$obj->_procedimento ?></td>
                             <td>Solicitante: <?= @$obj->_solicitante ?></td>
                         </tr>
