@@ -1053,3 +1053,14 @@ CREATE TABLE ponto.tb_agrupador_fisioterapia_temp
 
 ALTER TABLE ponto.tb_horarioagenda ADD COLUMN empresa_id integer;
 ALTER TABLE ponto.tb_horarioagenda ADD COLUMN observacoes character varying(1000);
+
+
+atualiza 07/12/16
+
+CREATE TABLE ponto.tb_operador_empresas
+(
+  operador_empresa_id serial NOT NULL,
+  operador_id integer,
+  empresa_id integer,
+  CONSTRAINT tb_operador_empresas_pkey PRIMARY KEY (operador_empresa_id )
+)
