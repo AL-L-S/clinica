@@ -1062,5 +1062,6 @@ CREATE TABLE ponto.tb_operador_empresas
   operador_empresa_id serial NOT NULL,
   operador_id integer,
   empresa_id integer,
+  ativo boolean NOT NULL DEFAULT true,
   CONSTRAINT tb_operador_empresas_pkey PRIMARY KEY (operador_empresa_id )
 )
