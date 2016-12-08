@@ -11,13 +11,17 @@ class login_model extends Model {
         $this->db->select(' o.operador_id,
                                 o.perfil_id,
                                 p.nome as perfil,
-                                a.modulo_id'
+                                a.modulo_id,
+                                oe.operador_empresa_id'
         );
         $this->db->from('tb_operador o');
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
         $this->db->join('tb_acesso a', 'a.perfil_id = o.perfil_id', 'left');
+        $this->db->join('tb_operador_empresas oe', 'oe.operador_id = o.operador_id', 'left');
         $this->db->where('o.usuario', $usuario);
         $this->db->where('o.senha', md5($senha));
+        $this->db->where('oe.empresa_id', $empresa);
+        $this->db->where('oe.ativo = true');
         $this->db->where('o.ativo = true');
         $this->db->where('p.ativo = true');
         $return = $this->db->get()->result();

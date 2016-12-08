@@ -10,14 +10,17 @@
         <h3 class="singular"><a href="#">Multifuncao Especialidade Recep&ccedil;&atilde;o</a></h3>
         <div>
             <?
-            $especialidade = $this->exame->listarespecialidade();
             $medicos = $this->operador_m->listarmedicos();
+            $especialidade = $this->exame->listarespecialidade();
+            $empresas = $this->exame->listarempresas();
+            $empresa_logada = $this->session->userdata('empresa_id');
             ?>
             <table>
                 <thead>
                 <form method="get" action="<?= base_url() ?>ambulatorio/exame/listarmultifuncaofisioterapia">
 
                     <tr>
+                        <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medicos</th>
                         <th class="tabela_title">SITUA&Ccedil;&Atilde;O</th>
@@ -25,6 +28,21 @@
                         <th colspan="2" class="tabela_title">Nome</th>
                     </tr>
                     <tr>
+                        <th class="tabela_title">
+                            <select name="empresa" id="empresa" class="size1">
+                                <option value=""></option>
+                                <? foreach ($empresas as $value) : ?>
+                                    <option value="<?= $value->empresa_id; ?>" <?
+                                    if ((isset($_GET['empresa']) || @$_GET['empresa'] != '') && @$_GET['empresa'] == $value->empresa_id) {
+                                        echo 'selected';
+                                    } elseif ($empresa_logada == $value->empresa_id) {
+                                        echo 'selected';
+                                    };
+                                    ?>><?php echo $value->nome; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+
+                        </th>
                         <th class="tabela_title">
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
@@ -42,11 +60,16 @@
                             <select name="medico" id="medico" class="size1">
                                 <option value=""> </option>
                                 <? foreach ($medicos as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>" <?
+                                <option value="<?= $value->operador_id; ?>"<?
                                     if (@$_GET['medico'] == $value->operador_id):echo 'selected';
                                     endif;
-                                    ?>><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
+                                    ?>>
+                                    
+                                    <?php echo $value->nome; ?>
+                                
+                                    
+                                </option>
+                            <? endforeach; ?>
 
                             </select>
                         </th>
@@ -80,6 +103,7 @@
                         <th class="tabela_header" width="70px;">Data</th>
                         <th class="tabela_header" width="50px;">Dia</th>
                         <th class="tabela_header" width="70px;">Agenda</th>
+                        <th class="tabela_header" width="70px;">    </th>
                         <th class="tabela_header" width="150px;">Sala</th>
                         <th class="tabela_header" width="150px;">Convenio</th>
                         <th class="tabela_header">Telefone</th>
@@ -200,11 +224,14 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><? if( isset($item->encaixe) ){
+                                    echo '<span class="vermelho">Encaixe</span>';
+                                } ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                        width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                width=500,height=230');">=><?= $item->observacoes; ?></td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -277,6 +304,11 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<style>
+    .vermelho{
+        color: red;
+    }
+</style>
 <script type="text/javascript">
     $(document).ready(function () {
 

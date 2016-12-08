@@ -902,7 +902,7 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN operador_alteradata integer;
 
 update ponto.tb_saldo
 set data = to_date(to_char(data_cadastro, 'YYYY/MM/DD'), 'YYYY/MM/DD')
-where data is null
+where data is null;
 
 -- atualiza 21/11/16
 
@@ -1039,3 +1039,31 @@ ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN autorizado boolean DEFAULT 
 -- Valor da Nota Fiscal 
 
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN valor_guia numeric(10,2);
+
+
+-- atualiza 06/12/16
+
+CREATE TABLE ponto.tb_agrupador_fisioterapia_temp
+(
+  agrupador_fisioterapia_temp_id serial NOT NULL,
+  qtde_sessoes integer,
+  ativo boolean NOT NULL DEFAULT true,
+  CONSTRAINT agrupador_fisioterapia_temp_id_pkey PRIMARY KEY (agrupador_fisioterapia_temp_id )
+);
+
+ALTER TABLE ponto.tb_horarioagenda ADD COLUMN empresa_id integer;
+ALTER TABLE ponto.tb_horarioagenda ADD COLUMN observacoes character varying(1000);
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN encaixe boolean;
+
+
+atualiza 07/12/16
+
+CREATE TABLE ponto.tb_operador_empresas
+(
+  operador_empresa_id serial NOT NULL,
+  operador_id integer,
+  empresa_id integer,
+  ativo boolean NOT NULL DEFAULT true,
+  CONSTRAINT tb_operador_empresas_pkey PRIMARY KEY (operador_empresa_id )
+)

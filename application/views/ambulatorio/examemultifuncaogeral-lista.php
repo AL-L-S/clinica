@@ -24,15 +24,18 @@
         <h3 class="singular"><a href="#">Multifuncao Geral Recep&ccedil;&atilde;o</a></h3>
         <div>
             <?
+            $medicos = $this->operador_m->listarmedicos();
             $salas = $this->exame->listartodassalas();
             $especialidade = $this->exame->listarespecialidade();
-            $medicos = $this->operador_m->listarmedicos();
+            $empresas = $this->exame->listarempresas();
+            $empresa_logada = $this->session->userdata('empresa_id');
             ?>
             <table>
                 <thead>
                 <form method="get" action="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">
 
                     <tr>
+                        <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
                         <th class="tabela_title">Salas</th>
@@ -43,6 +46,21 @@
                         <th colspan="2" class="tabela_title">Dt. Nascimento</th>
                     </tr>
                     <tr>
+                        <th class="tabela_title">
+                            <select name="empresa" id="empresa" class="size1">
+                                <option value=""></option>
+                                <? foreach ($empresas as $value) : ?>
+                                    <option value="<?= $value->empresa_id; ?>" <?
+                                    if ((isset($_GET['empresa']) || @$_GET['empresa'] != '') && @$_GET['empresa'] == $value->empresa_id) {
+                                        echo 'selected';
+                                    } elseif ($empresa_logada == $value->empresa_id) {
+                                        echo 'selected';
+                                    };
+                                    ?>><?php echo $value->nome; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+
+                        </th>
                         <th class="tabela_title">
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
@@ -60,11 +78,16 @@
                             <select name="medico" id="medico" class="size1">
                                 <option value=""> </option>
                                 <? foreach ($medicos as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>" <?
+                                <option value="<?= $value->operador_id; ?>"<?
                                     if (@$_GET['medico'] == $value->operador_id):echo 'selected';
                                     endif;
-                                    ?>><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
+                                    ?>>
+                                    
+                                    <?php echo $value->nome; ?>
+                                
+                                    
+                                </option>
+                            <? endforeach; ?>
 
                             </select>
                         </th>
@@ -236,19 +259,22 @@
                                     ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="green"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="green"><b><?= $item->paciente; ?></b></td>
-                                <? }
+                                <?
+                                }
 
                                 if ($verifica == 3) {
                                     ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $item->paciente; ?></b></td>
-                                <? }
+                                <?
+                                }
 
                                 if ($verifica == 4) {
                                     ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->paciente; ?></b></td>
-                                <? }
+                                <?
+                                }
 
                                 if ($verifica == 5) {
                                     ?>
@@ -303,7 +329,7 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
 
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
         <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar

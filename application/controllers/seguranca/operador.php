@@ -33,7 +33,26 @@ class Operador extends BaseController {
         $data['conta'] = $this->forma->listarforma();
         $data['tipo'] = $this->tipo->listartipo();
         $data['listarPerfil'] = $this->operador_m->listarPerfil();
+//        $data['listarempresas'] = $this->operador_m->listarempresas();
         $this->loadView('seguranca/operador-form', $data);
+    }
+
+    function associarempresas($operador_id) {
+        $data['operador'] = $this->operador_m->listarCada($operador_id);
+        $data['empresa'] = $this->operador_m->listarempresas();
+        $data['empresas'] = $this->operador_m->listarempresasoperador($operador_id);
+        $this->loadView('seguranca/operadorempresa-form', $data);
+    }
+
+    function gravarassociarempresas() {
+        $this->operador_m->gravarassociarempresas();
+        $operador_id = $_POST['txtoperador_id'];
+        redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
+    }
+
+    function excluirassociarempresas($operador_empresa_id , $operador_id) {
+        $this->operador_m->excluirassociarempresas($operador_empresa_id);
+        redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
     }
 
     function novorecepcao() {
@@ -91,7 +110,7 @@ class Operador extends BaseController {
 
     function operadorsetor($limite = 10) {
         $data["limite_paginacao"] = $limite;
-        $this->loadView('estoque/operador-lista',  $data);
+        $this->loadView('estoque/operador-lista', $data);
     }
 
     function gravar() {
@@ -107,7 +126,7 @@ class Operador extends BaseController {
 //        header("Location: base_url() . seguranca/operador");
         redirect(base_url() . "seguranca/operador", $data);
     }
-    
+
     function operadorconvenio($operador_id) {
 
         $data['operador'] = $this->operador_m->listarCada($operador_id);
@@ -115,7 +134,7 @@ class Operador extends BaseController {
         $data['convenios'] = $this->operador_m->listarconveniooperador($operador_id);
         $this->loadView('seguranca/operadorconvenio-form', $data);
     }
-    
+
     function operadorconvenioprocedimento($convenio_id, $operador_id) {
 
         $data['operador'] = $this->operador_m->listarCada($operador_id);
@@ -123,30 +142,30 @@ class Operador extends BaseController {
         $data['procedimentos'] = $this->operador_m->listarprocedimentoconveniooperador($operador_id);
         $this->loadView('seguranca/operadorconvenioprocedimento-form', $data);
     }
-    
+
     function gravaroperadorconvenio() {
         $operador_id = $_POST['txtoperador_id'];
         $this->operador_m->gravaroperadorconvenio();
         redirect(base_url() . "seguranca/operador/operadorconvenio/$operador_id");
     }
-    
+
     function gravaroperadorconvenioprocedimento() {
         $operador_id = $_POST['txtoperador_id'];
         $convenio_id = $_POST['txtconvenio_id'];
         $this->operador_m->gravaroperadorconvenioprocedimento();
         redirect(base_url() . "seguranca/operador/operadorconvenioprocedimento/$convenio_id/$operador_id");
     }
-    
+
     function excluiroperadorconvenio($ambulatorio_convenio_operador_id, $operador_id) {
         $this->operador_m->excluiroperadorconvenio($ambulatorio_convenio_operador_id);
         $this->operadorconvenio($operador_id);
     }
-    
+
     function excluiroperadorconvenioprocedimento($convenio_operador_procedimento_id, $convenio_id, $operador_id) {
         $this->operador_m->excluiroperadorconvenioprocedimento($convenio_operador_procedimento_id);
         $this->operadorconvenioprocedimento($convenio_id, $operador_id);
     }
-    
+
     function gravarrecepcao() {
         if ($this->operador_m->gravarrecepcao()) {
             $data['mensagem'] = 'Operador cadastrado com sucesso.';

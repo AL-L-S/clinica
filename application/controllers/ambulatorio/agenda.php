@@ -206,6 +206,7 @@ class Agenda extends BaseController {
 
     function novohorarioagenda($agenda_id) {
         $data['agenda_id'] = $agenda_id;
+        $data['empresas'] = $this->agenda->listarempresa();
         $this->loadView('ambulatorio/horarioagenda-form', $data);
     }
 

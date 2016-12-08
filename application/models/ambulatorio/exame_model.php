@@ -153,6 +153,15 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarempresas() {
+        $this->db->select('empresa_id,
+                               nome');
+        $this->db->from('tb_empresa');
+        $this->db->where('ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarsalas() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,
@@ -196,12 +205,16 @@ class exame_model extends Model {
     }
 
     function listarsalaagenda($agenda_exames_id) {
-        $this->db->select('agenda_exames_nome_id, tipo');
-        $this->db->from('tb_agenda_exames');
+        $this->db->select('ae.agenda_exames_nome_id, ag.tipo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $return = $this->db->get();
         return $return->result();
     }
+
 
     function listartodassalas() {
         $empresa_id = $this->session->userdata('empresa_id');
@@ -723,6 +736,7 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
@@ -755,8 +769,14 @@ class exame_model extends Model {
         if ($contador == 0) {
             $this->db->where('ae.data >=', $data);
         }
-        $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.tipo', 'EXAME');
+
+        if (empty($args['empresa']) || $args['empresa'] == '') {
+            $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $args['empresa']);
+        }
+
 //        $this->db->limit(5);
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
@@ -952,7 +972,11 @@ class exame_model extends Model {
         if ($contador == 0) {
             $this->db->where('ae.data >=', $data);
         }
-        $this->db->where('ae.empresa_id', $empresa_id);
+        if (empty($args['empresa']) || $args['empresa'] == '') {
+            $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $args['empresa']);
+        }
 //        $this->db->limit(5);
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
@@ -1045,7 +1069,7 @@ class exame_model extends Model {
         $return = $this->db->count_all_results();
         return $return;
     }
-    
+
     function listarestatisticapacienteespecialidade($args = array()) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -1107,7 +1131,7 @@ class exame_model extends Model {
         $return = $this->db->count_all_results();
         return $return;
     }
-    
+
     function listarestatisticapacienteconsulta($args = array()) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -1231,7 +1255,6 @@ class exame_model extends Model {
         $return = $this->db->count_all_results();
         return $return;
     }
-    
 
     function listarestatisticasempacienteespecialidade($args = array()) {
         $data = date("Y-m-d");
@@ -1294,7 +1317,7 @@ class exame_model extends Model {
         $return = $this->db->count_all_results();
         return $return;
     }
-    
+
     function listarestatisticasempacienteconsulta($args = array()) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -1428,6 +1451,7 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
@@ -1462,7 +1486,11 @@ class exame_model extends Model {
             $this->db->where('ae.data >=', $data);
         }
 //        $this->db->where('ae.data >=', $data);
-        $this->db->where('ae.empresa_id', $empresa_id);
+        if (empty($args['empresa']) || $args['empresa'] == '') {
+            $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $args['empresa']);
+        }
         $this->db->where('ae.tipo', 'CONSULTA');
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
@@ -1820,6 +1848,7 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
@@ -1849,8 +1878,13 @@ class exame_model extends Model {
         $this->db->orderby('ae.inicio');
         $this->db->where('ae.data >=', $data);
         $this->db->where('numero_sessao', null);
-        $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.tipo', 'FISIOTERAPIA');
+
+        if (empty($args['empresa']) || $args['empresa'] == '') {
+            $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $args['empresa']);
+        }
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
 //        $this->db->where('ae.cancelada', 'false');
@@ -2383,7 +2417,7 @@ class exame_model extends Model {
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-            } 
+            }
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
@@ -4102,7 +4136,7 @@ class exame_model extends Model {
         }
     }
 
-    function gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id) {
+    function gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null) {
         try {
 
             /* inicia o mapeamento no banco */
@@ -4124,7 +4158,8 @@ class exame_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            $empresa_id = $this->session->userdata('empresa_id');
+//            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('observacoes', $obs);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('tipo', 'EXAME');
             $this->db->set('data_cadastro', $horario);

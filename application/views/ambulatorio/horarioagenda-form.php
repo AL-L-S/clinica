@@ -23,6 +23,7 @@
                         <th>Fim do intervalo</th>
                         <th>Tempo consulta</th>
                         <th>QTDE consulta</th>
+                        <th>Empresa</th>
                     </tr>
                     <tr>
                         <td>                
@@ -43,9 +44,29 @@
                         <td><input type="text"  id="txtFimintervalo" name="txtFimintervalo" alt="time" value="00:00" class="size1" /></td>
                         <td><input type="text"  id="txtTempoconsulta" name="txtTempoconsulta" class="size1" /></td>
                         <td><input type="text"  id="txtQtdeconsulta" name="txtQtdeconsulta" value="0" class="size1" /></td>
+                        <td>                
+                            <select name="empresa" class="size2" required>
+                                <option value="" ></option>
+                                <? foreach ($empresas as $row) : ?>
+                                    <option value="<?= $row->empresa_id ?>"
+                                    <?
+//                                    $empresa_id = $this->session->userdata('empresa_id');
+//                                    if ($empresa_id == $row->empresa_id): echo 'selected';
+//                                    endif;
+                                    ?>><?= $row->nome ?></option> 
+                                        <? endforeach; ?>
+                            </select>
+                        </td>
                     </tr>
                 </table>    
-
+                <br/><br/>
+                <table>
+                    <tr>
+                        <td>
+                            <textarea rows="2" cols="50" placeholder="obs..." value="" name="obs"></textarea>
+                        </td>
+                    </tr>
+                </table>
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>
@@ -57,28 +78,28 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $(function() {
-        $( "#data_ficha" ).datepicker({
+    $(function () {
+        $("#data_ficha").datepicker({
             autosize: true,
             changeYear: true,
             changeMonth: true,
-            monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
             buttonImage: '<?= base_url() ?>img/form/date.png',
             dateFormat: 'dd/mm/yy'
         });
     });
-    
-    $('#btnVoltar').click(function() {
+
+    $('#btnVoltar').click(function () {
         $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
     });
 
-    $(function() {
-        $( "#accordion" ).accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
-    $(document).ready(function(){
-        jQuery('#form_horarioagenda').validate( {
+    $(document).ready(function () {
+        jQuery('#form_horarioagenda').validate({
             rules: {
                 txtDia: {
                     required: true

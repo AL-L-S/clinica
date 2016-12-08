@@ -24,22 +24,24 @@ $agenda = $exame[0]->agenda;
             <td ><font size = -1>Idade: <?= $teste; ?>&nbsp; </font></td>
             <td width="280px"><font size = -1><center></center></font></td>
 <td width="30px">&nbsp;</td>
-<td ><font size = -1><u>CLINICA RADIOLOGICA</u></font></td>
+<td ><font size = -1><u>Clin.Dr Ronaldo Barreira</u></font></td>
 </tr>
 <tr>
     <td colspan="2" ><font size = -1><?= utf8_decode($exame[0]->convenio); ?>&nbsp;&nbsp; - &nbsp;&nbsp;<?= $exame[0]->guia_id?></font></td>
     <td ><font size = -1>SEXO: <?= $sexopaciente ?></font></td>
     <td><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1><u>DR RONALDO BARREIRA</u></font></td>
+<td ><font size = -1>Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b></td>
+
 </tr>
 <tr>
     <td colspan="2" ><font size = -1>DATA: <?= substr($exame[0]->data, 8, 2) . "/" . substr($exame[0]->data, 5, 2) . "/" . substr($exame[0]->data, 0, 4); ?> HORA: <?= substr($dataatualizacao, 10, 6); ?></font></td>
     <td ><font size = -1>FONE:<?= $paciente['0']->telefone; ?> </font></td>
     <td><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1></font></td>
+    <td ><b>clinicaronaldobarreira.com.br/</b></td>
 </tr>
+<tr>
 <tr>
     <td colspan="2" ><font size = -1>
         <?
