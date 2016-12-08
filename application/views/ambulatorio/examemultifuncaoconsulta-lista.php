@@ -10,7 +10,8 @@
         <h3 class="singular"><a href="#">Multifuncao Consulta Recep&ccedil;&atilde;o</a></h3>
         <div>
             <?
-            $medico = $this->exame->listarespecialidade();
+            $medicos = $this->operador_m->listarmedicos();
+            $especialidade = $this->exame->listarespecialidade();
             $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
             ?>
@@ -45,9 +46,9 @@
                         <th class="tabela_title">
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
-                                <? foreach ($medico as $value) : ?>
+                                <? foreach ($especialidade as $value) : ?>
                                     <option value="<?= $value->descricao; ?>" <?
-                                    if (@$_GET['sala'] == $value->descricao):echo 'selected';
+                                    if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->descricao; ?></option>
                                         <? endforeach; ?>
@@ -58,6 +59,17 @@
                         <th class="tabela_title">
                             <select name="medico" id="medico" class="size1">
                                 <option value=""> </option>
+                                <? foreach ($medicos as $value) : ?>
+                                <option value="<?= $value->operador_id; ?>"<?
+                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
+                                    endif;
+                                    ?>>
+                                    
+                                    <?php echo $value->nome; ?>
+                                
+                                    
+                                </option>
+                            <? endforeach; ?>
 
                             </select>
                         </th>
@@ -321,40 +333,16 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-                                    $(document).ready(function () {
-
-
-                                        var txtcbo = $("#txtcbo");
-                                        txtcbo.focusout(function () {
-
-                                        });
-
-                                        $(function () {
-                                            $("#txtcbo").autocomplete({
-                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionaismultifuncao",
-                                                minLength: 3,
-                                                focus: function (event, ui) {
-                                                    $("#txtcbo").val(ui.item.label);
-                                                    return false;
-                                                },
-                                                select: function (event, ui) {
-                                                    $("#txtcbo").val(ui.item.value);
-                                                    $("#txtcboID").val(ui.item.id);
-                                                    return false;
-                                                }
-                                            });
-                                        });
-
-
+$(document).ready(function () {
+//alert('teste_parada');
                                         $(function () {
                                             $('#especialidade').change(function () {
 
                                                 if ($(this).val()) {
 
-                                                    especialidade_medico = txtcbo.val();
-//                     alert(teste_parada);
+//                                                  alert('teste_parada');
                                                     $('.carregando').show();
-//                     alert(teste_parada);
+//                                                        alert('teste_parada');
                                                     $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
                                                         options = '<option value=""></option>';
                                                         console.log(j);
@@ -374,7 +362,27 @@
 
                                                     });
                                                 } else {
-                                                    $('#medico').html('<option value="">Selecione</option>');
+                                                    $('.carregando').show();
+//                                                        alert('teste_parada');
+                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        console.log(j);
+
+                                                        for (var c = 0; c < j.length; c++) {
+
+
+                                                            if (j[0].operador_id != undefined) {
+                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+
+                                                            }
+                                                        }
+                                                        $('#medico').html(options).show();
+                                                        $('.carregando').hide();
+
+
+
+                                                    });
+                                                    
                                                 }
                                             });
                                         });

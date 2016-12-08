@@ -21,7 +21,7 @@
                     <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>ambulatorio/guia/pesquisar/<?= $args['paciente'] ?>">Guias</a></div></td>
 
 
-                    
+
                     <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>cadastros/pacientes/anexarimagem/<?= $paciente_id ?>">Arquivos</a></div></td>
                 </tr>
                 <tr><td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>cadastros/pacientes/procedimentoautorizar/<?= $paciente_id ?>">Autorizar exame</a></div></td>
@@ -29,13 +29,13 @@
                     <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>cadastros/pacientes/procedimentoautorizarfisioterapia/<?= $paciente_id ?>">Autorizar Especialidade</a></div></td>
                     <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>cadastros/pacientes/procedimentoautorizaratendimento/<?= $paciente_id ?>">Autorizar Atendimento</a></div></td>
                     <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $paciente_id ?>">Consultas</a></div></td>
-                                                    <? if ($perfil_id == 1) { ?>
+                    <? if ($perfil_id == 1) { ?>
                         <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>ambulatorio/exametemp/unificar/<?= $paciente_id ?>">unificar</a></div></td>
                     <? } ?>
 
 
-                    
-                    
+
+
                 </tr>
                 <tr>
                     <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/acompanhamento/<?= $paciente_id ?>">Acompanhamento</a></div></td>
@@ -45,24 +45,23 @@
                     <td width="250px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exame/autorizarsessaofisioterapia/<?= $paciente_id ?>">Sessao Especialidade</a></div></td>
                     <td width="250px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/orcamento/<?= $paciente_id ?>">Or&ccedil;amento</a></div></td>
                     <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacientetemp/<?= $paciente_id ?>">Exames</a></div></td>
-                                                    <? if ($perfil_id == 1) { ?>
+                    <? if ($perfil_id == 1) { ?>
                         <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>ambulatorio/exametemp/excluirpaciente/<?= $paciente_id ?>">excluir</a></div></td>
                     <? } ?>
 <!--                    <td width="250px;"><div class="bt_link"><a href="<?= base_url() ?>emergencia/filaacolhimento/gravarsolicitacao/<?= $paciente_id ?>">Acolhimento</a></div></td>
-                    <td width="200px;"><div class="bt_link"><a href="<?= base_url() ?>cadastros/pacientes/carregar">Ficha</a></div></td>
-                    <td width="200px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/novosolicitacaointernacao/<?= $paciente_id ?>">Sol. Interna&ccedil;&atilde;o</a></div></td>
-                    <td width="200px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/novointernacao/<?= $paciente_id ?>">Internar</a></div></td></tr>-->
-                    <!--<td width="200px;"><div class="bt_link"><a href="<?= base_url() ?>cadastros/pacientes/carregar">Marcar consulta</a></div></td></tr>-->
-            </tr>
-            <?if ($internacao == 't'){?>
-                <tr>
-                    <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/novointernacao/<?= $paciente_id ?>">Internação</a></div></td>
+                <td width="200px;"><div class="bt_link"><a href="<?= base_url() ?>cadastros/pacientes/carregar">Ficha</a></div></td>
+                <td width="200px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/novosolicitacaointernacao/<?= $paciente_id ?>">Sol. Interna&ccedil;&atilde;o</a></div></td>
+                <td width="200px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/novointernacao/<?= $paciente_id ?>">Internar</a></div></td></tr>-->
+                <!--<td width="200px;"><div class="bt_link"><a href="<?= base_url() ?>cadastros/pacientes/carregar">Marcar consulta</a></div></td></tr>-->
+                </tr>
+                <? if ($internacao == 't') { ?>
+                    <tr>
+                        <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/novointernacao/<?= $paciente_id ?>">Internação</a></div></td>
 
-                    
-            </tr>
-            <?
-                
-            }?>
+
+                    </tr>
+                    <? }
+                ?>
             </table>            
         </div>
 
@@ -78,12 +77,14 @@
                 <div>
                     <label>Sexo</label>
                     <select name="sexo" id="txtSexo" class="size2">
-                        <option value="M" <? if ($paciente['0']->sexo == "M"):echo 'selected';
-                    endif;
-                    ?>>Masculino</option>
-                        <option value="F" <? if ($paciente['0']->sexo == "F"):echo 'selected';
-                                endif;
-                    ?>>Feminino</option>
+                        <option value="M" <?
+                if ($paciente['0']->sexo == "M"):echo 'selected';
+                endif;
+                ?>>Masculino</option>
+                        <option value="F" <?
+                        if ($paciente['0']->sexo == "F"):echo 'selected';
+                        endif;
+                        ?>>Feminino</option>
                     </select>
                 </div>
 
@@ -106,6 +107,13 @@
 
 
                     <input type="text"  name="nome_pai" id="txtNomePai" class="texto08" value="<?= $paciente['0']->nome_pai; ?>" readonly/>
+                </div>
+                
+                <div>
+                    <legend>Foto</legend>
+
+                    <!--            <div id="results"> A imagem capturada aparece aqui...</div>-->
+                    <img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" alt="" height="140" width="100"  />
                 </div>
                 <div>
                     <label>CNS</label>

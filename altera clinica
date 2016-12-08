@@ -1099,3 +1099,15 @@ CREATE TABLE ponto.tb_ambulatorio_receituario_medicamento_unidade
   ativo boolean DEFAULT true,
   CONSTRAINT tb_ambulatorio_receituario_medicamento_unidade_pkey PRIMARY KEY (ambulatorio_receituario_medicamento_unidade_id)
 );
+
+
+atualiza  08/12/16
+
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN cartao boolean;
+
+
+INSERT INTO ponto.tb_operador_empresas(
+             operador_id, empresa_id)
+SELECT o.operador_id, e.empresa_id
+FROM ponto.tb_operador o, ponto.tb_empresa e
+WHERE o.ativo = 't' and e.ativo = 't';

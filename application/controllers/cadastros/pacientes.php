@@ -92,7 +92,7 @@ class pacientes extends BaseController {
             $data = array('upload_data' => $this->upload->data());
         }
         $data['paciente_id'] = $paciente_id;
-        
+
         redirect(base_url() . "cadastros/pacientes/anexarimagem/$paciente_id");
 
 //        $this->anexarimagem($paciente_id);
@@ -111,7 +111,7 @@ class pacientes extends BaseController {
         $destino = "./uploadopm/paciente/$paciente_id/$nome";
         copy($origem, $destino);
         unlink($origem);
-        
+
         redirect(base_url() . "cadastros/pacientes/anexarimagem/$paciente_id");
 
 //        $this->anexarimagem($paciente_id);
@@ -276,6 +276,7 @@ class pacientes extends BaseController {
     }
 
     function gravar() {
+
         $contador = $this->paciente->contador();
 
         $_POST['nascimento'] = str_replace("/", "-", $_POST['nascimento']);
@@ -291,6 +292,13 @@ class pacientes extends BaseController {
                 $data['mensagem'] = 'Paciente gravado com sucesso';
             } else {
                 $data['mensagem'] = 'Erro ao gravar paciente';
+            }
+            // Encodando o raw da imagem em base64, transformando em jpg e salvando
+
+            if ($paciente_id != false && $_POST['mydata'] != '') {
+                $encoded_data = $_POST['mydata'];
+                $binary_data = base64_decode($encoded_data);
+                $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
             }
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
@@ -311,6 +319,15 @@ class pacientes extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "cadastros/pacientes");
         }
+
+        // Encodando o raw da imagem em base64, transformando em jpg e salvando
+
+        if ($paciente_id != false && $_POST['mydata'] != '') {
+            $encoded_data = $_POST['mydata'];
+            $binary_data = base64_decode($encoded_data);
+            $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
+        }
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
     }

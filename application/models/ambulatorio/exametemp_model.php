@@ -361,6 +361,71 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarespecialidadeanterior($pacientetemp_id) {
+        $data = date("Y-m-d");
+        $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.data,
+                            a.nome,
+                            a.data,
+                            a.agenda_exames_nome_id,
+                            es.nome as sala,
+                            a.medico_agenda,
+                            o.nome as medico,
+                            c.nome as convenio,
+                            a.medico_consulta_id,
+                            a.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            a.observacoes');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("a.tipo !=", 'CONSULTA');
+        $this->db->where("a.tipo !=", 'EXAME');
+        $this->db->where("a.confirmado", 'true');
+        $this->db->where("a.paciente_id", $pacientetemp_id);
+        $this->db->orderby("a.data desc");
+        $this->db->orderby("a.inicio desc");
+        $this->db->limit(5);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarexameanterior($pacientetemp_id) {
+        $data = date("Y-m-d");
+        $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.data,
+                            a.nome,
+                            a.data,
+                            a.agenda_exames_nome_id,
+                            es.nome as sala,
+                            a.medico_agenda,
+                            o.nome as medico,
+                            c.nome as convenio,
+                            a.medico_consulta_id,
+                            a.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            a.observacoes');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("a.tipo", 'EXAME');
+        $this->db->where("a.confirmado", 'true');
+        $this->db->where("a.paciente_id", $pacientetemp_id);
+        $this->db->orderby("a.data desc");
+        $this->db->orderby("a.inicio desc");
+        $this->db->limit(5);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprocedimentosanterior($pacientetemp_id) {
         $data = date("Y-m-d");
         $this->db->select('a.agenda_exames_id,
@@ -1183,12 +1248,13 @@ class exametemp_model extends Model {
                 $this->db->set('confirmado', 'f');
                 $this->db->set('situacao', 'OK');
                 $this->db->set('observacoes', $_POST['observacoes']);
-                
+
                 $data = date("Y-m-d");
                 $hora = date("H:i:s");
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
 
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                 $this->db->set('paciente_id', $paciente_id);
                 $this->db->set('data_inicio', $_POST['data_ficha']);
                 $this->db->set('fim', $_POST['horarios']);
@@ -1846,6 +1912,7 @@ class exametemp_model extends Model {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
                 $empresa_id = $this->session->userdata('empresa_id');
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'CONSULTA');
                 $this->db->set('ativo', 'f');

@@ -1205,6 +1205,18 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function medicoespecialidadetodos() {
+
+        if (isset($_GET['txtcbo'])) {
+            $result = $this->operador_m->listarmedicos($_GET['txtcbo']);
+        } else {
+            $result = $this->operador_m->listarmedicos();
+        }
+
+
+        echo json_encode($result);
+    }
+    
     function medicoespecialidade() {
 
         if (isset($_GET['txtcbo'])) {

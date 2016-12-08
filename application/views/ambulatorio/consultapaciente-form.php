@@ -40,6 +40,12 @@
                 </select>
             </div>
             <div>
+                <label>Procedimento</label>
+                <select  name="procedimento" id="procedimento" class="size1" >
+                    <option value="">Selecione</option>
+                </select>
+            </div>
+            <div>
                 <label>Observacoes</label>
 
 
@@ -94,11 +100,12 @@
 
 </fieldset>
 </div> <!-- Final da DIV content -->
-
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-    $(function() {
+    $(function () {
         $("#data_ficha").datepicker({
             autosize: true,
             changeYear: true,
@@ -110,12 +117,12 @@
         });
     });
 
-    $(function() {
-        $('#exame').change(function() {
+    $(function () {
+        $('#exame').change(function () {
             if ($(this).val()) {
                 $('#horarios').hide();
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorio', {exame: $(this).val(), teste: $("#data_ficha").val()}, function(j) {
+                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorio', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
                     var options = '<option value=""></option>';
                     for (var i = 0; i < j.length; i++) {
                         options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '-' + j[i].nome + '-' + j[i].medico_agenda + '</option>';
@@ -129,15 +136,33 @@
         });
     });
 
-    $(function() {
+    $(function () {
+        $('#convenio').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    }
+                    $('#procedimento').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#procedimento').html('<option value="">Selecione</option>');
+            }
+        });
+    });
+
+    $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
             minLength: 3,
-            focus: function(event, ui) {
+            focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
                 $("#telefone").val(ui.item.itens);
@@ -171,12 +196,12 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         jQuery('#form_exametemp').validate({
             rules: {
                 txtNome: {
