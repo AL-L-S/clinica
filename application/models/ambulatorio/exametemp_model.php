@@ -1254,6 +1254,7 @@ class exametemp_model extends Model {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
 
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                 $this->db->set('paciente_id', $paciente_id);
                 $this->db->set('data_inicio', $_POST['data_ficha']);
                 $this->db->set('fim', $_POST['horarios']);
@@ -1911,6 +1912,7 @@ class exametemp_model extends Model {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
                 $empresa_id = $this->session->userdata('empresa_id');
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'CONSULTA');
                 $this->db->set('ativo', 'f');
