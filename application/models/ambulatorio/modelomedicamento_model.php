@@ -15,6 +15,7 @@ class modelomedicamento_model extends Model {
     }
 
     function listar($args = array()) {
+//        DIE;
         $this->db->select('arm.ambulatorio_receituario_medicamento_id as medicamento_id,
                            arm.nome,
                            o.nome as medico,
