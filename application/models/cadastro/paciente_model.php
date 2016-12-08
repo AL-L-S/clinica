@@ -193,6 +193,7 @@ class paciente_model extends BaseModel {
 
         $this->db->select('convenio_id, nome as descricao');
         $this->db->from('tb_convenio');
+        $this->db->where('ativo', 't');
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();

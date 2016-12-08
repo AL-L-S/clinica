@@ -113,7 +113,7 @@
                     <legend>Foto</legend>
 
                     <!--            <div id="results"> A imagem capturada aparece aqui...</div>-->
-                    <img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" alt="" width="160" height="140" />
+                    <img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" alt="" height="140" width="100"  />
                 </div>
                 <div>
                     <label>CNS</label>

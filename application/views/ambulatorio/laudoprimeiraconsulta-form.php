@@ -25,6 +25,7 @@
                         <tr><td>Sexo: <?= @$obj->_sexo ?></td>
                             <td>Convenio:<?= @$obj->_convenio; ?></td>
                             <td></td>
+                            <td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg"  height="120" width="100" /></td>
                         </tr>
                     </table>
                 </fieldset>

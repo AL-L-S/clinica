@@ -50,10 +50,10 @@
                                                 <th class="tabela_title" ></th>
                                                 <th class="tabela_title" >Prontuario</th>
                                                 <th class="tabela_title" colspan="3">Nome / Telefone / Nome da Mae / CPF</th>
-                                                <th class="tabela_title" colspan="3">Dt. Nascimento</th>
+                                                <th class="tabela_title" colspan="2">Dt. Nascimento</th>
                                             </tr>
                                             <tr>
-                                                <th class="tabela_title" colspan="9">
+                                                <th class="tabela_title" colspan="8">
 
                                         <form method="get" action="<?php echo base_url() ?>cadastros/pacientes/pesquisar">
                                             <input type="text" name="prontuario" class="texto03" value="<?php echo @$_GET['prontuario']; ?>" />
@@ -65,7 +65,6 @@
                                         </tr>
                                         <tr>
                                             <th class="tabela_header">Prontuario</th>
-                                            <th class="tabela_header">Foto</th>
                                             <th class="tabela_header">Nome</th>
                                             <th class="tabela_header">Nome da Mãe</th>
                                             <th class="tabela_header" width="100px;">Nascimento</th>
@@ -97,7 +96,6 @@
                                                     ?>
                                                     <tr>
                                                         <td class="<?php echo $estilo_linha; ?>"><?php echo $item->paciente_id; ?></td>
-                                                        <td class="<?php echo $estilo_linha; ?>" width="25px;"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $item->paciente_id ?>.jpg" alt="" width="25" height="25" /></td>
                                                         <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome_mae; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><?php echo substr($item->nascimento, 8, 2) . '/' . substr($item->nascimento, 5, 2) . '/' . substr($item->nascimento, 0, 4); ?></td>
@@ -140,7 +138,7 @@
                                         ?>
                                         <tfoot>
                                             <tr>
-                                                <th class="tabela_footer" colspan="10">
+                                                <th class="tabela_footer" colspan="9">
                                                     <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                                                     Total de registros: <?php echo $total; ?>
                                                 </th>

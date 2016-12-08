@@ -16,10 +16,11 @@
                 <fieldset>
                     <legend>Dados</legend>
                     <table> 
-                        <tr><td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="100" /></td>
+                        <tr>
                             <td width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <td width="400px;">Exame: <?= @$obj->_procedimento ?></td>
                             <td>Solicitante: <?= @$obj->_solicitante ?></td>
+                            <td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="100" /></td>
                         </tr>
                         <tr><td>Idade: <?= $teste ?></td>
                             <td>Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>

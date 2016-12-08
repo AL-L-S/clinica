@@ -295,7 +295,7 @@ class pacientes extends BaseController {
             }
             // Encodando o raw da imagem em base64, transformando em jpg e salvando
 
-            if ($paciente_id != false) {
+            if ($paciente_id != false && $_POST['mydata'] != '') {
                 $encoded_data = $_POST['mydata'];
                 $binary_data = base64_decode($encoded_data);
                 $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
@@ -322,7 +322,7 @@ class pacientes extends BaseController {
 
         // Encodando o raw da imagem em base64, transformando em jpg e salvando
 
-        if ($paciente_id != false) {
+        if ($paciente_id != false && $_POST['mydata'] != '') {
             $encoded_data = $_POST['mydata'];
             $binary_data = base64_decode($encoded_data);
             $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
