@@ -31,7 +31,7 @@
                     </dt>
                     <dd>
                         <input type="text" name="temporeceber" class="texto02" id="temporeceber" value= "<?= @$obj->_tempo_receber; ?>" />
-                        <input type="checkbox" name="arrendondamento" id="arrendondamento" <?  if (@$obj->_fixar == 't'){?>checked <?} ?>  />Fixar
+                        <input type="checkbox" name="arrendondamento" id="arrendondamento" <? if (@$obj->_fixar == 't') { ?>checked <? } ?>  />Fixar
                     </dd>
                     <dt>
                         <label>N° Maximo de Parcelas</label>
@@ -72,6 +72,12 @@
                                 ?>><?= $value->razao_social ?></option>
                                     <? } ?>                            
                         </select>
+                    </dd>
+                    <dt>
+                        <label>Forma de Pagamento Cartão</label>
+                    </dt>
+                    <dd>
+                        <input type="checkbox" name="cartao" id="cartao" <? if (@$obj->_cartao == 't') { ?>checked <? } ?>  />
                     </dd>
                 </dl>    
                 <hr/>

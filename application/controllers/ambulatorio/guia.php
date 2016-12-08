@@ -714,12 +714,12 @@ class Guia extends BaseController {
                 redirect(base_url() . "ambulatorio/guia/novo/$paciente_id");
             }
         } else {
-            
-            if ($_POST["valor1"] == 'null'){
+
+            if ($_POST["valor1"] == 'null') {
                 $_POST["valor1"] = 0;
             }
-                
-            
+
+
             $medico_id = $_POST['crm1'];
             $paciente_id = $_POST['txtpaciente_id'];
             $resultadoguia = $this->guia->listarguia($paciente_id);
@@ -736,18 +736,16 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentosgeral() {
-        
+
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            if( isset($_POST['guia_id']) ){
+            if (isset($_POST['guia_id'])) {
                 $guia_id = $_POST['guia_id'];
                 redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$guia_id");
-            }
-            else {
+            } else {
                 redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id");
-
             }
         } else {
             $medico_id = $_POST['crm1'];
@@ -776,22 +774,21 @@ class Guia extends BaseController {
     function gravarorcamento() {
 
         $paciente_id = $_POST['txtpaciente_id'];
-        if($_POST['procedimento1'] == '' || $_POST['convenio1'] == '-1' || $_POST['qtde1'] == ''){
+        if ($_POST['procedimento1'] == '' || $_POST['convenio1'] == '-1' || $_POST['qtde1'] == '') {
             $data['mensagem'] = 'Informe o convenio, o procedimento e a quantidade.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id");
-        }
-        else {
+        } else {
             $resultadoorcamento = $this->guia->listarorcamento($paciente_id);
-    //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+            //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
             if ($resultadoorcamento == null) {
                 $ambulatorio_orcamento = $this->guia->gravarorcamento($paciente_id);
             } else {
                 $ambulatorio_orcamento = $resultadoorcamento['ambulatorio_orcamento_id'];
             }
-    //            $this->gerardicom($ambulatorio_guia);
+            //            $this->gerardicom($ambulatorio_guia);
             $this->guia->gravarorcamentoitem($ambulatorio_orcamento);
-    //        $this->novo($paciente_id, $ambulatorio_guia);
+            //        $this->novo($paciente_id, $ambulatorio_guia);
             redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id/$ambulatorio_orcamento");
         }
     }
@@ -1904,14 +1901,13 @@ class Guia extends BaseController {
     }
 
     function gerarelatorioaniversariantes() {
-        if( !($_POST["txtdata_inicio"] == "") ){
+        if (!($_POST["txtdata_inicio"] == "")) {
             $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
             $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
             $data['relatorio'] = $this->guia->relatorioaniversariantes();
             $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
-        }
-        else {
+        } else {
             $data['mensagem'] = 'Insira um mês válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
@@ -2297,6 +2293,8 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixacartao();
         $data['contador'] = $this->guia->relatoriocaixacontadorcartao();
+        $data['caixa'] = $this->caixa->listarsangriacaixa();
+        $data['formapagamento'] = $this->formapagamento->listarformacartao();
         $this->load->View('ambulatorio/impressaorelatoriocaixacartao', $data);
     }
 
