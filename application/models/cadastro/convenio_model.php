@@ -142,6 +142,12 @@ class Convenio_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('convenio_id', $convenio_id);
         $this->db->update('tb_convenio');
+        
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('convenio_id', $convenio_id);
+        $this->db->update('tb_procedimento_convenio');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;

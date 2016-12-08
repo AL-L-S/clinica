@@ -10,7 +10,8 @@
         <h3 class="singular"><a href="#">Multifuncao Consulta Recep&ccedil;&atilde;o</a></h3>
         <div>
             <?
-            $medico = $this->exame->listarespecialidade();
+            $medicos = $this->operador_m->listarmedicos();
+            $especialidade = $this->exame->listarespecialidade();
             $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
             ?>
@@ -45,7 +46,7 @@
                         <th class="tabela_title">
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
-                                <? foreach ($medico as $value) : ?>
+                                <? foreach ($especialidade as $value) : ?>
                                     <option value="<?= $value->descricao; ?>" <?
                                     if (@$_GET['sala'] == $value->descricao):echo 'selected';
                                     endif;
@@ -58,6 +59,17 @@
                         <th class="tabela_title">
                             <select name="medico" id="medico" class="size1">
                                 <option value=""> </option>
+                                <? foreach ($medicos as $value) : ?>
+                                <option value="<?= $value->operador_id; ?>"<?
+                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
+                                    endif;
+                                    ?>>
+                                    
+                                    <?php echo $value->nome; ?>
+                                
+                                    
+                                </option>
+                            <? endforeach; ?>
 
                             </select>
                         </th>

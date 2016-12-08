@@ -93,6 +93,7 @@
                     <th class="tabela_header">Data</th>
                     <th class="tabela_header">Hora</th>
                     <th class="tabela_header">M&eacute;dico</th>
+                    <th class="tabela_header">Tempo</th>
                     <th class="tabela_header">Observa&ccedil;&otilde;es</th>
                     <th class="tabela_header" colspan="2">&nbsp;</th>
                 </tr>
@@ -107,6 +108,23 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><? 
+                            $horarioteste = str_replace('-', '', date('Y-m-d') );
+                            $data         = str_replace('-', '', $item->data);
+                            
+                            if( (int)$data > (int)$horarioteste ){
+                                $data = date_create($item->data);
+                                $horario = date_create(date('Y-m-d'));
+                                $intervalo = date_diff($horario, $data);
+                                echo  $intervalo->format('%a dias');
+                            }
+                            else if ( (int)$data == (int)$horarioteste ){
+                                echo 'Hoje';
+                            }
+                            else {
+                                echo 'Ainda nao ocorreu';
+                            }
+                        ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
                         width=500,height=230');">=><?= $item->observacoes; ?></a></td>
 
