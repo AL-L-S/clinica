@@ -179,6 +179,7 @@ class Exametemp extends BaseController {
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['contador'] = $this->exametemp->contadorpaciente($pacientetemp_id);
         $data['exames'] = $this->exametemp->listaragendatotalpaciente($pacientetemp_id);
+        $data['examesanteriores'] = $this->exametemp->listarexameanterior($pacientetemp_id);
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/examepacientetemp-form', $data);
     }
@@ -210,7 +211,7 @@ class Exametemp extends BaseController {
         $data['medico'] = $this->exametemp->listarmedicoconsulta();
         $data['contador'] = $this->exametemp->contadorfisioterapiapaciente($pacientetemp_id);
         $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapia($pacientetemp_id);
-        $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($pacientetemp_id);
+        $data['consultasanteriores'] = $this->exametemp->listarespecialidadeanterior($pacientetemp_id);
         $data['consultaanteriorcontador'] = $this->exametemp->listarconsultaanteriorcontador($pacientetemp_id);
 
         //$this->carregarView($data, 'giah/servidor-form');
@@ -391,18 +392,15 @@ class Exametemp extends BaseController {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopaciente");
-        }
-        elseif (trim($_POST['txtNomeid']) == "") {
+        } elseif (trim($_POST['txtNomeid']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
-        }
-        elseif (trim($_POST['telefone']) == "") {
+        } elseif (trim($_POST['telefone']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
-        }
-        elseif (trim($_POST['convenio1']) == "-1") {
+        } elseif (trim($_POST['convenio1']) == "-1") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio seleionar um convenio.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
@@ -541,15 +539,14 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacientetempgeral() {
-        
+
         $pacientetemp_id = $_POST['txtpaciente_id'];
-        
-        if($_POST['txtNome'] == '' || $_POST['data_ficha'] == '' || $_POST['exame'] == '' || $_POST['convenio1'] == '' || $_POST['procedimento1'] == '' ||  $_POST['horarios'] == ''){
+
+        if ($_POST['txtNome'] == '' || $_POST['data_ficha'] == '' || $_POST['exame'] == '' || $_POST['convenio1'] == '' || $_POST['procedimento1'] == '' || $_POST['horarios'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
-        }
-        else {
+        } else {
             $this->exametemp->gravarpacienteexistentegeral($pacientetemp_id);
             $this->carregarpacientetempgeral($pacientetemp_id);
         }

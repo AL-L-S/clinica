@@ -1397,10 +1397,9 @@ class guia_model extends Model {
         $this->db->groupby('g.ambulatorio_guia_id');
         $this->db->groupby('p.nome');
         $this->db->orderby('p.nome');
-        
+
         $return = $this->db->get();
         return $return->result();
-         
     }
 
     function relatorioindicacaoconsolidado() {
@@ -1896,7 +1895,7 @@ class guia_model extends Model {
     function relatorioconvenioexamesatendidos2() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
-       $empresa_id = $this->session->userdata('empresa_id');
+        $empresa_id = $this->session->userdata('empresa_id');
         $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
         $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
         // EXAMES ATENDIDOS
@@ -1954,7 +1953,7 @@ class guia_model extends Model {
     function relatorioconvenioexamesnaoatendidos2() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
-       $empresa_id = $this->session->userdata('empresa_id');
+        $empresa_id = $this->session->userdata('empresa_id');
         $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
         $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
 
@@ -2225,7 +2224,7 @@ class guia_model extends Model {
     function relatorioconvenioconsultasatendidos2() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
-       $empresa_id = $this->session->userdata('empresa_id');
+        $empresa_id = $this->session->userdata('empresa_id');
         $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
         $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
 
@@ -2285,7 +2284,7 @@ class guia_model extends Model {
     function relatorioconvenioconsultasnaoatendidos2() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
-       $empresa_id = $this->session->userdata('empresa_id');
+        $empresa_id = $this->session->userdata('empresa_id');
         $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
         $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
 
@@ -3106,6 +3105,11 @@ class guia_model extends Model {
         $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
+
+        $this->db->where('f.cartao', 't');
+//        $this->db->orwhere('f2.cartao', 't');
+//        $this->db->orwhere('f3.cartao', 't');
+//        $this->db->orwhere('f4.cartao', 't');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.operador_autorizacao >', 0);
@@ -5145,13 +5149,13 @@ AND data <= '$data_fim'";
 
         $teste = $_POST['qtde'];
         $w = 0;
-        foreach ($forma_pagamento as $value) { 
+        foreach ($forma_pagamento as $value) {
             $classe = "CAIXA" . " " . $value->nome;
             $w++;
             $valor_total = (str_replace(".", "", $teste[$w]));
             $valor_total = (str_replace(",", ".", $valor_total));
             if ($valor_total != '0.00') {
-                
+
                 if (empty($value->nome) || empty($value->conta_id) || empty($value->credor_devedor) || empty($value->parcelas)) {
                     return 10;
                 }
