@@ -1057,7 +1057,7 @@ ALTER TABLE ponto.tb_horarioagenda ADD COLUMN observacoes character varying(1000
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN encaixe boolean;
 
 
-atualiza 07/12/16
+-- atualiza 07/12/16
 
 CREATE TABLE ponto.tb_operador_empresas
 (
@@ -1066,4 +1066,4 @@ CREATE TABLE ponto.tb_operador_empresas
   empresa_id integer,
   ativo boolean NOT NULL DEFAULT true,
   CONSTRAINT tb_operador_empresas_pkey PRIMARY KEY (operador_empresa_id )
-)
+);
