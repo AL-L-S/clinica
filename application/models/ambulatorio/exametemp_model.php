@@ -2909,6 +2909,20 @@ class exametemp_model extends Model {
         return $return->row_array();
     }
 
+    function listarautocompletemedicamentounidade($parametro = null) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('amu.ambulatorio_receituario_medicamento_unidade_id as unidade_id,
+                           amu.descricao');
+        $this->db->from('tb_ambulatorio_receituario_medicamento_unidade amu');
+        $this->db->where('ativo', 'true');
+        $this->db->orderby('descricao');
+        if ($parametro != null) {
+            $this->db->where('descricao ilike', "%" . $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarautocompletehorarios($parametro = null, $teste = null) {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('a.agenda_exames_id,
@@ -3268,6 +3282,25 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompletemedicamentolaudo($parametro = null) {
+        $this->db->select('ambulatorio_receituario_medicamento_id,
+                           nome,
+                           quantidade,
+                           unidade_id,
+                           u.descricao,
+                           posologia,
+                           texto');
+        $this->db->from('tb_ambulatorio_receituario_medicamento m');
+        $this->db->where('m.ativo', 'true');
+        $this->db->join('tb_ambulatorio_receituario_medicamento_unidade u', 'u.ambulatorio_receituario_medicamento_unidade_id = m.unidade_id', 'left');
+//        $this->db->orderby('nome');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', '%'.$parametro.'%');
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompletelinha($parametro = null) {
         $this->db->select('ambulatorio_modelo_linha_id,
                             nome,
@@ -3276,7 +3309,7 @@ class exametemp_model extends Model {
         $this->db->where('ativo', 'true');
         $this->db->orderby('nome');
         if ($parametro != null) {
-            $this->db->where('nome ilike', $parametro);
+            $this->db->where('nome ilike', '%'.$parametro.'%');
         }
         $return = $this->db->get();
         return $return->result();
