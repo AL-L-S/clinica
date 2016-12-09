@@ -74,6 +74,16 @@
                             <option value='NAO' >NAO</option>
                         </select>
                     </dd>
+                    
+                    <dt>
+                        <label>Situação</label>
+                    </dt>
+                    <dd>
+                        <select name="situacao" id="situacao" class="size1" >
+                            <option value='1'  selected="true">FINALIZADO</option>
+                            <option value='0' >ABERTO</option>
+                        </select>
+                    </dd>
                     <dt>
                         <label>Solicitante</label>
                     </dt>
