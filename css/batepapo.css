@@ -118,9 +118,10 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
     font: 16px Tahoma, arial;
     color: white;
     padding: 0 10px 0 10px;
+    font-weight: bold;
 } 
 
-.janela_chat .cabecalho_janela_chat .nome_chat{font-size: 16px; color: white;float: left; margin-top: 2px;}
+.janela_chat .cabecalho_janela_chat .nome_chat{font-size: 16px; color: white;float: left; margin-top: -2px; font-weight: bold;}
 
 .janela_chat .corpo_janela_chat{ float: left; width: 100%; }
 
