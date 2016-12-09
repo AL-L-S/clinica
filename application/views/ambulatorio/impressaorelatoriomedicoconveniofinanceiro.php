@@ -1,5 +1,5 @@
 <div class="content"> <!-- Inicio da DIV content -->
-
+    <meta charset="utf-8">
 
     <? if (count($empresa) > 0) { ?>
         <h4><?= $empresa[0]->razao_social; ?></h4>
