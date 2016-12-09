@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Exames</a></h3>
+        <h3 class="singular"><a href="#">Manter Atendimentos</a></h3>
         <div>
             <?
             $salas = $this->exame->listartodassalas();
