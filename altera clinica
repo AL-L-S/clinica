@@ -1066,7 +1066,39 @@ CREATE TABLE ponto.tb_operador_empresas
   empresa_id integer,
   ativo boolean NOT NULL DEFAULT true,
   CONSTRAINT tb_operador_empresas_pkey PRIMARY KEY (operador_empresa_id )
-)
+);
+
+
+-- atualiza 08/12/2016
+
+CREATE TABLE ponto.tb_ambulatorio_receituario_medicamento
+(
+  ambulatorio_receituario_medicamento_id serial NOT NULL,
+  nome character varying(200),
+  texto text,
+  medico_id integer,    
+  quantidade character varying(200),
+  unidade_id integer,
+  posologia text,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_receituario_medicamento_pkey PRIMARY KEY (ambulatorio_receituario_medicamento_id)
+);
+
+CREATE TABLE ponto.tb_ambulatorio_receituario_medicamento_unidade
+(
+  ambulatorio_receituario_medicamento_unidade_id serial NOT NULL,
+  descricao character varying(200),
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_receituario_medicamento_unidade_pkey PRIMARY KEY (ambulatorio_receituario_medicamento_unidade_id)
+);
 
 
 atualiza  08/12/16

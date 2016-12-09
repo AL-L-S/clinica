@@ -36,9 +36,21 @@
                     </table>
 
                 </fieldset>
-                <div class="bt_link_new">
-                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modeloreceitaespecial');" >
-                        M. Receituario Especial</a></div>
+                <table>
+                    <tr>
+                        <td>
+                        <div class="bt_link_new" style="width: 200px; margin: 5px">
+                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modeloreceitaespecial');" style="width: 200px; margin: 5px">
+                                M. Receituario Especial</a></div>
+                        </td>
+                        <td>
+                        <div class="bt_link_new" style="width: 200px; margin: 5px">
+                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modelomedicamento');" style="width: 250px; margin: 5px">
+                                                    Modelo Medicamento</a></div>
+                        </td>
+                    </tr>
+                </table>
+                
                 <div>
                     <div >
                         <div>
@@ -53,6 +65,10 @@
                                             <option value="<?php echo $item->ambulatorio_modelo_receita_especial_id; ?>" ><?php echo $item->nome; ?></option>
                                         <?php } ?>
                                     </select>
+                                    
+                                    
+                                    <label>Medicamento</label>
+                                    <input type="text" id="medicamento" class="texto02" name="medicamento"/>
 
                                 </div>
                                 <div>
@@ -215,6 +231,28 @@
                                                         });
                                                     } else {
                                                         $('#laudo').html('value=""');
+                                                    }
+                                                });
+                                            });
+                                            
+                                            $(function () {
+                                                $("#medicamento").autocomplete({
+                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicamentolaudo",
+                                                    minLength: 1,
+                                                    focus: function (event, ui) {
+                                                        $("#medicamento").val(ui.item.label);
+                                                        return false;
+                                                    },
+                                                    select: function (event, ui) {
+                                                        $("#medicamento").val(ui.item.value);
+                                                        tinyMCE.triggerSave(true, true);
+                                                        document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                                                        $('#laudo').val() + ui.item.id
+                                                        var ed = tinyMCE.get('laudo');
+                                                        ed.setContent($('#laudo').val());
+                                                        //$( "#laudo" ).val() + ui.item.id;
+                                                        document.getElementById("medicamento").value = ''
+                                                        return false;
                                                     }
                                                 });
                                             });
