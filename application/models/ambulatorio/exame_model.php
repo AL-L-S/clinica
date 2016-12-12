@@ -4176,7 +4176,7 @@ class exame_model extends Model {
         }
     }
 
-    function gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id) {
+    function gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id ,$observacoes, $empresa_id) {
         try {
 
             /* inicia o mapeamento no banco */
@@ -4196,8 +4196,8 @@ class exame_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            $empresa_id = $this->session->userdata('empresa_id');
             $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('observacoes', $observacoes);
             $this->db->set('tipo', 'CONSULTA');
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);

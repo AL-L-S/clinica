@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_title">
-                            <select name="empresa" id="empresa" class="size1">
+                            <select name="empresa" id="empresa" class="size2">
                                 <option value=""></option>
                                 <? foreach ($empresas as $value) : ?>
                                     <option value="<?= $value->empresa_id; ?>" <?
@@ -74,7 +74,7 @@
                             </select>
                         </th>
                         <th class="tabela_title">
-                            <select name="situacao" id="situacao" class="size2">
+                            <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
                                 <option value="LIVRE">VAGO</option>
                                 <option value="OK">OCUPADO</option>

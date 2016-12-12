@@ -23,6 +23,8 @@
                         <th class="tabela_header">Inicio intervalo</th>
                         <th class="tabela_header">Fim do intervalo</th>
                         <th class="tabela_header">Tempo consulta</th>
+                        <th class="tabela_header">Obs</th>
+                        <th class="tabela_header">Empresa</th>
                         <th class="tabela_header">&nbsp;</th>
                     </tr>
                 </thead>
@@ -40,6 +42,8 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->intervaloinicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->intervalofim; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->tempoconsulta; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
 
                            
 
