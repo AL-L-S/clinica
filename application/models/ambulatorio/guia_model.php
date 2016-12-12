@@ -2569,7 +2569,10 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('e.cancelada', 'false');
-        $this->db->where('al.situacao', 'FINALIZADO');
+        
+        if ($_POST['situacao'] != "0") {
+            $this->db->where('al.situacao', 'FINALIZADO');
+        }
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }
@@ -2624,7 +2627,11 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('e.cancelada', 'false');
-        $this->db->where('al.situacao', 'FINALIZADO');
+
+        if ($_POST['situacao'] != "0") {
+            $this->db->where('al.situacao', 'FINALIZADO');
+        }
+
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }

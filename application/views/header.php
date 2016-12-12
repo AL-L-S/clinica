@@ -78,7 +78,6 @@ function debug($object) {
                     dataType: "json",
                     success: function (retorno) {
                         jQuery.each(retorno, function (i, usr) {
-//                            console.log(usr);
                             var tags = null;
                             if (usr.operador_id != <? echo $operador_id ?> && usr.usuario != 0) {
                                 tags = "<li id='" + usr.operador_id + "'><div class='imgPerfil'></div>";
@@ -99,14 +98,14 @@ function debug($object) {
 
                 //atribui dinamicamente a posicao da janela na pagina
                 var numeroJanelas = Number(jQuery("#chats .janela_chat").length);
-                if (numeroJanelas < 3) {
+                if (numeroJanelas < 4) {
                     var posicaoJanela = (270 + 15) * numeroJanelas;
                     var estiloJanela = 'float:none; position: absolute; bottom:0; right:' + posicaoJanela + 'px';
 
                     //pega o id do operador origem e do operador destino
                     var splitOperadores = id.split(':');
                     var operadorDestino = Number(splitOperadores[1]);
-
+                    
                     //criando a janela de mensagem
                     var janela;
                     janela = "<div class='janela_chat' id='janela_" + operadorDestino + "' style='" + estiloJanela + "'>";
@@ -135,24 +134,6 @@ function debug($object) {
                     success: function (retorno) {
                         jQuery.each(retorno, function (i, msg) {
                             if (jQuery('#janela_' + msg.janela).length > 0) {
-
-                                if (msg.mensagem.length > 26) {
-                                    var texto = "";
-                                    var inicio = 0;
-                                    var fim = 25;
-                                    var br = "<br>";
-
-                                    for (var n = 0; n < msg.mensagem.length; n++) {
-                                        if (n == fim) {
-                                            texto += msg.mensagem.substring(inicio, fim);
-                                            texto += br;
-                                            inicio = fim;
-                                            fim += 25;
-                                        }
-                                    }
-
-                                    msg.mensagem = texto;
-                                }
 
                                 if (operadorOrigem == msg.id_origem) {
                                     jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
@@ -286,8 +267,8 @@ function debug($object) {
 <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalasespera">Salas de Espera</a></span></ul>
-                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamerealizando">Salas de Exames</a></span></ul>
-                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamependente">Exames pendentes</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamerealizando">Salas de Atendimento</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamependente">Atendimentos pendentes</a></span></ul>
 <? } ?>
                         </li>
                     </ul>
@@ -394,9 +375,9 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocancelamento">Relatorio Cancelamento</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotempoesperaexame">Relatorio Tempo espera exame</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotemposalaespera">Relatorio Tempo sala de espera</a></span></ul>
-                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogrupo">Relatorio Exame Grupo</a></span></ul>
-                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogrupoanalitico">Relatorio Exame Grupo Analitico</a></span></ul>
-                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogrupoprocedimento">Relatorio Exame Grupo Procedimento</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogrupo">Relatorio Atendimento Grupo</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogrupoanalitico">Relatorio Atendimento Grupo Analitico</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogrupoprocedimento">Relatorio Atendimento Grupo Procedimento</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogrupoprocedimentomedico">Relatorio Grupo Procedimento Medico</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogeralconvenio">Relatorio Geral Convenio</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicosolicitante">Relatorio Medico Solicitante sintetico</a></span></ul>
@@ -407,7 +388,7 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotecnicoconvenio">Relatorio Tecnico Convenio</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotecnicoconveniosintetico">Relatorio Tecnico Convenio Sintetico</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexamesala">Relatorio Consolidado por sala</a></span></ul>
-                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioconveniovalor">Relatorio Convenio exames/consultas valor</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioconveniovalor">Relatorio Convenio atendimento/consultas valor</a></span></ul>
 <? } ?>
                         </li> 
                     </ul>
@@ -497,12 +478,12 @@ function debug($object) {
                 
                 
 <? } ?>
-                <li><span class="folder">Centro Cirurgico</span>
+<!--                <li><span class="folder">Centro Cirurgico</span>
                     <ul>
                         <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico">Listar Solicitacoes</a></span></li>
                         <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarcirurgia">Fila de Cirurgia</a></span></li>
                     </ul>
-                </li>
+                </li>-->
                 <li><span class="folder">Relatorios (RM)</span>
                     <ul>
                         <? if ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 3) { ?>
@@ -564,6 +545,8 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloatestado">Manter Modelo Atestado</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloreceitaespecial">Manter Modelo R. Especial</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelosolicitarexames">Manter Modelo S.Exames</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelomedicamento">Manter Medicamento</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelomedicamento/pesquisarunidade">Manter Medicamento Unidade</a></span></ul>
 <? } ?>
                         </li>
                         <li><span class="folder">Estoque</span>
@@ -613,13 +596,24 @@ function debug($object) {
                 collapsed: true,
                 unique: true
             });
+            
+            $(function(){
 
-            jQuery("#contatos_chat_lista").on("click", function () {
-                //mostrando a lista de contatos
-                carregacontatos();
-
-                //abrindo a janelas de batepapo
-                jQuery("#principalChat").on("click", "#usuarios_online a", function () {
+                jQuery("#contatos_chat_lista").click( function () {
+                    //mostrando a lista de contatos
+                    carregacontatos();
+                    
+                    jQuery("#principalChat #usuarios_online").mouseleave( function () {
+                        $("#principalChat #usuarios_online ul li").remove();
+                    });
+                });
+                
+            });
+            
+                
+            //abrindo a janelas de batepapo
+            $(function(){
+                $("#principalChat #usuarios_online ul li a").live('click', function () {
                     var id = jQuery(this).attr("id");
                     jQuery(this).removeClass("comecarChat");
 
@@ -635,75 +629,76 @@ function debug($object) {
                         jQuery(this).removeClass("comecarChat");
                     }
                 });
+            });
 
-                jQuery("#principalChat #usuarios_online").on("mouseleave", function () {
-                    $("#principalChat #usuarios_online ul li").remove();
+            //minimizando as janelas
+            $(function(){
+                jQuery("#principalChat .cabecalho_janela_chat").live('click', function () {
+                    var corpo_janela_chat = jQuery(this).next();
+                    corpo_janela_chat.toggle(100);
                 });
             });
 
 
-            //minimizando as janelas
-            jQuery("#principalChat").on('click', '.cabecalho_janela_chat', function () {
-                var corpo_janela_chat = jQuery(this).next();
-                corpo_janela_chat.toggle(100);
-            });
-
-
             //fechando a janela
-            jQuery("#principalChat").on('click', '.fechar', function () {
+            $(function(){
+                jQuery("#principalChat .fechar").live('click', function () {
 
-                var janelaSelecionada = jQuery(this).parent().parent();
-                var idJanela = janelaSelecionada.attr("id");
-                var janelaSplit = idJanela.split("_");
-                var janelaFechada = Number(janelaSplit[1]);
+                    var janelaSelecionada = jQuery(this).parent().parent();
+                    var idJanela = janelaSelecionada.attr("id");
+                    var janelaSplit = idJanela.split("_");
+                    var janelaFechada = Number(janelaSplit[1]);
 
-                var janelasAbertas = Number(jQuery(".janela_chat").length) - 1;
-                var indice = Number(jQuery(".fechar").index(this));
-                var janelasAfrente = janelasAbertas - indice;
+                    var janelasAbertas = Number(jQuery(".janela_chat").length) - 1;
+                    var indice = Number(jQuery(".fechar").index(this));
+                    var janelasAfrente = janelasAbertas - indice;
 
-                for (var i = 1; i <= janelasAfrente; i++) {
-                    jQuery(".janela_chat:eq(" + (indice + i) + ")").animate({right: "-=285"}, 200);
-                }
-
-                janelaSelecionada.remove();
-                jQuery("#usuarios_online li#" + janelaFechada + " a").addClass("comecar");
-
-                var test;
-                for (var i = 0; i < chatsAbertos.length; i++) {
-                    test = Number(chatsAbertos[i]);
-                    if (janelaFechada == test) {
-                        chatsAbertos.splice(i, 1);
-                        break;
+                    for (var i = 1; i <= janelasAfrente; i++) {
+                        jQuery(".janela_chat:eq(" + (indice + i) + ")").animate({right: "-=285"}, 200);
                     }
-                }
+
+                    janelaSelecionada.remove();
+                    jQuery("#usuarios_online li#" + janelaFechada + " a").addClass("comecar");
+
+                    var test;
+                    for (var i = 0; i < chatsAbertos.length; i++) {
+                        test = Number(chatsAbertos[i]);
+                        if (janelaFechada == test) {
+                            chatsAbertos.splice(i, 1);
+                            break;
+                        }
+                    }
+                });
             });
 
             //Enviando mensagens
-            jQuery("#principalChat").on('keyup', '.mensagem_chat', function (tecla) {
+            $(function(){
+                jQuery("#principalChat .mensagem_chat").live('keyup', function (tecla) {
 
-                if (tecla.which == 13) {
-                    var texto = jQuery(this).val();
-                    var len = Number(texto.length);
+                    if (tecla.which == 13) {
+                        var texto = jQuery(this).val();
+                        var len = Number(texto.length);
 
-                    if (len > 0) {
-                        var id = jQuery(this).attr("id");
-                        var splitId = id.split(":");
-                        var operadorOrigem = Number(splitId[0]);
-                        var operadorDestino = Number(splitId[1]);
-                        jQuery.ajax({
-                            type: "GET",
-                            url: "<?= base_url(); ?>" + "batepapo/enviarmensagem",
-                            data: "mensagem=" + texto + "&origem=" + operadorOrigem + "&destino=" + operadorDestino,
-                            success: function () {
-                                jQuery('.mensagem_chat').val('');
-                                verifica(0, 0, <? echo $operador_id ?>);
-                            }
-                        });
+                        if (len > 0) {
+                            var id = jQuery(this).attr("id");
+                            var splitId = id.split(":");
+                            var operadorOrigem = Number(splitId[0]);
+                            var operadorDestino = Number(splitId[1]);
+                            jQuery.ajax({
+                                type: "GET",
+                                url: "<?= base_url(); ?>" + "batepapo/enviarmensagem",
+                                data: "mensagem=" + texto + "&origem=" + operadorOrigem + "&destino=" + operadorDestino,
+                                success: function () {
+                                    jQuery('.mensagem_chat').val('');
+                                    verifica(0, 0, <? echo $operador_id ?>);
+                                }
+                            });
+                        }
+
                     }
-
-                }
+                });
             });
-
+//
             //Atualizando novas mensagens (LongPolling)
             function verifica(timestamp, ultimoId, operadorOrigem) {
                 var t;
@@ -732,24 +727,6 @@ function debug($object) {
                                     if (jQuery("#janela_" + msg.janela).length > 0) {
 
                                         if (jQuery("#janela_" + msg.janela + " .mensagens_chat ul li#" + msg.chat_id).length == 0 && msg.janela > 0) {
-
-                                            if (msg.mensagem.length > 26) {
-                                                var texto = "";
-                                                var inicio = 0;
-                                                var fim = 25;
-                                                var br = "<br>";
-
-                                                for (var n = 0; n < msg.mensagem.length; n++) {
-                                                    if (n == fim) {
-                                                        texto += msg.mensagem.substring(inicio, fim);
-                                                        texto += br;
-                                                        inicio = fim;
-                                                        fim += 25;
-                                                    }
-                                                }
-
-                                                msg.mensagem = texto;
-                                            }
 
                                             if (operadorOrigem == msg.id_origem) {
                                                 jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");

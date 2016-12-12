@@ -79,10 +79,11 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
 /* ESTILIZANDO OS CHATS */
 
 #chats{
-    position: absolute;
-    bottom: 26px;
+    z-index: 100;
+    position: fixed;
+    bottom: 0px;
     left: 0;
-    width: 80%;
+    width: 90%;
     height: auto;
     margin: 0px; padding: 0px;
 }
@@ -101,7 +102,7 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
 .janela_chat .cabecalho_janela_chat{
     float: left;
     height: 25px;
-    background: #00ace6;
+    background: rgba(179, 8, 2, 1);/*#00ace6*/
     width: 100%;
     margin: 0px; padding: 0px;
     position: relative;
@@ -117,9 +118,10 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
     font: 16px Tahoma, arial;
     color: white;
     padding: 0 10px 0 10px;
+    font-weight: bold;
 } 
 
-.janela_chat .cabecalho_janela_chat .nome_chat{font-size: 16px; color: white;float: left; margin-top: 2px;}
+.janela_chat .cabecalho_janela_chat .nome_chat{font-size: 16px; color: white;float: left; margin-top: -2px; font-weight: bold;}
 
 .janela_chat .corpo_janela_chat{ float: left; width: 100%; }
 
@@ -148,6 +150,7 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
     padding: 3px;
     margin-top: 5px;
     margin-bottom: 5px;
+    word-wrap: break-word;
 }
 
 .mensagens_chat ul li.eu{float: left; background: #a4e9ff}

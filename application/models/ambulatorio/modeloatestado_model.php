@@ -22,10 +22,13 @@ class modeloatestado_model extends Model {
                             texto');
         $this->db->from('tb_ambulatorio_modelo_atestado aml');
         $this->db->join('tb_operador o', 'o.operador_id = aml.medico_id', 'left');
+        $this->db->where('aml.ativo', "t");
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('aml.nome ilike', "%" . $args['nome'] . "%");
             $this->db->orwhere('o.nome ilike', "%" . $args['nome'] . "%");
+            $this->db->where('aml.ativo', "t");
             $this->db->orwhere('pt.nome ilike', "%" . $args['nome'] . "%");
+            $this->db->where('aml.ativo', "t");
         }
         return $this->db;
     }

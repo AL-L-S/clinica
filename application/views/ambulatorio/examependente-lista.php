@@ -1,7 +1,7 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Exames pendentes</a></h3>
+        <h3 class="singular"><a href="#">Atendimentos pendentes</a></h3>
         <div>
             <?
             $salas = $this->exame->listartodassalas();

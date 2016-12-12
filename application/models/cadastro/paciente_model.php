@@ -58,6 +58,7 @@ class paciente_model extends BaseModel {
         $this->db->where('nome', $_POST['nome']);
         $this->db->where('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
         $this->db->where('nome_mae', $_POST['nome_mae']);
+        $this->db->where('ativo', 't');
         $return = $this->db->count_all_results();
         return $return;
     }
@@ -66,6 +67,7 @@ class paciente_model extends BaseModel {
         $this->db->select();
         $this->db->from('tb_paciente');
         $this->db->where('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
+        $this->db->where('ativo', 't');
         $return = $this->db->count_all_results();
         return $return;
     }
@@ -193,6 +195,7 @@ class paciente_model extends BaseModel {
 
         $this->db->select('convenio_id, nome as descricao');
         $this->db->from('tb_convenio');
+        $this->db->where('ativo', 't');
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();

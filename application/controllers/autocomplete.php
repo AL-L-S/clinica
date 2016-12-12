@@ -1166,6 +1166,21 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function medicamentounidade() {
+
+        if (isset($_GET['unidade'])) {
+            $result = $this->exametemp->listarautocompletemedicamentounidade($_GET['unidade']);
+        } else {
+            $result = $this->exametemp->listarautocompletemedicamentounidade();
+        }
+        foreach ($result as $item) {
+            $retorno['id'] = $item->unidade_id;
+            $retorno['value'] = $item->descricao;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function modelosreceitaespecial() {
 
         if (isset($_GET['exame'])) {
@@ -1190,6 +1205,18 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function medicoespecialidadetodos() {
+
+        if (isset($_GET['txtcbo'])) {
+            $result = $this->operador_m->listarmedicos($_GET['txtcbo']);
+        } else {
+            $result = $this->operador_m->listarmedicos();
+        }
+
+
+        echo json_encode($result);
+    }
+    
     function medicoespecialidade() {
 
         if (isset($_GET['txtcbo'])) {
@@ -1226,6 +1253,22 @@ class Autocomplete extends Controller {
         foreach ($result as $item) {
             $retorno['value'] = $item->nome . '-' . $item->texto;
             $retorno['id'] = $item->texto;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function medicamentolaudo() {
+
+        if (isset($_GET['term'])) {
+            $result = $this->exametemp->listarautocompletemedicamentolaudo($_GET['term']);
+        } else {
+            $result = $this->exametemp->listarautocompletemedicamentolaudo();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nome . ' (' . $item->quantidade . ' - '.  $item->descricao .') -> ' . $item->posologia;
+            $retorno['id'] = $item->texto . '<br>' . $item->posologia;
+            $retorno['qtde'] = $item->quantidade;
             $var[] = $retorno;
         }
         echo json_encode($var);
