@@ -22,12 +22,13 @@ $("#document").ready(function(){
         if(valorParaTeste == "Outro" || valorParaTeste == "Outro Prof. Saúde" || valorParaTeste == "Outro serviços. públicos"){
             $(spanClass).show();
             $(selectId).show();
-            $(selectId).focus();
+            $(selectId).focus();           
         }
         else{
             $(spanClass).hide();
             $(selectId).hide();
         }
+        
         if(situacao == "FINALIZADO"){
             $(spanClass).show();
             $(selectId).show();

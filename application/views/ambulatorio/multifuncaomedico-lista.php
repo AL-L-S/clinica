@@ -248,18 +248,18 @@
     </div>
 
 </div> <!-- Final da DIV content -->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <script type="text/javascript">
                                     $(document).ready(function () {
 //alert('teste_parada');
                                         $(function () {
                                             $('#especialidade').change(function () {
-
+                                                
                                                 if ($(this).val()) {
 
 //                                                  alert('teste_parada');

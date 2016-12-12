@@ -435,15 +435,19 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacientefisioterapiatemp($agenda_exames_id) {
-        if (trim($_POST['txtNome']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
+        if (trim($_POST['txtNome']) == "" && trim($_POST['txtNomeid']) == "") {
+            $data['mensagem'] = 'Erro ao marcar especialidade é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
-        } elseif (trim($_POST['txtNomeid']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta. Paciente Inválido.';
+        } elseif ($_POST['convenio'] == '0') {
+            $data['mensagem'] = 'Erro ao marcar especialidade. Selecione um convenio.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
-        } else {
+        } elseif ($_POST['procedimento'] == '') {
+            $data['mensagem'] = 'Erro ao marcar especialidade. Selecione um procedimento.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+        }  else {
 
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
 
