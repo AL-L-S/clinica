@@ -12,7 +12,7 @@
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date" maxlength="10"  onkeypress="mascara3(this)"/>
             </div>
             <div>
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask"/>
@@ -20,11 +20,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone" alt="phone"/>
+                <input type="text" id="telefone" class="texto02" name="telefone" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
             </div>
             <div>
                 <label>Convenio *</label>
@@ -236,5 +236,32 @@
             }
         });
     });
+
+
+    function mascara2(horarios) {
+        if (horarios.value !== '') {
+            if (horarios.value.length == 1)
+                horarios.value = '(' + horarios.value;
+
+            if (horarios.value.length == 3)
+                horarios.value = horarios.value + ') ';
+
+            if (horarios.value.length == 9)
+                horarios.value = horarios.value + '-';
+
+        }
+    }
+
+    function mascara3(horarios) {
+        if (horarios.value !== '') {
+            if (horarios.value.length == 2)
+                horarios.value = horarios.value + '/';
+
+            if (horarios.value.length == 5)
+                horarios.value = horarios.value + '/';
+
+
+        }
+    }
 
 </script>

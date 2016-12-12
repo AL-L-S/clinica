@@ -39,7 +39,7 @@ function debug($object) {
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-treeview.js" ></script>
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
         <script type="text/javascript" src="<?= base_url() ?>js/jquery.bestupper.min.js"  ></script>
-        <script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>
+        <!--<script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>-->
         <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.js" ></script>-->
         <script type="text/javascript">
 //            var jQuery = jQuery.noConflict();
@@ -180,7 +180,7 @@ function debug($object) {
                        href="<?= base_url() ?>login/sair">Sair</a>
 
                     <div class="batepapo_div">
-                        <a id="contatos_chat_lista" href="#">
+                        <a id="contatos_chat_lista" href="#" class="nao_clicado">
                             <img src="<?= base_url(); ?>img/chat_icon.png" alt="Batepapo"
                                  title="Batepapo"/></a>
                     </div>
@@ -597,23 +597,31 @@ function debug($object) {
                 unique: true
             });
             
-            $(function(){
-
+            jQuery(function(){
+                
                 jQuery("#contatos_chat_lista").click( function () {
-                    //mostrando a lista de contatos
-                    carregacontatos();
                     
-                    jQuery("#principalChat #usuarios_online").mouseleave( function () {
-                        $("#principalChat #usuarios_online ul li").remove();
-                    });
+                    var classe = jQuery("#contatos_chat_lista").attr("class");
+                    
+                    //verificando se o usuario ja clicou no icone de batepapo
+                    if(classe == 'nao_clicado'){
+                        //mostrando a lista de contatos
+                        carregacontatos();
+                        jQuery("#contatos_chat_lista").attr("class", 'clicado');
+
+                        jQuery("#principalChat #usuarios_online").mouseleave( function () {
+                            jQuery("#principalChat #usuarios_online ul li").remove();
+                            jQuery("#contatos_chat_lista").attr("class", 'nao_clicado');
+                        });
+                    }
                 });
                 
             });
             
                 
             //abrindo a janelas de batepapo
-            $(function(){
-                $("#principalChat #usuarios_online ul li a").live('click', function () {
+            jQuery(function(){
+                jQuery("#principalChat #usuarios_online ul li a").live('click', function () {
                     var id = jQuery(this).attr("id");
                     jQuery(this).removeClass("comecarChat");
 
@@ -632,7 +640,7 @@ function debug($object) {
             });
 
             //minimizando as janelas
-            $(function(){
+            jQuery(function(){
                 jQuery("#principalChat .cabecalho_janela_chat").live('click', function () {
                     var corpo_janela_chat = jQuery(this).next();
                     corpo_janela_chat.toggle(100);
@@ -641,7 +649,7 @@ function debug($object) {
 
 
             //fechando a janela
-            $(function(){
+            jQuery(function(){
                 jQuery("#principalChat .fechar").live('click', function () {
 
                     var janelaSelecionada = jQuery(this).parent().parent();
@@ -672,7 +680,7 @@ function debug($object) {
             });
 
             //Enviando mensagens
-            $(function(){
+            jQuery(function(){
                 jQuery("#principalChat .mensagem_chat").live('keyup', function (tecla) {
 
                     if (tecla.which == 13) {
