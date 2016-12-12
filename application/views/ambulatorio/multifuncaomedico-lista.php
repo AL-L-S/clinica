@@ -7,6 +7,7 @@
             $salas = $this->exame->listartodassalas();
             $medicos = $this->operador_m->listarmedicos();
             $especialidade = $this->exame->listarespecialidade();
+            $perfil_id = $this->session->userdata('perfil_id');
             ?>
             <table>
                 <thead>
@@ -14,8 +15,11 @@
 
                     <tr>
                         <th class="tabela_title">Salas</th>
+                        
+                        <?if ($perfil_id != 4){?>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
+                        <? } ?>
                         <th class="tabela_title">Data</th>
                         <th class="tabela_title">Prontu&aacute;rio</th>
                         <th colspan="2" class="tabela_title">Nome</th>
@@ -32,6 +36,7 @@
                                         <? endforeach; ?>
                             </select>
                         </th>
+                        <?if ($perfil_id != 4){?>
                         <th class="tabela_title">
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
@@ -60,6 +65,7 @@
 
                             </select>
                         </th>
+                        <? } ?>
                         <th class="tabela_title">
                             <input type="text"  id="data" alt="date" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
                         </th>
@@ -248,18 +254,18 @@
     </div>
 
 </div> <!-- Final da DIV content -->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <script type="text/javascript">
                                     $(document).ready(function () {
 //alert('teste_parada');
                                         $(function () {
                                             $('#especialidade').change(function () {
-
+                                                
                                                 if ($(this).val()) {
 
 //                                                  alert('teste_parada');
