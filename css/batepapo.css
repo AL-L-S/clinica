@@ -9,8 +9,8 @@
     top: 80px;
     right: 10px;
     width: 305px;
-    max-height: 60%;
-    background-color: #eee; 
+    max-height: 500px;
+    background-color: #95a5a6; 
     background: linear-gradient(to right, #aaa, #eee 30%);
     border-left: 1px solid #999;
     border-bottom: 1px solid #999;
@@ -79,7 +79,7 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
 /* ESTILIZANDO OS CHATS */
 
 #chats{
-    z-index: 100;
+    z-index: 1;
     position: fixed;
     bottom: 0px;
     left: 0;
@@ -94,7 +94,7 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
     width: 270px;
     height: auto;
     margin: 0px; padding: 0px;
-    margin-left: 15px;
+    margin-left: 0px;
     border-radius: 4px;
     border: 1px solid #999;
 }
