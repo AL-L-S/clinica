@@ -30,17 +30,18 @@
             </div>
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" alt="time" class="size1" name="horarios" />
+                <input type="text" id="horarios" alt="time" class="size1" name="horarios"  maxlength="8" onkeypress="mascara(this)" onclick="if (this.value !== '')
+                            this.value = ''"/>
             </div>
             <div>
                 <label>Convenio *</label>
-                <select name="convenio1" id="convenio1" class="size4">
+                <select name="convenio1" id="convenio1" class="size4" required>
                     <option value="">Selecione</option>
                 </select>
             </div>
             <div>
                 <label>Procedimento</label>
-                <select  name="procedimento1" id="procedimento1" class="size1" >
+                <select  name="procedimento1" id="procedimento1" class="size1" required>
                     <option value="">Selecione</option>
                 </select>
             </div>
@@ -67,7 +68,7 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-                <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date" maxlength="10"  onkeypress="mascara3(this)"/>
             </div>
             <div>
 
@@ -79,11 +80,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone" alt="phone"/>
+                <input type="text" id="telefone" class="texto02" name="telefone" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
             </div>
 
             <div>
@@ -104,81 +105,111 @@
 
 
 
-    $(function () {
-        $("#data_ficha").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
+                    $(function () {
+                        $("#data_ficha").datepicker({
+                            autosize: true,
+                            changeYear: true,
+                            changeMonth: true,
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                            dateFormat: 'dd/mm/yy'
+                        });
+                    });
 
-    $(function () {
-        $('#medico').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
-                    var options = '<option value=""></option>';
-                    for (var i = 0; i < j.length; i++) {
-                        options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
+                    $(function () {
+                        $('#medico').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
+                                    var options = '<option value=""></option>';
+                                    for (var i = 0; i < j.length; i++) {
+                                        options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
+                                    }
+                                    $('#convenio1').html(options).show();
+                                    $('.carregando').hide();
+                                });
+                            } else {
+                                $('#convenio1').html('<option value="">-- Escolha um hora --</option>');
+                            }
+                        });
+                    });
+
+                    $(function () {
+                        $('#convenio1').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#exame").val()}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+                                    $('#procedimento1').html(options).show();
+                                    $('.carregando').hide();
+                                });
+                            } else {
+                                $('#procedimento1').html('<option value="">Selecione</option>');
+                            }
+                        });
+                    });
+
+                    $(function () {
+                        $("#txtNome").autocomplete({
+                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+                            minLength: 3,
+                            focus: function (event, ui) {
+                                $("#txtNome").val(ui.item.label);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#txtNome").val(ui.item.value);
+                                $("#txtNomeid").val(ui.item.id);
+                                $("#telefone").val(ui.item.itens);
+                                $("#nascimento").val(ui.item.valor);
+                                $("#txtEnd").val(ui.item.endereco);
+                                return false;
+                            }
+                        });
+                    });
+
+
+                    $(function () {
+                        $("#accordion").accordion();
+                    });
+
+
+                    function mascara(horarios) {
+                        if (horarios.value.length == 2)
+                            horarios.value = horarios.value + ':'; //quando o campo já tiver 2 caracteres (2 números) o script irá inserir um ':'.
+
+                        if (horarios.value.length == 5)
+                            horarios.value = horarios.value + ':'; //quando o campo já tiver 5 caracteres (2 números + ':' + 2 números), o script irá inserir um ':'.      
                     }
-                    $('#convenio1').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#convenio1').html('<option value="">-- Escolha um hora --</option>');
-            }
-        });
-    });
 
-    $(function () {
-        $('#convenio1').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#exame").val()}, function (j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    function mascara2(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 1)
+                                horarios.value = '(' + horarios.value;
+
+                            if (horarios.value.length == 3)
+                                horarios.value = horarios.value + ') ';
+
+                            if (horarios.value.length == 9)
+                                horarios.value = horarios.value + '-';
+
+                        }
                     }
-                    $('#procedimento1').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#procedimento1').html('<option value="">Selecione</option>');
-            }
-        });
-    });
 
-    $(function () {
-        $("#txtNome").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtNome").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtNome").val(ui.item.value);
-                $("#txtNomeid").val(ui.item.id);
-                $("#telefone").val(ui.item.itens);
-                $("#nascimento").val(ui.item.valor);
-                $("#txtEnd").val(ui.item.endereco);
-                return false;
-            }
-        });
-    });
+                    function mascara3(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 2)
+                                horarios.value = horarios.value + '/';
+
+                            if (horarios.value.length == 5)
+                                horarios.value = horarios.value + '/';
 
 
-    $(function () {
-        $("#accordion").accordion();
-    });
-
-
-
-
-
+                        }
+                    }
 
 </script>

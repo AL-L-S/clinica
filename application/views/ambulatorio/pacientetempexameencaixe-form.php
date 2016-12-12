@@ -35,7 +35,7 @@
             </div>
             <div>
                 <label>Convenio *</label>
-                <select name="convenio1" id="convenio1" class="size4">
+                <select name="convenio1" id="convenio1" class="size4"  required>
                     <option  value="-1">Selecione</option>
                     <? foreach ($convenio as $value) : ?>
                         <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
@@ -44,7 +44,7 @@
             </div>
             <div>
                 <label>Procedimento</label>
-                <select  name="procedimento1" id="procedimento1" class="size1" >
+                <select  name="procedimento1" id="procedimento1" class="size1" required>
                     <option value="">Selecione</option>
                 </select>
             </div>
@@ -64,7 +64,7 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-                <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" maxlength="10" onkeypress="mascara3(this)"/>
             </div>
             <div>
 
@@ -72,11 +72,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone" alt="phone"/>
+                <input type="text" id="telefone" class="texto02" name="telefone" maxlength="14"  onkeypress="mascara2(this)"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular"  maxlength="14"  onkeypress="mascara2(this)" />
             </div>
 
             <div>
@@ -200,6 +200,32 @@
 
                         if (horarios.value.length == 5)
                             horarios.value = horarios.value + ':'; //quando o campo já tiver 5 caracteres (2 números + ':' + 2 números), o script irá inserir um ':'.      
+                    }
+
+                    function mascara2(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 1)
+                                horarios.value = '(' + horarios.value;
+
+                            if (horarios.value.length == 3)
+                                horarios.value = horarios.value + ') ';
+
+                            if (horarios.value.length == 9)
+                                horarios.value = horarios.value + '-';
+
+                        }
+                    }
+
+                    function mascara3(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 2)
+                                horarios.value = horarios.value + '/';
+
+                            if (horarios.value.length == 5)
+                                horarios.value = horarios.value + '/';
+
+
+                        }
                     }
 
 </script>

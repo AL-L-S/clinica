@@ -22,7 +22,8 @@
 
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" alt="time" class="size1" name="horarios" />
+                <input type="text" id="horarios" alt="time" class="size1" name="horarios" maxlength="8" onkeypress="mascara(this)" onclick="if (this.value !== '')
+                            this.value = ''"/>
             </div>
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
@@ -48,16 +49,16 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone"/>
+                <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone"  maxlength="14"  onkeypress="mascara2(this)"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"  maxlength="14"  onkeypress="mascara2(this)"/>
             </div>
 
             <div>
                 <label>Convenio *</label>
-                <select name="convenio" id="convenio" class="size4">
+                <select name="convenio" id="convenio" class="size4" required>
                     <option  value="0">Selecione</option>
                     <? foreach ($convenio as $value) : ?>
                         <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
@@ -66,7 +67,7 @@
             </div>
             <div>
                 <label>Procedimento</label>
-                <select  name="procedimento" id="procedimento" class="size1" >
+                <select  name="procedimento" id="procedimento" class="size1" required>
                     <option value="">Selecione</option>
                 </select>
             </div>
@@ -88,112 +89,145 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 <? if ($this->session->flashdata('message') != ""): ?>
-        alert("<? echo $this->session->flashdata('message'); ?>");
+                        alert("<? echo $this->session->flashdata('message'); ?>");
 <? endif; ?>
 
-    $(function () {
-        $("#data_ficha").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
-    $(function () {
-        $("#txtNascimento").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
+                    $(function () {
+                        $("#data_ficha").datepicker({
+                            autosize: true,
+                            changeYear: true,
+                            changeMonth: true,
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                            dateFormat: 'dd/mm/yy'
+                        });
+                    });
+                    $(function () {
+                        $("#txtNascimento").datepicker({
+                            autosize: true,
+                            changeYear: true,
+                            changeMonth: true,
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                            dateFormat: 'dd/mm/yy'
+                        });
+                    });
 
-    $(function () {
-        $('#convenio').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    $(function () {
+                        $('#convenio').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+                                    $('#procedimento').html(options).show();
+                                    $('.carregando').hide();
+                                });
+                            } else {
+                                $('#procedimento').html('<option value="">Selecione</option>');
+                            }
+                        });
+                    });
+
+                    $(function () {
+                        $("#txtNome").autocomplete({
+                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+                            minLength: 3,
+                            focus: function (event, ui) {
+                                $("#txtNome").val(ui.item.label);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#txtNome").val(ui.item.value);
+                                $("#txtNomeid").val(ui.item.id);
+                                $("#txtTelefone").val(ui.item.itens);
+                                $("#txtNascimento").val(ui.item.valor);
+                                return false;
+                            }
+                        });
+                    });
+
+                    $(function () {
+                        $('#procedimento').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                    qtde = "";
+                                    qtde += j[0].qtde;
+                                    document.getElementById("qtde").value = qtde;
+                                    $('.carregando').hide();
+                                });
+                            } else {
+                                $('#qtde').html('value=""');
+                            }
+                        });
+                    });
+
+
+                    $(function () {
+                        $("#accordion").accordion();
+                    });
+
+
+                    $(document).ready(function () {
+                        jQuery('#form_exametemp').validate({
+                            rules: {
+                                data_ficha: {
+                                    required: true
+                                },
+                                horarios: {
+                                    required: true,
+                                    minlength: 5
+                                }
+                            },
+                            messages: {
+                                data_ficha: {
+                                    required: "*"
+                                },
+                                horarios: {
+                                    required: "*",
+                                    minlength: "!"
+                                }
+                            }
+                        });
+                    });
+
+                    function mascara(horarios) {
+                        if (horarios.value.length == 2)
+                            horarios.value = horarios.value + ':'; //quando o campo já tiver 2 caracteres (2 números) o script irá inserir um ':'.
+
+                        if (horarios.value.length == 5)
+                            horarios.value = horarios.value + ':'; //quando o campo já tiver 5 caracteres (2 números + ':' + 2 números), o script irá inserir um ':'.      
                     }
-                    $('#procedimento').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#procedimento').html('<option value="">Selecione</option>');
-            }
-        });
-    });
 
-    $(function () {
-        $("#txtNome").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtNome").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtNome").val(ui.item.value);
-                $("#txtNomeid").val(ui.item.id);
-                $("#txtTelefone").val(ui.item.itens);
-                $("#txtNascimento").val(ui.item.valor);
-                return false;
-            }
-        });
-    });
+                    function mascara2(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 1)
+                                horarios.value = '(' + horarios.value;
 
-    $(function () {
-        $('#procedimento').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                    qtde = "";
-                    qtde += j[0].qtde;
-                    document.getElementById("qtde").value = qtde;
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#qtde').html('value=""');
-            }
-        });
-    });
+                            if (horarios.value.length == 3)
+                                horarios.value = horarios.value + ') ';
+
+                            if (horarios.value.length == 9)
+                                horarios.value = horarios.value + '-';
+
+                        }
+                    }
+
+                    function mascara3(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 2)
+                                horarios.value = horarios.value + '/';
+
+                            if (horarios.value.length == 5)
+                                horarios.value = horarios.value + '/';
 
 
-    $(function () {
-        $("#accordion").accordion();
-    });
-
-
-    $(document).ready(function () {
-        jQuery('#form_exametemp').validate({
-            rules: {
-                data_ficha: {
-                    required: true
-                },
-                horarios: {
-                    required: true,
-                    minlength: 5
-                }
-            },
-            messages: {
-                data_ficha: {
-                    required: "*"
-                },
-                horarios: {
-                    required: "*",
-                    minlength: "!"
-                }
-            }
-        });
-    });
-
+                        }
+                    }
 
 </script>

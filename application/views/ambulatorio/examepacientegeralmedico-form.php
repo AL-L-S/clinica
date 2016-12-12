@@ -12,7 +12,7 @@
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" class="texto02" onkeypress="datanascimento(this)" type="text"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" maxlength="10"  onkeypress="mascara3(this)" type="text"/>
             </div>
             <div>
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask"/>
@@ -20,11 +20,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone" onkeypress="mascara(this)" type="text" />
+                <input type="text" id="telefone" class="texto02" name="telefone" maxlength="14"  onkeypress="mascara2(this)" type="text" />
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
             </div>
             <div>
                 <label>Medico</label>
@@ -109,11 +109,11 @@
 <script type="text/javascript">
 
 
-                    $(function() {
-                        $('#exame').change(function() {
+                    $(function () {
+                        $('#exame').change(function () {
                             if ($(this).val()) {
                                 $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function(j) {
+                                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                     var options = '<option value=""></option>';
                                     for (var i = 0; i < j.length; i++) {
                                         options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -127,11 +127,11 @@
                         });
                     });
 
-                    $(function() {
-                        $('#convenio1').change(function() {
+                    $(function () {
+                        $('#convenio1').change(function () {
                             if ($(this).val()) {
                                 $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#exame").val()}, function(j) {
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#exame").val()}, function (j) {
                                     options = '<option value=""></option>';
                                     for (var c = 0; c < j.length; c++) {
                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -146,15 +146,15 @@
                     });
 
 
-                    $(function() {
+                    $(function () {
                         $("#txtNome").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
                             minLength: 3,
-                            focus: function(event, ui) {
+                            focus: function (event, ui) {
                                 $("#txtNome").val(ui.item.label);
                                 return false;
                             },
-                            select: function(event, ui) {
+                            select: function (event, ui) {
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
                                 $("#telefone").val(ui.item.itens);
@@ -164,15 +164,15 @@
                         });
                     });
 
-                    $(function() {
+                    $(function () {
                         $("#nascimento").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientenascimento",
                             minLength: 3,
-                            focus: function(event, ui) {
+                            focus: function (event, ui) {
                                 $("#nascimento").val(ui.item.label);
                                 return false;
                             },
-                            select: function(event, ui) {
+                            select: function (event, ui) {
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
                                 $("#telefone").val(ui.item.itens);
@@ -229,5 +229,31 @@
 //            }
 //        });
 //    });
+
+                    function mascara2(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 1)
+                                horarios.value = '(' + horarios.value;
+
+                            if (horarios.value.length == 3)
+                                horarios.value = horarios.value + ') ';
+
+                            if (horarios.value.length == 9)
+                                horarios.value = horarios.value + '-';
+
+                        }
+                    }
+
+                    function mascara3(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 2)
+                                horarios.value = horarios.value + '/';
+
+                            if (horarios.value.length == 5)
+                                horarios.value = horarios.value + '/';
+
+
+                        }
+                    }
 
 </script>
