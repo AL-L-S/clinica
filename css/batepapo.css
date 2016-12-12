@@ -102,7 +102,7 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
 .janela_chat .cabecalho_janela_chat{
     float: left;
     height: 25px;
-    background: #f22613;/*#00ace6*/
+    background: rgba(179, 8, 2, 1);/*#00ace6*/
     width: 100%;
     margin: 0px; padding: 0px;
     position: relative;
