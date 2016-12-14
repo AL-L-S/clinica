@@ -281,7 +281,7 @@
 
                                 $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
                                 if (empty($teste)) {
-                                    $exames_sem_formapagamento = $this->exametemp->listarprocedimentosemformapagamento($ambulatorio_guia_id, $value->procedimento_tuss_id);
+                                    $exames_sem_formapagamento = $this->exametemp->listarprocedimentosemformapagamento($value->agenda_exames_id);
 
                                     foreach ($exames_sem_formapagamento as $item) {
 

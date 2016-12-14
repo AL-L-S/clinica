@@ -809,8 +809,8 @@ class exametemp_model extends Model {
 //        return $return->result();
 //    }
 
-    function listarprocedimentosemformapagamento($ambulatorio_guia_id, $procedimento_convenio_id) {
-
+    function listarprocedimentosemformapagamento($agenda_exames_id ) {
+        
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
@@ -851,8 +851,9 @@ class exametemp_model extends Model {
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where("guia_id", $ambulatorio_guia_id);
-        $this->db->where("ae.procedimento_tuss_id", $procedimento_convenio_id);
+        $this->db->where('ae.agenda_exames_id',$agenda_exames_id);
+//        $this->db->where("guia_id", $ambulatorio_guia_id);
+//        $this->db->where("ae.procedimento_tuss_id", $procedimento_convenio_id);
         $this->db->orderby("ae.data");
         $this->db->orderby("ae.inicio");
         $return = $this->db->get();
