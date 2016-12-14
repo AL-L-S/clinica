@@ -468,7 +468,7 @@ class Exametemp extends BaseController {
                 $contaHorarios = count($this->exametemp->contadordisponibilidadefisioterapia($data['agenda_selecionada'][0]));
 
                 //tratando o numero que veio nas sessoes
-                if ($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 0) {
+                if ($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 'null' || $_POST['sessao'] == 0) {
                     $_POST['sessao'] = 1;
                 }
                 $_POST['sessao'] = (int) $_POST['sessao'];
@@ -505,6 +505,8 @@ class Exametemp extends BaseController {
                     $this->session->set_flashdata('message', $data['mensagem']);
                     redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
                 }
+
+                $_POST['txtNomeid'] = $this->exametemp->crianovopacienteespecialidade();
 
                 //marcando sessoes
                 if ($_POST['sessao'] == 1) {
