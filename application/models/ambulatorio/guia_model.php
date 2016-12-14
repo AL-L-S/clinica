@@ -5738,7 +5738,8 @@ ORDER BY ae.agenda_exames_id)";
     function verificasessoesabertas($procedimento_convenio_id, $paciente_id) {
         $this->db->select('pt.grupo,
                             c.nome,
-                            c.dinheiro');
+                            c.dinheiro,
+                            c.convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
@@ -5746,10 +5747,11 @@ ORDER BY ae.agenda_exames_id)";
         $return = $this->db->get();
         $x = $return->result();
         $especialidade = $x[0]->grupo;
+        $convenio_id = $x[0]->convenio_id;
 
 //        var_dump($return->result()); die;
 
-        if ($x[0]->nome == 'f') {
+        if ($x[0]->dinheiro == 'f') {
 //            $this->db->select('confirmado , agenda_exames_id');
 //            $this->db->from('tb_agenda_exames');
 //            $this->db->where('tipo', $especialidade);
@@ -5798,7 +5800,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
             $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
-            $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+            $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
             $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
             $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
             $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
@@ -5807,12 +5809,13 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->orderby('ae.numero_sessao');
             $this->db->where('ae.empresa_id', $empresa_id);
             $this->db->where('ae.paciente_id', $paciente_id);
-//            $this->db->where('ae.tipo ', $especialidade);
+//            $this->db->where('ae.tipo ', $especialidade);//////////////////////
             $this->db->where('pt.grupo ', $especialidade);
+            $this->db->where('c.convenio_id', $convenio_id);
             $this->db->where('ae.ativo', 'false');
             $this->db->where('ae.numero_sessao >=', '1');
             $this->db->where('ae.realizada', 'false');
-            $this->db->where('ae.confirmado', 'false');
+//            $this->db->where('ae.confirmado', 'false');
             $this->db->where('ae.cancelada', 'false');
             $return = $this->db->get();
             $result = $return->result();
@@ -5829,7 +5832,9 @@ ORDER BY ae.agenda_exames_id)";
 //                    $contador++;
 //                }
 //            }
-
+//
+//            echo '<pre>';
+//            var_dump($result);die;
 
             if (count($result) != 0) {
                 return true;

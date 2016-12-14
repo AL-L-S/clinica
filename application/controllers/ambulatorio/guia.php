@@ -844,6 +844,8 @@ class Guia extends BaseController {
             //verifica se existem sessões abertas
             $retorno = $this->guia->verificasessoesabertas($_POST['procedimento1'], $_POST['txtpaciente_id']);
 
+//            var_dump($retorno);die;
+            
             if ($retorno == false) {
                 if ($_POST['medicoagenda'] != '') {
                     //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
@@ -2013,8 +2015,8 @@ class Guia extends BaseController {
 
         $dataFuturo = date("Y-m-d");
 
-//        $this->load->View('ambulatorio/impressaorecibomed', $data);
-        $this->load->View('ambulatorio/impressaorecibo', $data);
+        $this->load->View('ambulatorio/impressaorecibomed', $data);
+//        $this->load->View('ambulatorio/impressaorecibo', $data);
     }
 
     function relatoriomedicoconveniofinanceiro() {
