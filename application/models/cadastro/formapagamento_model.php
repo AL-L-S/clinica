@@ -289,6 +289,11 @@ class formapagamento_model extends Model {
             if ($_POST['ajuste'] == '') {
                 $ajuste = 0;
             }
+            
+            $parcela_minima = $_POST['parcela_minima'];
+            if ($_POST['parcela_minima'] == '') {
+                $parcela_minima = 0;
+            }
             $taxa_juros = $_POST['taxa_juros'];
             if ($_POST['taxa_juros'] == '') {
                 $taxa_juros = 0;
@@ -309,6 +314,7 @@ class formapagamento_model extends Model {
 
             $this->db->set('ajuste', $ajuste);
             $this->db->set('parcelas', $parcelas);
+            $this->db->set('parcela_minima', str_replace(",", ".", str_replace(".", "", $parcela_minima)));
             $this->db->set('taxa_juros', $taxa_juros);
             $this->db->set('fixar', $arredondamento);
             $this->db->set('cartao', $cartao);
@@ -350,6 +356,7 @@ class formapagamento_model extends Model {
                                conta_id,
                                ajuste, 
                                dia_receber, 
+                               parcela_minima, 
                                tempo_receber, 
                                credor_devedor,
                                fixar,
@@ -370,8 +377,9 @@ class formapagamento_model extends Model {
             $this->_credor_devedor = $return[0]->credor_devedor;
             $this->_taxa_juros = $return[0]->taxa_juros;
             $this->_parcelas = $return[0]->parcelas;
+            $this->_parcela_minima = $return[0]->parcela_minima;
             $this->_cartao = $return[0]->cartao;
-        } else {
+} else {
             $this->_forma_pagamento_id = null;
         }
     }
