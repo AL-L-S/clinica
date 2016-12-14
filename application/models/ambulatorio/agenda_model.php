@@ -2235,8 +2235,20 @@ class agenda_model extends Model {
     }
 
     function listarhorarioagenda($agenda_id = null) {
-        $this->db->select();
-        $this->db->from('tb_horarioagenda');
+        $this->db->select('e.nome as empresa,
+                           h.dia,
+                           h.horaentrada1,
+                           h.horasaida1,
+                           h.intervaloinicio,
+                           h.intervalofim,
+                           h.tempoconsulta,
+                           h.agenda_id,
+                           h.qtdeconsulta,
+                           h.empresa_id,
+                           h.observacoes,
+                           h.horarioagenda_id');
+        $this->db->from('tb_horarioagenda h');
+        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id');
         $this->db->where('agenda_id', $agenda_id);
         $this->db->orderby('dia');
         $return = $this->db->get();

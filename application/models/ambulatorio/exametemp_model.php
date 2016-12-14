@@ -1937,23 +1937,9 @@ class exametemp_model extends Model {
 
     function gravarpacientefisioterapia($agenda_exames_id) {
         try {
-            if ($_POST['txtNomeid'] == '') {
-                if ($_POST['nascimento'] != '') {
-                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
-                }
-                if ($_POST['idade'] != 0) {
-                    $this->db->set('idade', $_POST['idade']);
-                }
-                $this->db->set('celular', $_POST['celular']);
-                $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('telefone', $_POST['telefone']);
-                $this->db->set('numero_sessao', $_POST['sessao']);
-                $this->db->set('nome', $_POST['txtNome']);
-                $this->db->insert('tb_paciente');
-                $paciente_id = $this->db->insert_id();
-            } else {
-                $paciente_id = $_POST['txtNomeid'];
-            }
+            
+            $paciente_id = $_POST['txtNomeid'];
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
@@ -1973,6 +1959,27 @@ class exametemp_model extends Model {
         } catch (Exception $exc) {
             return $paciente_id;
         }
+    }
+
+    function crianovopacienteespecialidade() {
+        if ($_POST['txtNomeid'] == '') {
+            if ($_POST['nascimento'] != '') {
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+            }
+            if ($_POST['idade'] != 0) {
+                $this->db->set('idade', $_POST['idade']);
+            }
+            $this->db->set('celular', $_POST['celular']);
+            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('telefone', $_POST['telefone']);
+//                $this->db->set('numero_sessao', $_POST['sessao']);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->insert('tb_paciente');
+            $paciente_id = $this->db->insert_id();
+        } else {
+            $paciente_id = $_POST['txtNomeid'];
+        }
+        return $paciente_id;
     }
 
     function reservarexametemp($agenda_exames_id, $paciente_id, $agenda_exames_nome_id, $data) {

@@ -417,11 +417,23 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteconsultatemp($agenda_exames_id) {
-        if (trim($_POST['txtNome']) == "" || trim($_POST['txtNomeid']) == "") {
+        if (trim($_POST['txtNome']) == "" && trim($_POST['txtNomeid']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
-        } else {
+        } 
+        elseif (trim($_POST['convenio']) == "0" ) {
+            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio informar o convênio.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+        } 
+        
+        elseif (trim($_POST['procedimento']) == "" ) {
+            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio informar o procedimento.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+        } 
+        else {
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
             $paciente_id = $this->exametemp->gravarpacienteconsultas($agenda_exames_id);
             if ($paciente_id != 0) {
@@ -456,7 +468,7 @@ class Exametemp extends BaseController {
                 $contaHorarios = count($this->exametemp->contadordisponibilidadefisioterapia($data['agenda_selecionada'][0]));
 
                 //tratando o numero que veio nas sessoes
-                if ($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 0) {
+                if ($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 'null' || $_POST['sessao'] == 0) {
                     $_POST['sessao'] = 1;
                 }
                 $_POST['sessao'] = (int) $_POST['sessao'];
@@ -493,6 +505,8 @@ class Exametemp extends BaseController {
                     $this->session->set_flashdata('message', $data['mensagem']);
                     redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
                 }
+
+                $_POST['txtNomeid'] = $this->exametemp->crianovopacienteespecialidade();
 
                 //marcando sessoes
                 if ($_POST['sessao'] == 1) {
