@@ -33,12 +33,9 @@
 | The $active_record variables lets you determine whether or not to load
 | the active record class
 */
-
 $active_group = "default";
 $active_record = TRUE;
-
 //$db['default']['hostname'] = "172.30.40.2";
-
 $db['default']['hostname'] = "localhost";
 //$db['default']['hostname'] = "192.168.254.10";
 //$db['default']['hostname'] = "172.30.116.22";
@@ -57,7 +54,5 @@ $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_general_ci";
-
-
 /* End of file database.php */
 /* Location: ./system/application/config/database.php */
