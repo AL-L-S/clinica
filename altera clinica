@@ -1111,3 +1111,10 @@ INSERT INTO ponto.tb_operador_empresas(
 SELECT o.operador_id, e.empresa_id
 FROM ponto.tb_operador o, ponto.tb_empresa e
 WHERE o.ativo = 't' and e.ativo = 't';
+
+
+-- Dia 14/12/2016
+
+ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN parcela_minima numeric(10,2);
+
+
