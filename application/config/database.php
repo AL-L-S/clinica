@@ -48,6 +48,7 @@ $db['default']['password'] = "123456";
 //$db['default']['username'] = "saude";
 //$db['default']['password'] = "saude";
 //$db['default']['database'] = "sgh";
+<<<<<<< HEAD
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
@@ -103,6 +104,8 @@ $db['default']['database'] = "clinicas";
 //$db['default']['database'] = "hcor";
 =======
 $db['default']['database'] = "hcor";
+=======
+>>>>>>> origin/master
 $db['default']['database'] = "hcor";
 $db['default']['dbdriver'] = "postgre";
 $db['default']['dbprefix'] = "ponto.";
