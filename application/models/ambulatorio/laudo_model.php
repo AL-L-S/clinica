@@ -1626,14 +1626,16 @@ class laudo_model extends Model {
             $revisor = $value->revisor;
             $laudo_status = $value->laudo_status;
             $this->db->set('texto', $laudo_texto);
-            $this->db->set('situacao', $laudo_status);
+            $this->db->set('assinatura', 't');
+            $this->db->set('situacao', 'FINALIZADO');
             $this->db->set('medico_parecer1', $medico);
             $this->db->set('medico_parecer2', $revisor);
             $this->db->set('data_atualizacao', $laudo_data_hora);
             $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);
             $this->db->update('tb_ambulatorio_laudo');
         }
-
+      
+        
         $this->db->set('laudo_status', 'LIDO');
         $this->db->where('exame_id', $agenda_exames_id);
         $this->db->update('tb_integracao_laudo');
