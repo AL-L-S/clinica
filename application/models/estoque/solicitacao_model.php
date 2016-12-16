@@ -36,11 +36,12 @@ class solicitacao_model extends Model {
     }
 
     function solicitacaonome($estoque_solicitacao_id) {
-        $this->db->select('ec.nome  , esc.data_fechamento , o.nome as liberou, op.nome as solicitante');
+        $this->db->select('ec.nome  , esc.data_fechamento , o.nome as liberou, op.nome as solicitante, es.data_cadastro');
         $this->db->from('tb_estoque_solicitacao_cliente esc');
         $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = esc.cliente_id');
         $this->db->join('tb_operador o', 'o.operador_id = esc.operador_fechamento', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = esc.operador_liberacao', 'left');
+        $this->db->join('tb_estoque_saida es', 'es.solicitacao_cliente_id = esc.estoque_solicitacao_setor_id', 'left');
         $this->db->where('esc.estoque_solicitacao_setor_id', $estoque_solicitacao_id);
         $return = $this->db->get();
         return $return->result();
@@ -123,7 +124,7 @@ class solicitacao_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function saidaprodutositemverificacao($produto_id) {
         $this->db->select('ep.estoque_entrada_id,
                             p.descricao,
@@ -168,12 +169,33 @@ class solicitacao_model extends Model {
     }
 
     function listarsaidaitem($estoque_solicitacao_id) {
+
+        $this->db->select('sc.data_fechamento , sc.data_cadastro , si.estoque_solicitacao_itens_id');
+        $this->db->from('tb_estoque_solicitacao_cliente sc');
+        $this->db->join('tb_estoque_solicitacao_itens si' , 'si.solicitacao_cliente_id = sc.estoque_solicitacao_setor_id' , 'left');
+//        $this->db->join('tb_estoque_saida es' , 'es.solicitacao_cliente_id = sc.estoque_solicitacao_setor_id' , 'left');
+        $this->db->where('estoque_solicitacao_setor_id', $estoque_solicitacao_id);
+        $retorno = $this->db->get()->result();
+
+//        var_dump($retorno[0]->estoque_solicitacao_itens_id , $estoque_solicitacao_id);die;
         
         $this->db->select('data_cadastro');
-        $this->db->from('tb_estoque_solicitacao_cliente');
-        $this->db->where('estoque_solicitacao_setor_id', $estoque_solicitacao_id);
-        $retorno = $this->db->get()->result();  
+        $this->db->from('tb_estoque_saida ');
+//        $this->db->join('tb_estoque_saida es' , 'es.solicitacao_cliente_id = sc.estoque_solicitacao_setor_id' , 'left');
+        $this->db->where('estoque_solicitacao_itens_id', $retorno[0]->estoque_solicitacao_itens_id);
+        $this->db->where('solicitacao_cliente_id', $estoque_solicitacao_id);
+        $retorno3 = $this->db->get()->result();
         
+//        var_dump($retorno3);die;
+//        
+//        $datateste = $retorno3[0]->data_cadastro;
+        
+        if (isset($retorno3[0]->data_cadastro)) {
+            $data = $retorno3[0]->data_cadastro;
+        } else {
+            $data = $retorno[0]->data_cadastro;
+        }
+
         $this->db->select(' ep.estoque_saida_id,
                             p.descricao,
                             ep.validade,
@@ -188,13 +210,12 @@ class solicitacao_model extends Model {
         $this->db->join('tb_estoque_solicitacao_itens si', 'si.estoque_solicitacao_itens_id = ep.estoque_solicitacao_itens_id', 'left');
         $this->db->where('ep.solicitacao_cliente_id', $estoque_solicitacao_id);
         $this->db->where('ep.ativo', 'true');
-        $this->db->where('s.data_cadastro <=', $retorno[0]->data_cadastro);
+        $this->db->where('s.data_cadastro <=', $data);
         $this->db->groupby('ep.estoque_saida_id, p.descricao, ep.validade , u.descricao , si.quantidade');
         $this->db->orderby('ep.estoque_saida_id');
         $return = $this->db->get();
         return $return->result();
     }
-
 
     function listaritemliberado($estoque_solicitacao_id) {
         $this->db->select('sc.estoque_solicitacao_setor_id,

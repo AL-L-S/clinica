@@ -70,7 +70,7 @@ class Solicitacao extends BaseController {
     }
 
     function imprimir($estoque_solicitacao_id) {
-
+        
         $data['estoque_solicitacao_id'] = $estoque_solicitacao_id;
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['nome'] = $this->solicitacao->solicitacaonome($estoque_solicitacao_id);

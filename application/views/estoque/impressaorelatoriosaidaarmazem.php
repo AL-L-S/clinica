@@ -81,7 +81,7 @@
                     <td class="tabela_teste"><font size="-2">Validade</td>
                     <td class="tabela_teste"><font size="-2">Nota</td>
                     <td class="tabela_teste"><font size="-2">Data</td>
-                    <td class="tabela_teste"><font size="-2">Data Entrada</td>
+                    <!--<td class="tabela_teste"><font size="-2">Data Entrada</td>-->
 
                 </tr>
             </thead>
@@ -115,7 +115,7 @@
                             <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>
                             <td><font size="-2"><?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
-                            <td style='text-align: right;'><font size="-2"><?= substr($item->data_entrada, 8, 2) . '/' . substr($item->data_entrada, 5, 2) . '/' . substr($item->data_entrada, 0, 4); ?></td>
+                            <!--<td style='text-align: right;'><font size="-2"><?= substr($item->data_entrada, 8, 2) . '/' . substr($item->data_entrada, 5, 2) . '/' . substr($item->data_entrada, 0, 4); ?></td>-->
 
                         </tr>
 
