@@ -187,9 +187,9 @@ class Laudo extends BaseController {
 //            }
 //        }        
 
-        $data['integracao'] = $this->laudo->listarlaudosintegracao($ambulatorio_laudo_id);
+        $data['integracao'] = $this->laudo->listarlaudosintegracao($agenda_exames_id);
         if (count($data['integracao']) > 0) {
-            $this->laudo->atualizacaolaudosintegracao($ambulatorio_laudo_id);
+            $this->laudo->atualizacaolaudosintegracao($agenda_exames_id);
         }
         $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
@@ -670,12 +670,12 @@ class Laudo extends BaseController {
                 $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table>";
             } else {
                 if ($data['laudo']['0']->medico_parecer1 == 929) {
-            
-                $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
+
+                    $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
             <tr><td><center>Ultrassonografista</td></tr>
             <tr><td><center>CRM" . $data['laudo']['0']->conselho . "/CBR01701</td></tr></table>";
-                
-                }else{$rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
+                } else {
+                    $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
             <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
                 }
             }
@@ -767,17 +767,16 @@ class Laudo extends BaseController {
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 8) {//RONALDO BARREIRA
-            
-              $medicoparecer = $data['laudo']['0']->medico_parecer1;
-        $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='90px' src='img/cabecalho.jpg'><center></td></tr>
+            $medicoparecer = $data['laudo']['0']->medico_parecer1;
+            $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='90px' src='img/cabecalho.jpg'><center></td></tr>
                    
                     <tr><td colspan='2'>Exame de:" . $data['laudo']['0']->paciente . "</td></tr>
                     <tr><td>Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "----Idade: " . $teste . "</td></tr>
                     <tr><td>Atendimento:" . $data['laudo']['0']->guia_id . "----Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr>
                     <tr><td>Convenio: " . $data['laudo']['0']->convenio . "----Solicitante: " . $data['laudo']['0']->solicitante . "<br></td></tr>
                     </table>";
-                if ($data['laudo']['0']->convenio_id >= 29 && $data['laudo']['0']->convenio_id <= 84) {
-                    $cabecalho = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 9pt;'>
+            if ($data['laudo']['0']->convenio_id >= 29 && $data['laudo']['0']->convenio_id <= 84) {
+                $cabecalho = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 9pt;'>
                     <tr><td width='70%' style='vertical-align: bottom; font-family: serif; font-size: 12pt;'><center><u>Clinica Radiol&oacute;gica Dr. Ronaldo Barreira</u><center></td><td rowspan='2'><center><img align = 'left'  width='140px' height='40px' src='img/sesi.jpg'><center></td></tr>
                     <tr><td ><center>Rua 24 de maio, 961-Fone: 3226-9536<center></td><td></td></tr>           
                     <tr><td colspan='2'>Exame de:" . $data['laudo']['0']->paciente . "</td></tr>
@@ -785,37 +784,37 @@ class Laudo extends BaseController {
                     <tr><td>Atendimento:" . $data['laudo']['0']->guia_id . "</td><td>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr>
                     <tr><td>Convenio: " . $data['laudo']['0']->convenio . "<td>Solicitante: " . substr($data['laudo']['0']->solicitante, 0, 15) . "<br></td></tr>
                     </table>";
-                }
-                if ($data['laudo']['0']->medico_parecer1 != 929) {
-                    $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
+            }
+            if ($data['laudo']['0']->medico_parecer1 != 929) {
+                $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
                     <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
-                }
-                if ($data['laudo']['0']->medico_parecer1 == 929 && $data['laudo']['0']->situacao != "FINALIZADO") {
-                    $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
+            }
+            if ($data['laudo']['0']->medico_parecer1 == 929 && $data['laudo']['0']->situacao != "FINALIZADO") {
+                $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
                     <tr><td><center>Radiologista - Leitor Qualificado Padrao OIT</td></tr>
                     <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
-                }
-                if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 929) {
-                    $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            }
+            if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 929) {
+                $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  width='200px' height='130px' src='upload/1ASSINATURAS/$medicoparecer.bmp'>";
-                }
-                if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 930) {
-                    $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            }
+            if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 930) {
+                $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <img  width='120px' height='80px' src='upload/1ASSINATURAS/$medicoparecer.bmp'>";
-                }
-                if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 2483) {
-                   $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            }
+            if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 2483) {
+                $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <img  width='120px' height='80px' src='upload/1ASSINATURAS/$medicoparecer.bmp'>";
-                }
-                $grupo = $data['laudo']['0']->grupo;
-                $filename = "laudo.pdf";
-                $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
-                $this->load->View('ambulatorio/impressaolaudo_2', $data);
-    }   
+            }
+            $grupo = $data['laudo']['0']->grupo;
+            $filename = "laudo.pdf";
+            $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape, $grupo);
+            $this->load->View('ambulatorio/impressaolaudo_2', $data);
+        }
         //////////////////////////////////////////////////////////////////////////////       
         else {//GERAL       //este item fica sempre por último
             $filename = "laudo.pdf";
@@ -960,7 +959,6 @@ class Laudo extends BaseController {
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
-
     }
 
     function impressaolaudo2via($ambulatorio_laudo_id, $exame_id) {
@@ -977,7 +975,6 @@ class Laudo extends BaseController {
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
-
     }
 
     function impressaoreceita($ambulatorio_laudo_id) {
@@ -1329,23 +1326,23 @@ class Laudo extends BaseController {
 
     function impressaoimagem($ambulatorio_laudo_id, $exame_id) {
         $this->load->plugin('mpdf');
-        $sort= $this->laudo->listarnomeimagem($exame_id);
-        
-        $sort_array = array ();
-        for ($i=0; $i<count($sort);$i++){
-            if(substr($sort[$i]->nome, 0, 7) == 'Foto 10' ){
-               $c = $i;
-               continue;
+        $sort = $this->laudo->listarnomeimagem($exame_id);
+
+        $sort_array = array();
+        for ($i = 0; $i < count($sort); $i++) {
+            if (substr($sort[$i]->nome, 0, 7) == 'Foto 10') {
+                $c = $i;
+                continue;
             }
-            $sort_array[] = $sort[$i]->nome;   
-        }    
-        if(isset($c)){
+            $sort_array[] = $sort[$i]->nome;
+        }
+        if (isset($c)) {
             $sort_array[] = $sort[$c]->nome;
         }
-        
-        $data['nomeimagem']= $sort_array;
 
-        
+        $data['nomeimagem'] = $sort_array;
+
+
         $data['empresa'] = $this->guia->listarempresa();
 
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
@@ -1429,8 +1426,8 @@ class Laudo extends BaseController {
             $filename = "laudo.pdf";
             $cabecalho = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame: Dr(a). " . $data['laudo']['0']->procedimento . "</td></tr></table>";
             $rodape = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table>";
-        } 
-        
+        }
+
 ////////////////////////////////////////////////////////////////////////////////        
         else {//GERAL  // este item deve ficar sempre por último
             $filename = "laudo.pdf";
@@ -1600,9 +1597,9 @@ class Laudo extends BaseController {
             $corpo = "";
             foreach ($listarexame as $item) {
 
-                if (!is_dir($origem . '/' . $convenio . '/' . $item->paciente_id)) {
-                    mkdir($origem . '/' . $convenio . '/' . $item->paciente_id);
-                    chmod($origem . '/' . $convenio . '/' . $item->paciente_id, 0777);
+                if (!is_dir($origem . '/' . $convenio)) {
+                    mkdir($origem . '/' . $convenio);
+                    chmod($origem . '/' . $convenio, 0777);
                 }
 
                 $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -1610,7 +1607,7 @@ class Laudo extends BaseController {
                                 <NJ_CodPaciente>" . $item->paciente_id . "</NJ_CodPaciente>
                                 <NJ_NomePaciente>" . $item->paciente . "</NJ_NomePaciente>
                                 <NJ_Laudo>" . $item->ambulatorio_laudo_id . "</NJ_Laudo>
-                                <NJ_LocalLaudo>/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . "</NJ_LocalLaudo>
+                                <NJ_LocalLaudo>/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "</NJ_LocalLaudo>
                                 <NJ_FormatoLaudo>RTF</NJ_FormatoLaudo>
                                 <NJ_NomeMedicoLaudante>" . $item->medicosolicitante . "</NJ_NomeMedicoLaudante>
                                 <NJ_Detalhes>";
@@ -1624,13 +1621,13 @@ class Laudo extends BaseController {
                 $rodape = "</NJ_Detalhes>
                        </NAJA>";
 
-                $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . "/" . $item->paciente_id . ".xml";
+                $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . ".xml";
                 $xml = $cabecalho . $corpo . $rodape;
                 $fp = fopen($nome, "w+");
                 fwrite($fp, $xml . "\n");
                 fclose($fp);
 
-                $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . "/" . $item->paciente_id . ".rtf";
+                $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . ".rtf";
                 $rtf = $texto;
                 $fp = fopen($nome, "w+");
                 fwrite($fp, $rtf . "\n");

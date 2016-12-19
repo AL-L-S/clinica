@@ -172,24 +172,24 @@ class solicitacao_model extends Model {
 
         $this->db->select('sc.data_fechamento , sc.data_cadastro , si.estoque_solicitacao_itens_id');
         $this->db->from('tb_estoque_solicitacao_cliente sc');
-        $this->db->join('tb_estoque_solicitacao_itens si' , 'si.solicitacao_cliente_id = sc.estoque_solicitacao_setor_id' , 'left');
+        $this->db->join('tb_estoque_solicitacao_itens si', 'si.solicitacao_cliente_id = sc.estoque_solicitacao_setor_id', 'left');
 //        $this->db->join('tb_estoque_saida es' , 'es.solicitacao_cliente_id = sc.estoque_solicitacao_setor_id' , 'left');
         $this->db->where('estoque_solicitacao_setor_id', $estoque_solicitacao_id);
         $retorno = $this->db->get()->result();
 
 //        var_dump($retorno[0]->estoque_solicitacao_itens_id , $estoque_solicitacao_id);die;
-        
+
         $this->db->select('data_cadastro');
         $this->db->from('tb_estoque_saida ');
 //        $this->db->join('tb_estoque_saida es' , 'es.solicitacao_cliente_id = sc.estoque_solicitacao_setor_id' , 'left');
         $this->db->where('estoque_solicitacao_itens_id', $retorno[0]->estoque_solicitacao_itens_id);
         $this->db->where('solicitacao_cliente_id', $estoque_solicitacao_id);
         $retorno3 = $this->db->get()->result();
-        
+
 //        var_dump($retorno3);die;
 //        
 //        $datateste = $retorno3[0]->data_cadastro;
-        
+
         if (isset($retorno3[0]->data_cadastro)) {
             $data = $retorno3[0]->data_cadastro;
         } else {
@@ -292,6 +292,13 @@ class solicitacao_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('estoque_solicitacao_setor_id', $estoque_solicitacao_setor_id);
         $this->db->update('tb_estoque_solicitacao_cliente');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('solicitacao_cliente_id', $estoque_solicitacao_setor_id);
+        $this->db->update('tb_estoque_saida');
+
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return -1;
