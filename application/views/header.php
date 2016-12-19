@@ -622,6 +622,7 @@ function debug($object) {
             //abrindo a janelas de batepapo
             jQuery(function(){
                 jQuery("#principalChat #usuarios_online ul li a").live('click', function () {
+                    console.log('teste');
                     var id = jQuery(this).attr("id");
                     jQuery(this).removeClass("comecarChat");
 

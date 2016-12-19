@@ -1774,8 +1774,20 @@ class exametemp_model extends Model {
             return -1;
         }
     }
+    
+    
+    function tipomultifuncaogeral($procedimento) {
+        $this->db->select('ag.tipo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+	$this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+        $this->db->where('pc.procedimento_convenio_id', $procedimento);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
-    function gravarpacienteexames($agenda_exames_id) {
+
+    function gravarpacienteexames($agenda_exames_id, $tipo = null) {
         try {
 
             $this->db->select('agenda_exames_id,
@@ -1844,6 +1856,9 @@ class exametemp_model extends Model {
                     $this->db->set('medico_agenda', $_POST['medico']);
                 }
                 $this->db->set('situacao', 'OK');
+                if($tipo != null){		
+			$this->db->set('tipo', $tipo);
+		}
                 $this->db->set('observacoes', $_POST['observacoes']);
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
                 $this->db->set('paciente_id', $paciente_id);

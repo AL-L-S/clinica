@@ -60,7 +60,10 @@ class Operador_model extends BaseModel {
         $this->db->from('tb_operador')
                 ->join('tb_perfil', 'tb_perfil.perfil_id = tb_operador.perfil_id', 'left')
                 ->select('"tb_operador".*, tb_perfil.nome as nomeperfil');
-
+        
+        $this->db->where('tb_operador.usuario IS NOT NULL');
+        $this->db->where('tb_operador.senha IS NOT NULL');
+        
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 // $this->db->like('tb_operador.nome', $args['nome'], 'left');

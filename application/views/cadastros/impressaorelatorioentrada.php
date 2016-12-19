@@ -26,7 +26,7 @@
     <?
     if ($relatorioentrada > 0) {
         ?>
-        <table >
+        <table border="1">
             <thead>
                 <tr>
                     <th width="100px;" class="tabela_header">Conta</th>
