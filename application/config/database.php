@@ -45,7 +45,6 @@ $db['default']['password'] = "123456";
 //$db['default']['username'] = "saude";
 //$db['default']['password'] = "saude";
 //$db['default']['database'] = "sgh";
-//$db['default']['database'] = "proimagemteste";
 $db['default']['database'] = "clinicas";
 $db['default']['dbdriver'] = "postgre";
 $db['default']['dbprefix'] = "ponto.";
