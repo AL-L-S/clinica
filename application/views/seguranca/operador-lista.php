@@ -23,7 +23,7 @@
                         <th class="tabela_header">Usu&aacute;rio</th>
                         <th class="tabela_header">Perfil</th>
                         <th class="tabela_header">Ativo</th>
-                        <th class="tabela_header" colspan="4" width="140px;">A&ccedil;&otilde;es</th>
+                        <th class="tabela_header" colspan="4" width="140px;"><center>A&ccedil;&otilde;es</center></th>
                     </tr>
                 </thead>
                 <?php

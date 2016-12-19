@@ -722,6 +722,7 @@ class caixa_model extends Model {
             $this->db->set('data', $datainicio);
             $this->db->set('conta', $_POST['contaentrada']);
             $this->db->set('entrada_id', $entrada_id);
+            $this->db->set('saida_id', $saida_id);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saldo');
@@ -871,7 +872,6 @@ class caixa_model extends Model {
 
     function excluirsaida($saida) {
 
-
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('ativo', 'f');
@@ -879,12 +879,20 @@ class caixa_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('saida_id', $saida);
         $this->db->update('tb_saldo');
-
+        
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('saidas_id', $saida);
         $this->db->update('tb_saidas');
+        
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('saidas_id', $saida);
+        $this->db->update('tb_saidas');
+        
+        
     }
 
     function excluirsangria($saida) {

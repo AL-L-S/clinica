@@ -405,7 +405,8 @@ class Exametemp extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
         } else {
-            $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id);
+            $tipo = $this->exametemp->tipomultifuncaogeral($_POST['procedimento1']);
+            $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id, $tipo[0]->tipo);
             if ($paciente_id != 0) {
                 $this->carregarpacientetempgeral($paciente_id);
             } else {

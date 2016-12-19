@@ -37,7 +37,7 @@
                 <tbody>
                     <?php
                         if ($limit != "todos") {
-                            $lista = $this->fornecedor->listar($_GET)->limit($limit, $pagina)->get()->result();
+                            $lista = $this->fornecedor->listar($_GET)->orderby('razao_social')->limit($limit, $pagina)->get()->result();
                         } else {
                             $lista = $this->fornecedor->listar($_GET)->get()->result();
                         }
