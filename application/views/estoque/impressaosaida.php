@@ -4,11 +4,11 @@
 <center><table>
         <tbody>
         <tr>
-                <td colspan="2"  ><font size = -1>SETOR : <? echo $nome[0]->nome ?>  </font></td>
+                <td colspan="2"  ><font size = -1>SETOR : <? echo $nome[0]->nome ?> - <? echo $estoque_solicitacao_id?> </font></td>
                 <td ><font size = -1><center></center></font></td>
         <td width="30px">&nbsp;</td>
         <tr>
-            <td colspan="2"  ><font size = -1>DATA SOL.: <? echo date('d/m/y', strtotime(substr($nome[0]->data_fechamento, 0, 10))); ?> </font></td>
+            <td colspan="2"  ><font size = -1>DATA SAIDA.: <? echo date('d/m/y', strtotime(substr($nome[0]->data_cadastro, 0, 10))); ?> </font></td>
             <td ><font size = -1><center></center></font></td>
         <td width="30px">&nbsp;</td>
         <tr>
@@ -30,7 +30,7 @@
                 <td class="tabela_teste"><font size="-2">SAÍDA</td>
     <!--            <td class="tabela_teste"><font size="-2">SALDO/ESTOQUE</td>-->
                 <td class="tabela_teste"><font size="-2">ESTOQUE ATUAL</td>
-                <td class="tabela_teste"><font size="-2">Validade</th>
+<!--                <td class="tabela_teste"><font size="-2">Validade</th>-->
             </tr>
         </thead>
         <tbody>
@@ -42,7 +42,7 @@
                     <td><font size="-2"><?= utf8_decode($item->quantidade); ?></td>
                     <td><font size="-2"><?= utf8_decode($item->saldo); ?></td>
 <!--                    <td><font size="-2"></td>-->
-                    <td><font size="-2"><?= date('d/m/y', strtotime(substr($item->validade, 0, 10))); ?></td>
+<!--                    <td><font size="-2"><?= date('d/m/y', strtotime(substr($item->validade, 0, 10))); ?></td>-->
                 </tr>
             <? endforeach; ?>
 

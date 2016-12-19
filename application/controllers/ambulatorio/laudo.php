@@ -185,11 +185,11 @@ class Laudo extends BaseController {
 //                        copy($local, $destino);
 //                }
 //            }
-//        }
+//        }        
 
-        $data['integracao'] = $this->laudo->listarlaudosintegracao($agenda_exames_id);
+        $data['integracao'] = $this->laudo->listarlaudosintegracao($ambulatorio_laudo_id);
         if (count($data['integracao']) > 0) {
-            $this->laudo->atualizacaolaudosintegracao($agenda_exames_id);
+            $this->laudo->atualizacaolaudosintegracao($ambulatorio_laudo_id);
         }
         $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
