@@ -168,12 +168,17 @@ class solicitacao_model extends Model {
     }
 
     function listarsaidaitem($estoque_solicitacao_id) {
+         $this->db->select('data_cadastro');
+        $this->db->from('tb_estoque_solicitacao_cliente');
+        $this->db->where('estoque_solicitacao_setor_id', $estoque_solicitacao_id);
+        $retorno = $this->db->get()->result(); 
+       
         $this->db->select(' ep.estoque_saida_id,
                             p.descricao,
                             ep.validade,
                             ep.quantidade,
                             u.descricao as unidade,
-                            sum(s.quantidade) as saldo,                            
+                            sum(s.quantidade) as saldo,                           
                             si.quantidade as quantidade_solicitada');
         $this->db->from('tb_estoque_saida ep');
         $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
@@ -182,6 +187,7 @@ class solicitacao_model extends Model {
         $this->db->join('tb_estoque_solicitacao_itens si', 'si.estoque_solicitacao_itens_id = ep.estoque_solicitacao_itens_id', 'left');
         $this->db->where('ep.solicitacao_cliente_id', $estoque_solicitacao_id);
         $this->db->where('ep.ativo', 'true');
+        $this->db->where('s.data_cadastro <=', $retorno[0]->data_cadastro);
         $this->db->groupby('ep.estoque_saida_id, p.descricao, ep.validade , u.descricao , si.quantidade');
         $this->db->orderby('ep.estoque_saida_id');
         $return = $this->db->get();
