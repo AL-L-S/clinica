@@ -2047,8 +2047,9 @@ class exame_model extends Model {
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where('ae.tipo', 'EXAME');
+        $this->db->where('ag.tipo', 'EXAME');
 //        $this->db->where('pt.grupo !=', 'CONSULTA');
 //        $this->db->where('pt.grupo !=', 'LABORATORIAL');
 //        $this->db->where('ae.confirmado', 'true');
@@ -2076,8 +2077,7 @@ class exame_model extends Model {
     }
 
     function listarmultifuncao2medico($args = array()) {
-
-
+        
         $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
         $dataAtual = date("Y-m-d");
