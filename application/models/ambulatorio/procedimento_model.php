@@ -182,6 +182,18 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarprocedimentoautocomplete($parametro = null) {
+        $this->db->select('procedimento_tuss_id,
+                           nome');
+        $this->db->from('tb_procedimento_tuss');
+        $this->db->where('ativo', 'true');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarclassificacaotuss() {
         $this->db->select('tuss_classificacao_id,

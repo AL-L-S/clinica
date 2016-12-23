@@ -204,6 +204,30 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarpacientegastos($exames_id) {
+        $this->db->select('p.nome, p.paciente_id, p.sexo, p.nascimento, p.celular');
+        $this->db->from('tb_exames e');
+        $this->db->join('tb_paciente p', 'p.paciente_id = e.paciente_id', 'left');
+        $this->db->where('exames_id', $exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarprodutossalagastos() {
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->select('p.estoque_produto_id as produto_id, p.descricao, p.procedimento_id');
+        $this->db->from('tb_estoque_operador_cliente oc');
+        $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = oc.cliente_id');
+        $this->db->join('tb_estoque_menu em', 'em.estoque_menu_id = ec.menu_id');
+        $this->db->join('tb_estoque_menu_produtos emp', 'emp.menu_id = em.estoque_menu_id');
+        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = emp.produto');
+        $this->db->where('oc.operador_id', $operador_id);
+        $this->db->where('oc.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarsalaagenda($agenda_exames_id) {
         $this->db->select('ae.agenda_exames_nome_id, ag.tipo');
         $this->db->from('tb_agenda_exames ae');
@@ -3139,6 +3163,33 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listargastodesalaguia($exame_id) {
+        $this->db->select('guia_id');
+        $this->db->from('tb_exames');
+        $this->db->where('exames_id', $exame_id);
+        $return = $this->db->get();
+        $return = $return->result();
+        return $return[0]->guia_id;
+    }
+
+    function listaagendaexames($exame_id) {
+        $this->db->select('ae.tipo, , ae.medico_agenda');
+        $this->db->from('tb_exames e');
+        $this->db->join("tb_agenda_exames ae", "ae.agenda_exames_id = e.agenda_exames_id", "left");
+        $this->db->where('e.exames_id', $exame_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listaprocedimento($procedimento_id) {
+        $this->db->select('pc.procedimento_convenio_id, pc.valortotal, pt.*');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->join("tb_procedimento_convenio pc", "pc.procedimento_tuss_id = pt.procedimento_tuss_id", "left");
+        $this->db->where('pt.procedimento_tuss_id', $procedimento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function excluir($procedimento_tuss_id) {
 
         $horario = date("Y-m-d H:i:s");
@@ -3222,6 +3273,72 @@ class exame_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function gravargastodesala() {
+            $horario = date('Y-m-d');
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('guia_id', $_POST['txtguia_id']);
+            $this->db->set('produto_id', $_POST['produto_id']);
+            $this->db->set('quantidade', $_POST['txtqtde']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_ambulatorio_gasto_sala');
+    }
+
+    function faturargastodesala($dados) {
+            $horario = date('Y-m-d');
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+            $hora = date("H:i:s");
+            $data = date("Y-m-d");
+            
+            $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id );
+            $this->db->set('valor', $dados->valortotal );
+            $this->db->set('valor1', $dados->valortotal);
+            $this->db->set('valor_total', $dados->valortotal);
+            $this->db->set('quantidade', $_POST['txtqtde']);
+//            $this->db->set('autorizacao', $_POST['autorizacao1']);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('confirmado', 't');
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('ativo', 'f');
+            $this->db->set('realizada', 't');
+            if ($_POST['medicoagenda'] != "") {
+                $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+                $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+            }
+            $this->db->set('faturado', 't');
+            $this->db->set('situacao', 'OK');
+            $this->db->set('guia_id', $_POST['txtguia_id']);
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+//            $this->db->set('data', $_POST['txtdata']);
+            $this->db->set('data_autorizacao', $horario);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('data_realizacao', $horario);
+            $this->db->set('operador_realizacao', $operador_id);
+            $this->db->set('data_faturamento', $horario);
+            $this->db->set('operador_faturamento', $operador_id);
+            $this->db->set('operador_autorizacao', $operador_id);
+            $this->db->insert('tb_agenda_exames');
+            $agenda_exames_id = $this->db->insert_id();
+            
+
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->set('medico_realizador', $_POST['medicoagenda']);
+            $this->db->set('situacao', 'FINALIZADO');
+            $this->db->set('guia_id', $_POST['txtguia_id']);
+            $this->db->set('agenda_exames_id', $agenda_exames_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_exames');
+            $exames_id = $this->db->insert_id();
     }
 
     function contadorexames() {

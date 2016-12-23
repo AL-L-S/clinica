@@ -371,10 +371,14 @@ class Guia extends BaseController {
         }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////        
-        elseif ($data['empresa'][0]->impressao_tipo == 14) {//MedLab
+         elseif ($data['empresa'][0]->impressao_tipo == 14) {//MedLab
             if ($grupo == "CONSULTA") {
                 $this->load->View('ambulatorio/impressaofichamedlabrecibo', $data);
-            } else {
+            } 
+            elseif ($grupo == "RM") {
+                $this->fichaxml($paciente_id, $guia_id, $exames_id);
+            }
+            else {
                 $this->load->View('ambulatorio/impressaofichamedlab', $data);
             }
         }

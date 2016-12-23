@@ -1101,7 +1101,7 @@ CREATE TABLE ponto.tb_ambulatorio_receituario_medicamento_unidade
 );
 
 
-atualiza  08/12/16
+-- atualiza  08/12/16
 
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN cartao boolean;
 
@@ -1118,3 +1118,24 @@ WHERE o.ativo = 't' and e.ativo = 't';
 ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN parcela_minima numeric(10,2);
 
 
+-- Dia 22/12/2016
+
+ALTER TABLE ponto.tb_estoque_produto ADD COLUMN procedimento_id integer;
+ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN sala_id integer;
+
+
+-- Dia 23/12/2016
+
+CREATE TABLE ponto.tb_ambulatorio_gasto_sala
+(
+  ambulatorio_gasto_sala_id serial NOT NULL,
+  guia_id integer,
+  produto_id integer,
+  quantidade integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_ambulatorio_gasto_sala_pkey PRIMARY KEY (ambulatorio_gasto_sala_id)
+);

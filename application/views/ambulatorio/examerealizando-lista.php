@@ -77,10 +77,12 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->tecnico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
-                                        <a href="<?= base_url() ?>ambulatorio/exame/anexarimagem/<?= $item->exames_id ?>/<?= $item->sala_id ?>">
-                                            Imagem
-                                        </a></div>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> 
+                                    <div class="bt_link" style="width: 85px">                                 
+                                        <a style="width: 85px" href="<?= base_url() ?>ambulatorio/exame/anexarimagem/<?= $item->exames_id ?>/<?= $item->sala_id ?>">
+                                            Atendimento
+                                        </a>
+                                    </div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/finalizarexame/<?= $item->exames_id ?>/<?= $item->sala_id ?> ">

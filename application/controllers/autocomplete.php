@@ -77,6 +77,21 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoproduto() {
+
+        if (isset($_GET['procedimento'])) {
+            $result = $this->procedimento->listarprocedimentoautocomplete($_GET['procedimento']);
+        } else {
+            $result = $this->procedimento->listarprocedimentoautocomplete();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nome;
+            $retorno['id'] = $item->procedimento_tuss_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function procedimentoconveniomedico() {
 
         if (isset($_GET['convenio1'])) {
