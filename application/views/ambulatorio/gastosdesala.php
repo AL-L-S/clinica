@@ -1,9 +1,7 @@
 
 <meta charset="utf-8">
-<link href="<?= base_url() ?>css/estilo.css" rel="stylesheet" type="text/css" />
-<link href="<?= base_url() ?>css/form.css" rel="stylesheet" type="text/css" />
 
-<div> <!-- Inicio da DIV content -->
+<div id="conteudo"> <!-- Inicio da DIV content -->
     <form name="form_gastodesala" id="form_gastodesala" action="<?= base_url() ?>ambulatorio/exame/gravargastodesala" method="post">
         <fieldset>
             <legend>Paciente</legend>
@@ -47,14 +45,14 @@
                 </tr>
                 <tr id="gastos">
                     <td> 
-                        <select name="produto_id" id="produto_id" class="size4" style="width: 250px">
+                        <select name="produto_id" id="produto_id" class="size4" style="width: 250px" required="true">
                             <option value="">SELECIONE</option>
 <? foreach ($produtos as $value) : ?>
                             <option value="<?= $value->produto_id; ?>" onclick="procedimento_id(<?= $value->procedimento_id; ?>)"><?php echo $value->descricao; ?></option>
 <? endforeach; ?>
                         </select> 
                     </td>
-                    <td> <input style="width: 100px" type="number" name="txtqtde" min="1"/> </td>
+                    <td> <input style="width: 100px" type="number" name="txtqtde" min="1" required="true"/> </td>
                     
                 </tr>
                 <tr>
@@ -63,10 +61,9 @@
             </table>
         </fieldset>
 
-    </form>
-    <!--<fieldset>
+    <fieldset>
 <?
-//    if ($contador > 0) {
+    if (count($produtos_gastos) > 0) {
 ?>
             <table id="table_agente_toxico" border="0">
                 <thead>
@@ -74,38 +71,44 @@
                     <tr>
                         <th class="tabela_header">Produto</th>
                         <th class="tabela_header">Qtde</th>
+                        <!--<th class="tabela_header">Faturado</th>-->
                         <th class="tabela_header">&nbsp;</th>
                     </tr>
                 </thead>
+                <tbody>
     <?
-//            $estilo_linha = "tabela_content01";
-//            foreach ($produtos as $item) {
-//                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+            $estilo_linha = "tabela_content01";
+            foreach ($produtos_gastos as $item) {
+                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
     ?>
-                    <tbody>
+
                         <tr>
-                            <td class="<?php // echo $estilo_linha;  ?>"><? // $item->descricao;  ?></td>
-                            <td class="<?php // echo $estilo_linha;  ?>"><? // $item->quantidade;  ?></td>
-                            <td class="<?php // echo $estilo_linha;  ?>" width="100px;">
-                                <a href="<?= base_url() ?>estoque/solicitacao/excluirsolicitacao/<? // $item->estoque_solicitacao_itens_id;  ?>/<?= $estoque_solicitacao_id; ?>" class="delete">
+                            <td class="<?php echo $estilo_linha;  ?>" width="450px;"><center><? echo $item->descricao;  ?></center></td>
+                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->quantidade;  ?></center></td>
+                            <td class="<?php echo $estilo_linha;  ?>" width="100px;">
+                                <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>" class="delete">
                                 </a>
-    
                             </td>
                         </tr>
     
-                    </tbody>
-<?
-//            }
-//        }
-?>
+                    
+        <?
+            }
+                ?>
+                </tbody>
+            <?    
+    }
+ ?>
             <tfoot>
                 <tr>
-                    <th class="tabela_footer" colspan="4">
+                    <th class="tabela_footer" colspan="3">
                     </th>
                 </tr>
             </tfoot>
         </table> 
-    </fieldset>-->
+    </fieldset>
+</form>
+
 </div> <!-- Final da DIV content -->
 
 <style>
@@ -121,7 +124,13 @@
     legend{
         font-size: 15px;
     }
+    #conteudo{
+        overflow-y: auto;
+    }
 </style>
+
+<link href="<?= base_url() ?>css/estilo.css" rel="stylesheet" type="text/css" />
+<link href="<?= base_url() ?>css/form.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
@@ -134,8 +143,19 @@
                                     function procedimento_id(id) {
                                         if(id != undefined){
                                             $('#procedimento_id').val(id);
-                                            var faturar = '<td> <input type="checkbox" name="faturar"/> <label>Faturar</label></td>';
-                                            $('#gastos').append(faturar);
+                                            
+                                            var verifica = $("#faturar").length;
+                                            if (verifica == 0){
+                                                var faturar = '<td> <input type="checkbox" name="faturar" id="faturar"/> <label>Faturar</label></td>';
+                                                $('#gastos').append(faturar);
+                                            }
                                         } 
+                                        else{
+                                            var verifica = $("#faturar").length;
+                                            if (verifica == 1){
+                                                $("#faturar").parent().remove();
+//                                                console.log(i);
+                                            }
+                                        }
                                     }
 </script>

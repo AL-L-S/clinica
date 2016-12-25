@@ -49,7 +49,7 @@
         <h3><a href="#">Gastos de Sala</a></h3>
         <div >
             <div class="bt_link">
-                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/gastosdesala/$exame_id"?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">
+                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/gastosdesala/$exame_id"?>', '_blank', 'toolbar=no,Location=no,menubar=no,scrollbars=yes,width=800,height=600');">
                     Inserir
                 </a>
             </div

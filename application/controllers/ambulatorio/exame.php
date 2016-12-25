@@ -622,10 +622,8 @@ class Exame extends BaseController {
     function gastosdesala($exames_id) {
         $data['paciente']  = $this->exame->listarpacientegastos($exames_id);
         $data['produtos']  = $this->exame->listarprodutossalagastos();
-        $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);  
-        die('ainda não esta pronto');
-        //falta somente mostrar os produtos que ja foram usados
-        $data['produtos'] = $this->exame->listargastodesalaguia($exames_id);  
+        $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
+        $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']); 
         $data['exames_id'] = $exames_id;
         $this->load->View('ambulatorio/gastosdesala', $data);
     }
@@ -642,6 +640,13 @@ class Exame extends BaseController {
             $this->exame->faturargastodesala($data['procedimento'][0]);
         }
         redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
+//        $this->gastosdesala($exame_id);
+    }
+    
+    function excluirgastodesala($gasto_id, $exame_id) {
+        $this->exame->excluirgastodesala($gasto_id);
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
+//        $this->gastosdesala($exame_id);
     }
 
     function anexarimagem($exame_id, $sala_id) {
