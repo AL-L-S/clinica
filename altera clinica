@@ -1139,3 +1139,34 @@ CREATE TABLE ponto.tb_ambulatorio_gasto_sala
   ativo boolean DEFAULT true,
   CONSTRAINT tb_ambulatorio_gasto_sala_pkey PRIMARY KEY (ambulatorio_gasto_sala_id)
 );
+
+
+-- Dia 26/12/2016  Correcao no Centro Cirurgico
+
+DROP TABLE ponto.tb_solicitacao_cirurgia;
+
+CREATE TABLE ponto.tb_solicitacao_cirurgia
+(
+  solicitacao_cirurgia_id serial NOT NULL,
+  internacao_id integer,
+  procedimento_id integer,
+  data_prevista date,
+  data_realizou date,
+  medico_agendado integer,
+  medico_relizou integer,
+  sala_agendada integer,
+  sala_realizou integer,
+  paciente_id integer,
+  autorizado boolean DEFAULT false,
+  excluido boolean NOT NULL DEFAULT false,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_autorizacao timestamp without time zone,
+  operador_autorizacao integer,
+  
+
+  CONSTRAINT tb_solicitacao_cirurgia_pkey PRIMARY KEY (solicitacao_cirurgia_id )
+);
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN medico_solicitante integer;

@@ -226,6 +226,11 @@
                         </div>
                         <hr>
                         <button type="submit" name="btnEnviar">Salvar</button>
+                        <div class="bt_link_new" style="display: inline-block">
+                            <a onclick="javascript:window.open('<?= base_url() ?>centrocirurgico/centrocirurgico/novasolicitacaoconsulta/<?= $exame_id ?>');" >
+                                Solicitar Cirurgia
+                            </a>
+                        </div>
                     </fieldset>
                     <fieldset>
                         <legend><b><font size="3" color="red">Historico de consultas</font></b></legend>
