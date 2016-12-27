@@ -39,7 +39,7 @@ class contasreceber_model extends Model {
         $this->db->where('fc.ativo', 'true');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = fc.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor cd', 'cd.financeiro_credor_devedor_id = fc.devedor', 'left');
-                $this->db->join('tb_financeiro_classe f', 'f.descricao = fc.classe', 'left');
+        $this->db->join('tb_financeiro_classe f', 'f.descricao = fc.classe', 'left');
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('fc.devedor', $args['empresa']);
         }
@@ -91,8 +91,8 @@ class contasreceber_model extends Model {
         if ($_POST['conta'] != 0) {
             $this->db->where('fc.conta', $_POST['conta']);
         }
-        $this->db->where('fc.data >=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where('fc.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where('fc.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('fc.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('fc.data');
         $this->db->orderby('fcd.razao_social');
         $return = $this->db->get();
@@ -114,8 +114,8 @@ class contasreceber_model extends Model {
         if ($_POST['conta'] != 0) {
             $this->db->where('fc.conta', $_POST['conta']);
         }
-        $this->db->where('fc.data >=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) ));
-        $this->db->where('fc.data <=', date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) ));
+        $this->db->where('fc.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('fc.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $return = $this->db->count_all_results();
         return $return;
     }
@@ -171,6 +171,7 @@ class contasreceber_model extends Model {
             $this->db->set('data', $_POST['inicio']);
             $this->db->set('nome', $_POST['devedor']);
             $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('classe', $_POST['classe']);
             $this->db->set('conta', $_POST['conta_id']);
             $this->db->set('observacao', $_POST['Observacao']);
             $this->db->set('data_cadastro', $horario);

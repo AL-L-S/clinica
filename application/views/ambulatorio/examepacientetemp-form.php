@@ -14,6 +14,10 @@
                 <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>"/>
             </div>
             <div>
+                <label>Idade</label>
+                <input type="text" name="idade2" id="idade2" class="texto01" readonly/>
+            </div>
+            <div>
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= @$obj->_idade; ?>"  />
 
             </div>
@@ -117,9 +121,9 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/vizualizarpreparo/<?= $item->tuss_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                width=800,height=400');"><?= $item->procedimento; ?></a></td>
+                                                                                width=800,height=400');"><?= $item->procedimento; ?></a></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                                                                                width=500,height=230');">=><?= $item->observacoes; ?></a></td>
 
                         <? if (empty($faltou)) { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
@@ -269,5 +273,14 @@
                             }
                         });
                     });
+
+                    function calculoIdade() {
+                        var data = document.getElementById("txtNascimento").value;
+                        var ano = data.substring(6, 12);
+                        var idade = new Date().getFullYear() - ano;
+                        document.getElementById("idade2").value = idade;
+                    }
+
+                    calculoIdade();
 
 </script>

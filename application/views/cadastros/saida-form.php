@@ -39,8 +39,10 @@
                         <select name="tipo" id="tipo" class="size4">
                             <option value="">Selecione</option>
                             <? foreach ($tipo as $value) : ?>
-                                <option value="<?= $value->tipo_entradas_saida_id; ?>"><?php echo $value->descricao; ?></option>
-                            <? endforeach; ?>
+                                <option value="<?= $value->tipo_entradas_saida_id; ?>"
+                                <? if ($value->descricao == @$obj->_tipo):echo'selected';
+                                endif; ?>><?php echo $value->descricao; ?></option>
+<? endforeach; ?>
                         </select>
                     </dd>
                     <dt>
@@ -49,9 +51,10 @@
                     <dd>
                         <select name="classe" id="classe" class="size4">
                             <option value="">Selecione</option>
-                            <? foreach ($classe as $value) : ?>
+                                    <? foreach ($classe as $value) : ?>
                                 <option value="<?= $value->descricao; ?>"
-                                      <?  if($value->descricao == @$obj->_classe):echo'selected'; endif; ?>><?php echo $value->descricao; ?></option>
+                                        <? if ($value->descricao == @$obj->_classe):echo'selected';
+                                        endif; ?>><?php echo $value->descricao; ?></option>
 <? endforeach; ?>
                         </select>
                     </dd>
@@ -90,7 +93,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-        $(function () {
+    $(function () {
         $('#tipo').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();

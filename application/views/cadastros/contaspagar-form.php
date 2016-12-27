@@ -44,8 +44,12 @@
                         <select name="tipo" id="tipo" class="size4">
                             <option value="">Selecione</option>
                             <? foreach ($tipo as $value) : ?>
-                                <option value="<?= $value->tipo_entradas_saida_id; ?>"><?php echo $value->descricao; ?></option>
-                            <? endforeach; ?>
+                                <option value="<?= $value->tipo_entradas_saida_id; ?>"                            <?
+                                if ($value->descricao == @$obj->_tipo):echo'selected';
+                                endif;
+                                ?>
+                                        ><?php echo $value->descricao; ?></option>
+                                    <? endforeach; ?>
                         </select>
                     </dd>
                     <dt>

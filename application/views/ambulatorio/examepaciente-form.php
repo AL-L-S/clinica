@@ -7,13 +7,17 @@
             <div>
                 <label>Nome</label>
                 <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
-                <input type="text" id="txtNome" name="txtNome" class="texto10"/>
+                <input type="text" id="txtNome" name="txtNome" class="texto10" onblur="calculoIdade(document.getElementById('nascimento').value)"  />
                 <input type="hidden" id="agendaid" name="agendaid" class="texto_id" value="<?= $agenda_exames_id; ?>"/>
             </div>
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" class="texto02" onkeypress="mascara3(this)" type="text" maxlength="10"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" onkeypress="mascara3(this)" type="text" maxlength="10" onblur="calculoIdade(this.value)"/>
+            </div>
+            <div>
+                <label>Idade</label>
+                <input type="text" name="idade2" id="idade2" class="texto01" readonly/>
             </div>
             <div>
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask"/>
@@ -243,6 +247,13 @@
 
 
                         }
+                    }
+
+                    function calculoIdade() {
+                        var data = document.getElementById("nascimento").value;
+                        var ano = data.substring(6, 12);
+                        var idade = new Date().getFullYear() - ano;
+                        document.getElementById("idade2").value = idade;
                     }
 
 </script>

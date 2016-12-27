@@ -168,7 +168,7 @@
                             }
                         });
                     });
-
+                    
                     jQuery("#txtTelefone").mask("(99) 9999-9999");
                     jQuery("#txtCelular").mask("(99) 99999-9999");
                     jQuery("#nascimento").mask("99/99/9999");

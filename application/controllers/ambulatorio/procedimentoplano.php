@@ -16,6 +16,7 @@ class Procedimentoplano extends BaseController {
     function Procedimentoplano() {
         parent::Controller();
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
+        $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('seguranca/operador_model', 'operador_m');
@@ -61,8 +62,15 @@ class Procedimentoplano extends BaseController {
 
     function carregarprocedimentoformapagamento($procedimento_convenio_id) {
         $data["procedimento_convenio_id"] = $procedimento_convenio_id;
-         $data["formapagamento_grupo"] = $this->formapagamento->listargrupos();
+        $data["formapagamento_grupo"] = $this->formapagamento->listargrupos();
         $this->loadView('ambulatorio/procedimentoformapagamento-form', $data);
+    }
+
+    function orcamento() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['procedimento'] = $this->procedimento->listarprocedimentos();
+//        $data['exames'] = $this->exametemp->listarorcamentos();
+        $this->loadView('ambulatorio/orcamentogeral-form_1', $data);
     }
 
     function procedimentopercentualmedico() {

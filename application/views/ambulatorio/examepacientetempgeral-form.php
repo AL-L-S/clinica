@@ -16,6 +16,10 @@
                 <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>"/>
             </div>
             <div>
+                <label>Idade</label>
+                <input type="text" name="idade2" id="idade2" class="texto01" readonly/>
+            </div>
+            <div>
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= @$obj->_idade; ?>"  />
 
             </div>
@@ -106,11 +110,11 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
-                        <?if (empty($faltou)) { ?>
-                        <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                <a href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatempgeral/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
-                                    excluir</a></td></div>
+                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                            <? if (empty($faltou)) { ?>
+                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatempgeral/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
+                                        excluir</a></td></div>
                         <? } ?>    
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/reservartempgeral/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>/<?= $item->data; ?>">
@@ -154,12 +158,11 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-<?php 
-    if ($this->session->flashdata('message') != ''): ?>
-        alert("<? echo $this->session->flashdata('message') ?>");
+<?php if ($this->session->flashdata('message') != ''): ?>
+                        alert("<? echo $this->session->flashdata('message') ?>");
 <? endif; ?>
 
-                    $(function() {
+                    $(function () {
                         $("#data_ficha").datepicker({
                             autosize: true,
                             changeYear: true,
@@ -171,11 +174,11 @@
                         });
                     });
 
-                    $(function() {
-                        $('#exame').change(function() {
+                    $(function () {
+                        $('#exame').change(function () {
                             if ($(this).val()) {
                                 $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatoriogeral', {exame: $(this).val(), teste: $("#data_ficha").val()}, function(j) {
+                                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatoriogeral', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
                                     var options = '<option value=""></option>';
                                     for (var i = 0; i < j.length; i++) {
                                         options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '</option>';
@@ -188,11 +191,11 @@
                             }
                         });
                     });
-                    $(function() {
-                        $('#exame').change(function() {
+                    $(function () {
+                        $('#exame').change(function () {
                             if ($(this).val()) {
                                 $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function(j) {
+                                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                     var options = '<option value=""></option>';
                                     for (var i = 0; i < j.length; i++) {
                                         options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -207,11 +210,11 @@
                     });
 
 
-                    $(function() {
-                        $('#convenio1').change(function() {
+                    $(function () {
+                        $('#convenio1').change(function () {
                             if ($(this).val()) {
                                 $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $(this).val(), ajax: true}, function(j) {
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $(this).val(), ajax: true}, function (j) {
                                     options = '<option value=""></option>';
                                     for (var c = 0; c < j.length; c++) {
                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -249,12 +252,12 @@
 
 
 
-                    $(function() {
+                    $(function () {
                         $("#accordion").accordion();
                     });
 
 
-                    $(document).ready(function() {
+                    $(document).ready(function () {
                         jQuery('#form_exametemp').validate({
                             rules: {
                                 txtNome: {
@@ -294,5 +297,15 @@
                             }
                         });
                     });
+
+
+                    function calculoIdade() {
+                        var data = document.getElementById("txtNascimento").value;
+                        var ano = data.substring(6, 12);
+                        var idade = new Date().getFullYear() - ano;
+                        document.getElementById("idade2").value = idade;
+                    }
+                    
+                    calculoIdade();
 
 </script>

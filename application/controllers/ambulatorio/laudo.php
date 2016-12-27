@@ -576,13 +576,13 @@ class Laudo extends BaseController {
         }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-        elseif ($data['empresa'][0]->impressao_tipo == 10) {//CDC
-            $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td width='900px'><center><img align = 'center'  width='180px' height='80px' src='img/logo2.png'></center></td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-            $rodape = "<table><tr><td>Rua Juiz Renato Silva, 20 - Papicu | Fone (85)3234-3907</td></tr></table>";
-            $html = $this->load->view('ambulatorio/impressaolaudo_7', $data, true);
+        elseif ($data['empresa'][0]->impressao_tipo == 10) {//CLINICA MED
+     $filename = "laudo.pdf";
+            $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+            $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+            $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
-            $this->load->View('ambulatorio/impressaolaudo_7', $data);
+            $this->load->View('ambulatorio/impressaolaudo_1', $data);
         }
 
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////       
@@ -1643,7 +1643,7 @@ class Laudo extends BaseController {
         redirect(base_url() . "ambulatorio/laudo/faturamentolaudoxml", $data);
     }
 
-    function gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id) {
+     function gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id) {
         $this->load->plugin('mpdf');
 
         $listarexame = $this->laudo->listarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id);
@@ -1665,23 +1665,23 @@ class Laudo extends BaseController {
             }
 
 
-            $tipo_xml = $this->laudo->listarempresatipoxml(); //verifica qual tipo de xml que a empresa usa.
+            $tipo_xml = $this->laudo->listarempresatipoxml(); //verifica qual tipo de xml que a empresa usa.                       
             if ($tipo_xml[0]->nome == 'TIPO 1') {
 
                 $corpo = "";
                 $paciente_dif = "";
                 foreach ($listarexame as $item) {
 
-                    if ($_POST['apagar'] == 1) {
-                        delete_files($origem . '/' . $convenio . '/' . $item->paciente_id);
-                    }
+//                    if ($_POST['apagar'] == 1) {
+//                        delete_files($origem . '/' . $convenio . '/' . $item->paciente_id);
+//                    }
 
                     if ($item->paciente_id !== $paciente_dif) {
                         $sl_cod_doc = $item->ambulatorio_laudo_id;
                         $texto = "";
-                        if (!is_dir($origem . '/' . $convenio . '/' . $item->paciente_id)) {
-                            mkdir($origem . '/' . $convenio . '/' . $item->paciente_id);
-                            chmod($origem . '/' . $convenio . '/' . $item->paciente_id, 0777);
+                        if (!is_dir($origem . '/' . $convenio)) {
+                            mkdir($origem . '/' . $convenio);
+                            chmod($origem . '/' . $convenio, 0777);
                         }
 
                         //NUMERO DA CARTEIRA
@@ -1726,13 +1726,13 @@ class Laudo extends BaseController {
                        <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
 
-                        $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . "/" . $sl_cod_doc . ".xml";
+                        $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
                         $xml = $cabecalho . $corpo . $fim_numguia . $rodape;
                         $fp = fopen($nome, "w+");
                         fwrite($fp, $xml . "\n");
                         fclose($fp);
 
-                        $nomepdf = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . "/" . $sl_cod_doc . ".pdf";
+                        $nomepdf = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".pdf";
                         $cabecalhopdf = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $item->paciente . " <br>Emiss&atilde;o: </td></tr></table>";
                         $rodapepdf = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
                         salvapdf($texto, $nomepdf, $cabecalhopdf, $rodapepdf);
@@ -1740,17 +1740,17 @@ class Laudo extends BaseController {
 
                         $zip = new ZipArchive;
                         $this->load->helper('directory');
-                        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$item->paciente_id/");
+                        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/laudo/$convenio/");
                         $pasta = $item->paciente_id;
                         if ($arquivo_pasta != false) {
                             foreach ($arquivo_pasta as $value) {
-                                $zip->open("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$sl_cod_doc.zip", ZipArchive::CREATE);
-                                $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$value", "$sl_cod_doc.xml");
-                                $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$value", "$sl_cod_doc.pdf");
+                                $zip->open("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$sl_cod_doc.zip", ZipArchive::CREATE);
+                                $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$value", "$sl_cod_doc.xml");
+                                $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$value", "$sl_cod_doc.pdf");
                                 $zip->close();
                             }
-                            $arquivoxml = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$sl_cod_doc.xml";
-                            $arquivopdf = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$sl_cod_doc.pdf";
+                            $arquivoxml = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$sl_cod_doc.xml";
+                            $arquivopdf = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$sl_cod_doc.pdf";
                             unlink($arquivoxml);
                             unlink($arquivopdf);
                         }
@@ -1803,7 +1803,6 @@ class Laudo extends BaseController {
 //        redirect(base_url() . "ambulatorio/laudo", $data);
         }
     }
-
     function carregarrevisao($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['lista'] = $this->exametemp->listarautocompletemodelos();
