@@ -92,6 +92,9 @@ class produto_model extends Model {
             $this->db->set('estoque_minimo', $_POST['minimo']);
             $this->db->set('unidade_id', $_POST['unidade']);
             $this->db->set('sub_classe_id', $_POST['sub']);
+            if($_POST['procedimentoID'] != '' && $_POST['procedimento'] != ''){
+                $this->db->set('procedimento_id', $_POST['procedimentoID']);
+            }
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 

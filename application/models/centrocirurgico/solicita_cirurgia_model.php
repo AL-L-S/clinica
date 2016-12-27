@@ -83,6 +83,33 @@ class solicita_cirurgia_model extends BaseModel {
     }
     
     
+    function listasolicitacao($args = array()){
+
+        $this->db->select(' p.paciente_id,
+                            p.nome,
+                            sc.procedimento_id,
+                            sc.solicitacao_cirurgia_id,
+                            pt.descricao,
+                            sc.data_prevista');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->where('sc.ativo', 't');
+        $this->db->where('sc.excluido', 'f');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = sc.procedimento_id ');
+        $this->db->where('pc.ativo', 't');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id ');
+        $this->db->where('pt.ativo', 't');
+        
+        if ($args) {
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('nome ilike', "%" . $args['nome'] . "%", 'left');
+            }
+        }
+        return $this->db;
+    }
+    
+    
+    
     function mostrarsaidapaciente($internacao_id){
 
         $this->db->select('i.internacao_id,
@@ -142,6 +169,20 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->where('i.internacao_id', $internacao_id);
         $this->db->where('i.ativo', 't');
         $this->db->where('p.paciente_id = i.paciente_id');
+        
+        $return = $this->db->get();
+        return $return->result();
+    
+    }
+    
+    
+    function solicitacirurgiaconsulta($exame_id){
+
+        $this->db->select('p.nome as paciente,
+                           p.paciente_id');
+        $this->db->from('tb_exames e');
+        $this->db->join('tb_paciente p', 'p.paciente_id = e.paciente_id', 'left');
+        $this->db->where('e.exames_id', $exame_id);
         
         $return = $this->db->get();
         return $return->result();
@@ -244,6 +285,45 @@ class solicita_cirurgia_model extends BaseModel {
 
 
             return $internacao_motivosaida_id;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+    
+    function gravarnovasolicitacao() {
+
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            //mapeando banco
+            $this->db->set('paciente_id', $_POST['txtNomeid']);
+            $this->db->set('procedimento_id', $_POST['procedimentoID']);
+            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
+            $this->db->set('medico_agendado', $_POST['medicoagenda']);
+
+            if ($_POST['solicitacao_cirurgia_id'] == "0" || $_POST['solicitacao_cirurgia_id'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_solicitacao_cirurgia');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") { // erro de banco
+                    return false;
+                }
+            }
+            else { // update
+                $internacao_motivosaida_id = $_POST['solicitacao_cirurgia_id'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('solicitacao_cirurgia_id', $internacao_motivosaida_id);
+                $this->db->update('tb_solicitacao_cirurgia');
+                if (trim($erro) != "") { // erro de banco
+                    return false;
+                }
+            }
+
+            return true;
         } catch (Exception $exc) {
             return false;
         }

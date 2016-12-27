@@ -2544,6 +2544,7 @@ class guia_model extends Model {
             pc.procedimento_convenio_id,
             ae.autorizacao,
             ae.data,
+            e.situacao,
             op.operador_id,
             ae.valor_total,
             pc.procedimento_tuss_id,

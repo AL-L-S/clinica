@@ -110,7 +110,7 @@
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
-                                <td > 
+                                <td> 
                                     <select  name="medicoagenda" id="medicoagenda" class="size1" >
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
@@ -119,7 +119,8 @@
                                             endif;
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
-                                    </select></td>
+                                    </select>
+                                </td>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                                 <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>

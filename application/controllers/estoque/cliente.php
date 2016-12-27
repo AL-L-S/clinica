@@ -37,6 +37,7 @@ class Cliente extends BaseController {
         $obj_cliente = new cliente_model($estoque_cliente_id);
         $data['obj'] = $obj_cliente;
         $data['menu'] = $this->cliente->listarmenu();
+        $data['sala'] = $this->cliente->listarsalamenu();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('estoque/cliente-form', $data);
     }

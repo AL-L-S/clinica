@@ -619,6 +619,36 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
     }
 
+    function gastosdesala($exames_id) {
+        $data['paciente']  = $this->exame->listarpacientegastos($exames_id);
+        $data['produtos']  = $this->exame->listarprodutossalagastos();
+        $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
+        $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']); 
+        $data['exames_id'] = $exames_id;
+        $this->load->View('ambulatorio/gastosdesala', $data);
+    }
+    
+    function gravargastodesala() {
+        $exame_id  = $_POST['exame_id'];
+        $this->exame->gravargastodesala();
+        if( isset($_POST['faturar']) ){
+            $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id']);
+            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+            $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
+            $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
+            
+            $this->exame->faturargastodesala($data['procedimento'][0]);
+        }
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
+//        $this->gastosdesala($exame_id);
+    }
+    
+    function excluirgastodesala($gasto_id, $exame_id) {
+        $this->exame->excluirgastodesala($gasto_id);
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
+//        $this->gastosdesala($exame_id);
+    }
+
     function anexarimagem($exame_id, $sala_id) {
 
         $this->load->helper('directory');

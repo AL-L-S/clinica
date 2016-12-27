@@ -1,4 +1,13 @@
 <div class="content"> <!-- Inicio da DIV content -->
+    <table>
+        <tr>
+            <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/novasolicitacao/0">
+                        Nova Solicitacao
+                    </a>
+            </div>
+        </tr>
+        </table>
     <div id="accordion">
         <h3><a href="#">Manter Solicitacoes</a></h3>
         <div>
@@ -39,7 +48,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->descricao_resumida; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->descricao; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link_new">
                                     <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
                                 </td>                                

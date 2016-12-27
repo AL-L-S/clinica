@@ -18,6 +18,7 @@
                     <dd>
                         <input type="text" name="txttelefone" class="texto10 bestupper" alt="phone" value="<?= @$obj->_telefone; ?>" />
                     </dd>
+                    
                     <dt>
                     <label>Menu</label>
                     </dt>
@@ -31,6 +32,19 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
+                    
+                    <dt>
+                    <label>Sala</label>
+                    </dt>
+                    <dd>
+                        <select name="sala" id="sala" class="size4">
+                            <option value="">SELECIONE</option>
+                            <? foreach ( $sala as $item ){ ?>
+                            <option value="<?= $item->exame_sala_id; ?>"><?= $item->nome; ?></option>
+                            <? } ?>
+                        </select>
+                    </dd>
+                    
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

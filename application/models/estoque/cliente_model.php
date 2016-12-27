@@ -33,6 +33,18 @@ class cliente_model extends Model {
         return $return->result();
     }
     
+    
+    function listarsalamenu() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('exame_sala_id,
+                            nome');
+        $this->db->from('tb_exame_sala');
+        $this->db->where('ativo', 'true');
+        $this->db->where('empresa_id', $empresa_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarclientes() {
         $this->db->select('estoque_cliente_id,
                             nome');
@@ -144,6 +156,9 @@ class cliente_model extends Model {
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('menu_id', $_POST['menu']);
             $this->db->set('telefone', $_POST['txttelefone']);
+            if($_POST['sala'] != ''){
+                $this->db->set('sala_id', $_POST['sala']);
+            }
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 

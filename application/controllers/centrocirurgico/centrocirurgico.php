@@ -13,6 +13,7 @@ class centrocirurgico extends BaseController {
         $this->load->model('internacao/motivosaida_model', 'motivosaida');
         $this->load->model('internacao/enfermaria_model', 'enfermaria_m');
         $this->load->model('internacao/leito_model', 'leito_m');
+         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('internacao/solicitainternacao_model', 'solicitacaointernacao_m');
         $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico_m');
         $this->load->model('centrocirurgico/solicita_cirurgia_model', 'solicitacirurgia_m');
@@ -117,10 +118,34 @@ class centrocirurgico extends BaseController {
         $this->loadView('internacao/cadastrarleito', $data);
     }
     
-    function mostraautorizarcirurgia($solicitacao_id) {
-        $data['solicitacao']= $this->centrocirurgico_m->pegasolicitacaoinformacoes($solicitacao_id);
-        $data['leito']= $this->solicitacirurgia_m->listaleitocirugia();
-        $this->loadView('centrocirurgico/autorizarcirurgia', $data);
+    function gravarnovasolicitacao() {
+        $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
+        if($verifica){
+            $data['mensagem'] = 'Solicitacao efetuada com Sucesso';
+        }
+        else{
+            $data['mensagem'] = 'Erro ao efetuar Solicitacao';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
+    }
+    
+    function novasolicitacaoconsulta($exame_id) {
+        $data['paciente'] = $this->solicitacirurgia_m->solicitacirurgiaconsulta($exame_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $this->loadView('centrocirurgico/novasolicitacao', $data);
+    }
+    
+    
+    function novasolicitacao($solicitacao_id) {
+        $data['solicitacao_id'] = $solicitacao_id;
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        if($solicitacao_id != '0'){
+//        $data['solicitacao']= $this->centrocirurgico_m->pegasolicitacaoinformacoes($solicitacao_id);
+//        $data['leito']= $this->solicitacirurgia_m->listaleitocirugia();
+        }
+        
+        $this->loadView('centrocirurgico/novasolicitacao', $data);
     }
     
     function internacaoalta($internacao_id){

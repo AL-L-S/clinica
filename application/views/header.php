@@ -478,12 +478,12 @@ function debug($object) {
                 
                 
 <? } ?>
-<!--                <li><span class="folder">Centro Cirurgico</span>
+                <li><span class="folder">Centro Cirurgico</span>
                     <ul>
                         <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico">Listar Solicitacoes</a></span></li>
                         <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarcirurgia">Fila de Cirurgia</a></span></li>
                     </ul>
-                </li>-->
+                </li>
                 <li><span class="folder">Relatorios (RM)</span>
                     <ul>
                         <? if ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 3) { ?>
