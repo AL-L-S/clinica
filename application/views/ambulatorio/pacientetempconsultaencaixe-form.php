@@ -22,8 +22,7 @@
 
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" alt="time" class="size1" name="horarios" maxlength="8" onkeypress="mascara(this)" onclick="if (this.value !== '')
-                            this.value = ''" />
+                <input type="text" id="horarios" alt="time" class="size1" name="horarios" maxlength="8" onkeypress="mascara(this)"  />
             </div>
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
