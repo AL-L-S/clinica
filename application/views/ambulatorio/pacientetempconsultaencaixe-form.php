@@ -177,29 +177,42 @@
                     }
 
                     function mascara2(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 1)
-                                horarios.value = '(' + horarios.value;
+                        
+                        jQuery("#form_exametemp").on('keyup', '#txtTelefone', function (tecla) {
+                            if(tecla.which != '8' && tecla.which != '46'){
+                                if (horarios.value !== '') {
 
-                            if (horarios.value.length == 3)
-                                horarios.value = horarios.value + ') ';
 
-                            if (horarios.value.length == 9)
-                                horarios.value = horarios.value + '-';
+                                    if (horarios.value.length == 1)
+                                        horarios.value = '(' + horarios.value;
 
-                        }
+                                    if (horarios.value.length == 3)
+                                        horarios.value = horarios.value + ') ';
+
+                                    if (horarios.value.length == 9)
+                                        horarios.value = horarios.value + '-';
+                                }
+                            }
+
+                        });
                     }
 
                     function mascara3(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 2)
-                                horarios.value = horarios.value + '/';
+                                                
+//                        jQuery("#form_exametemp").on('keyup', '#txtTelefone', function (tecla) {
+//                            if(tecla.which != '8' && tecla.which != '46'){
+                                if (horarios.value !== '') {
+                                    alert(horarios.value.length);
+                                    if (horarios.value.length == 2)
+                                        horarios.value = horarios.value + '/';
 
-                            if (horarios.value.length == 5)
-                                horarios.value = horarios.value + '/';
+                                    if (horarios.value.length == 5)
+                                        horarios.value = horarios.value + '/';
 
 
-                        }
+                                }
+//                            }
+//                        });
                     }
 
 
