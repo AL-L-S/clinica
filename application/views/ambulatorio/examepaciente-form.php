@@ -112,6 +112,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
 
@@ -223,37 +224,15 @@
 //    });
 
 
-                    function mascara2(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 1)
-                                horarios.value = '(' + horarios.value;
-
-                            if (horarios.value.length == 3)
-                                horarios.value = horarios.value + ') ';
-
-                            if (horarios.value.length == 9)
-                                horarios.value = horarios.value + '-';
-
-                        }
-                    }
-
-                    function mascara3(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 2)
-                                horarios.value = horarios.value + '/';
-
-                            if (horarios.value.length == 5)
-                                horarios.value = horarios.value + '/';
-
-
-                        }
-                    }
-
                     function calculoIdade() {
                         var data = document.getElementById("nascimento").value;
                         var ano = data.substring(6, 12);
                         var idade = new Date().getFullYear() - ano;
                         document.getElementById("idade2").value = idade;
                     }
+
+                    jQuery("#telefone").mask("(99) 9999-9999");
+                    jQuery("#txtCelular").mask("(99) 99999-9999");
+                    jQuery("#nascimento").mask("99/99/9999");
 
 </script>
