@@ -172,6 +172,7 @@ class contaspagar_model extends Model {
             $this->db->set('data', $_POST['inicio']);
             $this->db->set('nome', $_POST['credor']);
             $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('classe', $_POST['classe']);
             $this->db->set('conta', $_POST['conta_id']);
             $this->db->set('observacao', $_POST['Observacao']);
             $this->db->set('data_cadastro', $horario);

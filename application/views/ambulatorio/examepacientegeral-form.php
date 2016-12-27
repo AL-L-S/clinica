@@ -7,7 +7,7 @@
             <div>
                 <label>Nome</label>
                 <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
-                <input type="text" id="txtNome" name="txtNome" class="texto10"/>
+                <input type="text" id="txtNome" name="txtNome" class="texto10" onblur="calculoIdade(document.getElementById('nascimento').value)" />
                 <div style="display: none">
                     <input type="text" id="medicoid" name="medicoid" class="texto_id" value="<?= $medico; ?>"/>
                     <input type="text" id="agendaid" name="agendaid" class="texto_id" value="<?= $agenda_exames_id; ?>"/>
@@ -15,8 +15,11 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-
-                <input type="text" name="nascimento" id="nascimento" class="texto02" onkeypress="datanascimento(this)" type="text"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" onkeypress="mascara3(this)" type="text" onblur="calculoIdade(this.value)"/>                
+            </div>
+            <div>
+                <label>Idade</label>
+                <input type="text" name="idade2" id="idade2" class="texto01" readonly/>
             </div>
             <div>
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask"/>
@@ -31,13 +34,13 @@
                 <label>Telefone</label>
 
 
-                <input type="text" id="telefone" class="texto02" name="telefone" onkeypress="mascara(this)" type="text" />
+                <input type="text" id="telefone" class="texto02" name="telefone" onkeypress="mascara2(this)" type="text" maxlength="14"/>
             </div>
             <div>
                 <label>Celular</label>
 
 
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" onkeypress="mascara2(this)" maxlength="14"/>
             </div>
             <div>
                 <label>Convenio *</label>
@@ -114,11 +117,10 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    
-    
-<?php 
-    if ($this->session->flashdata('message') != ''): ?>
-        alert("<? echo $this->session->flashdata('message') ?>");
+
+
+<?php if ($this->session->flashdata('message') != ''): ?>
+                        alert("<? echo $this->session->flashdata('message') ?>");
 <? endif; ?>
 
                     $(function () {
@@ -224,5 +226,39 @@
 //            }
 //        });
 //    });
+
+
+                    function mascara2(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 1)
+                                horarios.value = '(' + horarios.value;
+
+                            if (horarios.value.length == 3)
+                                horarios.value = horarios.value + ') ';
+
+                            if (horarios.value.length == 9)
+                                horarios.value = horarios.value + '-';
+
+                        }
+                    }
+
+                    function mascara3(horarios) {
+                        if (horarios.value !== '') {
+                            if (horarios.value.length == 2)
+                                horarios.value = horarios.value + '/';
+
+                            if (horarios.value.length == 5)
+                                horarios.value = horarios.value + '/';
+
+
+                        }
+                    }
+
+                    function calculoIdade() {
+                        var data = document.getElementById("nascimento").value;
+                        var ano = data.substring(6, 12);
+                        var idade = new Date().getFullYear() - ano;
+                        document.getElementById("idade2").value = idade;
+                    }
 
 </script>

@@ -215,7 +215,6 @@ class exame_model extends Model {
         return $return->result();
     }
 
-
     function listartodassalas() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,
@@ -798,6 +797,9 @@ class exame_model extends Model {
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('ae.situacao', $args['situacao']);
+            if ($args['situacao'] == 'LIVRE') {
+                $this->db->where('ae.bloqueado', 'f');
+            }
         }
         return $this->db;
     }
@@ -954,7 +956,9 @@ class exame_model extends Model {
                             c.nome as convenio,
                             co.nome as convenio_paciente,
                             al.situacao as situacaolaudo,
-                            tel.nome as telefonema_operador');
+                            tel.nome as telefonema_operador,
+                            bloc.nome as operador_bloqueio,
+                            desbloc.nome as operador_desbloqueio');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -967,6 +971,8 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
+        $this->db->join('tb_operador bloc', 'bloc.operador_id = ae.operador_bloqueio', 'left');
+        $this->db->join('tb_operador desbloc', 'desbloc.operador_id = ae.operador_desbloqueio', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         if ($contador == 0) {
@@ -998,6 +1004,9 @@ class exame_model extends Model {
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('ae.situacao', $args['situacao']);
+            if ($args['situacao'] == 'LIVRE') {
+                $this->db->where('ae.bloqueado', 'f');
+            }
         }
         if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
             $this->db->where('pt.medico', $args['c_s_medico']);
@@ -1506,6 +1515,9 @@ class exame_model extends Model {
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('ae.situacao', $args['situacao']);
+            if ($args['situacao'] == 'LIVRE') {
+                $this->db->where('ae.bloqueado', 'f');
+            }
         }
         return $this->db;
     }
@@ -1899,6 +1911,9 @@ class exame_model extends Model {
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('ae.situacao', $args['situacao']);
+            if ($args['situacao'] == 'LIVRE') {
+                $this->db->where('ae.bloqueado', 'f');
+            }
         }
         return $this->db;
     }
@@ -4176,7 +4191,7 @@ class exame_model extends Model {
         }
     }
 
-    function gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id ,$observacoes, $empresa_id) {
+    function gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id) {
         try {
 
             /* inicia o mapeamento no banco */

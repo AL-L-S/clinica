@@ -33,7 +33,7 @@
                                             <select name="tipo" id="tipo" class="size4">
                                                 <option value="">Selecione</option>
                     <? foreach ($tipo as $value) : ?>
-                                                            <option value="<?= $value->descricao; ?>"<?
+                                                                    <option value="<?= $value->descricao; ?>"<?
                         if (@$obj->_tipo == $value->descricao):echo'selected';
                         endif;
                         ?>><?php echo $value->descricao; ?></option>
@@ -53,8 +53,12 @@
                         <select name="tipo" id="tipo" class="size4">
                             <option value="">Selecione</option>
                             <? foreach ($tipo as $value) : ?>
-                                <option value="<?= $value->tipo_entradas_saida_id; ?>"><?php echo $value->descricao; ?></option>
-                            <? endforeach; ?>
+                                <option value="<?= $value->tipo_entradas_saida_id; ?>"                                <?
+                                if ($value->descricao == @$obj->_tipo):echo'selected';
+                                endif;
+                                ?>
+                                        ><?php echo $value->descricao; ?></option>
+                                    <? endforeach; ?>
                         </select>
                     </dd>
                     <dt>
@@ -65,11 +69,12 @@
                             <option value="">Selecione</option>
                             <? foreach ($classe as $value) : ?>
                                 <option value="<?= $value->descricao; ?>"
-                                <? if ($value->descricao == @$obj->_classe):echo'selected';
+                                <?
+                                if ($value->descricao == @$obj->_classe):echo'selected';
                                 endif;
                                 ?>
                                         ><?php echo $value->descricao; ?></option>
-<? endforeach; ?>
+                                    <? endforeach; ?>
                         </select>
                     </dd>
                     <dt>
@@ -83,7 +88,7 @@
                                 if (@$obj->_conta_id == $value->forma_entradas_saida_id):echo'selected';
                                 endif;
                                 ?>><?php echo $value->descricao; ?></option>
-<? endforeach; ?>
+                                    <? endforeach; ?>
                         </select>
                     </dd>
                     <dt>

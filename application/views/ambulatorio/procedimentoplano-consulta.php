@@ -1,6 +1,17 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
+    <table>
+        <thead>
+            <tr>
+                <th >        <div class="bt_link_new" style="cursor: pointer;">
+                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/orcamento');">
+                            Or&ccedil;amento
+                        </a>
+                    </div></th>
+            </tr>
 
+
+    </table>
     <div id="accordion">
         <h3 class="singular"><a href="#">Pre&ccedil;o procedimento</a></h3>
         <div>
@@ -17,17 +28,17 @@
                     </tr>
                     <tr>
                         <th class="tabela_title">
-                    <input type="text" name="procedimento" class="texto04" value="<?php echo @$_GET['procedimento']; ?>" />
-                    </th>
+                            <input type="text" name="procedimento" class="texto04" value="<?php echo @$_GET['procedimento']; ?>" />
+                        </th>
                         <th class="tabela_title">
-                    <input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />
-                    </th>
+                            <input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />
+                        </th>
                         <th class="tabela_title">
-                    <input type="text" name="codigo" class="texto04" value="<?php echo @$_GET['codigo']; ?>" />
-                    </th>
-                    <th class="tabela_title">
-                    <button type="submit" id="enviar">Pesquisar</button>
-                    </th>
+                            <input type="text" name="codigo" class="texto04" value="<?php echo @$_GET['codigo']; ?>" />
+                        </th>
+                        <th class="tabela_title">
+                            <button type="submit" id="enviar">Pesquisar</button>
+                        </th>
                     </tr>
                 </form>
                 </th>
@@ -47,14 +58,14 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->procedimentoplano->listar($_GET);
                 $total = $consulta->count_all_results();
-                $limit = 10;
+                $limit = 50;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->procedimentoplano->listar($_GET)->orderby('pt.grupo')->orderby('pt.nome')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->procedimentoplano->listar($_GET)->orderby('c.nome')->orderby('pt.nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -87,8 +98,8 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
-    $(function() {
-        $( "#accordion" ).accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
 </script>

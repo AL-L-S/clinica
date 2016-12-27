@@ -26,6 +26,10 @@
                 <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>"/>
             </div>
             <div>
+                <label>Idade</label>
+                <input type="text" name="idade2" id="idade2" class="texto01" readonly/>
+            </div>
+            <div>
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= @$obj->_idade; ?>"  />
 
             </div>
@@ -104,7 +108,7 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
                             <? if (empty($faltou)) { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                     <a href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
@@ -137,7 +141,6 @@
             $data2 = new DateTime($value->data);
 
             $intervalo = $data1->diff($data2);
-            
             ?>
             <h6><b><?= $intervalo->days ?> dias</b>&nbsp;&nbsp;&nbsp;- ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
 
@@ -237,5 +240,14 @@
                             }
                         });
                     });
+
+                    function calculoIdade() {
+                        var data = document.getElementById("txtNascimento").value;
+                        var ano = data.substring(6, 12);
+                        var idade = new Date().getFullYear() - ano;
+                        document.getElementById("idade2").value = idade;
+                    }
+
+                    calculoIdade();
 
 </script>

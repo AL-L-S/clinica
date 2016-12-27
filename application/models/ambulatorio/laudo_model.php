@@ -1586,11 +1586,11 @@ class laudo_model extends Model {
         return $return->result();
     }
 
-    function listarlaudosintegracao($ambulatorio_laudo_id) {
+    function listarlaudosintegracao($agenda_exames_id) {
 
         $this->db->select('exame_id');
         $this->db->from('tb_integracao_laudo');
-        $this->db->where('exame_id', $ambulatorio_laudo_id);
+        $this->db->where('exame_id', $agenda_exames_id);
         $this->db->where('laudo_status', 'PUBLICADO');
         $return = $this->db->get();
         return $return->result();
@@ -1603,6 +1603,7 @@ class laudo_model extends Model {
                             il.exame_id,
                             il.laudo_texto,
                             il.laudo_data_hora,
+                            al.ambulatorio_laudo_id,
                             il.laudo_status,
                             al.ambulatorio_laudo_id,
                             o.operador_id as medico,
@@ -1624,7 +1625,6 @@ class laudo_model extends Model {
             $ambulatorio_laudo_id = $value->ambulatorio_laudo_id;
             $medico = $value->medico;
             $revisor = $value->revisor;
-            $laudo_status = $value->laudo_status;
             $this->db->set('texto', $laudo_texto);
             $this->db->set('situacao', 'FINALIZADO');
             $this->db->set('medico_parecer1', $medico);

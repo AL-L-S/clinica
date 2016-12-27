@@ -28,14 +28,14 @@
                     $url      = $this->utilitario->build_query_params(current_url(), $_GET);
                     $consulta = $this->operador_m->listarmedicosolicitante($_GET);
                     $total    = $consulta->count_all_results();
-                    $limit    = 10;
+                    $limit    = 50;
                     isset ($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                     if ($total > 0) {
                 ?>
                 <tbody>
                     <?php
-                        $lista = $this->operador_m->listarmedicosolicitante($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->operador_m->listarmedicosolicitante($_GET)->limit($limit, $pagina)->orderby("nome")->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";

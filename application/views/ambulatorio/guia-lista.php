@@ -200,7 +200,7 @@
                         if ($cancelado == 0) {
                             ?>
                             <tr>
-                                <td colspan="6"><center><span style="color: red; font-weight: bold; font-size: 17px;">EXAME CANCELADO</span></center></td>
+                                <td colspan="6"><center><span style="color: red; font-weight: bold; font-size: 17px;">PROCEDIMENTO CANCELADO</span></center></td>
                         </tr>
                     <? } ?>
                     </tbody>                                

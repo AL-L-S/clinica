@@ -191,16 +191,16 @@
                     }
 
                     function mascara3(horarios) {
-                        if (horarios.value !== '') {
+                                if (horarios.value !== '') {
                             if (horarios.value.length == 2)
-                                horarios.value = horarios.value + '/';
+                                        horarios.value = horarios.value + '/';
 
-                            if (horarios.value.length == 5)
-                                horarios.value = horarios.value + '/';
+                                    if (horarios.value.length == 5)
+                                        horarios.value = horarios.value + '/';
 
 
-                        }
-                    }
+                                }
+                            }
 
 
 </script>

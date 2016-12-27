@@ -5996,6 +5996,14 @@ ORDER BY ae.agenda_exames_id)";
                 $grupo = 'MR';
             }
 
+            if ($grupo == 'TOMOGRAFIA') {
+                $grupo = 'CT';
+            }
+            if ($grupo == 'DENSITOMETRIA') {
+                $grupo = 'DX';
+            }
+
+
             $this->db->set('wkl_aetitle', "AETITLE");
             $this->db->set('wkl_procstep_startdate', str_replace("-", "", date("Y-m-d")));
             $this->db->set('wkl_procstep_starttime', str_replace(":", "", date("H:i:s")));

@@ -961,6 +961,7 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+        $data['grupos'] = $this->procedimento->listargrupos();
 
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {

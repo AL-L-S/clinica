@@ -275,6 +275,16 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoconveniogrupo() {
+
+        if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupo($_GET['convenio1'] , $_GET['grupo1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupo();
+        }
+        echo json_encode($result);
+    }
+
     function procedimentoporconvenio() {
 
         if (isset($_GET['covenio'])) {
@@ -1216,7 +1226,7 @@ class Autocomplete extends Controller {
 
         echo json_encode($result);
     }
-    
+
     function medicoespecialidade() {
 
         if (isset($_GET['txtcbo'])) {
@@ -1266,7 +1276,7 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompletemedicamentolaudo();
         }
         foreach ($result as $item) {
-            $retorno['value'] = $item->nome . ' (' . $item->quantidade . ' - '.  $item->descricao .') -> ' . $item->posologia;
+            $retorno['value'] = $item->nome . ' (' . $item->quantidade . ' - ' . $item->descricao . ') -> ' . $item->posologia;
             $retorno['id'] = $item->texto . '<br>' . $item->posologia;
             $retorno['qtde'] = $item->quantidade;
             $var[] = $retorno;
