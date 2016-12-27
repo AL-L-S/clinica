@@ -382,8 +382,8 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexametempgeral($agenda_exames_id) {
-        $agenda = $_POST['agendaid'];
-        $medico = $_POST['medicoid'];
+//        $agenda = $_POST['agendaid'];
+        $medico = $_POST['medico'];
         if (trim($_POST['txtNome']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
