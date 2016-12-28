@@ -72,12 +72,10 @@ class centrocirurgico_model extends BaseModel {
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
         $this->db->where('sc.autorizado', 't');
-        $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id');
-        $this->db->where('i.ativo', 't');
-        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id ');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = sc.procedimento_id ');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = sc.procedimento_id', 'left');
         $this->db->where('pc.ativo', 't');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id ');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where('pt.ativo', 't');
 
         if ($args) {
@@ -88,11 +86,11 @@ class centrocirurgico_model extends BaseModel {
                 $this->db->where("sc.data_prevista >=",  "$pesquisa1");
                 $this->db->where("sc.data_prevista <=",  "$pesquisa2");
                 if ($args['nome'] != null) {
-                    $this->db->where('nome ilike', "%" . $args['nome'] . "%");
+                    $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
                 }
             }
             else if ($args['nome'] != null) {
-                    $this->db->where('nome ilike', "%" . $args['nome'] . "%");
+                    $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
                 }
         } else {
             $hoje = date('Y-m-d');
@@ -133,16 +131,27 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
-    function autorizarcirurgia( ) {
-        $horario = date("Y-m-d H:i:s");
+    function gravarautorizarcirurgia( ) {
+        try {
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
 
-        $this->db->set('data_prevista', $_POST['dataprevista']);
-        $this->db->set('medico_agendado', $_POST['medicoagendadoid']);
-        $this->db->set('data_autorizacao', $horario);
-        $this->db->set('sala_agendada', $_POST['salaagendada']);
-        $this->db->set('autorizado', 't');
-        $this->db->where('solicitacao_cirurgia_id', $_POST['idsolicitacaocirurgia']);
-        $this->db->update('tb_solicitacao_cirurgia');
+            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
+            $this->db->set('medico_agendado', $_POST['medicoagenda']);
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->set('autorizado', 't');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+            $this->db->update('tb_solicitacao_cirurgia');
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            }
+            
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
     }
 
     function gravarcentrocirurgico() {
