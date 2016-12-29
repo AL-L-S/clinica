@@ -1196,3 +1196,19 @@ CREATE TABLE IF NOT EXISTS ponto.tb_solicitacao_cirurgia_orcamento
 -- Dia 29/12/2016
 
 ALTER TABLE ponto.tb_ambulatorio_gasto_sala add column agenda_exame_id integer;
+ALTER TABLE ponto.tb_solicitacao_cirurgia DROP COLUMN procedimento_id;
+
+CREATE TABLE ponto.tb_solicitacao_cirurgia_procedimento
+(
+  solicitacao_cirurgia_procedimento_id serial NOT NULL,
+  solicitacao_cirurgia_id integer,
+  procedimento_tuss_id integer,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  
+
+  CONSTRAINT tb_solicitacao_cirurgia_procedimento_pkey PRIMARY KEY (solicitacao_cirurgia_procedimento_id)
+);
