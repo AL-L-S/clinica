@@ -221,7 +221,7 @@ class contaspagar_model extends Model {
             $return = $this->db->get();
             $result = $return->result();
             $tipo = $result[0]->descricao;
-
+//            var_dump($tipo); die;
 
             /* inicia o mapeamento no banco */
             $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];

@@ -14,7 +14,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="tabela_title" colspan="5">
+                        <th class="tabela_title" colspan="4">
                             Lista de Solicitacoes
                 <form method="get" action="<?php echo base_url() ?>centrocirurgico/centrocirurgico/pesquisar">
                     <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
@@ -24,8 +24,10 @@
                 </tr>
                 <tr>
                     <th class="tabela_header">Nome</th>
-                    <th class="tabela_header">Procedimento</th>
-                    <th class="tabela_header" width="30px;" colspan="3"><center></center></th>
+                    <!--<th class="tabela_header">Data Prevista</th>-->
+                    <th class="tabela_header" width="30px;"><center></center></th>
+                <th class="tabela_header" width="30px;"><center></center></th>
+                <th class="tabela_header" width="30px;"><center></center></th>
 
                 </tr>
                 </thead>
@@ -47,16 +49,16 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo str_replace('-','/', date( 'd-m-Y', strtotime($item->data_prevista) ) ); ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link" style="width: 70px;">
-                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/autorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>" >Autorizar</a></div>
-                                </td>                                 
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?php echo str_replace('-','/', date( 'd-m-Y', strtotime($item->data_prevista) ) ); ?></td>-->
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link_new">
+                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
+                                </td> 
                                 <td class="<?php echo $estilo_linha; ?>" width="170px;"><div class="bt_link" style="width: 170px;">
                                     <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 150px;">Solicitar Orçamento</a></div>
-                                </td>                                 
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;" ><div class="bt_link" style="width: 70px;">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Excluir</a></div>
                                 </td>                              
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link_new">
+                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">EXCLUIR</a></div>
+                                </td> 
                             </tr>
                         </tbody>
                         <?php

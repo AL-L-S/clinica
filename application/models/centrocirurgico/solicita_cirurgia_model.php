@@ -338,6 +338,8 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('paciente_id', $_POST['txtNomeid']);
 //            $this->db->set('procedimento_id', $_POST['procedimentoID']);
 //            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
+//            $this->db->set('procedimento_id', $_POST['procedimentoID']);
+//            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
             $this->db->set('medico_agendado', $_POST['medicoagenda']);
 
             if ($_POST['solicitacao_cirurgia_id'] == "0" || $_POST['solicitacao_cirurgia_id'] == "") {// insert
