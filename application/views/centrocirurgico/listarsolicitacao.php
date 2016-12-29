@@ -47,7 +47,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->descricao; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo str_replace('-','/', date( 'd-m-Y', strtotime($item->data_prevista) ) ); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link" style="width: 70px;">
                                         <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/autorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>" >Autorizar</a></div>
                                 </td>                                 

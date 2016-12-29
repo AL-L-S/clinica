@@ -1238,3 +1238,6 @@ CREATE TABLE ponto.tb_solicitacao_cirurgia_procedimento
   
   CONSTRAINT tb_solicitacao_cirurgia_procedimento_pkey PRIMARY KEY (solicitacao_cirurgia_procedimento_id)
 );
+
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia DROP COLUMN procedimento_id;
