@@ -1191,3 +1191,8 @@ CREATE TABLE IF NOT EXISTS ponto.tb_solicitacao_cirurgia_orcamento
 
   CONSTRAINT tb_solicitacao_cirurgia_orcamento_pkey PRIMARY KEY (solicitacao_cirurgia_orcamento_id)
 );
+
+
+-- Dia 29/12/2016
+
+ALTER TABLE ponto.tb_ambulatorio_gasto_sala add column agenda_exame_id integer;
