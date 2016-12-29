@@ -1170,3 +1170,31 @@ CREATE TABLE ponto.tb_solicitacao_cirurgia
 );
 
 ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN medico_solicitante integer;
+
+--Atualiza 28/12/16
+
+CREATE TABLE ponto.tb_procedimentos_agrupados
+(
+  procedimento_agrupado_id integer NOT NULL DEFAULT nextval('ponto.tb_procedimentos_agrupados_procedimento_ageupado_id_seq'::regclass),
+  agrupador_id integer,
+  procedimento_tuss_id integer,
+  obs character varying,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_procedimentos_agrupados_id PRIMARY KEY (procedimento_agrupado_id )
+);
+
+CREATE TABLE ponto.tb_agrupador_procedimento_nome
+(
+  agrupador_id integer NOT NULL DEFAULT nextval('ponto.tb_agrupador_procedimento_agrupador_id_seq'::regclass),
+  nome character varying,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT agrupador_procedimento_pkey PRIMARY KEY (agrupador_id );
+)

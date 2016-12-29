@@ -57,11 +57,11 @@ class procedimentoplano_model extends Model {
                            nome');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
-        
+
         if (isset($args['txtpagamento']) && strlen($args['txtpagamento']) > 0) {
             $this->db->where('nome ilike', "%" . $args['txtpagamento'] . "%");
         }
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -154,6 +154,142 @@ class procedimentoplano_model extends Model {
             $this->db->where('ppmc.valor', $_POST['valor']);
         }
         return $this->db;
+    }
+
+    function listaragrupador() {
+        $this->db->select('agrupador_id,
+                           nome                            
+                            ');
+        $this->db->from('tb_agrupador_procedimento_nome');
+        $this->db->where("ativo", 't');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('c.nome ilike', "%" . $args['nome'] . "%");
+        }
+
+        return $this->db;
+    }
+
+    function buscaragrupador($agrupador_id) {
+        $this->db->select('agrupador_id,
+                           nome                            
+                            ');
+        $this->db->from('tb_agrupador_procedimento_nome');
+        $this->db->where("ativo", 't');
+        $this->db->where('agrupador_id', $agrupador_id);
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('c.nome ilike', "%" . $args['nome'] . "%");
+        }
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function listarprocedimentosagrupador($agrupador_id) {
+        $this->db->select('pa.agrupador_id,
+                           pa.procedimento_agrupado_id,
+                           pt.nome,
+                           pt.codigo,
+                           pt.procedimento_tuss_id
+                            ');
+        $this->db->from('tb_procedimentos_agrupados pa');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pa.procedimento_tuss_id', 'left');
+        $this->db->where("pa.ativo", 't');
+        $this->db->where('pa.agrupador_id', $agrupador_id);
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function gravaragrupadornome() {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_agrupador_procedimento_nome');
+
+            $agrupador_id = $this->db->insert_id();
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return 0;
+            else
+                return $agrupador_id;
+        } catch (Exception $exc) {
+            return 0;
+        }
+    }
+
+    function gravaragrupadoradicionar() {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('agrupador_id', $_POST['agrupador_id']);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_procedimentos_agrupados');
+
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return false;
+            else
+                return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function excluiragrupadornome($agrupador_id) {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('agrupador_id', $agrupador_id);
+            $this->db->update('tb_agrupador_procedimento_nome');
+
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return 0;
+            else
+                return 1;
+        } catch (Exception $exc) {
+            return 0;
+        }
+    }
+
+    function excluirprocedimentoagrupador($procedimento_agrupado_id) {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('procedimento_agrupado_id', $procedimento_agrupado_id);
+            $this->db->update('tb_procedimentos_agrupados');
+
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return 0;
+            else
+                return 1;
+        } catch (Exception $exc) {
+            return 0;
+        }
     }
 
     function listarprocedimento() {
@@ -255,8 +391,8 @@ class procedimentoplano_model extends Model {
         $this->db->where('grupo_pagamento_id ', $_POST['grupopagamento']);
         $return = $this->db->get();
         $result = $return->result();
-        
-        if($result != NULL){            
+
+        if ($result != NULL) {
             return 2;
         }
 
@@ -274,8 +410,9 @@ class procedimentoplano_model extends Model {
             } catch (Exception $exc) {
                 return 0;
             }
-        } 
+        }
     }
+
     function gravarnovomedico($procedimento_percentual_medico_id) {
 
         //verifica se esse medico já está cadastrado nesse procedimento 
@@ -285,8 +422,8 @@ class procedimentoplano_model extends Model {
         $this->db->where('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
         $return = $this->db->get();
         $result = $return->result();
-        
-        if($result != NULL){            
+
+        if ($result != NULL) {
             return 2;
         }
 
@@ -313,7 +450,7 @@ class procedimentoplano_model extends Model {
             } catch (Exception $exc) {
                 return 0;
             }
-        } 
+        }
     }
 
     function gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id) {
