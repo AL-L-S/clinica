@@ -205,7 +205,7 @@ class exame_model extends Model {
     }
 
     function listaritensgastos($guia_id) {
-        $this->db->select('ags.ambulatorio_gasto_sala_id, ep.descricao, ags.quantidade, ags.agenda_exame_id');
+        $this->db->select('ags.ambulatorio_gasto_sala_id, ep.descricao, ags.quantidade');
         $this->db->from('tb_ambulatorio_gasto_sala ags');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
         $this->db->where('ags.ativo', 't');
@@ -226,19 +226,14 @@ class exame_model extends Model {
     function listarprodutossalagastos() {
         $operador_id = $this->session->userdata('operador_id');
 
-        $this->db->select('DISTINCT(p.estoque_produto_id) as produto_id, p.descricao, p.procedimento_id');
+        $this->db->select('p.estoque_produto_id as produto_id, p.descricao, p.procedimento_id');
         $this->db->from('tb_estoque_operador_cliente oc');
         $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = oc.cliente_id');
         $this->db->join('tb_estoque_menu em', 'em.estoque_menu_id = ec.menu_id');
         $this->db->join('tb_estoque_menu_produtos emp', 'emp.menu_id = em.estoque_menu_id');
         $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = emp.produto');
         $this->db->where('oc.operador_id', $operador_id);
-        $this->db->where('ec.ativo', 't');
-        $this->db->where('em.ativo', 't');
-        $this->db->where('emp.ativo', 't');
-        $this->db->where('p.ativo', 't');
         $this->db->where('oc.ativo', 't');
-        
         $return = $this->db->get();
         return $return->result();
     }
@@ -3305,7 +3300,7 @@ class exame_model extends Model {
         }
     }
 
-    function gravargastodesala($agenda_exames_id = null) {
+    function gravargastodesala() {
             $horario = date('Y-m-d');
             $operador_id = $this->session->userdata('operador_id');
             
@@ -3314,13 +3309,10 @@ class exame_model extends Model {
             $this->db->set('quantidade', $_POST['txtqtde']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
-            if($agenda_exames_id != null){
-               $this->db->set('agenda_exame_id', $agenda_exames_id); 
-            }
             $this->db->insert('tb_ambulatorio_gasto_sala');
     }
 
-    function excluirgastodesala($gasto_id, $agenda_exame_id = null) {
+    function excluirgastodesala($gasto_id) {
             $horario = date('Y-m-d');
             $operador_id = $this->session->userdata('operador_id');
             
@@ -3329,16 +3321,6 @@ class exame_model extends Model {
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
             $this->db->update('tb_ambulatorio_gasto_sala');
-            
-            if($agenda_exame_id != -1){
-                $this->db->set('ativo', 'false');
-                $this->db->set('data_atualizacao', $horario);
-                $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->where('agenda_exames_id', $agenda_exame_id);
-                $this->db->update('tb_agenda_exames');
-//                die('morreu');
-            }
-            
     }
 
     function faturargastodesala($dados) {
@@ -3393,8 +3375,6 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_exames');
             $exames_id = $this->db->insert_id();
-            
-            return $agenda_exames_id;
     }
 
     function contadorexames() {

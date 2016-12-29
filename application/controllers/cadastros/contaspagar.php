@@ -99,8 +99,8 @@ class Contaspagar extends BaseController {
     }
 
     function gerarelatoriocontaspagar() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
@@ -215,9 +215,12 @@ class Contaspagar extends BaseController {
     function gravar() {
         $repetir = $_POST['repitir'];
         $dia = str_replace("/", "-", $_POST['inicio']);
+        $parcela = 1;
         if ($_POST['financeiro_contaspagar_id'] == '') {
             if ($repetir == '' || $repetir == 1) {
-                $parcela = 1;
+//                echo 'chegou aqui';
+//                die;
+
                 $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
             } elseif ($repetir >= 2) {
                 $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);

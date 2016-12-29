@@ -21,14 +21,14 @@
                         <label>Data*</label>
                     </dt>
                     <dd>
-                        <input type="text" name="inicio" id="inicio" class="texto04"/>
+                        <input type="text" name="inicio" id="inicio" class="texto04" required=""/>
                     </dd>
                     <dt>
                         <label>Receber de:</label>
                     </dt>
                     <dd>
                         <input type="hidden" id="devedor" class="texto_id" name="devedor" value="<?= @$obj->_devedor; ?>" />
-                        <input type="text" id="devedorlabel" class="texto09" name="devedorlabel" value="<?= @$obj->_razao_social; ?>" />
+                        <input type="text" id="devedorlabel" class="texto09" name="devedorlabel" value="<?= @$obj->_razao_social; ?>" required=""/>
                     </dd>
                     <dt>
                         <label>Tipo *</label>
@@ -45,7 +45,7 @@
                         <label>Classe *</label>
                     </dt>
                     <dd>
-                        <select name="classe" id="classe" class="size4">
+                        <select name="classe" id="classe" class="size4" required="">
                             <option value="">Selecione</option> 
                             <? foreach ($classe as $value) : ?>
                                 <option value="<?= $value->descricao; ?>"><?php echo $value->descricao; ?></option>
@@ -56,7 +56,7 @@
                         <label>Conta *</label>
                     </dt>
                     <dd>
-                        <select name="conta" id="conta" class="size4">
+                        <select name="conta" id="conta" class="size4" required="">
                             <option value="">Selecione</option>
                             <? foreach ($conta as $value) : ?>
                                 <option value="<?= $value->forma_entradas_saida_id; ?>"><?php echo $value->descricao; ?></option>
@@ -78,7 +78,6 @@
         </div>
     </div>
 </div> <!-- Final da DIV content -->
-
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>

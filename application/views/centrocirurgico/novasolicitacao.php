@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastrar Solicitação</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Armazem</a></h3>
         <div>
             <form name="form_sala" id="form_sala" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarnovasolicitacao" method="post">
 
@@ -29,7 +29,7 @@
                         <label>Médico</label>
                     </dt>
                     <dd>
-                        <select  name="medicoagenda" id="medicoagenda" class="size4"required="true" >
+                        <select  name="medicoagenda" id="medicoagenda" class="size4" >
                             <option value="">Selecione</option>
                             <? foreach ($medicos as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>">
@@ -41,12 +41,12 @@
 
 
 
-<!--                    <dt>
+                    <dt>
                         <label>Data Prevista</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_prevista" id="txtdata_prevista" alt="date"/>
-                    </dd>-->
+                    </dd>
 
                 </dl>    
                 <hr/>
@@ -93,6 +93,8 @@
             }
         });
     });
+
+
                     $(function () {
                         $("#txtNome").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
@@ -109,29 +111,22 @@
                         });
                     });
 
-
-    $(document).ready(function(){
-        jQuery('#form_sala').validate( {
-            rules: {
-                txtNome: {
-                    required: true,
-                    minlength: 2
-                },
-                procedimento: {
-                    required: true,
-                    minlength: 2
-                }
-            },
-            messages: {
-                txtNome: {
-                    required: "*",
-                    minlength: "!"
-                },
-                procedimento: {
-                    required: "*"
-                }
-            }
-        });
-    });
+//
+//    $(document).ready(function(){
+//        jQuery('#form_sala').validate( {
+//            rules: {
+//                txtNome: {
+//                    required: true,
+//                    minlength: 2
+//                }
+//            },
+//            messages: {
+//                txtNome: {
+//                    required: "*",
+//                    minlength: "!"
+//                }
+//            }
+//        });
+//    });
 
 </script>

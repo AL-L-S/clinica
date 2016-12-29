@@ -17,14 +17,14 @@
                         <label>Data*</label>
                     </dt>
                     <dd>
-                        <input type="text" name="inicio" id="inicio" class="texto04" value="<?= @$obj->_data; ?>"/>
+                        <input type="text" name="inicio" id="inicio" class="texto04" value="<?= @$obj->_data; ?>" required=""/>
                     </dd>
                     <dt>
                         <label>Receber de:</label>
                     </dt>
                     <dd>
                         <input type="hidden" id="devedor" class="texto_id" name="devedor" value="<?= @$obj->_devedor; ?>" />
-                        <input type="text" id="devedorlabel" class="texto09" name="devedorlabel" value="<?= @$obj->_razao_social; ?>" />
+                        <input type="text" id="devedorlabel" class="texto09" name="devedorlabel" value="<?= @$obj->_razao_social; ?>" required=""/>
                     </dd>
                     <!--                    <dt>
                                             <label>Tipo *</label>
@@ -65,7 +65,7 @@
                         <label>Classe</label>
                     </dt>
                     <dd>
-                        <select name="classe" id="classe" class="size4">
+                        <select name="classe" id="classe" class="size4" required="">
                             <option value="">Selecione</option>
                             <? foreach ($classe as $value) : ?>
                                 <option value="<?= $value->descricao; ?>"
@@ -81,7 +81,7 @@
                         <label>Conta *</label>
                     </dt>
                     <dd>
-                        <select name="conta" id="conta" class="size4">
+                        <select name="conta" id="conta" class="size4" required="">
                             <option value="">Selecione</option>
                             <? foreach ($conta as $value) : ?>
                                 <option value="<?= $value->forma_entradas_saida_id; ?>"<?

@@ -630,23 +630,21 @@ class Exame extends BaseController {
     
     function gravargastodesala() {
         $exame_id  = $_POST['exame_id'];
-        $agenda_exames_id = null;
+        $this->exame->gravargastodesala();
         if( isset($_POST['faturar']) ){
             $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id']);
             $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
             
-            $agenda_exames_id = $this->exame->faturargastodesala($data['procedimento'][0]);
+            $this->exame->faturargastodesala($data['procedimento'][0]);
         }
-        $this->exame->gravargastodesala($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
 //        $this->gastosdesala($exame_id);
     }
     
-    function excluirgastodesala($gasto_id, $exame_id, $agenda_exame_id = null) {
-        $agenda_exame_id = (int) $agenda_exame_id;
-        $this->exame->excluirgastodesala($gasto_id, $agenda_exame_id);
+    function excluirgastodesala($gasto_id, $exame_id) {
+        $this->exame->excluirgastodesala($gasto_id);
         redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
 //        $this->gastosdesala($exame_id);
     }

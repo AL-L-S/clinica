@@ -217,9 +217,10 @@ class Contasreceber extends BaseController {
     function gravar() {
         $repetir = $_POST['repitir'];
         $dia = str_replace("/", "-", $_POST['inicio']);
+        $parcela = 1;
         if ($_POST['financeiro_contasreceber_id'] == '') {
             if ($repetir == '' || $repetir == 1) {
-                $parcela = 1;
+                
                 $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
             } elseif ($repetir >= 2) {
                 $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);

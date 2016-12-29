@@ -94,8 +94,8 @@ class Autocomplete extends Controller {
     
     function procedimentoconveniocirurgia() {
 
-        if (isset($_GET['term'])) {
-            $result = $this->procedimento->listarprocedimentocirurgiaautocomplete($_GET['term']);
+        if (isset($_GET['procedimento'])) {
+            $result = $this->procedimento->listarprocedimentocirurgiaautocomplete($_GET['procedimento']);
         } else {
             $result = $this->procedimento->listarprocedimentocirurgiaautocomplete();
         }

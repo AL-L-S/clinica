@@ -300,7 +300,7 @@ class solicita_cirurgia_model extends BaseModel {
             //mapeando banco
             $this->db->set('paciente_id', $_POST['txtNomeid']);
             $this->db->set('procedimento_id', $_POST['procedimentoID']);
-//            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
+            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
             $this->db->set('medico_agendado', $_POST['medicoagenda']);
 
             if ($_POST['solicitacao_cirurgia_id'] == "0" || $_POST['solicitacao_cirurgia_id'] == "") {// insert
@@ -323,34 +323,6 @@ class solicita_cirurgia_model extends BaseModel {
                 }
             }
 
-            return true;
-        } catch (Exception $exc) {
-            return false;
-        }
-    }
-    
-    function gravarsolicitacaorcamento() {
-
-        try {
-
-            $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
-            
-            //mapeando banco
-            $this->db->set('convenio_id', $_POST['convenio']);
-            $this->db->set('operador_responsavel', $_POST['medico_responsavel']);
-            $this->db->set('data_solicitacao', $_POST['txtdata_prevista']);
-            if($_POST['observacao'] != ''){
-                $this->db->set('observacao', $_POST['observacao']);
-            }
-            $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_solicitacao_cirurgia_orcamento');
-            if (trim($erro) != "") { // erro de banco
-                return false;
-            }
-            
             return true;
         } catch (Exception $exc) {
             return false;

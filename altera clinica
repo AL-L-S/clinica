@@ -1196,3 +1196,8 @@ CREATE TABLE IF NOT EXISTS ponto.tb_solicitacao_cirurgia_orcamento
 -- Dia 29/12/2016
 
 ALTER TABLE ponto.tb_ambulatorio_gasto_sala add column agenda_exame_id integer;
+-- 	Update da PSICOSER (É necessário pegar o ID da Classe geral criada e colocar no set)
+   update ponto.tb_financeiro_classe
+	set tipo_id = 144
+	where tipo_id is null
+
