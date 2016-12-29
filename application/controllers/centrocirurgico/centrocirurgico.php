@@ -13,7 +13,8 @@ class centrocirurgico extends BaseController {
         $this->load->model('internacao/motivosaida_model', 'motivosaida');
         $this->load->model('internacao/enfermaria_model', 'enfermaria_m');
         $this->load->model('internacao/leito_model', 'leito_m');
-         $this->load->model('seguranca/operador_model', 'operador_m');
+        $this->load->model('seguranca/operador_model', 'operador_m');
+        $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('internacao/solicitainternacao_model', 'solicitacaointernacao_m');
         $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico_m');
         $this->load->model('centrocirurgico/solicita_cirurgia_model', 'solicitacirurgia_m');
@@ -63,9 +64,21 @@ class centrocirurgico extends BaseController {
          redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
     
-    function autorizarcirurgia() {
-         $this->centrocirurgico_m->autorizarcirurgia( );
-         $data['mensagem'] = 'Autorizacao efetuada com Sucesso';
+    function autorizarcirurgia($solicitacao_id) {
+        $data['solicitacao_id'] = $solicitacao_id;
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $this->loadView('centrocirurgico/autorizarcirurgia-form', $data);
+    }
+    
+    
+    function gravarautorizarcirurgia() {
+         $verifica = $this->centrocirurgico_m->gravarautorizarcirurgia();
+         if($verifica){
+            $data['mensagem'] = 'Autorizacao efetuada com Sucesso';
+         }
+         else{
+            $data['mensagem'] = 'Erro ao efetuar autorização';
+         }
          $this->session->set_flashdata('message', $data['mensagem']);
          redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
@@ -119,15 +132,23 @@ class centrocirurgico extends BaseController {
     }
     
     function gravarnovasolicitacao() {
-        $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
-        if($verifica){
-            $data['mensagem'] = 'Solicitacao efetuada com Sucesso';
+        if($_POST["txtNomeid"] == ""){
+            $data['mensagem'] = 'Paciente escolhido não é válido';
+        }
+        elseif($_POST["procedimentoID"] == ""){
+            $data['mensagem'] = 'Procedimento escolhido não é válido';
         }
         else{
-            $data['mensagem'] = 'Erro ao efetuar Solicitacao';
+            $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
+            if($verifica){
+                $data['mensagem'] = 'Solicitacao efetuada com Sucesso';
+            }
+            else{
+                $data['mensagem'] = 'Erro ao efetuar Solicitacao';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
         }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
     
     function novasolicitacaoconsulta($exame_id) {
@@ -146,6 +167,29 @@ class centrocirurgico extends BaseController {
         }
         
         $this->loadView('centrocirurgico/novasolicitacao', $data);
+    }
+    
+    
+    
+    function solicitacarorcamento($solicitacao_id) {
+        $data['solicitacao_id'] = $solicitacao_id;
+        $data['convenio'] = $this->procedimentoplano->listarconveniocirurgiaorcamento();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $this->loadView('centrocirurgico/solicitacarorcamento-form', $data);
+    }
+    
+    
+    function gravarsolicitacaorcamento() {
+//        $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
+        $verifica = $this->solicitacirurgia_m->gravarsolicitacaorcamento();
+        if($verifica){
+            $data['mensagem'] = 'Solicitacao de orçamento efetuada com Sucesso';
+        }
+        else{
+            $data['mensagem'] = 'Erro ao efetuar Solicitacao de orçamento';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
     
     function internacaoalta($internacao_id){
