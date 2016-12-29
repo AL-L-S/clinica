@@ -1198,6 +1198,33 @@ CREATE TABLE IF NOT EXISTS ponto.tb_solicitacao_cirurgia_orcamento
 ALTER TABLE ponto.tb_ambulatorio_gasto_sala add column agenda_exame_id integer;
 ALTER TABLE ponto.tb_solicitacao_cirurgia DROP COLUMN procedimento_id;
 
+CREATE TABLE ponto.tb_procedimentos_agrupados
+(
+  procedimento_agrupado_id serial NOT NULL,
+  agrupador_id integer,
+  procedimento_tuss_id integer,
+  obs character varying,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_procedimentos_agrupados_id PRIMARY KEY (procedimento_agrupado_id )
+);
+
+CREATE TABLE ponto.tb_agrupador_procedimento_nome
+(
+  agrupador_id serial NOT NULL,
+  nome character varying,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT agrupador_procedimento_pkey PRIMARY KEY (agrupador_id )
+);
+
+
 CREATE TABLE ponto.tb_solicitacao_cirurgia_procedimento
 (
   solicitacao_cirurgia_procedimento_id serial NOT NULL,
@@ -1209,6 +1236,5 @@ CREATE TABLE ponto.tb_solicitacao_cirurgia_procedimento
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
   
-
   CONSTRAINT tb_solicitacao_cirurgia_procedimento_pkey PRIMARY KEY (solicitacao_cirurgia_procedimento_id)
 );
