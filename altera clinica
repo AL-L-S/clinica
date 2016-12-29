@@ -1196,8 +1196,30 @@ CREATE TABLE IF NOT EXISTS ponto.tb_solicitacao_cirurgia_orcamento
 -- Dia 29/12/2016
 
 ALTER TABLE ponto.tb_ambulatorio_gasto_sala add column agenda_exame_id integer;
--- 	Update da PSICOSER (É necessário pegar o ID da Classe geral criada e colocar no set)
-   update ponto.tb_financeiro_classe
-	set tipo_id = 144
-	where tipo_id is null
 
+
+CREATE TABLE ponto.tb_procedimentos_agrupados
+(
+  procedimento_agrupado_id integer NOT NULL DEFAULT nextval('ponto.tb_procedimentos_agrupados_procedimento_ageupado_id_seq'::regclass),
+  agrupador_id integer,
+  procedimento_tuss_id integer,
+  obs character varying,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_procedimentos_agrupados_id PRIMARY KEY (procedimento_agrupado_id )
+);
+
+CREATE TABLE ponto.tb_agrupador_procedimento_nome
+(
+  agrupador_id integer NOT NULL DEFAULT nextval('ponto.tb_agrupador_procedimento_agrupador_id_seq'::regclass),
+  nome character varying,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT agrupador_procedimento_pkey PRIMARY KEY (agrupador_id );
+)
