@@ -51,7 +51,6 @@ function debug($object) {
                 });
             })(jQuery);
 
-
             function mensagensnaolidas() {
                 jQuery.ajax({
                     type: "GET",
@@ -64,12 +63,34 @@ function debug($object) {
 
                         if (retorno != 0) {
                             jQuery(".batepapo_div #contatos_chat_lista").append("<span class='total_mensagens'>+"+retorno+"</span>");
-//                            jQuery(".batepapo_div .total_mensagens").text("+" + retorno);
+//                            abrindomensagensnaolidas();
                         }
                     }
                 });
             }
-            mensagensnaolidas();
+            
+            
+//            function abrindomensagensnaolidas() {
+//                jQuery.ajax({
+//                    type: "GET",
+//                    url: "<?= base_url(); ?>" + "batepapo/abrindomensagensnaolidas",
+//                    dataType: "json",
+//                    success: function (retorno) {
+//                        jQuery.each(retorno, function (i, usr) {
+//                            var tags = null;
+//                            if (usr.operador_id != <?// echo $operador_id ?> && usr.usuario != 0) {
+//                                tags = "<li id='" + usr.operador_id + "'><div class='imgPerfil'></div>";
+//                                tags += "<a href='#' id='<? // echo $operador_id ?>:" + usr.operador_id + "' class='comecarChat'>" + usr.usuario + "</a>";
+//                                if (usr.num_mensagens != 0) {
+//                                    tags += "<span class='total_mensagens'> +" + usr.num_mensagens + " </span>";
+//                                }
+//                                tags += "<span id='usr.operador_id'></span></li>";
+//                                jQuery("#principalChat #usuarios_online ul").append(tags);
+//                            }
+//                        }
+//                    }
+//                });
+//            }
 
             function carregacontatos() {
                 jQuery.ajax({
@@ -80,12 +101,14 @@ function debug($object) {
                         jQuery.each(retorno, function (i, usr) {
                             var tags = null;
                             if (usr.operador_id != <? echo $operador_id ?> && usr.usuario != 0) {
+                                var id = "<? echo $operador_id ?>:" + usr.operador_id;
+                                var id = usr.usuario;
                                 tags = "<li id='" + usr.operador_id + "'><div class='imgPerfil'></div>";
                                 tags += "<a href='#' id='<? echo $operador_id ?>:" + usr.operador_id + "' class='comecarChat'>" + usr.usuario + "</a>";
                                 if (usr.num_mensagens != 0) {
                                     tags += "<span class='total_mensagens'> +" + usr.num_mensagens + " </span>";
                                 }
-                                tags += "<span id='usr.operador_id'></span></li>";
+                                tags += "<span id='"+usr.operador_id+"'></span></li>";
                                 jQuery("#principalChat #usuarios_online ul").append(tags);
                             }
                         });
@@ -629,14 +652,16 @@ function debug($object) {
                 }
             }, 800);
                 
+                
             //abrindo a janelas de batepapo
             jQuery(function(){
                 jQuery("#principalChat #usuarios_online ul li a").live('click', function () {
-                    console.log('teste');
+//                    console.log('teste');
                     var id = jQuery(this).attr("id");
                     jQuery(this).removeClass("comecarChat");
 
-                    var status = jQuery(this).next().attr("class");
+                    var status = jQuery(this).next().attr("class"); 
+//                    console.log(status);
                     var splitId = id.split(":");
                     var idJanela = Number(splitId[1]);
 
@@ -787,5 +812,6 @@ function debug($object) {
             }
 
             buscamensagens();
+            mensagensnaolidas();
 
         </script>

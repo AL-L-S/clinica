@@ -91,6 +91,32 @@ class batepapo extends BaseController {
         
         die(json_encode($total));
     }
+       
+    function abrindomensagensnaolidas() {        
+        $operador_id = $this->session->userdata('operador_id');
+        $data['usuarios'] = $this->batepapo->listarusuariosabrircontato();
+        $tot_mensagens[] = array();
+        echo '<pre>';
+        var_dump($data['usuarios']);die;
+
+        for ($i = 0; $i < count($data['usuarios']); $i++){
+            $tot_mensagens[$i]["total_mensagens"] = $this->batepapo->contamensagensporusuarios($data['usuarios'][$i]->operador_id);
+            $tot_mensagens[$i]["total_mensagens"] = count($tot_mensagens[$i]["total_mensagens"]);
+            $tot_mensagens[$i]["operador_origem"] = $data['usuarios'][$i]->operador_id;
+        }
+
+        for($i = 0; $i< count($data['usuarios']); $i++){
+            
+            $usuarios[] = array(
+                'usuario' => utf8_encode($data['usuarios'][$i]->usuario),
+                'operador_id' => $data['usuarios'][$i]->operador_id,
+            );
+            
+        }
+        
+        die(json_encode($usuarios));
+        
+    }
     
     function atualizamensagens() {
         
