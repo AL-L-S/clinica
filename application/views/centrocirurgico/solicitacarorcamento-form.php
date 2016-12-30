@@ -42,21 +42,21 @@
 //        });
 //    });
 
-    $(function () {
-        $("#cirurgiao1").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=centrocirurgicomedicos",
-            minLength: 1,
-            focus: function (event, ui) {
-                $("#cirurgiao1").val(ui.item.nome);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#cirurgiao1").val(ui.item.nome);
-                $("#cirurgiao1id").val(ui.item.id);
-                return false;
-            }
-        });
-    });
+//    $(function () {
+//        $("#cirurgiao1").autocomplete({
+//            source: "<?= base_url() ?>index.php?c=autocomplete&m=centrocirurgicomedicos",
+//            minLength: 1,
+//            focus: function (event,ui) {
+//                $("#cirurgiao1").val(ui.item.label);
+//                return false;
+//            },
+//            select: function (event,ui) {
+//                $("#cirurgiao1").val(ui.item.nome);
+//                $("#cirurgiao1id").val(ui.item.id);
+//                return false;
+//            }
+//        });
+//    });
 
     $(function () {
         $("#txtNome").autocomplete({
