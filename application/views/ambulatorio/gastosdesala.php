@@ -86,7 +86,7 @@
                             <td class="<?php echo $estilo_linha;  ?>" width="450px;"><center><? echo $item->descricao;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->quantidade;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>" width="100px;">
-                                <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>/<? if(isset( $item->agenda_exame_id) ){ echo $item->agenda_exame_id; } else{ echo '-1';} ;  ?>" class="delete">
+                                <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>" class="delete">
                                 </a>
                             </td>
                         </tr>

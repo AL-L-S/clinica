@@ -312,6 +312,12 @@ class Exame extends BaseController {
     }
 
     function examesala($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
+//        echo '<pre>';
+//        var_dump($paciente_id);
+//        var_dump($procedimento_tuss_id);
+//        var_dump($guia_id);
+//        var_dump($agenda_exames_id);
+//        die;
         $data['salas'] = $this->exame->listarsalas();
         $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
         $data['agenda_exames_nome_id'] = $this->exame->listarsalaagenda($agenda_exames_id);
@@ -419,6 +425,7 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
+//        var_dump($total); die;
         if ($total == 0) {
             $laudo_id = $this->exame->gravarexame();
             if ($laudo_id == "-1") {
@@ -630,23 +637,21 @@ class Exame extends BaseController {
     
     function gravargastodesala() {
         $exame_id  = $_POST['exame_id'];
-        $agenda_exames_id = null;
+        $this->exame->gravargastodesala();
         if( isset($_POST['faturar']) ){
             $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id']);
             $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
             
-            $agenda_exames_id = $this->exame->faturargastodesala($data['procedimento'][0]);
+            $this->exame->faturargastodesala($data['procedimento'][0]);
         }
-        $this->exame->gravargastodesala($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
 //        $this->gastosdesala($exame_id);
     }
     
-    function excluirgastodesala($gasto_id, $exame_id, $agenda_exame_id = null) {
-        $agenda_exame_id = (int) $agenda_exame_id;
-        $this->exame->excluirgastodesala($gasto_id, $agenda_exame_id);
+    function excluirgastodesala($gasto_id, $exame_id) {
+        $this->exame->excluirgastodesala($gasto_id);
         redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
 //        $this->gastosdesala($exame_id);
     }

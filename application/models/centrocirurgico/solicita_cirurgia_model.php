@@ -110,6 +110,28 @@ class solicita_cirurgia_model extends BaseModel {
     
     
     
+    function listarprocedimentosagrupador($agrupador){
+        $this->db->select('procedimento_tuss_id as procedimento_id');
+        $this->db->from('tb_procedimentos_agrupados');
+        $this->db->where('ativo', 't');
+        $this->db->where('agrupador_id', $agrupador);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
+    function verificasolicitacaoprocedimentorepetidos(){
+        $this->db->select('');
+        $this->db->from('tb_solicitacao_cirurgia_procedimento');
+        $this->db->where('ativo', 't');
+        $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+        $this->db->where('procedimento_tuss_id', $_POST['procedimentoID']);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
+    
     function mostrarsaidapaciente($internacao_id){
 
         $this->db->select('i.internacao_id,
@@ -139,6 +161,13 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->set('excluido', 't');
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->update('tb_solicitacao_cirurgia');
+    }
+    
+    
+    function excluirsolicitacaoprocedimento($solicitacao_procedimento_id) {
+        $this->db->set('ativo', 'f');
+        $this->db->where('solicitacao_cirurgia_procedimento_id', $solicitacao_procedimento_id);
+        $this->db->update('tb_solicitacao_cirurgia_procedimento');
     }
     
     function gravarsolicitacaocirurgia( ){
@@ -176,6 +205,32 @@ class solicita_cirurgia_model extends BaseModel {
     }
     
     
+    function carregarsolicitacaoprocedimento(){
+
+        
+        $this->db->select(' pt.procedimento_tuss_id,
+                            pt.descricao');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->where('pt.ativo', 't');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+        $this->db->where('ag.tipo', 'EXAME');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function carregarsolicitacaoagrupador(){
+
+        
+        $this->db->select('an.agrupador_id, an.nome');
+        $this->db->from('tb_agrupador_procedimento_nome an');
+        $this->db->where('an.ativo', 't');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
     function solicitacirurgiaconsulta($exame_id){
 
         $this->db->select('p.nome as paciente,
@@ -198,6 +253,17 @@ class solicita_cirurgia_model extends BaseModel {
         if ($parametro != null) {
             $this->db->where('nome ilike', "%" . $parametro . "%");
         }
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarsolicitacaosprocedimentos($solicitacao_id) {
+        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id,
+                           pt.nome');
+        $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = scp.procedimento_tuss_id', 'left');
+        $this->db->where('scp.ativo', 'true');
+        $this->db->where('scp.solicitacao_cirurgia_id', $solicitacao_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -299,7 +365,9 @@ class solicita_cirurgia_model extends BaseModel {
             
             //mapeando banco
             $this->db->set('paciente_id', $_POST['txtNomeid']);
-            $this->db->set('procedimento_id', $_POST['procedimentoID']);
+//            $this->db->set('procedimento_id', $_POST['procedimentoID']);
+//            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
+//            $this->db->set('procedimento_id', $_POST['procedimentoID']);
 //            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
             $this->db->set('medico_agendado', $_POST['medicoagenda']);
 
@@ -309,21 +377,46 @@ class solicita_cirurgia_model extends BaseModel {
                 $this->db->insert('tb_solicitacao_cirurgia');
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
-                    return false;
+                    return -1;
                 }
+                $solicitacao_id = $this->db->insert_id();
             }
             else { // update
-                $internacao_motivosaida_id = $_POST['solicitacao_cirurgia_id'];
+                $solicitacao_id = $_POST['solicitacao_cirurgia_id'];
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->where('solicitacao_cirurgia_id', $internacao_motivosaida_id);
+                $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
                 $this->db->update('tb_solicitacao_cirurgia');
                 if (trim($erro) != "") { // erro de banco
-                    return false;
+                    return -1;
                 }
             }
 
+            return $solicitacao_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravarsolicitacaoprocedimento() {
+
+        try {
+//            var_dump($_POST['procedimento_id']);die;
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimentoID']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_solicitacao_cirurgia_procedimento');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            }
             return true;
+            
         } catch (Exception $exc) {
             return false;
         }

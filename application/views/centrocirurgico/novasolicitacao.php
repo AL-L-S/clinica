@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastrar Solicitação</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Armazem</a></h3>
         <div>
             <form name="form_sala" id="form_sala" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarnovasolicitacao" method="post">
 
@@ -16,20 +16,12 @@
                 <input type="text" id="txtNome" name="txtNome" class="texto10"/>-->
                         
                     </dd>
-
-                    <dt>
-                        <label>Procedimento</label>
-                    </dt>
-                    <dd>
-                        <input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2"/>
-                        <input type="text" name="procedimento" id="procedimento" class="texto10"/>
-                    </dd>
-                    
+                 
                     <dt>
                         <label>Médico</label>
                     </dt>
                     <dd>
-                        <select  name="medicoagenda" id="medicoagenda" class="size4"required="true" >
+                        <select  name="medicoagenda" id="medicoagenda" class="size4" required="true">
                             <option value="">Selecione</option>
                             <? foreach ($medicos as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>">
@@ -39,14 +31,6 @@
                         </select>
                     </dd>
 
-
-
-<!--                    <dt>
-                        <label>Data Prevista</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="txtdata_prevista" id="txtdata_prevista" alt="date"/>
-                    </dd>-->
 
                 </dl>    
                 <hr/>
@@ -59,6 +43,10 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+    
+<?php if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
 
     $(function () {
         $("#accordion").accordion();
@@ -93,6 +81,8 @@
             }
         });
     });
+
+
                     $(function () {
                         $("#txtNome").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
@@ -116,19 +106,12 @@
                 txtNome: {
                     required: true,
                     minlength: 2
-                },
-                procedimento: {
-                    required: true,
-                    minlength: 2
                 }
             },
             messages: {
                 txtNome: {
                     required: "*",
                     minlength: "!"
-                },
-                procedimento: {
-                    required: "*"
                 }
             }
         });
