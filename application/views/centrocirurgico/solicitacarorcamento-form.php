@@ -47,6 +47,7 @@
             source: "<?= base_url() ?>index.php?c=autocomplete&m=centrocirurgicomedicos",
             minLength: 1,
             focus: function (event, ui) {
+                console.log(event);
                 $("#cirurgiao1").val(ui.item.nome);
                 return false;
             },
