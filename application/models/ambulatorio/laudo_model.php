@@ -1412,6 +1412,9 @@ class laudo_model extends Model {
                             ag.situacao,
                             ae.agenda_exames_nome_id,
                             ar.texto,
+                            ar.data,
+                            ar.imprimir_cid,
+                            ar.cid1,
                             p.nascimento,
                             ag.situacao_revisor,
                             o.nome as medico,
@@ -1443,6 +1446,14 @@ class laudo_model extends Model {
         $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("ar.ambulatorio_atestado_id", $ambulatorio_laudo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarcid($param) {
+        $this->db->select('*');
+        $this->db->from('tb_cid');
+        $this->db->where("co_cid", $param);
         $return = $this->db->get();
         return $return->result();
     }
@@ -2320,6 +2331,8 @@ class laudo_model extends Model {
 
     function gravaratestado() {
         try {
+//            var_dump($_POST['cid1ID']);
+//            die;
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -2330,6 +2343,15 @@ class laudo_model extends Model {
             $this->db->set('medico_parecer1', $_POST['medico']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $_POST['medico']);
+            if ($_POST['data'] != "") {
+                $this->db->set('data', $_POST['data']);
+            }
+            if ($_POST['cid1ID'] != "") {
+                $this->db->set('cid1', $_POST['cid1ID']);
+            }
+            if ($_POST['imprimircid'] == "on") {
+                $this->db->set('imprimir_cid', 't');
+            }
             $this->db->set('tipo', 'NORMAL');
 
             $this->db->insert('tb_ambulatorio_atestado');
