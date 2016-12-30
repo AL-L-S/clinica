@@ -110,6 +110,28 @@ class solicita_cirurgia_model extends BaseModel {
     
     
     
+    function listarprocedimentosagrupador($agrupador){
+        $this->db->select('procedimento_tuss_id as procedimento_id');
+        $this->db->from('tb_procedimentos_agrupados');
+        $this->db->where('ativo', 't');
+        $this->db->where('agrupador_id', $agrupador);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
+    function verificasolicitacaoprocedimentorepetidos(){
+        $this->db->select('');
+        $this->db->from('tb_solicitacao_cirurgia_procedimento');
+        $this->db->where('ativo', 't');
+        $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+        $this->db->where('procedimento_tuss_id', $_POST['procedimentoID']);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
+    
     function mostrarsaidapaciente($internacao_id){
 
         $this->db->select('i.internacao_id,
@@ -139,6 +161,13 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->set('excluido', 't');
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->update('tb_solicitacao_cirurgia');
+    }
+    
+    
+    function excluirsolicitacaoprocedimento($solicitacao_procedimento_id) {
+        $this->db->set('ativo', 'f');
+        $this->db->where('solicitacao_cirurgia_procedimento_id', $solicitacao_procedimento_id);
+        $this->db->update('tb_solicitacao_cirurgia_procedimento');
     }
     
     function gravarsolicitacaocirurgia( ){
@@ -372,12 +401,13 @@ class solicita_cirurgia_model extends BaseModel {
     function gravarsolicitacaoprocedimento() {
 
         try {
-
+//            var_dump($_POST['procedimento_id']);die;
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             
             $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-            $this->db->set('procedimento_tuss_id', $_POST['procedimento_id']);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimentoID']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_solicitacao_cirurgia_procedimento');

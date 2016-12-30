@@ -77,6 +77,14 @@ class centrocirurgico extends BaseController {
          redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
     
+    
+    function excluirsolicitacaoprocedimento($solicitacao_procedimento_id, $solicitacao) {
+         $this->solicitacirurgia_m->excluirsolicitacaoprocedimento($solicitacao_procedimento_id);
+         $data['mensagem'] = 'Procedimento removido com sucesso';
+         $this->session->set_flashdata('message', $data['mensagem']);
+         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
+    }
+    
     function novo($paciente_id) {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
 
@@ -122,9 +130,8 @@ class centrocirurgico extends BaseController {
         if($_POST["txtNomeid"] == ""){
             $data['mensagem'] = 'Paciente escolhido não é válido';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
+            redirect(base_url() . "centrocirurgico/centrocirurgico/novasolicitacao/0");
         }
-        
         else{
             $solicitacao = $this->solicitacirurgia_m->gravarnovasolicitacao();
             if($solicitacao == -1){
@@ -142,17 +149,35 @@ class centrocirurgico extends BaseController {
  
     function gravarsolicitacaoprocedimentos() {
             $solicitacao = $_POST['solicitacao_id'];
-            if( isset($_POST['procedimento_id']) ){
-                if( $this->solicitacirurgia_m->gravarsolicitacaoprocedimento() ){
-                    $data['mensagem'] = 'Procedimento adicionado com Sucesso';
-                }
-                else{
-                    $data['mensagem'] = 'Erro ao gravar Procedimento';
+            
+            if( $_POST['tipo'] == 'procedimento'){
+                if($_POST['procedimentoID'] != ''){
+                    $verifica = count( $this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos() );
+                    if($verifica == 0){
+                        if( $this->solicitacirurgia_m->gravarsolicitacaoprocedimento() ){
+                            $data['mensagem'] = 'Procedimento adicionado com Sucesso';
+                        }
+                        else{
+                            $data['mensagem'] = 'Erro ao gravar Procedimento';
+                        }
+                    }    
+                } 
+                else {
+                        $data['mensagem'] = 'Erro ao gravar Procedimento. Procedimento nao selecionado ou invalido.';
                 }
             }
-//            else{
-//                
-//            }
+            
+            elseif( $_POST['tipo'] == 'agrupador' ){
+                $procedimentos = $this->solicitacirurgia_m->listarprocedimentosagrupador($_POST['agrupador_id']);
+                foreach ($procedimentos as $item){
+                    $_POST['procedimentoID'] = $item->procedimento_id;
+                    $verifica = count( $this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos() );
+                    if($verifica == 0){
+                        $this->solicitacirurgia_m->gravarsolicitacaoprocedimento();
+                    }
+                }
+            }
+            
             redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
     }
     
@@ -161,10 +186,7 @@ class centrocirurgico extends BaseController {
 
         $data['solicitacao_id'] = $solicitacao_id;
         $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaoprocedimento();
-        $data['agrupador'] = array('ola', 'ola');
-//        $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador();
-//        echo '<pre>';
-//        var_dump($data['procedimento']);die;
+        $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador();
         $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentos($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);
         
