@@ -33,6 +33,8 @@
                                 <!--                                        impressaolaudo -->
                             </td>
                         </tr>
+                        
+                        <tr><td>Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero ?></td>
                     </table>
                 </fieldset>
                 <div>
