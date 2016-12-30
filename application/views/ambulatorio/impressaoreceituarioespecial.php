@@ -263,3 +263,31 @@
 </div>
 </div>
 
+<script>
+   // set portrait orientation
+   jsPrintSetup.setOption('orientation', jsPrintSetup.kLandscapeOrientation);
+   // set top margins in millimeters
+//   jsPrintSetup.setOption('marginTop', 15);
+//   jsPrintSetup.setOption('marginBottom', 15);
+//   jsPrintSetup.setOption('marginLeft', 20);
+//   jsPrintSetup.setOption('marginRight', 10);
+   // set page header
+//   jsPrintSetup.setOption('headerStrLeft', 'Receituario Especial');
+//   jsPrintSetup.setOption('headerStrCenter', '');
+   jsPrintSetup.setOption('headerStrRight', '');
+   // set empty page footer
+//   jsPrintSetup.setOption('footerStrLeft', '');
+//   jsPrintSetup.setOption('footerStrCenter', '');
+   jsPrintSetup.setOption('scaling', 80.0);
+   jsPrintSetup.setOption('shrinkToFit', 'false');
+   // clears user preferences always silent print value
+   // to enable using 'printSilent' option
+//   jsPrintSetup.clearSilentPrint();
+   // Suppress print dialog (for this context only)
+//   jsPrintSetup.setOption('printSilent', 1);
+   // Do Print 
+   // When print is submitted it is executed asynchronous and
+   // script flow continues after print independently of completetion of print process! 
+   jsPrintSetup.print();
+   // next commands
+</script> 
