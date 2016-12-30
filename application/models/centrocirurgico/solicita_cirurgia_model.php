@@ -329,6 +329,21 @@ class solicita_cirurgia_model extends BaseModel {
         }
     }
     
+        function listarmedicocirurgiaautocomplete($parametro = null) {
+        $this->db->select('operador_id,
+                           nome');
+        $this->db->from('tb_operador');
+        $this->db->where('consulta', 'true');
+        $this->db->where('ativo', 'true');
+        $this->db->orderby('nome');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
+
+    }
+    
     function gravarsolicitacaorcamento() {
 
         try {

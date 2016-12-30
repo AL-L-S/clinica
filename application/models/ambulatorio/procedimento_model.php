@@ -23,8 +23,8 @@ class procedimento_model extends Model {
             $this->instanciar($procedimento_tuss_id);
         }
     }
-    
- function listar($args = array()) {
+
+    function listar($args = array()) {
         $this->db->select('procedimento_tuss_id,
                             nome,
                             codigo,
@@ -182,7 +182,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimentoautocomplete($parametro = null) {
         $this->db->select('procedimento_tuss_id,
                            descricao');
@@ -194,7 +194,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimentocirurgiaautocomplete($parametro = null) {
         $this->db->select('pc.procedimento_convenio_id,
                            pt.descricao');

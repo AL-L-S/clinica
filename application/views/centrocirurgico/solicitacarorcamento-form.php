@@ -1,100 +1,62 @@
-<div class="content"> <!-- Inicio da DIV content -->
-    <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastrar Solicitação de Orçamento</a></h3>
+<div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
+    <fieldset>
+        <legend>Cadastrar Orçamento</legend>
         <div>
             <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaorcamento" method="post">
                 <div style="padding-bottom: 50px;">
-                    <dl class="dl_desconto_lista">
-                        <input type="hidden" name="solicitacao_id" id="solicitacao_id" value="<?= @$solicitacao_id; ?>"/>
+                    <input type="hidden" name="solicitacao_id" id="solicitacao_id" value="<?= @$solicitacao_id; ?>"/>
+                    <div>
+                        <label>Cirurgião *</label>
+                        <input type="text" name="cirurgiao1" id="cirurgiao1" class="texto06"/>
+                        <input type="text" name="cirurgiao1id" id="cirurgiao1id" class="texto01"/>
+                        <input type="text" id="txtNome" name="txtNome" class="texto10"/>
+                    </div>                   
 
-                        <dt>
-                            <label>Convenio</label>
-                        </dt>
-                        <dd>
-                            <select name="convenio" id="convenio" class="size4" required="true">
-                                <option  value="">Selecione</option>
-                                <? foreach ($convenio as $value) : ?>
-                                    <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
-                                <? endforeach; ?>
-                            </select>
-                        </dd>                    
-
-                        <dt>
-                            <label>Medico Responsavel</label>
-                        </dt>
-                        <dd>
-                            <select name="medico_responsavel" id="medico_responsavel" class="size4" required="true">
-                                <option  value="">Selecione</option>
-                                <? foreach ($medicos as $item) : ?>
-                                    <option value="<?= $item->operador_id; ?>">
-                                        <?= $item->nome; ?>
-                                    </option>
-                                <? endforeach; ?>
-                            </select>
-                        </dd>                    
-
-                        <dt>
-                            <label>Data Solicitacao</label>
-                        </dt>
-                        <dd>
-                            <input type="text" name="txtdata_prevista" id="txtdata_prevista" alt="date" required="true"/>
-                        </dd>
-
-                        <dt>
-                            <label>Observação</label>
-                        </dt>
-                        <dd>
-                            <!--<textarea name="observacao" id="observacao"></textarea>-->
-                            <textarea cols="49" rows="3" name="observacao" id="observacao"></textarea><br/>
-                        </dd>
-
-                    </dl>  
                 </div>
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>
             </form>
         </div>
-    </div>
+    </fieldset>
 </div> <!-- Final da DIV content -->
-
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
-    $(function () {
-        $("#accordion").accordion();
-    });
-
-
-    $(function () {
-        $("#txtdata_prevista").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
-
+//    $(function () {
+//        $("#cirurgiao1").autocomplete({
+//            source: "<?= base_url() ?>index.php?c=autocomplete&m=centrocirurgicomedicos",
+//            minLength: 1,
+//            focus: function (event, ui) {
+//                $("#cirurgiao1").val(ui.item.label);
+//                return false;
+//            },
+//            select: function (event, ui) {
+//                $("#cirurgiao1").val(ui.item.nome);
+//                $("#solicitacao_id").val(ui.item.id);
+//                return false;
+//            }
+//        });
+//    });
 
     $(function () {
-        $("#procedimento").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentoconveniocirurgia",
-            minLength: 3,
+        $("#cirurgiao1").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=centrocirurgicomedicos",
+            minLength: 1,
             focus: function (event, ui) {
-                $("#procedimento").val(ui.item.label);
+                $("#cirurgiao1").val(ui.item.nome);
                 return false;
             },
             select: function (event, ui) {
-                $("#procedimento").val(ui.item.value);
-                $("#procedimentoID").val(ui.item.id);
+                $("#cirurgiao1").val(ui.item.nome);
+                $("#cirurgiao1id").val(ui.item.id);
                 return false;
             }
         });
     });
-
 
     $(function () {
         $("#txtNome").autocomplete({
@@ -107,27 +69,12 @@
             select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
+                $("#telefone").val(ui.item.itens);
+                $("#nascimento").val(ui.item.valor);
+                $("#txtEnd").val(ui.item.endereco);
                 return false;
             }
         });
     });
-
-//
-//    $(document).ready(function(){
-//        jQuery('#form_sala').validate( {
-//            rules: {
-//                txtNome: {
-//                    required: true,
-//                    minlength: 2
-//                }
-//            },
-//            messages: {
-//                txtNome: {
-//                    required: "*",
-//                    minlength: "!"
-//                }
-//            }
-//        });
-//    });
 
 </script>

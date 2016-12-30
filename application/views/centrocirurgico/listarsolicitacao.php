@@ -51,8 +51,8 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link" style="width: 70px;">
                                         <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/autorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>" >Autorizar</a></div>
                                 </td>                                 
-                                <td class="<?php echo $estilo_linha; ?>" width="170px;"><div class="bt_link" style="width: 170px;">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 150px;">Solicitar Orçamento</a></div>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link" style="width: 100px;">
+                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 95px;">Orçamento</a></div>
                                 </td>                                 
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;" ><div class="bt_link" style="width: 70px;">
                                     <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Excluir</a></div>

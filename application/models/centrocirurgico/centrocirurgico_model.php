@@ -36,7 +36,7 @@ class centrocirurgico_model extends BaseModel {
     }
 
     function listarsolicitacoes($args = array()) {
-        
+
         $this->db->select(' p.paciente_id,
                             p.nome,
                             sc.procedimento_id,
@@ -83,19 +83,18 @@ class centrocirurgico_model extends BaseModel {
                 $pesquisa = $args['txtdata_cirurgia'];
                 $pesquisa1 = $pesquisa . ' 00:00:00';
                 $pesquisa2 = $pesquisa . ' 23:59:59';
-                $this->db->where("sc.data_prevista >=",  "$pesquisa1");
-                $this->db->where("sc.data_prevista <=",  "$pesquisa2");
+                $this->db->where("sc.data_prevista >=", "$pesquisa1");
+                $this->db->where("sc.data_prevista <=", "$pesquisa2");
                 if ($args['nome'] != null) {
                     $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
                 }
+            } else if ($args['nome'] != null) {
+                $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
-            else if ($args['nome'] != null) {
-                    $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
-                }
         } else {
             $hoje = date('Y-m-d');
             $hoje = $hoje . ' 00:00:00';
-            $this->db->where("sc.data_prevista >=",  "$hoje");
+            $this->db->where("sc.data_prevista >=", "$hoje");
         }
 
         return $this->db;
@@ -131,9 +130,9 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
-    function gravarautorizarcirurgia( ) {
+    function gravarautorizarcirurgia() {
         try {
-            
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -147,11 +146,25 @@ class centrocirurgico_model extends BaseModel {
             if (trim($erro) != "") { // erro de banco
                 return false;
             }
-            
+
             return true;
         } catch (Exception $exc) {
             return false;
         }
+    }
+
+    function listarmedicocirurgiaautocomplete($parametro = null) {
+        $this->db->select('operador_id,
+                           nome');
+        $this->db->from('tb_operador');
+        $this->db->where('consulta', 'true');
+        $this->db->where('ativo', 'true');
+//        $this->db->orderby('nome');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function gravarcentrocirurgico() {

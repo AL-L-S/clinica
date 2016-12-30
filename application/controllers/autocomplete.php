@@ -31,6 +31,7 @@ class Autocomplete extends Controller {
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('cadastro/classe_model', 'financeiro_classe');
         $this->load->model('estoque/menu_model', 'menu');
+        $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico');
     }
 
     function index() {
@@ -91,7 +92,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
+
     function procedimentoconveniocirurgia() {
 
         if (isset($_GET['term'])) {
@@ -102,6 +103,22 @@ class Autocomplete extends Controller {
         foreach ($result as $item) {
             $retorno['value'] = $item->descricao;
             $retorno['id'] = $item->procedimento_convenio_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function centrocirurgicomedicos() {
+//        var_dump(123);die;
+
+        if (isset($_GET['term'])) {
+            $result = $this->centrocirurgico->listarmedicocirurgiaautocomplete($_GET['term']);
+        } else {
+            $result = $this->centrocirurgico->listarmedicocirurgiaautocomplete();
+        }
+        foreach ($result as $item) {
+            $retorno['nome'] = $item->nome;
+            $retorno['id'] = $item->operador_id;
             $var[] = $retorno;
         }
         echo json_encode($var);
@@ -308,7 +325,7 @@ class Autocomplete extends Controller {
     function procedimentoconveniogrupo() {
 
         if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {
-            $result = $this->exametemp->listarautocompleteprocedimentosgrupo($_GET['convenio1'] , $_GET['grupo1']);
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupo($_GET['convenio1'], $_GET['grupo1']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentosgrupo();
         }
