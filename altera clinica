@@ -1241,3 +1241,12 @@ CREATE TABLE ponto.tb_solicitacao_cirurgia_procedimento
 
 
 ALTER TABLE ponto.tb_solicitacao_cirurgia DROP COLUMN procedimento_id;
+
+
+-- 30/12/16
+
+ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN data date;
+
+ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN cid boolean;
+ALTER TABLE ponto.tb_ambulatorio_atestado ALTER COLUMN cid SET NOT NULL;
+ALTER TABLE ponto.tb_ambulatorio_atestado ALTER COLUMN cid SET DEFAULT false;
