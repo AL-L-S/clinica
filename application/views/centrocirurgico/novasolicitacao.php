@@ -21,7 +21,7 @@
                         <label>Médico</label>
                     </dt>
                     <dd>
-                        <select  name="medicoagenda" id="medicoagenda" class="size4" >
+                        <select  name="medicoagenda" id="medicoagenda" class="size4" required="true">
                             <option value="">Selecione</option>
                             <? foreach ($medicos as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>">
@@ -43,6 +43,10 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+    
+<?php if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
 
     $(function () {
         $("#accordion").accordion();
@@ -95,22 +99,22 @@
                         });
                     });
 
-//
-//    $(document).ready(function(){
-//        jQuery('#form_sala').validate( {
-//            rules: {
-//                txtNome: {
-//                    required: true,
-//                    minlength: 2
-//                }
-//            },
-//            messages: {
-//                txtNome: {
-//                    required: "*",
-//                    minlength: "!"
-//                }
-//            }
-//        });
-//    });
+
+    $(document).ready(function(){
+        jQuery('#form_sala').validate( {
+            rules: {
+                txtNome: {
+                    required: true,
+                    minlength: 2
+                }
+            },
+            messages: {
+                txtNome: {
+                    required: "*",
+                    minlength: "!"
+                }
+            }
+        });
+    });
 
 </script>

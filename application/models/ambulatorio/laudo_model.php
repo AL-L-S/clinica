@@ -1324,6 +1324,7 @@ class laudo_model extends Model {
                             ag.situacao,
                             ae.agenda_exames_nome_id,
                             ar.texto,
+                            ar.data_cadastro,
                             p.nascimento,
                             ag.situacao_revisor,
                             o.nome as medico,

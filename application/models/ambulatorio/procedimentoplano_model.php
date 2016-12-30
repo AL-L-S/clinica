@@ -313,6 +313,16 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function listarconveniocirurgiaorcamento() {
+        $this->db->select('convenio_id,
+                            nome,');
+        $this->db->from('tb_convenio');
+        $this->db->where("ativo", 't');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listargrupo() {
         $this->db->distinct();
         $this->db->select('ambulatorio_grupo_id, 

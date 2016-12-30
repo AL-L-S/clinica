@@ -36,7 +36,7 @@ class centrocirurgico_model extends BaseModel {
     }
 
     function listarsolicitacoes($args = array()) {
-        
+
         $this->db->select(' p.paciente_id,
                             p.nome,
                             sc.solicitacao_cirurgia_id,
@@ -79,19 +79,18 @@ class centrocirurgico_model extends BaseModel {
                 $pesquisa = $args['txtdata_cirurgia'];
                 $pesquisa1 = $pesquisa . ' 00:00:00';
                 $pesquisa2 = $pesquisa . ' 23:59:59';
-                $this->db->where("sc.data_prevista >=",  "$pesquisa1");
-                $this->db->where("sc.data_prevista <=",  "$pesquisa2");
+                $this->db->where("sc.data_prevista >=", "$pesquisa1");
+                $this->db->where("sc.data_prevista <=", "$pesquisa2");
                 if ($args['nome'] != null) {
                     $this->db->where('nome ilike', "%" . $args['nome'] . "%");
                 }
+            } else if ($args['nome'] != null) {
+                $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
-            else if ($args['nome'] != null) {
-                    $this->db->where('nome ilike', "%" . $args['nome'] . "%");
-                }
         } else {
             $hoje = date('Y-m-d');
             $hoje = $hoje . ' 00:00:00';
-            $this->db->where("sc.data_prevista >=",  "$hoje");
+            $this->db->where("sc.data_prevista >=", "$hoje");
         }
 
         return $this->db;
@@ -127,9 +126,9 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
-    function autorizarcirurgia( ) {
+    function autorizarcirurgia() {
         $horario = date("Y-m-d H:i:s");
-
+        
         $this->db->set('data_prevista', $_POST['dataprevista']);
         $this->db->set('medico_agendado', $_POST['medicoagendadoid']);
         $this->db->set('data_autorizacao', $horario);
@@ -137,6 +136,20 @@ class centrocirurgico_model extends BaseModel {
         $this->db->set('autorizado', 't');
         $this->db->where('solicitacao_cirurgia_id', $_POST['idsolicitacaocirurgia']);
         $this->db->update('tb_solicitacao_cirurgia');
+    }
+
+    function listarmedicocirurgiaautocomplete($parametro = null) {
+        $this->db->select('operador_id,
+                           nome');
+        $this->db->from('tb_operador');
+        $this->db->where('consulta', 'true');
+        $this->db->where('ativo', 'true');
+//        $this->db->orderby('nome');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function gravarcentrocirurgico() {
