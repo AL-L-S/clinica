@@ -90,6 +90,8 @@
                         $perfil_id = $this->session->userdata('perfil_id');
                         $lista = $this->exame->listarexameagendaconfirmada2($_GET)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
+//                        echo '<pre>';
+//                        var_dump($lista); die;
                         foreach ($lista as $item) {
                             $dataFuturo = date("Y-m-d H:i:s");
                             $dataAtual = $item->data_autorizacao;

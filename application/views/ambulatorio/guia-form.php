@@ -30,6 +30,7 @@
             $convenio_paciente = $exames[0]->convenio_id;
             $ordenador1 = $exames[0]->ordenador;
         }
+//        var_dump($ordenador1); die;
         ?>
         <h3 class="singular"><a href="#">Marcar exames</a></h3>
         <div>
@@ -158,6 +159,7 @@
                                 </td>
 
                                 <td  width="70px;"><input type="text" id="data" name="data" class="size1"/></td>
+                                <? // var_dump($ordenador1); die;?>
                                 <td  width="70px;"><input type="text" name="ordenador" id="ordenador" value="<?= $ordenador1; ?>" class="texto01"/></td>
 <!--                                <td  width="70px;"><input type="text" name="observacao" id="observacao" class="texto04"/></td>-->
                             </tr>

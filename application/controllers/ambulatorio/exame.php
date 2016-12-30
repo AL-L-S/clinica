@@ -312,6 +312,12 @@ class Exame extends BaseController {
     }
 
     function examesala($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
+//        echo '<pre>';
+//        var_dump($paciente_id);
+//        var_dump($procedimento_tuss_id);
+//        var_dump($guia_id);
+//        var_dump($agenda_exames_id);
+//        die;
         $data['salas'] = $this->exame->listarsalas();
         $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
         $data['agenda_exames_nome_id'] = $this->exame->listarsalaagenda($agenda_exames_id);
@@ -419,6 +425,7 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
+//        var_dump($total); die;
         if ($total == 0) {
             $laudo_id = $this->exame->gravarexame();
             if ($laudo_id == "-1") {

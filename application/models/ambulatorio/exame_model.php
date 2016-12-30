@@ -3378,6 +3378,7 @@ class exame_model extends Model {
     }
 
     function contadorexames() {
+        
 
         $this->db->select('agenda_exames_id');
         $this->db->from('tb_exames');
@@ -3546,6 +3547,13 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
             $exame_id = $_POST['txtagenda_exames_id'];
+//            echo '<pre>';
+//            var_dump($_POST['txtpaciente_id']);
+//            var_dump($_POST['txtprocedimento_tuss_id']);
+//            var_dump($_POST['txtguia_id']);
+//            var_dump($_POST['txtagenda_exames_id']);
+//            var_dump($_POST['txttipo']);
+//            die;
 
             if ($_POST['txttipo'] == 'EXAME') {
 
@@ -3669,7 +3677,7 @@ class exame_model extends Model {
                 $this->db->insert('tb_ambulatorio_chamada');
             }
 
-            if ($_POST['txttipo'] == 'FISIOTERAPIA') {
+            if ($_POST['txttipo'] == 'ESPECIALIDADE') {
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
