@@ -71,11 +71,11 @@ div .mensagem {
 
 .total_mensagens{
     color: red;
-    text-decoration: none;
+    text-decoration: blink;
     padding: 1px;
     border-radius: 10%;
     font-weight: bolder;
-    font-size: 11px;
+    font-size: 16px;
     border: 1px solid rgba(200, 20, 20,.5);
 }
 
