@@ -740,7 +740,7 @@ class Guia extends BaseController {
                 $this->guia->gravarexames($ambulatorio_guia, $medico_id);
             }
             
-//            redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");
+            redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");
         }
     }
 
