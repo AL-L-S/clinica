@@ -63,8 +63,8 @@ function debug($object) {
                         }
 
                         if (retorno != 0) {
-                            jQuery(".batepapo_div #contatos_chat_lista").append("<span class='total_mensagens'></span>");
-                            jQuery(".batepapo_div .total_mensagens").text("+" + retorno);
+                            jQuery(".batepapo_div #contatos_chat_lista").append("<span class='total_mensagens'>+"+retorno+"</span>");
+//                            jQuery(".batepapo_div .total_mensagens").text("+" + retorno);
                         }
                     }
                 });
@@ -619,6 +619,15 @@ function debug($object) {
                 
             });
             
+            jQuery(".total_mensagens").css("opacity","0.4");//define opacidade inicial
+            setInterval(function() {
+                if($(".total_mensagens").css("opacity") == 0){
+                    $(".total_mensagens").css("opacity","1");
+                }
+                else{
+                  $(".total_mensagens").css("opacity","0");
+                }
+            }, 800);
                 
             //abrindo a janelas de batepapo
             jQuery(function(){
