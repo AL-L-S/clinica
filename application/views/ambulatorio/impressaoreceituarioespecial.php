@@ -282,9 +282,9 @@
    jsPrintSetup.setOption('shrinkToFit', 'false');
    // clears user preferences always silent print value
    // to enable using 'printSilent' option
-//   jsPrintSetup.clearSilentPrint();
+   jsPrintSetup.clearSilentPrint();
    // Suppress print dialog (for this context only)
-//   jsPrintSetup.setOption('printSilent', 1);
+   jsPrintSetup.setOption('printSilent', 1);
    // Do Print 
    // When print is submitted it is executed asynchronous and
    // script flow continues after print independently of completetion of print process! 
