@@ -24,8 +24,9 @@
                 </tr>
                 <tr>
                     <th class="tabela_header">Nome</th>
-                    <th class="tabela_header">Procedimento</th>
+                    <!--<th class="tabela_header">Data Prevista</th>-->
                     <th class="tabela_header" width="30px;"><center></center></th>
+                <th class="tabela_header" width="30px;"><center></center></th>
                 <th class="tabela_header" width="30px;"><center></center></th>
 
                 </tr>
@@ -48,13 +49,16 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->descricao; ?></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?php echo str_replace('-','/', date( 'd-m-Y', strtotime($item->data_prevista) ) ); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link_new">
                                     <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
-                                </td>                                
+                                </td> 
+                                <td class="<?php echo $estilo_linha; ?>" width="170px;"><div class="bt_link" style="width: 170px;">
+                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 150px;">Solicitar Orçamento</a></div>
+                                </td>                              
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link_new">
                                     <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">EXCLUIR</a></div>
-                                </td>                                
+                                </td> 
                             </tr>
                         </tbody>
                         <?php

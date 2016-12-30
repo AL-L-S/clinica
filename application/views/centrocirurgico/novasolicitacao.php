@@ -16,15 +16,7 @@
                 <input type="text" id="txtNome" name="txtNome" class="texto10"/>-->
                         
                     </dd>
-
-                    <dt>
-                        <label>Procedimento</label>
-                    </dt>
-                    <dd>
-                        <input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2"/>
-                        <input type="text" name="procedimento" id="procedimento" class="texto10"/>
-                    </dd>
-                    
+                 
                     <dt>
                         <label>Médico</label>
                     </dt>
@@ -39,14 +31,6 @@
                         </select>
                     </dd>
 
-
-
-                    <dt>
-                        <label>Data Prevista</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="txtdata_prevista" id="txtdata_prevista" alt="date"/>
-                    </dd>
 
                 </dl>    
                 <hr/>

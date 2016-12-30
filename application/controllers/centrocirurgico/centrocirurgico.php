@@ -117,19 +117,59 @@ class centrocirurgico extends BaseController {
         $data['obj'] = $obj_paciente;
         $this->loadView('internacao/cadastrarleito', $data);
     }
-    
+ 
     function gravarnovasolicitacao() {
-        $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
-        if($verifica){
-            $data['mensagem'] = 'Solicitacao efetuada com Sucesso';
+        if($_POST["txtNomeid"] == ""){
+            $data['mensagem'] = 'Paciente escolhido não é válido';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
         }
+        
         else{
-            $data['mensagem'] = 'Erro ao efetuar Solicitacao';
+            $solicitacao = $this->solicitacirurgia_m->gravarnovasolicitacao();
+            if($solicitacao == -1){
+                $data['mensagem'] = 'Erro ao efetuar Solicitacao';
+            }
+            else{
+                $data['mensagem'] = 'Solicitacao efetuada com Sucesso';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+//            var_dump($solicitacao);
+            redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
         }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
     
+ 
+    function gravarsolicitacaoprocedimentos() {
+            $solicitacao = $_POST['solicitacao_id'];
+            if( isset($_POST['procedimento_id']) ){
+                if( $this->solicitacirurgia_m->gravarsolicitacaoprocedimento() ){
+                    $data['mensagem'] = 'Procedimento adicionado com Sucesso';
+                }
+                else{
+                    $data['mensagem'] = 'Erro ao gravar Procedimento';
+                }
+            }
+//            else{
+//                
+//            }
+            redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
+    }
+    
+       
+    function carregarsolicitacao($solicitacao_id) {
+
+        $data['solicitacao_id'] = $solicitacao_id;
+        $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaoprocedimento();
+        $data['agrupador'] = array('ola', 'ola');
+//        $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador();
+//        echo '<pre>';
+//        var_dump($data['procedimento']);die;
+        $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentos($solicitacao_id);
+        $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);
+        
+    }
+
     function novasolicitacaoconsulta($exame_id) {
         $data['paciente'] = $this->solicitacirurgia_m->solicitacirurgiaconsulta($exame_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
