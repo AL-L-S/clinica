@@ -26,7 +26,7 @@ class batepapo_model extends BaseModel {
         $operador_id = $this->session->userdata('operador_id');
 
         $this->db->select('DISTINCT(operador_origem) as operador_origem,
-                           o.operador_destino,
+                           cm.operador_destino,
                            o.usuario');
         $this->db->from('tb_chat_mensagens cm');
         $this->db->where('cm.ativo', 't');
