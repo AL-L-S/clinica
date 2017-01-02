@@ -1247,3 +1247,7 @@ CREATE TABLE ponto.tb_solicitacao_cirurgia_procedimento
 ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN data date;
 ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN imprimir_cid boolean NOT NULL DEFAULT false;
 ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN cid1 character varying;
+
+--02/01/17
+
+ALTER TABLE ponto.tb_agenda_exames ALTER COLUMN ordenador SET DEFAULT ''::character varying;
