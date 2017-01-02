@@ -158,7 +158,7 @@
                                     $(function () {
                                         $("#txtcid1").autocomplete({
                                             source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-                                            minLength: 4,
+                                            minLength: 2,
                                             focus: function (event, ui) {
                                                 $("#txtcid1").val(ui.item.label);
                                                 return false;
