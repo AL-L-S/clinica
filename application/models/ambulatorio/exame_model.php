@@ -222,7 +222,7 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprodutossalagastos() {
         $operador_id = $this->session->userdata('operador_id');
 
@@ -237,7 +237,7 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarsalaagenda($agenda_exames_id) {
         $this->db->select('ae.agenda_exames_nome_id, ag.tipo');
         $this->db->from('tb_agenda_exames ae');
@@ -744,7 +744,29 @@ class exame_model extends Model {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            $this->db->where('ae.situacao', $args['situacao']);
+            if ($args['situacao'] != 'FALTOU') {
+                $this->db->where('ae.situacao', $args['situacao']);
+                if ($args['situacao'] == 'LIVRE') {
+                    $this->db->where('ae.bloqueado', 'f');
+                }
+                if ($args['situacao'] == 'OK') {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $hora_atual = date('H:i:s');
+                    $this->db->where('p.nome IS NOT NULL');
+                    $this->db->where('ae.confirmado', 'f');
+                    $this->db->where('ae.data >=', $data_atual);
+                    $this->db->where('ae.inicio >=', $hora_atual);
+                }
+            } else {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $hora_atual = date('H:i:s');
+                $this->db->where('p.nome IS NOT NULL');
+                $this->db->where('ae.confirmado', 'f');
+                $this->db->where('ae.data <=', $data_atual);
+                $this->db->where('ae.inicio <=', $hora_atual);
+            }
         }
         return $this->db;
     }
@@ -830,9 +852,28 @@ class exame_model extends Model {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            $this->db->where('ae.situacao', $args['situacao']);
-            if ($args['situacao'] == 'LIVRE') {
-                $this->db->where('ae.bloqueado', 'f');
+            if ($args['situacao'] != 'FALTOU') {
+                $this->db->where('ae.situacao', $args['situacao']);
+                if ($args['situacao'] == 'LIVRE') {
+                    $this->db->where('ae.bloqueado', 'f');
+                }
+                if ($args['situacao'] == 'OK') {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $hora_atual = date('H:i:s');
+                    $this->db->where('p.nome IS NOT NULL');
+                    $this->db->where('ae.confirmado', 'f');
+                    $this->db->where('ae.data >=', $data_atual);
+                    $this->db->where('ae.inicio >=', $hora_atual);
+                }
+            } else {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $hora_atual = date('H:i:s');
+                $this->db->where('p.nome IS NOT NULL');
+                $this->db->where('ae.confirmado', 'f');
+                $this->db->where('ae.data <=', $data_atual);
+                $this->db->where('ae.inicio <=', $hora_atual);
             }
         }
         return $this->db;
@@ -949,7 +990,29 @@ class exame_model extends Model {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            $this->db->where('ae.situacao', $args['situacao']);
+            if ($args['situacao'] != 'FALTOU') {
+                $this->db->where('ae.situacao', $args['situacao']);
+                if ($args['situacao'] == 'LIVRE') {
+                    $this->db->where('ae.bloqueado', 'f');
+                }
+                if ($args['situacao'] == 'OK') {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $hora_atual = date('H:i:s');
+                    $this->db->where('p.nome IS NOT NULL');
+                    $this->db->where('ae.confirmado', 'f');
+                    $this->db->where('ae.data >=', $data_atual);
+                    $this->db->where('ae.inicio >=', $hora_atual);
+                }
+            } else {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $hora_atual = date('H:i:s');
+                $this->db->where('p.nome IS NOT NULL');
+                $this->db->where('ae.confirmado', 'f');
+                $this->db->where('ae.data <=', $data_atual);
+                $this->db->where('ae.inicio <=', $hora_atual);
+            }
         }
         return $this->db;
     }
@@ -1037,9 +1100,29 @@ class exame_model extends Model {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            $this->db->where('ae.situacao', $args['situacao']);
-            if ($args['situacao'] == 'LIVRE') {
-                $this->db->where('ae.bloqueado', 'f');
+            
+            if ($args['situacao'] != 'FALTOU') {
+                $this->db->where('ae.situacao', $args['situacao']);
+                if ($args['situacao'] == 'LIVRE') {
+                    $this->db->where('ae.bloqueado', 'f');
+                }
+                if ($args['situacao'] == 'OK') {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $hora_atual = date('H:i:s');
+                    $this->db->where('p.nome IS NOT NULL');
+                    $this->db->where('ae.confirmado', 'f');
+                    $this->db->where('ae.data >=', $data_atual);
+                    $this->db->where('ae.inicio >=', $hora_atual);
+                }
+            } else {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $hora_atual = date('H:i:s');
+                $this->db->where('p.nome IS NOT NULL');
+                $this->db->where('ae.confirmado', 'f');
+                $this->db->where('ae.data <=', $data_atual);
+                $this->db->where('ae.inicio <=', $hora_atual);
             }
         }
         if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
@@ -1470,7 +1553,29 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            $this->db->where('ae.situacao', $args['situacao']);
+            if ($args['situacao'] != 'FALTOU') {
+                $this->db->where('ae.situacao', $args['situacao']);
+                if ($args['situacao'] == 'LIVRE') {
+                    $this->db->where('ae.bloqueado', 'f');
+                }
+                if ($args['situacao'] == 'OK') {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $hora_atual = date('H:i:s');
+                    $this->db->where('p.nome IS NOT NULL');
+                    $this->db->where('ae.confirmado', 'f');
+                    $this->db->where('ae.data >=', $data_atual);
+                    $this->db->where('ae.inicio >=', $hora_atual);
+                }
+            } else {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $hora_atual = date('H:i:s');
+                $this->db->where('p.nome IS NOT NULL');
+                $this->db->where('ae.confirmado', 'f');
+                $this->db->where('ae.data <=', $data_atual);
+                $this->db->where('ae.inicio <=', $hora_atual);
+            }
         }
         return $this->db;
     }
@@ -1548,9 +1653,28 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            $this->db->where('ae.situacao', $args['situacao']);
-            if ($args['situacao'] == 'LIVRE') {
-                $this->db->where('ae.bloqueado', 'f');
+            if ($args['situacao'] != 'FALTOU') {
+                $this->db->where('ae.situacao', $args['situacao']);
+                if ($args['situacao'] == 'LIVRE') {
+                    $this->db->where('ae.bloqueado', 'f');
+                }
+                if ($args['situacao'] == 'OK') {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $hora_atual = date('H:i:s');
+                    $this->db->where('p.nome IS NOT NULL');
+                    $this->db->where('ae.confirmado', 'f');
+                    $this->db->where('ae.data >=', $data_atual);
+                    $this->db->where('ae.inicio >=', $hora_atual);
+                }
+            } else {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $hora_atual = date('H:i:s');
+                $this->db->where('p.nome IS NOT NULL');
+                $this->db->where('ae.confirmado', 'f');
+                $this->db->where('ae.data <=', $data_atual);
+                $this->db->where('ae.inicio <=', $hora_atual);
             }
         }
         return $this->db;
@@ -1871,7 +1995,29 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            $this->db->where('ae.situacao', $args['situacao']);
+            if ($args['situacao'] != 'FALTOU') {
+                $this->db->where('ae.situacao', $args['situacao']);
+                if ($args['situacao'] == 'LIVRE') {
+                    $this->db->where('ae.bloqueado', 'f');
+                }
+                if ($args['situacao'] == 'OK') {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $hora_atual = date('H:i:s');
+                    $this->db->where('p.nome IS NOT NULL');
+                    $this->db->where('ae.confirmado', 'f');
+                    $this->db->where('ae.data >=', $data_atual);
+                    $this->db->where('ae.inicio >=', $hora_atual);
+                }
+            } else {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $hora_atual = date('H:i:s');
+                $this->db->where('p.nome IS NOT NULL');
+                $this->db->where('ae.confirmado', 'f');
+                $this->db->where('ae.data <=', $data_atual);
+                $this->db->where('ae.inicio <=', $hora_atual);
+            }
         }
         return $this->db;
     }
@@ -1944,9 +2090,28 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            $this->db->where('ae.situacao', $args['situacao']);
-            if ($args['situacao'] == 'LIVRE') {
-                $this->db->where('ae.bloqueado', 'f');
+            if ($args['situacao'] != 'FALTOU') {
+                $this->db->where('ae.situacao', $args['situacao']);
+                if ($args['situacao'] == 'LIVRE') {
+                    $this->db->where('ae.bloqueado', 'f');
+                }
+                if ($args['situacao'] == 'OK') {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $hora_atual = date('H:i:s');
+                    $this->db->where('p.nome IS NOT NULL');
+                    $this->db->where('ae.confirmado', 'f');
+                    $this->db->where('ae.data >=', $data_atual);
+                    $this->db->where('ae.inicio >=', $hora_atual);
+                }
+            } else {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $hora_atual = date('H:i:s');
+                $this->db->where('p.nome IS NOT NULL');
+                $this->db->where('ae.confirmado', 'f');
+                $this->db->where('ae.data <=', $data_atual);
+                $this->db->where('ae.inicio <=', $hora_atual);
             }
         }
         return $this->db;
@@ -2126,7 +2291,7 @@ class exame_model extends Model {
     }
 
     function listarmultifuncao2medico($args = array()) {
-        
+
         $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
         $dataAtual = date("Y-m-d");
@@ -2387,9 +2552,10 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.medico_consulta_id', $operador_id);
+
         if ($teste == true) {
 //        if ((!isset($args['nome'])&& $args['nome'] == 0) || (!isset($args['data'])&& strlen($args['data']) == '') || (!isset($args['sala'])&& strlen($args['sala']) == '') || (!isset($args['medico'])&& strlen($args['medico']) =='')) {
-            $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -2466,7 +2632,15 @@ class exame_model extends Model {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-                $this->db->where('ae.situacao', $args['situacao']);
+//                if ($args['situacao'] != 'FALTOU') {
+//                    $this->db->where('ae.situacao', $args['situacao']);
+//                } //else {
+//                    date_default_timezone_set('America/Fortaleza');
+//                    $data_atual = date('Y-m-d');
+//                    $hora_atual = date('H:i:s');
+//                    $this->db->where('ae.data <=', $data_atual);
+//                    $this->db->where('ae.inicio <=', $hora_atual);
+//                }
             }
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -2527,8 +2701,10 @@ class exame_model extends Model {
         $this->db->orderby('ae.inicio');
         $this->db->orderby('al.situacao');
         $this->db->where('ae.cancelada', 'false');
-        if ($teste == true) {
+        if ($operador_id != '1') {
             $this->db->where('ae.medico_consulta_id', $operador_id);
+        }
+        if ($teste == true) {
             $this->db->where('ae.data', $dataAtual);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -2670,9 +2846,11 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
+        if ($operador_id != '1') {
+            $this->db->where('ae.medico_consulta_id', $operador_id);
+        }
         if ($teste == true) {
 //        if ((!isset($args['nome'])&& $args['nome'] == 0) || (!isset($args['data'])&& strlen($args['data']) == '') || (!isset($args['sala'])&& strlen($args['sala']) == '') || (!isset($args['medico'])&& strlen($args['medico']) =='')) {
-            $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -2748,9 +2926,12 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
+        if ($operador_id != '1') {
+            $this->db->where('ae.medico_consulta_id', $operador_id);
+        }
         if ($teste == true) {
 //        if ((!isset($args['nome'])&& $args['nome'] == 0) || (!isset($args['data'])&& strlen($args['data']) == '') || (!isset($args['sala'])&& strlen($args['sala']) == '') || (!isset($args['medico'])&& strlen($args['medico']) =='')) {
-            $this->db->where('ae.medico_consulta_id', $operador_id);
+//            $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -3301,84 +3482,84 @@ class exame_model extends Model {
     }
 
     function gravargastodesala() {
-            $horario = date('Y-m-d');
-            $operador_id = $this->session->userdata('operador_id');
-            
-            $this->db->set('guia_id', $_POST['txtguia_id']);
-            $this->db->set('produto_id', $_POST['produto_id']);
-            $this->db->set('quantidade', $_POST['txtqtde']);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_ambulatorio_gasto_sala');
+        $horario = date('Y-m-d');
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('guia_id', $_POST['txtguia_id']);
+        $this->db->set('produto_id', $_POST['produto_id']);
+        $this->db->set('quantidade', $_POST['txtqtde']);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_ambulatorio_gasto_sala');
     }
 
     function excluirgastodesala($gasto_id) {
-            $horario = date('Y-m-d');
-            $operador_id = $this->session->userdata('operador_id');
-            
-            $this->db->set('ativo', 'false');
-            $this->db->set('data_atualizacao', $horario);
-            $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
-            $this->db->update('tb_ambulatorio_gasto_sala');
+        $horario = date('Y-m-d');
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'false');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
+        $this->db->update('tb_ambulatorio_gasto_sala');
     }
 
     function faturargastodesala($dados) {
-            $horario = date('Y-m-d');
-            $operador_id = $this->session->userdata('operador_id');
-            $empresa_id = $this->session->userdata('empresa_id');
-            $hora = date("H:i:s");
-            $data = date("Y-m-d");
-            
-            $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id );
-            $this->db->set('valor', $dados->valortotal );
-            $this->db->set('valor1', $dados->valortotal);
-            $this->db->set('valor_total', $dados->valortotal);
-            $this->db->set('quantidade', $_POST['txtqtde']);
-//            $this->db->set('autorizacao', $_POST['autorizacao1']);
-            $this->db->set('empresa_id', $empresa_id);
-            $this->db->set('confirmado', 't');
-            $this->db->set('tipo', $_POST['tipo']);
-            $this->db->set('ativo', 'f');
-            $this->db->set('realizada', 't');
-            if ($_POST['medicoagenda'] != "") {
-                $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
-                $this->db->set('medico_solicitante', $_POST['medicoagenda']);
-            }
-            $this->db->set('faturado', 't');
-            $this->db->set('situacao', 'OK');
-            $this->db->set('guia_id', $_POST['txtguia_id']);
-            $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
-            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-//            $this->db->set('data', $_POST['txtdata']);
-            $this->db->set('data_autorizacao', $horario);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->set('data_realizacao', $horario);
-            $this->db->set('operador_realizacao', $operador_id);
-            $this->db->set('data_faturamento', $horario);
-            $this->db->set('operador_faturamento', $operador_id);
-            $this->db->set('operador_autorizacao', $operador_id);
-            $this->db->insert('tb_agenda_exames');
-            $agenda_exames_id = $this->db->insert_id();
-            
+        $horario = date('Y-m-d');
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $hora = date("H:i:s");
+        $data = date("Y-m-d");
 
-            $this->db->set('empresa_id', $empresa_id);
-            $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
-            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-            $this->db->set('medico_realizador', $_POST['medicoagenda']);
-            $this->db->set('situacao', 'FINALIZADO');
-            $this->db->set('guia_id', $_POST['txtguia_id']);
-            $this->db->set('agenda_exames_id', $agenda_exames_id);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_exames');
-            $exames_id = $this->db->insert_id();
+        $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
+        $this->db->set('valor', $dados->valortotal);
+        $this->db->set('valor1', $dados->valortotal);
+        $this->db->set('valor_total', $dados->valortotal);
+        $this->db->set('quantidade', $_POST['txtqtde']);
+//            $this->db->set('autorizacao', $_POST['autorizacao1']);
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('confirmado', 't');
+        $this->db->set('tipo', $_POST['tipo']);
+        $this->db->set('ativo', 'f');
+        $this->db->set('realizada', 't');
+        if ($_POST['medicoagenda'] != "") {
+            $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+            $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+        }
+        $this->db->set('faturado', 't');
+        $this->db->set('situacao', 'OK');
+        $this->db->set('guia_id', $_POST['txtguia_id']);
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+//            $this->db->set('data', $_POST['txtdata']);
+        $this->db->set('data_autorizacao', $horario);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->set('data_realizacao', $horario);
+        $this->db->set('operador_realizacao', $operador_id);
+        $this->db->set('data_faturamento', $horario);
+        $this->db->set('operador_faturamento', $operador_id);
+        $this->db->set('operador_autorizacao', $operador_id);
+        $this->db->insert('tb_agenda_exames');
+        $agenda_exames_id = $this->db->insert_id();
+
+
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
+        $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+        $this->db->set('medico_realizador', $_POST['medicoagenda']);
+        $this->db->set('situacao', 'FINALIZADO');
+        $this->db->set('guia_id', $_POST['txtguia_id']);
+        $this->db->set('agenda_exames_id', $agenda_exames_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_exames');
+        $exames_id = $this->db->insert_id();
     }
 
     function contadorexames() {
-        
+
 
         $this->db->select('agenda_exames_id');
         $this->db->from('tb_exames');
@@ -4404,6 +4585,7 @@ class exame_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_agenda_exames');
+//            die;
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;

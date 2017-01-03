@@ -261,6 +261,7 @@ class Operador_model extends BaseModel {
         $this->db->select('o.operador_id,
                                o.usuario,
                                o.nome,
+                               o.conselho,
                                o.perfil_id,
                                p.nome as perfil');
         $this->db->from('tb_operador o');

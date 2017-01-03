@@ -65,7 +65,7 @@
                                     endif;
                                     ?>>
                                     
-                                    <?php echo $value->nome; ?>
+                                    <?php echo $value->nome . ' - CRM: '. $value->conselho; ?>
                                 
                                     
                                 </option>
@@ -77,7 +77,9 @@
                             <select name="situacao" id="situacao" class="size2">
                                 <option value=""></option>
                                 <option value="LIVRE">VAGO</option>
+                                <option value="CANCELADO">BLOQUEADO</option>
                                 <option value="OK">OCUPADO</option>
+                                <option value="FALTOU">FALTOU</option>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -228,7 +230,7 @@
                                     echo '<span class="vermelho">Encaixe</span>';
                                 } ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="250px;"><?= $item->convenio . ' - ' .$item->procedimento;  ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
                                 width=500,height=230');">=><?= $item->observacoes; ?></td>

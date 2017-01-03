@@ -16,7 +16,7 @@
             <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Nome: <? echo $laudo[0]->medico; ?></td>
         </tr>
         <tr>
-            <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>End: <? echo $laudo[0]->endempresa; ?> &nbsp; <? echo $laudo[0]->numeroempresa; ?></td>
+            <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>End: <span class="endereco_menor"><? echo $laudo[0]->endempresa; ?> <? echo $laudo[0]->numeroempresa . ' ' . $laudo[0]->bairroemp; ?>. <? echo $laudo[0]->cidaempresa; ?> </span></td>
         </tr>
         <tr>
             <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>CRM:<? echo $laudo[0]->conselho; ?></td>
@@ -78,7 +78,7 @@
             <td >Paciente:&nbsp; <? echo $laudo[0]->paciente; ?></td>
         </tr>
         <tr >
-            <td >Endere&ccedil;o: &nbsp; <? echo $laudo[0]->logradouro; ?>&nbsp; <? echo $laudo[0]->numero; ?></td>
+            <td >Endere&ccedil;o: &nbsp;<span class="endereco_menor"> <? echo $laudo[0]->logradouro; ?>,&nbsp;<? echo $laudo[0]->numero . ' ' .$laudo[0]->bairro; ?>, <?=$laudo[0]->cidade .' - ' . $laudo[0]->estado; ?></span> </td>
         </tr>
     </table>
 </div>
@@ -100,9 +100,9 @@
     </table>
 </div>
 <div >
-    <table border="1" style="border-collapse: collapse" >
+    <table border="1" style="border-collapse: collapse" cellpadding="5px">
         <tr >
-            <th colspan="2" width="220px" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>IDENTIFICA&Ccedil;&Atilde;O DO COMPRADOR</th><th width="220px" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>IDENTIFICA&Ccedil;&Atilde;O DO FORNECEDOR</th>
+            <th colspan="2" width="270px" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>IDENTIFICA&Ccedil;&Atilde;O DO COMPRADOR</th><th width="270px" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>IDENTIFICA&Ccedil;&Atilde;O DO FORNECEDOR</th>
         </tr>
         <tr>
             <td colspan="2" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Nome:</td>
@@ -149,8 +149,7 @@
             <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Nome: <? echo $laudo[0]->medico; ?></td>
         </tr>
         <tr>
-            <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>End: <? echo $laudo[0]->endempresa; ?> &nbsp; <? echo $laudo[0]->numeroempresa; ?></td>
-        </tr>
+                        <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>End: <span class="endereco_menor"><? echo $laudo[0]->endempresa; ?> <? echo $laudo[0]->numeroempresa . ' ' . $laudo[0]->bairroemp; ?>. <? echo $laudo[0]->cidaempresa; ?> </span></td>
         <tr>
             <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>CRM:<? echo $laudo[0]->conselho; ?></td>
         </tr>
@@ -211,7 +210,7 @@
             <td >Paciente:&nbsp; <? echo $laudo[0]->paciente; ?></td>
         </tr>
         <tr >
-            <td >Endere&ccedil;o: &nbsp; <? echo $laudo[0]->logradouro; ?>&nbsp; <? echo $laudo[0]->numero; ?></td>
+            <td >Endere&ccedil;o: &nbsp;<span class="endereco_menor"> <? echo $laudo[0]->logradouro; ?>,&nbsp;<? echo $laudo[0]->numero . ' ' .$laudo[0]->bairro; ?>, <?=$laudo[0]->cidade .' - ' . $laudo[0]->estado; ?></span> </td>
         </tr>
     </table>
 </div>
@@ -233,9 +232,9 @@
     </table>
 </div>
 <div >
-    <table border="1" style="border-collapse: collapse" >
+    <table border="1" style="border-collapse: collapse" cellpadding="5px">
         <tr >
-            <th colspan="2" width="220px" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>IDENTIFICA&Ccedil;&Atilde;O DO COMPRADOR</th><th width="220px" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>IDENTIFICA&Ccedil;&Atilde;O DO FORNECEDOR</th>
+            <th colspan="2" width="270px" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>IDENTIFICA&Ccedil;&Atilde;O DO COMPRADOR</th><th width="270px" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>IDENTIFICA&Ccedil;&Atilde;O DO FORNECEDOR</th>
         </tr>
         <tr>
             <td colspan="2" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Nome:</td>
@@ -262,7 +261,11 @@
     </table>
 </div>
 </div>
-
+<style>
+    .endereco_menor{
+        font-size: 10px;
+    }
+</style>
 <script>
    // set portrait orientation
    jsPrintSetup.setOption('orientation', jsPrintSetup.kLandscapeOrientation);
