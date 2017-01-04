@@ -34,7 +34,7 @@
                             </td>
                         </tr>
                         
-                        <tr><td>Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero ?></td>
+                        <tr><td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro?> - <?= @$obj->_uf?></td>
                     </table>
                 </fieldset>
                 <div>
@@ -447,9 +447,13 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
+                    jQuery("#Altura").mask("999", {placeholder:" "});
+//                    jQuery("#Peso").mask("999,99");
 
 
                                             pesob1 = document.getElementById('Peso').value;

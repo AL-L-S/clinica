@@ -152,9 +152,11 @@
                     <input type="text" id="txtUsuario" name="txtUsuario"  class="texto04" value="<?= @$obj->_usuario; ?>" />
                 </div>
                 <div>
-                    <label>Senha *</label>
-
-                    <input type="password" name="txtSenha" id="txtSenha" class="texto04" value="<?= @$obj->_senha; ?>" />
+                    <label>Senha: *</label>
+                    <input type="password" name="txtSenha" id="txtSenha" class="texto04" value="" />
+                    
+                    <label>Confirme a Senha: *</label>
+                    <input type="password" name="verificador" id="txtSenha" class="texto04" value="" onblur="confirmaSenha(this)"/>
                 </div>
                 <div>
                     <label>Tipo perfil *</label>
@@ -299,7 +301,16 @@
                         $('#btnVoltar').click(function () {
                             $(location).attr('href', '<?= base_url(); ?>sca/operador');
                         });
-
+                        
+                        function confirmaSenha(verificacao){
+                            var senha = $("#txtSenha");
+                            if(verificacao.value != senha.value){
+                                verificacao.setCustomValidity("Senha incorreta!");
+                            }
+                            else{
+                                verificacao.setCustomValidity("");
+                            }
+                        }
 
                         $(function () {
                             $("#txtCidade").autocomplete({

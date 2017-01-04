@@ -1,8 +1,11 @@
 <? // var_dump($atestado, $co_cid) ?>
 <link href="<?= base_url() ?>css/style_p.css" rel="stylesheet" type="text/css" />
+<meta charset="utf8"/>
 
 <BODY>
-
+    <? if ( @$receituario != NULL ) { ?>
+    <center><p style="text-align: center; font-weight: bold;">RECEITUÁRIO</p></center>
+    <? }?>
     <br>
     <? //if (isset($atestado) && !$atestado) { ?>
        <!--<p style="text-align: left;">Paciente: <? // echo $laudo['0']->paciente;  ?></p>-->

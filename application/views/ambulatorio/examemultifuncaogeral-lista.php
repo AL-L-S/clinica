@@ -83,7 +83,7 @@
                                     endif;
                                     ?>>
                                     
-                                    <?php echo $value->nome; ?>
+                                    <?php echo $value->nome . ' - CRM: '. $value->conselho; ?>
                                 
                                     
                                 </option>
@@ -106,7 +106,9 @@
                             <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
                                 <option value="LIVRE">VAGO</option>
+                                <option value="CANCELADO">BLOQUEADO</option>
                                 <option value="OK">OCUPADO</option>
+                                <option value="FALTOU">FALTOU</option>
                             </select>
                         </th>
                         <th class="tabela_title">

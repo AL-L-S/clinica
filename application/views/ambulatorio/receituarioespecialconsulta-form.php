@@ -1,4 +1,4 @@
-<div >
+<div>
     <?
     $dataFuturo = date("Y-m-d");
     $dataAtual = @$obj->_nascimento;
@@ -94,6 +94,7 @@
                     <table id="table_agente_toxico" border="0">
                         <thead>
                             <tr>
+                                <th class="tabela_header">Data</th>
                                 <th class="tabela_header">Descri&ccedil;&atilde;o</th>
                                 <th colspan="2" class="tabela_header">&nbsp;</th>
                             </tr>
@@ -105,6 +106,7 @@
                             ?>
                             <tbody>
                                 <tr>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_cadastro) ); ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceitaespecial/<?= $item->ambulatorio_receituario_especial_id; ?>');">Imprimir

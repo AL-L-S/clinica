@@ -1483,7 +1483,7 @@ class Exame extends BaseController {
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
-
+//        var_dump($horarioagenda);die;
         foreach ($horarioagenda as $item) {
 
             $tempoconsulta = $item->tempoconsulta;

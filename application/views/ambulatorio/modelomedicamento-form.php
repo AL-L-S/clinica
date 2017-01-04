@@ -75,22 +75,34 @@
             });
         });
 
-        jQuery('#form_horariostipo').validate({
+        jQuery('#form_novomedicamento').validate({
             rules: {
-                txtNome: {
+                txtmedicamento: {
                     required: true,
                     minlength: 3
                 },
-                txtTipo: {
+                qtde: {
+                    required: true
+                },
+                unidade: {
+                    required: true
+                },
+                posologia: {
                     required: true
                 }
             },
             messages: {
-                txtNome: {
+                txtmedicamento: {
                     required: "*",
                     minlength: "!"
                 },
-                txtTipo: {
+                qtde: {
+                    required: "*"
+                },
+                unidade: {
+                    required: "*"
+                },
+                posologia: {
                     required: "*"
                 }
             }

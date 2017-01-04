@@ -984,6 +984,7 @@ class Laudo extends BaseController {
         $data['laudo'] = $this->laudo->listarreceitaimpressao($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
+        $data['receituario'] = true;
 
         $dataFuturo = date("Y-m-d");
         $dataAtual = $data['laudo']['0']->nascimento;
