@@ -590,7 +590,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao adiar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamependente");
+        redirect(base_url() . "ambulatorio/exame/listarexamependente", $data);
     }
 
     function finalizarexame($exames_id, $sala_id) {
@@ -601,7 +601,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+        redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
     }
 
     function finalizarexametodos($sala_id, $guia_id, $grupo) {
@@ -612,7 +612,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+        redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
     }
 
     function pendenteexame($exames_id, $sala_id) {
@@ -626,7 +626,8 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
     }
 
-    function gastosdesala($exames_id) {
+    function gastosdesala($exames_id, $sala_id) {
+        $data['sala_id'] = $sala_id;
         $data['paciente']  = $this->exame->listarpacientegastos($exames_id);
         $data['produtos']  = $this->exame->listarprodutossalagastos();
         $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);

@@ -205,9 +205,10 @@ class exame_model extends Model {
     }
 
     function listaritensgastos($guia_id) {
-        $this->db->select('ags.ambulatorio_gasto_sala_id, ep.descricao, ags.quantidade');
+        $this->db->select('ags.ambulatorio_gasto_sala_id, ep.descricao, ags.quantidade, eu.descricao as unidade');
         $this->db->from('tb_ambulatorio_gasto_sala ags');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
+        $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = ep.unidade_id', 'left');
         $this->db->where('ags.ativo', 't');
         $this->db->where('ags.guia_id', $guia_id);
         $return = $this->db->get();
@@ -2508,38 +2509,17 @@ class exame_model extends Model {
     }
 
     function listarmultifuncaoconsulta($args = array()) {
-        $teste = empty($args);
-        $empresa_id = $this->session->userdata('empresa_id');
+                $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
         $dataAtual = date("Y-m-d");
-        $this->db->select('ae.agenda_exames_id,
-                            ae.agenda_exames_nome_id,
-                            ae.data,
-                            ae.inicio,
-                            ae.fim,
-                            ae.ativo,
-                            ae.telefonema,
-                            ae.situacao,
-                            ae.guia_id,
-                            ae.data_atualizacao,
-                            ae.paciente_id,
-                            ae.observacoes,
-                            ae.realizada,
-                            al.medico_parecer1,
-                            al.ambulatorio_laudo_id,
-                            al.exame_id,
-                            al.procedimento_tuss_id,
-                            p.paciente_id,
-                            an.nome as sala,
-                            p.nome as paciente,
-                            ae.procedimento_tuss_id,
-                            ae.confirmado,
-                            o.nome as medicoconsulta,
-                            pt.nome as procedimento,
-                            al.situacao as situacaolaudo');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id
+                            ');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio co', 'co.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
@@ -2548,14 +2528,14 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ag.tipo', 'CONSULTA');
-//        $this->db->where('ae.confirmado', 'true');
-//        $this->db->where('ae.ativo', 'false');
-//        $this->db->where('ae.realizada', 'false');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.inicio');
+//        $this->db->orderby('al.situacao');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where('ae.medico_consulta_id', $operador_id);
-
+        if ($operador_id != '1') {
+            $this->db->where('ae.medico_consulta_id', $operador_id);
+        }
         if ($teste == true) {
-//        if ((!isset($args['nome'])&& $args['nome'] == 0) || (!isset($args['data'])&& strlen($args['data']) == '') || (!isset($args['sala'])&& strlen($args['sala']) == '') || (!isset($args['medico'])&& strlen($args['medico']) =='')) {
             $this->db->where('ae.data', $dataAtual);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {

@@ -304,8 +304,8 @@
                         
                         function confirmaSenha(verificacao){
                             var senha = $("#txtSenha");
-                            if(verificacao.value != senha.value){
-                                verificacao.setCustomValidity("Senha incorreta!");
+                            if(verificacao.value != senha.val()){
+                                verificacao.setCustomValidity("As senhas não correspondem!");
                             }
                             else{
                                 verificacao.setCustomValidity("");

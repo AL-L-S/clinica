@@ -1,4 +1,6 @@
+<?
 
+?>
 <meta charset="utf-8">
 
 <div id="conteudo"> <!-- Inicio da DIV content -->
@@ -31,6 +33,15 @@
                         <td><input type="text" name="nascimento" class="input_pequeno" value="<?= str_replace('-', '/', date('d-m-Y', strtotime($paciente[0]->nascimento))); ?>" readonly /></td>
                         <td><input type="text" name="celular" class="input_pequeno" value="<?= $paciente[0]->celular; ?>" readonly /></td>
                     </tr>
+                    <tr>
+                        <td width="70px;"><div class="bt_link_new">
+                                        <a onclick="javascript: return confirm('Deseja realmente executar a ação a seguir?');" href="<?= base_url() ?>ambulatorio/exame/finalizarexame/<?= $exames_id ?>/<?= $sala_id ?> ">
+                                            Finalizar
+                                        </a></div>
+<!--                        <td><a onclick="javascript: return confirm('Deseja realmente exlcuir esse Forma?');" href="<?= base_url() ?>ambulatorio/exame/finalizarexametodos/<?= $item->sala_id ?>/<?= $item->guia_id; ?>/<?= $item->grupo; ?> ">
+                                            Todos
+                                        </a></td>-->
+                    </tr>
                 </table>
 
             </div>
@@ -53,7 +64,7 @@
                         </select> 
                     </td>
                     <td> <input style="width: 100px" type="number" name="txtqtde" min="1" required="true"/> </td>
-                    
+                    <td></td>
                 </tr>
                 <tr>
                     <td> <button type="submit" name="btnEnviar" >Adicionar</button> </td>
@@ -71,6 +82,7 @@
                     <tr>
                         <th class="tabela_header">Produto</th>
                         <th class="tabela_header">Qtde</th>
+                        <th class="tabela_header">Unidade</th>
                         <!--<th class="tabela_header">Faturado</th>-->
                         <th class="tabela_header">&nbsp;</th>
                     </tr>
@@ -85,6 +97,7 @@
                         <tr>
                             <td class="<?php echo $estilo_linha;  ?>" width="450px;"><center><? echo $item->descricao;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->quantidade;  ?></center></td>
+                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->unidade;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>" width="100px;">
                                 <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>" class="delete">
                                 </a>
@@ -101,7 +114,7 @@
  ?>
             <tfoot>
                 <tr>
-                    <th class="tabela_footer" colspan="3">
+                    <th class="tabela_footer" colspan="4">
                     </th>
                 </tr>
             </tfoot>
