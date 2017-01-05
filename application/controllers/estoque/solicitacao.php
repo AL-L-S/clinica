@@ -74,7 +74,7 @@ class Solicitacao extends BaseController {
     }
 
     function imprimir($estoque_solicitacao_id) {
-        
+
         $data['estoque_solicitacao_id'] = $estoque_solicitacao_id;
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['nome'] = $this->solicitacao->solicitacaonome($estoque_solicitacao_id);
@@ -118,20 +118,17 @@ class Solicitacao extends BaseController {
 //        $_POST['txtqtde'] = (int) $_POST['txtqtde'];
 //        $_POST['qtdedisponivel'] = (int) $_POST['qtdedisponivel'];
 //        var_dump($_POST['qtdedisponivel']); die;
-        
-        if($_POST['produto_id'] == ''){
+
+        if ($_POST['produto_id'] == '') {
             $data['mensagem'] = 'Insira um produto valido.';
             $this->session->set_flashdata('message', $data['mensagem']);
-        }                
-        elseif( $_POST['txtqtde'] == ''){
+        } elseif ($_POST['txtqtde'] == '') {
             $data['mensagem'] = 'Insira uma quantidade valida.';
             $this->session->set_flashdata('message', $data['mensagem']);
-        }
-        elseif( isset($_POST['qtdedisponivel']) && ( (int)$_POST['txtqtde'] > (int)$_POST['qtdedisponivel']) ){
+        } elseif (isset($_POST['qtdedisponivel']) && ( (int) $_POST['txtqtde'] > (int) $_POST['qtdedisponivel'])) {
             $data['mensagem'] = 'Quantidade selecionada excede o saldo disponivel.';
             $this->session->set_flashdata('message', $data['mensagem']);
-        }
-        else{
+        } else {
             //nao permitir quantidades maiores que o que tem
             $data['produtos'] = $this->solicitacao->listarprodutositem($estoque_solicitacao_itens_id);
             $this->solicitacao->gravarsaidaitens();
@@ -141,24 +138,38 @@ class Solicitacao extends BaseController {
 
     function gravaritens() {
         $estoque_solicitacao_id = $_POST['txtestoque_solicitacao_id'];
-        if($_POST['produto_id'] == '' ){
+        if ($_POST['produto_id'] == '') {
             $data['mensagem'] = 'Insira um produto valido.';
             $this->session->set_flashdata('message', $data['mensagem']);
-        }
-        elseif($_POST['txtqtde'] == ''){
+        } elseif ($_POST['txtqtde'] == '') {
             $data['mensagem'] = 'Insira uma quantidade valida.';
             $this->session->set_flashdata('message', $data['mensagem']);
-        }
-        elseif($_POST['valor'] == ''){
+        } elseif ($_POST['valor'] == '') {
             $data['mensagem'] = 'Insira um valor valido.';
             $this->session->set_flashdata('message', $data['mensagem']);
-        }
-        else {
+        } else {
             $_POST['valor'] = str_replace(',', '.', $_POST['valor']);
             $this->solicitacao->gravaritens();
         }
-        
+
         redirect(base_url() . "estoque/solicitacao/carregarsolicitacao/$estoque_solicitacao_id");
+    }
+
+    function gravarfaturamento() {
+        if($_POST['valortotal'] == '0.00'){
+            $verifica = $this->solicitacao->gravarfaturamento();
+            if ($verifica) {
+                $data['mensagem'] = 'Faturado com sucesso.'; 
+            }
+            else{
+                $data['mensagem'] = 'Erro ao Faturar.';  
+            }
+        }
+        else{
+            $data['mensagem'] = 'Erro ao Faturar.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "estoque/solicitacao/pesquisar");
     }
 
     function excluirsolicitacao($estoque_solicitacao_itens_id, $estoque_solicitacao_id) {
@@ -173,23 +184,27 @@ class Solicitacao extends BaseController {
 
     function faturarsolicitacao($estoque_solicitacao_id) {
         $data['forma_pagamento'] = $this->solicitacao->formadepagamentoprocedimento();
-        $valortotal = $this->solicitacao->listarsolicitacaosvalortotal($estoque_solicitacao_id);
-        $data['valortotal'] = 0;
-        if( count($data['valortotal']) > 0 ){
-            foreach ($valortotal as $item) {
-                $v = (float) $item->valor_venda;
-                $a = (int) str_replace('.', '', $item->quantidade); 
-                $preco = (float) $a * $v; 
-                $data['valortotal'] += $preco;
-            }
-        }
+        $data['solicitacao'] = $this->solicitacao->listarsolicitacaofaturamento($estoque_solicitacao_id);
+//        echo "<pre>";var_dump($data['solicitacao'], $estoque_solicitacao_id);
         $data['estoque_solicitacao_id'] = $estoque_solicitacao_id;
         $data['valor'] = 0.00;
-        $this->load->View('estoque/faturar-form', $data);
+        $this->load->View('estoque/faturarsolicitacao-form', $data);
     }
 
     function liberarsolicitacao($estoque_solicitacao_id) {
+
         $this->solicitacao->liberarsolicitacao($estoque_solicitacao_id);
+        $data['valor_total'] = $this->solicitacao->calculavalortotalsolicitacao($estoque_solicitacao_id);
+        $valortotal = 0;
+        foreach ($data['valor_total'] as $item){
+        //calcula valor total
+            $v = (float) $item->valor_venda;
+            $a = (int) str_replace('.', '', $item->quantidade);
+            $preco = (float) $a * $v;
+            $valortotal += $preco;
+        }
+        
+        $this->solicitacao->gravarsolicitacaofaturamento($estoque_solicitacao_id, $valortotal);
         $this->pesquisar();
     }
 

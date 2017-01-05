@@ -8,7 +8,7 @@
                 <td ><font size = -1><center></center></font></td>
         <td width="30px">&nbsp;</td>
         <tr>
-            <td colspan="2"  ><font size = -1>DATA SOL.: <? echo date('d/m/y', strtotime(substr($nome[0]->data_liberacao, 0, 10))); ?> </font></td>
+            <td colspan="2"  ><font size = -1>DATA DO PEDIDO: <? echo date('d/m/y', strtotime(substr($nome[0]->data_liberacao, 0, 10))); ?> </font></td>
             <td ><font size = -1><center></center></font></td>
         <td width="30px">&nbsp;</td>
         <tr>

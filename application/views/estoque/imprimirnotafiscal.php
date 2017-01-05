@@ -68,9 +68,9 @@
                 <td width="91" class="ti">HORA DA SAÍDA</td>
             </tr>
             <tr>
-                <td colspan="3" class="tc"><strong>Dionisio Torres</strong></td>
-                <td colspan="2" class="tc"><strong></strong></td>
-                <td class="tc"><strong>CE</strong></td>
+                <td colspan="3" class="tc"><strong><?= $destinatario[0]->municipio ?></strong></td>
+                <td colspan="2" class="tc"><strong><?= $destinatario[0]->telefone ?></strong></td>
+                <td class="tc"><strong><?= $destinatario[0]->estado ?></strong></td>
                 <td class="tc"><strong></strong>
                 <td class="tc"><strong></strong></td>
             </tr>

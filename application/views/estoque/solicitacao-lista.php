@@ -75,7 +75,7 @@
                                 if ($item->situacao == 'LIBERADA' && ($perfil_id == 1 || $perfil_id == 8)) {
                                     if($item->faturado == 'f'){ ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">                                
-                                            <a onclick="javascript:window.open('<?= base_url() ?>estoque/solicitacao/faturarsolicitacao/<?= $item->estoque_solicitacao_setor_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=700,height=600');">Faturar</a>
+                                            <a onclick="javascript:window.open('<?= base_url() ?>estoque/solicitacao/faturarsolicitacao/<?= $item->estoque_solicitacao_setor_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=600');">Faturar</a>
                                             
                                         </div>
                                     </td>

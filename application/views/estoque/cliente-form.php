@@ -64,7 +64,7 @@
                     <label>Telefone</label>
                     </dt>
                     <dd>
-                        <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone" value="<?= @$obj->_telefone; ?>" />
+                        <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="(99) 9999-9999" value="<?= @$obj->_telefone; ?>" />
                     </dd>
                     <dt>
                     <label>Celular</label>
