@@ -80,8 +80,8 @@ class Autocomplete extends Controller {
 
     function procedimentoproduto() {
 
-        if (isset($_GET['procedimento'])) {
-            $result = $this->procedimento->listarprocedimentoautocomplete($_GET['procedimento']);
+        if (isset($_GET['term'])) {
+            $result = $this->procedimento->listarprocedimentoautocomplete($_GET['term']);
         } else {
             $result = $this->procedimento->listarprocedimentoautocomplete();
         }

@@ -155,8 +155,8 @@
                     <label>Senha: *</label>
                     <input type="password" name="txtSenha" id="txtSenha" class="texto04" value="" />
                     
-                    <label>Confirme a Senha: *</label>
-                    <input type="password" name="verificador" id="txtSenha" class="texto04" value="" onblur="confirmaSenha(this)"/>
+<!--                    <label>Confirme a Senha: *</label>
+                    <input type="password" name="verificador" id="txtSenha" class="texto04" value="" onblur="confirmaSenha(this)"/>-->
                 </div>
                 <div>
                     <label>Tipo perfil *</label>

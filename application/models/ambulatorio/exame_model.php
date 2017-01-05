@@ -204,11 +204,29 @@ class exame_model extends Model {
         return $return->result();
     }
 
+     function mostrarlaudogastodesala($exame_id) {
+        $this->db->select('al.medico_parecer1,
+                            al.ambulatorio_laudo_id,
+                            al.procedimento_tuss_id,
+                            e.sala_id,           
+                            pt.nome as procedimento,
+                            al.situacao as situacaolaudo');
+        $this->db->from('tb_exames e');
+	$this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+	$this->db->where('e.exames_id', $exame_id);
+	$return = $this->db->get();
+        return $return->result();
+    }
+
     function listaritensgastos($guia_id) {
-        $this->db->select('ags.ambulatorio_gasto_sala_id, ep.descricao, ags.quantidade, eu.descricao as unidade');
+        $this->db->select('ags.ambulatorio_gasto_sala_id, ep.descricao, ags.quantidade, eu.descricao as unidade, pt.descricao as procedimento');
         $this->db->from('tb_ambulatorio_gasto_sala ags');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
         $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = ep.unidade_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = ep.procedimento_id', 'left');
         $this->db->where('ags.ativo', 't');
         $this->db->where('ags.guia_id', $guia_id);
         $return = $this->db->get();
@@ -235,6 +253,7 @@ class exame_model extends Model {
         $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = emp.produto');
         $this->db->where('oc.operador_id', $operador_id);
         $this->db->where('oc.ativo', 't');
+        $this->db->orderby('p.descricao');
         $return = $this->db->get();
         return $return->result();
     }
@@ -2681,11 +2700,10 @@ class exame_model extends Model {
         $this->db->orderby('ae.inicio');
         $this->db->orderby('al.situacao');
         $this->db->where('ae.cancelada', 'false');
-        if ($operador_id != '1') {
-            $this->db->where('ae.medico_consulta_id', $operador_id);
-        }
+        
         if ($teste == true) {
             $this->db->where('ae.data', $dataAtual);
+            $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
