@@ -79,12 +79,21 @@
                         <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_municipio_id; ?>" readonly="true" />
                         <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_nome; ?>" />
                     </dd>
-                     <dt>
-                    <label>Criar Credor</label>
+                    
+                    <dt>
+                        <label>Criar Credor</label>
                     </dt>
                     <dd>
                         <input type="checkbox" name="criarcredor"/>
                     </dd>
+                    
+                    <dt>
+                        <label>Saida</label>
+                    </dt>
+                    <dd>
+                        <input type="checkbox" name="saida"/>
+                    </dd>
+                    
                     <dt>
                     <label>Menu</label>
                     </dt>

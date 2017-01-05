@@ -169,7 +169,7 @@ class Solicitacao extends BaseController {
             $data['mensagem'] = 'Erro ao Faturar.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "estoque/solicitacao/pesquisar");
+        echo "<script type='text/javascript'> window.close(); </script>";
     }
 
     function excluirsolicitacao($estoque_solicitacao_itens_id, $estoque_solicitacao_id) {

@@ -169,6 +169,9 @@ class cliente_model extends Model {
             if($_POST['sala'] != ''){
                 $this->db->set('sala_id', $_POST['sala']);
             }
+            if($_POST['saida'] != ''){
+                $this->db->set('saida', 'true');
+            }
             if ($_POST['municipio_id'] != '') {
                 $this->db->set('municipio_id', $_POST['municipio_id']);
             }
