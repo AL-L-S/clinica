@@ -14,15 +14,21 @@
             <legend>Cadastro de Produtos</legend>
             <div>
                 <label>Produtos</label>
-                <select name="produto_id" id="produto_id" class="size4">
+                <select name="produto_id" id="produto_id" class="size4" required>
+                    <option value="">SELECIONE</option>
                     <? foreach ($produto as $value) : ?>
-                        <option value="<?= $value->estoque_produto_id; ?>"><?php echo $value->descricao; ?></option>
+                        <option value="<?= $value->estoque_produto_id; ?>"  onclick="carregaValor('<?= $value->valor_venda; ?>')">
+                            <?php echo $value->descricao; ?></option>
                     <? endforeach; ?>
                 </select>
             </div>
             <div>
                 <label>Quantidade</label>
-                <input type="text" name="txtqtde" class="size1" alt="integer"/>
+                <input type="text" name="txtqtde" class="size1" alt="integer" required/>
+            </div>
+            <div>
+                <label>Valor</label>
+                <input type="text" name="valor" id="valor" alt="decimal" class="texto02" required/>
             </div>
             <div>
                 <label>&nbsp;</label>
@@ -41,18 +47,26 @@
                 <tr>
                     <th class="tabela_header">Produto</th>
                     <th class="tabela_header">Qtde</th>
+                    <th class="tabela_header">Valor (R$)</th>
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
             </thead>
             <?
-            $estilo_linha = "tabela_content01";
+            $valortotal = 0;
+            $estilo_linha = "tabela_content01";?>
+            <tbody>
+            <?
             foreach ($produtos as $item) {
                 ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                 ?>
-                <tbody>
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><? $v = (float) $item->valor_venda;
+                                                                    $a = (int) str_replace('.', '', $item->quantidade); 
+                                                                    $preco = (float) $a * $v; 
+                                                                    $valortotal += $preco;
+                                                                    echo "R$ <span id='valorunitario'>". number_format($preco, 2, '.', ',') . '</span>'; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                             <a href="<?= base_url() ?>estoque/solicitacao/excluirsolicitacao/<?= $item->estoque_solicitacao_itens_id; ?>/<?= $estoque_solicitacao_id; ?>" class="delete">
                             </a>
@@ -60,9 +74,17 @@
                         </td>
                     </tr>
 
-                </tbody>
+                
                 <?
-            }
+            }?>
+                    <tr id="tot">
+                        <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
+                        <td class="<?php echo $estilo_linha; ?>" id="textovalortotal"><span id="spantotal"> Total:</span> </td>
+                        <td class="<?php echo $estilo_linha; ?>"><span id="spantotal">R$ <?=$valortotal;?></span></td>
+                        <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
+                    </tr>
+            </tbody>    
+                <?
         }
         ?>
         <tfoot>
@@ -78,32 +100,31 @@
 </div>
 </fieldset>
 </div> <!-- Final da DIV content -->
-
+ 
+<style>
+    #spantotal{
+        
+        color: black;
+        font-weight: bolder;
+        font-size: 18px;
+    }
+    #textovalortotal{
+        text-align: right;
+    }
+    #tot td{
+        background-color: #bdc3c7;
+    }
+</style>
 
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-
-
-                    //$(function(){     
-                    //    $('#exame').change(function(){
-                    //        exame = $(this).val();
-                    //        if ( exame === '')
-                    //            return false;
-                    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-                    //            var option = new Array();
-                    //            $.each(data, function(i, obj){
-                    //                console.log(obl);
-                    //                option[i] = document.createElement('option');
-                    //                $( option[i] ).attr( {value : obj.id} );
-                    //                $( option[i] ).append( obj.nome );
-                    //                $("select[name='horarios']").append( option[i] );
-                    //            });
-                    //        });
-                    //    });
-                    //});
-
-
+    function carregaValor(valor){
+//        alert(valor);
+        $("#valor").val(valor);
+    }
+    
+//     onclick="carregaValor('+j[c].valor_venda+')"
 
 </script>

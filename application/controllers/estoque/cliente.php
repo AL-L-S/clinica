@@ -16,6 +16,8 @@ class Cliente extends BaseController {
     function Cliente() {
         parent::Controller();
         $this->load->model('estoque/cliente_model', 'cliente');
+        $this->load->model('cadastro/convenio_model', 'convenio');
+        $this->load->model('estoque/fornecedor_model', 'fornecedor');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -38,6 +40,7 @@ class Cliente extends BaseController {
         $data['obj'] = $obj_cliente;
         $data['menu'] = $this->cliente->listarmenu();
         $data['sala'] = $this->cliente->listarsalamenu();
+        $data['tipo'] = $this->fornecedor->listartipo();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('estoque/cliente-form', $data);
     }
@@ -80,6 +83,8 @@ class Cliente extends BaseController {
     }
 
     function gravar() {
+//        echo "<pre>";
+//        var_dump($_POST); die;
         $exame_cliente_id = $this->cliente->gravar();
         if ($exame_cliente_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Cliente. Opera&ccedil;&atilde;o cancelada.';

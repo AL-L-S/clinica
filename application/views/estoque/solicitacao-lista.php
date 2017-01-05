@@ -2,14 +2,14 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>estoque/solicitacao/criarsolicitacao/0">
-            Novo Solicitacao
+            Novo Pedido
         </a>
     </div>
     <?
     $perfil_id = $this->session->userdata('perfil_id');
     ?>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Solicitacao</a></h3>
+        <h3 class="singular"><a href="#">Manter Pedido</a></h3>
         <div>
             <table>
                 <thead>
@@ -22,10 +22,10 @@
                         </th>
                     </tr>
                     <tr>
-                        <th class="tabela_header">Solicita&ccedil;&atilde;o</th>
+                        <th class="tabela_header">Pedido</th>
                         <th class="tabela_header">Data</th>
                         <th class="tabela_header">Status</th>
-                        <th class="tabela_header" width="70px;" colspan="3"><center>Detalhes</center></th>
+                        <th class="tabela_header" width="70px;" colspan="4"><center>Detalhes</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -73,7 +73,15 @@
                                 <?
                                 }
                                 if ($item->situacao == 'LIBERADA' && ($perfil_id == 1 || $perfil_id == 8)) {
-                                    ?>
+                                    if($item->faturado == 'f'){ ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">                                
+                                            <a onclick="javascript:window.open('<?= base_url() ?>estoque/solicitacao/faturarsolicitacao/<?= $item->estoque_solicitacao_setor_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=700,height=600');">Faturar</a>
+                                            
+                                        </div>
+                                    </td>
+                                    
+                                    <? } ?>
+                                    
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">                                
                                             <a href="<?= base_url() ?>estoque/solicitacao/carregarsaida/<?= $item->estoque_solicitacao_setor_id ?>">Saida</a>
                                         </div>
@@ -82,8 +90,7 @@
                                             <a href="<?= base_url() ?>estoque/solicitacao/imprimirliberada/<?= $item->estoque_solicitacao_setor_id ?>">Imprimir</a>
                                         </div>
                                     </td>
-                                <?
-                                }
+                            <?  }
                                 if ($item->situacao != 'FECHADA' && ($perfil_id == 1 || $perfil_id == 8)) {
                                     ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">                                  
@@ -98,6 +105,11 @@
                                             <a href="<?= base_url() ?>estoque/solicitacao/imprimir/<?= $item->estoque_solicitacao_setor_id ?>">Imprimir</a>
                                         </div>
                                     </td>
+                                    
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">  <div class="bt_link">                                
+                                            <a href="<?= base_url() ?>estoque/solicitacao/carregarnotafiscal/<?= $item->estoque_solicitacao_setor_id ?>">N. Fiscal</a>
+                                        </div>
+                                    </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                     </td>
                         <? } ?>
@@ -110,7 +122,7 @@
 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="6">
+                        <th class="tabela_footer" colspan="7">
 <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

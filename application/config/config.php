@@ -16,7 +16,7 @@ if (!defined('BASEPATH'))
  */
 //$config['base_url']	= "http://192.168.25.85/clinica/";
 ////$config['base_url']	= "http://192.168.0.216/clinica/";
-$config['base_url']	= "http://localhost/clinicas/";
+$config['base_url']	= "http://localhost/administrativo/";
 
 
 
@@ -334,7 +334,7 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 $config['sis_sigla'] = 'STG';
-$config['sis_name'] = 'SISTEMA DE GESTAO CLINICAS';
+$config['sis_name'] = 'SOLUCAO EM TECNOLOGIA DE GESTAO';
 $config['sis_version'] = '1.0';
 
 /* End of file config.php */

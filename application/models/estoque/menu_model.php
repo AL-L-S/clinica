@@ -32,7 +32,8 @@ class menu_model extends Model {
 
     function listarprodutos() {
         $this->db->select('p.estoque_produto_id,
-                            p.descricao');
+                            p.descricao,
+                            p.valor_venda');
         $this->db->from('tb_estoque_produto p');
         $this->db->where('p.ativo', 'true');
         $return = $this->db->get();
@@ -92,7 +93,8 @@ class menu_model extends Model {
 
     function listarautocompleteprodutosporsubclasse($subclasse_id) {
         $this->db->select('p.estoque_produto_id,
-                            p.descricao');
+                            p.descricao,
+                            p.valor_venda');
         $this->db->from('tb_estoque_sub_classe sc');
         $this->db->join('tb_estoque_produto p', 'p.sub_classe_id = sc.estoque_sub_classe_id', 'left');
         $this->db->where('sc.estoque_sub_classe_id', $subclasse_id);

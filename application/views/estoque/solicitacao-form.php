@@ -1,12 +1,12 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Solicita&ccedil;&atilde;o</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Pedido</a></h3>
         <div>
             <form name="form_sala" id="form_sala" action="<?= base_url() ?>estoque/solicitacao/gravar" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                    <label>Setor</label>
+                    <label>Cliente</label>
                     </dt>
                     <dd>
                         <select name="setor" id="setor" class="size4">

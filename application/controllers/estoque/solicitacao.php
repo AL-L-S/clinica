@@ -16,6 +16,8 @@ class Solicitacao extends BaseController {
     function Solicitacao() {
         parent::Controller();
         $this->load->model('estoque/solicitacao_model', 'solicitacao');
+        $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -36,6 +38,8 @@ class Solicitacao extends BaseController {
         if ($data['contador'] > 0) {
             $data['produtos'] = $this->solicitacao->listarsolicitacaos($estoque_solicitacao_id);
         }
+//        echo "<pre>";
+//        var_dump($data['produtos']);
         $this->loadView('estoque/solicitacaoitens-form', $data);
     }
 
@@ -145,7 +149,12 @@ class Solicitacao extends BaseController {
             $data['mensagem'] = 'Insira uma quantidade valida.';
             $this->session->set_flashdata('message', $data['mensagem']);
         }
+        elseif($_POST['valor'] == ''){
+            $data['mensagem'] = 'Insira um valor valido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+        }
         else {
+            $_POST['valor'] = str_replace(',', '.', $_POST['valor']);
             $this->solicitacao->gravaritens();
         }
         
@@ -162,6 +171,23 @@ class Solicitacao extends BaseController {
         $this->saidaitens($estoque_solicitacao_itens_id, $estoque_solicitacao_id);
     }
 
+    function faturarsolicitacao($estoque_solicitacao_id) {
+        $data['forma_pagamento'] = $this->solicitacao->formadepagamentoprocedimento();
+        $valortotal = $this->solicitacao->listarsolicitacaosvalortotal($estoque_solicitacao_id);
+        $data['valortotal'] = 0;
+        if( count($data['valortotal']) > 0 ){
+            foreach ($valortotal as $item) {
+                $v = (float) $item->valor_venda;
+                $a = (int) str_replace('.', '', $item->quantidade); 
+                $preco = (float) $a * $v; 
+                $data['valortotal'] += $preco;
+            }
+        }
+        $data['estoque_solicitacao_id'] = $estoque_solicitacao_id;
+        $data['valor'] = 0.00;
+        $this->load->View('estoque/faturar-form', $data);
+    }
+
     function liberarsolicitacao($estoque_solicitacao_id) {
         $this->solicitacao->liberarsolicitacao($estoque_solicitacao_id);
         $this->pesquisar();
@@ -170,6 +196,14 @@ class Solicitacao extends BaseController {
     function fecharsolicitacao($estoque_solicitacao_id) {
         $this->solicitacao->fecharsolicitacao($estoque_solicitacao_id);
         $this->pesquisar();
+    }
+
+    function carregarnotafiscal($estoque_solicitacao_id) {
+        $data['empresa'] = $this->solicitacao->empresa();
+        $data['destinatario'] = $this->solicitacao->listaclientenotafiscal($estoque_solicitacao_id);
+        $data['produtos'] = $this->solicitacao->listarsolicitacaosnota($estoque_solicitacao_id);
+//        echo "<pre>";var_dump($data['destinatario']);die;
+        $this->load->View('estoque/imprimirnotafiscal', $data);
     }
 
     function pesquisar($args = array()) {

@@ -4,7 +4,7 @@
 <center><table>
         <tbody>
             <tr>
-                <td colspan="2"  ><font size = -1>SETOR : <? echo $nome[0]->nome ?>  </font></td>
+                <td colspan="2"  ><font size = -1>CLIENTE : <? echo $nome[0]->nome ?>  </font></td>
                 <td ><font size = -1><center></center></font></td>
         <td width="30px">&nbsp;</td>
         <tr>

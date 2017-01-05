@@ -22,6 +22,18 @@ class solicitacao_model extends Model {
         return $return;
     }
 
+    function listaclientenotafiscal($estoque_solicitacao_id) {
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->select('ec.*');
+        $this->db->from('tb_estoque_solicitacao_cliente esc');
+        $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = esc.cliente_id', 'left');
+//        $this->db->join('tb_municipio m', 'm.municipio_id = esc.municipio_id', 'left');
+        $this->db->where('esc.estoque_solicitacao_setor_id', $estoque_solicitacao_id);
+        $this->db->where('esc.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarclientes() {
         $operador_id = $this->session->userdata('operador_id');
         $this->db->select('estoque_cliente_id,
@@ -67,8 +79,8 @@ class solicitacao_model extends Model {
         return $return->result();
     }
 
-    function listarsolicitacaos($estoque_solicitacao_id) {
-        $this->db->select('ep.descricao, esi.estoque_solicitacao_itens_id, esi.quantidade, esi.exame_id');
+    function listarsolicitacaosnota($estoque_solicitacao_id) {
+        $this->db->select('ep.descricao, esi.estoque_solicitacao_itens_id, esi.quantidade, esi.exame_id, ep.valor_venda, ep.estoque_produto_id');
         $this->db->from('tb_estoque_solicitacao_itens esi');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = esi.produto_id');
         $this->db->where('esi.ativo', 'true');
@@ -76,8 +88,65 @@ class solicitacao_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+
+    function listarsolicitacaos($estoque_solicitacao_id) {
+        $this->db->select('ep.descricao, esi.estoque_solicitacao_itens_id, esi.quantidade, esi.exame_id, esi.valor as valor_venda');
+        $this->db->from('tb_estoque_solicitacao_itens esi');
+        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = esi.produto_id');
+        $this->db->where('esi.ativo', 'true');
+        $this->db->where('esi.solicitacao_cliente_id', $estoque_solicitacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarsolicitacaosvalortotal($estoque_solicitacao_id) {
+        $this->db->select('ep.descricao, esi.estoque_solicitacao_itens_id, esi.quantidade, esi.exame_id, ep.valor_venda');
+        $this->db->from('tb_estoque_solicitacao_itens esi');
+        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = esi.produto_id');
+        $this->db->where('esi.ativo', 'true');
+        $this->db->where('esi.solicitacao_cliente_id', $estoque_solicitacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
+    function empresa() {
+        $empresa = $this->session->userdata('empresa_id');
+        $this->db->select('empresa_id,
+                            nome,
+                            cnpj,
+                            cep,
+                            razao_social,
+                            logradouro,
+                            bairro,
+                            telefone,
+                            internacao,
+                            numero');
+        $this->db->from('tb_empresa');
+        $this->db->where('empresa_id', $empresa);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
 
     function listarprodutos($estoque_solicitacao_id) {
+        $this->db->select('ep.estoque_produto_id,
+                            ep.descricao,
+                            ep.valor_venda');
+        $this->db->from('tb_estoque_produto ep');
+        $this->db->join('tb_estoque_menu_produtos emp', 'emp.produto = ep.estoque_produto_id');
+        $this->db->join('tb_estoque_menu em', 'em.estoque_menu_id = emp.menu_id');
+        $this->db->join('tb_estoque_cliente ec', 'ec.menu_id = emp.menu_id');
+        $this->db->join('tb_estoque_solicitacao_cliente esc', 'esc.cliente_id = ec.estoque_cliente_id');
+        $this->db->where('esc.estoque_solicitacao_setor_id', $estoque_solicitacao_id);
+        $this->db->where('ep.ativo', 'true');
+        $this->db->where('emp.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listardadoscliente($estoque_solicitacao_id) {
         $this->db->select('ep.estoque_produto_id,
                             ep.descricao');
         $this->db->from('tb_estoque_produto ep');
@@ -246,12 +315,36 @@ class solicitacao_model extends Model {
         return $return;
     }
 
+       function formadepagamentoprocedimento() {
+        $this->db->select('fp.forma_pagamento_id,
+                            fp.nome as nome');
+        $this->db->from('tb_forma_pagamento fp');
+//        $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
+//        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
+        $this->db->where('ativo', 't');
+        $this->db->orderby('fp.nome');
+        $return = $this->db->get();
+        $retorno = $return->result();
+
+        if (empty($retorno)) {
+            $this->db->select('fp.forma_pagamento_id,
+                            fp.nome as nome');
+            $this->db->from('tb_forma_pagamento fp');
+            $this->db->orderby('fp.nome');
+            $return = $this->db->get();
+            return $return->result();
+        } else {
+            return $retorno;
+        }
+    }
+    
     function listar($args = array()) {
         $operador_id = $this->session->userdata('operador_id');
         $this->db->select('es.estoque_solicitacao_setor_id,
                             es.cliente_id,
                             ec.nome as cliente,
                             es.data_cadastro,
+                            es.faturado,
                             es.situacao');
         $this->db->from('tb_estoque_solicitacao_cliente es');
         $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = es.cliente_id');
@@ -409,6 +502,7 @@ class solicitacao_model extends Model {
             /* inicia o mapeamento no banco */
             $this->db->set('solicitacao_cliente_id', $_POST['txtestoque_solicitacao_id']);
             $this->db->set('quantidade', $_POST['txtqtde']);
+            $this->db->set('valor', $_POST['valor']);
             $this->db->set('produto_id', $_POST['produto_id']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');

@@ -153,12 +153,26 @@ class cliente_model extends Model {
         try {
             /* inicia o mapeamento no banco */
             $estoque_cliente_id = $_POST['txtestoqueclienteid'];
-            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->set('nome', $_POST['txtfantasia']);
             $this->db->set('menu_id', $_POST['menu']);
             $this->db->set('telefone', $_POST['txttelefone']);
+            $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
+            $this->db->set('razao_social', $_POST['txtrazaosocial']);
+            $this->db->set('cep', $_POST['txttipo_id']);
+            $this->db->set('logradouro', $_POST['endereco']);
+            $this->db->set('numero', $_POST['numero']);
+            $this->db->set('bairro', $_POST['bairro']);
+            $this->db->set('complemento', $_POST['complemento']);
+            if ($_POST['txtCNPJ'] != '') {
+                $this->db->set('cnpj', str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ'])));
+            }
             if($_POST['sala'] != ''){
                 $this->db->set('sala_id', $_POST['sala']);
             }
+            if ($_POST['municipio_id'] != '') {
+                $this->db->set('municipio_id', $_POST['municipio_id']);
+            }
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 

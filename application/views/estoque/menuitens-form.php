@@ -46,14 +46,16 @@
                 <label>Produtos</label>
                 <select name="produto_id" id="produto_id" class="size4">
                     <? foreach ($produto as $value) : ?>
-                        <option value="<?= $value->estoque_produto_id; ?>"><?php echo $value->descricao; ?></option>
+                    <option value="<?= $value->estoque_produto_id; ?>" onclick="carregaValor('<?= $value->valor_venda; ?>')"><?php echo $value->descricao; ?></option>
                     <? endforeach; ?>
                 </select>
             </div>
-            <div>
+            <dl>
                 <label>&nbsp;</label>
+            </dl>
+            <dd>
                 <button type="submit" name="btnEnviar">Adicionar</button>
-            </div>
+            </dd>
     </form>
 </fieldset>
 
@@ -65,7 +67,7 @@
             <thead>
 
                 <tr>
-                    <th class="tabela_header">Exame</th>
+                    <th class="tabela_header">Produtos</th>
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
             </thead>

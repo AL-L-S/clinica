@@ -2,11 +2,11 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>estoque/cliente/carregarcliente/0">
-            Novo Setor
+            Novo Cliente
         </a>
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Setor</a></h3>
+        <h3 class="singular"><a href="#">Manter Cliente</a></h3>
         <div>
             <table>
                 <thead>

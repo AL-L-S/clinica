@@ -10,9 +10,9 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>Cadastro de Setores</legend>
+            <legend>Cadastro de Clientes</legend>
             <div>
-                <label>Setores</label>
+                <label>Clientes</label>
                 <select name="clientes_id" id="clientes_id" class="size4">
                     <? foreach ($clientes as $value) : ?>
                         <option value="<?= $value->estoque_cliente_id; ?>"><?php echo $value->nome; ?></option>
@@ -34,7 +34,7 @@
             <thead>
 
                 <tr>
-                    <th class="tabela_header">Exame</th>
+                    <th class="tabela_header">Cliente</th>
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
             </thead>
