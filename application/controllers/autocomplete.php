@@ -618,6 +618,15 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentovalororcamento() {
+        if (isset($_GET['procedimento1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosvalor2($_GET['procedimento1'] , $_GET['convenio']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosvalor2();
+        }
+        echo json_encode($result);
+    }
+
     function procedimentovalorfisioterapia() {
 
         if (isset($_GET['procedimento1'])) {

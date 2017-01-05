@@ -40,12 +40,15 @@ class centrocirurgico_model extends BaseModel {
         $this->db->select(' p.paciente_id,
                             p.nome,
                             sc.solicitacao_cirurgia_id,
-                            sc.data_prevista');
+                            sc.data_prevista,
+                            c.nome as convenio,
+                            c.convenio_id');
         $this->db->from('tb_solicitacao_cirurgia sc');
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
         $this->db->where('sc.autorizado', 'f');
-        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');
+        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio' , 'left');
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');

@@ -124,6 +124,12 @@ class centrocirurgico extends BaseController {
         $data['obj'] = $obj_paciente;
         $this->loadView('internacao/cadastrarleito', $data);
     }
+    
+    function impressaoorcamento($solicitacao_id) {
+        $data['nomes'] = $this->solicitacirurgia_m->buscarnomesimpressao($solicitacao_id);
+        $data['impressao'] = $this->solicitacirurgia_m->impressaoorcamento($solicitacao_id);
+        $this->load->view('centrocirurgico/impressaoorcamento', $data);
+    }
 
     function gravarnovasolicitacao() {
         if ($_POST["txtNomeid"] == "") {
@@ -135,14 +141,11 @@ class centrocirurgico extends BaseController {
             if ($solicitacao == -1) {
                 $data['mensagem'] = 'Erro ao efetuar Solicitacao';
             } else {
-                $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
-                if ($verifica) {
-                    $data['mensagem'] = 'Solicitacao efetuada com Sucesso';
-                }
-                $this->session->set_flashdata('message', $data['mensagem']);
+                $data['mensagem'] = 'Solicitacao efetuada com Sucesso';
 //            var_dump($solicitacao);
-                redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
             }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
         }
     }
 
@@ -159,7 +162,7 @@ class centrocirurgico extends BaseController {
                         $data['mensagem'] = 'Erro ao gravar Procedimento';
                     }
                     $this->session->set_flashdata('message', $data['mensagem']);
-                    redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
+                    redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
                 }
             } else {
                 $data['mensagem'] = 'Erro ao gravar Procedimento. Procedimento nao selecionado ou invalido.';
@@ -196,6 +199,7 @@ class centrocirurgico extends BaseController {
     function novasolicitacao($solicitacao_id) {
         $data['solicitacao_id'] = $solicitacao_id;
         $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['convenio'] = $this->procedimentoplano->listarconveniocirurgiaorcamento();
         if ($solicitacao_id != '0') {
 //        $data['solicitacao']= $this->centrocirurgico_m->pegasolicitacaoinformacoes($solicitacao_id);
 //        $data['leito']= $this->solicitacirurgia_m->listaleitocirugia();
@@ -204,9 +208,38 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/novasolicitacao', $data);
     }
 
-    function solicitacarorcamento($solicitacao_id) {
+    function solicitacarorcamento($solicitacao_id, $convenio_id) {
         $data['solicitacao_id'] = $solicitacao_id;
+        $data['convenio_id'] = $convenio_id;
+
+        // opção editar orçamento (início)
+        $data['verifica'] = $this->solicitacirurgia_m->verificaorcamento($solicitacao_id);
+        foreach ($data['verifica'] as $value) {
+            if ($value->grau_participacao == "CIRURGIAO") {
+                $data['cirurgiao'] = $value;
+            }
+            if ($value->grau_participacao == "AUXILIO1") {
+                $data['auxilio1'] = $value;
+            }
+            if ($value->grau_participacao == "AUXILIO2") {
+                $data['auxilio2'] = $value;
+            }
+            if ($value->grau_participacao == "ANESTESISTA") {
+                $data['anestesista'] = $value;
+            }
+            if ($value->grau_participacao == "CIRURGIAO2") {
+                $data['cirurgiao2'] = $value;
+            }
+            if ($value->grau_participacao == "CIRURGIAO3") {
+                $data['cirurgiao3'] = $value;
+            }
+        }
+        
+//        var_dump($data['cirurgiao']);die;
+        // opção editar orçamento (fim)
+        
         $data['convenio'] = $this->procedimentoplano->listarconveniocirurgiaorcamento();
+        $data['procedimentos'] = $this->solicitacirurgia_m->listarprocedimentoscirurgia($solicitacao_id, $convenio_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
         $this->loadView('centrocirurgico/solicitacarorcamento-form', $data);
     }
@@ -215,9 +248,9 @@ class centrocirurgico extends BaseController {
 //        $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
         $verifica = $this->solicitacirurgia_m->gravarsolicitacaorcamento();
         if ($verifica) {
-            $data['mensagem'] = 'Solicitacao de orçamento efetuada com Sucesso';
+            $data['mensagem'] = 'Orçamento efetuada com Sucesso';
         } else {
-            $data['mensagem'] = 'Erro ao efetuar Solicitacao de orçamento';
+            $data['mensagem'] = 'Erro ao efetuar Orçamento';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");

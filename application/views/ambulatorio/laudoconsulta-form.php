@@ -1,3 +1,6 @@
+<head>
+    <title>Laudo Consulta</title>
+</head>
 <div >
 
     <?

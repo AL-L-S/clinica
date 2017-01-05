@@ -1,3 +1,6 @@
+<head>
+    <title>Atestado</title>
+</head>
 <div >
     <?
     $dataFuturo = date("Y-m-d");

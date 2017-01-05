@@ -1,13 +1,13 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <table>
         <tr>
-            <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/novasolicitacao/0">
-                        Nova Solicitacao
-                    </a>
-            </div>
+        <div class="bt_link_new">
+            <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/novasolicitacao/0">
+                Nova Solicitacao
+            </a>
+        </div>
         </tr>
-        </table>
+    </table>
     <div id="accordion">
         <h3><a href="#">Manter Solicitacoes</a></h3>
         <div>
@@ -16,18 +16,19 @@
                     <tr>
                         <th class="tabela_title" colspan="4">
                             Lista de Solicitacoes
-                <form method="get" action="<?php echo base_url() ?>centrocirurgico/centrocirurgico/pesquisar">
-                    <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
-                    <button type="submit" name="enviar">Pesquisar</button>
-                </form>
-                </th>
-                </tr>
-                <tr>
-                    <th class="tabela_header">Nome</th>
-                    <!--<th class="tabela_header">Data Prevista</th>-->
-                    <th class="tabela_header" width="30px;"><center></center></th>
-                <th class="tabela_header" width="30px;"><center></center></th>
-                <th class="tabela_header" width="30px;"><center></center></th>
+                            <form method="get" action="<?php echo base_url() ?>centrocirurgico/centrocirurgico/pesquisar">
+                                <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
+                                <button type="submit" name="enviar">Pesquisar</button>
+                            </form>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="tabela_header">Nome</th>
+                        <th class="tabela_header">Convenio</th>
+                       <!--<th class="tabela_header">Data Prevista</th>-->
+                        <th class="tabela_header" width="30px;" colspan="4"><center></center></th>
+<!--                <th class="tabela_header" width="30px;"><center></center></th>
+                <th class="tabela_header" width="30px;"><center></center></th>-->
 
                 </tr>
                 </thead>
@@ -49,15 +50,19 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <!--<td class="<?php echo $estilo_linha; ?>"><?php echo str_replace('-','/', date( 'd-m-Y', strtotime($item->data_prevista) ) ); ?></td>-->
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link_new">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->convenio; ?></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?php echo str_replace('-', '/', date('d-m-Y', strtotime($item->data_prevista))); ?></td>-->
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
+                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
                                 </td> 
-                                <td class="<?php echo $estilo_linha; ?>" width="170px;"><div class="bt_link" style="width: 170px;">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 150px;">Orçamento</a></div>
-                                </td>                              
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link_new">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">EXCLUIR</a></div>
+                                <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
+                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->convenio_id; ?>" style="width: 85px;">ORÇAMENTO</a></div>
+                                </td> 
+                                <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
+                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 85px;">IMPRIMIR</a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 60px;">
+                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">EXCLUIR</a></div>
                                 </td> 
                             </tr>
                         </tbody>
@@ -81,9 +86,9 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-   
-    $(function() {
-        $( "#accordion" ).accordion();
+
+    $(function () {
+        $("#accordion").accordion();
     });
 
 </script>

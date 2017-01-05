@@ -1250,3 +1250,8 @@ ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN data date;
 ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN cid boolean;
 ALTER TABLE ponto.tb_ambulatorio_atestado ALTER COLUMN cid SET NOT NULL;
 ALTER TABLE ponto.tb_ambulatorio_atestado ALTER COLUMN cid SET DEFAULT false;
+
+
+-- 02/01/17
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN convenio integer;

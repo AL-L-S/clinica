@@ -3275,6 +3275,16 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompleteprocedimentosvalor2($parametro = null , $parametro2 = null) {
+        $this->db->select('pc.valortotal');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where('pc.convenio_id', $parametro2);
+        $this->db->where('pc.procedimento_tuss_id', $parametro);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompleteprocedimentosforma($parametro = null) {
         $this->db->select('fp.nome,
                            fp.forma_pagamento_id');

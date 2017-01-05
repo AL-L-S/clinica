@@ -1,3 +1,6 @@
+<head>
+    <title>Solicitar Exames</title>
+</head>
 <div >
     <?
     $dataFuturo = date("Y-m-d");

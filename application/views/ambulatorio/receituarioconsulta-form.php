@@ -1,3 +1,6 @@
+<head>
+    <title>Receituário</title>
+</head>
 <div >
     <?
     $dataFuturo = date("Y-m-d");

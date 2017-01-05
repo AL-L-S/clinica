@@ -6,28 +6,43 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
+                        <label>Convenio</label>
+                    </dt>
+                    <dd>
+                        <select name="convenio" id="convenio" class="texto04" required>
+                            <option value="">Selecione</option>
+                            <? foreach ($convenio as $value) { ?>
+                                <option value="<?= $value->convenio_id; ?>"><?= $value->nome; ?></option>
+                            <? } ?>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Paciente</label>
                     </dt>
                     <dd>
                         <input type="hidden" name="solicitacao_cirurgia_id" class="texto10" value="<?= @$solicitacao_id; ?>" />
-                        <input type="hidden" name="txtNomeid" id="txtNomeid" class="texto02" value="<?= @$paciente[0]->paciente_id;?>"/>
-                        <input type="text" name="txtNome" id="txtNome" class="texto10" <? if( isset($paciente[0]->paciente ) ){ echo "value='".$paciente[0]->paciente."' readonly"; } ?>/>
+                        <input type="hidden" name="txtNomeid" id="txtNomeid" class="texto02" value="<?= @$paciente[0]->paciente_id; ?>"/>
+                        <input type="text" name="txtNome" id="txtNome" class="texto10" <?
+                        if (isset($paciente[0]->paciente)) {
+                            echo "value='" . $paciente[0]->paciente . "' readonly";
+                        }
+                        ?>/>
 <!--                        <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
                 <input type="text" id="txtNome" name="txtNome" class="texto10"/>-->
-                        
+
                     </dd>
-                 
+
                     <dt>
                         <label>Médico</label>
                     </dt>
                     <dd>
                         <select  name="medicoagenda" id="medicoagenda" class="size4" required="true">
                             <option value="">Selecione</option>
-                            <? foreach ($medicos as $item) : ?>
+                                <? foreach ($medicos as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>">
-                                    <?= $item->nome; ?>
+                                <?= $item->nome; ?>
                                 </option>
-                            <? endforeach; ?>
+<? endforeach; ?>
                         </select>
                     </dd>
 
@@ -43,7 +58,7 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    
+
 <?php if ($this->session->flashdata('message') != ''): ?>
         alert("<? echo $this->session->flashdata('message') ?>");
 <? endif; ?>
@@ -83,25 +98,25 @@
     });
 
 
-                    $(function () {
-                        $("#txtNome").autocomplete({
-                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                            minLength: 3,
-                            focus: function (event, ui) {
-                                $("#txtNome").val(ui.item.label);
-                                return false;
-                            },
-                            select: function (event, ui) {
-                                $("#txtNome").val(ui.item.value);
-                                $("#txtNomeid").val(ui.item.id);
-                                return false;
-                            }
-                        });
-                    });
+    $(function () {
+        $("#txtNome").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#txtNome").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtNome").val(ui.item.value);
+                $("#txtNomeid").val(ui.item.id);
+                return false;
+            }
+        });
+    });
 
 
-    $(document).ready(function(){
-        jQuery('#form_sala').validate( {
+    $(document).ready(function () {
+        jQuery('#form_sala').validate({
             rules: {
                 txtNome: {
                     required: true,
