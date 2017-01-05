@@ -452,7 +452,7 @@ CREATE TABLE ponto.tb_convenio_operador_procedimento
 
 
 
-atualiza 05/07/2016
+-- atualiza 05/07/2016
 
   update ponto.tb_agenda_exames
 	set medico_consulta_id = medico_agenda
@@ -460,7 +460,7 @@ atualiza 05/07/2016
 
 ALTER TABLE ponto.tb_agenda_exames add column ocupado boolean DEFAULT false;
 
-atualiza 16/07/2016
+-- atualiza 16/07/2016
 
 CREATE TABLE ponto.tb_versao
 (
@@ -468,13 +468,13 @@ CREATE TABLE ponto.tb_versao
   sistema character varying(20),
   banco_de_dados character varying(20),
   CONSTRAINT tb_versao_pkey PRIMARY KEY (versao_id )
-)
+);
 
-atualiza 20/07/2016
+-- atualiza 20/07/2016
 
 CREATE TABLE ponto.tb_procedimento_percentual_medico_convenio
 
-atualiza 01/08/2016
+-- atualiza 01/08/2016
 
 ALTER TABLE ponto.tb_agenda_exames add column internet boolean DEFAULT false;
 ALTER TABLE ponto.tb_paciente add column internet boolean DEFAULT false;
@@ -1143,6 +1143,8 @@ CREATE TABLE ponto.tb_ambulatorio_gasto_sala
 
 -- Dia 26/12/2016  Correcao no Centro Cirurgico
 
+DROP TABLE IF EXISTS ponto.tb_solicitacao_cirurgia;
+
 CREATE TABLE IF NOT EXISTS ponto.tb_solicitacao_cirurgia
 (
   solicitacao_cirurgia_id serial NOT NULL,
@@ -1240,13 +1242,15 @@ CREATE TABLE ponto.tb_solicitacao_cirurgia_procedimento
 );
 
 
-ALTER TABLE ponto.tb_solicitacao_cirurgia DROP COLUMN procedimento_id;
-
-
 -- 30/12/16
 
 ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN data date;
+ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN imprimir_cid boolean NOT NULL DEFAULT false;
+ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN cid1 character varying;
 
+--02/01/17
+
+ALTER TABLE ponto.tb_agenda_exames ALTER COLUMN ordenador SET DEFAULT ''::character varying;
 ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN cid boolean;
 ALTER TABLE ponto.tb_ambulatorio_atestado ALTER COLUMN cid SET NOT NULL;
 ALTER TABLE ponto.tb_ambulatorio_atestado ALTER COLUMN cid SET DEFAULT false;

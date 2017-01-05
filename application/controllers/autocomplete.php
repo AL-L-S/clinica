@@ -80,8 +80,8 @@ class Autocomplete extends Controller {
 
     function procedimentoproduto() {
 
-        if (isset($_GET['procedimento'])) {
-            $result = $this->procedimento->listarprocedimentoautocomplete($_GET['procedimento']);
+        if (isset($_GET['term'])) {
+            $result = $this->procedimento->listarprocedimentoautocomplete($_GET['term']);
         } else {
             $result = $this->procedimento->listarprocedimentoautocomplete();
         }
@@ -1640,19 +1640,20 @@ class Autocomplete extends Controller {
     }
 
     function pacientenascimento() {
-        if (isset($_GET['term'])) {
-            $result = $this->exame->listarautocompletepacientenascimento($_GET['term']);
-        } else {
-            $result = $this->exame->listarautocompletepacientenascimento();
-        }
-        foreach ($result as $item) {
-            $retorno['value'] = $item->nome;
-            $retorno['itens'] = $item->telefone;
-            $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
-            $retorno['id'] = $item->paciente_id;
-            $var[] = $retorno;
-        }
-        echo json_encode($var);
+//        if (isset($_GET['term'])) {
+//            $result = $this->exame->listarautocompletepacientenascimento($_GET['term']);
+//        } else {
+//            $result = $this->exame->listarautocompletepacientenascimento();
+//        }
+//        foreach ($result as $item) {
+//            $retorno['value'] = $item->nome;
+//            $retorno['itens'] = $item->telefone;
+//            $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
+//            $retorno['id'] = $item->paciente_id;
+//            $var[] = $retorno;
+//        }
+//        echo json_encode($var);
+        echo json_encode('olaolaoa');
     }
 
     function cid1() {

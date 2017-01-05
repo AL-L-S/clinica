@@ -75,7 +75,19 @@ class Modelomedicamento extends BaseController {
     }
 
     function gravar() {
-        $this->modelomedicamento->gravar();
+        if($_POST['unidadeid'] != ''){
+            $verifica = $this->modelomedicamento->gravar();
+            if($verifica){
+                $mensagem = 'Sucesso ao excluir a Medicamento';
+            } 
+            else{
+                $mensagem = 'Erro ao excluir o Medicamento';
+            }
+        }
+        else{
+            $mensagem = 'Erro. Unidade escolhida não é valida.';
+        }
+        $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/modelomedicamento");
     }
 

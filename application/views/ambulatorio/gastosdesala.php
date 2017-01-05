@@ -1,4 +1,6 @@
+<?
 
+?>
 <meta charset="utf-8">
 
 <div id="conteudo"> <!-- Inicio da DIV content -->
@@ -14,6 +16,41 @@
                     <tr>
                         <td><label>Nome</label></td>
                         <td><label>Sexo</label></td>
+                        <td rowspan="13">
+                            <table cellpadding="2">
+                                <tr>
+                                    <td width="40px;"><div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituario/<?= $laudo[0]->ambulatorio_laudo_id ?>/<?= $paciente[0]->paciente_id ?>/<?= $laudo[0]->procedimento_tuss_id ?>');" >
+                                                Receituario</a></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40px;"><div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituarioespecial/<?= $laudo[0]->ambulatorio_laudo_id ?>/<?= $paciente[0]->paciente_id ?>/<?= $laudo[0]->procedimento_tuss_id ?>');" >
+                                                R. especial</a></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40px;"><div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarexames/<?= $laudo[0]->ambulatorio_laudo_id ?>/<?= $exames_id ?>');" >
+                                                S. exames</a></div>
+                                        <!--                                        impressaolaudo -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40px;"><div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaratestado/<?= $laudo[0]->ambulatorio_laudo_id ?>/<?= $paciente[0]->paciente_id ?>/<?= $laudo[0]->procedimento_tuss_id ?>');" >
+                                                Atestado</a></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40px;"><div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $laudo[0]->ambulatorio_laudo_id ?>');" >
+                                                Arquivos</a></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                     <tr>
                         <td><input type="text" name="paciente" class="input_grande" value="<?= $paciente[0]->nome; ?>" readonly /></td>
@@ -26,12 +63,25 @@
                     <tr>
                         <td><label>Nascimento</label></td>
                         <td><label>Telefone</label></td>
+                        
                     </tr>
                     <tr>
                         <td><input type="text" name="nascimento" class="input_pequeno" value="<?= str_replace('-', '/', date('d-m-Y', strtotime($paciente[0]->nascimento))); ?>" readonly /></td>
                         <td><input type="text" name="celular" class="input_pequeno" value="<?= $paciente[0]->celular; ?>" readonly /></td>
                     </tr>
+                    <tr>
+                        <td width="70px;">
+                            <div class="bt_link_new">
+                                        <a onclick="javascript: return confirm('Deseja realmente executar a ação a seguir?');" href="<?= base_url() ?>ambulatorio/exame/finalizarexame/<?= $exames_id ?>/<?= $sala_id ?> ">
+                                            Finalizar
+                                        </a>
+                            </div>
+                    </tr>
                 </table>
+                
+                <div>
+                            
+                        </div>
 
             </div>
         </fieldset>  
@@ -53,7 +103,7 @@
                         </select> 
                     </td>
                     <td> <input style="width: 100px" type="number" name="txtqtde" min="1" required="true"/> </td>
-                    
+                    <td></td>
                 </tr>
                 <tr>
                     <td> <button type="submit" name="btnEnviar" >Adicionar</button> </td>
@@ -71,7 +121,8 @@
                     <tr>
                         <th class="tabela_header">Produto</th>
                         <th class="tabela_header">Qtde</th>
-                        <!--<th class="tabela_header">Faturado</th>-->
+                        <th class="tabela_header">Unidade</th>
+                        <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">&nbsp;</th>
                     </tr>
                 </thead>
@@ -85,6 +136,8 @@
                         <tr>
                             <td class="<?php echo $estilo_linha;  ?>" width="450px;"><center><? echo $item->descricao;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->quantidade;  ?></center></td>
+                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->unidade;  ?></center></td>
+                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->procedimento;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>" width="100px;">
                                 <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>" class="delete">
                                 </a>
@@ -101,7 +154,7 @@
  ?>
             <tfoot>
                 <tr>
-                    <th class="tabela_footer" colspan="3">
+                    <th class="tabela_footer" colspan="5">
                     </th>
                 </tr>
             </tfoot>

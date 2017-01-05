@@ -590,7 +590,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao adiar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamependente");
+        redirect(base_url() . "ambulatorio/exame/listarexamependente", $data);
     }
 
     function finalizarexame($exames_id, $sala_id) {
@@ -601,7 +601,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+        echo "<script type='text/javascript'>window.close();</script>";
     }
 
     function finalizarexametodos($sala_id, $guia_id, $grupo) {
@@ -612,7 +612,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+        redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
     }
 
     function pendenteexame($exames_id, $sala_id) {
@@ -626,11 +626,14 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
     }
 
-    function gastosdesala($exames_id) {
+    function gastosdesala($exames_id, $sala_id = null) {
+        $data['sala_id'] = $sala_id;
         $data['paciente']  = $this->exame->listarpacientegastos($exames_id);
         $data['produtos']  = $this->exame->listarprodutossalagastos();
         $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
         $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']); 
+        $data['laudo'] = $this->exame->mostrarlaudogastodesala($exames_id); 
+//        echo '<pre>'; var_dump($data['laudo']);
         $data['exames_id'] = $exames_id;
         $this->load->View('ambulatorio/gastosdesala', $data);
     }
@@ -1483,7 +1486,7 @@ class Exame extends BaseController {
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
-
+//        var_dump($horarioagenda);die;
         foreach ($horarioagenda as $item) {
 
             $tempoconsulta = $item->tempoconsulta;
