@@ -480,7 +480,9 @@ class Operador_model extends BaseModel {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
             }
             $this->db->set('usuario', $_POST['txtUsuario']);
-            $this->db->set('senha', md5($_POST['txtSenha']));
+            if ($_POST['txtSenha'] != "") {
+                 $this->db->set('senha', md5($_POST['txtSenha']));
+            }
             if ($_POST['txtPerfil'] != "") {
                 $this->db->set('perfil_id', $_POST['txtPerfil']);
             }
