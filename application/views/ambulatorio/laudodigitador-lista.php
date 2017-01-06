@@ -149,7 +149,7 @@
                                                             <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                 <a href="<?= base_url() ?>ambulatorio/guia/impressaoetiiqueta/<?= $item->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Etiqueta</a></div>
                             </td>
-                                <? if ($operador_id == 1 || $operador_id == 4582){ ?>
+                                <? if ($perfil_id == 1 || $operador_id == 4582){ ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
                                             Cancelar
