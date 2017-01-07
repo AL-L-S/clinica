@@ -359,6 +359,7 @@ class solicitacao_model extends Model {
         $this->db->select('es.estoque_solicitacao_setor_id,
                             es.cliente_id,
                             ec.nome as cliente,
+                            ec.saida,
                             es.data_cadastro,
                             es.faturado,
                             es.situacao');
