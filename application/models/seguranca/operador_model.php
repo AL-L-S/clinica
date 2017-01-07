@@ -37,6 +37,7 @@ class Operador_model extends BaseModel {
     var $_cbo_nome = null;
     var $_cbo_ocupacao_id = null;
     var $_logradouro = null;
+    var $_carimbo = null;
 
     function Operador_model($operador_id = null) {
         parent::Model();
@@ -418,6 +419,7 @@ class Operador_model extends BaseModel {
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['nome']);
             $this->db->set('sexo', $_POST['sexo']);
+            $this->db->set('carimbo', $_POST['carimbo']);
             if ($_POST['nascimento'] != '')
                 $this->db->set('nascimento', substr($_POST['nascimento'], 6, 4) . '-' . substr($_POST['nascimento'], 3, 2) . '-' . substr($_POST['nascimento'], 0, 2));
             else
@@ -674,7 +676,8 @@ class Operador_model extends BaseModel {
                                 o.cep,
                                 o.cbo_ocupacao_id,
                                 m.nome as cidade_nome,
-                                c.descricao as cbo_nome');
+                                c.descricao as cbo_nome,
+                                o.carimbo');
             $this->db->from('tb_operador o');
             $this->db->join('tb_municipio m', 'm.municipio_id = o.municipio_id', 'left');
             $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
@@ -716,6 +719,7 @@ class Operador_model extends BaseModel {
             $this->_csll = $return[0]->csll;
             $this->_iss = $return[0]->iss;
             $this->_valor_base = $return[0]->valor_base;
+            $this->_carimbo = $return[0]->carimbo;
         }
     }
 

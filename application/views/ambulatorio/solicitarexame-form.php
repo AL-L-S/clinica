@@ -53,6 +53,12 @@
                                     <?php } ?>
                                 </select>
 
+                                <label>Carimbo</label>
+                                <input type="checkbox" id="carimbo"  name="carimbo"/>
+
+                                <label>Assinatura</label>
+                                <input type="checkbox" id="assinatura" name="assinatura"/>
+
                             </div>
                             <div>
                                 <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $receituario_id ?>"/>

@@ -50,7 +50,7 @@ class Operador extends BaseController {
         redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
     }
 
-    function excluirassociarempresas($operador_empresa_id , $operador_id) {
+    function excluirassociarempresas($operador_empresa_id, $operador_id) {
         $this->operador_m->excluirassociarempresas($operador_empresa_id);
         redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
     }
@@ -125,6 +125,67 @@ class Operador extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
 //        header("Location: base_url() . seguranca/operador");
         redirect(base_url() . "seguranca/operador", $data);
+    }
+
+    function anexarimagem($operador_id) {
+
+        $this->load->helper('directory');
+        $data['arquivo_pasta'] = directory_map("./upload/1ASSINATURAS/");
+//        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
+        if ($data['arquivo_pasta'] != false) {
+            sort($data['arquivo_pasta']);
+        }
+        $data['operador_id'] = $operador_id;
+        $this->loadView('seguranca/operador_assinatura', $data);
+    }
+
+    function importarimagem() {
+        $this->load->helper('directory');
+        $operador_id = $_POST['operador_id'];
+        $_FILES['userfile']['name'] = $operador_id . ".jpg";
+
+        if (!is_dir("./upload/1ASSINATURAS")) {
+            mkdir("./upload/1ASSINATURAS");
+            $destino = "./upload/1ASSINATURAS";
+            chmod($destino, 0777);
+        }
+
+        $arquivos = directory_map("./upload/1ASSINATURAS/");
+        foreach ($arquivos as $value) {
+            if ($value == $operador_id . ".jpg") {
+                $arquivo_existe = true;
+                break;
+            } else {
+                $arquivo_existe = false;
+            }
+        }
+
+        if (!$arquivo_existe) {
+            //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
+            $config['upload_path'] = "./upload/1ASSINATURAS/";
+            $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar';
+            $config['max_size'] = '0';
+            $config['overwrite'] = FALSE;
+            $config['encrypt_name'] = FALSE;
+            $config['name'] = FALSE;
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) {
+                $error = array('error' => $this->upload->display_errors());
+            } else {
+                $error = null;
+                $data = array('upload_data' => $this->upload->data());
+            }
+            $data['operador_id'] = $operador_id;
+        }
+
+        redirect(base_url() . "seguranca/operador/anexarimagem/ $operador_id");
+    }
+
+    function ecluirimagem($operador_id) {
+
+        unlink("./upload/1ASSINATURAS/$operador_id.jpg");
+        $this->anexarimagem($operador_id);
     }
 
     function operadorconvenio($operador_id) {

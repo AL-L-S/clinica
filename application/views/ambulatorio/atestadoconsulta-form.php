@@ -56,6 +56,12 @@
                             <label>CID</label>
                             <input type="hidden" id="txtcid1ID" class="texto_id" name="cid1ID"  />
                             <input type="text" id="txtcid1" class="texto10" name="txtcid1"  />
+
+                            <label>Carimbo</label>
+                            <input type="checkbox" id="carimbo"  name="carimbo"/>
+
+                            <label>Assinatura</label>
+                            <input type="checkbox" id="assinatura" name="assinatura"/>
                         </div>
                         <div>
                             <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $receituario_id ?>"/>
@@ -106,7 +112,7 @@
                         ?>
                         <tbody>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_cadastro) ); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_cadastro)); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoatestado/<?= $item->ambulatorio_atestado_id; ?>');">Imprimir
