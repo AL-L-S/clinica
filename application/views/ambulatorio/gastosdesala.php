@@ -98,7 +98,7 @@
                         <select name="produto_id" id="produto_id" class="size4" style="width: 250px" required="true">
                             <option value="">SELECIONE</option>
 <? foreach ($produtos as $value) : ?>
-                            <option value="<?= $value->produto_id; ?>" onclick="procedimento_id(<?= $value->procedimento_id; ?>)"><?php echo $value->descricao; ?></option>
+                            <option value="<?= $value->produto_id; ?>" onclick="procedimento_id(<?= $value->procedimento_id; ?>)"><?php echo $value->descricao . " (" ."$value->unidade".")"; ?></option>
 <? endforeach; ?>
                         </select> 
                     </td>

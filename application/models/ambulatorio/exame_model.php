@@ -245,12 +245,13 @@ class exame_model extends Model {
     function listarprodutossalagastos() {
         $operador_id = $this->session->userdata('operador_id');
 
-        $this->db->select('p.estoque_produto_id as produto_id, p.descricao, p.procedimento_id');
+        $this->db->select('p.estoque_produto_id as produto_id, p.descricao, p.procedimento_id, eu.descricao as unidade');
         $this->db->from('tb_estoque_operador_cliente oc');
         $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = oc.cliente_id');
         $this->db->join('tb_estoque_menu em', 'em.estoque_menu_id = ec.menu_id');
         $this->db->join('tb_estoque_menu_produtos emp', 'emp.menu_id = em.estoque_menu_id');
         $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = emp.produto');
+        $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = p.unidade_id');
         $this->db->where('oc.operador_id', $operador_id);
         $this->db->where('oc.ativo', 't');
         $this->db->orderby('p.descricao');
