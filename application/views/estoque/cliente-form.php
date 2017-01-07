@@ -9,13 +9,13 @@
                     <label>Nome Fantasia</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtfantasia" id="txtfantasia" class="texto10" value="<?= @$obj->_fantasia; ?>" />
+                        <input type="text" name="txtfantasia" id="txtfantasia" class="texto10" value="<?= @$obj->_nome; ?>" />
                     </dd>
                     <dt>
                     <label>Raz&atilde;o social</label>
                     </dt>
                     <dd>
-                        <input type="hidden" name="txtestoquefornecedorid" class="texto10" value="<?= @$obj->_estoque_fornecedor_id; ?>" />
+                        <input type="hidden" name="txtestoqueclienteid" class="texto10" value="<?= @$obj->_estoque_cliente_id; ?>" />
                         <input type="text" name="txtrazaosocial" id="txtrazaosocial" class="texto10" value="<?= @$obj->_razao_social; ?>" />
                     </dd>
                     <dt>
@@ -24,8 +24,9 @@
                     <dd>
                         <input type="text" name="txtCNPJ" maxlength="14" alt="cnpj" class="texto03" value="<?= @$obj->_cnpj; ?>" />
                     </dd>
+                    
                     <dt>
-                    <label>Tipo</label>
+                        <label>Tipo</label>
                     </dt>
                     <dd>
                         <select name="txttipo_id" id="txttipo_id" class="size4">
@@ -36,6 +37,7 @@
                                     <? endforeach; ?>
                         </select>
                     </dd>
+                    
                     <dt>
                     <label>Endere&ccedil;o</label>
                     </dt>
@@ -77,7 +79,7 @@
                     </dt>
                     <dd>
                         <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_municipio_id; ?>" readonly="true" />
-                        <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_nome; ?>" />
+                        <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_municipio_nome; ?>" />
                     </dd>
                     
                     <dt>

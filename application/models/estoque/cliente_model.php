@@ -4,6 +4,20 @@ class cliente_model extends Model {
 
     var $_estoque_cliente_id = null;
     var $_nome = null;
+    var $_cnpj = null;
+    var $_cep = null;
+    var $_logradouro = null;
+    var $_numero = null;
+    var $_complemento = null;
+    var $_bairro = null;
+    var $_municipio_id = null;
+    var $_municipio_nome = null;
+    var $_celular = null;
+    var $_telefone = null;
+    var $_razao_social = null;
+    var $_tipo_logradouro_id = null;
+    var $_menu_id = null;
+    var $_sala_id = null;
 
     function Cliente_model($estoque_cliente_id = null) {
         parent::Model();
@@ -155,10 +169,10 @@ class cliente_model extends Model {
             $estoque_cliente_id = $_POST['txtestoqueclienteid'];
             $this->db->set('nome', $_POST['txtfantasia']);
             $this->db->set('menu_id', $_POST['menu']);
-            $this->db->set('telefone', $_POST['txttelefone']);
+            $this->db->set('telefone', $_POST['telefone']);
             $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
-            $this->db->set('cep', $_POST['txttipo_id']);
+//            $this->db->set('cep', $_POST['txttipo_id']);
             $this->db->set('logradouro', $_POST['endereco']);
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
@@ -174,6 +188,9 @@ class cliente_model extends Model {
             }
             if ($_POST['municipio_id'] != '') {
                 $this->db->set('municipio_id', $_POST['municipio_id']);
+            }
+            if ($_POST['txttipo_id'] != '') {
+                $this->db->set('tipo_logradouro_id', $_POST['txttipo_id']);
             }
             
             $horario = date("Y-m-d H:i:s");
@@ -205,20 +222,33 @@ class cliente_model extends Model {
     private function instanciar($estoque_cliente_id) {
 
         if ($estoque_cliente_id != 0) {
-            $this->db->select('estoque_cliente_id, nome, telefone, menu_id');
-            $this->db->from('tb_estoque_cliente');
+            $this->db->select('ec.*, m.nome as municipio_nome, tl.descricao');
+            $this->db->from('tb_estoque_cliente ec');
+            $this->db->join('tb_municipio m', 'm.municipio_id = ec.municipio_id', 'left');
+            $this->db->join('tb_tipo_logradouro tl', 'tl.tipo_logradouro_id = ec.tipo_logradouro_id', 'left');
             $this->db->where("estoque_cliente_id", $estoque_cliente_id);
             $query = $this->db->get();
             $return = $query->result();
             $this->_estoque_cliente_id = $estoque_cliente_id;
             $this->_nome = $return[0]->nome;
             $this->_telefone = $return[0]->telefone;
-            $this->_menu = $return[0]->menu_id;
+            $this->_cnpj = $return[0]->cnpj;
+            $this->_cep = $return[0]->cep;
+            $this->_bairro = $return[0]->bairro;
+            $this->_logradouro = $return[0]->logradouro;
+            $this->_numero = $return[0]->numero;
+            $this->_complemento = $return[0]->complemento;
+            $this->_municipio_id = $return[0]->municipio_id;
+            $this->_municipio_nome = $return[0]->municipio_nome;
+            $this->_tipo_logradouro_id = $return[0]->tipo_logradouro_id;
+            $this->_celular = $return[0]->celular;
+            $this->_razao_social = $return[0]->razao_social;
+            $this->_menu_id = $return[0]->menu_id;
+            $this->_sala_id = $return[0]->sala_id;
         } else {
             $this->_estoque_cliente_id = null;
         }
     }
 
 }
-
 ?>

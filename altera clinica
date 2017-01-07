@@ -62,3 +62,4 @@ ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN saida boolean NOT NULL DEFAULT f
 -- Dia 07/01/2017
 
 ALTER TABLE ponto.tb_estoque_menu_produtos ADD COLUMN valor numeric(10,2);
+ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN tipo_logradouro_id integer;

@@ -15,7 +15,7 @@
             <div>
                 <label>Produtos</label>
                 <select name="produto_id" id="produto_id" class="size4" required>
-                    <option value=""  onclick="carregaValor('0,00')">SELECIONE</option>
+                    <option value=""  onclick="carregaValor('0.00')">SELECIONE</option>
                     <? foreach ($produto as $value) : ?>
                         <option value="<?= $value->estoque_produto_id; ?>"  onclick="carregaValor('<?= $value->valor_venda; ?>')">
                             <?php echo $value->descricao; ?></option>
@@ -121,10 +121,7 @@
 <script type="text/javascript">
 
     function carregaValor(valor){
-//        alert(valor);
         $("#valor").val(valor);
     }
-    
-//     onclick="carregaValor('+j[c].valor_venda+')"
 
 </script>
