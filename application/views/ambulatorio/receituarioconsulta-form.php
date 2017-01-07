@@ -40,14 +40,14 @@
                 <table>
                     <tr>
                         <td>
-                        <div class="bt_link_new" style="width: 200px; margin: 5px">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modeloreceita');" style="width: 250px; margin: 5px">
-                                                        Modelo Receituario</a></div>
+                            <div class="bt_link_new" style="width: 200px; margin: 5px">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modeloreceita');" style="width: 250px; margin: 5px">
+                                    Modelo Receituario</a></div>
                         </td>
                         <td>
-                        <div class="bt_link_new" style="width: 200px; margin: 5px">
-                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modelomedicamento');" style="width: 250px; margin: 5px">
-                                                    Modelo Medicamento</a></div>
+                            <div class="bt_link_new" style="width: 200px; margin: 5px">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modelomedicamento');" style="width: 250px; margin: 5px">
+                                    Modelo Medicamento</a></div>
                         </td>
                     </tr>
                 </table>
@@ -66,6 +66,12 @@
 
                             <label>Medicamento</label>
                             <input type="text" id="medicamento" class="texto02" name="medicamento"/>
+
+                            <label>Carimbo</label>
+                            <input type="checkbox" id="carimbo"  name="carimbo"/>
+
+                            <label>Assinatura</label>
+                            <input type="checkbox" id="assinatura" name="assinatura"/>
 
                         </div>
                         <div>
@@ -119,10 +125,10 @@
                         ?>
                         <tbody>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_cadastro) ); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_cadastro)); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceita/<?=  $item->ambulatorio_receituario_id ; ?>');">Imprimir
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceita/<?= $item->ambulatorio_receituario_id; ?>');">Imprimir
                                         </a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
@@ -161,196 +167,196 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-                                            document.getElementById('titulosenha').style.display = "none";
-                                            document.getElementById('senha').style.display = "none";
+                                    document.getElementById('titulosenha').style.display = "none";
+                                    document.getElementById('senha').style.display = "none";
 
 
-                                            $(document).ready(function () {
-                                                $('#sortable').sortable();
-                                            });
+                                    $(document).ready(function () {
+                                        $('#sortable').sortable();
+                                    });
 
 
-                                            $(document).ready(function () {
-                                                jQuery('#ficha_laudo').validate({
-                                                    rules: {
-                                                        imagem: {
-                                                            required: true
-                                                        }
-                                                    },
-                                                    messages: {
-                                                        imagem: {
-                                                            required: "*"
-                                                        }
-                                                    }
-                                                });
-                                            });
-
-
-
-                                            function muda(obj) {
-                                                if (obj.value != 'DIGITANDO') {
-                                                    document.getElementById('titulosenha').style.display = "block";
-                                                    document.getElementById('senha').style.display = "block";
-                                                } else {
-                                                    document.getElementById('titulosenha').style.display = "none";
-                                                    document.getElementById('senha').style.display = "none";
+                                    $(document).ready(function () {
+                                        jQuery('#ficha_laudo').validate({
+                                            rules: {
+                                                imagem: {
+                                                    required: true
+                                                }
+                                            },
+                                            messages: {
+                                                imagem: {
+                                                    required: "*"
                                                 }
                                             }
+                                        });
+                                    });
 
 
 
-                                            tinyMCE.init({
-                                                // General options
-                                                mode: "textareas",
-                                                theme: "advanced",
-                                                plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                                                // Theme options
-                                                theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                                                theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-                                                theme_advanced_toolbar_location: "top",
-                                                theme_advanced_toolbar_align: "left",
-                                                theme_advanced_statusbar_location: "bottom",
-                                                theme_advanced_resizing: true,
-                                                // Example content CSS (should be your site CSS)
-                                                //                                    content_css : "css/content.css",
-                                                content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                                                // Drop lists for link/image/media/template dialogs
-                                                template_external_list_url: "lists/template_list.js",
-                                                external_link_list_url: "lists/link_list.js",
-                                                external_image_list_url: "lists/image_list.js",
-                                                media_external_list_url: "lists/media_list.js",
-                                                // Style formats
-                                                style_formats: [
-                                                    {title: 'Bold text', inline: 'b'},
-                                                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                                    {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                                    {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                                    {title: 'Table styles'},
-                                                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                                ],
-                                                // Replace values for the template plugin
-                                                template_replace_values: {
-                                                    username: "Some User",
-                                                    staffid: "991234"
-                                                }
+                                    function muda(obj) {
+                                        if (obj.value != 'DIGITANDO') {
+                                            document.getElementById('titulosenha').style.display = "block";
+                                            document.getElementById('senha').style.display = "block";
+                                        } else {
+                                            document.getElementById('titulosenha').style.display = "none";
+                                            document.getElementById('senha').style.display = "none";
+                                        }
+                                    }
 
-                                            });
 
-                                            $(function () {
-                                                $('#exame').change(function () {
-                                                    if ($(this).val()) {
-                                                        //$('#laudo').hide();
-                                                        $('.carregando').show();
-                                                        $.getJSON('<?= base_url() ?>autocomplete/modelosreceita', {exame: $(this).val(), ajax: true}, function (j) {
-                                                            options = "";
 
-                                                            options += j[0].texto;
-                                                            //                                                document.getElementById("laudo").value = options
+                                    tinyMCE.init({
+                                        // General options
+                                        mode: "textareas",
+                                        theme: "advanced",
+                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                        // Theme options
+                                        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                                        theme_advanced_toolbar_location: "top",
+                                        theme_advanced_toolbar_align: "left",
+                                        theme_advanced_statusbar_location: "bottom",
+                                        theme_advanced_resizing: true,
+                                        // Example content CSS (should be your site CSS)
+                                        //                                    content_css : "css/content.css",
+                                        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                        // Drop lists for link/image/media/template dialogs
+                                        template_external_list_url: "lists/template_list.js",
+                                        external_link_list_url: "lists/link_list.js",
+                                        external_image_list_url: "lists/image_list.js",
+                                        media_external_list_url: "lists/media_list.js",
+                                        // Style formats
+                                        style_formats: [
+                                            {title: 'Bold text', inline: 'b'},
+                                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                            {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                            {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                            {title: 'Table styles'},
+                                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                        ],
+                                        // Replace values for the template plugin
+                                        template_replace_values: {
+                                            username: "Some User",
+                                            staffid: "991234"
+                                        }
 
-                                                            $('#laudo').val(options)
-                                                            var ed = tinyMCE.get('laudo');
-                                                            ed.setContent($('#laudo').val());
+                                    });
 
-                                                            //$('#laudo').val(options);
-                                                            //$('#laudo').html(options).show();
-                                                            //                                                $('.carregando').hide();
-                                                            //history.go(0) 
-                                                        });
-                                                    } else {
-                                                        $('#laudo').html('value=""');
-                                                    }
+                                    $(function () {
+                                        $('#exame').change(function () {
+                                            if ($(this).val()) {
+                                                //$('#laudo').hide();
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/modelosreceita', {exame: $(this).val(), ajax: true}, function (j) {
+                                                    options = "";
+
+                                                    options += j[0].texto;
+                                                    //                                                document.getElementById("laudo").value = options
+
+                                                    $('#laudo').val(options)
+                                                    var ed = tinyMCE.get('laudo');
+                                                    ed.setContent($('#laudo').val());
+
+                                                    //$('#laudo').val(options);
+                                                    //$('#laudo').html(options).show();
+                                                    //                                                $('.carregando').hide();
+                                                    //history.go(0) 
                                                 });
-                                            });
+                                            } else {
+                                                $('#laudo').html('value=""');
+                                            }
+                                        });
+                                    });
 
-                                            $(function () {
-                                                $('#linha').change(function () {
-                                                    if ($(this).val()) {
-                                                        //$('#laudo').hide();
-                                                        $('.carregando').show();
-                                                        $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
-                                                            options = "";
+                                    $(function () {
+                                        $('#linha').change(function () {
+                                            if ($(this).val()) {
+                                                //$('#laudo').hide();
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                                    options = "";
 
-                                                            options += j[0].texto;
-                                                            //                                                document.getElementById("laudo").value = $('#laudo').val() + options
-                                                            $('#laudo').val() + options
-                                                            var ed = tinyMCE.get('laudo');
-                                                            ed.setContent($('#laudo').val());
-                                                            //$('#laudo').html(options).show();
-                                                        });
-                                                    } else {
-                                                        $('#laudo').html('value=""');
-                                                    }
+                                                    options += j[0].texto;
+                                                    //                                                document.getElementById("laudo").value = $('#laudo').val() + options
+                                                    $('#laudo').val() + options
+                                                    var ed = tinyMCE.get('laudo');
+                                                    ed.setContent($('#laudo').val());
+                                                    //$('#laudo').html(options).show();
                                                 });
-                                            });
+                                            } else {
+                                                $('#laudo').html('value=""');
+                                            }
+                                        });
+                                    });
 
-                                            $(function () {
-                                                $("#medicamento").autocomplete({
-                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicamentolaudo",
-                                                    minLength: 1,
-                                                    focus: function (event, ui) {
-                                                        $("#medicamento").val(ui.item.label);
-                                                        return false;
-                                                    },
-                                                    select: function (event, ui) {
-                                                        $("#medicamento").val(ui.item.value);
-                                                        tinyMCE.triggerSave(true, true);
-                                                        document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                                                        $('#laudo').val() + ui.item.id
-                                                        var ed = tinyMCE.get('laudo');
-                                                        ed.setContent($('#laudo').val());
-                                                        //$( "#laudo" ).val() + ui.item.id;
-                                                        document.getElementById("medicamento").value = ''
-                                                        return false;
-                                                    }
-                                                });
-                                            });
-                                            
-                                            $(function () {
-                                                $("#linha2").autocomplete({
-                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
-                                                    minLength: 1,
-                                                    focus: function (event, ui) {
-                                                        $("#linha2").val(ui.item.label);
-                                                        return false;
-                                                    },
-                                                    select: function (event, ui) {
-                                                        $("#linha2").val(ui.item.value);
-                                                        tinyMCE.triggerSave(true, true);
-                                                        document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                                                        $('#laudo').val() + ui.item.id
-                                                        var ed = tinyMCE.get('laudo');
-                                                        ed.setContent($('#laudo').val());
-                                                        //$( "#laudo" ).val() + ui.item.id;
-                                                        document.getElementById("linha2").value = ''
-                                                        return false;
-                                                    }
-                                                });
-                                            });
+                                    $(function () {
+                                        $("#medicamento").autocomplete({
+                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicamentolaudo",
+                                            minLength: 1,
+                                            focus: function (event, ui) {
+                                                $("#medicamento").val(ui.item.label);
+                                                return false;
+                                            },
+                                            select: function (event, ui) {
+                                                $("#medicamento").val(ui.item.value);
+                                                tinyMCE.triggerSave(true, true);
+                                                document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                                                $('#laudo').val() + ui.item.id
+                                                var ed = tinyMCE.get('laudo');
+                                                ed.setContent($('#laudo').val());
+                                                //$( "#laudo" ).val() + ui.item.id;
+                                                document.getElementById("medicamento").value = ''
+                                                return false;
+                                            }
+                                        });
+                                    });
 
-                                            $(function (a) {
-                                                $('#anteriores').change(function () {
-                                                    if ($(this).val()) {
-                                                        //$('#laudo').hide();
-                                                        $('.carregando').show();
-                                                        $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
-                                                            option = "";
+                                    $(function () {
+                                        $("#linha2").autocomplete({
+                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
+                                            minLength: 1,
+                                            focus: function (event, ui) {
+                                                $("#linha2").val(ui.item.label);
+                                                return false;
+                                            },
+                                            select: function (event, ui) {
+                                                $("#linha2").val(ui.item.value);
+                                                tinyMCE.triggerSave(true, true);
+                                                document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                                                $('#laudo').val() + ui.item.id
+                                                var ed = tinyMCE.get('laudo');
+                                                ed.setContent($('#laudo').val());
+                                                //$( "#laudo" ).val() + ui.item.id;
+                                                document.getElementById("linha2").value = ''
+                                                return false;
+                                            }
+                                        });
+                                    });
 
-                                                            option = i[0].texto;
-                                                            tinyMCE.triggerSave();
-                                                            document.getElementById("laudo").value = option
-                                                            //$('#laudo').val(options);
-                                                            //$('#laudo').html(options).show();
-                                                            $('.carregando').hide();
-                                                            history.go(0)
-                                                        });
-                                                    } else {
-                                                        $('#laudo').html('value="texto"');
-                                                    }
+                                    $(function (a) {
+                                        $('#anteriores').change(function () {
+                                            if ($(this).val()) {
+                                                //$('#laudo').hide();
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                                    option = "";
+
+                                                    option = i[0].texto;
+                                                    tinyMCE.triggerSave();
+                                                    document.getElementById("laudo").value = option
+                                                    //$('#laudo').val(options);
+                                                    //$('#laudo').html(options).show();
+                                                    $('.carregando').hide();
+                                                    history.go(0)
                                                 });
-                                            });
-                                            //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                                            $('.jqte-test').jqte();
+                                            } else {
+                                                $('#laudo').html('value="texto"');
+                                            }
+                                        });
+                                    });
+                                    //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+                                    $('.jqte-test').jqte();
 
 
 

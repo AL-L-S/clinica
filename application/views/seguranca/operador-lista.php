@@ -23,8 +23,8 @@
                         <th class="tabela_header">Usu&aacute;rio</th>
                         <th class="tabela_header">Perfil</th>
                         <th class="tabela_header">Ativo</th>
-                        <th class="tabela_header" colspan="4" width="140px;"><center>A&ccedil;&otilde;es</center></th>
-                    </tr>
+                        <th class="tabela_header" colspan="5" width="140px;"><center>A&ccedil;&otilde;es</center></th>
+                </tr>
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
@@ -77,6 +77,10 @@
                                         </a>
             <!--                           href="<?= base_url() ?>seguranca/operador/operadorconvenio/<?= $item->operador_id ?>"-->
                                     </td>
+                                    <td class="<?php echo $estilo_linha; ?>">
+                                        <a  onclick="javascript:window.open('<?= base_url() . "seguranca/operador/anexarimagem/$item->operador_id"; ?> ', '_blank');">Assinatura
+                                        </a>
+                                    </td>
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="140px;">
                                     <? } ?>
@@ -96,15 +100,21 @@
                             <div style="display: inline">
                                 <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>
                                 <select style="width: 50px">
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/50');" <? if ($limit == 50) {
-                                echo "selected";
-                            } ?>> 50 </option>
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/100');" <? if ($limit == 100) {
-                                echo "selected";
-                            } ?>> 100 </option>
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/todos');" <? if ($limit == "todos") {
-                                echo "selected";
-                            } ?>> Todos </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/50');" <?
+                                    if ($limit == 50) {
+                                        echo "selected";
+                                    }
+                                    ?>> 50 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/100');" <?
+                                            if ($limit == 100) {
+                                                echo "selected";
+                                            }
+                                    ?>> 100 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/todos');" <?
+                                            if ($limit == "todos") {
+                                                echo "selected";
+                                            }
+                                    ?>> Todos </option>
                                 </select>
                             </div>
                         </th>

@@ -577,7 +577,7 @@ class Laudo extends BaseController {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 10) {//CLINICA MED
-     $filename = "laudo.pdf";
+            $filename = "laudo.pdf";
             $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
             $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
             $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
@@ -992,6 +992,10 @@ class Laudo extends BaseController {
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
 
+        if ($data['laudo'][0]->assinatura == 't') {
+            $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
+        }
+
         if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
             $filename = "laudo.pdf";
             $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/humana.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
@@ -1088,6 +1092,10 @@ class Laudo extends BaseController {
         $teste = $diff->format('%Ya %mm %dd');
 
 
+        if ($data['laudo'][0]->assinatura == 't') {
+            $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
+        }
+
         if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
             $filename = "laudo.pdf";
             $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/humana.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
@@ -1171,13 +1179,17 @@ class Laudo extends BaseController {
         $data['laudo'] = $this->laudo->listaratestadoimpressao($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
-        
+
         $data['atestado'] = true;
         $data['imprimircid'] = $data['laudo']['0']->imprimir_cid;
         $data['co_cid'] = $data['laudo']['0']->cid1;
-        
-        if(isset($data['co_cid'])){
-           $data['cid'] = $this->laudo->listarcid($data['co_cid']); 
+
+        if (isset($data['co_cid'])) {
+            $data['cid'] = $this->laudo->listarcid($data['co_cid']);
+        }
+
+        if ($data['laudo'][0]->assinatura == 't') {
+            $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
         }
 
         $dataFuturo = date("Y-m-d");
@@ -1288,6 +1300,11 @@ class Laudo extends BaseController {
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
+
+        if ($data['laudo'][0]->assinatura == 't') {
+            $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
+        }
+
         $this->load->View('ambulatorio/impressaoreceituarioespecial', $data);
         //        $filename = "laudo.pdf";
         //        $cabecalho = "";
@@ -1652,7 +1669,7 @@ class Laudo extends BaseController {
         redirect(base_url() . "ambulatorio/laudo/faturamentolaudoxml", $data);
     }
 
-     function gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id) {
+    function gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id) {
         $this->load->plugin('mpdf');
 
         $listarexame = $this->laudo->listarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id);
@@ -1812,6 +1829,7 @@ class Laudo extends BaseController {
 //        redirect(base_url() . "ambulatorio/laudo", $data);
         }
     }
+
     function carregarrevisao($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['lista'] = $this->exametemp->listarautocompletemodelos();
