@@ -15,7 +15,7 @@
             <div>
                 <label>Produtos</label>
                 <select name="produto_id" id="produto_id" class="size4" required>
-                    <option value="">SELECIONE</option>
+                    <option value=""  onclick="carregaValor('0,00')">SELECIONE</option>
                     <? foreach ($produto as $value) : ?>
                         <option value="<?= $value->estoque_produto_id; ?>"  onclick="carregaValor('<?= $value->valor_venda; ?>')">
                             <?php echo $value->descricao; ?></option>
@@ -28,7 +28,7 @@
             </div>
             <div>
                 <label>Valor</label>
-                <input type="text" name="valor" id="valor" alt="decimal" class="texto02" required/>
+                <input type="text" name="valor" id="valor" alt="decimal" class="texto02" required readonly/>
             </div>
             <div>
                 <label>&nbsp;</label>

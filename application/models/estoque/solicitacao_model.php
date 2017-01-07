@@ -140,7 +140,7 @@ class solicitacao_model extends Model {
     function listarprodutos($estoque_solicitacao_id) {
         $this->db->select('ep.estoque_produto_id,
                             ep.descricao,
-                            ep.valor_venda');
+                            emp.valor as valor_venda');
         $this->db->from('tb_estoque_produto ep');
         $this->db->join('tb_estoque_menu_produtos emp', 'emp.produto = ep.estoque_produto_id');
         $this->db->join('tb_estoque_menu em', 'em.estoque_menu_id = emp.menu_id');

@@ -57,3 +57,8 @@ CREATE TABLE ponto.tb_estoque_solicitacao_faturamento
 ALTER TABLE ponto.tb_estoque_solicitacao_faturamento ADD COLUMN ativo boolean NOT NULL DEFAULT true;
 
 ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN saida boolean NOT NULL DEFAULT false;
+
+
+-- Dia 07/01/2017
+
+ALTER TABLE ponto.tb_estoque_menu_produtos ADD COLUMN valor numeric(10,2);

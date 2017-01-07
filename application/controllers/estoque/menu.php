@@ -48,6 +48,7 @@ class Menu extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
         }
         else {
+            $_POST['valor'] = str_replace(',', '.', $_POST['valor']);
             $this->menu->gravaritens();        
         }
         redirect(base_url() . "estoque/menu/criarmenu/$estoque_menu_id");

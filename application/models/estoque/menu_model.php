@@ -218,6 +218,7 @@ class menu_model extends Model {
     function gravaritens() {
         try {
             /* inicia o mapeamento no banco */
+            $this->db->set('valor', $_POST['valor']);
             $this->db->set('menu_id', $_POST['txtestoque_menu_id']);
             $this->db->set('produto', $_POST['produto_id']);
             $horario = date("Y-m-d H:i:s");

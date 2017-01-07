@@ -46,9 +46,13 @@
                 <label>Produtos</label>
                 <select name="produto_id" id="produto_id" class="size4">
                     <? foreach ($produto as $value) : ?>
-                    <option value="<?= $value->estoque_produto_id; ?>" onclick="carregaValor('<?= $value->valor_venda; ?>')"><?php echo $value->descricao; ?></option>
+                        <option value="<?= $value->estoque_produto_id; ?>" onclick="carregaValor('<?= $value->valor_venda; ?>')"><?php echo $value->descricao; ?></option>
                     <? endforeach; ?>
                 </select>
+            </div>
+            <div>
+                <label>Valor</label>
+                <input type="text" name="valor" id="valor" alt="decimal" class="texto02" required/>
             </div>
             <dl>
                 <label>&nbsp;</label>
@@ -106,100 +110,102 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-<?php 
-    if ($this->session->flashdata('message') != ''): ?>
-        alert("<? echo $this->session->flashdata('message') ?>");
+<?php if ($this->session->flashdata('message') != ''): ?>
+                            alert("<? echo $this->session->flashdata('message') ?>");
 <? endif; ?>
 
-    $(function () {
-        $('#classe_id').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/estoquesubclasseporclasse', {classe_id: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">SELECIONE -></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].estoque_sub_classe_id + '">' + j[c].descricao + '</option>';
-                    }
-                    $('#subclasse_id').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#subclasse_id').html('<option value="">SELECIONE</option>');
-            }
-        });
-    });
+                        $(function () {
+                            $('#classe_id').change(function () {
+                                if ($(this).val()) {
+                                    $('.carregando').show();
+                                    $.getJSON('<?= base_url() ?>autocomplete/estoquesubclasseporclasse', {classe_id: $(this).val(), ajax: true}, function (j) {
+                                        options = '<option value="">SELECIONE -></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].estoque_sub_classe_id + '">' + j[c].descricao + '</option>';
+                                        }
+                                        $('#subclasse_id').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                } else {
+                                    $('#subclasse_id').html('<option value="">SELECIONE</option>');
+                                }
+                            });
+                        });
 
-    $(function () {
-        $('#tipo_id').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/estoqueclasseportipo', {tipo_id: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">SELECIONE -></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].estoque_classe_id + '">' + j[c].descricao + '</option>';
-                    }
-                    $('#classe_id').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#classe_id').html('<option value="">SELECIONE</option>');
-            }
-        });
-    });
+                        $(function () {
+                            $('#tipo_id').change(function () {
+                                if ($(this).val()) {
+                                    $('.carregando').show();
+                                    $.getJSON('<?= base_url() ?>autocomplete/estoqueclasseportipo', {tipo_id: $(this).val(), ajax: true}, function (j) {
+                                        options = '<option value="">SELECIONE -></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].estoque_classe_id + '">' + j[c].descricao + '</option>';
+                                        }
+                                        $('#classe_id').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                } else {
+                                    $('#classe_id').html('<option value="">SELECIONE</option>');
+                                }
+                            });
+                        });
 
-    $(function () {
-        $('#subclasse_id').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/estoqueprodutosporsubclasse', {subclasse_id: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">SELECIONE -></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].estoque_produto_id + '">' + j[c].descricao + '</option>';
-                    }
-                    $('#produto_id').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#produto_id').html('<option value="">SELECIONE</option>');
-            }
-        });
-    });
-
-
+                        $(function () {
+                            $('#subclasse_id').change(function () {
+                                if ($(this).val()) {
+                                    $('.carregando').show();
+                                    $.getJSON('<?= base_url() ?>autocomplete/estoqueprodutosporsubclasse', {subclasse_id: $(this).val(), ajax: true}, function (j) {
+                                        options = '<option value="">SELECIONE -></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].estoque_produto_id + '" onclick="carregaValor(\''+j[c].valor_venda+'\')">' + j[c].descricao + '</option>';
+                                        }
+                                        $('#produto_id').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                } else {
+                                    $('#produto_id').html('<option value="">SELECIONE</option>');
+                                }
+                            });
+                        });
 
 
-    $(function () {
-        $("#accordion").accordion();
-    });
 
 
-    $(document).ready(function () {
-        jQuery('#form_exametemp').validate({
-            rules: {
-                txtNome: {
-                    required: true,
-                    minlength: 3
-                },
-                nascimento: {
-                    required: true
-                },
-                idade: {
-                    required: true
-                }
-            },
-            messages: {
-                txtNome: {
-                    required: "*",
-                    minlength: "!"
-                },
-                nascimento: {
-                    required: "*"
-                },
-                idade: {
-                    required: "*"
-                }
-            }
-        });
-    });
+                        $(function () {
+                            $("#accordion").accordion();
+                        });
+
+                        function carregaValor(valor) {
+                            $("#valor").val(valor);
+                        }
+
+                        $(document).ready(function () {
+                            jQuery('#form_exametemp').validate({
+                                rules: {
+                                    txtNome: {
+                                        required: true,
+                                        minlength: 3
+                                    },
+                                    nascimento: {
+                                        required: true
+                                    },
+                                    idade: {
+                                        required: true
+                                    }
+                                },
+                                messages: {
+                                    txtNome: {
+                                        required: "*",
+                                        minlength: "!"
+                                    },
+                                    nascimento: {
+                                        required: "*"
+                                    },
+                                    idade: {
+                                        required: "*"
+                                    }
+                                }
+                            });
+                        });
 
 </script>
