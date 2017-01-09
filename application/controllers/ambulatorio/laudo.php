@@ -998,6 +998,10 @@ class Laudo extends BaseController {
             $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
         }
 
+        if ($data['laudo'][0]->assinatura == 't') {
+            $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
+        }
+
         $data['empresa'][0]->impressao_tipo = 1;
         
         if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
