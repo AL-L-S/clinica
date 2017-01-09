@@ -126,24 +126,7 @@ class batepapo extends BaseController {
 //        $mensagens = array_reverse($mensagens);
 
         $tot_linhas = count($mensagens);
-//        if( $tot_linhas<=0 ){
-//            while($tot_linhas <= 0){
-//                if($tot_linhas <= 0){
-//                    
-//                    //vai verificar por 20segundos
-//                    if($tempo_gasto >= 5){
-//                        die(json_encode(array("status" => "vazio", "ultimoid" => 0, "timestamp" => time())));
-//                        exit;
-//                    }
-//                    
-//                    sleep(1);
-//                    $mensagens = $this->batepapo->atualizamensagens($timestamp, $ultimo_id);
-//                    $tot_linhas = count($mensagens);
-//                    $tempo_gasto++;
-//                }
-//            }
-//        } 
-//        echo "<pre>"; echo $operador_id . "<hr>";
+        
         if( $tot_linhas >= 1){
             foreach ($mensagens as $item){
                 
@@ -159,7 +142,8 @@ class batepapo extends BaseController {
                     'mensagem' => utf8_decode($item->mensagem),
                     'janela' => $janela,
                     'id_origem' => $item->operador_origem,
-                    'id_destino' => $item->operador_destino
+                    'id_destino' => $item->operador_destino,
+                    'data_envio' => date("d/m/Y H:i", strtotime($item->data_envio) )
                 );
             }
         }
