@@ -23,6 +23,8 @@ class laudo_model extends Model {
     var $_indicado = null;
     var $_procedimento = null;
     var $_nascimento = null;
+    var $_uf = null;
+    var $_bairro = null;
     var $_logradouro = null;
     var $_numero = null;
     var $_solicitante = null;
@@ -744,6 +746,7 @@ class laudo_model extends Model {
 
         $this->db->select(' ag.ambulatorio_receituario_id,
                             ag.texto,
+                            ag.data_cadastro,
                             ag.medico_parecer1');
         $this->db->from('tb_ambulatorio_receituario ag');
         $this->db->where('ag.laudo_id', $ambulatorio_laudo_id);
@@ -770,6 +773,7 @@ class laudo_model extends Model {
 
         $this->db->select(' ag.ambulatorio_atestado_id,
                             ag.texto,
+                            ag.data_cadastro,
                             ag.medico_parecer1');
         $this->db->from('tb_ambulatorio_atestado ag');
         $this->db->where('ag.laudo_id', $ambulatorio_laudo_id);
@@ -830,6 +834,7 @@ class laudo_model extends Model {
 
         $this->db->select(' ag.ambulatorio_receituario_especial_id ,
                             ag.texto,
+                            ag.data_cadastro,
                             ag.medico_parecer1');
         $this->db->from('tb_ambulatorio_receituario_especial ag');
         $this->db->where('ag.laudo_id', $ambulatorio_laudo_id);
@@ -1324,6 +1329,7 @@ class laudo_model extends Model {
                             ag.situacao,
                             ae.agenda_exames_nome_id,
                             ar.texto,
+                            ar.data_cadastro,
                             p.nascimento,
                             ag.situacao_revisor,
                             o.nome as medico,
@@ -1342,7 +1348,10 @@ class laudo_model extends Model {
                             ag.imagens,
                             c.nome as convenio,
                             pc.convenio_id,
-                            p.nome as paciente');
+                            p.nome as paciente,
+                            ar.assinatura,
+                            ar.carimbo,
+                            o.carimbo as medico_carimbo');
         $this->db->from('tb_ambulatorio_receituario ar');
         $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
@@ -1385,7 +1394,10 @@ class laudo_model extends Model {
                             ag.imagens,
                             c.nome as convenio,
                             pc.convenio_id,
-                            p.nome as paciente');
+                            p.nome as paciente,
+                            ar.assinatura,
+                            ar.carimbo,
+                            o.carimbo as medico_carimbo');
         $this->db->from('tb_ambulatorio_exame ar');
         $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
@@ -1411,6 +1423,9 @@ class laudo_model extends Model {
                             ag.situacao,
                             ae.agenda_exames_nome_id,
                             ar.texto,
+                            ar.data,
+                            ar.imprimir_cid,
+                            ar.cid1,
                             p.nascimento,
                             ag.situacao_revisor,
                             o.nome as medico,
@@ -1429,7 +1444,10 @@ class laudo_model extends Model {
                             ag.imagens,
                             c.nome as convenio,
                             pc.convenio_id,
-                            p.nome as paciente');
+                            p.nome as paciente,
+                            ar.assinatura,
+                            ar.carimbo,
+                            o.carimbo as medico_carimbo');
         $this->db->from('tb_ambulatorio_atestado ar');
         $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
@@ -1446,6 +1464,14 @@ class laudo_model extends Model {
         return $return->result();
     }
 
+    function listarcid($param) {
+        $this->db->select('*');
+        $this->db->from('tb_cid');
+        $this->db->where("co_cid", $param);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarreceitaespecialimpressao($ambulatorio_laudo_id) {
 
         $this->db->select('ag.ambulatorio_laudo_id,
@@ -1455,10 +1481,13 @@ class laudo_model extends Model {
                             ag.situacao,
                             ae.agenda_exames_nome_id,
                             ar.texto,
+                            p.bairro,
                             p.nascimento,
                             p.nome as paciente,
                             p.logradouro,
                             p.numero,
+                            mp.nome as cidade,
+                            mp.estado as estado,
                             p.rg,
                             p.uf_rg,
                             ag.situacao_revisor,
@@ -1474,15 +1503,19 @@ class laudo_model extends Model {
                             ae.agenda_exames_id,
                             ag.imagens,
                             ar.data_cadastro,
-                            m.nome as cidade,
-                            m.estado,
+                            m.nome as cidaempresa,
+                            m.estado as estadoempresa,
+                            ep.bairro as bairroemp,
                             ep.logradouro as endempresa,
                             ep.numero as numeroempresa,
                             ep.telefone as telempresa,
                             ep.celular as celularempresa,
                             tl.descricao as tipologradouro,
                             c.nome as convenio,
-                            pc.convenio_id,');
+                            pc.convenio_id,
+                            ar.assinatura,
+                            ar.carimbo,
+                            o.carimbo as medico_carimbo');
         $this->db->from('tb_ambulatorio_receituario_especial ar');
         $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
@@ -1495,6 +1528,7 @@ class laudo_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_empresa ep', 'ep.empresa_id = ae.empresa_id', 'left');
         $this->db->join('tb_municipio m', 'm.municipio_id = ep.municipio_id', 'left');
+        $this->db->join('tb_municipio mp', 'mp.municipio_id = p.municipio_id', 'left');
         $this->db->where("ar.ambulatorio_receituario_especial_id", $ambulatorio_laudo_id);
         $return = $this->db->get();
         return $return->result();
@@ -1586,11 +1620,11 @@ class laudo_model extends Model {
         return $return->result();
     }
 
-    function listarlaudosintegracao($ambulatorio_laudo_id) {
+    function listarlaudosintegracao($agenda_exames_id) {
 
         $this->db->select('exame_id');
         $this->db->from('tb_integracao_laudo');
-        $this->db->where('exame_id', $ambulatorio_laudo_id);
+        $this->db->where('exame_id', $agenda_exames_id);
         $this->db->where('laudo_status', 'PUBLICADO');
         $return = $this->db->get();
         return $return->result();
@@ -1603,6 +1637,7 @@ class laudo_model extends Model {
                             il.exame_id,
                             il.laudo_texto,
                             il.laudo_data_hora,
+                            al.ambulatorio_laudo_id,
                             il.laudo_status,
                             al.ambulatorio_laudo_id,
                             o.operador_id as medico,
@@ -1624,7 +1659,6 @@ class laudo_model extends Model {
             $ambulatorio_laudo_id = $value->ambulatorio_laudo_id;
             $medico = $value->medico;
             $revisor = $value->revisor;
-            $laudo_status = $value->laudo_status;
             $this->db->set('texto', $laudo_texto);
             $this->db->set('situacao', 'FINALIZADO');
             $this->db->set('medico_parecer1', $medico);
@@ -2299,6 +2333,12 @@ class laudo_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('texto', $_POST['laudo']);
+            if ($_POST['carimbo'] == "on") {
+                $this->db->set('carimbo', 't');
+            }
+            if ($_POST['assinatura'] == "on") {
+                $this->db->set('assinatura', 't');
+            }
 //            $this->db->set('paciente_id', $_POST['paciente_id']);
 //            $this->db->set('procedimento_tuss_id', $_POST['procedimento_tuss_id']);
             $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
@@ -2319,16 +2359,33 @@ class laudo_model extends Model {
 
     function gravaratestado() {
         try {
+//            var_dump($_POST['cid1ID']);
+//            die;
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('texto', $_POST['laudo']);
+            if ($_POST['carimbo'] == "on") {
+                $this->db->set('carimbo', 't');
+            }
+            if ($_POST['assinatura'] == "on") {
+                $this->db->set('assinatura', 't');
+            }
 //            $this->db->set('paciente_id', $_POST['paciente_id']);
 //            $this->db->set('procedimento_tuss_id', $_POST['procedimento_tuss_id']);
             $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
             $this->db->set('medico_parecer1', $_POST['medico']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $_POST['medico']);
+            if ($_POST['data'] != "") {
+                $this->db->set('data', $_POST['data']);
+            }
+            if ($_POST['cid1ID'] != "") {
+                $this->db->set('cid1', $_POST['cid1ID']);
+            }
+            if ($_POST['imprimircid'] == "on") {
+                $this->db->set('imprimir_cid', 't');
+            }
             $this->db->set('tipo', 'NORMAL');
 
             $this->db->insert('tb_ambulatorio_atestado');
@@ -2347,6 +2404,13 @@ class laudo_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('texto', $_POST['laudo']);
+
+            if ($_POST['carimbo'] == "on") {
+                $this->db->set('carimbo', 't');
+            }
+            if ($_POST['assinatura'] == "on") {
+                $this->db->set('assinatura', 't');
+            }
 //            $this->db->set('paciente_id', $_POST['paciente_id']);
 //            $this->db->set('procedimento_tuss_id', $_POST['procedimento_tuss_id']);
             $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
@@ -2373,6 +2437,12 @@ class laudo_model extends Model {
             $this->db->set('texto', $_POST['laudo']);
 //            $this->db->set('paciente_id', $_POST['paciente_id']);
 //            $this->db->set('procedimento_tuss_id', $_POST['procedimento_tuss_id']);
+            if ($_POST['carimbo'] == "on") {
+                $this->db->set('carimbo', 't');
+            }
+            if ($_POST['assinatura'] == "on") {
+                $this->db->set('assinatura', 't');
+            }
             $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
             $this->db->set('medico_parecer1', $_POST['medico']);
             $this->db->set('data_cadastro', $horario);
@@ -2791,12 +2861,15 @@ class laudo_model extends Model {
                             p.paciente_id,
                             p.logradouro,
                             p.numero,
+                            p.bairro,
+                            m.estado as uf,
                             age.guia_id,
                             co.nome as convenio,
                             ag.situacao as situacaolaudo,
                             p.nome as paciente');
             $this->db->from('tb_ambulatorio_laudo ag');
             $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+            $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
             $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
             $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
             $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.sala_id', 'left');
@@ -2816,6 +2889,8 @@ class laudo_model extends Model {
             $this->_paciente_id = $return[0]->paciente_id;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;
+            $this->_bairro = $return[0]->bairro;
+            $this->_uf = $return[0]->uf;
             $this->_texto = $return[0]->texto;
             $this->_medico_parecer1 = $return[0]->medico_parecer1;
             $this->_medico_parecer2 = $return[0]->medico_parecer2;

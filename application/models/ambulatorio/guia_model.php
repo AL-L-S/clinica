@@ -5997,6 +5997,14 @@ ORDER BY ae.agenda_exames_id)";
                 $grupo = 'MR';
             }
 
+            if ($grupo == 'TOMOGRAFIA') {
+                $grupo = 'CT';
+            }
+            if ($grupo == 'DENSITOMETRIA') {
+                $grupo = 'DX';
+            }
+
+
             $this->db->set('wkl_aetitle', "AETITLE");
             $this->db->set('wkl_procstep_startdate', str_replace("-", "", date("Y-m-d")));
             $this->db->set('wkl_procstep_starttime', str_replace(":", "", date("H:i:s")));
@@ -6301,7 +6309,7 @@ ORDER BY ae.agenda_exames_id)";
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('quantidade', '1');
-                $this->db->set('tipo', 'FISIOTERAPIA');
+                $this->db->set('tipo', 'ESPECIALIDADE');
                 $this->db->set('ativo', 'f');
                 $this->db->set('situacao', 'OK');
                 $this->db->set('guia_id', $ambulatorio_guia_id);
@@ -6500,7 +6508,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('guia_id', $_POST['guia_id']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->set('tipo', 'EXAME');
+            
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             $this->db->set('medico_solicitante', $_POST['medico']);
             $this->db->set('data_editar', $horario);

@@ -83,7 +83,7 @@
                                     endif;
                                     ?>>
                                     
-                                    <?php echo $value->nome; ?>
+                                    <?php echo $value->nome . ' - CRM: '. $value->conselho; ?>
                                 
                                     
                                 </option>
@@ -106,7 +106,9 @@
                             <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
                                 <option value="LIVRE">VAGO</option>
+                                <option value="CANCELADO">BLOQUEADO</option>
                                 <option value="OK">OCUPADO</option>
+                                <option value="FALTOU">FALTOU</option>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -377,12 +379,12 @@
                             if ($item->bloqueado == 'f') {
                                 ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
+                                        <a title="<?=  $item->operador_desbloqueio?>" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
                                         </a></div>
                                 </td>
             <? } else { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
+                                        <a title="<?= $item->operador_bloqueio?>"  onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
                                         </a></div>
                                 </td>
                                 <?

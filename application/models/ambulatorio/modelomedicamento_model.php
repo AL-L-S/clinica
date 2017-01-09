@@ -86,6 +86,11 @@ class modelomedicamento_model extends Model {
         $this->db->set('data_cadastro', $horario);
         $this->db->set('operador_cadastro', $operador_id);
         $this->db->insert('tb_ambulatorio_receituario_medicamento');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
     }
 
     function gravarunidade() {

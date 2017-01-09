@@ -312,6 +312,12 @@ class Exame extends BaseController {
     }
 
     function examesala($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
+//        echo '<pre>';
+//        var_dump($paciente_id);
+//        var_dump($procedimento_tuss_id);
+//        var_dump($guia_id);
+//        var_dump($agenda_exames_id);
+//        die;
         $data['salas'] = $this->exame->listarsalas();
         $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
         $data['agenda_exames_nome_id'] = $this->exame->listarsalaagenda($agenda_exames_id);
@@ -419,6 +425,7 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
+//        var_dump($total); die;
         if ($total == 0) {
             $laudo_id = $this->exame->gravarexame();
             if ($laudo_id == "-1") {
@@ -583,7 +590,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao adiar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamependente");
+        redirect(base_url() . "ambulatorio/exame/listarexamependente", $data);
     }
 
     function finalizarexame($exames_id, $sala_id) {
@@ -594,7 +601,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+        echo "<script type='text/javascript'>window.close();</script>";
     }
 
     function finalizarexametodos($sala_id, $guia_id, $grupo) {
@@ -605,7 +612,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+        redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
     }
 
     function pendenteexame($exames_id, $sala_id) {
@@ -617,6 +624,39 @@ class Exame extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+    }
+
+    function gastosdesala($exames_id, $sala_id = null) {
+        $data['sala_id'] = $sala_id;
+        $data['paciente']  = $this->exame->listarpacientegastos($exames_id);
+        $data['produtos']  = $this->exame->listarprodutossalagastos();
+        $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
+        $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']); 
+        $data['laudo'] = $this->exame->mostrarlaudogastodesala($exames_id); 
+//        echo '<pre>'; var_dump($data['laudo']);
+        $data['exames_id'] = $exames_id;
+        $this->load->View('ambulatorio/gastosdesala', $data);
+    }
+    
+    function gravargastodesala() {
+        $exame_id  = $_POST['exame_id'];
+        $this->exame->gravargastodesala();
+        if( isset($_POST['faturar']) ){
+            $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id']);
+            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+            $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
+            $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
+            
+            $this->exame->faturargastodesala($data['procedimento'][0]);
+        }
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
+//        $this->gastosdesala($exame_id);
+    }
+    
+    function excluirgastodesala($gasto_id, $exame_id) {
+        $this->exame->excluirgastodesala($gasto_id);
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
+//        $this->gastosdesala($exame_id);
     }
 
     function anexarimagem($exame_id, $sala_id) {
@@ -1446,7 +1486,7 @@ class Exame extends BaseController {
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
-
+//        var_dump($horarioagenda);die;
         foreach ($horarioagenda as $item) {
 
             $tempoconsulta = $item->tempoconsulta;

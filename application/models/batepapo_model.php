@@ -21,11 +21,26 @@ class batepapo_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+
+    function listarusuariosabrircontato() {
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->select('DISTINCT(operador_origem) as operador_origem,
+                           cm.operador_destino,
+                           o.usuario');
+        $this->db->from('tb_chat_mensagens cm');
+        $this->db->where('cm.ativo', 't');
+        $this->db->where('cm.visualizada', 'f');
+        $this->db->where('cm.operador_destino', $operador_id);
+        $this->db->join('tb_operador o', 'o.operador_id = cm.operador_origem', 'left');
+        $return = $this->db->get();
+        return $return->result();
+    }
     
     function totalmensagensnaolidas() {
         $operador_id = $this->session->userdata('operador_id');
 
-        $this->db->select('chat_mensagens_id');
+        $this->db->select('*');
         $this->db->from('tb_chat_mensagens');
         $this->db->where('ativo', 't');
         $this->db->where('operador_destino', $operador_id);

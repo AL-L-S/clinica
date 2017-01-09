@@ -65,7 +65,7 @@
                                     endif;
                                     ?>>
                                     
-                                    <?php echo $value->nome; ?>
+                                    <?php echo $value->nome . ' - CRM: '. $value->conselho; ?>
                                 
                                     
                                 </option>
@@ -77,7 +77,9 @@
                             <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
                                 <option value="LIVRE">VAGO</option>
+                                <option value="CANCELADO">BLOQUEADO</option>
                                 <option value="OK">OCUPADO</option>
+                                <option value="FALTOU">FALTOU</option>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -242,9 +244,9 @@
                                 <? } ?>                                
 
                                 <? if ($item->convenio != '') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . ' - ' .$item->procedimento;  ?></td>
                                 <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' .$item->procedimento; ?></td>
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\

@@ -36,18 +36,19 @@ class centrocirurgico_model extends BaseModel {
     }
 
     function listarsolicitacoes($args = array()) {
+
         $this->db->select(' p.paciente_id,
                             p.nome,
-                            sc.procedimento_id,
                             sc.solicitacao_cirurgia_id,
-                            ');
+                            sc.data_prevista,
+                            c.nome as convenio,
+                            c.convenio_id');
         $this->db->from('tb_solicitacao_cirurgia sc');
-        $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id');
-        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id ');
-//        $this->db->join('tb_procedimento pr','pr.procedimento_id = sc.procedimento_id ');
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
         $this->db->where('sc.autorizado', 'f');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');
+        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio' , 'left');
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
@@ -62,7 +63,7 @@ class centrocirurgico_model extends BaseModel {
                             p.nome,
                             sc.procedimento_id,
                             sc.solicitacao_cirurgia_id,
-                            pr.descricao_resumida,
+                            pt.descricao,
                             sc.data_prevista');
         $this->db->from('tb_solicitacao_cirurgia sc');
         $this->db->where('sc.ativo', 't');
@@ -71,40 +72,28 @@ class centrocirurgico_model extends BaseModel {
         $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id');
         $this->db->where('i.ativo', 't');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id ');
-        $this->db->join('tb_procedimento pr', 'pr.procedimento_id = sc.procedimento_id ');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = sc.procedimento_id ');
+        $this->db->where('pc.ativo', 't');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id ');
+        $this->db->where('pt.ativo', 't');
 
         if ($args) {
             if (isset($args['txtdata_cirurgia']) && strlen($args['txtdata_cirurgia']) > 0) {
                 $pesquisa = $args['txtdata_cirurgia'];
                 $pesquisa1 = $pesquisa . ' 00:00:00';
                 $pesquisa2 = $pesquisa . ' 23:59:59';
-                $this->db->where("sc.data_prevista >=",  "$pesquisa1");
-                $this->db->where("sc.data_prevista <=",  "$pesquisa2");
-//                $pesquisa[0] = intval(substr($args['txtdata_cirurgia'], 0, 2));
-//                $pesquisa[1] = intval(substr($args['txtdata_cirurgia'], 3, 2));
-//                $pesquisa[2] = intval(substr($args['txtdata_cirurgia'], 6, 4));
-//                        
-//                $this->db->where("EXTRACT( Day from sc.data_prevista) = $pesquisa[0]");
-//                $this->db->where("EXTRACT( Month from sc.data_prevista) = $pesquisa[1]");
-//                $this->db->where("EXTRACT( Year from sc.data_prevista) = $pesquisa[2]");
+                $this->db->where("sc.data_prevista >=", "$pesquisa1");
+                $this->db->where("sc.data_prevista <=", "$pesquisa2");
                 if ($args['nome'] != null) {
                     $this->db->where('nome ilike', "%" . $args['nome'] . "%");
                 }
+            } else if ($args['nome'] != null) {
+                $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
-            else if ($args['nome'] != null) {
-                    $this->db->where('nome ilike', "%" . $args['nome'] . "%");
-                }
         } else {
             $hoje = date('Y-m-d');
             $hoje = $hoje . ' 00:00:00';
-            $this->db->where("sc.data_prevista >=",  "$hoje");
-
-//            $dia_atual = date("d");
-//            $mes_atual = date("m");
-//            $ano_atual = date("Y");
-//            $this->db->where("EXTRACT(Day from sc.data_prevista) >= $dia_atual");
-//            $this->db->where("EXTRACT(Month from sc.data_prevista) >= $mes_atual ");
-//            $this->db->where("EXTRACT(Year from sc.data_prevista) >= $ano_atual ");
+            $this->db->where("sc.data_prevista >=", "$hoje");
         }
 
         return $this->db;
@@ -140,9 +129,9 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
-    function autorizarcirurgia( ) {
+    function autorizarcirurgia() {
         $horario = date("Y-m-d H:i:s");
-
+        
         $this->db->set('data_prevista', $_POST['dataprevista']);
         $this->db->set('medico_agendado', $_POST['medicoagendadoid']);
         $this->db->set('data_autorizacao', $horario);
@@ -150,6 +139,20 @@ class centrocirurgico_model extends BaseModel {
         $this->db->set('autorizado', 't');
         $this->db->where('solicitacao_cirurgia_id', $_POST['idsolicitacaocirurgia']);
         $this->db->update('tb_solicitacao_cirurgia');
+    }
+
+    function listarmedicocirurgiaautocomplete($parametro = null) {
+        $this->db->select('operador_id,
+                           nome');
+        $this->db->from('tb_operador');
+        $this->db->where('consulta', 'true');
+        $this->db->where('ativo', 'true');
+//        $this->db->orderby('nome');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function gravarcentrocirurgico() {
