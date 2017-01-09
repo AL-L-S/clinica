@@ -52,7 +52,7 @@ class batepapo extends BaseController {
     function historicomensagens() {        
         $operador_id = $this->session->userdata('operador_id');
         $historico = $this->batepapo->historicomensagens();
-//        die(json_encode("oi"));
+//        echo '<pre>';
         $this->batepapo->atualizamensagensvisualizadas($_GET["operador_destino"]);
         
         foreach ($historico as $item){
@@ -68,9 +68,12 @@ class batepapo extends BaseController {
                 'mensagem' => utf8_decode($item->mensagem),
                 'janela' => $janela,
                 'id_origem' => $item->operador_origem,
-                'id_destino' => $item->operador_destino
+                'id_destino' => $item->operador_destino,
+                'data_envio' => date("d/m/Y H:i", strtotime($item->data_envio) )
             );
         }
+//        var_dump($mensagens);die;
+
         
         die(json_encode($mensagens));
     }

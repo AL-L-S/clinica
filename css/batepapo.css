@@ -163,6 +163,15 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
 
 }
 
+.mensagens_chat ul li .data_envio{
+    font-size: 10px;
+    color: #6C7A89;
+    float: right;
+    margin: -2px;
+    margin-bottom: -7px;
+    font-weight: bold;
+}
+
 .mensagens_chat ul li p{font: 13px tahoma, arial; color: #444; width: 75%; }
 
 .janela_chat .corpo_janela_chat .enviar_mensagens_chat{
