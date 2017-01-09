@@ -91,7 +91,7 @@ class batepapo_model extends BaseModel {
         $sql .= "FROM ponto.tb_chat_mensagens WHERE (ativo = 't') AND ";
         $sql .= "((operador_origem = " . $_GET['operador_origem'] . " AND operador_destino = " . $_GET['operador_destino'] . ") OR ";
         $sql .= "(operador_origem = " . $_GET['operador_destino'] . " AND operador_destino = " . $_GET['operador_origem'] . ")) ";
-        $sql .= " ORDER BY chat_mensagens_id";
+        $sql .= " ORDER BY data_envio";
 
         $return = $this->db->query($sql);
         return $return->result();

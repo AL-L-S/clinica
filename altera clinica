@@ -1287,3 +1287,9 @@ ALTER TABLE ponto.tb_ambulatorio_exame ADD COLUMN assinatura boolean;
 ALTER TABLE ponto.tb_ambulatorio_exame ALTER COLUMN assinatura SET DEFAULT false;
 
 ALTER TABLE ponto.tb_operador ADD COLUMN carimbo character varying;
+
+
+
+-- Dia 09/01/2017
+
+ALTER TABLE ponto.tb_ambulatorio_gasto_sala ADD COLUMN descricao text;
