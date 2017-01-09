@@ -312,7 +312,20 @@ class Operador_model extends BaseModel {
         $return = $this->db->get('tb_cbo');
         return $return->result();
     }
-
+    
+    function medicoreceituario($operador_id) {
+        $this->db->select('o.nome,
+                            o.operador_id,
+                            c.descricao as ocupacao,
+                            o.conselho
+                            ');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+        $this->db->where('o.operador_id', $operador_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarempresas() {
         $this->db->select('empresa_id,
                             nome');

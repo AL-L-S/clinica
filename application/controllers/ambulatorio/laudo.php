@@ -982,6 +982,8 @@ class Laudo extends BaseController {
 
         $this->load->plugin('mpdf');
         $data['laudo'] = $this->laudo->listarreceitaimpressao($ambulatorio_laudo_id);
+        $data['medico'] = $this->operador_m->medicoreceituario($data['laudo'][0]->medico_parecer1);
+//        var_dump($data['medico']); die;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
         $data['receituario'] = true;
@@ -1177,6 +1179,7 @@ class Laudo extends BaseController {
 
         $this->load->plugin('mpdf');
         $data['laudo'] = $this->laudo->listaratestadoimpressao($ambulatorio_laudo_id);
+        $data['medico'] = $this->operador_m->medicoreceituario($data['laudo'][0]->medico_parecer1);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
 

@@ -1,4 +1,4 @@
-<? // var_dump($atestado, $co_cid)     ?>
+<? // var_dump($atestado, $co_cid)       ?>
 <link href="<?= base_url() ?>css/style_p.css" rel="stylesheet" type="text/css" />
 <meta charset="utf8"/>
 
@@ -8,7 +8,7 @@
 <? } ?>
 <br>
 <? //if (isset($atestado) && !$atestado) { ?>
-   <!--<p style="text-align: left;">Paciente: <? // echo $laudo['0']->paciente;      ?></p>-->
+   <!--<p style="text-align: left;">Paciente: <? // echo $laudo['0']->paciente;        ?></p>-->
 <? //} ?>
 
 <?= $laudo['0']->texto; ?><br/>
@@ -30,31 +30,49 @@
     }
 }
 //else {
-    if (isset($operador_assinatura)) {
-        $this->load->helper('directory');
-        $arquivo_pasta = directory_map("./upload/1ASSINATURAS/");
-        foreach ($arquivo_pasta as $value) {
-            if ($value == $operador_assinatura . ".jpg") {
-                ?>
+if (isset($operador_assinatura)) {
+    $this->load->helper('directory');
+    $arquivo_pasta = directory_map("./upload/1ASSINATURAS/");
+    foreach ($arquivo_pasta as $value) {
+        if ($value == $operador_assinatura . ".jpg") {
+            ?>
+            <table>
                 <tr>
                     <td><img width="200px;" height="50px;" src="<?= base_url() . "upload/1ASSINATURAS/$value" ?>" /></td>
                 </tr>
-                <?
-            }
+            </table>
+            <?
         }
+    }
 //        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/1ASSINATURAS/");
 //        
-//        var_dump($value);
-    }
-    if ($laudo[0]->carimbo == 't') {
-        ?>
+}
+//        var_dump($medico);die;
+if ($laudo[0]->carimbo == 't') {
+    ?>
+    <table>
         <tr>
             <td><?= $laudo[0]->medico_carimbo ?></td>
+            
         </tr>
+        
+    </table>
     <?
-    }
+}
 //}
 ?>
+        <table>
+        
+        <tr>
+            <td><? echo $medico[0]->nome; ?></td>
+        </tr>
+        <tr>
+            <td>CRM: <?= $medico[0]->conselho ?></td>
+        </tr>
+        <tr>
+            <td>ESPECIALIDADE: <?= $medico[0]->ocupacao ?></td>
+        </tr>
+    </table>
 
              <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  width="130px" height="80px" src="<?= base_url() . "upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".bmp" ?>">-->
 
