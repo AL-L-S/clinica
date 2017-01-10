@@ -17,7 +17,7 @@
                         <label>Data*</label>
                     </dt>
                     <dd>
-                        <input type="text" name="inicio" id="inicio" class="texto04" value="<?= @$obj->_data; ?>" required=""/>
+                        <input type="text" name="inicio" id="inicio" class="texto04" alt="date" value="<?= @$obj->_data; ?>" required=""/>
                     </dd>
                     <dt>
                         <label>Receber de:</label>
@@ -33,7 +33,7 @@
                                             <select name="tipo" id="tipo" class="size4">
                                                 <option value="">Selecione</option>
                     <? foreach ($tipo as $value) : ?>
-                                                                    <option value="<?= $value->descricao; ?>"<?
+                                                                        <option value="<?= $value->descricao; ?>"<?
                         if (@$obj->_tipo == $value->descricao):echo'selected';
                         endif;
                         ?>><?php echo $value->descricao; ?></option>
@@ -117,6 +117,9 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
+<?php if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
 
     $(function () {
         $('#tipo').change(function () {

@@ -109,8 +109,8 @@ class Contasreceber extends BaseController {
     }
 
     function gerarelatoriocontasreceber() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
@@ -219,8 +219,13 @@ class Contasreceber extends BaseController {
         $dia = str_replace("/", "-", $_POST['inicio']);
         $parcela = 1;
         if ($_POST['financeiro_contasreceber_id'] == '') {
+            if ($_POST['devedor'] == '') {
+                $mensagem = 'É necessário selecionar o item no campo Receber de: ';
+                $this->session->set_flashdata('message', $mensagem);
+                redirect(base_url() . "cadastros/contasreceber/carregar/0");
+            }
             if ($repetir == '' || $repetir == 1) {
-                
+
                 $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
             } elseif ($repetir >= 2) {
                 $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
