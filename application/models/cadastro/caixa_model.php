@@ -70,7 +70,7 @@ class caixa_model extends Model {
         $this->db->from('tb_saidas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+//        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('s.nome', $args['empresa']);

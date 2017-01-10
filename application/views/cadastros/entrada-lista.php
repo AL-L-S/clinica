@@ -145,7 +145,7 @@
 
 
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>cadastros/caixa/excluirentrada/<?= $item->entradas_id ?>">Excluir</a></div>
+                                        <a onclick="javascript: return confirm('Deseja realmente excluir a entrada?');" href="<?= base_url() ?>cadastros/caixa/excluirentrada/<?= $item->entradas_id ?>">Excluir</a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/caixa/anexarimagementrada/<?= $item->entradas_id ?>">Arquivos</a></div>
