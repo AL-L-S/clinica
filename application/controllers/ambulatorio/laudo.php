@@ -998,6 +998,12 @@ class Laudo extends BaseController {
             $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
         }
 
+        if ($data['laudo'][0]->assinatura == 't') {
+            $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
+        }
+
+        $data['empresa'][0]->impressao_tipo = 1;
+        
         if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
             $filename = "laudo.pdf";
             $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/humana.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";

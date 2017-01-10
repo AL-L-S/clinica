@@ -1,4 +1,3 @@
-<? // var_dump($atestado, $co_cid)       ?>
 <link href="<?= base_url() ?>css/style_p.css" rel="stylesheet" type="text/css" />
 <meta charset="utf8"/>
 
@@ -30,6 +29,7 @@
     }
 }
 //else {
+//var_dump($operador_assinatura);die;
 if (isset($operador_assinatura)) {
     $this->load->helper('directory');
     $arquivo_pasta = directory_map("./upload/1ASSINATURAS/");

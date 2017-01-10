@@ -185,7 +185,7 @@ function debug($object) {
                     //adiciona a janela criada na lista de janelas abertas
                     chatsAbertos.push(operadorDestino);
                     //retorna o historico de mensagens e faz a pagina se atualizar novamente
-                    verifica(0, 0,<? echo $operador_id ?>);
+//                    verifica(0, 0,<?// echo $operador_id ?>);
                 }
             }
 
@@ -202,9 +202,9 @@ function debug($object) {
                             if (jQuery('#janela_' + msg.janela).length > 0) {
 
                                 if (operadorOrigem == msg.id_origem) {
-                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
+                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p><div class='data_envio'>"+msg.data_envio+"</div></li>");
                                 } else {
-                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
+                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p><div class='data_envio'>"+msg.data_envio+"</div></li>");
                                 }
                             }
                         });
@@ -819,9 +819,9 @@ function debug($object) {
                                         if (jQuery("#janela_" + msg.janela + " .mensagens_chat ul li#" + msg.chat_id).length == 0 && msg.janela > 0) {
 
                                             if (operadorOrigem == msg.id_origem) {
-                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p></li>");
+                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p> <div class='data_envio'>"+msg.data_envio+"</div></li>");
                                             } else {
-                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><div class='imgPerfil'></div><p>" + msg.mensagem + "</p></li>");
+                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><div class='imgPerfil'></div><p>" + msg.mensagem + "</p> <div class='data_envio'>"+msg.data_envio+"</div></li>");
                                             }
                                         }
                                         
