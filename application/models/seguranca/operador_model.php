@@ -491,6 +491,10 @@ class Operador_model extends BaseModel {
                 $this->db->set('consulta', $_POST['txtconsulta']);
                 $this->db->set('medico', 't');
             }
+            if ($_POST['txtconsulta'] == null) {
+                $this->db->set('consulta', 'f');
+                $this->db->set('medico', 'f');
+            }
             if ($_POST['txtcboID'] != "") {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
             }

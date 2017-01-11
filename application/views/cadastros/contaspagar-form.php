@@ -22,7 +22,7 @@
                         <label>Data*</label>
                     </dt>
                     <dd>
-                        <input type="text" name="inicio" id="inicio" class="texto04" value="<?= @$obj->_data; ?>" required=""/>
+                        <input type="text" name="inicio" id="inicio" class="texto04" alt="date" value="<?= @$obj->_data; ?>" required=""/>
                     </dd>
                     <dt>
                         <label>Pagar a:</label>
@@ -109,6 +109,10 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
+<?php if ($this->session->flashdata('message') != ''): ?>
+                                            alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
+    
     $(function () {
         $("#credorlabel").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=credordevedor",

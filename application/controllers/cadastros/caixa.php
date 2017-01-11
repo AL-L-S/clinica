@@ -101,6 +101,12 @@ class Caixa extends BaseController {
     }
 
     function gravarentrada() {
+        if ($_POST['devedor'] == '') {
+            $mensagem = 'É necessário selecionar o item no campo Receber de: ';
+            $this->session->set_flashdata('message', $mensagem);
+            redirect(base_url() . "cadastros/caixa/novaentrada");
+        }
+
         $caixa_id = $this->caixa->gravarentrada();
         if ($caixa_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar entrada. Opera&ccedil;&atilde;o cancelada.';
@@ -111,6 +117,11 @@ class Caixa extends BaseController {
     }
 
     function gravarsaida() {
+        if ($_POST['devedor'] == '') {
+            $mensagem = 'É necessário selecionar o item no campo Pagar a: ';
+            $this->session->set_flashdata('message', $mensagem);
+            redirect(base_url() . "cadastros/caixa/novasaida");
+        }
         $caixa_id = $this->caixa->gravarsaida();
         if ($caixa_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Saida. Opera&ccedil;&atilde;o cancelada.';
@@ -503,10 +514,9 @@ class Caixa extends BaseController {
         $this->loadView('ambulatorio/relatorioentrada', $data);
     }
 
-
-    function gerarelatorioentrada() {    
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
-        $data['txtdata_fim'] = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+    function gerarelatorioentrada() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['credordevedor'] = $this->caixa->buscarcredordevedor($_POST['credordevedor']);
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);

@@ -22,7 +22,7 @@
                         <label>Data*</label>
                     </dt>
                     <dd>
-                        <input type="text" name="inicio" id="inicio" class="texto04" value="<?= substr(@$obj->_data, 8, 2) . "-" . substr(@$obj->_data, 5, 2) . "-" . substr(@$obj->_data, 0, 4); ?>" required=""/>
+                        <input type="text" name="inicio" id="inicio" class="texto04" alt="date" value="<?= @$obj->_data ?>" required=""/>
                     </dd>
                     <dt>
                         <label>Pagar a:</label>
@@ -41,7 +41,8 @@
                             <? foreach ($tipo as $value) : ?>
                                 <option value="<?= $value->tipo_entradas_saida_id; ?>"
                                 <? if ($value->descricao == @$obj->_tipo):echo'selected';
-                                endif; ?>><?php echo $value->descricao; ?></option>
+                                endif;
+                                ?>><?php echo $value->descricao; ?></option>
 <? endforeach; ?>
                         </select>
                     </dd>
@@ -51,10 +52,11 @@
                     <dd>
                         <select name="classe" id="classe" class="size4" required="">
                             <option value="">Selecione</option>
-                                    <? foreach ($classe as $value) : ?>
+                            <? foreach ($classe as $value) : ?>
                                 <option value="<?= $value->descricao; ?>"
                                         <? if ($value->descricao == @$obj->_classe):echo'selected';
-                                        endif; ?>><?php echo $value->descricao; ?></option>
+                                        endif;
+                                        ?>><?php echo $value->descricao; ?></option>
 <? endforeach; ?>
                         </select>
                     </dd>
@@ -92,6 +94,10 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
+
+<?php if ($this->session->flashdata('message') != ''): ?>
+        alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
 
     $(function () {
         $('#tipo').change(function () {

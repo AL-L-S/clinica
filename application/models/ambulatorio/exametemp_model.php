@@ -1216,7 +1216,8 @@ class exametemp_model extends Model {
             $this->db->where('operador_id', $_POST['medico']);
             $query = $this->db->get();
             $return = $query->result();
-            $nome = substr($return[0]->nome, 0, 10);
+            $explode = explode(" ", $return[0]->nome);
+            $nome = $explode[0] . " " . $explode[1];
 
 
             if ($_POST['txtNomeid'] == '') {
@@ -1488,7 +1489,8 @@ class exametemp_model extends Model {
             $this->db->where('operador_id', $_POST['medico']);
             $query = $this->db->get();
             $return = $query->result();
-            $nome = substr($return[0]->nome, 0, 10);
+            $explode = explode(" ", $return[0]->nome);
+            $nome = $explode[0] . " " . $explode[1];
 
 
             if ($_POST['txtNomeid'] == '') {
@@ -1573,7 +1575,8 @@ class exametemp_model extends Model {
             $this->db->where('operador_id', $_POST['medico']);
             $query = $this->db->get();
             $return = $query->result();
-            $nome = substr($return[0]->nome, 0, 10);
+            $explode = explode(" ", $return[0]->nome);
+            $nome = $explode[0] . " " . $explode[1];
             if ($_POST['horarios'] != "") {
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
@@ -3275,7 +3278,7 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarautocompleteprocedimentosvalor2($parametro = null , $parametro2 = null) {
+    function listarautocompleteprocedimentosvalor2($parametro = null, $parametro2 = null) {
         $this->db->select('pc.valortotal');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->where("pc.ativo", 't');

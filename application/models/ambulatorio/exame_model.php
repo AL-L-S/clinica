@@ -222,7 +222,11 @@ class exame_model extends Model {
     }
 
     function listaritensgastos($guia_id) {
-        $this->db->select('ags.ambulatorio_gasto_sala_id, ep.descricao, ags.quantidade, eu.descricao as unidade, pt.descricao as procedimento');
+        $this->db->select('ags.ambulatorio_gasto_sala_id, 
+                           ep.descricao, ags.quantidade, 
+                           eu.descricao as unidade, 
+                           pt.descricao as procedimento,
+                           ags.descricao as descricao_gasto');
         $this->db->from('tb_ambulatorio_gasto_sala ags');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
         $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = ep.unidade_id', 'left');
@@ -2498,24 +2502,30 @@ class exame_model extends Model {
 //        $this->db->orderby('ae.inicio');
 //        $this->db->orderby('al.situacao');
         $this->db->where('ae.cancelada', 'false');
-        if ($operador_id != '1') {
-            $this->db->where('ae.medico_consulta_id', $operador_id);
-        }
+//        if ($operador_id != '1') {
+//            
+//        }
         if ($teste == true) {
             $this->db->where('ae.data', $dataAtual);
+            $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', $args['data']);
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-            } if (isset($args['medico']) && strlen($args['medico']) > 0) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            } 
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
         }
@@ -2654,16 +2664,21 @@ class exame_model extends Model {
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', $args['data']);
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-            } if (isset($args['medico']) && strlen($args['medico']) > 0) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            } 
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
         }
@@ -3430,6 +3445,9 @@ class exame_model extends Model {
         $horario = date('Y-m-d');
         $operador_id = $this->session->userdata('operador_id');
 
+        if($_POST['descricao'] != ''){
+            $this->db->set('descricao', $_POST['descricao']);
+        }
         $this->db->set('guia_id', $_POST['txtguia_id']);
         $this->db->set('produto_id', $_POST['produto_id']);
         $this->db->set('quantidade', $_POST['txtqtde']);

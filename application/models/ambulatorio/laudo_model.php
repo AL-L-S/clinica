@@ -23,6 +23,7 @@ class laudo_model extends Model {
     var $_indicado = null;
     var $_procedimento = null;
     var $_nascimento = null;
+    var $_telefone = null;
     var $_uf = null;
     var $_bairro = null;
     var $_logradouro = null;
@@ -2860,6 +2861,7 @@ class laudo_model extends Model {
                             p.sexo,
                             p.paciente_id,
                             p.logradouro,
+                            p.telefone,
                             p.numero,
                             p.bairro,
                             m.estado as uf,
@@ -2891,6 +2893,7 @@ class laudo_model extends Model {
             $this->_numero = $return[0]->numero;
             $this->_bairro = $return[0]->bairro;
             $this->_uf = $return[0]->uf;
+            $this->_telefone = $return[0]->telefone;
             $this->_texto = $return[0]->texto;
             $this->_medico_parecer1 = $return[0]->medico_parecer1;
             $this->_medico_parecer2 = $return[0]->medico_parecer2;

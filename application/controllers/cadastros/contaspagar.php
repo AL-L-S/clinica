@@ -217,9 +217,12 @@ class Contaspagar extends BaseController {
         $dia = str_replace("/", "-", $_POST['inicio']);
         $parcela = 1;
         if ($_POST['financeiro_contaspagar_id'] == '') {
+            if ($_POST['devedor'] == '') {
+                $mensagem = 'É necessário selecionar o item no campo Pagar a: ';
+                $this->session->set_flashdata('message', $mensagem);
+                redirect(base_url() . "cadastros/contaspagar/carregar/0");
+            }
             if ($repetir == '' || $repetir == 1) {
-//                echo 'chegou aqui';
-//                die;
 
                 $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
             } elseif ($repetir >= 2) {
