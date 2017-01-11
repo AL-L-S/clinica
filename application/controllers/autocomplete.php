@@ -620,7 +620,7 @@ class Autocomplete extends Controller {
 
     function procedimentovalororcamento() {
         if (isset($_GET['procedimento1'])) {
-            $result = $this->exametemp->listarautocompleteprocedimentosvalor2($_GET['procedimento1'] , $_GET['convenio']);
+            $result = $this->exametemp->listarautocompleteprocedimentosvalor2($_GET['procedimento1'], $_GET['convenio']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentosvalor2();
         }
@@ -1373,6 +1373,25 @@ class Autocomplete extends Controller {
         foreach ($result as $item) {
             $retorno['value'] = $item->nome . ' - ' . $item->estado;
             $retorno['id'] = $item->municipio_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function cep() {
+
+        if (isset($_GET['term'])) {
+            $result = $this->paciente_m->cep($_GET['term']);
+        } else {
+            $result = $this->paciente_m->cep();
+        }
+        foreach ($result as $item) {
+            $retorno['cep'] = $item->cep;
+            $retorno['logradouro_nome'] = $item->logradouro_nome;
+//            $retorno['tipo_logradouro'] = $item->tipo_logradouro;
+            $retorno['localidade_nome'] = $item->localidade_nome;
+//            $retorno['uf'] = $item->uf;
+            $retorno['nome_bairro'] = $item->nome_bairro;
             $var[] = $retorno;
         }
         echo json_encode($var);
