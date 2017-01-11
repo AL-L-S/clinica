@@ -30,14 +30,19 @@
                         </tr>
                         <tr><td>Sexo: <?= @$obj->_sexo ?></td>
                             <td>Convenio:<?= @$obj->_convenio; ?></td>
+                            <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
+
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                             <td width="40px;"><div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
                                         chamar</a></div>
                                 <!--                                        impressaolaudo -->
                             </td>
+                            <!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
                         </tr>
-
-                        <tr><td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                     </table>
                 </fieldset>
                 <div>
@@ -50,7 +55,7 @@
                                 <td width="60px;"><font size = -1><input type="text" name="Peso" id="Peso" class="texto01"  alt="decimal" onkeyup="validar(this,'num');" value="<?= @$obj->_peso?>"/></font></td>
                                 <td width="60px;"><font size = -1>Kg</font></td>
                                 <td ><font size = -1>Altura:</font></td>
-                                <td width="60px;"><font size = -1><input type="text" name="Altura" id="Altura" alt="integer" class="texto01" value="<?= @$obj->_altura; ?>" onblur="history.go(0)"/></font></td>
+                                <td width="60px;"><font size = -1><input type="text" name="Altura" id="Altura" alt="integer" class="texto01" value="<?= @$obj->_altura; ?>" onblur="calculaImc()"/></font></td> <!--onblur="history.go(0)"-->
                                 <td width="60px;"><font size = -1>Cm</font></td>
                             </tr>
                             <?
@@ -481,6 +486,19 @@
                                                     //imc = res;
                                                     resultado = imc.toFixed(2)
                                                     document.getElementById('imc').value = resultado.replace('.', ',');
+                                                    
+                                                    function calculaImc(){
+                                                        pesob1 = document.getElementById('Peso').value;
+                                                        peso = parseFloat(pesob1.replace(',', '.'));
+    //                                        peso = pesob1.substring(0, 2)  + "." + pesob1.substring(3, 1);
+                                                        alturae1 = document.getElementById('Altura').value;
+                                                        var res = alturae1.substring(0, 1) + "." + alturae1.substring(1, 3);
+                                                        var altura = parseFloat(res);
+                                                        imc = peso / Math.pow(altura, 2);
+                                                        //imc = res;
+                                                        resultado = imc.toFixed(2)
+                                                        document.getElementById('imc').value = resultado.replace('.', ',');
+                                                    }
 
 
 

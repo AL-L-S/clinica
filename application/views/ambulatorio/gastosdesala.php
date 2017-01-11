@@ -91,6 +91,7 @@
                 <tr>
                     <td> <label>Produtos</label> </td>
                     <td> <label>Quantidade</label> </td>
+                    <td> <label>Descricao</label> </td>
                     <!--<td> <label>Faturar</label> </td>-->
                 </tr>
                 <tr id="gastos">
@@ -103,6 +104,7 @@
                         </select> 
                     </td>
                     <td> <input style="width: 100px" type="number" name="txtqtde" min="1" required="true"/> </td>
+                    <td><textarea name="descricao" id="descricao" style="margin-left: 10px; width: 300px"></textarea></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -122,7 +124,7 @@
                         <th class="tabela_header">Produto</th>
                         <th class="tabela_header">Qtde</th>
                         <th class="tabela_header">Unidade</th>
-                        <th class="tabela_header">Procedimento</th>
+                        <th class="tabela_header">Descricao</th>
                         <th class="tabela_header">&nbsp;</th>
                     </tr>
                 </thead>
@@ -137,7 +139,7 @@
                             <td class="<?php echo $estilo_linha;  ?>" width="450px;"><center><? echo $item->descricao;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->quantidade;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->unidade;  ?></center></td>
-                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->procedimento;  ?></center></td>
+                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->descricao_gasto;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>" width="100px;">
                                 <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>" class="delete">
                                 </a>
