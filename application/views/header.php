@@ -856,7 +856,7 @@ function debug($object) {
                     verifica(0, 0,<? echo $operador_id ?>);
                     mensagensnaolidas();
 
-                }, 3000);
+                }, 9003000);
             }
 
             buscamensagens();

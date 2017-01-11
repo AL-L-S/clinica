@@ -430,25 +430,20 @@
                 });
             });
 
-
-
             $(function () {
                 $("#cep").autocomplete({
                     source: "<?= base_url() ?>index.php?c=autocomplete&m=cep",
-                    minLength: 2,
+                    minLength: 3,
                     focus: function (event, ui) {
                         $("#cep").val(ui.item.label);
                         return false;
                     },
                     select: function (event, ui) {
                         $("#cep").val(ui.item.cep);
-                        $("#txtBairro").val(ui.item.nome_bairro);
-                        $("#txtCidade").val(ui.item.localidade_nome);
-                        $("#txtendereco").val(ui.item.logradouro_nome);
+//                        $("#txtcboID").val(ui.item.id);
                         return false;
                     }
                 });
             });
-
 
 </script>

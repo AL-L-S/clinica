@@ -1378,25 +1378,6 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
-    function cep() {
-
-        if (isset($_GET['term'])) {
-            $result = $this->paciente_m->cep($_GET['term']);
-        } else {
-            $result = $this->paciente_m->cep();
-        }
-        foreach ($result as $item) {
-            $retorno['cep'] = $item->cep;
-            $retorno['logradouro_nome'] = $item->logradouro_nome;
-//            $retorno['tipo_logradouro'] = $item->tipo_logradouro;
-            $retorno['localidade_nome'] = $item->localidade_nome;
-//            $retorno['uf'] = $item->uf;
-            $retorno['nome_bairro'] = $item->nome_bairro;
-            $var[] = $retorno;
-        }
-        echo json_encode($var);
-    }
-
     function produto() {
 
         if (isset($_GET['term'])) {
@@ -1636,6 +1617,27 @@ class Autocomplete extends Controller {
         foreach ($result as $item) {
             $retorno['value'] = $item->cbo_ocupacao_id . '-' . $item->descricao;
             $retorno['id'] = $item->cbo_ocupacao_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+    
+    function cep() {
+        if (isset($_GET['term'])) {
+            $result = $this->paciente_m->cep($_GET['term']);
+        } else {
+            $result = $this->paciente_m->cep();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->cep . ' - ' . $item->tipo_logradouro . ' ' . $item->logradouro_nome;
+//            $retorno['id'] = '$item->cbo_ocupacao_id';
+//            $var[] = $retorno;
+            $retorno['cep'] = $item->cep;
+            $retorno['logradouro_nome'] = $item->logradouro_nome;
+            $retorno['tipo_logradouro'] = $item->tipo_logradouro;
+            $retorno['localidade_nome'] = $item->localidade_nome;
+//            $retorno['uf'] = $item->uf;
+            $retorno['nome_bairro'] = $item->nome_bairro;
             $var[] = $retorno;
         }
         echo json_encode($var);
