@@ -1293,3 +1293,9 @@ ALTER TABLE ponto.tb_operador ADD COLUMN carimbo character varying;
 -- Dia 09/01/2017
 
 ALTER TABLE ponto.tb_ambulatorio_gasto_sala ADD COLUMN descricao text;
+
+
+-- Dia 11/01/2017
+
+ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN cid2 character varying;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN cid2 character varying(8);

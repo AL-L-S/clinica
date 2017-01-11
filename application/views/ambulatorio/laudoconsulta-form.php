@@ -35,13 +35,16 @@
                         </tr>
 
                         <tr>
-                            <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
+                            <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
                             <td width="40px;"><div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
                                         chamar</a></div>
                                 <!--                                        impressaolaudo -->
                             </td>
                             <!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
+                        </tr>
+                        <tr>
+                            <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                         </tr>
                     </table>
                 </fieldset>
@@ -117,10 +120,7 @@
                                 <option value="<?php echo $item->ambulatorio_modelo_laudo_id; ?>" ><?php echo $item->nome; ?></option>
                             <?php } ?>
                         </select>
-
-
-                        <div>
-                            <?
+                        <?
                             if (@$obj->_cabecalho == "") {
                                 $cabecalho = @$obj->_procedimento;
                             } else {
@@ -130,10 +130,18 @@
                             <label>Queixa Principal</label>
                             <input type="text" id="cabecalho" class="texto7" name="cabecalho" value="<?= $cabecalho ?>"/>
 
-                            <label>CID</label>
+                        <div>
+                            
+<!--                        </div>    
+                        <div>-->
+                            <label>CID Primario</label>
                             <input type="hidden" name="agrupadorfisioterapia" id="agrupadorfisioterapia" value="<?= @$obj->_agrupador_fisioterapia; ?>" class="size2" />
                             <input type="hidden" name="txtCICPrimario" id="txtCICPrimario" value="<?= @$obj->_cid; ?>" class="size2" />
                             <input type="text" name="txtCICPrimariolabel" id="txtCICPrimariolabel" value="<?= @$obj->_ciddescricao; ?>" class="size8" />
+                   
+                            <label>CID Secundario</label>
+                            <input type="hidden" name="txtCICSecundario" id="txtCICSecundario" value="<?= @$obj->_cid2; ?>" class="size2" />
+                            <input type="text" name="txtCICSecundariolabel" id="txtCICSecundariolabel" value="<?= @$obj->_cid2descricao; ?>" class="size8" />
                         </div>
 
                         <div>
@@ -570,6 +578,22 @@
                                                             select: function (event, ui) {
                                                                 $("#txtCICPrimariolabel").val(ui.item.value);
                                                                 $("#txtCICPrimario").val(ui.item.id);
+                                                                return false;
+                                                            }
+                                                        });
+                                                    });
+
+                                                    $(function () {
+                                                        $("#txtCICSecundariolabel").autocomplete({
+                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                                                            minLength: 3,
+                                                            focus: function (event, ui) {
+                                                                $("#txtCICSecundariolabel").val(ui.item.label);
+                                                                return false;
+                                                            },
+                                                            select: function (event, ui) {
+                                                                $("#txtCICSecundariolabel").val(ui.item.value);
+                                                                $("#txtCICSecundario").val(ui.item.id);
                                                                 return false;
                                                             }
                                                         });
