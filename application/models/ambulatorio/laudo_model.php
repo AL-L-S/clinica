@@ -21,6 +21,7 @@ class laudo_model extends Model {
     var $_nome = null;
     var $_Idade = null;
     var $_indicado = null;
+    var $_indicacao = null;
     var $_procedimento = null;
     var $_nascimento = null;
     var $_telefone = null;
@@ -35,6 +36,8 @@ class laudo_model extends Model {
     var $_imagens = null;
     var $_cid = null;
     var $_ciddescricao = null;
+    var $_cid2 = null;
+    var $_cid2descricao = null;
     var $_peso = null;
     var $_altura = null;
     var $_pasistolica = null;
@@ -1427,6 +1430,7 @@ class laudo_model extends Model {
                             ar.data,
                             ar.imprimir_cid,
                             ar.cid1,
+                            ar.cid2,
                             p.nascimento,
                             ag.situacao_revisor,
                             o.nome as medico,
@@ -2279,6 +2283,9 @@ class laudo_model extends Model {
             if ($_POST['txtCICPrimario'] != '') {
                 $this->db->set('cid', $_POST['txtCICPrimario']);
             }
+            if ($_POST['txtCICSecundario'] != '') {
+                $this->db->set('cid2', $_POST['txtCICSecundario']);
+            }
             if ($_POST['medico'] != '') {
                 $this->db->set('medico_parecer1', $_POST['medico']);
             }
@@ -2383,6 +2390,9 @@ class laudo_model extends Model {
             }
             if ($_POST['cid1ID'] != "") {
                 $this->db->set('cid1', $_POST['cid1ID']);
+            }
+            if ($_POST['cid2ID'] != "") {
+                $this->db->set('cid2', $_POST['cid2ID']);
             }
             if ($_POST['imprimircid'] == "on") {
                 $this->db->set('imprimir_cid', 't');
@@ -2824,6 +2834,7 @@ class laudo_model extends Model {
                             pt.grupo,
                             p.nascimento,
                             ag.cid,
+                            ag.cid2,
                             agi.peso,
                             agi.altura,
                             agi.pasistolica,
@@ -2855,6 +2866,7 @@ class laudo_model extends Model {
                             ag.ao_diametro_raiz,
                             ag.ao_relacao_atrio_esquerdo_aorta,
                             c.no_cid,
+                            c2.no_cid as no_cid2,
                             ae.exames_id,
                             ae.indicado,
                             es.nome as sala,
@@ -2864,6 +2876,7 @@ class laudo_model extends Model {
                             p.telefone,
                             p.numero,
                             p.bairro,
+                            pi.nome as indicacao,
                             m.estado as uf,
                             age.guia_id,
                             co.nome as convenio,
@@ -2871,6 +2884,7 @@ class laudo_model extends Model {
                             p.nome as paciente');
             $this->db->from('tb_ambulatorio_laudo ag');
             $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+            $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao', 'left');
             $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
             $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
             $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
@@ -2880,12 +2894,14 @@ class laudo_model extends Model {
             $this->db->join('tb_convenio co', 'co.convenio_id = pc.convenio_id', 'left');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->join('tb_cid c', 'c.co_cid = ag.cid', 'left');
+            $this->db->join('tb_cid c2', 'c2.co_cid = ag.cid2', 'left');
             $this->db->join('tb_operador o', 'o.operador_id = age.medico_solicitante', 'left');
             $this->db->where("ambulatorio_laudo_id", $ambulatorio_laudo_id);
             $query = $this->db->get();
             $return = $query->result();
             $this->_ambulatorio_laudo_id = $ambulatorio_laudo_id;
             $this->_indicado = $return[0]->indicado;
+            $this->_indicacao = $return[0]->indicacao;
             $this->_situacaolaudo = $return[0]->situacaolaudo;
             $this->_agenda_exames_id = $return[0]->agenda_exames_id;
             $this->_paciente_id = $return[0]->paciente_id;
@@ -2918,6 +2934,8 @@ class laudo_model extends Model {
             $this->_imagens = $return[0]->imagens;
             $this->_cid = $return[0]->cid;
             $this->_ciddescricao = $return[0]->no_cid;
+            $this->_cid2 = $return[0]->cid2;
+            $this->_cid2descricao = $return[0]->no_cid2;
             $this->_peso = $return[0]->peso;
             $this->_altura = $return[0]->altura;
             $this->_pasistolica = $return[0]->pasistolica;

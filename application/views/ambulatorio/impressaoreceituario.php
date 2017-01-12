@@ -19,6 +19,15 @@
             ?>
 
             <tr><td><center>Cid Principal: <? echo $cid['0']->co_cid . "-" . $cid['0']->no_cid; ?></center></td></tr><br/>
+
+            
+        <? } 
+        if (isset($cid2['0']->co_cid) && isset($cid2['0']->no_cid)) {
+            ?>
+
+            <tr><td><center>Cid Secundario: <? echo $cid2['0']->co_cid . "-" . $cid2['0']->no_cid; ?></center></td></tr><br/>
+
+            
         <? } ?>
 
         <tr><td><center>Resolução CFM 1.658/2002 - Art. 5º - Os médicos somente podem fornecer atestados com o diagnóstico codificado ou não quando por justa causa, exercício de dever legal, solicitação do próprio paciente ou de seu representante legal.</center></tr>

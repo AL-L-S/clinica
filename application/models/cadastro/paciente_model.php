@@ -146,6 +146,17 @@ class paciente_model extends BaseModel {
         return $return->result();
     }
 
+//    function cep_buscarcidade($cidadenome) {
+//
+//        $this->db->select('municipio_id,
+//                               nome');
+//        $this->db->from('tb_municipio');
+//        $this->db->where('nome', $cidadenome);
+//
+//        $return = $this->db->get();
+//        return $return->result();
+//    }
+
     private function instanciar($paciente_id) {
         if ($paciente_id != 0) {
 

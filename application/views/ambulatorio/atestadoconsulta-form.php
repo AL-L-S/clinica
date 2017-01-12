@@ -42,6 +42,16 @@
                     <fieldset>
                         <legend>Atestado</legend>
                         <div>
+                            <label>CID Primario</label>
+                            <input type="hidden" id="txtcid1ID" class="texto_id" name="cid1ID"  />
+                            <input type="text" id="txtcid1" class="texto10" name="txtcid1"  />
+                        </div>
+                        <div>
+                            <label>CID Secundario</label>
+                            <input type="hidden" id="txtcid2ID" class="texto_id" name="cid2ID"  />
+                            <input type="text" id="txtcid2" class="texto10" name="txtcid2"  />
+                        </div>
+                        <div>
                             <label>Modelos</label>
                             <select name="exame" id="exame" class="size2" >
                                 <option value='' >selecione</option>
@@ -51,17 +61,16 @@
                             </select>
                             <label>Data</label>
                             <input type="text" id="data" name="data" class="texto02" required/>
-                            <label>Imprimir CID</label>
-                            <input type="checkbox"  name="imprimircid" />
-                            <label>CID</label>
-                            <input type="hidden" id="txtcid1ID" class="texto_id" name="cid1ID"  />
-                            <input type="text" id="txtcid1" class="texto10" name="txtcid1"  />
 
-                            <label>Carimbo</label>
-                            <input type="checkbox" id="carimbo"  name="carimbo"/>
+                            <label for="carimbo">Carimbo</label>
+                            <input type="checkbox" id="carimbo"  name="carimbo" id="carimbo"/>
 
-                            <label>Assinatura</label>
-                            <input type="checkbox" id="assinatura" name="assinatura"/>
+                            <label for="assinatura">Assinatura</label>
+                            <input type="checkbox" id="assinatura" name="assinatura" id="assinatura"/>
+                            
+                            
+                            <label for="imprimircid">Imprimir CID</label>
+                            <input type="checkbox"  name="imprimircid" id="imprimircid" />
                         </div>
                         <div>
                             <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $receituario_id ?>"/>
@@ -177,6 +186,22 @@
                                             select: function (event, ui) {
                                                 $("#txtcid1").val(ui.item.value);
                                                 $("#txtcid1ID").val(ui.item.id);
+                                                return false;
+                                            }
+                                        });
+                                    });
+                                    
+                                    $(function () {
+                                        $("#txtcid2").autocomplete({
+                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                                            minLength: 2,
+                                            focus: function (event, ui) {
+                                                $("#txtcid2").val(ui.item.label);
+                                                return false;
+                                            },
+                                            select: function (event, ui) {
+                                                $("#txtcid2").val(ui.item.value);
+                                                $("#txtcid2ID").val(ui.item.id);
                                                 return false;
                                             }
                                         });

@@ -1216,8 +1216,9 @@ class exametemp_model extends Model {
             $this->db->where('operador_id', $_POST['medico']);
             $query = $this->db->get();
             $return = $query->result();
+            
             $explode = explode(" ", $return[0]->nome);
-            $nome = $explode[0] . " " . $explode[1];
+            $nome = @$explode[0] . " " . @$explode[1];
 
 
             if ($_POST['txtNomeid'] == '') {

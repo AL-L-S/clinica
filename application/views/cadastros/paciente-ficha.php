@@ -152,8 +152,8 @@
                 <label>CEP</label>
 
 
-                <!--<input type="text" id="cep" class="texto02" name="cep" alt="cep" value="<?= @$obj->_cep; ?>" />-->
                 <input type="text" id="cep" class="texto02" name="cep"  value="<?= @$obj->_cep; ?>" />
+                <!--<input type="text" id="cep" class="texto02" name="cep"  value="<?= @$obj->_cep; ?>" />-->
 
             </div>
 
@@ -435,20 +435,21 @@
             $(function () {
                 $("#cep").autocomplete({
                     source: "<?= base_url() ?>index.php?c=autocomplete&m=cep",
-                    minLength: 2,
+                    minLength: 3,
                     focus: function (event, ui) {
                         $("#cep").val(ui.item.label);
                         return false;
                     },
                     select: function (event, ui) {
                         $("#cep").val(ui.item.cep);
-                        $("#txtBairro").val(ui.item.nome_bairro);
-                        $("#txtCidade").val(ui.item.localidade_nome);
                         $("#txtendereco").val(ui.item.logradouro_nome);
+                        $("#txtBairro").val(ui.item.nome_bairro);
+//                        $("#txtCidade").val(ui.item.localidade_nome);
+                        $("#txtTipoLogradouro").val(ui.item.tipo_logradouro);
+
                         return false;
                     }
                 });
             });
-
 
 </script>
