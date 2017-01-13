@@ -74,6 +74,9 @@ class guia_model extends Model {
                             c.dinheiro,
                             ae.recebido,
                             ae.data_recebido,
+                            ae.empresa_id,
+                            emp.nome as empresa,
+                            ae.empresa_id,
                             ae.entregue,
                             ae.data_entregue,
                             p.nome as paciente,
@@ -95,12 +98,13 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id= pc.convenio_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_empresa emp', 'emp.empresa_id = ae.empresa_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_recebido', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_entregue', 'left');
         $this->db->join('tb_operador om', 'om.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_operador oz', 'oz.operador_id = ae.operador_autorizacao', 'left');
         $this->db->where('ae.confirmado', 't');
-        $this->db->where('ae.empresa_id', $empresa_id);
+//        $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where("ae.paciente_id", $paciente_id);
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.agenda_exames_id');

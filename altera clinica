@@ -1299,3 +1299,9 @@ ALTER TABLE ponto.tb_ambulatorio_gasto_sala ADD COLUMN descricao text;
 
 ALTER TABLE ponto.tb_ambulatorio_atestado ADD COLUMN cid2 character varying;
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN cid2 character varying(8);
+
+-- Dia 13/01/2017
+
+ALTER TABLE ponto.tb_operador ADD COLUMN horario_login timestamp without time zone;
+ALTER TABLE ponto.tb_operador ADD COLUMN horario_logout timestamp without time zone;
+ALTER TABLE ponto.tb_operador ADD COLUMN online boolean NOT NULL DEFAULT false;

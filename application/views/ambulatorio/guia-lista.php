@@ -8,6 +8,7 @@
     <?
     $operador_id = $this->session->userdata('operador_id');
     $empresa = $this->session->userdata('empresa');
+    $empresa_id = $this->session->userdata('empresa_id');
     $perfil_id = $this->session->userdata('perfil_id');
     ?>
     <div>
@@ -60,6 +61,7 @@
             foreach ($guia as $test) :
                 $guia_id = $test->ambulatorio_guia_id;
                 $cancelado = 0;
+                $empresa = 0;
                 ?>
                 <table >
                     <thead>
@@ -95,9 +97,13 @@
                         $estilo_linha = "tabela_content01";
                         foreach ($exames as $item) :
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            
 
                             if ($test->ambulatorio_guia_id == $item->guia_id) {
                                 $cancelado++;
+                                if($item->empresa_id == $empresa_id){
+                                    
+                                
                                 ?>
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>" width="100px;"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');"><?= $item->procedimento ?></a></td>
@@ -195,14 +201,26 @@
 
 
                                 <?
+                                }else{?>
+                                    <tr>
+                                <td colspan="6"><center><span style="color: red; font-weight: bold; font-size: 17px;">LANÇADO EM: <?=$item->empresa?></span></center></td>
+                           </tr>
+                                    <? 
+                                    
+                                }
                             }
                         endforeach;
-                        if ($cancelado == 0) {
+                         
                             ?>
-                            <tr>
+
+                       <? if($cancelado == 0){
+                            ?>
+                             <tr>
                                 <td colspan="6"><center><span style="color: red; font-weight: bold; font-size: 17px;">PROCEDIMENTO CANCELADO</span></center></td>
-                        </tr>
-                    <? } ?>
+                           </tr>  
+
+                       <?}?>
+
                     </tbody>                                
                     <br>
                 <? endforeach; ?>
