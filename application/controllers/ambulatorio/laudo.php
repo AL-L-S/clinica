@@ -997,12 +997,6 @@ class Laudo extends BaseController {
         if ($data['laudo'][0]->assinatura == 't') {
             $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
         }
-
-        if ($data['laudo'][0]->assinatura == 't') {
-            $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
-        }
-
-        $data['empresa'][0]->impressao_tipo = 1;
         
         if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
             $filename = "laudo.pdf";
@@ -1077,8 +1071,8 @@ class Laudo extends BaseController {
 ///////////////////////////////////////////////////////////////////////////////////////            
         } else {//GERAL        //  este item fica sempre por ultimo
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-            $rodape = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
+            $cabecalho = "<table ><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+            $rodape = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
             $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
             $this->load->View('ambulatorio/impressaoreceituario', $data);
@@ -1295,8 +1289,8 @@ class Laudo extends BaseController {
             pdf($html, $filename, $cabecalho, $rodape, $grupo);
         } else { //GERAL        //este item fica sempre por útimo
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td><center><b>ATESTADO</b></center><br/><br/><br/></td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Data: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
-            $rodape = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
+            $cabecalho = "<table ><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td><center><b>ATESTADO MÉDICO</b></center><br/><br/><br/></td></tr><tr><td><b>Para:" . $data['laudo']['0']->paciente . "<br></b></td></tr></table>";
+            $rodape = "<table ><tr><td><td></tr><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
             $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
             $this->load->View('ambulatorio/impressaoreceituario', $data);
