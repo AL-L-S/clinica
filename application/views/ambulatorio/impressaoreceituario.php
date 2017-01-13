@@ -3,7 +3,7 @@
 
 <BODY>
     <? if (@$receituario != NULL) { ?>
-    <center><p style="text-align: center; font-weight: bold;">Receita Médica</p></center>
+    <!--<center><p style="text-align: center; font-weight: bold;">Receita Médica</p></center>-->
 <? } ?>
 <br>
 <? //if (isset($atestado) && !$atestado) { ?>
