@@ -33,9 +33,15 @@ class batepapo extends BaseController {
                 }
             }
             
+            $status = 'off';
+            if($data['usuarios'][$i]->online == 't'){
+                $status = 'on';
+            }
+            
             $usuarios[] = array(
                 'usuario' => utf8_encode($data['usuarios'][$i]->usuario),
                 'operador_id' => $data['usuarios'][$i]->operador_id,
+                'status' => $status,
                 'num_mensagens' => $num_mensagens
             );
         }

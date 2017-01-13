@@ -33,6 +33,10 @@ class login_model extends Model {
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa);
         $retorno = $this->db->get()->result();
+        
+        $this->db->set('online', 't');
+        $this->db->where('operador_id', $return[0]->operador_id);
+        $this->db->update('tb_operador');
 
         if(count($retorno) > 0){
             $empresanome = $retorno[0]->nome;
@@ -77,6 +81,14 @@ class login_model extends Model {
         $this->db->orderby('empresa_id');
         $return = $this->db->get();
         return $return->result();
+    }
+    
+    function sair() {
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('online', 'f');
+        $this->db->where('operador_id', $operador_id);
+        $this->db->update('tb_operador');
     }
 
 }

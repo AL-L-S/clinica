@@ -13,7 +13,8 @@ class batepapo_model extends BaseModel {
         $operador_id = $this->session->userdata('operador_id');
 
         $this->db->select('o.usuario,
-                           o.operador_id ');
+                           o.operador_id,
+                           o.online');
         $this->db->from('tb_operador o');
         $this->db->where('o.ativo', 't');
         $this->db->where('o.operador_id !=', $operador_id);

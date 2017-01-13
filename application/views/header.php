@@ -124,7 +124,7 @@ function debug($object) {
                                 if (usr.num_mensagens != 0) {
                                     tags += "<span class='total_mensagens'> +" + usr.num_mensagens + " </span>";
                                 }
-                                tags += "<span id='"+usr.operador_id+"'></span></li>";
+                                tags += "<span id='"+usr.operador_id+"' class='status "+usr.status+"'></span></li>";
                                 
                                 //apos criar o item, adciona ele a lista e cria-se o item seguinte
                                 jQuery("#principalChat #usuarios_online ul").append(tags);
@@ -856,7 +856,7 @@ function debug($object) {
                     verifica(0, 0,<? echo $operador_id ?>);
                     mensagensnaolidas();
 
-                }, 9003000);
+                }, 3000);
             }
 
             buscamensagens();
