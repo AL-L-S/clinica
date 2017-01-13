@@ -595,13 +595,13 @@ class Exame extends BaseController {
 
     function finalizarexame($exames_id, $sala_id) {
         $verificar = $this->exame->finalizarexame($exames_id, $sala_id);
-        if ($verificar == "-1") {
+        if ($verificar == -1) {
             $data['mensagem'] = 'Erro ao finalizar o Exame. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        echo "<script type='text/javascript'>window.close();</script>";
+        redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
     }
 
     function finalizarexametodos($sala_id, $guia_id, $grupo) {
