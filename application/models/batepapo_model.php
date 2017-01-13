@@ -13,10 +13,13 @@ class batepapo_model extends BaseModel {
         $operador_id = $this->session->userdata('operador_id');
 
         $this->db->select('o.usuario,
-                           o.operador_id ');
+                           o.operador_id,
+                           o.online,
+                           o.horario_login');
         $this->db->from('tb_operador o');
         $this->db->where('o.ativo', 't');
         $this->db->where('o.operador_id !=', $operador_id);
+        $this->db->orderby('o.online DESC');
         $this->db->orderby('o.usuario');
         $return = $this->db->get();
         return $return->result();
@@ -72,6 +75,15 @@ class batepapo_model extends BaseModel {
         $this->db->update('tb_chat_mensagens');
     }
     
+    
+    function atualizastatusoperadores($operador) {
+        $horario = date("Y-m-d H:i:s");
+        $this->db->set('horario_logout', $horario);
+        $this->db->set('online', 'f');
+        $this->db->where('operador_id', $operador);
+        $this->db->update('tb_operador');
+    }
+    
     function contamensagensporusuarios($operador_origem) {
         $operador_id = $this->session->userdata('operador_id');
 
@@ -96,13 +108,12 @@ class batepapo_model extends BaseModel {
         $return = $this->db->query($sql);
         return $return->result();
     }
-
-    function atualizahorario($operador_id) {
-        $horario = date(" Y-m-d H:i:s");
-        $limite = date(" Y-m-d H:i:s", strtotime('+2 min'));
+    
+    function atualizastatus() {
+        $operador_id = $this->session->userdata('operador_id');
+        $horario = date("Y-m-d H:i:s");
 
         $this->db->set('horario_login', $horario);
-        $this->db->set('limite', $limite);
         $this->db->where('operador_id', $operador_id);
         $this->db->update('tb_operador');
     }

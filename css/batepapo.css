@@ -73,7 +73,7 @@ aside ul{ list-style: none;margin: 0px; padding: 0px;}
     background-color: #666; 
 }
 .status.off{background-color: #ccc;}
-.status.on{background-color: #090;}
+.status.on{background-color: #00D717;}
 
 
 /* ESTILIZANDO OS CHATS */

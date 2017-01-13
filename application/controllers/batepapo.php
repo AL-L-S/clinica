@@ -33,13 +33,26 @@ class batepapo extends BaseController {
                 }
             }
             
+            $status = 'off';
+            
+            if( isset($data['usuarios'][$i]->horario_login) ){
+                $horario = date("Y-m-d H:i:s");
+                $data['usuarios'][$i]->horario_login = strtotime("+3 minutes", strtotime($data['usuarios'][$i]->horario_login));
+                $horario_login = date("Y-m-d H:i:s", $data['usuarios'][$i]->horario_login);    
+                
+                if(($horario_login > $horario) || ($data['usuarios'][$i]->online == 't')){
+                    $status = 'on';
+                }
+                
+            }
+            
             $usuarios[] = array(
                 'usuario' => utf8_encode($data['usuarios'][$i]->usuario),
                 'operador_id' => $data['usuarios'][$i]->operador_id,
+                'status' => $status,
                 'num_mensagens' => $num_mensagens
             );
         }
-        
         
         die(json_encode($usuarios));
     }
@@ -49,10 +62,27 @@ class batepapo extends BaseController {
         $this->batepapo->enviarmensagem();
     }
     
+    function atualizastatus() {
+        $this->batepapo->atualizastatus();
+        $operadores = $this->batepapo->listarusuarios();
+        
+        foreach ($operadores as $item){
+            
+            if( isset($item->horario_login) ){
+                $horario = date("Y-m-d H:i:s");
+                $horario_login = date("Y-m-d H:i:s", strtotime($item->horario_login) );    
+                if($horario_login <= $horario){
+                    $this->batepapo->atualizastatusoperadores($item->operador_id);
+                }
+                
+            }
+        }
+    }
+    
     function historicomensagens() {        
         $operador_id = $this->session->userdata('operador_id');
         $historico = $this->batepapo->historicomensagens();
-//        echo '<pre>';
+        
         $this->batepapo->atualizamensagensvisualizadas($_GET["operador_destino"]);
         
         foreach ($historico as $item){

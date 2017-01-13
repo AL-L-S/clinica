@@ -43,7 +43,10 @@ class Login extends Controller {
     }
 
     function sair() {
+        $this->login->sair();
+        
         $this->session->sess_destroy();
+        
         $data['mensagem'] = $this->mensagem->getMensagem('login003');
         $this->carregarView($data);
     }
