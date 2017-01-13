@@ -2289,15 +2289,14 @@ class laudo_model extends Model {
             if ($_POST['medico'] != '') {
                 $this->db->set('medico_parecer1', $_POST['medico']);
             }
+            if ($_POST['diabetes'] != '') {
+                $this->db->set('diabetes', $_POST['diabetes']);
+            }
+            if ($_POST['hipertensao'] != '') {
+                $this->db->set('hipertensao', $_POST['hipertensao']);
+            }
 
-            if ($_POST['Peso'] != '0,00') {
-                $this->db->set('peso', str_replace(",", ".", $_POST['Peso']));
-            }
-            if ($_POST['Altura'] != '') {
-                $this->db->set('altura', $_POST['Altura']);
-            }
-            $this->db->set('diabetes', $_POST['diabetes']);
-            $this->db->set('hipertensao', $_POST['hipertensao']);
+            
             if (isset($_POST['assinatura'])) {
                 $this->db->set('assinatura', 't');
             } else {
@@ -2318,7 +2317,7 @@ class laudo_model extends Model {
             $this->db->update('tb_ambulatorio_laudo');
 
 
-            if ($_POST['Peso'] != '0,00') {
+            if ($_POST['Peso'] != '') {
                 $this->db->set('peso', str_replace(",", ".", $_POST['Peso']));
             } else {
                 $this->db->set('peso', null);
