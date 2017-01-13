@@ -1,0 +1,71 @@
+
+
+ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN razao_social character varying(200);
+ALTER TABLE ponto.tb_estoque_solicitacao_cliente ADD COLUMN faturado boolean NOT NULL DEFAULT false;
+
+CREATE TABLE ponto.tb_estoque_solicitacao_faturamento
+(
+  estoque_solicitacao_faturamento_id serial NOT NULL,
+  estoque_solicitacao_setor_id integer,
+  desconto character varying(300),
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  valor1 numeric(10,2) DEFAULT 0,
+  forma_pagamento1 integer,
+  quantidade_parcelas1 integer,
+  CONSTRAINT tb_estoque_solicitacao_faturamento_pkey PRIMARY KEY (estoque_solicitacao_faturamento_id)
+);
+
+ALTER TABLE ponto.tb_estoque_solicitacao_itens ADD COLUMN valor numeric(10,2);
+
+
+-- Dia 05/01/2017
+
+
+CREATE TABLE ponto.tb_estoque_solicitacao_faturamento
+(
+  estoque_solicitacao_faturamento_id serial NOT NULL,
+  estoque_solicitacao_id integer,
+  valor_total numeric(10,2),
+  forma_pagamento integer,
+  valor1 numeric(10,2) DEFAULT 0,
+  forma_pagamento2 integer,
+  valor2 numeric(10,2) DEFAULT 0,
+  forma_pagamento3 integer,
+  valor3 numeric(10,2) DEFAULT 0,
+  forma_pagamento4 integer,
+  valor4 numeric(10,2) DEFAULT 0,
+  operador_faturamento integer,
+  data_faturamento timestamp without time zone,
+  desconto numeric(10,2) DEFAULT 0,
+  faturado boolean NOT NULL DEFAULT false,
+  parcelas1 integer DEFAULT 1,
+  parcelas2 integer DEFAULT 1,
+  parcelas3 integer DEFAULT 1,
+  parcelas4 integer DEFAULT 1,
+  observacao_faturamento character varying(8000),
+  operador_obs_faturamento integer,
+  data_obs_faturamento timestamp without time zone,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_estoque_solicitacao_faturamento_pkey PRIMARY KEY (estoque_solicitacao_faturamento_id)
+);
+ALTER TABLE ponto.tb_estoque_solicitacao_faturamento ADD COLUMN ativo boolean NOT NULL DEFAULT true;
+
+ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN saida boolean NOT NULL DEFAULT false;
+
+
+-- Dia 07/01/2017
+
+ALTER TABLE ponto.tb_estoque_menu_produtos ADD COLUMN valor numeric(10,2);
+ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN tipo_logradouro_id integer;
+
+
+-- Dia 13/01/2017
+
+ALTER TABLE ponto.tb_estoque_produto ADD COLUMN ncm character varying(20);
+ALTER TABLE ponto.tb_estoque_produto RENAME COLUMN procedimento_id TO codigo;
