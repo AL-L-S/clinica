@@ -39,15 +39,9 @@
     }
 }
 ?>
-<div style="margin-top: 50px;">
-    <table >
+
+<!--    <table >
         <tr>
-            <td>Fortaleza, 04 de Janeiro de 2017</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-            <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-            <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
             <?
             if (isset($operador_assinatura)) {
                 $this->load->helper('directory');
@@ -67,12 +61,12 @@
                 ?>
 
                 <td><?= $laudo[0]->medico_carimbo ?></td>
-
+                
                 <?
             }
             ?>
         </tr>
-    </table>
+    </table>-->
     <!--        <table>
     
     <tr>
@@ -90,7 +84,6 @@
 
 
 
-</div>
 
 
 </BODY>
