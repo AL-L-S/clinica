@@ -3056,7 +3056,7 @@ class exame_model extends Model {
     }
 
     function listarguiafaturamento() {
-
+        
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('g.ambulatorio_guia_id,
                             ae.valor_total as valortotal,
@@ -3099,7 +3099,7 @@ class exame_model extends Model {
         if ($_POST['medico'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medico']);
         }
-        if ($_POST['medico'] != "0") {
+        if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
         $this->db->orderby('g.ambulatorio_guia_id');
