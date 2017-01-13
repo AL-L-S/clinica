@@ -62,6 +62,9 @@
                 $guia_id = $test->ambulatorio_guia_id;
                 $cancelado = 0;
                 $empresa = 0;
+                if($test->empresa_id == $empresa_id){
+                    
+                
                 ?>
                 <table >
                     <thead>
@@ -94,6 +97,9 @@
                     </thead>
                     <tbody>
                         <?
+                        }else {
+                            $empresa ++;
+                        }
                         $estilo_linha = "tabela_content01";
                         foreach ($exames as $item) :
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -202,9 +208,7 @@
 
                                 <?
                                 }else{?>
-                                    <tr>
-                                <td colspan="6"><center><span style="color: red; font-weight: bold; font-size: 17px;">LANÇADO EM: <?=$item->empresa?></span></center></td>
-                           </tr>
+
                                     <? 
                                     
                                 }
@@ -213,13 +217,19 @@
                          
                             ?>
 
-                       <? if($cancelado == 0){
+                       <? 
+                        if($empresa ==0){
+                            
+                       
+                       if($cancelado == 0){
                             ?>
                              <tr>
                                 <td colspan="6"><center><span style="color: red; font-weight: bold; font-size: 17px;">PROCEDIMENTO CANCELADO</span></center></td>
                            </tr>  
 
-                       <?}?>
+                       <?}
+                        }
+                       ?>
 
                     </tbody>                                
                     <br>
