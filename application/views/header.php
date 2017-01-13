@@ -8,7 +8,6 @@ $perfil_id = $this->session->userdata('perfil_id');
 $operador_id = $this->session->userdata('operador_id');
 $internacao = $this->session->userdata('internacao');
 
-
 function alerta($valor) {
     echo "<script>alert('$valor');</script>";
 }
@@ -62,38 +61,38 @@ function debug($object) {
                         }
 
                         if (retorno != 0) {
-                            jQuery(".batepapo_div #contatos_chat_lista").append("<span class='total_mensagens'>+"+retorno+"</span>");
+                            jQuery(".batepapo_div #contatos_chat_lista").append("<span class='total_mensagens'>+" + retorno + "</span>");
                             abrindomensagensnaolidas();
                         }
                     }
                 });
             }
-            
-            
+
+
             function abrindomensagensnaolidas() {
                 jQuery.ajax({
                     type: "GET",
                     url: "<?= base_url(); ?>" + "batepapo/abrindomensagensnaolidas",
                     dataType: "json",
                     success: function (retorno) {
-                        
-                        if(retorno.length > 0){
-                            for (var obj in retorno){
+
+                        if (retorno.length > 0) {
+                            for (var obj in retorno) {
                                 var id = "<?= $operador_id ?>:" + retorno[obj].operador_id;
                                 var nome = retorno[obj].usuario;
-                                var status = null;    
+                                var status = null;
                                 var aberta = false;
-                                for (var i = 0; i < chatsAbertos.length; i++){
-                                    if(retorno[obj].operador_id == chatsAbertos[i]){
+                                for (var i = 0; i < chatsAbertos.length; i++) {
+                                    if (retorno[obj].operador_id == chatsAbertos[i]) {
                                         aberta = true;
                                     }
                                 }
-                                if(!aberta){
+                                if (!aberta) {
                                     adicionarJanela(id, nome, status);
                                 }
                             }
                         }
-                        
+
                     }
                 });
             }
@@ -124,8 +123,8 @@ function debug($object) {
                                 if (usr.num_mensagens != 0) {
                                     tags += "<span class='total_mensagens'> +" + usr.num_mensagens + " </span>";
                                 }
-                                tags += "<span id='"+usr.operador_id+"' class='status "+usr.status+"'></span></li>";
-                                
+                                tags += "<span id='" + usr.operador_id + "' class='status " + usr.status + "'></span></li>";
+
                                 //apos criar o item, adciona ele a lista e cria-se o item seguinte
                                 jQuery("#principalChat #usuarios_online ul").append(tags);
                             }
@@ -134,7 +133,7 @@ function debug($object) {
                 });
             }
 
-            
+
             //abri uma nova janela de batepapo
             function adicionarJanela(id, nome, status) {
                 //o parametro ID diz respeito ao operador_id que mandou a mensagem
@@ -145,7 +144,7 @@ function debug($object) {
                 //o numero maximo de janelas permitido sao cinco
                 var numeroJanelas = Number(jQuery("#chats .janela_chat").length);
                 if (numeroJanelas < 5) {
-                    
+
                     //atribui dinamicamente a posicao da janela na pagina
                     var posicaoJanela = (270 + 15) * numeroJanelas;
                     var estiloJanela = 'float:none; position: absolute; bottom:0; right:' + posicaoJanela + 'px';
@@ -153,8 +152,8 @@ function debug($object) {
                     //pega o id do operador origem e do operador destino
                     var splitOperadores = id.split(':');
                     var operadorDestino = Number(splitOperadores[1]);
-                    
-                    
+
+
                     // CRIANDO A JANELA DE BATEPAPO
                     // Toda janela de batepapo e construida da seguinte maneira:
                     // TAG <div> class='janela_chat' (serve para estilizar via CSS) e id que contera o id do contado aberto
@@ -172,10 +171,11 @@ function debug($object) {
                     //                  essa div tera um id com o id do operador logado e do operador qe ela esta dialogando
                     //                  para ajudar em eventos do javascript.
                     //                  o INPUT tem um valor maximo de 300 caracteres
+                    
                     var janela;
                     janela = "<div class='janela_chat' id='janela_" + operadorDestino + "' style='" + estiloJanela + "'>";
-                    janela += "<div class='cabecalho_janela_chat'> <a href='#' class='fechar'>X</a>"; 
-                    janela += "<span class='nome_chat'>" + nome + "</span><span id='" + operadorDestino + "'></span></div>";
+                    janela += "<div class='cabecalho_janela_chat'> <a href='#' class='fechar'>X</a>";
+                    janela += "<span class='nome_chat'>" + nome + "</span><span id='" + operadorDestino + "' class='"+status+"'></span></div>";
                     janela += "<div class='corpo_janela_chat'><div class='mensagens_chat'><ul></ul></div>";
                     janela += "<div class='enviar_mensagens_chat' id='" + id + "'>";
                     janela += "<input type='text' maxlength='300' name='mensagem_chat' class='mensagem_chat' id='" + id + "' /></div></div></div>";
@@ -185,7 +185,7 @@ function debug($object) {
                     //adiciona a janela criada na lista de janelas abertas
                     chatsAbertos.push(operadorDestino);
                     //retorna o historico de mensagens e faz a pagina se atualizar novamente
-//                    verifica(0, 0,<?// echo $operador_id ?>);
+//                    verifica(0, 0,<? // echo $operador_id  ?>);
                 }
             }
 
@@ -202,9 +202,9 @@ function debug($object) {
                             if (jQuery('#janela_' + msg.janela).length > 0) {
 
                                 if (operadorOrigem == msg.id_origem) {
-                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p><div class='data_envio'>"+msg.data_envio+"</div></li>");
+                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p><div class='data_envio'>" + msg.data_envio + "</div></li>");
                                 } else {
-                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p><div class='data_envio'>"+msg.data_envio+"</div></li>");
+                                    jQuery("#janela_" + msg.janela + " .corpo_janela_chat .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p><div class='data_envio'>" + msg.data_envio + "</div></li>");
                                 }
                             }
                         });
@@ -315,12 +315,12 @@ function debug($object) {
                             if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 11 || $perfil_id == 12) {
                                 ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriorecepcaomedicoconvenio">Relatorio Medico Convenio</a></span></ul>
-                            <?
+                                <?
                             }
                             if ($perfil_id != 9) {
                                 ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioatendenteconvenio">Relatorio Atendente Convenio</a></span></ul>
-<? } ?>    
+                            <? } ?>    
 <!--                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exametemp">Pacientes temporarios</a></span></ul>
 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/localizapaciente">Loacalizar pacientes</a></span></ul>-->
                         </li>
@@ -330,37 +330,37 @@ function debug($object) {
                 <li><span class="folder">Atendimento</span>
                     <ul>
                         <li><span class="folder">Rotinas</span>
-<? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalasespera">Salas de Espera</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamerealizando">Salas de Atendimento</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamependente">Atendimentos pendentes</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li>
                     </ul>
                 </li>
                 <li><span class="folder">Imagem</span>
                     <ul>
                         <li><span class="folder">Rotinas</span>
-<? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedico">Multifuncao Medico</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo">Manter Laudo</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisardigitador">Manter Laudo Digitador</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarrevisor">Manter Revisor</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarlaudoantigo">Manter Antigo</a></span></ul>
-<? } ?>     
+                            <? } ?>     
                         </li>
                         <li><span class="folder">Relatorios</span>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
-<? } ?>    
+                            <? } ?>    
                         </li>    
                     </ul>
                 </li>
                 <li><span class="folder">Consultas</span>
                     <ul>
                         <li><span class="folder">Rotinas</span>
-<? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicoconsulta">Multifuncao Medico</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarconsulta">Manter Consulta</a></span></ul>
                                 <?
@@ -370,7 +370,7 @@ function debug($object) {
                         <li><span class="folder">Relatorios</span>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li>   
                     </ul>
                 </li>
@@ -386,7 +386,7 @@ function debug($object) {
                         <li><span class="folder">Relatorios</span>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li>  
                     </ul>
                 </li>
@@ -402,7 +402,7 @@ function debug($object) {
                         <li><span class="folder">Relatorios</span>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li>  
                     </ul>
                 </li>
@@ -418,22 +418,22 @@ function debug($object) {
                         <li><span class="folder">Relatorios</span>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
-<? } ?>    
+                            <? } ?>    
                         </li>   
                     </ul>
                 </li>
                 <li><span class="folder">Faturamento</span>
                     <ul>
                         <li><span class="folder">Rotinas</span>
-<? if ($perfil_id == 1 || $perfil_id == 3) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentoexame">Faturar</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentoexamexml">Gerar xml</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/faturamentolaudoxml">Gerar xml Laudo</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriovalorprocedimento">Ajustar valores</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li>
                         <li><span class="folder">Relatorios</span>
-<? if ($perfil_id == 1 || $perfil_id == 3) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexame">Relatorio Conferencia</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/gerarelatoriogeralsintetico">Relatorio Sintetico Geral</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexamech">Relatorio Faturamento Convenio CH</a></span></ul>
@@ -455,7 +455,7 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotecnicoconveniosintetico">Relatorio Tecnico Convenio Sintetico</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexamesala">Relatorio Consolidado por sala</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioconveniovalor">Relatorio Convenio atendimento/consultas valor</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li> 
                     </ul>
                 </li>
@@ -464,15 +464,15 @@ function debug($object) {
                         <li><span class="folder">Rotinas</span>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/solicitacao">Manter Solicitacao</a></span></ul>
-<? } if ($perfil_id == 1 || $perfil_id == 8) { ?>
+                            <? } if ($perfil_id == 1 || $perfil_id == 8) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada">Manter Entrada</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/inventario">Manter Inventario</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/fornecedor">Manter Fornecedor</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/produto">Manter Produto</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li> 
                         <li><span class="folder">Relatorios</span>
-<? if ($perfil_id == 1 || $perfil_id == 8) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 8) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatorioentradaarmazem">Relatorio Entrada Produtos</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaidaarmazem">Relatorio Saida Produtos</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldoarmazem">Relatorio Saldo Produtos/Entrada</a></span></ul>
@@ -481,14 +481,14 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatorioprodutos">Relatorio Produtos</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriofornecedores">Relatorio Fornecedores</a></span></ul>
 
-<? } ?>
+                            <? } ?>
                         </li> 
                     </ul>
                 </li>
                 <li><span class="folder">Financeiro</span>
                     <ul>
                         <li><span class="folder">Rotinas</span>
-<? if ($perfil_id == 1) { ?>
+                            <? if ($perfil_id == 1) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa">Manter Entrada</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/pesquisar2">Manter Saida</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/contaspagar">Manter Contas a pagar</a></span></ul>
@@ -532,18 +532,18 @@ function debug($object) {
 
                     </ul>
                 </li>
-                
+
                 <? if ($internacao == 't') { ?>
-                            <li><span class="folder">Internacao</span>
-                                <ul>
-                                    <li><span class="file"><a href="<?= base_url() ?>internacao/internacao">Listar Internações</a></span></li>
-                                    <!--<li><span class="file"><a href="<?= base_url() ?>internacao/internacao">Listar Internacoes</a></span></li>-->
-                                    <li><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarsaida">Listar Saidas</a></span></li>
-                                </ul>
-                            </li>
-                
-                
-<? } ?>
+                    <li><span class="folder">Internacao</span>
+                        <ul>
+                            <li><span class="file"><a href="<?= base_url() ?>internacao/internacao">Listar Internações</a></span></li>
+                            <!--<li><span class="file"><a href="<?= base_url() ?>internacao/internacao">Listar Internacoes</a></span></li>-->
+                            <li><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarsaida">Listar Saidas</a></span></li>
+                        </ul>
+                    </li>
+
+
+                <? } ?>
                 <li><span class="folder">Centro Cirurgico</span>
                     <ul>
                         <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico">Listar Solicitacoes</a></span></li>
@@ -561,13 +561,13 @@ function debug($object) {
                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicosolicitanterm">Relatorio Medico Solicitante</a></span></ul>
                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconveniorm">Relatorio Medico Convenio</a></span></ul>
                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriofaturamentorm">Relatorio Faturamento</a></span></ul>
-<? } ?>
+                        <? } ?>
                     </ul>
                 </li>
                 <li><span class="folder">Configura&ccedil;&atilde;o</span>
                     <ul>
                         <li><span class="folder">Recep&ccedil;&atilde;o</span>
-<? if ($perfil_id == 1 || $perfil_id == 5) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 5) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador">Listar Profissionais</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/motivocancelamento">Motivo cancelamento</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/tipoconsulta">Tipo consulta</a></span></ul>
@@ -577,11 +577,11 @@ function debug($object) {
                             <? } ?>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/sala">Manter Salas</a></span></ul>
-<? } ?>
+                            <? } ?>
                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelodeclaracao">Modelo Declara&ccedil;&atilde;o</a></span></ul>
                         </li>
                         <li><span class="folder">Procedimento</span>                    
-<? if ($perfil_id == 1 || $perfil_id == 3) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento">Manter Procedimentos</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/relatorioprocedimento">Relatorio Procedimentos</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/pesquisartuss">Manter Procedimentos TUSS</a></span></ul>
@@ -593,31 +593,31 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">Manter Percentual M&eacute;dico</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificacao</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/agrupador">Manter Agrupador</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li>
                         <li><span class="folder">Imagem</span> 
-<? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelolaudo">Manter Modelo Laudo</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelolinha">Manter Modelo Linha</a></span></ul>
-                        <? } ?>
+                            <? } ?>
                         </li>
-<? if ($internacao == 't') { ?>
+                        <? if ($internacao == 't') { ?>
                             <li><span class="folder">Interna&ccedil;&atilde;o</span>
                                 <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarmotivosaida">Manter Motivo Saida</a></span></ul> 
                             </li>
-                            <? } ?>
+                        <? } ?>
                         <li><span class="folder">Consulta</span> 
-<? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloreceita">Manter Modelo Receita</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloatestado">Manter Modelo Atestado</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloreceitaespecial">Manter Modelo R. Especial</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelosolicitarexames">Manter Modelo S.Exames</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelomedicamento">Manter Medicamento</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelomedicamento/pesquisarunidade">Manter Medicamento Unidade</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li>
                         <li><span class="folder">Estoque</span>
-<? if ($perfil_id == 1 || $perfil_id == 8) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 8) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/menu">Manter Menu</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/tipo">Manter Tipo</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/classe">Manter Classe</a></span></ul>
@@ -626,23 +626,23 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/armazem">Manter Armazem</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>estoque/cliente">Manter Setor</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/operadorsetor">Listar Operadores</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li> 
                         <li><span class="folder">Financeiro</span>
-<? if ($perfil_id == 1) { ?>
+                            <? if ($perfil_id == 1) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/tipo">Manter Tipo</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/classe">Manter Classe</a></span></ul>
     <!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/forma">Manter Conta</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento">Manter Forma de Pagamento</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Forma de Pagamento Grupo</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li> 
                         <li><span class="folder">Administrativas</span>
-<? if ($perfil_id == 1 || $perfil_id == 3) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa">Manter Empresa</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/versao">Vers&atilde;o</a></span></ul>
-<? } ?>
+                            <? } ?>
                         </li> 
                     </ul>
                 </li>
@@ -653,9 +653,9 @@ function debug($object) {
             <!-- Fim da Barra Lateral -->
         </div>
         <div class="mensagem"><?
-            if (isset($mensagem)): echo $mensagem;
-            endif;
-            ?></div>
+                            if (isset($mensagem)): echo $mensagem;
+                            endif;
+                            ?></div>
         <script type="text/javascript">
             $("#menu").treeview({
                 animated: "normal",
@@ -663,48 +663,47 @@ function debug($object) {
                 collapsed: true,
                 unique: true
             });
-            
-            jQuery(function(){
-                
-                jQuery("#contatos_chat_lista").click( function () {
-                    
+
+            jQuery(function () {
+
+                jQuery("#contatos_chat_lista").click(function () {
+
                     var classe = jQuery("#contatos_chat_lista").attr("class");
-                    
+//                    console.log('ola');
                     //verificando se o usuario ja clicou no icone de batepapo
-                    if(classe == 'nao_clicado'){
+                    if (classe == 'nao_clicado') {
                         //mostrando a lista de contatos
                         carregacontatos();
                         jQuery("#contatos_chat_lista").attr("class", 'clicado');
 
-                        jQuery("#principalChat #usuarios_online").mouseleave( function () {
+                        jQuery("#principalChat #usuarios_online").mouseleave(function () {
                             jQuery("#principalChat #usuarios_online ul li").remove();
                             jQuery("#contatos_chat_lista").attr("class", 'nao_clicado');
                         });
                     }
                 });
-                
+
             });
-            
-            jQuery(".total_mensagens").css("opacity","0.4");//define opacidade inicial
+
+            jQuery(".total_mensagens").css("opacity", "0.4");//define opacidade inicial
             //faz o numero de mensagens nao lidas piscar
-            setInterval(function() {
-                if($(".total_mensagens").css("opacity") == 0){
-                    $(".total_mensagens").css("opacity","1");
-                }
-                else{
-                  $(".total_mensagens").css("opacity","0");
+            setInterval(function () {
+                if ($(".total_mensagens").css("opacity") == 0) {
+                    $(".total_mensagens").css("opacity", "1");
+                } else {
+                    $(".total_mensagens").css("opacity", "0");
                 }
             }, 600);
-                
-                
+
+
             //abrindo a janelas de batepapo
-            jQuery(function(){
+            jQuery(function () {
                 jQuery("#principalChat #usuarios_online ul li a").live('click', function () {
 //                    console.log('teste');
                     var id = jQuery(this).attr("id");
                     jQuery(this).removeClass("comecarChat");
 
-                    var status = jQuery(this).next().attr("class"); 
+                    var status = jQuery(this).next().attr("class");
 //                    console.log(status);
                     var splitId = id.split(":");
                     var idJanela = Number(splitId[1]);
@@ -720,16 +719,17 @@ function debug($object) {
             });
 
             //minimizando as janelas
-            jQuery(function(){
+            jQuery(function () {
                 jQuery("#principalChat .cabecalho_janela_chat").live('click', function () {
                     var corpo_janela_chat = jQuery(this).next();
                     corpo_janela_chat.toggle(100);
+                    verifica(0, 0, <? echo $operador_id ?>);
                 });
             });
 
 
             //fechando a janela
-            jQuery(function(){
+            jQuery(function () {
                 jQuery("#principalChat .fechar").live('click', function () {
 
                     var janelaSelecionada = jQuery(this).parent().parent();
@@ -760,7 +760,7 @@ function debug($object) {
             });
 
             //Enviando mensagens
-            jQuery(function(){
+            jQuery(function () {
                 jQuery("#principalChat .mensagem_chat").live('keyup', function (tecla) {
 
                     if (tecla.which == 13) {
@@ -786,11 +786,11 @@ function debug($object) {
                     }
                 });
             });
-            
+
             //Atualizando novas mensagens
             function verifica(timestamp, ultimoId, operadorOrigem) {
                 var t;
-                
+
                 //ESSA FUNCAO IRA VERIFICAR SE HA NOVAS MENSAGENS PARA OS CONTATOS ABERTOS OU NOVAS MENSAGENS NAO LIDAS
                 jQuery.ajax({
                     url: "<?= base_url(); ?>" + "batepapo/atualizamensagens",
@@ -814,20 +814,20 @@ function debug($object) {
 
                                     //testando se ela ja esta aberta
                                     if (jQuery("#janela_" + msg.janela).length > 0) {
-                                        
+
                                         //caso a janela ja esteja aberta adciona as novas mensagens em uma tag <li> e incrementa elas a <ul> da janela correspondente
                                         if (jQuery("#janela_" + msg.janela + " .mensagens_chat ul li#" + msg.chat_id).length == 0 && msg.janela > 0) {
 
                                             if (operadorOrigem == msg.id_origem) {
-                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p> <div class='data_envio'>"+msg.data_envio+"</div></li>");
+                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li class='eu' id='" + msg.chat_id + "'><p>" + msg.mensagem + "</p> <div class='data_envio'>" + msg.data_envio + "</div></li>");
                                             } else {
-                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><div class='imgPerfil'></div><p>" + msg.mensagem + "</p> <div class='data_envio'>"+msg.data_envio+"</div></li>");
+                                                jQuery("#janela_" + msg.janela + " .mensagens_chat ul").append("<li id='" + msg.chat_id + "'><div class='imgPerfil'></div><p>" + msg.mensagem + "</p> <div class='data_envio'>" + msg.data_envio + "</div></li>");
                                             }
                                         }
-                                        
+
                                         //CASO O CONTATO ESTEJA ABBERTO ELE MARCA A MENSAGEM COMO LIDA
                                         jQuery.ajax({
-                                                url: "<?= base_url(); ?>" + "batepapo/visualizacontatoaberto",
+                                            url: "<?= base_url(); ?>" + "batepapo/visualizacontatoaberto",
                                             type: "GET",
                                             data: 'operador_destino=' + msg.janela,
                                             success: function () {
@@ -856,8 +856,21 @@ function debug($object) {
                     verifica(0, 0,<? echo $operador_id ?>);
                     mensagensnaolidas();
 
-                }, 3000);
+                }, 10000);
             }
+
+            function atualizastatus() {
+                jQuery.ajax({
+                    type: "GET",
+                    url: "<?= base_url(); ?>" + "batepapo/atualizastatus",
+                    dataType: "json"
+                });
+            }
+
+            //atualiza status do operador
+            setInterval(function () {
+                atualizastatus();
+            }, 90000);
 
             buscamensagens();
 //            mensagensnaolidas();

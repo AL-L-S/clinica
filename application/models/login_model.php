@@ -34,6 +34,8 @@ class login_model extends Model {
         $this->db->where('empresa_id', $empresa);
         $retorno = $this->db->get()->result();
         
+        $horario = date(" Y-m-d H:i:s");
+        $this->db->set('horario_login', $horario);
         $this->db->set('online', 't');
         $this->db->where('operador_id', $return[0]->operador_id);
         $this->db->update('tb_operador');
@@ -85,8 +87,9 @@ class login_model extends Model {
     
     function sair() {
         $operador_id = $this->session->userdata('operador_id');
+        $horario = date(" Y-m-d H:i:s");
 
-        $this->db->set('online', 'f');
+        $this->db->set('horario_logout', $horario);
         $this->db->where('operador_id', $operador_id);
         $this->db->update('tb_operador');
     }

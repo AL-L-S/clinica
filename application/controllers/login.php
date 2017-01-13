@@ -43,8 +43,8 @@ class Login extends Controller {
     }
 
     function sair() {
-        //setando operador pra offline
         $this->login->sair();
+        
         $this->session->sess_destroy();
         
         $data['mensagem'] = $this->mensagem->getMensagem('login003');
