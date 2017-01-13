@@ -41,6 +41,7 @@ class guia_model extends Model {
 
         $this->db->select('ag.ambulatorio_guia_id,
                             ag.paciente_id,
+                            ag.empresa_id,
                             ag.data_cadastro,
                             p.nome as paciente');
         $this->db->from('tb_ambulatorio_guia ag');
