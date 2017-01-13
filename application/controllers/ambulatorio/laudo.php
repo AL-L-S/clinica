@@ -1192,9 +1192,14 @@ class Laudo extends BaseController {
         $data['atestado'] = true;
         $data['imprimircid'] = $data['laudo']['0']->imprimir_cid;
         $data['co_cid'] = $data['laudo']['0']->cid1;
+        $data['co_cid2'] = $data['laudo']['0']->cid2;
 
         if (isset($data['co_cid'])) {
             $data['cid'] = $this->laudo->listarcid($data['co_cid']);
+        }
+
+        if (isset($data['co_cid'])) {
+            $data['cid2'] = $this->laudo->listarcid($data['co_cid2']);
         }
 
         if ($data['laudo'][0]->assinatura == 't') {

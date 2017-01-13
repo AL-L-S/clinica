@@ -56,7 +56,7 @@ class paciente_model extends BaseModel {
         $this->db->select();
         $this->db->from('tb_paciente');
         $this->db->where('nome', $_POST['nome']);
-        $this->db->where('nascimento', date("Y-m-d", strtotime( str_replace("/","-",$_POST['nascimento']) ) ));
+        $this->db->where('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
         $this->db->where('nome_mae', $_POST['nome_mae']);
         $this->db->where('ativo', 't');
         $return = $this->db->count_all_results();
@@ -124,6 +124,38 @@ class paciente_model extends BaseModel {
 
         return $return->result();
     }
+
+    function cep($parametro = null) {
+
+        $this->db->select('cl.cep,
+                           cl.logradouro_nome,
+                           cl.tipo_logradouro,
+                           cloc.localidade_nome,
+                           cloc.uf,
+                           cb.nome_bairro');
+        $this->db->from('tb_cep_logradouro cl');
+        $this->db->join('tb_cep_localidade cloc', 'cloc.localidade_id = cl.localidade_id', 'left');
+        $this->db->join('tb_cep_bairro cb', 'cb.cep_bairro_id = cl.bairro_inicial', 'left');
+
+        if ($parametro != null) {
+//            $parametro = intval($parametro);
+            $this->db->where('cl.cep ilike', $parametro . "%");
+        }
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+//    function cep_buscarcidade($cidadenome) {
+//
+//        $this->db->select('municipio_id,
+//                               nome');
+//        $this->db->from('tb_municipio');
+//        $this->db->where('nome', $cidadenome);
+//
+//        $return = $this->db->get();
+//        return $return->result();
+//    }
 
     private function instanciar($paciente_id) {
         if ($paciente_id != 0) {
@@ -228,7 +260,7 @@ class paciente_model extends BaseModel {
                 $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
             }
             if ($_POST['nascimento'] != '') {
-                $this->db->set('nascimento',  str_replace("/","-",$_POST['nascimento']));
+                $this->db->set('nascimento', str_replace("/", "-", $_POST['nascimento']));
             }
             if ($_POST['data_emissao'] != '') {
                 $this->db->set('data_emissao', $_POST['data_emissao']);

@@ -1,7 +1,7 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <form name="form_paciente" id="form_paciente" action="<?= base_url() ?>cadastros/pacientes/gravar" method="post">
         <!--        Chamando o Script para a Webcam   -->
-            <script src="<?= base_url() ?>js/webcam.js"></script>
+        <script src="<?= base_url() ?>js/webcam.js"></script>
         <fieldset>
             <legend>Dados do Paciente</legend>
             <div>
@@ -152,7 +152,9 @@
                 <label>CEP</label>
 
 
-                <input type="text" id="cep" class="texto02" name="cep" alt="cep" value="<?= @$obj->_cep; ?>" />
+                <input type="text" id="cep" class="texto02" name="cep"  value="<?= @$obj->_cep; ?>" />
+                <!--<input type="text" id="cep" class="texto02" name="cep"  value="<?= @$obj->_cep; ?>" />-->
+
             </div>
 
 
@@ -305,37 +307,36 @@
         </a>
 
     </form>
-    
-        <script language="JavaScript">
-            Webcam.set({
-                width: 140,
-                height: 160,
-                dest_width: 480,
-                dest_height: 360,
 
-                image_format: 'jpeg',
-                jpeg_quality: 100
+    <script language="JavaScript">
+        Webcam.set({
+            width: 140,
+            height: 160,
+            dest_width: 480,
+            dest_height: 360,
+            image_format: 'jpeg',
+            jpeg_quality: 100
+        });
+        function ativar_camera() {
+            Webcam.attach('#my_camera');
+        }
+        function take_snapshot() {
+            // tira a foto e gera uma imagem para a div
+            Webcam.snap(function (data_uri) {
+                // display results in page
+                document.getElementById('results').innerHTML =
+                        '<img height = "160" width = "140" src="' + data_uri + '"/>';
+                //              Gera uma variável com o código binário em base 64 e joga numa variável
+                var raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
+                //              Pega o valor do campo mydata, campo hidden que armazena temporariamente o código da imagem
+                document.getElementById('mydata').value = raw_image_data;
+
             });
-            function ativar_camera(){
-                    Webcam.attach('#my_camera');
-                }
-            function take_snapshot() {
-                // tira a foto e gera uma imagem para a div
-                Webcam.snap(function (data_uri) {
-                    // display results in page
-                    document.getElementById('results').innerHTML =
-                            '<img height = "160" width = "140" src="' + data_uri + '"/>';
-    //              Gera uma variável com o código binário em base 64 e joga numa variável
-                    var raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
-    //              Pega o valor do campo mydata, campo hidden que armazena temporariamente o código da imagem
-                    document.getElementById('mydata').value = raw_image_data;
-
-                });
-            }
+        }
 
 
 
-        </script>
+    </script>
 
 </div>
 
@@ -346,90 +347,109 @@
 <script type="text/javascript">
 
 
-        $(document).ready(function () {
-            jQuery('#form_paciente').validate({
-                rules: {
-                    nome: {
-                        required: true,
-                        minlength: 3
+            $(document).ready(function () {
+                jQuery('#form_paciente').validate({
+                    rules: {
+                        nome: {
+                            required: true,
+                            minlength: 3
+                        },
+                        sexo: {
+                            required: true
+                        },
+                        telefone: {
+                            required: true
+                        },
+                        nascimento: {
+                            required: true
+                        }
+
                     },
-                    sexo: {
-                        required: true
-                    },
-                    telefone: {
-                        required: true
-                    },
-                    nascimento: {
-                        required: true
+                    messages: {
+                        nome: {
+                            required: "*",
+                            minlength: "*"
+                        },
+                        sexo: {
+                            required: "*"
+                        },
+                        telefone: {
+                            required: "*"
+                        },
+                        nascimento: {
+                            required: "*"
+                        }
                     }
+                });
+            });
 
-                },
-                messages: {
-                    nome: {
-                        required: "*",
-                        minlength: "*"
+            $(function () {
+                $("#txtcbo").autocomplete({
+                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
+                    minLength: 3,
+                    focus: function (event, ui) {
+                        $("#txtcbo").val(ui.item.label);
+                        return false;
                     },
-                    sexo: {
-                        required: "*"
-                    },
-                    telefone: {
-                        required: "*"
-                    },
-                    nascimento: {
-                        required: "*"
+                    select: function (event, ui) {
+                        $("#txtcbo").val(ui.item.value);
+                        $("#txtcboID").val(ui.item.id);
+                        return false;
                     }
-                }
+                });
             });
-        });
 
-        $(function () {
-            $("#txtcbo").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
-                minLength: 3,
-                focus: function (event, ui) {
-                    $("#txtcbo").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#txtcbo").val(ui.item.value);
-                    $("#txtcboID").val(ui.item.id);
-                    return false;
-                }
+            $(function () {
+                $("#txtCidade").autocomplete({
+                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
+                    minLength: 3,
+                    focus: function (event, ui) {
+                        $("#txtCidade").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#txtCidade").val(ui.item.value);
+                        $("#txtCidadeID").val(ui.item.id);
+                        return false;
+                    }
+                });
             });
-        });
-
-        $(function () {
-            $("#txtCidade").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
-                minLength: 3,
-                focus: function (event, ui) {
-                    $("#txtCidade").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#txtCidade").val(ui.item.value);
-                    $("#txtCidadeID").val(ui.item.id);
-                    return false;
-                }
+            $(function () {
+                $("#txtEstado").autocomplete({
+                    source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
+                    minLength: 2,
+                    focus: function (event, ui) {
+                        $("#txtEstado").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#txtEstado").val(ui.item.value);
+                        $("#txtEstadoID").val(ui.item.id);
+                        return false;
+                    }
+                });
             });
-        });
-        $(function () {
-            $("#txtEstado").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
-                minLength: 2,
-                focus: function (event, ui) {
-                    $("#txtEstado").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#txtEstado").val(ui.item.value);
-                    $("#txtEstadoID").val(ui.item.id);
-                    return false;
-                }
+
+
+
+            $(function () {
+                $("#cep").autocomplete({
+                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cep",
+                    minLength: 3,
+                    focus: function (event, ui) {
+                        $("#cep").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#cep").val(ui.item.cep);
+                        $("#txtendereco").val(ui.item.logradouro_nome);
+                        $("#txtBairro").val(ui.item.nome_bairro);
+//                        $("#txtCidade").val(ui.item.localidade_nome);
+                        $("#txtTipoLogradouro").val(ui.item.tipo_logradouro);
+
+                        return false;
+                    }
+                });
             });
-        });
-
-
-
 
 </script>

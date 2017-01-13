@@ -204,7 +204,7 @@ class exame_model extends Model {
         return $return->result();
     }
 
-     function mostrarlaudogastodesala($exame_id) {
+    function mostrarlaudogastodesala($exame_id) {
         $this->db->select('al.medico_parecer1,
                             al.ambulatorio_laudo_id,
                             al.procedimento_tuss_id,
@@ -212,17 +212,21 @@ class exame_model extends Model {
                             pt.nome as procedimento,
                             al.situacao as situacaolaudo');
         $this->db->from('tb_exames e');
-	$this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
-	$this->db->where('e.exames_id', $exame_id);
-	$return = $this->db->get();
+        $this->db->where('e.exames_id', $exame_id);
+        $return = $this->db->get();
         return $return->result();
     }
 
     function listaritensgastos($guia_id) {
-        $this->db->select('ags.ambulatorio_gasto_sala_id, ep.descricao, ags.quantidade, eu.descricao as unidade, pt.descricao as procedimento');
+        $this->db->select('ags.ambulatorio_gasto_sala_id, 
+                           ep.descricao, ags.quantidade, 
+                           eu.descricao as unidade, 
+                           pt.descricao as procedimento,
+                           ags.descricao as descricao_gasto');
         $this->db->from('tb_ambulatorio_gasto_sala ags');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
         $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = ep.unidade_id', 'left');
@@ -764,31 +768,26 @@ class exame_model extends Model {
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
+
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            if ($args['situacao'] != 'FALTOU') {
-                $this->db->where('ae.situacao', $args['situacao']);
-                if ($args['situacao'] == 'LIVRE') {
-                    $this->db->where('ae.bloqueado', 'f');
-                }
-                if ($args['situacao'] == 'OK') {
-                    date_default_timezone_set('America/Fortaleza');
-                    $data_atual = date('Y-m-d');
-                    $hora_atual = date('H:i:s');
-                    $this->db->where('p.nome IS NOT NULL');
-                    $this->db->where('ae.confirmado', 'f');
-                    $this->db->where('ae.data >=', $data_atual);
-                    $this->db->where('ae.inicio >=', $hora_atual);
-                }
-            } else {
+            if ($args['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($args['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($args['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($args['situacao'] == "FALTOU") {
                 date_default_timezone_set('America/Fortaleza');
                 $data_atual = date('Y-m-d');
-                $hora_atual = date('H:i:s');
-                $this->db->where('p.nome IS NOT NULL');
-                $this->db->where('ae.confirmado', 'f');
-                $this->db->where('ae.data <=', $data_atual);
-                $this->db->where('ae.inicio <=', $hora_atual);
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
             }
         }
+
         return $this->db;
     }
 
@@ -872,29 +871,23 @@ class exame_model extends Model {
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
+
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            if ($args['situacao'] != 'FALTOU') {
-                $this->db->where('ae.situacao', $args['situacao']);
-                if ($args['situacao'] == 'LIVRE') {
-                    $this->db->where('ae.bloqueado', 'f');
-                }
-                if ($args['situacao'] == 'OK') {
-                    date_default_timezone_set('America/Fortaleza');
-                    $data_atual = date('Y-m-d');
-                    $hora_atual = date('H:i:s');
-                    $this->db->where('p.nome IS NOT NULL');
-                    $this->db->where('ae.confirmado', 'f');
-                    $this->db->where('ae.data >=', $data_atual);
-                    $this->db->where('ae.inicio >=', $hora_atual);
-                }
-            } else {
+            if ($args['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($args['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($args['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($args['situacao'] == "FALTOU") {
                 date_default_timezone_set('America/Fortaleza');
                 $data_atual = date('Y-m-d');
-                $hora_atual = date('H:i:s');
-                $this->db->where('p.nome IS NOT NULL');
-                $this->db->where('ae.confirmado', 'f');
-                $this->db->where('ae.data <=', $data_atual);
-                $this->db->where('ae.inicio <=', $hora_atual);
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
             }
         }
         return $this->db;
@@ -1011,28 +1004,21 @@ class exame_model extends Model {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            if ($args['situacao'] != 'FALTOU') {
-                $this->db->where('ae.situacao', $args['situacao']);
-                if ($args['situacao'] == 'LIVRE') {
-                    $this->db->where('ae.bloqueado', 'f');
-                }
-                if ($args['situacao'] == 'OK') {
-                    date_default_timezone_set('America/Fortaleza');
-                    $data_atual = date('Y-m-d');
-                    $hora_atual = date('H:i:s');
-                    $this->db->where('p.nome IS NOT NULL');
-                    $this->db->where('ae.confirmado', 'f');
-                    $this->db->where('ae.data >=', $data_atual);
-                    $this->db->where('ae.inicio >=', $hora_atual);
-                }
-            } else {
+            if ($args['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($args['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($args['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($args['situacao'] == "FALTOU") {
                 date_default_timezone_set('America/Fortaleza');
                 $data_atual = date('Y-m-d');
-                $hora_atual = date('H:i:s');
-                $this->db->where('p.nome IS NOT NULL');
-                $this->db->where('ae.confirmado', 'f');
-                $this->db->where('ae.data <=', $data_atual);
-                $this->db->where('ae.inicio <=', $hora_atual);
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
             }
         }
         return $this->db;
@@ -1121,29 +1107,21 @@ class exame_model extends Model {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            
-            if ($args['situacao'] != 'FALTOU') {
-                $this->db->where('ae.situacao', $args['situacao']);
-                if ($args['situacao'] == 'LIVRE') {
-                    $this->db->where('ae.bloqueado', 'f');
-                }
-                if ($args['situacao'] == 'OK') {
-                    date_default_timezone_set('America/Fortaleza');
-                    $data_atual = date('Y-m-d');
-                    $hora_atual = date('H:i:s');
-                    $this->db->where('p.nome IS NOT NULL');
-                    $this->db->where('ae.confirmado', 'f');
-                    $this->db->where('ae.data >=', $data_atual);
-                    $this->db->where('ae.inicio >=', $hora_atual);
-                }
-            } else {
+            if ($args['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($args['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($args['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($args['situacao'] == "FALTOU") {
                 date_default_timezone_set('America/Fortaleza');
                 $data_atual = date('Y-m-d');
-                $hora_atual = date('H:i:s');
-                $this->db->where('p.nome IS NOT NULL');
-                $this->db->where('ae.confirmado', 'f');
-                $this->db->where('ae.data <=', $data_atual);
-                $this->db->where('ae.inicio <=', $hora_atual);
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
             }
         }
         if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
@@ -1574,28 +1552,21 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            if ($args['situacao'] != 'FALTOU') {
-                $this->db->where('ae.situacao', $args['situacao']);
-                if ($args['situacao'] == 'LIVRE') {
-                    $this->db->where('ae.bloqueado', 'f');
-                }
-                if ($args['situacao'] == 'OK') {
-                    date_default_timezone_set('America/Fortaleza');
-                    $data_atual = date('Y-m-d');
-                    $hora_atual = date('H:i:s');
-                    $this->db->where('p.nome IS NOT NULL');
-                    $this->db->where('ae.confirmado', 'f');
-                    $this->db->where('ae.data >=', $data_atual);
-                    $this->db->where('ae.inicio >=', $hora_atual);
-                }
-            } else {
+            if ($args['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($args['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($args['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($args['situacao'] == "FALTOU") {
                 date_default_timezone_set('America/Fortaleza');
                 $data_atual = date('Y-m-d');
-                $hora_atual = date('H:i:s');
-                $this->db->where('p.nome IS NOT NULL');
-                $this->db->where('ae.confirmado', 'f');
-                $this->db->where('ae.data <=', $data_atual);
-                $this->db->where('ae.inicio <=', $hora_atual);
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
             }
         }
         return $this->db;
@@ -1674,28 +1645,21 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            if ($args['situacao'] != 'FALTOU') {
-                $this->db->where('ae.situacao', $args['situacao']);
-                if ($args['situacao'] == 'LIVRE') {
-                    $this->db->where('ae.bloqueado', 'f');
-                }
-                if ($args['situacao'] == 'OK') {
-                    date_default_timezone_set('America/Fortaleza');
-                    $data_atual = date('Y-m-d');
-                    $hora_atual = date('H:i:s');
-                    $this->db->where('p.nome IS NOT NULL');
-                    $this->db->where('ae.confirmado', 'f');
-                    $this->db->where('ae.data >=', $data_atual);
-                    $this->db->where('ae.inicio >=', $hora_atual);
-                }
-            } else {
+            if ($args['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($args['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($args['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($args['situacao'] == "FALTOU") {
                 date_default_timezone_set('America/Fortaleza');
                 $data_atual = date('Y-m-d');
-                $hora_atual = date('H:i:s');
-                $this->db->where('p.nome IS NOT NULL');
-                $this->db->where('ae.confirmado', 'f');
-                $this->db->where('ae.data <=', $data_atual);
-                $this->db->where('ae.inicio <=', $hora_atual);
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
             }
         }
         return $this->db;
@@ -2016,28 +1980,21 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            if ($args['situacao'] != 'FALTOU') {
-                $this->db->where('ae.situacao', $args['situacao']);
-                if ($args['situacao'] == 'LIVRE') {
-                    $this->db->where('ae.bloqueado', 'f');
-                }
-                if ($args['situacao'] == 'OK') {
-                    date_default_timezone_set('America/Fortaleza');
-                    $data_atual = date('Y-m-d');
-                    $hora_atual = date('H:i:s');
-                    $this->db->where('p.nome IS NOT NULL');
-                    $this->db->where('ae.confirmado', 'f');
-                    $this->db->where('ae.data >=', $data_atual);
-                    $this->db->where('ae.inicio >=', $hora_atual);
-                }
-            } else {
+            if ($args['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($args['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($args['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($args['situacao'] == "FALTOU") {
                 date_default_timezone_set('America/Fortaleza');
                 $data_atual = date('Y-m-d');
-                $hora_atual = date('H:i:s');
-                $this->db->where('p.nome IS NOT NULL');
-                $this->db->where('ae.confirmado', 'f');
-                $this->db->where('ae.data <=', $data_atual);
-                $this->db->where('ae.inicio <=', $hora_atual);
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
             }
         }
         return $this->db;
@@ -2111,28 +2068,21 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-            if ($args['situacao'] != 'FALTOU') {
-                $this->db->where('ae.situacao', $args['situacao']);
-                if ($args['situacao'] == 'LIVRE') {
-                    $this->db->where('ae.bloqueado', 'f');
-                }
-                if ($args['situacao'] == 'OK') {
-                    date_default_timezone_set('America/Fortaleza');
-                    $data_atual = date('Y-m-d');
-                    $hora_atual = date('H:i:s');
-                    $this->db->where('p.nome IS NOT NULL');
-                    $this->db->where('ae.confirmado', 'f');
-                    $this->db->where('ae.data >=', $data_atual);
-                    $this->db->where('ae.inicio >=', $hora_atual);
-                }
-            } else {
+            if ($args['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($args['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($args['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($args['situacao'] == "FALTOU") {
                 date_default_timezone_set('America/Fortaleza');
                 $data_atual = date('Y-m-d');
-                $hora_atual = date('H:i:s');
-                $this->db->where('p.nome IS NOT NULL');
-                $this->db->where('ae.confirmado', 'f');
-                $this->db->where('ae.data <=', $data_atual);
-                $this->db->where('ae.inicio <=', $hora_atual);
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
             }
         }
         return $this->db;
@@ -2529,7 +2479,7 @@ class exame_model extends Model {
     }
 
     function listarmultifuncaoconsulta($args = array()) {
-                $teste = empty($args);
+        $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
         $dataAtual = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -2552,24 +2502,30 @@ class exame_model extends Model {
 //        $this->db->orderby('ae.inicio');
 //        $this->db->orderby('al.situacao');
         $this->db->where('ae.cancelada', 'false');
-        if ($operador_id != '1') {
-            $this->db->where('ae.medico_consulta_id', $operador_id);
-        }
+//        if ($operador_id != '1') {
+//            
+//        }
         if ($teste == true) {
             $this->db->where('ae.data', $dataAtual);
+            $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', $args['data']);
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-            } if (isset($args['medico']) && strlen($args['medico']) > 0) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            } 
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
         }
@@ -2701,23 +2657,28 @@ class exame_model extends Model {
         $this->db->orderby('ae.inicio');
         $this->db->orderby('al.situacao');
         $this->db->where('ae.cancelada', 'false');
-        
+
         if ($teste == true) {
             $this->db->where('ae.data', $dataAtual);
             $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', $args['data']);
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
+                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-            } if (isset($args['medico']) && strlen($args['medico']) > 0) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            } 
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
         }
@@ -3484,6 +3445,9 @@ class exame_model extends Model {
         $horario = date('Y-m-d');
         $operador_id = $this->session->userdata('operador_id');
 
+        if($_POST['descricao'] != ''){
+            $this->db->set('descricao', $_POST['descricao']);
+        }
         $this->db->set('guia_id', $_POST['txtguia_id']);
         $this->db->set('produto_id', $_POST['produto_id']);
         $this->db->set('quantidade', $_POST['txtqtde']);
@@ -4704,7 +4668,8 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    private function instanciar($agenda_exames_id) {
+    private
+            function instanciar($agenda_exames_id) {
 
         if ($agenda_exames_id != 0) {
             $this->db->select('agenda_exames_id, horarioagenda_id, paciente_id, procedimento_tuss_id, inicio, fim, nome, ativo, confirmado, data_inicio, data_fim');

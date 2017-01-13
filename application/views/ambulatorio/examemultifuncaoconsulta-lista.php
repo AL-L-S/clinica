@@ -76,10 +76,10 @@
                         <th class="tabela_title">
                             <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
-                                <option value="LIVRE">VAGO</option>
-                                <option value="CANCELADO">BLOQUEADO</option>
-                                <option value="OK">OCUPADO</option>
+                                <option value="BLOQUEADO">BLOQUEADO</option>
                                 <option value="FALTOU">FALTOU</option>
+                                <option value="OK">OCUPADO</option>
+                                <option value="LIVRE">VAGO</option>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -172,7 +172,7 @@
                                     date_default_timezone_set('America/Fortaleza');
                                     $data_atual = date('Y-m-d');
                                     $hora_atual = date('H:i:s');
-                                    if ($item->data <= $data_atual && $item->inicio < $hora_atual) {
+                                    if ($item->data < $data_atual) {
                                         $situacao = "<font color='gray'>faltou";
                                         $faltou = true;
                                     } else {
