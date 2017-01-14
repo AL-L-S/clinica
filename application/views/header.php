@@ -192,7 +192,7 @@ function debug($object) {
                     //adiciona a janela criada na lista de janelas abertas
                     chatsAbertos.push(operadorDestino);
                     //retorna o historico de mensagens e faz a pagina se atualizar novamente
-//                    verifica(0, 0,<? // echo $operador_id  ?>);
+                    verifica(0, 0,<? echo $operador_id  ?>);
                 }
             }
 
@@ -220,7 +220,7 @@ function debug($object) {
                         jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                     }
                 });
-//                verifica(0, 0,<? // echo $operador_id  ?>);
+                verifica(0, 0,<? echo $operador_id  ?>);
             }
             
             <?}?>
