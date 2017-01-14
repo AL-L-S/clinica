@@ -630,6 +630,30 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarhistoricoantigo2($args = array()) {
+
+        $this->db->select('distinct(p.paciente_id), p.nome as paciente');
+        $this->db->from('tb_laudoantigo la');
+        $this->db->join('tb_paciente p', 'p.paciente_id = la.paciente_id', 'left');
+        $this->db->orderby('p.nome');
+        if (isset($args['paciente'])) {
+            
+            $this->db->where('p.nome ilike', '%' . $args['paciente'] . '%');
+        }
+        return $this->db;
+    }
+    
+    function listarhistoricoantigo($args = array()) {
+
+        $this->db->select('distinct(p.paciente_id), p.nome as paciente,');
+        $this->db->from('tb_laudoantigo la');
+        $this->db->join('tb_paciente p', 'p.paciente_id = la.paciente_id', 'left');
+        if (isset($args['paciente'])) {
+            $this->db->where('p.nome ilike', '%' . $args['paciente'] . '%');
+        }
+        return $this->db;
+    }
 
     function listarnomeendoscopia() {
 
