@@ -12,6 +12,7 @@ class cliente_model extends Model {
     var $_bairro = null;
     var $_municipio_id = null;
     var $_municipio_nome = null;
+    var $_inscricao_estadual = null;
     var $_celular = null;
     var $_telefone = null;
     var $_razao_social = null;
@@ -192,6 +193,9 @@ class cliente_model extends Model {
             if ($_POST['txttipo_id'] != '') {
                 $this->db->set('tipo_logradouro_id', $_POST['txttipo_id']);
             }
+            if ($_POST['inscricaoestadual'] != '') {
+                $this->db->set('inscricao_estadual', $_POST['inscricaoestadual']);
+            }
             
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -236,6 +240,7 @@ class cliente_model extends Model {
             $this->_cep = $return[0]->cep;
             $this->_bairro = $return[0]->bairro;
             $this->_logradouro = $return[0]->logradouro;
+            $this->_inscricao_estadual = $return[0]->inscricao_estadual;
             $this->_numero = $return[0]->numero;
             $this->_complemento = $return[0]->complemento;
             $this->_municipio_id = $return[0]->municipio_id;

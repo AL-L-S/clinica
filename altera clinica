@@ -69,3 +69,6 @@ ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN tipo_logradouro_id integer;
 
 ALTER TABLE ponto.tb_estoque_produto ADD COLUMN ncm character varying(20);
 ALTER TABLE ponto.tb_estoque_produto RENAME COLUMN procedimento_id TO codigo;
+
+-- Dia 14/01/2017
+ALTER TABLE ponto.tb_estoque_cliente ADD COLUMN inscricao_estadual character varying(20);

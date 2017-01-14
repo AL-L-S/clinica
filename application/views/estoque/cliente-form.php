@@ -82,6 +82,14 @@
                         <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_municipio_nome; ?>" />
                     </dd>
                     
+                    
+                    <dt>
+                        <label>Inscrição Estadual</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="inscricaoestadual" class="texto04" name="inscricaoestadual" alt="99.999.9999-9" value="<?= @$obj->_inscricao_estadual; ?>" />
+                    </dd>
+                    
                     <dt>
                         <label>Criar Credor</label>
                     </dt>
@@ -95,6 +103,7 @@
                     <dd>
                         <input type="checkbox" name="saida"/>
                     </dd>
+
                     
                     <dt>
                     <label>Menu</label>
