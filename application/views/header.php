@@ -7,6 +7,7 @@ if ($this->session->userdata('autenticado') != true) {
 $perfil_id = $this->session->userdata('perfil_id');
 $operador_id = $this->session->userdata('operador_id');
 $internacao = $this->session->userdata('internacao');
+$chat = $this->session->userdata('chat');
 
 function alerta($valor) {
     echo "<script>alert('$valor');</script>";
@@ -42,13 +43,17 @@ function debug($object) {
         <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.js" ></script>-->
         <script type="text/javascript">
 //            var jQuery = jQuery.noConflict();
-            var chatsAbertos = new Array();
+            
 
             (function ($) {
                 $(function () {
                     $('input:text').setMask();
                 });
             })(jQuery);
+            
+        <? if ($chat == 't') {?>
+                
+            var chatsAbertos = new Array();
 
             function mensagensnaolidas() {
                 jQuery.ajax({
@@ -213,6 +218,8 @@ function debug($object) {
                     }
                 });
             }
+            
+            <?}?>
 
 
         </script>
@@ -245,11 +252,13 @@ function debug($object) {
                     <a id="login_sair" title="Sair do Sistema" onclick="javascript: return confirm('Deseja realmente sair da aplicação?');"
                        href="<?= base_url() ?>login/sair">Sair</a>
 
+                    <? if ($chat == 't') {?>
                     <div class="batepapo_div">
                         <a id="contatos_chat_lista" href="#" class="nao_clicado">
                             <img src="<?= base_url(); ?>img/chat_icon.png" alt="Batepapo"
                                  title="Batepapo"/></a>
                     </div>
+                    <?}?>
                 </div>
                 <!--<div id="user_foto">Imagem</div>-->
 
@@ -257,6 +266,7 @@ function debug($object) {
         </div>
         <div class="decoration_header">&nbsp;</div>
 
+    <? if ($chat == 't') {?>
         <!-- INICIO BATEPAPO -->
         <div id="principalChat">
             <aside id="usuarios_online" >
@@ -271,6 +281,7 @@ function debug($object) {
 
         </div>
         <!-- FIM BATEPAPO -->
+    <?}?>
 
         <!-- Fim do Cabeçalho -->
         <div class="barraMenus" style="float: left;">
@@ -664,6 +675,7 @@ function debug($object) {
                 unique: true
             });
 
+<? if ($chat == 't') {?>
             jQuery(function () {
 
                 jQuery("#contatos_chat_lista").click(function () {
@@ -874,5 +886,5 @@ function debug($object) {
 
             buscamensagens();
 //            mensagensnaolidas();
-
+<?}?>
         </script>
