@@ -42,13 +42,16 @@ class centrocirurgico_model extends BaseModel {
                             sc.solicitacao_cirurgia_id,
                             sc.data_prevista,
                             c.nome as convenio,
-                            c.convenio_id');
+                            c.convenio_id,
+                            o.nome as medico,
+                            sc.situacao');
         $this->db->from('tb_solicitacao_cirurgia sc');
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
         $this->db->where('sc.autorizado', 'f');
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');
-        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio' , 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_agendado', 'left');
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
@@ -129,9 +132,45 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
+    function liberarsolicitacao($solicitacao_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('situacao', 'LIBERADA');
+        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->update('tb_solicitacao_cirurgia');
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function finalizarrcamento($solicitacao_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
+        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->update('tb_solicitacao_cirurgia');
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     function autorizarcirurgia() {
         $horario = date("Y-m-d H:i:s");
-        
+
         $this->db->set('data_prevista', $_POST['dataprevista']);
         $this->db->set('medico_agendado', $_POST['medicoagendadoid']);
         $this->db->set('data_autorizacao', $horario);

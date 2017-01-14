@@ -124,9 +124,10 @@ class centrocirurgico extends BaseController {
         $data['obj'] = $obj_paciente;
         $this->loadView('internacao/cadastrarleito', $data);
     }
-    
+
     function impressaoorcamento($solicitacao_id) {
         $data['nomes'] = $this->solicitacirurgia_m->buscarnomesimpressao($solicitacao_id);
+        $data['empresa'] = $this->solicitacirurgia_m->burcarempresa($solicitacao_id);
         $data['impressao'] = $this->solicitacirurgia_m->impressaoorcamento($solicitacao_id);
         $this->load->view('centrocirurgico/impressaoorcamento', $data);
     }
@@ -184,10 +185,21 @@ class centrocirurgico extends BaseController {
     function carregarsolicitacao($solicitacao_id) {
 
         $data['solicitacao_id'] = $solicitacao_id;
+        $data['dados'] = $this->centrocirurgico_m->listarsolicitacoes()->where('solicitacao_cirurgia_id', $solicitacao_id)->get()->result();
         $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaoprocedimento();
         $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador();
         $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentos($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);
+    }
+
+    function liberar($solicitacao_id) {
+        if ($this->centrocirurgico_m->liberarsolicitacao($solicitacao_id)) {
+            $data['mensagem'] = "LIBERADO!";
+        } else {
+            $data['mensagem'] = "Falho ao realizar Liberação!";
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
 
     function novasolicitacaoconsulta($exame_id) {
@@ -208,52 +220,60 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/novasolicitacao', $data);
     }
 
+    function finalizarorcamento($solicitacao_id) {
+        if ($this->centrocirurgico_m->finalizarrcamento($solicitacao_id)) {
+            $data['mensagem'] = "Orçamento Finalizado";
+        }else{
+            $data['mensagem'] = "ERRO: Orçamento NÃO Finalizado";
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
+    }
+
     function solicitacarorcamento($solicitacao_id, $convenio_id) {
         $data['solicitacao_id'] = $solicitacao_id;
         $data['convenio_id'] = $convenio_id;
 
         // opção editar orçamento (início)
-        $data['verifica'] = $this->solicitacirurgia_m->verificaorcamento($solicitacao_id);
-        foreach ($data['verifica'] as $value) {
-            if ($value->grau_participacao == "CIRURGIAO") {
-                $data['cirurgiao'] = $value;
-            }
-            if ($value->grau_participacao == "AUXILIO1") {
-                $data['auxilio1'] = $value;
-            }
-            if ($value->grau_participacao == "AUXILIO2") {
-                $data['auxilio2'] = $value;
-            }
-            if ($value->grau_participacao == "ANESTESISTA") {
-                $data['anestesista'] = $value;
-            }
-            if ($value->grau_participacao == "CIRURGIAO2") {
-                $data['cirurgiao2'] = $value;
-            }
-            if ($value->grau_participacao == "CIRURGIAO3") {
-                $data['cirurgiao3'] = $value;
-            }
-        }
-        
+//        $data['verifica'] = $this->solicitacirurgia_m->verificaorcamento($solicitacao_id);
+//        foreach ($data['verifica'] as $value) {
+//            if ($value->grau_participacao == "CIRURGIAO") {
+//                $data['cirurgiao'] = $value;
+//            }
+//            if ($value->grau_participacao == "AUXILIO1") {
+//                $data['auxilio1'] = $value;
+//            }
+//            if ($value->grau_participacao == "AUXILIO2") {
+//                $data['auxilio2'] = $value;
+//            }
+//            if ($value->grau_participacao == "ANESTESISTA") {
+//                $data['anestesista'] = $value;
+//            }
+//            if ($value->grau_participacao == "CIRURGIAO2") {
+//                $data['cirurgiao2'] = $value;
+//            }
+//            if ($value->grau_participacao == "CIRURGIAO3") {
+//                $data['cirurgiao3'] = $value;
+//            }
+//        }
 //        var_dump($data['cirurgiao']);die;
         // opção editar orçamento (fim)
-        
+
         $data['convenio'] = $this->procedimentoplano->listarconveniocirurgiaorcamento();
-        $data['procedimentos'] = $this->solicitacirurgia_m->listarprocedimentoscirurgia($solicitacao_id, $convenio_id);
+        $data['procedimentos'] = $this->solicitacirurgia_m->listarprocedimentoscirurgia($solicitacao_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['funcoes'] = $this->solicitacirurgia_m->listarfuncoes();
+        $data['procedimentos_orcamentados'] = $this->solicitacirurgia_m->listarprocedimentos_orcamentados($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacarorcamento-form', $data);
     }
 
     function gravarsolicitacaorcamento() {
 //        $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
-        $verifica = $this->solicitacirurgia_m->gravarsolicitacaorcamento();
-        if ($verifica) {
-            $data['mensagem'] = 'Orçamento efetuada com Sucesso';
-        } else {
-            $data['mensagem'] = 'Erro ao efetuar Orçamento';
-        }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
+        $this->solicitacirurgia_m->gravarsolicitacaorcamento();
+
+        $solicitacao_id = $_POST['solicitacao_id'];
+        $convenio_id = $_POST['convenio_id'];
+        redirect(base_url() . "centrocirurgico/centrocirurgico/solicitacarorcamento/$solicitacao_id/$convenio_id");
     }
 
     function internacaoalta($internacao_id) {
