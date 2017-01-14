@@ -94,10 +94,6 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-<?php if ($this->session->flashdata('message') != ''): ?>
-                        alert("<? echo $this->session->flashdata('message')?>");
-<? endif; ?>
-
                     $(function () {
                         $("#data_ficha").datepicker({
                             autosize: true,

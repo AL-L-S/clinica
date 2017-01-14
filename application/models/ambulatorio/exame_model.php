@@ -2201,6 +2201,8 @@ class exame_model extends Model {
     function listarmultifuncaomedico($args = array()) {
 
         $empresa_id = $this->session->userdata('empresa_id');
+        $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
                             ae.data,
@@ -2241,6 +2243,11 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
+        
+        if ($perfil_id == 4) {
+            $this->db->where('ae.medico_consulta_id', $operador_id);
+        }
+            
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
@@ -2481,6 +2488,7 @@ class exame_model extends Model {
     function listarmultifuncaoconsulta($args = array()) {
         $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $dataAtual = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id
@@ -2505,25 +2513,28 @@ class exame_model extends Model {
 //        if ($operador_id != '1') {
 //            
 //        }
+        
+        
         if ($teste == true) {
             $this->db->where('ae.data', $dataAtual);
             $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
+            
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            }
+            
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
-                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
-                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
-                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-                $this->db->where('ae.medico_consulta_id', $operador_id);
             } 
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -2608,6 +2619,7 @@ class exame_model extends Model {
     function listarmultifuncao2consulta($args = array()) {
         $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $dataAtual = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
@@ -2662,21 +2674,20 @@ class exame_model extends Model {
             $this->db->where('ae.data', $dataAtual);
             $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            }
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
-                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
-                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
-                $this->db->where('ae.medico_consulta_id', $operador_id);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-                $this->db->where('ae.medico_consulta_id', $operador_id);
             } 
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -2764,6 +2775,7 @@ class exame_model extends Model {
     function listarmultifuncaofisioterapia($args = array()) {
         $teste = empty($args);
         $empresa_id = $this->session->userdata('empresa_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $operador_id = $this->session->userdata('operador_id');
         $dataAtual = date("Y-m-d");
         $this->db->select('ae.agenda_exames_id,
@@ -2806,13 +2818,16 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
-        if ($operador_id != '1') {
-            $this->db->where('ae.medico_consulta_id', $operador_id);
-        }
+        
         if ($teste == true) {
 //        if ((!isset($args['nome'])&& $args['nome'] == 0) || (!isset($args['data'])&& strlen($args['data']) == '') || (!isset($args['sala'])&& strlen($args['sala']) == '') || (!isset($args['medico'])&& strlen($args['medico']) =='')) {
             $this->db->where('ae.data', $dataAtual);
+            $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            }
+            
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
@@ -2834,6 +2849,7 @@ class exame_model extends Model {
     function listarmultifuncao2fisioterapia($args = array()) {
         $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $dataAtual = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
@@ -2886,14 +2902,15 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
-        if ($operador_id != '1') {
-            $this->db->where('ae.medico_consulta_id', $operador_id);
-        }
+        
         if ($teste == true) {
-//        if ((!isset($args['nome'])&& $args['nome'] == 0) || (!isset($args['data'])&& strlen($args['data']) == '') || (!isset($args['sala'])&& strlen($args['sala']) == '') || (!isset($args['medico'])&& strlen($args['medico']) =='')) {
-//            $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);
+            $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            }
+            
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
