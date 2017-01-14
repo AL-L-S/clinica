@@ -38,7 +38,7 @@ function debug($object) {
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-treeview.js" ></script>
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
         <script type="text/javascript" src="<?= base_url() ?>js/jquery.bestupper.min.js"  ></script>
-        <!--<script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>-->
+        <script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
         <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.js" ></script>-->
         <script type="text/javascript">
 //            var jQuery = jQuery.noConflict();
