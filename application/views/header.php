@@ -94,6 +94,7 @@ function debug($object) {
                                 }
                                 if (!aberta) {
                                     adicionarJanela(id, nome, status);
+                                    retorna_historico(retorno[obj].operador_id);
                                 }
                             }
                         }
@@ -136,6 +137,7 @@ function debug($object) {
                         });
                     }
                 });
+                verifica(0, 0,<? echo $operador_id  ?>);
             }
 
 
@@ -203,6 +205,7 @@ function debug($object) {
                     data: "operador_origem=" + operadorOrigem + "&operador_destino=" + idJanela,
                     dataType: 'json',
                     success: function (retorno) {
+//                        console.log(retorno);
                         jQuery.each(retorno, function (i, msg) {
                             if (jQuery('#janela_' + msg.janela).length > 0) {
 
@@ -217,6 +220,7 @@ function debug($object) {
                         jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                     }
                 });
+//                verifica(0, 0,<? // echo $operador_id  ?>);
             }
             
             <?}?>
@@ -882,6 +886,7 @@ function debug($object) {
             //atualiza status do operador
             setInterval(function () {
                 atualizastatus();
+                verifica(0, 0,<? echo $operador_id ?>);
             }, 90000);
 
             buscamensagens();

@@ -33,6 +33,7 @@ class batepapo extends BaseController {
                 }
             }
             
+            
             $status = 'off';
             
             if( isset($data['usuarios'][$i]->horario_login) ){
