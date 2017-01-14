@@ -43,6 +43,12 @@ class Laudo extends BaseController {
 
 //            $this->carregarView($data);
     }
+    
+    function pesquisarconsultaantigo($args = array()) {
+        $this->loadView('ambulatorio/laudoconsultaantigo-lista', $args);
+
+//            $this->carregarView($data);
+    }
 
     function pesquisardigitador($args = array()) {
         $this->loadView('ambulatorio/laudodigitador-lista', $args);
@@ -288,6 +294,15 @@ class Laudo extends BaseController {
         $data['procedimento_tuss_id'] = $procedimento_tuss_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/laudoconsulta-form', $data);
+    }
+    
+    function carregaranamineseantigo($paciente_id) {
+        
+        $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
+        
+        $this->load->View('ambulatorio/laudoconsultaantigo-form', $data);
     }
 
     function carregarreceituario($ambulatorio_laudo_id) {

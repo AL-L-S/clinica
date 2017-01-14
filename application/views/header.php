@@ -7,6 +7,7 @@ if ($this->session->userdata('autenticado') != true) {
 $perfil_id = $this->session->userdata('perfil_id');
 $operador_id = $this->session->userdata('operador_id');
 $internacao = $this->session->userdata('internacao');
+$chat = $this->session->userdata('chat');
 
 function alerta($valor) {
     echo "<script>alert('$valor');</script>";
@@ -38,17 +39,21 @@ function debug($object) {
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-treeview.js" ></script>
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
         <script type="text/javascript" src="<?= base_url() ?>js/jquery.bestupper.min.js"  ></script>
-        <!--<script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>-->
+        <script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
         <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.js" ></script>-->
         <script type="text/javascript">
 //            var jQuery = jQuery.noConflict();
-            var chatsAbertos = new Array();
+            
 
             (function ($) {
                 $(function () {
                     $('input:text').setMask();
                 });
             })(jQuery);
+            
+        <? if ($chat == 't') {?>
+                
+            var chatsAbertos = new Array();
 
             function mensagensnaolidas() {
                 jQuery.ajax({
@@ -89,6 +94,7 @@ function debug($object) {
                                 }
                                 if (!aberta) {
                                     adicionarJanela(id, nome, status);
+                                    retorna_historico(retorno[obj].operador_id);
                                 }
                             }
                         }
@@ -131,6 +137,7 @@ function debug($object) {
                         });
                     }
                 });
+                verifica(0, 0,<? echo $operador_id  ?>);
             }
 
 
@@ -185,7 +192,7 @@ function debug($object) {
                     //adiciona a janela criada na lista de janelas abertas
                     chatsAbertos.push(operadorDestino);
                     //retorna o historico de mensagens e faz a pagina se atualizar novamente
-//                    verifica(0, 0,<? // echo $operador_id  ?>);
+                    verifica(0, 0,<? echo $operador_id  ?>);
                 }
             }
 
@@ -198,6 +205,7 @@ function debug($object) {
                     data: "operador_origem=" + operadorOrigem + "&operador_destino=" + idJanela,
                     dataType: 'json',
                     success: function (retorno) {
+//                        console.log(retorno);
                         jQuery.each(retorno, function (i, msg) {
                             if (jQuery('#janela_' + msg.janela).length > 0) {
 
@@ -212,7 +220,10 @@ function debug($object) {
                         jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                     }
                 });
+                verifica(0, 0,<? echo $operador_id  ?>);
             }
+            
+            <?}?>
 
 
         </script>
@@ -245,11 +256,13 @@ function debug($object) {
                     <a id="login_sair" title="Sair do Sistema" onclick="javascript: return confirm('Deseja realmente sair da aplicação?');"
                        href="<?= base_url() ?>login/sair">Sair</a>
 
+                    <? if ($chat == 't') {?>
                     <div class="batepapo_div">
                         <a id="contatos_chat_lista" href="#" class="nao_clicado">
                             <img src="<?= base_url(); ?>img/chat_icon.png" alt="Batepapo"
                                  title="Batepapo"/></a>
                     </div>
+                    <?}?>
                 </div>
                 <!--<div id="user_foto">Imagem</div>-->
 
@@ -257,6 +270,7 @@ function debug($object) {
         </div>
         <div class="decoration_header">&nbsp;</div>
 
+    <? if ($chat == 't') {?>
         <!-- INICIO BATEPAPO -->
         <div id="principalChat">
             <aside id="usuarios_online" >
@@ -271,6 +285,7 @@ function debug($object) {
 
         </div>
         <!-- FIM BATEPAPO -->
+    <?}?>
 
         <!-- Fim do Cabeçalho -->
         <div class="barraMenus" style="float: left;">
@@ -360,12 +375,17 @@ function debug($object) {
                 <li><span class="folder">Consultas</span>
                     <ul>
                         <li><span class="folder">Rotinas</span>
-                            <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicoconsulta">Multifuncao Medico</a></span></ul>
+                                <? if ($perfil_id == 1 || $perfil_id == 10) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarconsulta">Manter Consulta</a></span></ul>
-                                <?
-                            }
-                            ?>
+                                <?}?>
+                                <? if ($perfil_id == 1 || $perfil_id == 10 || $perfil_id == 4) { ?>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarconsultaantigo">Histórico de Consultas Antigas</a></span></ul>
+                                <?}?>
+
+                            <?}?>
+                            
                         </li> 
                         <li><span class="folder">Relatorios</span>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
@@ -664,6 +684,7 @@ function debug($object) {
                 unique: true
             });
 
+<? if ($chat == 't') {?>
             jQuery(function () {
 
                 jQuery("#contatos_chat_lista").click(function () {
@@ -870,9 +891,10 @@ function debug($object) {
             //atualiza status do operador
             setInterval(function () {
                 atualizastatus();
+                verifica(0, 0,<? echo $operador_id ?>);
             }, 90000);
 
             buscamensagens();
 //            mensagensnaolidas();
-
+<?}?>
         </script>

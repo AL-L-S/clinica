@@ -630,6 +630,30 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarhistoricoantigo2($args = array()) {
+
+        $this->db->select('distinct(p.paciente_id), p.nome as paciente');
+        $this->db->from('tb_laudoantigo la');
+        $this->db->join('tb_paciente p', 'p.paciente_id = la.paciente_id', 'left');
+        $this->db->orderby('p.nome');
+        if (isset($args['paciente'])) {
+            
+            $this->db->where('p.nome ilike', '%' . $args['paciente'] . '%');
+        }
+        return $this->db;
+    }
+    
+    function listarhistoricoantigo($args = array()) {
+
+        $this->db->select('distinct(p.paciente_id), p.nome as paciente,');
+        $this->db->from('tb_laudoantigo la');
+        $this->db->join('tb_paciente p', 'p.paciente_id = la.paciente_id', 'left');
+        if (isset($args['paciente'])) {
+            $this->db->where('p.nome ilike', '%' . $args['paciente'] . '%');
+        }
+        return $this->db;
+    }
 
     function listarnomeendoscopia() {
 
@@ -906,6 +930,9 @@ class laudo_model extends Model {
     function listardigitador($args = array()) {
 
         $empresa_id = $this->session->userdata('empresa_id');
+        $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
+        
         $this->db->select('ag.ambulatorio_laudo_id,
                             ag.paciente_id,
                             ag.data_cadastro,
@@ -931,6 +958,11 @@ class laudo_model extends Model {
         $this->db->where('ag.empresa_id', $empresa_id);
         $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where("ag.cancelada", 'false');
+        
+        if ($perfil_id == 4) {
+            $this->db->where('age.medico_consulta_id', $operador_id);
+        }
+        
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
@@ -965,6 +997,9 @@ class laudo_model extends Model {
         $data = date("Y-m-d");
         $contador = count($args);
         $empresa_id = $this->session->userdata('empresa_id');
+        $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
+        
         $this->db->select('ag.ambulatorio_laudo_id,
                             ag.paciente_id,
                             ag.data_cadastro,
@@ -1008,6 +1043,11 @@ class laudo_model extends Model {
         if ($contador == 0) {
             $this->db->where('ag.data >=', $data);
         }
+        
+        if ($perfil_id == 4) {
+            $this->db->where('age.medico_consulta_id', $operador_id);
+        }
+        
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }

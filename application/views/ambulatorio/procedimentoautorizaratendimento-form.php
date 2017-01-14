@@ -183,9 +183,6 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-<?php if ($this->session->flashdata('message') != ''): ?>
-                            alert("<? echo $this->session->flashdata('message') ?>");
-<? endif; ?>
                         $(function () {
                             $("#medico1").autocomplete({
                                 source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",

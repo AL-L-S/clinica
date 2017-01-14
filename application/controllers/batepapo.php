@@ -70,7 +70,7 @@ class batepapo extends BaseController {
             
             if( isset($item->horario_login) ){
                 $horario = date("Y-m-d H:i:s");
-                $horario_login = date("Y-m-d H:i:s", strtotime($item->horario_login) );    
+                $horario_login = date("Y-m-d H:i:s", strtotime("+3 minutes", strtotime($data['usuarios'][$i]->horario_login)) ); 
                 if($horario_login <= $horario){
                     $this->batepapo->atualizastatusoperadores($item->operador_id);
                 }
