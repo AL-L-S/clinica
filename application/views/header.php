@@ -360,12 +360,17 @@ function debug($object) {
                 <li><span class="folder">Consultas</span>
                     <ul>
                         <li><span class="folder">Rotinas</span>
-                            <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicoconsulta">Multifuncao Medico</a></span></ul>
+                                <? if ($perfil_id == 1 || $perfil_id == 10) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarconsulta">Manter Consulta</a></span></ul>
-                                <?
-                            }
-                            ?>
+                                <?}?>
+                                <? if ($perfil_id == 1 || $perfil_id == 10 || $perfil_id == 4) { ?>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarconsultaantigo">Histórico de Consultas Antigas</a></span></ul>
+                                <?}?>
+
+                            <?}?>
+                            
                         </li> 
                         <li><span class="folder">Relatorios</span>
                             <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
