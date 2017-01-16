@@ -23,8 +23,10 @@
                         </th>
                     </tr>
                     <tr>
-                        <th class="tabela_header">Nome</th>
+                        <th class="tabela_header">Paciente</th>
+                        <th class="tabela_header">Médico</th>
                         <th class="tabela_header">Convenio</th>
+                        <th class="tabela_header">Situação</th>
                        <!--<th class="tabela_header">Data Prevista</th>-->
                         <th class="tabela_header" width="30px;" colspan="4"><center></center></th>
 <!--                <th class="tabela_header" width="30px;"><center></center></th>
@@ -50,17 +52,29 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->convenio; ?></td>
-                                <!--<td class="<?php echo $estilo_linha; ?>"><?php echo str_replace('-', '/', date('d-m-Y', strtotime($item->data_prevista))); ?></td>-->
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
-                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
-                                </td> 
-                                <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
-                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->convenio_id; ?>" style="width: 85px;">ORÇAMENTO</a></div>
-                                </td> 
-                                <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
-                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 85px;">IMPRIMIR</a></div>
-                                </td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->situacao; ?></td>
+                                <? if ($item->situacao != 'ABERTA' && $item->situacao == 'ORCAMENTO_COMPLETO') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
+                                    </td> 
+                                <? } ?>
+                                <? if ($item->situacao != 'ABERTA' && $item->situacao != 'ORCAMENTO_COMPLETO') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->convenio_id; ?>" style="width: 85px;">ORÇAMENTO</a></div>
+                                    </td> 
+                                <? } ?>
+                                <? if ($item->situacao != 'ABERTA' && $item->situacao == 'ORCAMENTO_COMPLETO' ) { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
+                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 85px;">IMPRIMIR</a></div>
+                                    </td>
+                                <? } ?>
+                                <? if ($item->situacao == 'ABERTA') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacao/<?= $item->solicitacao_cirurgia_id; ?>">CADASTRAR</a></div>
+                                    </td>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 60px;">
                                         <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">EXCLUIR</a></div>
                                 </td> 
@@ -72,7 +86,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="7">
+                        <th class="tabela_footer" colspan="8">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
