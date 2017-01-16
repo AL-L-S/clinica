@@ -352,6 +352,39 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
+    function burcarempresa() {
+        $empresa = $this->session->userdata('empresa_id');
+        $this->db->select('razao_social,
+                           cnpj,
+                           logradouro,
+                           numero,
+                           bairro,
+                           telefone');
+        $this->db->from('tb_empresa');
+        $this->db->where('empresa_id', $empresa);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentos_orcamentados($solicitacao_id) {
+        $this->db->select('pt.nome as procedimento,
+                           pt.procedimento_tuss_id,
+                           pt.codigo,
+                           fc.nome as grau_participacao,
+                           o.nome as medico,
+                           co.valor,
+                           co.observacao');
+        $this->db->from('tb_solicitacao_cirurgia_orcamento co');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = co.procedimento_tuss_id', 'left');
+        $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = co.grau_participacao', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = co.operador_responsavel', 'left');
+        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function gravarnovasolicitacao() {
 
         try {
@@ -459,7 +492,7 @@ class solicita_cirurgia_model extends BaseModel {
     }
 
     function impressaoorcamento($solicitacao_id) {
-        $this->db->select('sco.grau_participacao,
+        $this->db->select('fc.nome as grau_participacao,
                            sco.procedimento_tuss_id,
                            sco.operador_responsavel,
                            sco.valor,
@@ -473,9 +506,18 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = sco.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = sco.convenio_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = sco.operador_responsavel', 'left');
+        $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = sco.grau_participacao', 'left');
         $this->db->where('sco.ativo', 'true');
         $this->db->where('sco.solicitacao_cirurgia_id', $solicitacao_id);
-        $this->db->orderby('sco.grau_participacao');
+        $this->db->orderby('fc.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarfuncoes() {
+        $this->db->select('*');
+        $this->db->from('tb_funcoes_cirurgia');
+        $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -487,132 +529,27 @@ class solicita_cirurgia_model extends BaseModel {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            if ($_POST['cirurgiao1'] != "" && $_POST['procedimento1'] != "") {
-                $valor1 = str_replace(".", "", $_POST['valor1']);
-                $valor1 = str_replace(",", ".", $valor1);
-                $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
-                $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
-                $this->db->set('grau_participacao', "CIRURGIAO");
-                $this->db->set('valor', $valor1);
-                $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-                $this->db->set('observacao', $_POST['obs']);
-                $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
+            $valor1 = str_replace(".", "", $_POST['valor1']);
+            $valor1 = str_replace(",", ".", $valor1);
+            $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+            $this->db->set('grau_participacao', $_POST['funcao']);
+            $this->db->set('valor', $valor1);
+            $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+            $this->db->set('observacao', $_POST['obs']);
+            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_solicitacao_cirurgia_orcamento');
 
-                if ($_POST['cirurgiao1_id'] == "") {
-                    $this->db->insert('tb_solicitacao_cirurgia_orcamento');
-                } else {
-                    $this->db->where('solicitacao_cirurgia_orcamento_id', $_POST['cirurgiao1_id']);
-                    $this->db->update('tb_solicitacao_cirurgia_orcamento');
-                }
-            }
+            $solicitacao_cirurgia_orcamento = $this->db->insert_id();
 
-            if ($_POST['auxilio1'] != "" && $_POST['procedimento2'] != "") {
-                $valor2 = str_replace(".", "", $_POST['valor2']);
-                $valor2 = str_replace(",", ".", $valor2);
-                $this->db->set('operador_responsavel', $_POST['auxilio1']);
-                $this->db->set('procedimento_tuss_id', $_POST['procedimento2']);
-                $this->db->set('grau_participacao', "AUXILIO1");
-                $this->db->set('valor', $valor2);
-                $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-                $this->db->set('observacao', $_POST['obs']);
-                $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-
-                if ($_POST['auxilio1_id'] == "") {
-                    $this->db->insert('tb_solicitacao_cirurgia_orcamento');
-                } else {
-                    $this->db->where('solicitacao_cirurgia_orcamento_id', $_POST['auxilio1_id']);
-                    $this->db->update('tb_solicitacao_cirurgia_orcamento');
-                }
-            }
-
-            if ($_POST['auxilio2'] != "" && $_POST['procedimento3'] != "") {
-                $valor3 = str_replace(".", "", $_POST['valor3']);
-                $valor3 = str_replace(",", ".", $valor3);
-                $this->db->set('operador_responsavel', $_POST['auxilio2']);
-                $this->db->set('procedimento_tuss_id', $_POST['procedimento3']);
-                $this->db->set('grau_participacao', "AUXILIO2");
-                $this->db->set('valor', $valor3);
-                $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-                $this->db->set('observacao', $_POST['obs']);
-                $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-
-                if ($_POST['auxilio2_id'] == "") {
-                    $this->db->insert('tb_solicitacao_cirurgia_orcamento');
-                } else {
-                    $this->db->where('solicitacao_cirurgia_orcamento_id', $_POST['auxilio2_id']);
-                    $this->db->update('tb_solicitacao_cirurgia_orcamento');
-                }
-            }
-
-            if ($_POST['anestesista'] != "" && $_POST['procedimento4'] != "") {
-                $valor4 = str_replace(".", "", $_POST['valor4']);
-                $valor4 = str_replace(",", ".", $valor4);
-                $this->db->set('operador_responsavel', $_POST['anestesista']);
-                $this->db->set('procedimento_tuss_id', $_POST['procedimento4']);
-                $this->db->set('grau_participacao', "ANESTESISTA");
-                $this->db->set('valor', $valor4);
-                $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-                $this->db->set('observacao', $_POST['obs']);
-                $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-
-
-                if ($_POST['anestesista_id'] == "") {
-                    $this->db->insert('tb_solicitacao_cirurgia_orcamento');
-                } else {
-                    $this->db->where('solicitacao_cirurgia_orcamento_id', $_POST['anestesista_id']);
-                    $this->db->update('tb_solicitacao_cirurgia_orcamento');
-                }
-            }
-
-            if ($_POST['cirurgiao2'] != "" && $_POST['procedimento5'] != "") {
-                $valor5 = str_replace(".", "", $_POST['valor5']);
-                $valor5 = str_replace(",", ".", $valor5);
-                $this->db->set('operador_responsavel', $_POST['cirurgiao2']);
-                $this->db->set('procedimento_tuss_id', $_POST['procedimento5']);
-                $this->db->set('grau_participacao', "CIRURGIAO2");
-                $this->db->set('valor', $valor5);
-                $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-                $this->db->set('observacao', $_POST['obs']);
-                $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-
-
-                if ($_POST['cirurgiao2_id'] == "") {
-                    $this->db->insert('tb_solicitacao_cirurgia_orcamento');
-                } else {
-                    $this->db->where('solicitacao_cirurgia_orcamento_id', $_POST['cirurgiao2_id']);
-                    $this->db->update('tb_solicitacao_cirurgia_orcamento');
-                }
-            }
-
-            if ($_POST['cirurgiao3'] != "" && $_POST['procedimento6'] != "") {
-                $valor6 = str_replace(".", "", $_POST['valor6']);
-                $valor6 = str_replace(",", ".", $valor6);
-                $this->db->set('operador_responsavel', $_POST['cirurgiao3']);
-                $this->db->set('procedimento_tuss_id', $_POST['procedimento6']);
-                $this->db->set('grau_participacao', "CIRURGIAO3");
-                $this->db->set('valor', $valor6);
-                $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-                $this->db->set('observacao', $_POST['obs']);
-                $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-
-                if ($_POST['cirurgiao3_id'] == "") {
-                    $this->db->insert('tb_solicitacao_cirurgia_orcamento');
-                } else {
-                    $this->db->where('solicitacao_cirurgia_orcamento_id', $_POST['cirurgiao3_id']);
-                    $this->db->update('tb_solicitacao_cirurgia_orcamento');
-                }
+            if (isset($solicitacao_cirurgia_orcamento)) {
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->set('situacao', 'ORCAMENTO_INCOMPLETO');
+                $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+                $this->db->update('tb_solicitacao_cirurgia');
             }
 
 

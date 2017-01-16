@@ -79,7 +79,6 @@ class Autocomplete extends Controller {
     }
 
     function procedimentoproduto() {
-
         if (isset($_GET['term'])) {
             $result = $this->procedimento->listarprocedimentoautocomplete($_GET['term']);
         } else {
