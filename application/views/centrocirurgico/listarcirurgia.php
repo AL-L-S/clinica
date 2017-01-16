@@ -22,7 +22,6 @@
                 <thead>
                 <tr>
                     <th class="tabela_header">Nome</th>
-                    <th class="tabela_header">Procedimento</th>
                     <th class="tabela_header">Data Prevista</th>
 
                 </tr>
@@ -44,8 +43,7 @@
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->descricao_resumida; ?></td>                              
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>                              
                                 <td class="<?php echo $estilo_linha; ?>">
                                                             <?$ano= substr($item->data_prevista,0,4);?>
                                                             <?$mes= substr($item->data_prevista,5,2);?>

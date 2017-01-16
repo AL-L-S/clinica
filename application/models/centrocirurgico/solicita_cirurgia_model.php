@@ -491,7 +491,7 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
-    function impressaoorcamento($solicitacao_id) {
+    function impressaoorcamento($solicitacao_id, $grau_participacao = null) {
         $this->db->select('fc.nome as grau_participacao,
                            sco.procedimento_tuss_id,
                            sco.operador_responsavel,
@@ -509,6 +509,9 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = sco.grau_participacao', 'left');
         $this->db->where('sco.ativo', 'true');
         $this->db->where('sco.solicitacao_cirurgia_id', $solicitacao_id);
+        if (isset($grau_participacao)) {
+            $this->db->where('sco.grau_participacao', $grau_participacao);
+        }
         $this->db->orderby('fc.nome');
         $return = $this->db->get();
         return $return->result();

@@ -125,10 +125,20 @@ class centrocirurgico extends BaseController {
         $this->loadView('internacao/cadastrarleito', $data);
     }
 
+    function mostraautorizarcirurgia($solicitacao_id) {
+        $data['solicitacao'] = $this->centrocirurgico_m->pegasolicitacaoinformacoes($solicitacao_id);
+        $data['leito'] = $this->solicitacirurgia_m->listaleitocirugia();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['salas'] = $this->centrocirurgico_m->listarsalas();
+        $this->loadView('centrocirurgico/autorizarcirurgia', $data);
+    }
+
     function impressaoorcamento($solicitacao_id) {
+        $data['solicitacao_id'] = $solicitacao_id;
         $data['nomes'] = $this->solicitacirurgia_m->buscarnomesimpressao($solicitacao_id);
         $data['empresa'] = $this->solicitacirurgia_m->burcarempresa($solicitacao_id);
-        $data['impressao'] = $this->solicitacirurgia_m->impressaoorcamento($solicitacao_id);
+        $data['contador_impressao'] = $this->solicitacirurgia_m->impressaoorcamento($solicitacao_id);
+        $data['funcoes'] = $this->solicitacirurgia_m->listarfuncoes();
         $this->load->view('centrocirurgico/impressaoorcamento', $data);
     }
 
@@ -223,7 +233,7 @@ class centrocirurgico extends BaseController {
     function finalizarorcamento($solicitacao_id) {
         if ($this->centrocirurgico_m->finalizarrcamento($solicitacao_id)) {
             $data['mensagem'] = "Orçamento Finalizado";
-        }else{
+        } else {
             $data['mensagem'] = "ERRO: Orçamento NÃO Finalizado";
         }
         $this->session->set_flashdata('message', $data['mensagem']);
