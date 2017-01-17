@@ -14,12 +14,14 @@
                         <th colspan="5" class="tabela_title">
                             <form method="get" action="<?= base_url() ?>ambulatorio/laudo/pesquisarconsultaantigo">
                                 <tr>
-                                    
-                                    <th colspan="2" class="tabela_title">Nome</th>
+                                    <th class="tabela_title">Prontuário</th>
+                                    <th class="tabela_title">Nome</th>
                                 </tr>
                                 <tr>
-                                   
-                                    <th colspan="2" class="tabela_title">
+                                    <th class="tabela_title">
+                                        <input type="text" name="prontuario" class="texto03" value="<?php echo @$_GET['prontuario']; ?>" />
+                                    </th>
+                                    <th class="tabela_title">
                                         <input type="text" name="paciente" class="texto06 bestupper" value="<?php echo @$_GET['paciente']; ?>" />
                                     </th>
                                     <th class="tabela_title">
@@ -46,7 +48,8 @@
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->laudo->listarhistoricoantigo($_GET);
-                $total = $consulta->count_all_results();
+                $total = count($consulta->get()->result());
+//                var_dump($total); die;
                 $limit = 10;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
                 if ($total > 0) {

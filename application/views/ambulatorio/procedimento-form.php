@@ -35,10 +35,10 @@
                         <select name="grupo" id="grupo" class="size2" >
                             <option value='' >Selecione</option>
                             <? foreach ($grupos as $grupo) { ?>                                
-                                <option value='<?= $grupo->nome?>' <?
+                                <option value='<?= $grupo->nome ?>' <?
                                 if (@$obj->_grupo == $grupo->nome):echo 'selected';
                                 endif;
-                                ?>><?=$grupo->nome?></option>
+                                ?>><?= $grupo->nome ?></option>
                                     <? } ?>
                         </select>
                     </dd>
@@ -167,6 +167,14 @@
                     </dt>
                     <dd>
                         <input type="text" name="entrega" class="texto" value="<?= @$obj->_entrega; ?>" />
+                    </dd>
+                    <dt>
+                        <label>Descrição</label>
+                    </dt>
+                    <dd>
+                        <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1" ><?=@$obj->_descricao_procedimento;  ?> </textarea>
+                                                            
+                        
                     </dd>
                 </dl>    
 
