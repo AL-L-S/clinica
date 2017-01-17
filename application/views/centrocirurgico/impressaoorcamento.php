@@ -27,7 +27,8 @@
     <?
     $total = 0;
     $total_geral = 0;
-    if (count($impressao) > 0) {
+
+    if (count($contador_impressao) > 0) {
         ?>
         <table border="1" style="width: 800px;">
             <thead>
@@ -37,15 +38,10 @@
             </thead>
             <?php
             $x = 1;
-            foreach ($impressao as $item) :
-                $total = $total + $item->valor;
-                $total_geral = $total_geral + $item->valor;
-                if ($x == 1) {
-                    $grau_participacao = $item->grau_participacao;
-                }
-                if ($grau_participacao != $item->grau_participacao || $x == 1) {
+            foreach ($funcoes as $value) {
+                $impressao = $this->solicitacirurgia_m->impressaoorcamento($solicitacao_id, $value->funcao_cirurgia_id);
+                if (count($impressao) > 0) {
                     ?>
-
                     <thead>
                         <tr>
                             <th width="80px" class="tabela_header">Código</th>
@@ -53,17 +49,20 @@
                             <th class="tabela_header">Grau de participação</th>
                         </tr>
                     </thead>
-                <? } ?>
-                <tbody>
-
-                    <tr>
-                        <td ><?= utf8_decode($item->codigo); ?></td>
-                        <td ><?= utf8_decode($item->procedimento); ?></td>
-                        <td ><?= utf8_encode($item->grau_participacao); ?></td>
-                    </tr>
                     <?
-                    if ($grau_participacao != $item->grau_participacao || $x == 1) {
-                        $grau_participacao = $item->grau_participacao;
+                    foreach ($impressao as $item) {
+                        $total = $total + $item->valor;
+                        $total_geral = $total_geral + $item->valor;
+                        ?>
+                        <tbody>
+
+                            <tr>
+                                <td ><?= utf8_decode($item->codigo); ?></td>
+                                <td ><?= utf8_decode($item->procedimento); ?></td>
+                                <td ><?= utf8_encode($item->grau_participacao); ?></td>
+                            </tr>
+                            <?
+                        }
                         ?>
                         <tr>
                             <td colspan="2"></td>
@@ -74,12 +73,9 @@
                         <tr><td></td></tr>
                     </tbody>
                     <?
-                    $total = 0;
-                } else {
-                    
                 }
-                $x++;
-            endforeach;
+                $total = 0;
+            }
             ?>
             <tfoot>
                 <tr>
@@ -89,7 +85,7 @@
                 <tr>
                     <td colspan="3"><b>OBS: <?= $item->observacao; ?></b></td>
                 </tr>
-            </tfoot>>
+            </tfoot>
 
 
             <?

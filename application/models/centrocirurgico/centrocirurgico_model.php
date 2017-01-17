@@ -64,21 +64,14 @@ class centrocirurgico_model extends BaseModel {
 
         $this->db->select(' p.paciente_id,
                             p.nome,
-                            sc.procedimento_id,
                             sc.solicitacao_cirurgia_id,
-                            pt.descricao,
                             sc.data_prevista');
         $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id' , 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ' , 'left');
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
         $this->db->where('sc.autorizado', 't');
-        $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id');
-        $this->db->where('i.ativo', 't');
-        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id ');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = sc.procedimento_id ');
-        $this->db->where('pc.ativo', 't');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id ');
-        $this->db->where('pt.ativo', 't');
 
         if ($args) {
             if (isset($args['txtdata_cirurgia']) && strlen($args['txtdata_cirurgia']) > 0) {
@@ -115,19 +108,26 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
+    function listarsalas() {
+        $this->db->select('exame_sala_id,
+                           nome');
+        $this->db->from('tb_exame_sala');
+        $this->db->where('ativo', 'true');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function pegasolicitacaoinformacoes($solicitacao_id) {
         $this->db->select(' p.paciente_id,
                             p.nome,
-                            sc.procedimento_id,
                             sc.solicitacao_cirurgia_id,
-                            pr.descricao_resumida');
+                            sc.medico_agendado');
         $this->db->from('tb_solicitacao_cirurgia sc');
-        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
-        $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id');
-        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id ');
-        $this->db->join('tb_procedimento pr', 'pr.procedimento_id = sc.procedimento_id ');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ');
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
+        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -170,12 +170,15 @@ class centrocirurgico_model extends BaseModel {
 
     function autorizarcirurgia() {
         $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
 
         $this->db->set('data_prevista', $_POST['dataprevista']);
         $this->db->set('medico_agendado', $_POST['medicoagendadoid']);
-        $this->db->set('data_autorizacao', $horario);
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
         $this->db->set('sala_agendada', $_POST['salaagendada']);
         $this->db->set('autorizado', 't');
+        $this->db->set('situacao', 'AUTORIZADA');
         $this->db->where('solicitacao_cirurgia_id', $_POST['idsolicitacaocirurgia']);
         $this->db->update('tb_solicitacao_cirurgia');
     }

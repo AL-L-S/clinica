@@ -1309,5 +1309,10 @@ ALTER TABLE ponto.tb_operador ADD COLUMN online boolean NOT NULL DEFAULT false;
 -- Dia 14/01/2017
 ALTER TABLE ponto.tb_empresa ADD COLUMN chat boolean NOT NULL DEFAULT false;
 
+
 -- Dia 16/01/2017
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN situacao character varying;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ALTER COLUMN situacao SET DEFAULT 'ABERTA'::character varying;
+
+-- Dia 17/01/2017
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN descricao_procedimento character varying(600);
