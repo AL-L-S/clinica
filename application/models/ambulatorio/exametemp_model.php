@@ -1765,6 +1765,11 @@ class exametemp_model extends Model {
             $this->db->set('operador_unificacao', $operador_id);
             $this->db->where('paciente_id', $_POST['pacienteid']);
             $this->db->update('tb_ambulatorio_laudo');
+            
+            // TB_laudo antigo
+            $this->db->set('paciente_id',$_POST['paciente_id']);
+            $this->db->where('paciente_id', $_POST['pacienteid']);
+            $this->db->update('tb_laudoantigo');
 
             if ($_POST['pacienteid'] != $_POST['paciente_id']) {
                 $this->db->set('ativo', 'f');

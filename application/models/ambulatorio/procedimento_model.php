@@ -289,6 +289,9 @@ class procedimento_model extends Model {
             if ($_POST['medico'] != '') {
                 $this->db->set('medico', $_POST['medico']);
             }
+            if ($_POST['descricao'] != '') {
+                $this->db->set('descricao_procedimento', $_POST['descricao']);
+            }
             if ($_POST['entrega'] != '') {
                 $this->db->set('entrega', $_POST['entrega']);
             }
@@ -380,7 +383,7 @@ class procedimento_model extends Model {
     private function instanciar($procedimento_tuss_id) {
 
         if ($procedimento_tuss_id != 0) {
-            $this->db->select('pt.nome, pt.codigo, pt.grupo, pt.tuss_id, pt.entrega, pt.medico, pt.percentual,  t.descricao, pt.perc_medico, pt.qtde, pt.dencidade_calorica, pt.proteinas, pt.carboidratos, pt.lipidios, pt.kcal');
+            $this->db->select('pt.nome, pt.codigo, pt.grupo, pt.tuss_id, pt.descricao_procedimento, pt.entrega, pt.medico, pt.percentual,  t.descricao, pt.perc_medico, pt.qtde, pt.dencidade_calorica, pt.proteinas, pt.carboidratos, pt.lipidios, pt.kcal');
             $this->db->from('tb_procedimento_tuss pt');
             $this->db->join('tb_tuss t', 't.tuss_id = pt.tuss_id', 'left');
             $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
@@ -393,6 +396,7 @@ class procedimento_model extends Model {
             $this->_grupo = $return[0]->grupo;
             $this->_codigo = $return[0]->codigo;
             $this->_descricao = $return[0]->descricao;
+            $this->_descricao_procedimento = $return[0]->descricao_procedimento;
             $this->_perc_medico = $return[0]->perc_medico;
             $this->_qtde = $return[0]->qtde;
             $this->_dencidade_calorica = $return[0]->dencidade_calorica;

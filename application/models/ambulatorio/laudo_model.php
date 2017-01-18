@@ -633,10 +633,14 @@ class laudo_model extends Model {
     
     function listarhistoricoantigo2($args = array()) {
 
-        $this->db->select('distinct(p.paciente_id), p.nome as paciente');
+        $this->db->select('distinct(la.paciente_id), p.nome as paciente');
         $this->db->from('tb_laudoantigo la');
         $this->db->join('tb_paciente p', 'p.paciente_id = la.paciente_id', 'left');
+//        $this->db->where('p.nome ', null);
         $this->db->orderby('p.nome');
+        if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
+            $this->db->where('la.paciente_id ', $args['prontuario']);
+        }
         if (isset($args['paciente'])) {
             
             $this->db->where('p.nome ilike', '%' . $args['paciente'] . '%');
@@ -646,9 +650,13 @@ class laudo_model extends Model {
     
     function listarhistoricoantigo($args = array()) {
 
-        $this->db->select('distinct(p.paciente_id), p.nome as paciente,');
+        $this->db->select('distinct(la.paciente_id)');
         $this->db->from('tb_laudoantigo la');
         $this->db->join('tb_paciente p', 'p.paciente_id = la.paciente_id', 'left');
+//        $this->db->where('p.nome ', null);
+        if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
+            $this->db->where('la.paciente_id ', $args['prontuario']);
+        }
         if (isset($args['paciente'])) {
             $this->db->where('p.nome ilike', '%' . $args['paciente'] . '%');
         }
