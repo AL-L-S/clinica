@@ -18,7 +18,7 @@
                         </select>
                     </div>
                     <div>
-                        <label>Médico</label>
+<!--                        <label>Médico</label>
                         <select name="cirurgiao1" id="cirurgiao1" class="texto04" required>
                             <option value="">SELECIONE</option>
                             <? foreach ($medicos as $value) { ?>
@@ -29,7 +29,7 @@
                                 endif;
                                 ?>><?= $value->nome ?></option>
                                     <? } ?>
-                        </select>
+                        </select>-->
                         <input type="hidden" name="cirurgiao1_id"  value="<?= @$cirurgiao->solicitacao_cirurgia_orcamento_id ?>"/>
                     </div>
                     <div>

@@ -385,6 +385,18 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
+    function listarequipe($solicitacao_id) {
+        $this->db->select('o.nome as medico,
+                           fc.nome');
+        $this->db->from('tb_solicitacao_cirurgia_equipe ce');
+        $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = ce.funcao', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ce.operador_responsavel', 'left');
+        $this->db->where('ce.solicitacao_cirurgia_id', $solicitacao_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function gravarnovasolicitacao() {
 
         try {
@@ -534,7 +546,7 @@ class solicita_cirurgia_model extends BaseModel {
 
             $valor1 = str_replace(".", "", $_POST['valor1']);
             $valor1 = str_replace(",", ".", $valor1);
-            $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
+//            $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
             $this->db->set('grau_participacao', $_POST['funcao']);
             $this->db->set('valor', $valor1);
@@ -556,6 +568,28 @@ class solicita_cirurgia_model extends BaseModel {
             }
 
 
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            }
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarequipe() {
+
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('funcao', $_POST['funcao']);
+            $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
+            $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+            $this->db->insert('tb_solicitacao_cirurgia_equipe');
+            
             if (trim($erro) != "") { // erro de banco
                 return false;
             }

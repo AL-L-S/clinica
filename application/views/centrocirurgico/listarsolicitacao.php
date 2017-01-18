@@ -55,17 +55,22 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->situacao; ?></td>
-                                <? if ($item->situacao != 'ABERTA' && $item->situacao == 'ORCAMENTO_COMPLETO') { ?>
+                                <? if ($item->situacao != 'ABERTA' && $item->situacao == 'EQUIPE_MONTADA') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
                                             <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
                                     </td> 
                                 <? } ?>
-                                <? if ($item->situacao != 'ABERTA' && $item->situacao != 'ORCAMENTO_COMPLETO') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
-                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->convenio_id; ?>" style="width: 85px;">ORÇAMENTO</a></div>
+                                <? if ($item->situacao != 'ABERTA' && $item->situacao == 'ORCAMENTO_COMPLETO' && $item->situacao != 'EQUIPE_MONTADA') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= $item->solicitacao_cirurgia_id; ?>">EQUIPE</a></div>
                                     </td> 
                                 <? } ?>
-                                <? if ($item->situacao != 'ABERTA' && $item->situacao == 'ORCAMENTO_COMPLETO' ) { ?>
+                                <? if ($item->situacao != 'ABERTA' && $item->situacao != 'ORCAMENTO_COMPLETO' && $item->situacao != 'EQUIPE_MONTADA') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/orcamentopergunta/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->convenio_id; ?>" style="width: 85px;">ORÇAMENTO</a></div>
+                                    </td> 
+                                <? } ?>
+                                <? if (($item->situacao != 'ABERTA' && $item->situacao == 'ORCAMENTO_COMPLETO') || $item->situacao == 'EQUIPE_MONTADA') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 85px;">IMPRIMIR</a></div>
                                     </td>
