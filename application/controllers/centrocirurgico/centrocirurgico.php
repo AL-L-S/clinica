@@ -216,6 +216,16 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);
     }
 
+    function excluiritemorcamento($orcamento_id, $solicitacao_id, $convenio_id) {
+        $this->solicitacirurgia_m->excluiritemorcamento($orcamento_id);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/solicitacarorcamento/$solicitacao_id/$convenio_id");
+    }
+
+    function excluiritemequipe($equipe_id, $solicitacao_id) {
+        $this->solicitacirurgia_m->excluiritemequipe($equipe_id);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$solicitacao_id");
+    }
+
     function liberar($solicitacao_id) {
         if ($this->centrocirurgico_m->liberarsolicitacao($solicitacao_id)) {
             $data['mensagem'] = "LIBERADO!";

@@ -48,13 +48,26 @@
                         $lista = $this->centrocirurgico_m->listarsolicitacoes($_GET)->orderby('p.nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
+                            $situacao = '';
+                            if ($item->situacao == 'ABERTA') {
+                                $situacao = "<font color='blue'>ABERTA";
+                            } elseif ($item->situacao == 'LIBERADA') {
+                                $situacao = "<font color='green'>LIBERADA";
+                            } elseif ($item->situacao == 'ORCAMENTO_INCOMPLETO') {
+                                $situacao = "<font color='red'>ORÇAMENTO INCOMPLETO";
+                            } elseif ($item->situacao == 'ORCAMENTO_COMPLETO') {
+                                $situacao = "<font color='green'>ORÇAMENTO COMPLETO";
+                            } elseif ($item->situacao == 'EQUIPE_MONTADA') {
+                                $situacao = "<font color='green'>EQUIPE MONTADA";
+                            }
+
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->convenio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->situacao; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $situacao; ?></td>
                                 <? if ($item->situacao != 'ABERTA' && $item->situacao == 'EQUIPE_MONTADA') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
                                             <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>

@@ -22,7 +22,7 @@
                             <option value="">SELECIONE</option>
                             <? foreach ($medicos as $value) { ?>
                                 <option value="<?= $value->operador_id ?>"
-                                ><?= $value->nome ?></option>
+                                        ><?= $value->nome ?></option>
                                     <? } ?>
                         </select>
                     </div>
@@ -45,6 +45,7 @@
                     <tr>
                         <th class="tabela_header">Função</th>
                         <th class="tabela_header">Médico</th>
+                        <th class="tabela_header" width="30px;" ><center></center></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,6 +57,11 @@
                         <tr>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
+                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->cirurgia_equipe_id; ?>/<?= $solicitacao_id; ?>" class="delete">
+                                </a>
+                            </td>
+
                         </tr>
                     </tbody>
                 <?php }
@@ -63,7 +69,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="8">
-                            
+
                         </th>
                     </tr>
                 </tfoot>
@@ -81,22 +87,22 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
-                    $(function () {
-                        $('#procedimento1').change(function () {
-                            if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
-                                    options = "";
-                                    options += j[0].valortotal;
+            $(function () {
+                $('#procedimento1').change(function () {
+                    if ($(this).val()) {
+                        $('.carregando').show();
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
+                            options = "";
+                            options += j[0].valortotal;
 //                    b = options.toPrecision(2);
-                                    document.getElementById("valor1").value = options.replace(".", ",");
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#valor1').html('value=""');
-                            }
+                            document.getElementById("valor1").value = options.replace(".", ",");
+                            $('.carregando').hide();
                         });
-                    });
+                    } else {
+                        $('#valor1').html('value=""');
+                    }
+                });
+            });
 
 
 </script>

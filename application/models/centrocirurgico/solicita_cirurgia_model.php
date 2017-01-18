@@ -374,12 +374,14 @@ class solicita_cirurgia_model extends BaseModel {
                            fc.nome as grau_participacao,
                            o.nome as medico,
                            co.valor,
-                           co.observacao');
+                           co.observacao,
+                           co.solicitacao_cirurgia_orcamento_id');
         $this->db->from('tb_solicitacao_cirurgia_orcamento co');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = co.procedimento_tuss_id', 'left');
         $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = co.grau_participacao', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = co.operador_responsavel', 'left');
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->where('co.ativo', 't');
 
         $return = $this->db->get();
         return $return->result();
@@ -387,11 +389,13 @@ class solicita_cirurgia_model extends BaseModel {
 
     function listarequipe($solicitacao_id) {
         $this->db->select('o.nome as medico,
-                           fc.nome');
+                           fc.nome,
+                           ce.cirurgia_equipe_id');
         $this->db->from('tb_solicitacao_cirurgia_equipe ce');
         $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = ce.funcao', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ce.operador_responsavel', 'left');
         $this->db->where('ce.solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->where('ce.ativo', 't');
 
         $return = $this->db->get();
         return $return->result();
@@ -452,6 +456,46 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_solicitacao_cirurgia_procedimento');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            }
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function excluiritemorcamento($orcamento_id) {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('solicitacao_cirurgia_orcamento_id', $orcamento_id);
+            $this->db->update('tb_solicitacao_cirurgia_orcamento');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            }
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function excluiritemequipe($equipe_id) {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('ativo', 'f');
+            $this->db->where('cirurgia_equipe_id', $equipe_id);
+            $this->db->update('tb_solicitacao_cirurgia_equipe');
             $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco
                 return false;
@@ -589,7 +633,7 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
             $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
             $this->db->insert('tb_solicitacao_cirurgia_equipe');
-            
+
             if (trim($erro) != "") { // erro de banco
                 return false;
             }
