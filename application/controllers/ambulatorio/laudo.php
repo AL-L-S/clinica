@@ -396,13 +396,19 @@ class Laudo extends BaseController {
             if (count($contador) == 0) {
                 $this->laudo->deletarregistroimagem($exame_id, $imagem_id);
                 $this->laudo->gravarnome($exame_id, $sequencia, $novonome, $sequencia);
+                $nometemp = "./upload/$exame_id/11";
                 $newname = "./upload/$exame_id/$sequencia";
+                rename($newname, $nometemp);
                 rename($oldname, $newname);
+                rename($nometemp, $oldname);
                 redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
             } elseif ($sequencia == trim($_POST['imagem_id'])) {
                 $this->laudo->alterarnome($exame_id, $imagem_id, $novonome, $sequencia);
+                $nometemp = "./upload/$exame_id/11";
                 $newname = "./upload/$exame_id/$sequencia";
+                rename($newname, $nometemp);
                 rename($oldname, $newname);
+                rename($nometemp, $oldname);
                 redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
             } else {
                 $mensagem = "Imagem Foto " . $sequencia . " já existe";

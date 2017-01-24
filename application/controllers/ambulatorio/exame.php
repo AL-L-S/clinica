@@ -81,6 +81,14 @@ class Exame extends BaseController {
         $data['salas'] = $this->exame->listartodassalas();
         $this->loadView('ambulatorio/relatoriomedicoagendaexame', $data);
     }
+    
+    function relatoriomedicoagendafaltou() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['salas'] = $this->exame->listartodassalas();
+        $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltou', $data);
+    }
 
     function relatoriomedicoagendaconsultas() {
         $data['convenio'] = $this->convenio->listardados();
@@ -154,6 +162,16 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaexame();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexame', $data);
+    }
+    
+    function gerarelatoriomedicoagendaexamefaltou() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+//        echo '<pre>'; 
+        $data['relatorio'] = $this->exame->gerarelatoriomedicoagendaexamefaltou();
+//        var_dump($data['relatorio']); die;
+        $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexamefaltou', $data);
     }
 
     function listarmultifuncaofisioterapia($args = array()) {

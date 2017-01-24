@@ -763,7 +763,7 @@ class exame_model extends Model {
             $this->db->where('p.nascimento', $args['nascimento']);
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -866,7 +866,7 @@ class exame_model extends Model {
             $this->db->where('ae.medico_agenda', $args['medico']);
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -998,7 +998,7 @@ class exame_model extends Model {
             $this->db->where('p.nascimento', $args['nascimento']);
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -1101,7 +1101,7 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -1183,7 +1183,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -1245,7 +1245,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -1307,7 +1307,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -1369,7 +1369,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -1431,7 +1431,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -1493,7 +1493,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -1546,7 +1546,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -1567,6 +1567,7 @@ class exame_model extends Model {
                 $data_atual = date('Y-m-d');
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
             }
         }
         return $this->db;
@@ -1639,7 +1640,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -1660,9 +1661,43 @@ class exame_model extends Model {
                 $data_atual = date('Y-m-d');
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
             }
         }
         return $this->db;
+    }
+
+    function gerarelatoriomedicoagendaexamefaltou($args = array()) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id,
+                            p.celular,
+                            p.telefone,
+                            p.nome as paciente,
+                            pt.nome as procedimento,
+                            m.nome as cidade,
+                            ae.data
+                            ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_municipio m', 'p.municipio_id = m.municipio_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        date_default_timezone_set('America/Fortaleza');
+        $data_atual = date('Y-m-d');
+        $this->db->where('ae.data >=', $_POST['txtdata_inicio']);
+        $this->db->where('ae.data <=', $_POST['txtdata_fim']);
+        $this->db->where('ae.situacao', 'OK');
+        $this->db->where('ae.realizada', 'f');
+        $this->db->where('ae.paciente_id is not null');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('p.nome');
+        if ($_POST['empresa'] != '') {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+
+
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listaragendaconsulta($args = array()) {
@@ -1974,7 +2009,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -2062,7 +2097,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -2243,16 +2278,16 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
-        
+
         if ($perfil_id == 4) {
             $this->db->where('ae.medico_consulta_id', $operador_id);
         }
-            
+
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
             $this->db->where('p.paciente_id', $args['prontuario']);
@@ -2334,7 +2369,7 @@ class exame_model extends Model {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
                 $this->db->where('p.paciente_id', $args['prontuario']);
@@ -2398,7 +2433,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -2470,7 +2505,7 @@ class exame_model extends Model {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -2513,29 +2548,29 @@ class exame_model extends Model {
 //        if ($operador_id != '1') {
 //            
 //        }
-        
-        
+
+
         if ($teste == true) {
             $this->db->where('ae.data', $dataAtual);
             $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
-            
+
             if ($perfil_id == 4) {
                 $this->db->where('ae.medico_consulta_id', $operador_id);
             }
-            
+
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-            } 
+            }
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
@@ -2593,7 +2628,7 @@ class exame_model extends Model {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -2681,14 +2716,14 @@ class exame_model extends Model {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 $this->db->where('ae.situacao', $args['situacao']);
-            } 
+            }
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
@@ -2758,7 +2793,7 @@ class exame_model extends Model {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -2818,7 +2853,7 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
-        
+
         if ($teste == true) {
 //        if ((!isset($args['nome'])&& $args['nome'] == 0) || (!isset($args['data'])&& strlen($args['data']) == '') || (!isset($args['sala'])&& strlen($args['sala']) == '') || (!isset($args['medico'])&& strlen($args['medico']) =='')) {
             $this->db->where('ae.data', $dataAtual);
@@ -2827,12 +2862,12 @@ class exame_model extends Model {
             if ($perfil_id == 4) {
                 $this->db->where('ae.medico_consulta_id', $operador_id);
             }
-            
+
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -2902,7 +2937,7 @@ class exame_model extends Model {
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
-        
+
         if ($teste == true) {
             $this->db->where('ae.data', $dataAtual);
             $this->db->where('ae.medico_consulta_id', $operador_id);
@@ -2910,12 +2945,12 @@ class exame_model extends Model {
             if ($perfil_id == 4) {
                 $this->db->where('ae.medico_consulta_id', $operador_id);
             }
-            
+
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -2982,7 +3017,7 @@ class exame_model extends Model {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -3058,7 +3093,7 @@ class exame_model extends Model {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
-                $this->db->where('ae.data', date( "Y-m-d", strtotime( str_replace('/', '-', $args['data']) ) ));
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -3073,7 +3108,7 @@ class exame_model extends Model {
     }
 
     function listarguiafaturamento() {
-        
+
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('g.ambulatorio_guia_id,
                             ae.valor_total as valortotal,
@@ -3462,7 +3497,7 @@ class exame_model extends Model {
         $horario = date('Y-m-d');
         $operador_id = $this->session->userdata('operador_id');
 
-        if($_POST['descricao'] != ''){
+        if ($_POST['descricao'] != '') {
             $this->db->set('descricao', $_POST['descricao']);
         }
         $this->db->set('guia_id', $_POST['txtguia_id']);
