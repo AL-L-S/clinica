@@ -1316,3 +1316,39 @@ ALTER TABLE ponto.tb_solicitacao_cirurgia ALTER COLUMN situacao SET DEFAULT 'ABE
 
 -- Dia 17/01/2017
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN descricao_procedimento character varying(600);
+
+CREATE TABLE ponto.tb_solicitacao_cirurgia_equipe
+(
+  cirurgia_equipe_id serial NOT NULL,
+  funcao integer,
+  operador_responsavel integer,
+  solicitacao_cirurgia_id integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT solicitacao_cirurgia_equipe_pkey PRIMARY KEY (cirurgia_equipe_id )
+)
+
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN situacao character varying;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ALTER COLUMN situacao SET DEFAULT 'ABERTA'::character varying;
+
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN convenio integer;
+
+
+
+CREATE TABLE ponto.tb_funcoes_cirurgia
+(
+  funcao_cirurgia_id serial NOT NULL,
+  nome character varying,
+  CONSTRAINT funcao_cirurgia_pkey PRIMARY KEY (funcao_cirurgia_id )
+)
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia_orcamento ADD COLUMN grau_participacao;
+ALTER TABLE ponto.tb_solicitacao_cirurgia_orcamento ADD COLUMN grau_participacao integer;
+
+INSERT INTO ponto.tb_funcoes_cirurgia (funcao_cirurgia_id , nome)
+VALUES(1 , 'CIRURGIAO');
+INSERT INTO ponto.tb_funcoes_cirurgia (funcao_cirurgia_id , nome)
+VALUES(2 , 'ANESTESISTA');
+INSERT INTO ponto.tb_funcoes_cirurgia (funcao_cirurgia_id , nome)
+VALUES(3 , 'AUXILIAR 1');

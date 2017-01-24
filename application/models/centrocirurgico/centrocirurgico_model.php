@@ -67,8 +67,8 @@ class centrocirurgico_model extends BaseModel {
                             sc.solicitacao_cirurgia_id,
                             sc.data_prevista');
         $this->db->from('tb_solicitacao_cirurgia sc');
-        $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id' , 'left');
-        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ' , 'left');
+        $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ', 'left');
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
         $this->db->where('sc.autorizado', 't');
@@ -150,6 +150,52 @@ class centrocirurgico_model extends BaseModel {
         }
     }
 
+    function alterarsituacaoorcamento($solicitacao_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('situacao', 'ORCAMENTO_INCOMPLETO');
+        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->update('tb_solicitacao_cirurgia');
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function alterarsituacaoorcamentodisnecessario($solicitacao_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
+        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->update('tb_solicitacao_cirurgia');
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function verificasituacao($solicitacao_id) {
+        $this->db->select('situacao');
+        $this->db->from('tb_solicitacao_cirurgia');
+        $this->db->where('ativo', 't');
+        $this->db->where('excluido', 'f');
+        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function finalizarrcamento($solicitacao_id) {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
@@ -157,6 +203,24 @@ class centrocirurgico_model extends BaseModel {
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
+        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->update('tb_solicitacao_cirurgia');
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function finalizarequipe($solicitacao_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('situacao', 'EQUIPE_MONTADA');
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->update('tb_solicitacao_cirurgia');
 

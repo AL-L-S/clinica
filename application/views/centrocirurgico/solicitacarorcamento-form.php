@@ -18,18 +18,18 @@
                         </select>
                     </div>
                     <div>
-                        <label>Médico</label>
-                        <select name="cirurgiao1" id="cirurgiao1" class="texto04" required>
-                            <option value="">SELECIONE</option>
-                            <? foreach ($medicos as $value) { ?>
-                                <option value="<?= $value->operador_id ?>"
-                                <?
-                                if (isset($cirurgiao->operador_responsavel) && $cirurgiao->operador_responsavel == $value->operador_id) :
-                                    echo 'selected';
-                                endif;
-                                ?>><?= $value->nome ?></option>
-                                    <? } ?>
-                        </select>
+                        <!--                        <label>Médico</label>
+                                                <select name="cirurgiao1" id="cirurgiao1" class="texto04" required>
+                                                    <option value="">SELECIONE</option>
+                        <? foreach ($medicos as $value) { ?>
+                                                                <option value="<?= $value->operador_id ?>"
+                            <?
+                            if (isset($cirurgiao->operador_responsavel) && $cirurgiao->operador_responsavel == $value->operador_id) :
+                                echo 'selected';
+                            endif;
+                            ?>><?= $value->nome ?></option>
+                        <? } ?>
+                                                </select>-->
                         <input type="hidden" name="cirurgiao1_id"  value="<?= @$cirurgiao->solicitacao_cirurgia_orcamento_id ?>"/>
                     </div>
                     <div>
@@ -93,14 +93,10 @@
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->procedimento; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo number_format($item->valor, 2, ",", "."); ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->observacao; ?></td>
-                            <!--                            <? if ($item->situacao == 'ABERTA') { ?>
-                                            <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
-                                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacao/<?= $item->solicitacao_cirurgia_id; ?>">CADASTRAR</a></div>
-                                            </td>
-                            <? } ?>
-                            <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 60px;">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">EXCLUIR</a></div>
-                            </td> -->
+                            <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
+                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemorcamento/<?= $item->solicitacao_cirurgia_orcamento_id; ?>/<?= $solicitacao_id; ?>/<?= $convenio_id; ?>" class="delete">
+                                    </a>
+                            </td>
                         </tr>
                     </tbody>
                 <?php }
@@ -126,22 +122,22 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
-                    $(function () {
-                        $('#procedimento1').change(function () {
-                            if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
-                                    options = "";
-                                    options += j[0].valortotal;
+            $(function () {
+                $('#procedimento1').change(function () {
+                    if ($(this).val()) {
+                        $('.carregando').show();
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
+                            options = "";
+                            options += j[0].valortotal;
 //                    b = options.toPrecision(2);
-                                    document.getElementById("valor1").value = options.replace(".", ",");
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#valor1').html('value=""');
-                            }
+                            document.getElementById("valor1").value = options.replace(".", ",");
+                            $('.carregando').hide();
                         });
-                    });
+                    } else {
+                        $('#valor1').html('value=""');
+                    }
+                });
+            });
 
 
 </script>

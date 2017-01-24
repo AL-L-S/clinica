@@ -138,8 +138,8 @@
                         }
 
                         //autocomplete dos procedimentos
-        $(function() {
-            $( "#procedimento" ).autocomplete({
+                        $(function () {
+                            $("#procedimento").autocomplete({
                                 source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentoproduto",
                                 minLength: 3,
                                 focus: function (event, ui) {
