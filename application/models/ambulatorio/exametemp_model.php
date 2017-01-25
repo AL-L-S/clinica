@@ -3442,7 +3442,7 @@ class exametemp_model extends Model {
         $this->db->where('ativo', 'true');
         $this->db->orderby('nome');
         if ($parametro != null) {
-            $this->db->where('nome ilike', '%' . $parametro . '%');
+            $this->db->where('nome ilike', $parametro);
         }
         $return = $this->db->get();
         return $return->result();

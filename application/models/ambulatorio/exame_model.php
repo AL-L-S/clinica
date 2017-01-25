@@ -2168,7 +2168,7 @@ class exame_model extends Model {
         $this->db->orderby('ae.numero_sessao');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.paciente_id', $paciente_id);
-        $this->db->where('ae.tipo', 'FISIOTERAPIA');
+        $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.numero_sessao >=', '1');
         $this->db->where('ae.realizada', 'false');

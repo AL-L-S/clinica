@@ -179,9 +179,9 @@
                                         <input type="text" id="linha2" class="texto02" name="linha2"/>
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
-                                        <?php foreach ($linha as $item) { ?>
-                                                                                                                        <option value="<?php echo $item->nome; ?>" ><?php echo $item->nome; ?></option>
-                                        <?php } ?>
+                                        <?php// foreach ($linha as $item) { ?>
+                                                                                                                        <option value="<?php// echo $item->nome; ?>" ><?php// echo $item->nome; ?></option>
+                                        <?php// } ?>
                                         </select>-->
 
                                         <div class="bt_link">
