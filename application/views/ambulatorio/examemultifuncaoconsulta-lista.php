@@ -31,13 +31,17 @@
                         <th class="tabela_title">
                             <select name="empresa" id="empresa" class="size2">
                                 <option value=""></option>
-                                <? foreach ($empresas as $value) : ?>
+                                <? $selected = false;
+                                foreach ($empresas as $value) : ?>
                                     <option value="<?= $value->empresa_id; ?>" <?
                                     if ((isset($_GET['empresa']) || @$_GET['empresa'] != '') && @$_GET['empresa'] == $value->empresa_id) {
-                                        echo 'selected';
-                                    } elseif ($empresa_logada == $value->empresa_id) {
-                                        echo 'selected';
-                                    };
+                                        echo 'selected'; $selected = true;
+                                    } 
+                                    else{
+                                        if ($empresa_logada == $value->empresa_id && $selected == false) {
+                                            echo 'selected'; $selected = true;
+                                        }
+                                    }
                                     ?>><?php echo $value->nome; ?></option>
                                         <? endforeach; ?>
                             </select>
