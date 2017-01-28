@@ -3770,7 +3770,7 @@ class exame_model extends Model {
 //            var_dump($_POST['txttipo']);
 //            die;
 
-            if ($_POST['txttipo'] == 'EXAME') {
+            if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO') {
 
                 $this->db->set('ativo', 'f');
                 $this->db->where('exame_sala_id', $_POST['txtsalas']);
