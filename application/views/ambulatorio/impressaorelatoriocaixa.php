@@ -5,7 +5,7 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>CONFERENCIA CAIXA</h4>
-    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
+    <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
     <? if ($contador > 0 && $operador != 0) { ?>
         <h3>ATENDENTE: <?= $relatorio[0]->nome; ?></h3>
     <? } ?>
@@ -34,6 +34,7 @@
                 foreach ($formapagamento as $value) {
                     $data[$value->nome] = 0;
                     $numero[$value->nome] = 0;
+                    $desconto[$value->nome] = 0;
                 }
 
                 $i = 0;
@@ -68,6 +69,7 @@
                 $operadorexames = "";
                 $paciente = "";
                 $exame = "";
+                $pendentes = 0;
 
                 foreach ($relatorio as $item) {
 
@@ -260,25 +262,36 @@
                             if ($item->forma_pagamento == $value->nome) {
                                 $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                 $numero[$value->nome] ++;
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                             }
                         }
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_2 == $value->nome) {
                                 $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                 $numero[$value->nome] ++;
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                             }
                         }
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_3 == $value->nome) {
                                 $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                 $numero[$value->nome] ++;
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                             }
                         }
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_4 == $value->nome) {
                                 $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                 $numero[$value->nome] ++;
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                             }
+                        }
+                        if ($item->faturado == 'f') {
+                            $pendentes ++;
+                        }
+                        if ($item->forma_pagamento == "") {
+                            $OUTROS = $OUTROS + $item->valor_total;
+                            $NUMEROOUTROS++;
                         }
                         $y++;
                         $valor = $valor + $item->valor_total;
@@ -406,27 +419,38 @@
                         <?
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento == $value->nome) {
-                                $data[$value->nome] = $data[$value->nome] + $item->valor1;            
+                                $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                 $numero[$value->nome] ++;
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                             }
                         }
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_2 == $value->nome) {
                                 $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                 $numero[$value->nome] ++;
+                               $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                             }
                         }
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_3 == $value->nome) {
                                 $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                 $numero[$value->nome] ++;
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                             }
                         }
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_4 == $value->nome) {
                                 $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                 $numero[$value->nome] ++;
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                             }
+                        }
+                        if ($item->forma_pagamento == "") {
+                            $OUTROS = $OUTROS + $item->valor_total;
+                            $NUMEROOUTROS++;
+                        }
+                        if ($item->faturado == 'f') {
+                            $pendentes ++;
                         }
                         $valor = 0;
                         $valor = $valor + $item->valor_total;
@@ -434,16 +458,18 @@
                         $y++;
                     }
                 }
-                
-                $w = 0;?>                       
-            <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
-                <? foreach ($formapagamento as $value) { 
-                    
-$w++;?>
 
-                <input type="hidden" class="texto3" name="qtde[<?=$w?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
-                <? }
-                ?>
+                $w = 0;
+                ?>                       
+            <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
+                <? foreach ($formapagamento as $value) {
+
+                    $w++;
+                    ?>
+
+                    <input type="hidden" class="texto3" name="qtde[<?= $w ?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
+    <? }
+    ?>
     <!--                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($DINHEIRO, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="cheque" value="<?= number_format($CHEQUE, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="debito" value="<?= number_format($DEBITO_CONTA, 2, ',', '.'); ?>" readonly/>
@@ -452,7 +478,7 @@ $w++;?>
      <input type="hidden" class="texto3" name="cartaomaster" value="<?= number_format($CARTAOMASTER, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="cartaohiper" value="<?= number_format($CARTAOHIPER, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="cartaoelo" value="<?= number_format($CARTAOELO, 2, ',', '.'); ?>" readonly/>-->
-<!--                <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>-->
+    <!--                <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>-->
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
                 <input type="hidden" class="texto3" name="grupo" value="<?= $grupo; ?>"/>
@@ -480,7 +506,7 @@ $w++;?>
                         <? } ?>
                     <? } else { ?>
                         <td colspan="3" ><b>Pendencias de Faturamento / Finalizar exame</b></td>
-                    <? } ?>
+    <? } ?>
                 </tr>
 
 
@@ -491,17 +517,25 @@ $w++;?>
         <table border="1">
             <tbody>
                 <tr>
-                    <td colspan="4" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
+                    <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
+                    <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
             </tr>
-            <? foreach ($formapagamento as $value) { ?>
+    <? foreach ($formapagamento as $value) { ?>
                 <tr>
                     <td width="140px;"><font size="-1"><?= $value->nome ?></td>
                     <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
-                    <td><font size="-2"></td>
                     <td width="200px;"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
-                </tr>       
-            <? } ?>
+                    <td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>
+                </tr>    
 
+
+    <? } ?>
+            <tr>
+                <td width="140px;"><font size="-1">PENDENTES</td>
+                <td width="140px;"><font size="-1"><?= $NUMEROOUTROS ?></td>
+                <td width="200px;"><font size="-1"><?= number_format($OUTROS, 2, ',', '.'); ?></td>
+                <td><font size="-2"></td>
+            </tr>  
             <?
             $TOTALCARTAO = 0;
             $QTDECARTAO = 0;
@@ -515,14 +549,12 @@ $w++;?>
             <tr>
                 <td width="140px;"><font size="-1">TOTAL CARTAO</td>
                 <td width="140px;"><font size="-1">Nr. Cart&otilde;es: <?= $QTDECARTAO; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
+                <td width="200px;" colspan="2"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
             </tr>
             <tr>
                 <td width="140px;"><font size="-1">TOTAL GERAL</td>
                 <td width="140px;"><font size="-1">Nr. Exa: <?= $i; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
+                <td width="200px;" colspan="2"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
             </tr>
             </tbody>
 
@@ -556,7 +588,7 @@ $w++;?>
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $NUMERODINHEIRO; ?>,<?= $NUMERODEBITO_CONTA; ?>,<?= $NUMEROCARTAOVISA; ?>,<?= $NUMEROCARTAOMASTER; ?>,<?= $NUMEROCARTAOHIPER; ?>,<?= $NUMEROCARTAOELO; ?>,<?= $NUMEROOUTROS; ?>&chtt=QUANTIDADE DE EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALOUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste"/></center>
                 GRAFICO DE VALOR DE EXAMES
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $VALORDINHEIRO; ?>,<?= $VALORDEBITO_CONTA; ?>,<?= $VALORCARTAOVISA; ?>,<?= $VALORCARTAOMASTER; ?>,<?= $VALORCARTAOHIPER; ?>,<?= $VALORCARTAOELO; ?>,<?= $VALOROUTROS; ?>&chtt=VALOR DOS EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALVALORDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOHIPER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALOROUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste2" /></center>-->
-        <? if (count($caixa)) { ?>
+    <? if (count($caixa)) { ?>
             <table border="1">
                 <thead>
                     <tr>
@@ -568,12 +600,12 @@ $w++;?>
                     </tr>
                 </thead>
                 <tbody>
-                    <? foreach ($caixa as $item) : ?>
+        <? foreach ($caixa as $item) : ?>
                         <tr>
                             <td><?= utf8_decode($item->operador_caixa); ?></td>
                             <td><?= number_format($item->valor, 2, ',', '.'); ?></td>
                         </tr>
-                    <? endforeach; ?>
+            <? endforeach; ?>
                 </tbody>
             </table>
             <? //  var_dump($data[$value->nome]);   ?>
