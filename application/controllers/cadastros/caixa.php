@@ -151,6 +151,7 @@ class Caixa extends BaseController {
         } elseif ($caixa_id == 0) {
             $data['mensagem'] = 'Senha incorreta.';
         }
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/caixa/pesquisar3", $data);
     }
 
@@ -164,6 +165,7 @@ class Caixa extends BaseController {
         } elseif ($caixa_id == 0) {
             $data['mensagem'] = 'Senha incorreta.';
         }
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/caixa/pesquisar3", $data);
     }
 

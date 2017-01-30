@@ -987,7 +987,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
 //        $this->db->where('ae.data >=', $data);
-        $this->db->where('ae.empresa_id', $empresa_id);
+            $this->db->where('ae.empresa_id', $empresa_id);
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
 //        $this->db->where('ae.cancelada', 'false');
@@ -1536,7 +1536,13 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
 //        $this->db->where('ae.data >=', $data);
-        $this->db->where('ae.empresa_id', $empresa_id);
+        
+        if (empty($args['empresa']) || $args['empresa'] == '') {
+            $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $args['empresa']);
+        }
+        
         $this->db->where('ae.tipo', 'CONSULTA');
 //        $this->db->where('ae.confirmado', 'true');
 //        $this->db->where('ae.ativo', 'false');
@@ -2168,7 +2174,7 @@ class exame_model extends Model {
         $this->db->orderby('ae.numero_sessao');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.paciente_id', $paciente_id);
-        $this->db->where('ae.tipo', 'FISIOTERAPIA');
+        $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.numero_sessao >=', '1');
         $this->db->where('ae.realizada', 'false');
@@ -3427,10 +3433,13 @@ class exame_model extends Model {
 
     function verificadiasessao($agenda_exames_id) {
 
-        $this->db->select('agrupador_fisioterapia,
+        $this->db->select('agrupador_fisioterapia, ag.nome,
                             numero_sessao,
                             qtde_sessao');
-        $this->db->from('tb_agenda_exames');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join("tb_procedimento_convenio pc", "pc.procedimento_convenio_id = ae.procedimento_tuss_id", "left");
+        $this->db->join("tb_procedimento_tuss pt", "pt.procedimento_tuss_id = pc.procedimento_tuss_id", "left");
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $query = $this->db->get();
         $retorno = $query->result();
@@ -3438,6 +3447,10 @@ class exame_model extends Model {
         $sessao = $retorno[0]->numero_sessao;
         $agrupador = $retorno[0]->agrupador_fisioterapia;
         $qtde_sessao = $retorno[0]->qtde_sessao;
+        $grupo = $retorno[0]->nome;
+//        echo '<pre>';
+        var_dump($grupo);
+        
 
 
         $i = 1;
@@ -3445,20 +3458,26 @@ class exame_model extends Model {
         while ($i < $qtde_sessao) {
 
             $data = date("Y-m-d");
-            $this->db->select('data');
-            $this->db->from('tb_agenda_exames');
+            $this->db->select('ae.data, ag.nome');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->join("tb_procedimento_convenio pc", "pc.procedimento_convenio_id = ae.procedimento_tuss_id", "left");
+            $this->db->join("tb_procedimento_tuss pt", "pt.procedimento_tuss_id = pc.procedimento_tuss_id", "left");
+            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
             $this->db->where('agrupador_fisioterapia', $agrupador);
             $this->db->where('numero_sessao', $i);
+            $this->db->where('ag.nome', $grupo);
             $this->db->where('data', $data);
             $query2 = $this->db->get();
             $retorno2 = $query2->result();
+            var_dump($retorno2);
+
 
             if (count($retorno2) != 0) {
                 $x++;
             }
             $i++;
         }
-
+//        die;
         return $x;
     }
 
@@ -3751,7 +3770,7 @@ class exame_model extends Model {
 //            var_dump($_POST['txttipo']);
 //            die;
 
-            if ($_POST['txttipo'] == 'EXAME') {
+            if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO') {
 
                 $this->db->set('ativo', 'f');
                 $this->db->where('exame_sala_id', $_POST['txtsalas']);

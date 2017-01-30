@@ -1935,8 +1935,11 @@ class exametemp_model extends Model {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
                 $empresa_id = $this->session->userdata('empresa_id');
+                
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
-                $this->db->set('empresa_id', $empresa_id);
+                
+//                $this->db->set('empresa_id', $empresa_id);
+                
                 $this->db->set('tipo', 'CONSULTA');
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
@@ -3442,7 +3445,7 @@ class exametemp_model extends Model {
         $this->db->where('ativo', 'true');
         $this->db->orderby('nome');
         if ($parametro != null) {
-            $this->db->where('nome ilike', '%' . $parametro . '%');
+            $this->db->where('nome ilike', $parametro);
         }
         $return = $this->db->get();
         return $return->result();

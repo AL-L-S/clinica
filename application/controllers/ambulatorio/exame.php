@@ -443,7 +443,6 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
-//        var_dump($total); die;
         if ($total == 0) {
             $laudo_id = $this->exame->gravarexame();
             if ($laudo_id == "-1") {
@@ -452,12 +451,13 @@ class Exame extends BaseController {
                 $data['mensagem'] = 'Sucesso ao gravar o Exame.';
 //                $this->gerarcr($agenda_exames_id); //clinica humana
                 $this->gerardicom($laudo_id); //clinica ronaldo
+                
+                $this->laudo->chamada($laudo_id);
             }
         } else {
             $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
         }
 //        $this->session->set_flashdata('message', $data['mensagem']);
-        $this->laudo->chamada($laudo_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 

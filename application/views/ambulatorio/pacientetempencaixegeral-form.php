@@ -4,7 +4,7 @@
         </fieldset>
         <fieldset>
 
-            <legend>Manter Exames</legend>
+            <legend>Agenda Geral</legend>
             <div>
                 <label>Data</label>
                 <input type="text"  id="data_ficha" name="data_ficha" class="size1"  />
