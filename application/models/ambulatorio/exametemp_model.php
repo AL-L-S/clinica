@@ -3492,6 +3492,7 @@ class exametemp_model extends Model {
 //        $this->db->set('medico_consulta_id', null);
 //        $this->db->set('medico_agenda', null);
         $this->db->set('ativo', 't');
+        $this->db->set('encaixe', 'f');
         $this->db->set('situacao', 'LIVRE');
         $this->db->set('observacoes', "");
         $horario = date("Y-m-d H:i:s");

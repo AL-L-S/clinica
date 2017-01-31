@@ -13,7 +13,7 @@
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" class="texto02" onkeypress="mascara3(this)" type="text" maxlength="10" onblur="calculoIdade(this.value)"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" type="text" maxlength="10" onblur="calculoIdade(this.value)"/>
             </div>
             <div>
                 <label>Idade</label>
@@ -27,13 +27,13 @@
                 <label>Telefone</label>
 
 
-                <input type="text" id="telefone" class="texto02" name="telefone" onkeypress="mascara2(this)" type="text" maxlength="14"/>
+                <input type="text" id="telefone" class="texto02" name="telefone" type="text" maxlength="14"/>
             </div>
             <div>
                 <label>Celular</label>
 
 
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" onkeypress="mascara2(this)" type="text" maxlength="14"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" type="text" maxlength="14"/>
             </div>
             <div>
                 <label>Convenio *</label>
@@ -108,10 +108,11 @@
 
 </fieldset>
 </div> <!-- Final da DIV content -->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
 
@@ -217,34 +218,10 @@
 //            }
 //        });
 //    });
-
-
-                    function mascara2(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 1)
-                                horarios.value = '(' + horarios.value;
-
-                            if (horarios.value.length == 3)
-                                horarios.value = horarios.value + ') ';
-
-                            if (horarios.value.length == 9)
-                                horarios.value = horarios.value + '-';
-
-                        }
-                    }
-
-                    function mascara3(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 2)
-                                horarios.value = horarios.value + '/';
-
-                            if (horarios.value.length == 5)
-                                horarios.value = horarios.value + '/';
-
-
-                        }
-                    }
-
+                    jQuery("#telefone").mask("(99) 9999-9999");
+                    jQuery("#txtCelular").mask("(99) 99999-9999");
+                    jQuery("#nascimento").mask("99/99/9999");
+                    
                     function calculoIdade() {
                         var data = document.getElementById("nascimento").value;
                         var ano = data.substring(6, 12);

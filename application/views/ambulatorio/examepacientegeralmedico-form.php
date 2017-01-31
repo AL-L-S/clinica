@@ -12,7 +12,7 @@
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" class="texto02" maxlength="10"  onkeypress="mascara3(this)" type="text"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" maxlength="10" type="text"/>
             </div>
             <div>
                 <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask"/>
@@ -20,11 +20,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone" maxlength="14"  onkeypress="mascara2(this)" type="text" />
+                <input type="text" id="telefone" class="texto02" name="telefone"  type="text" />
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular" />
             </div>
             <div>
                 <label>Medico</label>
@@ -102,10 +102,11 @@
 
 </fieldset>
 </div> <!-- Final da DIV content -->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
 
@@ -230,30 +231,7 @@
 //        });
 //    });
 
-                    function mascara2(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 1)
-                                horarios.value = '(' + horarios.value;
-
-                            if (horarios.value.length == 3)
-                                horarios.value = horarios.value + ') ';
-
-                            if (horarios.value.length == 9)
-                                horarios.value = horarios.value + '-';
-
-                        }
-                    }
-
-                    function mascara3(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 2)
-                                horarios.value = horarios.value + '/';
-
-                            if (horarios.value.length == 5)
-                                horarios.value = horarios.value + '/';
-
-
-                        }
-                    }
-
+                    jQuery("#telefone").mask("(99) 9999-9999");
+                    jQuery("#txtCelular").mask("(99) 99999-9999");
+                    jQuery("#nascimento").mask("99/99/9999");
 </script>
