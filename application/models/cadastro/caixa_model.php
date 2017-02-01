@@ -848,6 +848,7 @@ class caixa_model extends Model {
         $this->db->select('financeiro_credor_devedor_id,
             razao_social');
         $this->db->from('tb_financeiro_credor_devedor');
+        $this->db->where('ativo', 'true');
         $this->db->orderby('razao_social');
         $return = $this->db->get();
         return $return->result();

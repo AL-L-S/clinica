@@ -55,12 +55,12 @@
                         <table>
                             <tr>
                                 <td><font size = -1>Peso:</font></td>
-                                <td width="60px;"><font size = -1><input type="text" name="Peso" id="Peso" class="texto01"  alt="decimal" onkeyup="validar(this,'num');" value="<?= @$obj->_peso?>"/></font></td>
-                                <td width="60px;"><font size = -1>Kg</font></td>
+                                <td width="50px;"><font size = -1><input type="text" name="Peso" id="Peso" class="texto01"  alt="decimal" onkeyup="validar(this,'num');" value="<?= @$obj->_peso?>"/></font></td>
+                                <td width="50px;"><font size = -1>Kg</font></td>
                                 <td ><font size = -1>Altura:</font></td>
-                                <td width="60px;"><font size = -1><input type="text" name="Altura" id="Altura" alt="integer" class="texto01" value="<?= @$obj->_altura; ?>" onblur="calculaImc()"/></font></td> <!--onblur="history.go(0)"-->
-                                <td width="60px;"><font size = -1>Cm</font></td>
-                            </tr>
+                                <td width="50px;"><font size = -1><input type="text" name="Altura" id="Altura" alt="integer" class="texto01" value="<?= @$obj->_altura; ?>" onblur="calculaImc()"/></font></td> <!--onblur="history.go(0)"-->
+                                <td width="50px;"><font size = -1>Cm</font></td>
+                            <!--</tr>-->
                             <?
 //                            $imc = 0;
 //                            $peso =  @$obj->_peso;
@@ -70,15 +70,15 @@
 //                            $imc = $peso / pow($altura, 2);
 //                            }
                             ?>
-                            <tr>
+                            <!--<tr>-->
                                 <td><font size = -1>IMC</font></td>
                                 <td width="60px;"><font size = -1><input type="text" name="imc" id="imc" class="texto01"  readonly/></font></td>
+                                <td width="30px;"></td>
+<!--                                <td ><font size = -1></font></td>
                                 <td width="60px;"></td>
-                                <td ><font size = -1></font></td>
-                                <td width="60px;"></td>
-                                <td width="60px;"></td>
-                            </tr>
-                            <tr>
+                                <td width="60px;"></td>-->
+<!--                            </tr>
+                            <tr>-->
                                 <td><font size = -1>Diabetes:</font></td>
                                 <td colspan="2"><font size = -1>                            
                                     <select name="diabetes" id="diabetes" class="size1">
@@ -92,6 +92,7 @@
                                         endif;
                                         ?> >sim</option>
                                     </select><font></td>
+                                <td width="20px;"></td>
                                 <td><font size = -1>Hipertens&atilde;o:</font></td>
                                 <td colspan="2"><font size = -1>                            
                                     <select name="hipertensao" id="hipertensao" class="size1">
@@ -317,6 +318,7 @@
                         </div>
 
                     </fieldset>
+                    
                     <fieldset>
                         <legend><b><font size="3" color="red">Historico de exames</font></b></legend>
                         <div>

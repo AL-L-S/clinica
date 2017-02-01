@@ -1357,4 +1357,8 @@ VALUES(3 , 'AUXILIAR 1');
 
 ALTER TABLE ponto.tb_solicitacao_cirurgia_orcamento ADD COLUMN procedimento_tuss_id integer;
 ALTER TABLE ponto.tb_solicitacao_cirurgia_orcamento ADD COLUMN valor numeric(10,2);
-ALTER TABLE ponto.tb_solicitacao_cirurgia_orcamento ADD COLUMN grau_participacao integer;
+
+
+-- Dia 01/02/2017
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_bruto numeric(10,2);

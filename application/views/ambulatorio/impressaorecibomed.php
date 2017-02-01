@@ -34,7 +34,17 @@ $formapagamento ='';
     <td ><font size = -1>Idade: <?= $idade; ?></font></td>
 </tr>
 <tr>
-    <td ><font size = -1>Convenio: <?= utf8_decode($exame[0]->convenio); ?></font></td>
+    <td >
+        <?
+            foreach ($exames as $value) :
+                $convenios[] = utf8_decode($value->convenio);
+            endforeach; 
+            $convenios = array_unique($convenios);
+            $convenios = implode(' / ', $convenios);
+        ?>
+        <font size = -1>Convenio: <?= $convenios; ?>
+        </font>
+    </td>
 </tr>
 <tr>
     <td ><font size = -1>-------------------------------------------------------------</font></td>
