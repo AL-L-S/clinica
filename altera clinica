@@ -1352,3 +1352,30 @@ INSERT INTO ponto.tb_funcoes_cirurgia (funcao_cirurgia_id , nome)
 VALUES(2 , 'ANESTESISTA');
 INSERT INTO ponto.tb_funcoes_cirurgia (funcao_cirurgia_id , nome)
 VALUES(3 , 'AUXILIAR 1');
+
+
+
+-- Dia 01/02/2017
+
+CREATE TABLE ponto.tb_procedimento_convenio_antigo
+(
+  procedimento_convenio_id_antigo serial NOT NULL,
+  procedimento_convenio_id integer,
+  convenio_id integer,
+  procedimento_tuss_id integer,
+  qtdech numeric(10,4),
+  valorch numeric(10,4),
+  qtdefilme numeric(10,4),
+  valorfilme numeric(10,4),
+  qtdeporte numeric(10,4),
+  valorporte numeric(10,4),
+  qtdeuco numeric(10,4),
+  valoruco numeric(10,4),
+  valortotal numeric(10,2),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_procedimento_convenio_antigo_pkey PRIMARY KEY (procedimento_convenio_id_antigo )
+); 
