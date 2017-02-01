@@ -3702,6 +3702,7 @@ class guia_model extends Model {
                             p.sexo,
                             es.nome as sala,
                             c.nome as convenio,
+                            c.convenio_id,
                             ae.autorizacao,
                             fp.nome as formadepagamento,
                             fp2.nome as formadepagamento2,
@@ -3725,7 +3726,7 @@ class guia_model extends Model {
         $this->db->join('tb_forma_pagamento fp4', 'fp4.forma_pagamento_id =ae.forma_pagamento4', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_autorizacao', 'left');
         $this->db->where("ae.guia_id", $guia_id);
-        $this->db->where("c.convenio_id", $convenioid);
+//        $this->db->where("c.convenio_id", $convenioid);
         $this->db->where("ae.cancelada", "f");
         $this->db->orderby('ae.guia_id');
         $return = $this->db->get();
@@ -6441,6 +6442,11 @@ ORDER BY ae.agenda_exames_id)";
             $data = date("Y-m-d");
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
             $this->db->set('valor', $_POST['valor1']);
+            
+            if ($_POST['valortot'] != "") {
+                $this->db->set('valor_bruto', $_POST['valortot']);
+            }
+            
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor1', $valortotal);
             $this->db->set('valor_total', $valortotal);

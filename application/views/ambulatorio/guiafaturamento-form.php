@@ -53,13 +53,12 @@
 
                     <div>
                         <label>Nome da M&atilde;e</label>
-
-
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
                 </fieldset>
 
                 <fieldset>
+                    
                     <table id="table_justa">
                         <thead>
 
@@ -71,6 +70,7 @@
                                 <th class="tabela_header">Tipo</th>
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header">Ajuste(%)</th>
                                 <th class="tabela_header">Empresa</th>
                                 <th class="tabela_header">Laudo</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
@@ -78,7 +78,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
+                                <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" onchange="alteraQuantidade()" class="texto00"/></td>
                                 <td  width="50px;">
                                     <select  name="convenio1" id="convenio1" class="size1" >
                                         <option value="-1">Selecione</option>
@@ -93,7 +93,7 @@
                                     </select>
                                 </td>
                                 <td > 
-                                    <select  name="medicoagenda" id="medicoagenda" class="size7" >
+                                    <select  name="medicoagenda" id="medicoagenda" class="size6" >
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
                                             <option value="<?= $item->operador_id; ?>"<?
@@ -110,15 +110,20 @@
                                 </td>
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td  width="20px;">
+                                    <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
+                                    <input type="hidden" name="valortot" id="valortot" class="texto01" readonly=""/>
+                                </td>
+                                <td  width="20px;"><input type="text" name="desconto" id="desconto" class="texto01" onblur="percentual();"/></td>
                                 <td>
                                     <select  name="txtempresa" id="empresa" class="size06" >
                                         <? foreach ($empresa as $item) : ?>
-                                            <option value="<?= $item->empresa_id; ?>" <? if ($empresa_id == $item->empresa_id):echo 'selected';
-                                        endif;
+                                            <option value="<?= $item->empresa_id; ?>" <?
+                                            if ($empresa_id == $item->empresa_id):echo 'selected';
+                                            endif;
                                             ?>>
-                                            <?= $item->nome; ?></option>
-<? endforeach; ?>
+                                                <?= $item->nome; ?></option>
+                                        <? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="10px;"><input type="checkbox" name="laudo" /></td>
@@ -169,14 +174,14 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor_total, 2, ',', '.'); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
-    <? if ($item->faturado != "t") { ?>
+                                <? if ($item->faturado != "t") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarconvenio/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">Faturar
                                             </a></div>
                                     </td>
-    <? }else{ ?>
-                                              <td class="<?php echo $estilo_linha; ?>" width="60px;">&nbsp;</td>                          
-    <?}?>
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">&nbsp;</td>                          
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><div class="bt_link_new">
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterardata/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">Alterar Data
                                         </a>
@@ -209,6 +214,15 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+                                        function percentual() {
+                                            var valordesconto = parseFloat(document.form_guia.desconto.value.replace(",", "."));
+                                            var desconto = valordesconto / 100;
+                                            var valortot = document.getElementById("valortot").value;
+                                            var valor = valortot * desconto;
+                                            var r = valor.toFixed(2);
+                                            
+                                            document.getElementById("valor1").value = r;
+                                        }
 
                                         $(function () {
                                             $("#data").datepicker({
@@ -251,16 +265,36 @@
                                                 if ($(this).val()) {
                                                     $('.carregando').show();
                                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                        options = "";
-                                                        options += j[0].valortotal;
-                                                        document.getElementById("valor1").value = options
+
+                                                        var valorTotal = parseFloat(j[0].valortotal);
+                                                        var qt = document.getElementById("qtde1").value;
+                                                        document.getElementById("valor1").value = qt * valorTotal;
+                                                        document.getElementById("valortot").value = qt * valorTotal;
                                                         $('.carregando').hide();
+
                                                     });
                                                 } else {
                                                     $('#valor1').html('value=""');
                                                 }
                                             });
                                         });
+
+                                        function alteraQuantidade() {
+                                            if ($("#procedimento1").val()) {
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (j) {
+
+                                                    var valorTotal = parseFloat(j[0].valortotal);
+                                                    var qt = document.getElementById("qtde1").value;
+//                                                    document  .getElementById("valor1").value = qt * valorTotal;
+                                                    document.getElementById("valortot").value = qt * valorTotal;
+                                                    $('.carregando').hide();
+
+                                                });
+                                            } else {
+                                                $('#valor1').html('value=""');
+                                            }
+                                        }
 
 
 

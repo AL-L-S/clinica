@@ -5,10 +5,10 @@
             <form name="form_sala" id="form_sala" action="<?= base_url() ?>centrocirurgico/centrocirurgico/orcamentoescolha/<?=$solicitacao_id?>/<?=$convenio_id?>" method="post">
 
                 <dl class="dl_desconto_lista">
-                    <dt>
+                    <dt style="width: 150pt">
                         <input type="hidden" name="solicitacao_id" value="<?= $solicitacao_id ?>"/>
                         <input type="hidden" name="convenio_id" value="<?= $convenio_id ?>"/>
-                        <label>Nessecita de orçamento?</label>
+                        <label>Necessita de orçamento?</label>
                     </dt>
                     <dd>
                         <select name="escolha" id="escolha" class="texto04" required>

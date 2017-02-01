@@ -3,23 +3,23 @@
         <h3 class="singular"><a href="#"></a></h3>
         <div>
             <form name="form_sala" id="form_sala" action="<?= base_url() ?>centrocirurgico/centrocirurgico/adicionarprocedimentosdecisao" method="post">
-
-                <dl class="dl_desconto_lista">
-                    <dt>
+                <fieldset>
+                    <div>
                         <input type="hidden" name="solicitacao_id" value="<?= $solicitacao ?>"/>
                         <label>Deseja adicionar os procedimentos agora?</label>
-                    </dt>
-                    <dd>
+
                         <select name="escolha" id="escolha" class="texto04" required>
                             <option value="">Selecione</option>
                             <option value="SIM">SIM</option>
                             <option value="NAO">NÃO</option>
                         </select>
-                    </dd>
-                </dl>    
-                <hr/>
-                <button type="submit" name="btnEnviar">Enviar</button>
-                <button type="reset" name="btnLimpar">Limpar</button>
+                    </div>
+                    <hr>
+                    <div>
+                        <button type="submit" name="btnEnviar">Enviar</button>
+                        <button type="reset" name="btnLimpar">Limpar</button>
+                    </div>
+                </fieldset>
             </form>
         </div>
     </div>

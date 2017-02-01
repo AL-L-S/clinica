@@ -235,8 +235,9 @@ class centrocirurgico_model extends BaseModel {
     function autorizarcirurgia() {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-
-        $this->db->set('data_prevista', $_POST['dataprevista']);
+        $_POST['dataprevista'] = date( "Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['dataprevista'])) );
+        
+        $this->db->set('data_prevista', $_POST['dataprevista'] );
         $this->db->set('medico_agendado', $_POST['medicoagendadoid']);
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);

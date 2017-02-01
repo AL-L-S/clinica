@@ -1222,7 +1222,6 @@ class Laudo extends BaseController {
 
     function impressaoreceita($ambulatorio_laudo_id) {
 
-
         $this->load->plugin('mpdf');
         $data['laudo'] = $this->laudo->listarreceitaimpressao($ambulatorio_laudo_id);
         $data['medico'] = $this->operador_m->medicoreceituario($data['laudo'][0]->medico_parecer1);
@@ -1243,6 +1242,7 @@ class Laudo extends BaseController {
 
         $base_url = base_url();
 
+
         if ($data['laudo'][0]->assinatura == 't') {
             if (isset($data['laudo'][0]->medico_parecer1)) {
                 $this->load->helper('directory');
@@ -1259,7 +1259,7 @@ class Laudo extends BaseController {
             $carimbo = "";
         }       
 
-
+//        var_dump($carimbo);die;
         $meses = array('01' => "Janeiro", '02' => "Fevereiro", '03' => "Março", '04' => "Abril", '05' => "Maio", '06' => "Junho", '07' => "Julho", '08' => "Agosto", '09' => "Setembro", '10' => "Outubro", '11' => "Novembro", '12' => "Dezembro");
 
         $dia = substr($data['laudo'][0]->data_cadastro, 8, 2);
@@ -1267,9 +1267,12 @@ class Laudo extends BaseController {
         $ano = substr($data['laudo'][0]->data_cadastro, 0, 4);
 
         $nomemes = $meses[$mes];
+        
+
 
         $texto_rodape = "Fortaleza, " . $dia . " de " . $nomemes . " de " . $ano;
 
+//        var_dump($data['empresa'][0]->impressao_tipo); die('morreu');
 
         if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
             $filename = "laudo.pdf";
@@ -1345,7 +1348,7 @@ class Laudo extends BaseController {
         } else {//GERAL        //  este item fica sempre por ultimo
             $filename = "laudo.pdf";
             $cabecalho = "<table ><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td><center><b><p style='text-align: center; font-weight: bold;'>Receita Médica</p></b></center></td></tr><tr><td>Para:" . $data['laudo']['0']->paciente . "<br></td></tr></table>";
-            $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td >$carimbo</td></tr></table><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
+            $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td ></td></tr></table><div>$carimbo</div><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
             $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
             $this->load->View('ambulatorio/impressaoreceituario', $data);

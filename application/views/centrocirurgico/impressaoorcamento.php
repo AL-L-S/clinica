@@ -30,20 +30,25 @@
 
     if (count($contador_impressao) > 0) {
         ?>
-        <table border="1" style="width: 800px;">
+        <table style="width: 800px;" cellpadding="4">
             <thead>
                 <tr>
-                    <th  class="tabela_header" colspan="4" >HONORÁRIOS MÉDICOS</th>
+                    <th class="tabela_header" colspan="4" style="border:1pt solid gray">HONORÁRIOS MÉDICOS</th>
+                </tr>
+                <tr>
+                    <th  class="tabela_header" colspan="4" ><div style="height: 40pt"></div></th>
                 </tr>
             </thead>
-            <?php
-            $x = 1;
-            foreach ($funcoes as $value) {
-                $impressao = $this->solicitacirurgia_m->impressaoorcamento($solicitacao_id, $value->funcao_cirurgia_id);
-                if (count($impressao) > 0) {
-                    ?>
+            <tbody>
+                <?php
+                $x = 1;
+                foreach ($funcoes as $value) {
+                    $impressao = $this->solicitacirurgia_m->impressaoorcamento($solicitacao_id, $value->funcao_cirurgia_id);
+                    if (count($impressao) > 0) {
+                        ?>
+                
                     <thead>
-                        <tr>
+                        <tr style="border:1pt solid gray">
                             <th width="80px" class="tabela_header">Código</th>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">Grau de participação</th>
@@ -69,32 +74,31 @@
                             <td ><b>TOTAL: R$ <?= number_format($total, 2, ",", "."); ?></b></td>
 
                         </tr>
-                        <tr><td></td></tr>
-                        <tr><td></td></tr>
+                        <tr>
+                            <td class="tabela_header" colspan="4" ><div style="height: 15pt"></div></td>
+                        </tr>
                     </tbody>
                     <?
                 }
                 $total = 0;
             }
             ?>
+            </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2"><b>TOTAL GERAL:</b></td>
+                    <td colspan="2"><b>TOTAL HONORARIOS MEDICOS:</b></td>
                     <td colspan=""><b>R$ <?= number_format($total_geral, 2, ",", "."); ?></b></td>
-                </tr>
-                <tr>
-                    <td colspan="3"><b>OBS: <?= $item->observacao; ?></b></td>
                 </tr>
             </tfoot>
 
-
-            <?
-        } else {
-            ?>
-            <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
-            <?
-        }
+        </table>
+        <?
+    } else {
         ?>
+        <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+        <?
+    }
+    ?>
 </div> <!-- Final da DIV content -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">

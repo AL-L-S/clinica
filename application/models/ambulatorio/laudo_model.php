@@ -787,7 +787,7 @@ class laudo_model extends Model {
         $this->db->from('tb_ambulatorio_receituario ag');
         $this->db->where('ag.laudo_id', $ambulatorio_laudo_id);
         $this->db->where('ag.tipo', 'NORMAL');
-        $this->db->orderby('ambulatorio_receituario_id');
+        $this->db->orderby('ag.data_cadastro DESC');
 
         $return = $this->db->get();
         return $return->result();
@@ -814,7 +814,7 @@ class laudo_model extends Model {
         $this->db->from('tb_ambulatorio_atestado ag');
         $this->db->where('ag.laudo_id', $ambulatorio_laudo_id);
         $this->db->where('ag.tipo', 'NORMAL');
-        $this->db->orderby('ambulatorio_atestado_id');
+        $this->db->orderby('ag.data_cadastro DESC');
         $return = $this->db->get();
         return $return->result();
     }
@@ -875,7 +875,7 @@ class laudo_model extends Model {
         $this->db->from('tb_ambulatorio_receituario_especial ag');
         $this->db->where('ag.laudo_id', $ambulatorio_laudo_id);
         $this->db->where('ag.tipo', 'ESPECIAL');
-        $this->db->orderby('ambulatorio_receituario_especial_id');
+        $this->db->orderby('ag.data_cadastro DESC');
         $return = $this->db->get();
         return $return->result();
     }
