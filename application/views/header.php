@@ -456,7 +456,7 @@ function debug($object) {
                         <li><span class="folder">Relatorios</span>
                             <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexame">Relatorio Conferencia</a></span></ul>
-                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/gerarelatoriogeralsintetico">Relatorio Sintetico Geral</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogeralsintetico">Relatorio Sintetico Geral</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexamech">Relatorio Faturamento Convenio CH</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacieneteexame">Relatorio Convenio Paciente</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocancelamento">Relatorio Cancelamento</a></span></ul>

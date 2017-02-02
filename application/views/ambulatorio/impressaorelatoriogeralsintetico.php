@@ -1,18 +1,19 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <?
     $horario = 12;
-    $ano = date("2016");
+//    $ano = date("2016");
+//    var_dump($ano); die;
     $index = 1;
     if ($horario > 1) {
         for ($index = 1; $index <= $horario; $index++) {
 
-            $particular[] = $this->guia->consultargeralparticular($index);
-            $particularfaturado[] = $this->guia->consultargeralparticularfaturado($index);
-            $particularnaofaturado[] = $this->guia->consultargeralparticularnaofaturado($index);
-            $convenio[] = $this->guia->consultargeralconvenio($index);
-            $conveniofaturado[] = $this->guia->consultargeralconveniofaturado($index);
-            $convenionaofaturado[] = $this->guia->consultargeralconvenionaofaturado($index);
-            $geral[] = $this->guia->consultargeralsintetico($index);
+            $particular[] = $this->guia->consultargeralparticular($index, $ano);
+            $particularfaturado[] = $this->guia->consultargeralparticularfaturado($index, $ano);
+            $particularnaofaturado[] = $this->guia->consultargeralparticularnaofaturado($index, $ano);
+            $convenio[] = $this->guia->consultargeralconvenio($index, $ano);
+            $conveniofaturado[] = $this->guia->consultargeralconveniofaturado($index, $ano);
+            $convenionaofaturado[] = $this->guia->consultargeralconvenionaofaturado($index, $ano);
+            $geral[] = $this->guia->consultargeralsintetico($index, $ano);
         }
     }
     ?>
@@ -79,7 +80,7 @@
 
                     if (empty($iten->total)) {
                         ?>
-                        <td width="70px;"><font size="-2">0</td>
+                        <!--<td width="70px;"><font size="-2">0</td>-->
                     <? } else { ?>
                         <td width="70px;"><font size="-2"><?= number_format($iten->total, 2, ',', '.'); ?></td>
 

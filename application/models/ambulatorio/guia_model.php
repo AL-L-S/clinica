@@ -4060,7 +4060,7 @@ AND data <= '$data_fim'";
         return 0;
     }
 
-    function consultargeralparticular($mes) {
+    function consultargeralparticular($mes, $ano) {
 
         $sql = "SELECT sum (valor_total) as total
    FROM ponto.tb_agenda_exames ae
@@ -4069,7 +4069,7 @@ AND data <= '$data_fim'";
    left join ponto.tb_procedimento_tuss as pt on pt.procedimento_tuss_id = pc.procedimento_tuss_id
    left join ponto.tb_convenio as c on c.convenio_id = pc.convenio_id
    WHERE EXTRACT('Month' From data) = $mes
-   and Extract (Year from data) = 2016
+   and Extract (Year from data) = $ano
    and c.dinheiro = true
    and e.cancelada = false
    and e.situacao = 'FINALIZADO'";
@@ -4077,7 +4077,7 @@ AND data <= '$data_fim'";
         return $return;
     }
 
-    function consultargeralparticularfaturado($mes) {
+    function consultargeralparticularfaturado($mes, $ano) {
 
         $sql = "SELECT sum (valor_total) as total
    FROM ponto.tb_agenda_exames ae
@@ -4086,7 +4086,7 @@ AND data <= '$data_fim'";
    left join ponto.tb_procedimento_tuss as pt on pt.procedimento_tuss_id = pc.procedimento_tuss_id
    left join ponto.tb_convenio as c on c.convenio_id = pc.convenio_id
    WHERE EXTRACT('Month' From data) = $mes
-   and Extract (Year from data) = 2016
+   and Extract (Year from data) = $ano
    and c.dinheiro = true
    and ae.faturado = true
    and e.cancelada = false
@@ -4095,7 +4095,7 @@ AND data <= '$data_fim'";
         return $return;
     }
 
-    function consultargeralparticularnaofaturado($mes) {
+    function consultargeralparticularnaofaturado($mes, $ano) {
 
         $sql = "SELECT sum (valor_total) as total
    FROM ponto.tb_agenda_exames ae
@@ -4104,7 +4104,7 @@ AND data <= '$data_fim'";
    left join ponto.tb_procedimento_tuss as pt on pt.procedimento_tuss_id = pc.procedimento_tuss_id
    left join ponto.tb_convenio as c on c.convenio_id = pc.convenio_id
    WHERE EXTRACT('Month' From data) = $mes
-   and Extract (Year from data) = 2016
+   and Extract (Year from data) = $ano
    and c.dinheiro = true
    and ae.faturado = false
    and e.cancelada = false
@@ -4113,7 +4113,7 @@ AND data <= '$data_fim'";
         return $return;
     }
 
-    function consultargeralconveniofaturado($mes) {
+    function consultargeralconveniofaturado($mes, $ano ) {
         $sql = "SELECT sum (valor_total) as total
    FROM ponto.tb_agenda_exames ae
    left join ponto.tb_exames as e on e.agenda_exames_id = ae.agenda_exames_id
@@ -4121,7 +4121,7 @@ AND data <= '$data_fim'";
    left join ponto.tb_procedimento_tuss as pt on pt.procedimento_tuss_id = pc.procedimento_tuss_id
    left join ponto.tb_convenio as c on c.convenio_id = pc.convenio_id
    WHERE EXTRACT('Month' From data) = $mes
-   and Extract (Year from data) = 2016
+   and Extract (Year from data) = $ano
    and c.dinheiro = false
    and ae.faturado = true
    and e.cancelada = false
@@ -4130,7 +4130,7 @@ AND data <= '$data_fim'";
         return $return;
     }
 
-    function consultargeralconvenionaofaturado($mes) {
+    function consultargeralconvenionaofaturado($mes, $ano) {
         $sql = "SELECT sum (valor_total) as total
    FROM ponto.tb_agenda_exames ae
    left join ponto.tb_exames as e on e.agenda_exames_id = ae.agenda_exames_id
@@ -4138,7 +4138,7 @@ AND data <= '$data_fim'";
    left join ponto.tb_procedimento_tuss as pt on pt.procedimento_tuss_id = pc.procedimento_tuss_id
    left join ponto.tb_convenio as c on c.convenio_id = pc.convenio_id
    WHERE EXTRACT('Month' From data) = $mes
-   and Extract (Year from data) = 2016
+   and Extract (Year from data) = $ano
    and c.dinheiro = false
    and ae.faturado = false
    and e.cancelada = false
@@ -4147,7 +4147,7 @@ AND data <= '$data_fim'";
         return $return;
     }
 
-    function consultargeralconvenio($mes) {
+    function consultargeralconvenio($mes, $ano) {
         $sql = "SELECT sum (valor_total) as total
    FROM ponto.tb_agenda_exames ae
    left join ponto.tb_exames as e on e.agenda_exames_id = ae.agenda_exames_id
@@ -4155,7 +4155,7 @@ AND data <= '$data_fim'";
    left join ponto.tb_procedimento_tuss as pt on pt.procedimento_tuss_id = pc.procedimento_tuss_id
    left join ponto.tb_convenio as c on c.convenio_id = pc.convenio_id
    WHERE EXTRACT('Month' From data) = $mes
-   and Extract (Year from data) = 2016
+   and Extract (Year from data) = $ano
    and c.dinheiro = false
    and e.cancelada = false
    and e.situacao = 'FINALIZADO'";
@@ -4163,7 +4163,7 @@ AND data <= '$data_fim'";
         return $return;
     }
 
-    function consultargeralsintetico($mes) {
+    function consultargeralsintetico($mes, $ano) {
         $sql = "SELECT sum (valor_total) as total
    FROM ponto.tb_agenda_exames ae
    left join ponto.tb_exames as e on e.agenda_exames_id = ae.agenda_exames_id
@@ -4171,7 +4171,7 @@ AND data <= '$data_fim'";
    left join ponto.tb_procedimento_tuss as pt on pt.procedimento_tuss_id = pc.procedimento_tuss_id
    left join ponto.tb_convenio as c on c.convenio_id = pc.convenio_id
    WHERE EXTRACT('Month' From data) = $mes
-   and Extract (Year from data) = 2016
+   and Extract (Year from data) = $ano
    and e.cancelada = false
    and e.situacao = 'FINALIZADO'
                 and (c.dinheiro = false

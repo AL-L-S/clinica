@@ -30,7 +30,7 @@
             $ordenador1 = $exames[0]->ordenador;
         }
         ?>
-        <h3 class="singular"><a href="#">Marcar exames</a></h3>
+       
         <div>
             <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentosconsulta" method="post">
                 <fieldset>
@@ -114,6 +114,7 @@
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">ordenador</th>
+                                <th class="tabela_header">Indicação</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
                         </thead>
@@ -168,6 +169,22 @@
 
                                 <td  ><input type="text" name="ordenador" id="ordenador" value="<?= $ordenador1; ?>" class="texto01"/></td>
 <!--                                <td  width="70px;"><input type="text" name="observacao" id="observacao" class="texto04"/></td>-->
+                                <td  >
+                                    <select name="indicacao" id="indicacao" class="size1" >
+                                        <option value='' >Selecione</option>
+                                        <?php
+                                        $indicacao = $this->paciente->listaindicacao($_GET);
+                                        foreach ($indicacao as $item) {
+                                            ?>
+
+                                            <option   value =<?php echo $item->paciente_indicacao_id; ?>>
+                                                <?php echo $item->nome; ?>
+                                            </option>
+                                                      <?php
+                                                  }
+                                                  ?> 
+                                    </select>
+                                </td>
                             </tr>
 
                         </tbody>
@@ -351,10 +368,9 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    
-<?php 
-    if ($this->session->flashdata('message') != ''): ?>
-        alert("<? echo $this->session->flashdata('message') ?>");
+
+<?php if ($this->session->flashdata('message') != ''): ?>
+                                            alert("<? echo $this->session->flashdata('message') ?>");
 <? endif; ?>
 
                                         $(function () {

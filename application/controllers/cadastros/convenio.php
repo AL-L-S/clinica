@@ -56,6 +56,8 @@ class Convenio extends BaseController {
     }
 
     function gravardesconto($convenio_id) {
+        
+        $data['convenio'] = $this->convenio->gravardescontoantigo($convenio_id);
         $data['convenio'] = $this->convenio->gravardesconto($convenio_id);
         $data['convenioid'] = $convenio_id;
         redirect(base_url() . "cadastros/convenio");

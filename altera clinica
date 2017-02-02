@@ -1378,10 +1378,15 @@ CREATE TABLE ponto.tb_procedimento_convenio_antigo
   qtdeuco numeric(10,4),
   valoruco numeric(10,4),
   valortotal numeric(10,2),
+  percentual_ch character varying(100),
+  percentual_filme character varying(100),
+  percentual_porte character varying(100),
+  percentual_uco character varying(100),
+  percentual_total character varying(100),
   ativo boolean DEFAULT true,
   data_cadastro timestamp without time zone,
   operador_cadastro integer,
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
   CONSTRAINT tb_procedimento_convenio_antigo_pkey PRIMARY KEY (procedimento_convenio_id_antigo )
-); 
+);

@@ -135,6 +135,12 @@ class Exametemp extends BaseController {
 
     function gravarunificar() {
         $pacientetemp_id = $_POST['paciente_id'];
+        
+        if ($_POST['paciente_id'] == $_POST['pacienteid']) {
+            $data['mensagem'] = 'Erro ao unificar. Você está tentando unificar ';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/unificar/$pacientetemp_id");
+        }
 
         if ($_POST['txtpaciente'] == '' || $_POST['pacienteid'] == '') {
             $data['mensagem'] = 'Paciente que sera unificado nao informado ou invalido.';

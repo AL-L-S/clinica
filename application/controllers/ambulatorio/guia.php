@@ -1290,8 +1290,13 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioexamesala', $data);
     }
 
+    function relatoriogeralsintetico() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriogeralsintetico', $data);
+    }
     function gerarelatoriogeralsintetico() {
         $data['empresa'] = $this->guia->listarempresas();
+        $data['ano'] = $_POST['ano'];
         $this->load->View('ambulatorio/impressaorelatoriogeralsintetico', $data);
     }
 

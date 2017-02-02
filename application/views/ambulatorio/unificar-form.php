@@ -68,15 +68,15 @@ endif;
             
         $(function() {
             $( "#txtpaciente" ).autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                minLength: 6,
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=pacienteunificar",
+                minLength: 3,
                 focus: function( event, ui ) {
                     $( "#txtpaciente" ).val( ui.item.label );
                     return false;
                 },
                 select: function( event, ui ) {
                     $( "#txtpaciente" ).val( ui.item.value );
-                    $( "#txtnome_mae" ).val( ui.item.itens );
+                    $( "#txtnome_mae" ).val( ui.item.mae );
                     $( "#txtdtnascimento" ).val( ui.item.valor );
                     $( "#pacienteid" ).val( ui.item.id );
                     return false;

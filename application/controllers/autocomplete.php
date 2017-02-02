@@ -1656,6 +1656,24 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
+    
+    function pacienteunificar() {
+        if (isset($_GET['term'])) {
+            $result = $this->exame->listarautocompletepaciente($_GET['term']);
+        } else {
+            $result = $this->exame->listarautocompletepaciente();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->paciente_id . " - " . $item->nome;
+            $retorno['itens'] = $item->telefone;
+            $retorno['mae'] = $item->nome_mae;
+            $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
+            $retorno['id'] = $item->paciente_id;
+            $retorno['endereco'] = $item->logradouro . " - " . $item->numero;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
 
     function pacientenascimento() {
 //        if (isset($_GET['term'])) {
