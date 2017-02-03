@@ -83,14 +83,13 @@
 
 
 </div> <!-- Final da DIV content -->
+
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
-<? if ($this->session->flashdata('message') != ""): ?>
-                        alert("<? echo $this->session->flashdata('message'); ?>");
-<? endif; ?>
 
                     $(function () {
                         $("#data_ficha").datepicker({

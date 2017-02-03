@@ -952,7 +952,7 @@ class exametemp_model extends Model {
             $this->db->where('ativo', 'f');
             $this->db->where('cancelada', 'f');
             $this->db->where('confirmado', 'f');
-            $this->db->where("tipo", "FISIOTERAPIA");
+            $this->db->where("( (tipo = 'FISIOTERAPIA') OR (tipo = 'ESPECIALIDADE') )");
             $this->db->where("data >=", $horario);
             $this->db->where("data >=", $data_es);
             $this->db->where("inicio", $inicio);
@@ -1491,7 +1491,7 @@ class exametemp_model extends Model {
             $query = $this->db->get();
             $return = $query->result();
             $explode = explode(" ", $return[0]->nome);
-            $nome = $explode[0] . " " . $explode[1];
+            $nome = @$explode[0] . " " . @$explode[1];
 
 
             if ($_POST['txtNomeid'] == '') {

@@ -1,8 +1,8 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
-    <div class="bt_link_new">
-        <a onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
-            Novo Medico
+    <div class="bt_link_new" style="width: 150pt">
+        <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
+            Novo Medico Solicitante
         </a>
     </div>
     <div class="bt_link_new">
@@ -21,16 +21,13 @@
                 </div>
                 <div>
                     <label>Sexo</label>
-                    <select name="sexo" id="txtSexo" class="size2">
-                        <option value="M" <?
-                        if ($paciente['0']->sexo == "M"):echo 'selected';
-                        endif;
-                        ?>>Masculino</option>
-                        <option value="F" <?
-                        if ($paciente['0']->sexo == "F"):echo 'selected';
-                        endif;
-                        ?>>Feminino</option>
-                    </select>
+                    <input name="sexo" id="txtSexo" class="size2" 
+                           value="<?
+                           if ($paciente['0']->sexo == "M"):echo 'Masculino';
+                           endif;
+                           if ($paciente['0']->sexo == "F"):echo 'Feminino';
+                           endif;
+                           ?>" readonly="true">
                 </div>
 
                 <div>
@@ -43,7 +40,7 @@
                 <div>
 
                     <label>Idade</label>
-                    <input type="text" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= $paciente['0']->idade; ?>" readonly />
+                    <input type="text" name="txtIdade" id="txtIdade" class="texto01" readonly/>
 
                 </div>
 
@@ -55,7 +52,7 @@
                 </div>
             </fieldset>
             <fieldset>
-                <legend>Consultas anteriores</legend>
+                <legend>Especialidades anteriores</legend>
                 <?
                 if (count($consultasanteriores) > 0) {
                     foreach ($consultasanteriores as $value) {
@@ -65,7 +62,7 @@
 
                         $intervalo = $data1->diff($data2);
                         ?>
-                        <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->d . ' dias' ?></h6>
+                        <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->days ?> dia(s)</h6>
 
                         <?
                     }
@@ -963,5 +960,14 @@
                                 }
                             });
                         });
+
+                        function calculoIdade() {
+                            var data = document.getElementById("txtNascimento").value;
+                            var ano = data.substring(6, 12);
+                            var idade = new Date().getFullYear() - ano;
+                            document.getElementById("txtIdade").value = idade;
+                        }
+
+                        calculoIdade();
 
 </script>

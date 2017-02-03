@@ -7,14 +7,14 @@
                 <td width="100px;"><center>
                     <div class="bt_link_new">
                         <a href="<?php echo base_url() ?>ambulatorio/exametemp/novopacientefisioterapia">
-                            Nova Fisioterapia
+                            Nova Especialidade
                         </a>
                     </div>
                     </td>
             </div>
         </fieldset>
         <fieldset>
-            <legend>Marcar Fisioterapia</legend>
+            <legend>Marcar Especialidade</legend>
 
             <div>
                 <label>Nome</label>
@@ -142,7 +142,7 @@
 
             $intervalo = $data1->diff($data2);
             ?>
-            <h6><b><?= $intervalo->days ?> dias</b>&nbsp;&nbsp;&nbsp;- ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
+            <h6><b><?= $intervalo->days ?> dia(s)</b>&nbsp;&nbsp;&nbsp;- ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
 
             <?
         }

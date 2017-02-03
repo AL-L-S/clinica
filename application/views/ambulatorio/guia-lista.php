@@ -14,7 +14,7 @@
     <div>
         <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos" method="post">
             <fieldset>
-                <legend>Dados do Pacienete</legend>
+                <legend>Dados do Paciente</legend>
                 <div>
                     <label>Nome</label>                      
                     <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
@@ -149,16 +149,16 @@
 
                                     $intervalo = $data1->diff($data2);
                                     ?>
-                                    <td class="<?php echo $estilo_linha; ?>" ><?= $intervalo->d . ' dias' ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="200"><?= $intervalo->days ?> dia(s)</td>
                                     <? if (isset($item->atendente) || isset($item->medicorealizou)) { ?>
-                                        <td class="<?php echo $estilo_linha; ?>" >
+                                    <td class="<?php echo $estilo_linha; ?>" style="padding: 5pt; width: auto;">
                                             <? if (isset($item->atendente)): ?>
-                                            <span style="font-weigth:bolder; text-decoration: underline; color: rgb(255,50,0);">Atendente:</span> <? echo $item->atendente; ?><br>
+                                            <a style="text-decoration: none; color: black;" title="<? echo $item->atendente; ?>" href="#"><span style="font-weigth:bolder; text-decoration: underline; color: rgb(255,50,0);">Atendente:</span> <? echo substr($item->atendente, 0, 5); ?>(...)</a><br>
                                                 <?
                                             endif;
-                                            if (isset($item->atendente)):
+                                            if (isset($item->medicorealizou)):
                                                 ?>
-                                                <span style="font-weigth:bolder; text-decoration: underline; color: rgb(255,50,0);">Medico:</span> <? echo $item->medicorealizou; ?>
+                                            <a style="text-decoration: none; color: black;" title="<? echo $item->medicorealizou; ?>" href="#"><span style="font-weigth:bolder; text-decoration: underline; color: rgb(255,50,0);">Medico:</span> <? echo substr($item->medicorealizou, 0, 5); ?>(...)</a>
                                             <? endif; ?>
                                         </td>
                                     <? } ?>

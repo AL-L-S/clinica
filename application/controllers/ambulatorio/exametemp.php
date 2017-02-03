@@ -732,12 +732,13 @@ class Exametemp extends BaseController {
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
         } 
         else {
+//            die;
             $disponibilidade = $this->exametemp->contadorhorariosdisponiveisfisioterapia($_POST['data_ficha'], $_POST['horarios'], $_POST['medico']);
             if ($disponibilidade == 0) {
                 $pacientetemp_id = $this->exametemp->gravarfisioterapiaencaixe();
                 $this->carregarpacientefisioterapiatemp($pacientetemp_id);
             } else {
-                $data['mensagem'] = 'Erro ao marcar consulta; este horário já está agendado.';
+                $data['mensagem'] = 'Erro ao marcar consulta. Este horário já está agendado.';
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "ambulatorio/exametemp/novopacientefisioterapiaencaixe");
             }

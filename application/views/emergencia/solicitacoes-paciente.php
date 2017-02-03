@@ -224,6 +224,10 @@
     <div class="clear"></div>
 </div>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<style>
+    .bt_link_new{ width: 150pt; }
+    .bt_link_new a{ width: 150pt; }
+</style>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/funcoes.js"></script>

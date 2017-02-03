@@ -1,8 +1,8 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
-    <div class="bt_link_new">
-        <a onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
-            Novo Medico
+    <div class="bt_link_new" style="width: 150pt">
+        <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
+            Novo Medico Solicitante
         </a>
     </div>
     <div class="bt_link_new">
@@ -14,23 +14,20 @@
     <div>
         <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>cadastros/pacientes/autorizarambulatoriotemp/<?= $paciente_id; ?>" method="post">
             <fieldset>
-                <legend>Dados do Pacienete</legend>
+                <legend>Dados do Paciente</legend>
                 <div>
                     <label>Nome</label>                      
                     <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
                 </div>
                 <div>
                     <label>Sexo</label>
-                    <select name="sexo" id="txtSexo" class="size2">
-                        <option value="M" <?
-                        if ($paciente['0']->sexo == "M"):echo 'selected';
-                        endif;
-                        ?>>Masculino</option>
-                        <option value="F" <?
-                        if ($paciente['0']->sexo == "F"):echo 'selected';
-                        endif;
-                        ?>>Feminino</option>
-                    </select>
+                    <input name="sexo" id="txtSexo" class="size2" 
+                           value="<?
+                           if ($paciente['0']->sexo == "M"):echo 'Masculino';
+                           endif;
+                           if ($paciente['0']->sexo == "F"):echo 'Feminino';
+                           endif;
+                           ?>" readonly="true">
                 </div>
 
                 <div>
@@ -43,7 +40,7 @@
                 <div>
 
                     <label>Idade</label>
-                    <input type="text" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= $paciente['0']->idade; ?>" readonly />
+                    <input type="text" name="txtIdade" id="txtIdade" class="texto01" readonly/>
 
                 </div>
 
@@ -1057,5 +1054,14 @@
                                 }
                             });
                         });
+
+                        function calculoIdade() {
+                            var data = document.getElementById("txtNascimento").value;
+                            var ano = data.substring(6, 12);
+                            var idade = new Date().getFullYear() - ano;
+                            document.getElementById("txtIdade").value = idade;
+                        }
+
+                        calculoIdade();
 
 </script>
