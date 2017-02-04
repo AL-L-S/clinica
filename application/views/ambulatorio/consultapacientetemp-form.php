@@ -115,9 +115,17 @@
                                         width=500,height=230');">=><?= $item->observacoes; ?></a></td>
 
                         <? if (empty($faltou)) { ?>
+                        <? if ($item->encaixe == 't') { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
-                                        excluir</a></td></div>
+                                    <a onclick="javascript: return confirm('Deseja realmente excluir o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatempencaixe/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
+                                        Excluir</a></td></div>
+                        <? }else {?>
+                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                    <a onclick="javascript: return confirm('Deseja realmente excluir a consulta?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
+                                        Excluir</a></td></div>
+                            
+                       <? } ?>
+                            
                         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/reservarconsultatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>/<?= $item->data; ?>">
