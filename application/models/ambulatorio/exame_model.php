@@ -36,6 +36,7 @@ class exame_model extends Model {
         $this->db->select('paciente_id,
                             nome,
                             telefone,
+                            celular,
                             nome_mae,
                             nascimento,
                             cpf,

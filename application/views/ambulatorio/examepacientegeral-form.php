@@ -2,7 +2,7 @@
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteexametempgeral/<?= $agenda_exames_id ?>" method="post">
         <fieldset>
-            <legend>Marcar Exames</legend>
+            <legend>Agendamento Geral</legend>
 
             <div>
                 <label>Nome</label>
@@ -15,7 +15,7 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-                <input type="text" name="nascimento" id="nascimento" class="texto02" onkeypress="mascara3(this)" type="text" onblur="calculoIdade(this.value)"/>                
+                <input type="text" name="nascimento" id="nascimento" class="texto02"/>                
             </div>
             <div>
                 <label>Idade</label>
@@ -34,13 +34,13 @@
                 <label>Telefone</label>
 
 
-                <input type="text" id="telefone" class="texto02" name="telefone" onkeypress="mascara2(this)" type="text" maxlength="14"/>
+                <input type="text" id="telefone" class="texto02" name="telefone"/>
             </div>
             <div>
                 <label>Celular</label>
 
 
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" onkeypress="mascara2(this)" maxlength="14"/>
+                <input type="text" id="txtCelular" class="texto02" name="txtCelular"/>
             </div>
             <div>
                 <label>Convenio *</label>
@@ -112,10 +112,12 @@
 
 </fieldset>
 </div> <!-- Final da DIV content -->
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
 
@@ -149,6 +151,7 @@
                             select: function (event, ui) {
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
+                                $("#txtCelular").val(ui.item.celular);
                                 $("#telefone").val(ui.item.itens);
                                 $("#nascimento").val(ui.item.valor);
                                 $("#txtEnd").val(ui.item.endereco);
@@ -178,77 +181,10 @@
 
 
 
-
-                    //$(function(){     
-                    //    $('#exame').change(function(){
-                    //        exame = $(this).val();
-                    //        if ( exame === '')
-                    //            return false;
-                    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-                    //            var option = new Array();
-                    //            $.each(data, function(i, obj){
-                    //                console.log(obl);
-                    //                option[i] = document.createElement('option');
-                    //                $( option[i] ).attr( {value : obj.id} );
-                    //                $( option[i] ).append( obj.nome );
-                    //                $("select[name='horarios']").append( option[i] );
-                    //            });
-                    //        });
-                    //    });
-                    //});
-
-
-
-
-//
-//    $(function() {
-//        $("#accordion").accordion();
-//    });
-//
-//
-//    $(document).ready(function() {
-//        jQuery('#form_exametemp').validate({
-//            rules: {
-//                txtNome: {
-//                    required: true,
-//                    minlength: 3
-//                }
-//            },
-//            messages: {
-//                txtNome: {
-//                    required: "*",
-//                    minlength: "!"
-//                }
-//            }
-//        });
-//    });
-
-
-                    function mascara2(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 1)
-                                horarios.value = '(' + horarios.value;
-
-                            if (horarios.value.length == 3)
-                                horarios.value = horarios.value + ') ';
-
-                            if (horarios.value.length == 9)
-                                horarios.value = horarios.value + '-';
-
-                        }
-                    }
-
-                    function mascara3(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 2)
-                                horarios.value = horarios.value + '/';
-
-                            if (horarios.value.length == 5)
-                                horarios.value = horarios.value + '/';
-
-
-                        }
-                    }
+                    jQuery("#telefone").mask("(99) 9999-9999");
+                    jQuery("#txtCelular").mask("(99) 99999-9999");
+                    jQuery("#nascimento").mask("99/99/9999");
+                    jQuery("#horarios").mask("99:99");
 
                     function calculoIdade() {
                         var data = document.getElementById("nascimento").value;

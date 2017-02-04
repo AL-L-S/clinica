@@ -27,13 +27,13 @@
                 <label>Telefone</label>
 
 
-                <input type="text" id="telefone" class="texto02" name="telefone" type="text" maxlength="14"/>
+                <input type="text" id="telefone" class="texto02" name="telefone"/>
             </div>
             <div>
                 <label>Celular</label>
 
 
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" type="text" maxlength="14"/>
+                <input type="text" id="txtCelular" class="texto02" name="txtCelular"/>
             </div>
             <div>
                 <label>Convenio *</label>
@@ -116,6 +116,10 @@
 <script type="text/javascript">
 
 
+                    jQuery("#telefone").mask("(99) 9999-9999");
+                    jQuery("#txtCelular").mask("(99) 99999-9999");
+                    jQuery("#nascimento").mask("99/99/9999");
+                    
                     $(function () {
                         $('#convenio1').change(function () {
                             if ($(this).val()) {
@@ -147,6 +151,7 @@
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
                                 $("#telefone").val(ui.item.itens);
+                                $("#txtCelular").val(ui.item.celular);
                                 $("#nascimento").val(ui.item.valor);
                                 return false;
                             }
