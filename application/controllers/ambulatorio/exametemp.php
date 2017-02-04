@@ -393,7 +393,7 @@ class Exametemp extends BaseController {
         } else {
             $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id);
             if ($paciente_id != 0) {
-                $this->carregarpacientetemp($paciente_id);
+                redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$paciente_id");
             } else {
                 $data['mensagem'] = 'Erro ao marcar exame o horario esta oculpado.';
                 $this->session->set_flashdata('message', $data['mensagem']);
@@ -412,24 +412,24 @@ class Exametemp extends BaseController {
         } elseif (trim($_POST['txtNomeid']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
         } elseif (trim($_POST['telefone']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
         } elseif (trim($_POST['convenio1']) == "-1") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio seleionar um convenio.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
         } elseif (trim($_POST['procedimento1']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio selecionar um procedimento.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral/$agenda/$medico");
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
         } else {
             $tipo = $this->exametemp->tipomultifuncaogeral($_POST['procedimento1']);
             $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id, $tipo[0]->tipo);
             if ($paciente_id != 0) {
-                $this->carregarpacientetempgeral($paciente_id);
+                redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$paciente_id");
             } else {
                 $data['mensagem'] = 'Erro ao marcar exame o horario esta oculpado.';
                 $this->session->set_flashdata('message', $data['mensagem']);
@@ -705,7 +705,7 @@ class Exametemp extends BaseController {
             redirect(base_url() . "ambulatorio/exametemp/novopacienteexameencaixe");
         } else {
             $pacientetemp_id = $this->exametemp->gravarexameencaixe();
-            $this->carregarpacientetemp($pacientetemp_id);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
         }
     }
 
@@ -716,7 +716,7 @@ class Exametemp extends BaseController {
             redirect(base_url() . "ambulatorio/exametemp/novopacienteencaixegeral");
         } else {
             $pacientetemp_id = $this->exametemp->gravarexameencaixegeral();
-            $this->carregarpacientetempgeral($pacientetemp_id);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
         }
     }
 

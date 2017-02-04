@@ -30,8 +30,7 @@
             </div>
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" alt="time" class="size1" name="horarios"  maxlength="8" onkeypress="mascara(this)" onclick="if (this.value !== '')
-                            this.value = ''"/>
+                <input type="text" id="horarios" class="size1" name="horarios"/>
             </div>
             <div>
                 <label>Convenio *</label>
@@ -45,13 +44,13 @@
                     <option value="">Selecione</option>
                 </select>
             </div>
-            <!--            <div>
-                            <label>Tipo</label>
-                            <select  name="tipo" id="tipo" class="size1" >
-                                <option value="EXAME">Exame</option>
-                                <option value="CONSULTA">Consulta</option>
-                            </select>
-                        </div>-->
+<!--            <div>
+                <label>Tipo</label>
+                <select  name="tipo" id="tipo" class="size1" >
+                    <option value="EXAME">Exame</option>
+                    <option value="CONSULTA">Consulta</option>
+                </select>
+            </div>-->
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
                 <input type="text" id="observacoes" class="size3" name="observacoes" />
@@ -68,23 +67,23 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-                <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date" maxlength="10"  onkeypress="mascara3(this)"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02"/>
             </div>
             <div>
 
-                <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask"/>
+                <input type="hidden" name="idade" id="txtIdade" class="texto01"/>
             </div>
             <div>
                 <label>End.</label>
-                <input type="text" id="txtEnd" class="texto06" name="txtEnd" alt="phone"/>
+                <input type="text" id="txtEnd" class="texto06" name="txtEnd" />
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="telefone" class="texto02" name="telefone"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="txtCelular" class="texto02" name="celular"/>
             </div>
 
             <div>
@@ -96,16 +95,13 @@
 
 
 </div> <!-- Final da DIV content -->
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>-->
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
 
@@ -142,9 +138,10 @@
 
                     $(function () {
                         $('#convenio1').change(function () {
+//                            alert('entrou');
                             if ($(this).val()) {
                                 $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#exame").val()}, function (j) {
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#medico").val()}, function (j) {
                                     options = '<option value=""></option>';
                                     for (var c = 0; c < j.length; c++) {
                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -181,40 +178,12 @@
                     $(function () {
                         $("#accordion").accordion();
                     });
+                  
+                    
 
-
-                    function mascara(horarios) {
-                        if (horarios.value.length == 2)
-                            horarios.value = horarios.value + ':'; //quando o campo já tiver 2 caracteres (2 números) o script irá inserir um ':'.
-
-                        if (horarios.value.length == 5)
-                            horarios.value = horarios.value + ':'; //quando o campo já tiver 5 caracteres (2 números + ':' + 2 números), o script irá inserir um ':'.      
-                    }
-
-                    function mascara2(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 1)
-                                horarios.value = '(' + horarios.value;
-
-                            if (horarios.value.length == 3)
-                                horarios.value = horarios.value + ') ';
-
-                            if (horarios.value.length == 9)
-                                horarios.value = horarios.value + '-';
-
-                        }
-                    }
-
-                    function mascara3(horarios) {
-                        if (horarios.value !== '') {
-                            if (horarios.value.length == 2)
-                                horarios.value = horarios.value + '/';
-
-                            if (horarios.value.length == 5)
-                                horarios.value = horarios.value + '/';
-
-
-                        }
-                    }
+                    jQuery("#telefone").mask("(99) 9999-9999");
+                    jQuery("#txtCelular").mask("(99) 99999-9999");
+                    jQuery("#nascimento").mask("99/99/9999");
+                    jQuery("#horarios").mask("99:99");
 
 </script>

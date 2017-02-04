@@ -1290,7 +1290,7 @@ class exametemp_model extends Model {
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
                 }
-                $this->db->set('celular', $_POST['celular']);
+                $this->db->set('celular', $_POST['txtCelular']);
                 $this->db->set('convenio_id', $_POST['convenio']);
                 $this->db->set('telefone', $_POST['telefone']);
                 $this->db->set('nome', $_POST['txtNome']);
@@ -1298,6 +1298,12 @@ class exametemp_model extends Model {
                 $paciente_id = $this->db->insert_id();
             } else {
                 $paciente_id = $_POST['txtNomeid'];
+                
+                $this->db->set('celular', $_POST['txtCelular']);
+                $this->db->set('telefone', $_POST['telefone']);
+                $this->db->set('nome', $_POST['txtNome']);
+                $this->db->where('paciente_id', $paciente_id);
+                $this->db->update('tb_paciente');
             }
 
             if ($_POST['horarios'] != "") {
@@ -1355,18 +1361,28 @@ class exametemp_model extends Model {
                 $paciente_id = $this->db->insert_id();
             } else {
                 $paciente_id = $_POST['txtNomeid'];
+                
+                $this->db->set('celular', $_POST['celular']);
+                $this->db->set('telefone', $_POST['telefone']);
+                $this->db->set('nome', $_POST['txtNome']);
+//                $this->db->set('nome', $_POST['txtEnd']);
+                $this->db->where('paciente_id', $paciente_id);
+                $this->db->update('tb_paciente');
             }
 
             if ($_POST['horarios'] != "") {
+                
+                
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
 
                 $tipo = $this->buscartipo($_POST['procedimento1']);
 
-                if (isset($tipo)) {
-                    $this->db->set('tipo', $tipo);
+                if ( count($tipo) > 0 && isset($tipo[0]->tipo) ) {
+                    $this->db->set('tipo', $tipo[0]->tipo);
                 }
-
+//                var_dump($tipo);die;
+                
                 $this->db->set('agenda_exames_nome_id', $_POST['sala']);
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
@@ -1401,9 +1417,10 @@ class exametemp_model extends Model {
 
     function buscartipo($procedimento_id) {
         $this->db->select('ag.tipo');
-        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
-        $this->db->where('pt.procedimento_tuss_id', $procedimento_id);
+        $this->db->where('pc.procedimento_convenio_id', $procedimento_id);
         $this->db->where('ag.tipo !=', 'ESPECIALIDADE');
         $return = $this->db->get();
 
@@ -1840,11 +1857,11 @@ class exametemp_model extends Model {
                     if ($_POST['nascimento'] != '') {
                         $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
                     }
-                    if ($_POST['idade'] != 0) {
-                        $this->db->set('idade', $_POST['idade']);
-                    }
+//                    if ($_POST['idade'] != 0) {
+//                        $this->db->set('idade', $_POST['idade']);
+//                    }
 
-                    $this->db->set('celular', $_POST['celular']);
+                    $this->db->set('celular', $_POST['txtCelular']);
                     $this->db->set('convenio_id', $_POST['convenio1']);
 
                     $this->db->set('telefone', $_POST['telefone']);
@@ -1853,6 +1870,11 @@ class exametemp_model extends Model {
                     $paciente_id = $this->db->insert_id();
                 } else {
                     $paciente_id = $_POST['txtNomeid'];
+                    
+                    $this->db->set('celular', $_POST['txtCelular']);
+                    $this->db->set('telefone', $_POST['telefone']);
+                    $this->db->where("paciente_id", $paciente_id);
+                    $this->db->update('tb_paciente');
                 }
 
                 $horario = date("Y-m-d H:i:s");

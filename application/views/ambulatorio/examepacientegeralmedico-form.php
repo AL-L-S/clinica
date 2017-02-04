@@ -2,7 +2,7 @@
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteexametempgeral/<?= $agenda_exames_id ?>" method="post">
         <fieldset>
-            <legend>Marcar Exames</legend>
+            <legend>Agendamento Geral</legend>
 
             <div>
                 <label>Nome</label>
@@ -20,11 +20,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone"  type="text" />
+                <input type="text" id="telefone" class="texto02" name="telefone"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" />
+                <input type="text" id="txtCelular" class="texto02" name="txtCelular" />
             </div>
             <div>
                 <label>Medico</label>
@@ -159,6 +159,7 @@
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
                                 $("#telefone").val(ui.item.itens);
+                                $("#txtCelular").val(ui.item.celular);
                                 $("#nascimento").val(ui.item.valor);
                                 return false;
                             }
@@ -182,54 +183,6 @@
                             }
                         });
                     });
-
-
-
-
-
-                    //$(function(){     
-                    //    $('#exame').change(function(){
-                    //        exame = $(this).val();
-                    //        if ( exame === '')
-                    //            return false;
-                    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-                    //            var option = new Array();
-                    //            $.each(data, function(i, obj){
-                    //                console.log(obl);
-                    //                option[i] = document.createElement('option');
-                    //                $( option[i] ).attr( {value : obj.id} );
-                    //                $( option[i] ).append( obj.nome );
-                    //                $("select[name='horarios']").append( option[i] );
-                    //            });
-                    //        });
-                    //    });
-                    //});
-
-
-
-
-//
-//    $(function() {
-//        $("#accordion").accordion();
-//    });
-//
-//
-//    $(document).ready(function() {
-//        jQuery('#form_exametemp').validate({
-//            rules: {
-//                txtNome: {
-//                    required: true,
-//                    minlength: 3
-//                }
-//            },
-//            messages: {
-//                txtNome: {
-//                    required: "*",
-//                    minlength: "!"
-//                }
-//            }
-//        });
-//    });
 
                     jQuery("#telefone").mask("(99) 9999-9999");
                     jQuery("#txtCelular").mask("(99) 99999-9999");

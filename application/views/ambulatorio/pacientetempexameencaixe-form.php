@@ -30,8 +30,7 @@
             </div>
             <div>
                 <label>Horarios</label>
-                <input type="time" id="horarios" name="horarios"  class="size1"  maxlength="8"  onkeypress="mascara(this)" onclick="if (this.value !== '')
-                            this.value = ''" />
+                <input type="text" id="horarios" name="horarios"  class="size1"/>
             </div>
             <div>
                 <label>Convenio *</label>
@@ -64,7 +63,7 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-                <input type="text" name="nascimento" id="nascimento" class="texto02" maxlength="10" onkeypress="mascara3(this)"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02"/>
             </div>
             <div>
 
@@ -72,11 +71,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone" maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="telefone" class="texto02" name="telefone"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular"  maxlength="14"  onkeypress="mascara2(this)" />
+                <input type="text" id="txtCelular" class="texto02" name="txtCelular"/>
             </div>
 
             <div>
@@ -139,6 +138,7 @@
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
                                 $("#telefone").val(ui.item.itens);
+                                $("#txtCelular").val(ui.item.celular);
                                 $("#nascimento").val(ui.item.valor);
                                 return false;
                             }
