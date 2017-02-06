@@ -26,13 +26,13 @@
                 <label>Telefone</label>
 
 
-                <input type="text" id="telefone" class="texto02" name="telefone" alt="phone"  maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="txtTelefone" class="texto02" name="txtTelefone"/>
             </div>
             <div>
                 <label>Celular</label>
 
 
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"  maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="txtCelular" class="texto02" name="txtCelular"/>
             </div>
             <div>
                 <label>Convenio *</label>
@@ -172,32 +172,13 @@
                             select: function (event, ui) {
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
-                                $("#telefone").val(ui.item.itens);
+                                $("#txtTelefone").val(ui.item.itens);
+                                $("#txtCelular").val(ui.item.celular);
                                 $("#nascimento").val(ui.item.valor);
                                 return false;
                             }
                         });
                     });
-
-
-
-                    //$(function(){     
-                    //    $('#exame').change(function(){
-                    //        exame = $(this).val();
-                    //        if ( exame === '')
-                    //            return false;
-                    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-                    //            var option = new Array();
-                    //            $.each(data, function(i, obj){
-                    //                console.log(obl);
-                    //                option[i] = document.createElement('option');
-                    //                $( option[i] ).attr( {value : obj.id} );
-                    //                $( option[i] ).append( obj.nome );
-                    //                $("select[name='horarios']").append( option[i] );
-                    //            });
-                    //        });
-                    //    });
-                    //});
 
 
 

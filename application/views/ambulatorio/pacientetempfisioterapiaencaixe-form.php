@@ -22,7 +22,7 @@
 
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" alt="time" class="size1" name="horarios" maxlength="8" onkeypress="mascara(this)" />
+                <input type="text" id="horarios" class="size1" name="horarios"/>
             </div>
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
@@ -48,11 +48,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone"  maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="txtTelefone" class="texto02" name="txtTelefone"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone"  maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="txtCelular" class="texto02" name="txtCelular"/>
             </div>
 
             <div>
@@ -85,10 +85,10 @@
 </div> <!-- Final da DIV content -->
 
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
                     $(function () {
@@ -144,6 +144,7 @@
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
                                 $("#txtTelefone").val(ui.item.itens);
+                                $("#txtCelular").val(ui.item.celular);
                                 $("#txtNascimento").val(ui.item.valor);
                                 return false;
                             }

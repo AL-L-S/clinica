@@ -22,7 +22,7 @@
 
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" alt="time" class="size1" name="horarios" maxlength="8" onkeypress="mascara(this)"  />
+                <input type="text" id="horarios" alt="time" class="size1" name="horarios" />
             </div>
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
@@ -40,7 +40,7 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-                <input type="text" name="nascimento" id="nascimento" class="texto02" maxlength="10" onkeypress="mascara3(this)"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02"/>
             </div>
             <div>
 
@@ -52,11 +52,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="txtTelefone" class="texto02" name="telefone" maxlength="14"  onkeypress="mascara2(this)" />
+                <input type="text" id="txtTelefone" class="texto02" name="txtTelefone"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" maxlength="14"  onkeypress="mascara2(this)" />
+                <input type="text" id="txtCelular" class="texto02" name="txtCelular"/>
             </div>
 
             <div>
@@ -115,6 +115,7 @@
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
                                 $("#txtTelefone").val(ui.item.itens);
+                                $("#txtCelular").val(ui.item.celular);
                                 $("#nascimento").val(ui.item.valor);
                                 $("#txtEnd").val(ui.item.endereco);
                                 return false;

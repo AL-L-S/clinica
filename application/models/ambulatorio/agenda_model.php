@@ -125,8 +125,8 @@ class agenda_model extends Model {
     function gravarmedico() {
         try {
 
-            $datainicial = str_replace("/", "-", $_POST['datainicio']);
-            $datafinal = str_replace("/", "-", $_POST['datafim']);
+            $datainicial = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datainicio']) ) );
+            $datafinal = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datafim']) ) );
 
             if (isset($_POST['txtdomingo'])) {
                 $Domingo = 'Domingo';
@@ -668,9 +668,10 @@ class agenda_model extends Model {
     function gravarmedicogeral() {
         try {
 
-            $datainicial = str_replace("/", "-", $_POST['datainicio']);
-            $datafinal = str_replace("/", "-", $_POST['datafim']);
-
+            $datainicial = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datainicio']) ) );
+            $datafinal = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datafim']) ) );
+            var_dump($datainicial);die;
+            
             if (isset($_POST['txtdomingo'])) {
                 $Domingo = 'Domingo';
             } else {
@@ -1177,8 +1178,8 @@ class agenda_model extends Model {
     function gravarmedicoconsulta() {
         try {
 
-            $datainicial = str_replace("/", "-", $_POST['datainicio']);
-            $datafinal = str_replace("/", "-", $_POST['datafim']);
+            $datainicial = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datainicio']) ) );
+            $datafinal = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datafim']) ) );
 
             if (isset($_POST['txtdomingo'])) {
                 $Domingo = 'Domingo';
@@ -1707,8 +1708,8 @@ class agenda_model extends Model {
     function gravarmedicoespecialidade() {
         try {
 
-            $datainicial = str_replace("/", "-", $_POST['datainicio']);
-            $datafinal = str_replace("/", "-", $_POST['datafim']);
+            $datainicial = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datainicio']) ) );
+            $datafinal = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datafim']) ) );
 
             if (isset($_POST['txtdomingo'])) {
                 $Domingo = 'Domingo';

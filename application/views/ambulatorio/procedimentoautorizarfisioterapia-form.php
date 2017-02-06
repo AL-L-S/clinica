@@ -14,7 +14,7 @@
     <div>
         <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>cadastros/pacientes/autorizarambulatoriotempfisioterapia/<?= $paciente_id; ?>" method="post">
             <fieldset>
-                <legend>Dados do Pacienete</legend>
+                <legend>Dados do Paciente</legend>
                 <div>
                     <label>Nome</label>                      
                     <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
@@ -76,7 +76,7 @@
             <input type="hidden" name="paciente_id" value="<?= $paciente_id; ?>" />
 
             <fieldset>
-                <legend>Autorizar sess&otilde;es de fisioterapia</legend>
+                <legend>Autorizar sess&otilde;es de Especialidade</legend>
                 <table id="table_justa">
                     <thead>
 

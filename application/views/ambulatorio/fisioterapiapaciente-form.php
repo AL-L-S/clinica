@@ -12,7 +12,7 @@
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date" maxlength="10"  onkeypress="mascara3(this)" onblur="calculoIdade(this.value)"/>
+                <input type="text" name="nascimento" id="nascimento" class="texto02" onblur="calculoIdade(this.value)"/>
             </div>
             <div>
                 <label>Idade</label>
@@ -24,11 +24,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="telefone" class="texto02" name="telefone" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="txtTelefone" class="texto02" name="txtTelefone"/>
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" maxlength="14"  onkeypress="mascara2(this)"/>
+                <input type="text" id="txtCelular" class="texto02" name="txtCelular" />
             </div>
             <div>
                 <label>Convenio *</label>
@@ -190,6 +190,8 @@
                             select: function (event, ui) {
                                 $("#txtNome").val(ui.item.value);
                                 $("#txtNomeid").val(ui.item.id);
+                                $("#txtTelefone").val(ui.item.itens);
+                                $("#txtCelular").val(ui.item.celular);
                                 $("#telefone").val(ui.item.itens);
                                 $("#nascimento").val(ui.item.valor);
                                 return false;
@@ -250,7 +252,7 @@
                         document.getElementById("idade2").value = idade;
                     }
 
-                    jQuery("#telefone").mask("(99) 9999-9999");
+                    jQuery("#txtTelefone").mask("(99) 9999-9999");
                     jQuery("#txtCelular").mask("(99) 99999-9999");
                     jQuery("#nascimento").mask("99/99/9999");
 

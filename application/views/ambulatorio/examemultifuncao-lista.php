@@ -50,18 +50,20 @@
                             <select name="empresa" id="empresa" class="size1">
                                 <option value=""></option>
                                 <? $selected = false;
-                                foreach ($empresas as $value) : ?>
+                                foreach ($empresas as $value) :
+                                    ?>
                                     <option value="<?= $value->empresa_id; ?>" <?
                                     if ((isset($_GET['empresa']) || @$_GET['empresa'] != '') && @$_GET['empresa'] == $value->empresa_id) {
-                                        echo 'selected'; $selected = true;
-                                    } 
-                                    else{
+                                        echo 'selected';
+                                        $selected = true;
+                                    } else {
                                         if ($empresa_logada == $value->empresa_id && $selected == false) {
-                                            echo 'selected'; $selected = true;
+                                            echo 'selected';
+                                            $selected = true;
                                         }
                                     }
                                     ?>><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
+<? endforeach; ?>
                             </select>
 
                         </th>
@@ -69,11 +71,8 @@
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
                                 <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->descricao; ?>" <?
-                                    if (@$_GET['sala'] == $value->descricao):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->descricao; ?></option>
-                                        <? endforeach; ?>
+                                    <option value="<?= $value->cbo_ocupacao_id; ?>"><?php echo $value->descricao; ?></option>
+<? endforeach; ?>
                             </select>
                         </th>
 
@@ -83,15 +82,15 @@
                                 <option value=""> </option>
                                 <? foreach ($medicos as $value) : ?>
                                     <option value="<?= $value->operador_id; ?>"<?
-                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
-                                    endif;
-                                    ?>>
+                                            if (@$_GET['medico'] == $value->operador_id):echo 'selected';
+                                            endif;
+                                            ?>>
 
-                                        <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
+    <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
 
 
                                     </option>
-                                <? endforeach; ?>
+<? endforeach; ?>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -99,10 +98,10 @@
                                 <option value=""></option>
                                 <? foreach ($salas as $value) : ?>
                                     <option value="<?= $value->exame_sala_id; ?>" <?
-                                    if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
+                                            if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
+                                            endif;
+                                            ?>><?php echo $value->nome; ?></option>
+<? endforeach; ?>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -259,7 +258,7 @@
                                 <? } if ($verifica == 6) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
-                                <? } ?>
+        <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
@@ -277,15 +276,15 @@
                                 <? } ?>
                                 <? if ($item->convenio != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . " - " . $item->procedimento . " - " . $item->codigo; ?></td>
-                                <? } else { ?>
+                                    <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?=
-                                        $item->convenio_paciente . " - " . $item->procedimento . " - " . $item->codigo;
-                                        ?></td>
-                                <? } ?>
+                                    $item->convenio_paciente . " - " . $item->procedimento . " - " . $item->codigo;
+                                    ?></td>
+                                                                            <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
-                                    <? if ($item->paciente_id != "") { ?>
+                                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
+        <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
                                             </a></div>
@@ -300,7 +299,7 @@
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarexame/<?= $item->agenda_exames_id ?>');">Exame
                                             </a></div>
                                     </td>
-                                <? } elseif ($item->bloqueado == 'f') { ?>
+        <? } elseif ($item->bloqueado == 'f') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarpacientetemp/<?= $item->paciente_id ?>/<?= $faltou; ?>');">Exame
                                             </a></div>
@@ -316,7 +315,7 @@
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
                                                 </a></div>
                                         </td>
-                                    <? } else { ?>
+            <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
                                                 </a></div>
@@ -327,7 +326,7 @@
                                     ?>
                                     <? if ($item->telefonema == 't') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><font color="green" title="<?= $item->telefonema_operador; ?>" ><b>Confirmado</b></td>
-                                    <? } else { ?>
+            <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/telefonema/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Confirma
                                                 </a></div>
@@ -347,7 +346,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="14">
-                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total . " - Vago: " . $l . " - Marcado: " . $p; ?>
                         </th>
                     </tr>

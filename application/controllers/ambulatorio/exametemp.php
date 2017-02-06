@@ -649,12 +649,12 @@ class Exametemp extends BaseController {
             $pacientetemp_id = $this->exametemp->gravarconsultasencaixe();
 
             //enviar email
-            $texto = "Consulta agendada para o dia " . $_POST['data_ficha'] . ", com início às " . $_POST['horarios'] . ".";
-            $email = $this->laudo->email($pacientetemp_id);
-            if (isset($email)) {
-                $this->email($email, $texto);
-            }
-            //fim eviafr email
+//            $texto = "Consulta agendada para o dia " . $_POST['data_ficha'] . ", com início às " . $_POST['horarios'] . ".";
+//            $email = $this->laudo->email($pacientetemp_id);
+//            if (isset($email)) {
+//                $this->email($email, $texto);
+//            }
+            //fim enviar email
 
             $this->carregarpacienteconsultatemp($pacientetemp_id);
         }
@@ -679,7 +679,7 @@ class Exametemp extends BaseController {
         $this->email->subject('Consulta Agendada');
         $this->email->message($texto);
         $this->email->send();
-//    echo $this->email->print_debugger();
+//        echo $this->email->print_debugger();
     }
 
     function gravarpacienteexameencaixe() {
@@ -719,24 +719,28 @@ class Exametemp extends BaseController {
         if (trim($_POST['txtNomeid']) == "" && trim($_POST['txtNome']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio inserir um Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            redirect(base_url() . "ambulatorio/exametemp/novopacientefisioterapiaencaixe");
         } 
         elseif (trim($_POST['convenio']) == "0") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio inserir o covenio.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            redirect(base_url() . "ambulatorio/exametemp/novopacientefisioterapiaencaixe");
         } 
         elseif (trim($_POST['procedimento']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio inserir o procedimento.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            redirect(base_url() . "ambulatorio/exametemp/novopacientefisioterapiaencaixe");
+        } 
+        elseif (trim($_POST['horarios']) == "") {
+            $data['mensagem'] = 'Erro ao marcar consulta. É obrigatorio inserir o horario.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/novopacientefisioterapiaencaixe");
         } 
         else {
-//            die;
             $disponibilidade = $this->exametemp->contadorhorariosdisponiveisfisioterapia($_POST['data_ficha'], $_POST['horarios'], $_POST['medico']);
             if ($disponibilidade == 0) {
                 $pacientetemp_id = $this->exametemp->gravarfisioterapiaencaixe();
-                $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+                redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
             } else {
                 $data['mensagem'] = 'Erro ao marcar consulta. Este horário já está agendado.';
                 $this->session->set_flashdata('message', $data['mensagem']);

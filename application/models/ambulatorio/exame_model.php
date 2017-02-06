@@ -718,6 +718,8 @@ class exame_model extends Model {
 
     function listarexamemultifuncao($args = array()) {
         $data = date("Y-m-d");
+//        $contador = count($args);
+
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
@@ -730,33 +732,52 @@ class exame_model extends Model {
                             ae.confirmado,
                             ae.guia_id,
                             ae.data_atualizacao,
+                            ae.operador_atualizacao,
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
+                            e.situacao as situacaoexame,
                             o.nome as medicoagenda,
                             an.nome as sala,
                             p.nome as paciente,
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
+                            pt.codigo,
                             c.nome as convenio,
-                            al.situacao as situacaolaudo');
+                            co.nome as convenio_paciente,
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio co', 'co.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
-//        $this->db->where('ae.data >=', $data);
-        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.inicio');
+//        if ($contador == 0) {
+//            $this->db->where('ae.data >=', $data);
+//        }
         $this->db->where('ae.tipo', 'EXAME');
+
+        if (empty($args['empresa']) || $args['empresa'] == '') {
+            $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $args['empresa']);
+        }
+
+//        $this->db->limit(5);
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
 //        $this->db->where('ae.cancelada', 'false');
@@ -765,6 +786,12 @@ class exame_model extends Model {
         }
         if (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
             $this->db->where('p.nascimento', $args['nascimento']);
+        }
+        if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
+        }
+        if (isset($args['medico']) && strlen($args['medico']) > 0) {
+            $this->db->where('ae.medico_agenda', $args['medico']);
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
@@ -791,7 +818,6 @@ class exame_model extends Model {
                 $this->db->where('ae.situacao', 'OK');
             }
         }
-
         return $this->db;
     }
 
@@ -865,6 +891,9 @@ class exame_model extends Model {
         }
         if (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
             $this->db->where('p.nascimento', $args['nascimento']);
+        }
+        if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_agenda', $args['medico']);
@@ -954,9 +983,12 @@ class exame_model extends Model {
 
     function listarexamemultifuncaogeral($args = array()) {
         $data = date("Y-m-d");
+//        $contador = count($args);
+
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
+                            ae.ocupado,
                             ae.data,
                             ae.inicio,
                             ae.fim,
@@ -966,32 +998,53 @@ class exame_model extends Model {
                             ae.confirmado,
                             ae.guia_id,
                             ae.data_atualizacao,
+                            ae.operador_atualizacao,
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
+                            e.situacao as situacaoexame,
                             o.nome as medicoagenda,
                             an.nome as sala,
+                            ae.medico_agenda,
                             p.nome as paciente,
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
+                            pt.codigo,
                             c.nome as convenio,
-                            al.situacao as situacaolaudo');
+                            co.nome as convenio_paciente,
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador,
+                            bloc.nome as operador_bloqueio,
+                            desbloc.nome as operador_desbloqueio');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio co', 'co.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
-//        $this->db->where('ae.data >=', $data);
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
+        $this->db->join('tb_operador bloc', 'bloc.operador_id = ae.operador_bloqueio', 'left');
+        $this->db->join('tb_operador desbloc', 'desbloc.operador_id = ae.operador_desbloqueio', 'left');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.inicio');
+//        if ($contador == 0) {
+//            $this->db->where('ae.data >=', $data);
+//        }
+        if (empty($args['empresa']) || $args['empresa'] == '') {
             $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $args['empresa']);
+        }
+//        $this->db->limit(5);
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
 //        $this->db->where('ae.cancelada', 'false');
@@ -1000,6 +1053,12 @@ class exame_model extends Model {
         }
         if (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
             $this->db->where('p.nascimento', $args['nascimento']);
+        }
+        if (isset($args['medico']) && strlen($args['medico']) > 0) {
+            $this->db->where('ae.medico_consulta_id', $args['medico']);
+        }
+        if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
@@ -1024,6 +1083,12 @@ class exame_model extends Model {
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
             }
+        }
+        if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
+            $this->db->where('pt.medico', $args['c_s_medico']);
+        }
+        if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
+            $this->db->where('pt.medico', $args['c_s_medico']);
         }
         return $this->db;
     }
@@ -1103,6 +1168,9 @@ class exame_model extends Model {
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
+        }
+        if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
@@ -1511,6 +1579,7 @@ class exame_model extends Model {
 
     function listarexamemultifuncaoconsulta($args = array()) {
         $data = date("Y-m-d");
+//        $contador = count($args);
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
@@ -1518,37 +1587,56 @@ class exame_model extends Model {
                             ae.inicio,
                             ae.fim,
                             ae.ativo,
-                            ae.telefonema,
                             ae.situacao,
-                            p.celular,
-                            p.telefone,
                             ae.guia_id,
+                            ae.realizada,
+                            ae.confirmado,
                             ae.data_atualizacao,
+                            ae.operador_atualizacao,
                             ae.paciente_id,
+                            ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
+                            p.celular,
+                            ae.bloqueado,
+                            p.telefone,
+                            c.nome as convenio,
+                            co.nome as convenio_paciente,
                             o.nome as medicoagenda,
                             an.nome as sala,
+                            e.situacao as situacaoexame,
+                            tc.descricao as tipoconsulta,
                             p.nome as paciente,
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio co', 'co.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.inicio');
+//        if ($contador == 0) {
+//            $this->db->where('ae.data >=', $data);
+//        }
 //        $this->db->where('ae.data >=', $data);
-        
         if (empty($args['empresa']) || $args['empresa'] == '') {
             $this->db->where('ae.empresa_id', $empresa_id);
         } else {
             $this->db->where('ae.empresa_id', $args['empresa']);
         }
-        
         $this->db->where('ae.tipo', 'CONSULTA');
-//        $this->db->where('ae.confirmado', 'true');
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
 //        $this->db->where('ae.cancelada', 'false');
@@ -1557,6 +1645,9 @@ class exame_model extends Model {
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+        }
+        if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -1651,6 +1742,9 @@ class exame_model extends Model {
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+        }
+        if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -1987,31 +2081,52 @@ class exame_model extends Model {
                             ae.inicio,
                             ae.fim,
                             ae.ativo,
-                            ae.telefonema,
                             ae.situacao,
-                            p.celular,
-                            p.telefone,
                             ae.guia_id,
+                            ae.realizada,
+                            ae.confirmado,
                             ae.data_atualizacao,
+                            ae.operador_atualizacao,
                             ae.paciente_id,
+                            ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
+                            p.celular,
+                            ae.bloqueado,
+                            p.telefone,
+                            c.nome as convenio,
                             o.nome as medicoagenda,
                             an.nome as sala,
+                            tc.descricao as tipoconsulta,
                             p.nome as paciente,
                             op.nome as secretaria,
                             ae.procedimento_tuss_id,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.inicio');
         $this->db->where('ae.data >=', $data);
-        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->where('numero_sessao', null);
         $this->db->where('ae.tipo', 'FISIOTERAPIA');
-//        $this->db->where('ae.confirmado', 'true');
+
+        if (empty($args['empresa']) || $args['empresa'] == '') {
+            $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $args['empresa']);
+        }
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
 //        $this->db->where('ae.cancelada', 'false');
@@ -2020,6 +2135,9 @@ class exame_model extends Model {
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+        }
+        if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
@@ -2108,6 +2226,9 @@ class exame_model extends Model {
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+        }
+        if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);

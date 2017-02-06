@@ -114,8 +114,6 @@ class Agenda extends BaseController {
     }
 
     function gravarmedicogeral() {
-        echo 'geral';
-        die;
         $agenda_id = $this->agenda->gravarmedicogeral();
         if ($agenda_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Medico. Opera&ccedil;&atilde;o cancelada.';

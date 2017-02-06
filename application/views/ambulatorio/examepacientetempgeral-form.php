@@ -4,7 +4,7 @@
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacientetempgeral" method="post">
 
         <fieldset>
-            <legend>Marcar Consulta</legend>
+            <legend>Marcar Atendimento</legend>
 
             <div>
                 <label>Nome</label>
@@ -138,13 +138,13 @@
     if (count($consultasanteriores) > 0) {
         foreach ($consultasanteriores as $value) {
             ?>
-            <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
+            <h6>ULTIMO ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
 
             <?
         }
     } else {
         ?>
-        <h6>NENHUMA CONSULTA ENCONTRADA</h6>
+        <h6>NENHUM ATENDIMENTO ENCONTRADO</h6>
         <?
     }
     ?>

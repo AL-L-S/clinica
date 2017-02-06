@@ -1216,7 +1216,7 @@ class exametemp_model extends Model {
             $this->db->where('operador_id', $_POST['medico']);
             $query = $this->db->get();
             $return = $query->result();
-            
+
             $explode = explode(" ", $return[0]->nome);
             $nome = @$explode[0] . " " . @$explode[1];
 
@@ -1236,6 +1236,12 @@ class exametemp_model extends Model {
                 $paciente_id = $this->db->insert_id();
             } else {
                 $paciente_id = $_POST['txtNomeid'];
+
+                $this->db->set('celular', $_POST['txtCelular']);
+                $this->db->set('telefone', $_POST['txtTelefone']);
+                $this->db->set('nome', $_POST['txtNome']);
+                $this->db->where('paciente_id', $paciente_id);
+                $this->db->update('tb_paciente');
             }
 
 
@@ -1295,7 +1301,7 @@ class exametemp_model extends Model {
                 $paciente_id = $this->db->insert_id();
             } else {
                 $paciente_id = $_POST['txtNomeid'];
-                
+
                 $this->db->set('celular', $_POST['txtCelular']);
                 $this->db->set('telefone', $_POST['telefone']);
                 $this->db->set('nome', $_POST['txtNome']);
@@ -1357,7 +1363,7 @@ class exametemp_model extends Model {
                 $paciente_id = $this->db->insert_id();
             } else {
                 $paciente_id = $_POST['txtNomeid'];
-                
+
                 $this->db->set('celular', $_POST['celular']);
                 $this->db->set('telefone', $_POST['telefone']);
                 $this->db->set('nome', $_POST['txtNome']);
@@ -1367,18 +1373,18 @@ class exametemp_model extends Model {
             }
 
             if ($_POST['horarios'] != "") {
-                
-                
+
+
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
 
                 $tipo = $this->buscartipo($_POST['procedimento1']);
 
-                if ( count($tipo) > 0 && isset($tipo[0]->tipo) ) {
+                if (count($tipo) > 0 && isset($tipo[0]->tipo)) {
                     $this->db->set('tipo', $tipo[0]->tipo);
                 }
 //                var_dump($tipo);die;
-                
+
                 $this->db->set('agenda_exames_nome_id', $_POST['sala']);
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
@@ -1526,6 +1532,12 @@ class exametemp_model extends Model {
                 $paciente_id = $this->db->insert_id();
             } else {
                 $paciente_id = $_POST['txtNomeid'];
+
+                $this->db->set('celular', $_POST['txtCelular']);
+                $this->db->set('telefone', $_POST['txtTelefone']);
+                $this->db->set('nome', $_POST['txtNome']);
+                $this->db->where('paciente_id', $paciente_id);
+                $this->db->update('tb_paciente');
             }
 
 
@@ -1782,9 +1794,9 @@ class exametemp_model extends Model {
             $this->db->set('operador_unificacao', $operador_id);
             $this->db->where('paciente_id', $_POST['pacienteid']);
             $this->db->update('tb_ambulatorio_laudo');
-            
+
             // TB_laudo antigo
-            $this->db->set('paciente_id',$_POST['paciente_id']);
+            $this->db->set('paciente_id', $_POST['paciente_id']);
             $this->db->where('paciente_id', $_POST['pacienteid']);
             $this->db->update('tb_laudoantigo');
 
@@ -1866,7 +1878,7 @@ class exametemp_model extends Model {
                     $paciente_id = $this->db->insert_id();
                 } else {
                     $paciente_id = $_POST['txtNomeid'];
-                    
+
                     $this->db->set('celular', $_POST['txtCelular']);
                     $this->db->set('telefone', $_POST['telefone']);
                     $this->db->where("paciente_id", $paciente_id);
@@ -1953,15 +1965,21 @@ class exametemp_model extends Model {
                     $paciente_id = $this->db->insert_id();
                 } else {
                     $paciente_id = $_POST['txtNomeid'];
+
+                    $this->db->set('celular', $_POST['txtCelular']);
+                    $this->db->set('telefone', $_POST['txtTelefone']);
+                    $this->db->set('nome', $_POST['txtNome']);
+                    $this->db->where('paciente_id', $paciente_id);
+                    $this->db->update('tb_paciente');
                 }
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
                 $empresa_id = $this->session->userdata('empresa_id');
-                
+
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
-                
+
 //                $this->db->set('empresa_id', $empresa_id);
-                
+
                 $this->db->set('tipo', 'CONSULTA');
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
@@ -2025,6 +2043,12 @@ class exametemp_model extends Model {
             $paciente_id = $this->db->insert_id();
         } else {
             $paciente_id = $_POST['txtNomeid'];
+
+            $this->db->set('celular', $_POST['txtCelular']);
+            $this->db->set('telefone', $_POST['txtTelefone']);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->where('paciente_id', $paciente_id);
+            $this->db->update('tb_paciente');
         }
         return $paciente_id;
     }
@@ -3265,7 +3289,7 @@ class exametemp_model extends Model {
                             ');
         $this->db->from('tb_cbo_ocupacao co');
         $this->db->join('tb_operador o', 'co.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
-        $this->db->where('co.descricao', $parametro);
+        $this->db->where('co.cbo_ocupacao_id', $parametro);
         $this->db->where('o.ativo', 't');
         $this->db->where('o.medico', 't');
         $this->db->orderby("o.nome");
