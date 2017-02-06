@@ -322,6 +322,21 @@ class Exametemp extends BaseController {
         $this->exametemp->excluirexametemp($agenda_exames_id);
         $this->carregarpacienteconsultatemp($pacientetemp_id);
     }
+    
+    function excluirconsultatempencaixe($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->excluirexametempencaixe($agenda_exames_id);
+        $this->carregarpacienteconsultatemp($pacientetemp_id);
+    }
+    
+    function excluirexametempencaixe($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->excluirexametempencaixe($agenda_exames_id);
+        $this->carregarpacientetemp($pacientetemp_id);
+    }
+    
+    function excluirfisioterapiatempencaixe($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->excluirexametempencaixe($agenda_exames_id);
+        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+    }
 
     function excluirfisioterapiatemp($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametemp($agenda_exames_id);

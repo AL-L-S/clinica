@@ -232,7 +232,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                 
-                                <td class="<?php echo $estilo_linha; ?>"><? if( isset($item->encaixe) ){
+                                <td class="<?php echo $estilo_linha; ?>"><? if( $item->encaixe == 't' ){
                                     echo '<span class="vermelho">Encaixe</span>';
                                 } ?>
                                 </td>

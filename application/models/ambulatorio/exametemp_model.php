@@ -218,6 +218,7 @@ class exametemp_model extends Model {
                             a.inicio,
                             a.data,
                             a.nome,
+                            a.encaixe,
                             a.data,
                             a.agenda_exames_nome_id,
                             pt.nome as procedimento,
@@ -259,6 +260,7 @@ class exametemp_model extends Model {
                             a.data,
                             a.nome,
                             a.data,
+                            a.encaixe,
                             a.agenda_exames_nome_id,
                             es.nome as sala,
                             a.medico_agenda,
@@ -309,6 +311,7 @@ class exametemp_model extends Model {
                             a.inicio,
                             a.data,
                             a.nome,
+                            a.encaixe,
                             a.data,
                             a.agenda_exames_nome_id,
                             es.nome as sala,
@@ -1330,6 +1333,7 @@ class exametemp_model extends Model {
                 $this->db->set('data_inicio', $_POST['data_ficha']);
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
                 $this->db->set('fim', $_POST['horarios']);
+                $this->db->set('encaixe', 't');
                 $this->db->set('inicio', $_POST['horarios']);
                 $this->db->set('data_fim', $_POST['data_ficha']);
                 $this->db->set('data', $_POST['data_ficha']);
@@ -3548,6 +3552,18 @@ class exametemp_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $this->db->update('tb_agenda_exames');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+    
+    function excluirexametempencaixe($agenda_exames_id) {
+
+        
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->delete('tb_agenda_exames');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;
