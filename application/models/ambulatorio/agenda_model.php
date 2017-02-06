@@ -670,7 +670,6 @@ class agenda_model extends Model {
 
             $datainicial = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datainicio']) ) );
             $datafinal = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['datafim']) ) );
-            var_dump($datainicial);die;
             
             if (isset($_POST['txtdomingo'])) {
                 $Domingo = 'Domingo';

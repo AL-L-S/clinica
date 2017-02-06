@@ -1265,6 +1265,7 @@ class exametemp_model extends Model {
                 $hora = date("H:i:s");
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
+                $_POST['data_ficha'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_ficha']))); 
 
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                 $this->db->set('paciente_id', $paciente_id);
@@ -1314,6 +1315,8 @@ class exametemp_model extends Model {
 
             if ($_POST['horarios'] != "") {
                 $empresa_id = $this->session->userdata('empresa_id');
+                   $_POST['data_ficha'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_ficha']))); 
+                
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'EXAME');
                 $this->db->set('agenda_exames_nome_id', $_POST['sala']);
@@ -1388,6 +1391,8 @@ class exametemp_model extends Model {
                     $this->db->set('tipo', $tipo[0]->tipo);
                 }
 //                var_dump($tipo);die;
+                 $_POST['data_ficha'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_ficha']))); 
+//                 var_dump($_POST['data_ficha']);die;
 
                 $this->db->set('agenda_exames_nome_id', $_POST['sala']);
                 $this->db->set('ativo', 'f');
@@ -1409,6 +1414,7 @@ class exametemp_model extends Model {
                 $this->db->set('inicio', $_POST['horarios']);
                 $this->db->set('data_fim', $_POST['data_ficha']);
                 $this->db->set('data', $_POST['data_ficha']);
+                $this->db->set('encaixe', 't');
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->set('data_cadastro', $horario);
@@ -1480,8 +1486,11 @@ class exametemp_model extends Model {
                 if (isset($_POST['tipo'])) {
                     $this->db->set('tipo', $_POST['tipo']);
                 }
+                 $_POST['data_ficha'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_ficha']))); 
+                
                 $this->db->set('agenda_exames_nome_id', $_POST['sala']);
                 $this->db->set('ativo', 't');
+                $this->db->set('encaixe', 't');
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 'f');
                 $this->db->set('situacao', 'LIVRE');

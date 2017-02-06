@@ -64,7 +64,7 @@
                                         }
                                     }
                                     ?>><?php echo $value->nome; ?></option>
-<? endforeach; ?>
+                                        <? endforeach; ?>
                             </select>
 
                         </th>
@@ -73,7 +73,7 @@
                                 <option value=""></option>
                                 <? foreach ($especialidade as $value) : ?>
                                     <option value="<?= $value->cbo_ocupacao_id; ?>"><?php echo $value->descricao; ?></option>
-<? endforeach; ?>
+                                <? endforeach; ?>
                             </select>
                         </th>
 
@@ -87,11 +87,11 @@
                                     endif;
                                     ?>>
 
-    <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
+                                        <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
 
 
                                     </option>
-<? endforeach; ?>
+                                <? endforeach; ?>
 
                             </select>
                         </th>
@@ -103,7 +103,7 @@
                                     if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->nome; ?></option>
-<? endforeach; ?>
+                                        <? endforeach; ?>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -148,6 +148,7 @@
                         <th class="tabela_header" width="70px;">Data</th>
                         <th class="tabela_header" width="50px;">Dia</th>
                         <th class="tabela_header" width="70px;">Agenda</th>
+                        <th class="tabela_header" width="70px;">    </th>
                         <th class="tabela_header" width="150px;">Telefone</th>
                         <th class="tabela_header" width="150px;">Convenio</th>
                         <th class="tabela_header">Sala</th>
@@ -308,15 +309,21 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>
 
                                 <!-- DATA, DIA E AGENDA -->
-        <? if ($item->ocupado == 't') { ?>
+                                <? if ($item->ocupado == 't') { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>
                             <td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>
                             <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
-        <? } else { ?>
+                        <? } else { ?>
                             <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-        <? } ?>
+                        <? } ?>
+                        <td class="<?php echo $estilo_linha; ?>"><?
+                            if ($item->encaixe == 't') {
+                                echo '<span class="vermelho">Encaixe</span>';
+                            }
+                            ?>
+                        </td>
 
                         <!-- TELEFONE -->
                         <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
@@ -335,7 +342,7 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
 
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
         <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -355,8 +362,8 @@
 
                                     </div>
                                 </td>
-                            <? } else {
-                                ?>
+            <? } else {
+                ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarexamegeral/<?= $item->agenda_exames_id ?>/<?= $item->medico_agenda ?>');">Atendimento
                                         </a>
@@ -427,6 +434,11 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<style>
+    .vermelho{
+        color: red;
+    }
+</style>
 <script type="text/javascript">
     $(document).ready(function () {
 //alert('teste_parada');

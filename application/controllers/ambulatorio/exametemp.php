@@ -663,13 +663,13 @@ class Exametemp extends BaseController {
         else {
             $pacientetemp_id = $this->exametemp->gravarconsultasencaixe();
 
-            //enviar email
-//            $texto = "Consulta agendada para o dia " . $_POST['data_ficha'] . ", com início às " . $_POST['horarios'] . ".";
-//            $email = $this->laudo->email($pacientetemp_id);
-//            if (isset($email)) {
-//                $this->email($email, $texto);
-//            }
-            //fim enviar email
+//            enviar email
+            $texto = "Consulta agendada para o dia " . $_POST['data_ficha'] . ", com início às " . $_POST['horarios'] . ".";
+            $email = $this->laudo->email($pacientetemp_id);
+            if (isset($email)) {
+                $this->email($email, $texto);
+            }
+//            fim enviar email
 
             $this->carregarpacienteconsultatemp($pacientetemp_id);
         }

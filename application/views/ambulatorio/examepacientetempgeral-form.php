@@ -135,19 +135,24 @@
         </tfoot>
     </table> 
     <?
-    if (count($consultasanteriores) > 0) {
-        foreach ($consultasanteriores as $value) {
-            ?>
-            <h6>ULTIMO ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
+                if (count($consultasanteriores) > 0) {
+                    foreach ($consultasanteriores as $value) {
+                        $data_atual = date('Y-m-d');
+                        $data1 = new DateTime($data_atual);
+                        $data2 = new DateTime($value->data);
 
-            <?
-        }
-    } else {
-        ?>
-        <h6>NENHUM ATENDIMENTO ENCONTRADO</h6>
-        <?
-    }
-    ?>
+                        $intervalo = $data1->diff($data2);
+                        ?>
+                        <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->days ?> dia(s)</h6>
+
+                        <?
+                    }
+                } else {
+                    ?>
+                    <h6>NENHUM ATENDIMENTO ENCONTRADO</h6>
+                    <?
+                }
+                ?>
 
 
 </fieldset>

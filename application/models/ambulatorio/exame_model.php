@@ -1114,6 +1114,7 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.encaixe,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
