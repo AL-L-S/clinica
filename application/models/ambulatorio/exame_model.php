@@ -816,6 +816,9 @@ class exame_model extends Model {
                 $data_atual = date('Y-m-d');
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
             }
         }
         return $this->db;
@@ -921,6 +924,9 @@ class exame_model extends Model {
                 $data_atual = date('Y-m-d');
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
             }
         }
         return $this->db;
@@ -1082,6 +1088,9 @@ class exame_model extends Model {
                 $data_atual = date('Y-m-d');
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
             }
         }
         if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
@@ -1195,6 +1204,9 @@ class exame_model extends Model {
                 $data_atual = date('Y-m-d');
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
             }
         }
         if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
@@ -1670,6 +1682,8 @@ class exame_model extends Model {
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
                 $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
             }
         }
         return $this->db;
@@ -1767,6 +1781,8 @@ class exame_model extends Model {
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
                 $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
             }
         }
         return $this->db;
@@ -2159,6 +2175,9 @@ class exame_model extends Model {
                 $data_atual = date('Y-m-d');
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
             }
         }
         return $this->db;
@@ -2250,6 +2269,9 @@ class exame_model extends Model {
                 $data_atual = date('Y-m-d');
                 $this->db->where('ae.data <', $data_atual);
                 $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
             }
         }
         return $this->db;

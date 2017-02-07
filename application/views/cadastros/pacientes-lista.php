@@ -5,7 +5,7 @@
             <td width="60px;">
                 <div class="bt_link">
                     <a href="<?php echo base_url() ?>cadastros/pacientes/novo">
-                        Cadastro
+                        Cad. Novo 
                     </a>
                 </div>
             </td>
@@ -49,7 +49,7 @@
                     <tr>
                         <th class="tabela_title" ></th>
                         <th class="tabela_title" >Prontuario</th>
-                        <th class="tabela_title" colspan="3">Nome / Telefone / Nome da Mae / CPF</th>
+                        <th class="tabela_title" colspan="3">Nome / Nome da Mae / Telefone / CPF</th>
                         <th class="tabela_title" colspan="2">Dt. Nascimento</th>
                         <th class="tabela_title" ></th>
                     </tr>

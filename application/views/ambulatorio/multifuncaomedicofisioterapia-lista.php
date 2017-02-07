@@ -39,7 +39,7 @@
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
                                 <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->descricao; ?>" <?
+                                    <option value="<?= $value->cbo_ocupacao_id; ?>" <?
                                     if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->descricao; ?></option>

@@ -22,7 +22,7 @@
                         <label>Data*</label>
                     </dt>
                     <dd>
-                        <input type="text" name="inicio" id="inicio" class="texto04" alt="date" value="<?= @$obj->_data ?>" required=""/>
+                        <input type="text" name="inicio" id="inicio" class="texto04" alt="date" value="<?= substr(@$obj->_data, 8, 2) . '/' . substr(@$obj->_data, 5, 2) . '/' . substr(@$obj->_data, 0, 4);  ?>" required=""/>
                     </dd>
                     <dt>
                         <label>Pagar a:</label>

@@ -144,10 +144,11 @@ class Caixa extends BaseController {
     function gravarsangria() {
         $caixa_id = $this->caixa->gravarsangria();
 
-        if ($caixa_id == 1) {
-            $data['mensagem'] = 'Erro ao gravar a Saida. Opera&ccedil;&atilde;o cancelada.';
-        } elseif ($caixa_id == 1) {
-            $data['mensagem'] = 'Sucesso ao gravar a Saida.';
+//        if ($caixa_id == 1) {
+//            $data['mensagem'] = 'Erro ao gravar a Saida. Opera&ccedil;&atilde;o cancelada.';
+//        } else
+            if ($caixa_id == 1) {
+            $data['mensagem'] = 'Sucesso ao gravar a sangria.';
         } elseif ($caixa_id == 0) {
             $data['mensagem'] = 'Senha incorreta.';
         }
@@ -158,10 +159,11 @@ class Caixa extends BaseController {
     function gravarcancelarsangria() {
         $caixa_id = $this->caixa->gravarcancelarsangria();
 
-        if ($caixa_id == 1) {
-            $data['mensagem'] = 'Erro ao gravar a Saida. Opera&ccedil;&atilde;o cancelada.';
-        } elseif ($caixa_id == 1) {
-            $data['mensagem'] = 'Sucesso ao gravar a Saida.';
+//        if ($caixa_id == 1) {
+//            $data['mensagem'] = 'Erro ao gravar a Saida. Opera&ccedil;&atilde;o cancelada.';
+//        } else
+            if ($caixa_id == 1) {
+            $data['mensagem'] = 'Sucesso ao cancelar a sangria.';
         } elseif ($caixa_id == 0) {
             $data['mensagem'] = 'Senha incorreta.';
         }
