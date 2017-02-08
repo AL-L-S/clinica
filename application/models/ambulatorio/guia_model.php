@@ -2477,11 +2477,14 @@ class guia_model extends Model {
 
     function relatorioaniversariantes() {
 
-        $mes = $_POST['txtdata_inicio'];
+        $mes_incial = $_POST['txtdata_inicio'];
+        $mes_final = $_POST['txtdata_fim'];
 
-        $sql = "SELECT p.nome as paciente, p.nascimento , p.celular , p.telefone from ponto.tb_paciente p
-                left join ponto.tb_convenio c on c.convenio_id = p.convenio_id
-                Where Extract(Month From p.nascimento) = $mes order by Extract(Day From p.nascimento)";
+        $sql = "SELECT p.nome as paciente, p.nascimento , p.celular , p.cns , p.telefone 
+                FROM ponto.tb_paciente p
+                LEFT JOIN ponto.tb_convenio c ON c.convenio_id = p.convenio_id
+                WHERE (Extract(Month From p.nascimento) >= $mes_incial) AND (Extract(Month From p.nascimento) <= $mes_final)
+                ORDER BY Extract(Day From p.nascimento)";
         $return = $this->db->query($sql)->result();
         return $return;
     }

@@ -23,7 +23,7 @@
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medicos</th>
-                        <th class="tabela_title">SITUA&Ccedil;&Atilde;O</th>
+                        <th class="tabela_title">Situa&ccedil;&atilde;o</th>
                         <th class="tabela_title">Data</th>
                         <th colspan="2" class="tabela_title">Nome</th>
                     </tr>
@@ -51,8 +51,11 @@
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
                                 <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->cbo_ocupacao_id; ?>"><?php echo $value->descricao; ?></option>
-                                <? endforeach; ?>
+                                    <option value="<?= $value->cbo_ocupacao_id; ?>"<?
+                                    if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->descricao; ?></option>
+<? endforeach; ?>
                             </select>
                         </th>
 
@@ -75,12 +78,12 @@
                             </select>
                         </th>
                         <th class="tabela_title">
-                            <select name="situacao" id="situacao" class="size2">
+                            <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
-                                <option value="BLOQUEADO">BLOQUEADO</option>
-                                <option value="FALTOU">FALTOU</option>
-                                <option value="OK">OCUPADO</option>
-                                <option value="LIVRE">VAGO</option>
+                                <option value="BLOQUEADO" <? if( @$_GET['situacao'] == "BLOQUEADO" ){ echo 'selected'; }?>>BLOQUEADO</option>
+                                <option value="FALTOU" <? if( @$_GET['situacao'] == "FALTOU" ){ echo 'selected'; }?>>FALTOU</option>
+                                <option value="OK" <? if( @$_GET['situacao'] == "OK" ){ echo 'selected'; }?>>OCUPADO</option>
+                                <option value="LIVRE" <? if( @$_GET['situacao'] == "LIVRE" ){ echo 'selected'; }?>>VAGO</option>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -118,7 +121,7 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listarexamemultifuncaofisioterapia($_GET);
                 $total = $consulta->count_all_results();
-                $limit = 50;
+                $limit = 100;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
                 $l = $this->exame->listarestatisticapacienteespecialidade($_GET);
                 $p = $this->exame->listarestatisticasempacienteespecialidade($_GET);
@@ -227,9 +230,16 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><? if( isset($item->encaixe) ){
-                                    echo '<span class="vermelho">Encaixe</span>';
-                                } ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><? 
+                                if ($item->encaixe == 't') {
+                                    if ($item->paciente == '') {
+                                        echo '<span class="vermelho">Encaixe H.</span>';
+                                    }
+                                    else{
+                                        echo '<span class="vermelho">Encaixe</span>';
+                                    }
+                                }
+                                ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="250px;"><?= $item->convenio . ' - ' .$item->procedimento;  ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>

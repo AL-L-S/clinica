@@ -85,8 +85,9 @@ class Autocomplete extends Controller {
             $result = $this->procedimento->listarprocedimentoautocomplete();
         }
         foreach ($result as $item) {
-            $retorno['value'] = $item->descricao;
-            $retorno['id'] = $item->procedimento_tuss_id;
+            $retorno['value'] = $item->nome;
+            $retorno['id'] = $item->procedimento_convenio_id;
+            $retorno['convenio'] = $item->convenio_id;
             $var[] = $retorno;
         }
         echo json_encode($var);

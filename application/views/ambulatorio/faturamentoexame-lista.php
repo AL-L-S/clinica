@@ -64,12 +64,13 @@
                 <tr>
                     <th width="60px;">Guia</th>
                     <th width="90px;">Autoriza&ccedil;&atilde;o</th>
-                    <th width="90px;">Procedimento</th>
+                    <th width="130px;">Procedimento</th>
+                    <th width="90px;"><div style="margin-left:8pt;">Convenio</div></th>
                     <th width="60px;">Codigo</th>
                     <th width="90px;">Medico</th>
                     <th width="60px;">Data</th>
-                    <th width="300px;">Nome</th>
-                    <th >Obs.</th>
+                    <th width="110px;">Nome</th>
+                    <th width="180px;">Obs.</th>
                     <th width="60px;">Valor Fatur.</th>
                     
                     <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
@@ -104,19 +105,31 @@
                             <td ><?= $item->ambulatorio_guia_id; ?></td>
                             <td ><?= $item->autorizacao; ?></td>
                             <td ><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');"><?= substr($item->procedimento, 0, 16) . " ". $item->numero_sessao; ?></a></td>
+                            <td ><div style="margin-left:8pt;"><?= $item->nome; ?></div></td>
                             <td ><?= $item->codigo; ?></td>
                             <td ><?= substr($item->medico, 0, 10); ?></td>
                             <td ><?= substr($item->data_criacao, 8, 2) . "/" . substr($item->data_criacao, 5, 2) . "/" . substr($item->data_criacao, 0, 4); ?></td>
                             <? if ($item->faturado == "t") { ?>
-                                <td><font color="green"><?= $item->paciente; ?></td>
+                                <td>
+                                    <a style="text-decoration: none; color: black;" title="<? echo $item->paciente; ?>" href="#"><font color="green"><? echo substr($item->paciente, 0, 10); ?>(...)</a>
+                                    
+                                </td>
                                 <?
                             } else {
                                 ?>
-                                <td><font color="c60000"><?= $item->paciente; ?></td>
+                                <td>
+                                    <a style="text-decoration: none; color: black;" title="<? echo $item->paciente; ?>" href="#"><font color="c60000"><? echo substr($item->paciente, 0, 10); ?>(...)</a>
+                                  
+                                </td>
                             <? } ?>
 
-                            <td ><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/alterarobservacaofaturar/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,\n\width=500,height=230');">
-                                    =><?= $item->observacao_faturamento; ?></a></td>
+                                <td >
+                                    <div class="observacao">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/alterarobservacaofaturar/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,\n\width=500,height=230');">
+                                            =><?= $item->observacao_faturamento; ?>
+                                        </a>
+                                    </div>
+                                </td>
                             <td ><?= number_format($item->valortotal, 2, ",", "."); ?></td>
                             <?
                             if ($item->faturado != "t") {
@@ -130,9 +143,12 @@
                                 <td>Faturado&nbsp;</td>
                             <? }
                             ?>
-                            <td width="40px;"><div class="bt_link_new">
+                            <td width="40px;">
+                                <div class="bt_link" style="width: 60pt">
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturarguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
-                                        Faturar guia</a></div>
+                                        Faturar guia
+                                    </a>
+                                </div>
                             </td>
                         </tr>
 
@@ -181,6 +197,15 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<style>
+    .observacao{
+        max-height: 50pt;
+        max-width: 170px;
+        
+        word-wrap: break-word;
+        overflow-y: auto;
+    }
+</style>
 <script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>
 <script type="text/javascript">
 

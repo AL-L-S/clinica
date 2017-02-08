@@ -118,7 +118,19 @@
                                    }else{
                                        $data_alterada = '';
                                    }?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?><br/><?= $data_alterada?></td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="50px;">
+                                        <table cellspacing="5">
+                                            <tr>
+                                                <td class="<?php echo $estilo_linha; ?>"></td>
+                                                <td class="<?php echo $estilo_linha; ?>">
+                                                    <?= $item->convenio ?>
+                                                </td>
+                                                <td class="<?php echo $estilo_linha; ?>"> 
+                                                    <?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?><br/><?= $data_alterada?>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    
                                     <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->inicio ?></td>
 
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">

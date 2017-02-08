@@ -39,7 +39,7 @@
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
                         <th class="tabela_title">Salas</th>
-                        <th class="tabela_title">SITUA&Ccedil;&Atilde;O</th>
+                        <th class="tabela_title">Situa&ccedil;&atilde;o</th>
                         <th class="tabela_title">Medico S/N</th>
                         <th class="tabela_title">Data</th>
                         <th colspan="2" class="tabela_title">Nome</th>
@@ -72,7 +72,17 @@
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
                                 <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->cbo_ocupacao_id; ?>"><?php echo $value->descricao; ?></option>
+                                    <option value="<?= $value->cbo_ocupacao_id; ?>" <?
+                                    if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
+                                    endif;
+                                    ?>>
+                                                <?
+//                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
+//                                                    echo '<script>carregaMedicoEspecialidade();</script>';
+//                                                endif;
+                                                ?>
+                                                <?php echo $value->descricao; ?>
+                                    </option>
                                 <? endforeach; ?>
                             </select>
                         </th>
@@ -109,10 +119,10 @@
                         <th class="tabela_title">
                             <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
-                                <option value="BLOQUEADO">BLOQUEADO</option>
-                                <option value="FALTOU">FALTOU</option>
-                                <option value="OK">OCUPADO</option>
-                                <option value="LIVRE">VAGO</option>
+                                <option value="BLOQUEADO" <? if( @$_GET['situacao'] == "BLOQUEADO" ){ echo 'selected'; }?>>BLOQUEADO</option>
+                                <option value="FALTOU" <? if( @$_GET['situacao'] == "FALTOU" ){ echo 'selected'; }?>>FALTOU</option>
+                                <option value="OK" <? if( @$_GET['situacao'] == "OK" ){ echo 'selected'; }?>>OCUPADO</option>
+                                <option value="LIVRE" <? if( @$_GET['situacao'] == "LIVRE" ){ echo 'selected'; }?>>VAGO</option>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -160,7 +170,7 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listarexamemultifuncaogeral($_GET);
                 $total = $consulta->count_all_results();
-                $limit = 20;
+                $limit = 100;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 $l = $this->exame->listarestatisticapaciente($_GET);
@@ -320,7 +330,12 @@
                         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>"><?
                             if ($item->encaixe == 't') {
-                                echo '<span class="vermelho">Encaixe</span>';
+                                if ($item->paciente == '') {
+                                    echo '<span class="vermelho">Encaixe H.</span>';
+                                }
+                                else{
+                                    echo '<span class="vermelho">Encaixe</span>';
+                                }
                             }
                             ?>
                         </td>
@@ -333,7 +348,7 @@
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . " - " . $item->procedimento . " - " . $item->codigo; ?></td>
                         <? } else { ?>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . " - " . $item->procedimento . " - " . $item->codigo; ?></td>
-        <? } ?>
+                        <? } ?>
 
                         <!-- SALA -->   
                         <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
@@ -342,8 +357,8 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
 
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
-        <? if ($item->paciente_id != "") { ?>
+                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
+                            <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
                                     </a></div>
@@ -362,8 +377,8 @@
 
                                     </div>
                                 </td>
-            <? } else {
-                ?>
+                            <? } else {
+                                ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarexamegeral/<?= $item->agenda_exames_id ?>/<?= $item->medico_agenda ?>');">Atendimento
                                         </a>
@@ -393,7 +408,7 @@
                                         <a title="<?= $item->operador_desbloqueio ?>" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
                                         </a></div>
                                 </td>
-            <? } else { ?>
+                            <? } else { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a title="<?= $item->operador_bloqueio ?>"  onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
                                         </a></div>
@@ -404,7 +419,7 @@
                             ?>
                             <? if ($item->telefonema == 't') { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><font color="green" title="<?= $item->telefonema_operador; ?>"><b>Confirmado</b></td>
-            <? } else { ?>
+                            <? } else { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/telefonema/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Confirma
                                         </a></div>
@@ -424,7 +439,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="15">
-<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total . " - Vago: " . $l . " - Marcado: " . $p; ?>
                         </th>
                     </tr>
@@ -494,6 +509,23 @@
             });
         });
 
+//        function carregaMedicoEspecialidade() {
+        
+//                alert('ola');
+//            if ($("#especialidade").val()) {
+//                $('.carregando').show();
+//                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $("#especialidade").val(), ajax: true}, function (j) {
+//                    options = '<option value=""></option>';
+//                    for (var c = 0; c < j.length; c++) {
+//                        if (j[0].operador_id != undefined) {
+//                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+//                        }
+//                    }
+//                    $('#medico').html(options).show();
+//                    $('.carregando').hide();
+//                });
+//            }
+//        }
 
 
         $(function () {

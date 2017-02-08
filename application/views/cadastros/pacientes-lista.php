@@ -3,9 +3,9 @@
     <table>
         <tr>
             <td width="60px;">
-                <div class="bt_link">
-                    <a href="<?php echo base_url() ?>cadastros/pacientes/novo">
-                        Cad. Novo 
+                <div class="bt_link" style="width: 110pt">
+                    <a href="<?php echo base_url() ?>cadastros/pacientes/novo" style="width: 100pt">
+                        Novo Cadastro
                     </a>
                 </div>
             </td>

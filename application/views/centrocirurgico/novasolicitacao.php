@@ -33,7 +33,7 @@
                     </dd>
 
                     <dt>
-                        <label>Médico</label>
+                        <label>Médico Solicitante</label>
                     </dt>
                     <dd>
                         <select  name="medicoagenda" id="medicoagenda" class="size4" required="true">
@@ -44,6 +44,15 @@
                                 </option>
 <? endforeach; ?>
                         </select>
+                    </dd>
+                    </dd>
+
+                    
+                    <dt>
+                        <label for="orcamento">Orçamento</label>
+                    </dt>
+                    <dd>
+                        <input type="checkbox" id="orcamento" name="orcamento"/>
                     </dd>
 
 

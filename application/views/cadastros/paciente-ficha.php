@@ -68,7 +68,7 @@
 
                 <input type="text" name="rg"  id="txtDocumento" class="texto04" maxlength="20" value="<?= @$obj->_documento; ?>" />
             </div>
-            <div>
+<!--            <div>
                 <label>UF Expedidor</label>
 
 
@@ -88,7 +88,7 @@
 
 
                     <input type="text"   name="titulo_eleitor" id="txtTituloEleitor" class="texto02" value="<?= @$obj->_titulo_eleitor; ?>" />
-                </div>
+                </div>-->
 
 
 

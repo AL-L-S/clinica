@@ -9,7 +9,7 @@
             </div>
 
             <div>
-                <label>Médico</label>
+                <label>Médico Solicitante</label>
                 <input type="text" class="texto06" readonly value="<?= $dados[0]->medico ?>"/> 
             </div>
             <div>
@@ -155,6 +155,14 @@
                         });
 
                     }
+                    
+//                    var procedimentosAutocomplete = function(){ 
+//                        jQuery.ajax({
+//                            url: "<?= base_url(); ?>" + "autocomplete/procedimentoproduto?convenio=<?= $dados[0]->convenio ?>,
+//                            type: "GET",
+//                            dataType: 'json'
+//                        });
+//                    }
 
                     function adicionarbtn() {
                         var btn = '<div id="btnEnviar"><label>&nbsp;</label>';
@@ -167,5 +175,7 @@
                             jQuery("#cadastro").append(btn);
                         }
                     }
+                    
+                    
 
 </script>

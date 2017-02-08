@@ -5,10 +5,22 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioaniversariantes">
                 <dl>
                     <dt>
-                    <label>Mes</label>
+                        <label>Periodo Inicial</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="integer" />
+                    </dd>
+                    <dt>
+                        <label>Periodo Final</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtdata_fim" id="txtdata_fim" alt="integer" />
+                    </dd>
+                    <dt>
+                        <label for="mala_direta">Mala Direta</label>
+                    </dt>
+                    <dd>
+                        <input type="checkbox" name="mala_direta" id="mala_direta"/>
                     </dd>
                     <dt>
                     <label>Empresa</label>

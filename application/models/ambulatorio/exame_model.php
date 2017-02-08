@@ -2137,7 +2137,7 @@ class exame_model extends Model {
 //        $this->db->orderby('ae.inicio');
         $this->db->where('ae.data >=', $data);
         $this->db->where('numero_sessao', null);
-        $this->db->where('ae.tipo', 'FISIOTERAPIA');
+        $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
 
         if (empty($args['empresa']) || $args['empresa'] == '') {
             $this->db->where('ae.empresa_id', $empresa_id);
@@ -2231,7 +2231,7 @@ class exame_model extends Model {
         $this->db->orderby('ae.inicio');
         $this->db->where('ae.data >=', $data);
         $this->db->where('numero_sessao', null);
-        $this->db->where('ae.tipo', 'FISIOTERAPIA');
+        $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
 
         if (empty($args['empresa']) || $args['empresa'] == '') {
             $this->db->where('ae.empresa_id', $empresa_id);

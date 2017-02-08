@@ -35,7 +35,7 @@
             <legend>Paciente</legend>
             <div>
                 <label>Nome</label>
-                <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
+                <input type="hidden" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
                 <input type="text" id="txtNome" name="txtNome" class="texto10"/>
             </div>
             <div>
@@ -84,11 +84,17 @@
 
 </div> <!-- Final da DIV content -->
 
-<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
+
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
                     $(function () {

@@ -144,17 +144,17 @@ class centrocirurgico extends BaseController {
 
     function adicionarprocedimentos($solicitacao) {
         $data['solicitacao'] = $solicitacao;
-        $this->loadView('centrocirurgico/adicionarprocedimentos', $data);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
     }
 
-    function adicionarprocedimentosdecisao() {
-        if ($_POST['escolha'] == "SIM") {
-            $solicitacao = $_POST['solicitacao_id'];
-            redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
-        } else {
-            redirect(base_url() . "centrocirurgico/centrocirurgico/centrocirurgico");
-        }
-    }
+//    function adicionarprocedimentosdecisao() {
+////        if ($_POST['escolha'] == "SIM") {
+//            $solicitacao = $_POST['solicitacao_id'];
+//            redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
+////        } else {
+////            redirect(base_url() . "centrocirurgico/centrocirurgico/centrocirurgico");
+////        }
+//    }
 
     function gravarnovasolicitacao() {
         if ($_POST["txtNomeid"] == "") {

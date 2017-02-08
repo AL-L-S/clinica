@@ -58,7 +58,7 @@
             <legend>Paciente</legend>
             <div>
                 <label>Nome</label>
-                <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
+                <input type="hidden" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
                 <input type="text" id="txtNome" name="txtNome" class="texto10"/>
             </div>
             <div>
