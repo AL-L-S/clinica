@@ -29,8 +29,8 @@
                         <label>Medico</label>
                     </dt>
                     <dd>                    
-                        <select name="medico" id="medico" class="size4">
-                            <option>SELECIONE</option>
+                        <select name="medico" id="medico" class="size4" required="true">
+                            <option value="">Selecione</option>
                             <? foreach ($medicos as $value) : ?>
                                 <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
@@ -40,7 +40,7 @@
                         <label>Valor</label>
                     </dt>
                     <dd>
-                        <input type="text" name="valor" id="valor" class="texto01" />
+                        <input type="text" name="valor" id="valor" class="texto01" required="true"/>
                     </dd>
                     <dt>
                         <label>Percentual</label>
@@ -73,29 +73,29 @@
     });
 
 
-    $(document).ready(function () {
-        jQuery('#form_procedimentonovomedico').validate({
-            rules: {
-                medico: {
-                    required: true,
-                    equalTo: "#SELECIONE"
-                },
-                valor: {
-                    required: true
-                }
-
-            },
-            messages: {
-                medico: {
-                    required: "*",
-                    equalTo: "*"
-                },
-                valor: {
-                    required: "*"
-                }
-            }
-        });
-    });
+//    $(document).ready(function () {
+//        jQuery('#form_procedimentonovomedico').validate({
+//            rules: {
+//                medico: {
+//                    required: true,
+//                    equalTo: "#SELECIONE"
+//                },
+//                valor: {
+//                    required: true
+//                }
+//
+//            },
+//            messages: {
+//                medico: {
+//                    required: "*",
+//                    equalTo: "*"
+//                },
+//                valor: {
+//                    required: "*"
+//                }
+//            }
+//        });
+//    });
 
 
 

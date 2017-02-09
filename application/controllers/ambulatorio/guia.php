@@ -707,6 +707,10 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentos() {
+        $procedimentopercentual = $_POST['procedimento1'];
+        $medicopercentual = $_POST['medicoagenda'];
+        $percentual = $this->guia->percentualmedicoconvenio($procedimentopercentual, $medicopercentual);
+        $valor_percentual = $percentual[0]->valor;
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
@@ -734,7 +738,7 @@ class Guia extends BaseController {
                 } else {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
-                $this->guia->gravarexames($ambulatorio_guia, $medico_id);
+                $this->guia->gravarexames($ambulatorio_guia, $medico_id, $valor_percentual);
             }
             
             redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");
@@ -800,7 +804,11 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentosconsulta() {
-
+        $procedimentopercentual = $_POST['procedimento1'];
+        $medicopercentual = $_POST['medicoagenda'];
+        $percentual = $this->guia->percentualmedicoconvenio($procedimentopercentual, $medicopercentual);
+        $valor_percentual = $percentual[0]->valor;
+//        var_dump($percentual); die;
         $paciente_id = $_POST['txtpaciente_id'];
 
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
@@ -822,7 +830,7 @@ class Guia extends BaseController {
                 } else {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
-                $this->guia->gravarconsulta($ambulatorio_guia);
+                $this->guia->gravarconsulta($ambulatorio_guia, $valor_percentual);
             }
             //        $this->gerardicom($ambulatorio_guia);
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -832,7 +840,10 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentosfisioterapia() {
-
+        $procedimentopercentual = $_POST['procedimento1'];
+        $medicopercentual = $_POST['medicoagenda'];
+        $percentual = $this->guia->percentualmedicoconvenio($procedimentopercentual, $medicopercentual);
+        $valor_percentual = $percentual[0]->valor;
         $i = 1;
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
@@ -860,7 +871,7 @@ class Guia extends BaseController {
                     } else {
                         $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                     }
-                    $this->guia->gravarfisioterapia($ambulatorio_guia);
+                    $this->guia->gravarfisioterapia($ambulatorio_guia, $valor_percentual);
                 }
                 //        $this->gerardicom($ambulatorio_guia);
                 //            $this->session->set_flashdata('message', $data['mensagem']);

@@ -1393,6 +1393,7 @@ CREATE TABLE ponto.tb_procedimento_convenio_antigo
 
 
 -- Dia 04/02/16
+-- Comando para resolver o erro de duplicate primary key ou de lastval not defined in the season
 ⁠⁠⁠SELECT setval('the_primary_key_sequence', (SELECT MAX(the_primary_key) FROM the_table)+1);
 
 -- Dia 09/02/2017

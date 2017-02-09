@@ -2551,6 +2551,7 @@ class guia_model extends Model {
             pt.nome as procedimento,
             pc.procedimento_convenio_id,
             ae.autorizacao,
+            ae.percentual_medico,
             ae.data,
             e.situacao,
             op.operador_id,
@@ -5902,7 +5903,7 @@ ORDER BY ae.agenda_exames_id)";
         return $medico_id;
     }
 
-    function gravarexames($ambulatorio_guia_id, $medico_id) {
+    function gravarexames($ambulatorio_guia_id, $medico_id, $valor_percentual) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -5923,6 +5924,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('valor', $_POST['valor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
+            $this->db->set('percentual_medico', $valor_percentual);
             $this->db->set('quantidade', $_POST['qtde1']);
             $this->db->set('autorizacao', $_POST['autorizacao1']);
 //            $this->db->set('observacoes', $_POST['observacao']);
@@ -6182,7 +6184,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function gravarconsulta($ambulatorio_guia_id) {
+    function gravarconsulta($ambulatorio_guia_id, $valor_percentual) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -6203,6 +6205,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('valor', $_POST['valor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
+            $this->db->set('percentual_medico', $valor_percentual);
             $this->db->set('quantidade', $_POST['qtde1']);
             $this->db->set('autorizacao', $_POST['autorizacao1']);
 //            $this->db->set('observacoes', $_POST['observacao']);
@@ -6252,7 +6255,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function gravarfisioterapia($ambulatorio_guia_id) {
+    function gravarfisioterapia($ambulatorio_guia_id, $valor_percentual) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -6278,6 +6281,7 @@ ORDER BY ae.agenda_exames_id)";
                 if ($dinheiro == "t") {
                     if ($index == 1) {
                         $this->db->set('valor', $_POST['valor1']);
+                        $this->db->set('percentual_medico', $valor_percentual);
                         $this->db->set('valor_total', $_POST['valor1']);
                         $this->db->set('confirmado', 't');
                     } else {

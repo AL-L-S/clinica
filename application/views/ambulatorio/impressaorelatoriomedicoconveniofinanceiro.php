@@ -78,9 +78,13 @@
                             <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_total, 2, ",", "."); ?></td>
                         <? } ?>
                         <?
+                        
                         if ($item->percentual == "t") {
                             $simbolopercebtual = " %";
-                            if ($testearray > 0) {
+                            if ($item->percentual_medico != "") {
+                                $valorpercentualmedico = $item->percentual_medico;
+                            }
+                            elseif ($testearray > 0) {
                                 $valorpercentualmedico = $percentual[0]->valor;
                             } else {
                                 $valorpercentualmedico = $item->perc_medico;
