@@ -348,6 +348,6 @@
                                                 
                                                 setInterval(function () {
                                                     window.location.reload();
-                                                }, 90000);
+                                                }, 180000);
 
 </script>

@@ -8,7 +8,7 @@
                     <label>Convenio</label>
                     </dt>
                     <dd>
-                        <select  name="convenio1" id="convenio1" class="size1" >
+                        <select  name="convenio1" id="convenio1" class="size1">
                             <option value="-1">Selecione</option>
                             <? foreach ($convenio as $item) : ?>
                                 <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
@@ -18,7 +18,7 @@
                     <label>Procedimento</label>
                     </dt>
                     <dd>
-                        <select  name="procedimento1" id="procedimento1" class="size1" >
+                        <select  name="procedimento1" id="procedimento1" class="size1" required="true">
                             <option value="">Selecione</option>
                         </select>
                     </dd>

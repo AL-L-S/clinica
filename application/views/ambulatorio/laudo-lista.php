@@ -280,15 +280,19 @@ $(document).ready(function () {
                                             $("#accordion").accordion();
                                         });
 
-                                        setTimeout('delayReload()', 20000);
-                                        function delayReload()
-                                        {
-                                            if (navigator.userAgent.indexOf("MSIE") != -1) {
-                                                history.go(0);
-                                            } else {
-                                                window.location.reload();
-                                            }
-                                        }
+//                                        setTimeout('delayReload()', 20000);
+//                                        function delayReload()
+//                                        {
+//                                            if (navigator.userAgent.indexOf("MSIE") != -1) {
+//                                                history.go(0);
+//                                            } else {
+//                                                window.location.reload();
+//                                            }
+//                                        }
 
                                     });
+                                    
+                                    setInterval(function () {
+                                                    window.location.reload();
+                                                }, 180000);
 </script>

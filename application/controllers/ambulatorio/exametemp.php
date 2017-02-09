@@ -584,7 +584,7 @@ class Exametemp extends BaseController {
             redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
         } else {
             $this->exametemp->gravarpacienteexistentegeral($pacientetemp_id);
-            $this->carregarpacientetempgeral($pacientetemp_id);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
         }
     }
 
@@ -592,14 +592,15 @@ class Exametemp extends BaseController {
 
         $pacientetemp_id = $_POST['txtpaciente_id'];
         $this->exametemp->gravarconsultaspacienteexistente($pacientetemp_id);
-        $this->carregarpacienteconsultatemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
 
     function gravarfisioterapiapacientetemp() {
 
         $pacientetemp_id = $_POST['txtpaciente_id'];
         $this->exametemp->gravarfisioterapiapacienteexistente($pacientetemp_id);
-        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
+//        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
     }
 
     function gravarpaciente() {

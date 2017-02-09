@@ -1397,4 +1397,7 @@ CREATE TABLE ponto.tb_procedimento_convenio_antigo
 
 -- Dia 09/02/2017
 ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN orcamento boolean NOT NULL DEFAULT true;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_medico numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_medico numeric(10,2);
+
 

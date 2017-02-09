@@ -119,8 +119,8 @@
                                             <option value="-1">Selecione</option>
                                             <? foreach ($medicos as $value) : ?>
                                                 <option value="//<?= $value->operador_id; ?>" <?
-//                                                if ($value->operador_id == $item->medico_consulta_id):echo 'selected';
-//                                                endif;
+                                                if ($value->operador_id == $item->medico_consulta_id):echo 'selected';
+                                                endif;
 //                                                ?>><?= $value->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -129,7 +129,7 @@
                                         <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" >
                                             <option value="-1">Selecione</option>
                                             <? foreach ($convenio as $value) : ?>
-                                                <option value="//<?= $value->convenio_id; ?>"<?
+                                                <option value="<?= $value->convenio_id; ?>"<?
 //                                                if ($value->convenio_id == $item->convenio_id):echo'selected';
 //                                                endif;
 //                                                ?>><?= $value->nome; ?></option>
@@ -485,6 +485,7 @@
                             $('#convenio1').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
+//                                    alert('oi');
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
@@ -494,7 +495,7 @@
                                         $('.carregando').hide();
                                     });
                                 } else {
-                                    $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
+                                    $('#procedimento1').html('<option value="">-- Escolha um Procedimento --</option>');
                                 }
                             });
                         });

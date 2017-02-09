@@ -707,7 +707,6 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentos() {
-//        var_dump($_POST['ordenador']); die;
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
@@ -730,9 +729,7 @@ class Guia extends BaseController {
             $resultadoguia = $this->guia->listarguia($paciente_id);
             
             if ($_POST['medicoagenda'] != '') {
-//                var_dump($_POST['ordenador']); die;
                 if ($resultadoguia == null) {
-//                    var_dump($_POST['ordenador']); die;
                     $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
                 } else {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
