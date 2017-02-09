@@ -186,9 +186,11 @@ class procedimento_model extends Model {
     function listarprocedimentoautocomplete($parametro = null) {
         $this->db->select('pc.procedimento_convenio_id,
                            pt.nome,
+                           c.nome as convenio,
                            pc.convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('pc.ativo', 'true');
         if ($parametro != null) {
             $this->db->where("(pt.descricao ilike '%$parametro%' OR pt.codigo ilike '%$parametro%')");

@@ -23,6 +23,7 @@
                 <tr>
                     <th class="tabela_header">Nome</th>
                     <th class="tabela_header">Data Prevista</th>
+                    <th class="tabela_header">Detalhes</th>
 
                 </tr>
                 </thead>
@@ -52,6 +53,9 @@
                                                             <?$datafinal= $dia . '/' . $mes . '/' . $ano . $hora; ?>
                                     
                                                             <?php echo$datafinal?></strong></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>">Imprimir</a></div>
+                                </td>
                             </tr>
                         </tbody>
                         <?php

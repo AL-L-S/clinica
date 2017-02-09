@@ -202,7 +202,8 @@ class centrocirurgico extends BaseController {
                 }
             }
         }
-
+        
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
     }
 
@@ -226,8 +227,8 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$solicitacao_id");
     }
 
-    function liberar($solicitacao_id) {
-        if ($this->centrocirurgico_m->liberarsolicitacao($solicitacao_id)) {
+    function liberar($solicitacao_id, $orcamento) {
+        if ($this->centrocirurgico_m->liberarsolicitacao($solicitacao_id, $orcamento)) {
             $data['mensagem'] = "LIBERADO!";
         } else {
             $data['mensagem'] = "Falha ao realizar Liberação!";
@@ -240,11 +241,7 @@ class centrocirurgico extends BaseController {
         $data['solicitacao_id'] = $solicitacao_id;
         $data['convenio_id'] = $convenio_id;
         $teste = $this->centrocirurgico_m->verificasituacao($solicitacao_id);
-        if ($teste[0]->situacao == 'LIBERADA') {
-            $this->loadView('centrocirurgico/nessecitadeoscamento', $data);
-        } else {
-            redirect(base_url() . "centrocirurgico/centrocirurgico/solicitacarorcamento/$solicitacao_id/$convenio_id");
-        }
+        redirect(base_url() . "centrocirurgico/centrocirurgico/solicitacarorcamento/$solicitacao_id/$convenio_id");
     }
 
     function orcamentoescolha($solicitacao_id, $convenio_id) {

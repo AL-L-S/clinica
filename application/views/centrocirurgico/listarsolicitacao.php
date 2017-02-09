@@ -28,7 +28,7 @@
                         <th class="tabela_header">Convenio</th>
                         <th class="tabela_header">Situação</th>
                        <!--<th class="tabela_header">Data Prevista</th>-->
-                        <th class="tabela_header" width="30px;" colspan="4"><center></center></th>
+                        <th class="tabela_header" width="30px;" colspan="6"><center></center></th>
 <!--                <th class="tabela_header" width="30px;"><center></center></th>
                 <th class="tabela_header" width="30px;"><center></center></th>-->
 
@@ -45,19 +45,23 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->centrocirurgico_m->listarsolicitacoes($_GET)->orderby('p.nome')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->centrocirurgico_m->listarsolicitacoes2($_GET)->orderby('p.nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             $situacao = '';
                             if ($item->situacao == 'ABERTA') {
                                 $situacao = "<font color='blue'>ABERTA";
-                            } elseif ($item->situacao == 'LIBERADA') {
+                            } 
+                            elseif ($item->situacao == 'LIBERADA') {
                                 $situacao = "<font color='green'>LIBERADA";
-                            } elseif ($item->situacao == 'ORCAMENTO_INCOMPLETO') {
+                            } 
+                            elseif ($item->situacao == 'ORCAMENTO_INCOMPLETO' && $item->orcamento == 't') {
                                 $situacao = "<font color='red'>ORÇAMENTO INCOMPLETO";
-                            } elseif ($item->situacao == 'ORCAMENTO_COMPLETO') {
+                            } 
+                            elseif ($item->situacao == 'ORCAMENTO_COMPLETO'  && $item->orcamento == 't') {
                                 $situacao = "<font color='green'>ORÇAMENTO COMPLETO";
-                            } elseif ($item->situacao == 'EQUIPE_MONTADA') {
+                            } 
+                            elseif ($item->situacao == 'EQUIPE_MONTADA') {
                                 $situacao = "<font color='green'>EQUIPE MONTADA";
                             }
 
@@ -69,32 +73,35 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $situacao; ?></td>
                                 <? if ($item->situacao != 'ABERTA' && $item->situacao == 'EQUIPE_MONTADA') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
-                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">AUTORIZAR</a></div>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Autorizar</a></div>
                                     </td> 
                                 <? } ?>
                                 <? if ($item->situacao != 'ABERTA' && $item->situacao == 'ORCAMENTO_COMPLETO' && $item->situacao != 'EQUIPE_MONTADA') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
-                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= $item->solicitacao_cirurgia_id; ?>">EQUIPE</a></div>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= $item->solicitacao_cirurgia_id; ?>">Equipe</a></div>
                                     </td> 
                                 <? } ?>
-                                <? if ($item->situacao != 'ABERTA' && $item->situacao != 'ORCAMENTO_COMPLETO' && $item->situacao != 'EQUIPE_MONTADA') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
-                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/orcamentopergunta/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->convenio_id; ?>" style="width: 85px;">ORÇAMENTO</a></div>
+                                <? if ($item->situacao != 'ORCAMENTO_COMPLETO' && $item->orcamento == 't') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->convenio_id; ?>">Orçamento</a></div>
                                     </td> 
                                 <? } ?>
                                 <? if (($item->situacao != 'ABERTA' && $item->situacao == 'ORCAMENTO_COMPLETO') || $item->situacao == 'EQUIPE_MONTADA') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="90px;"><div class="bt_link" style="width: 90px;">
-                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>" style="width: 85px;">IMPRIMIR</a></div>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>">Imprimir</a></div>
                                     </td>
                                 <? } ?>
-                                <? if ($item->situacao == 'ABERTA') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 80px;">
-                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacao/<?= $item->solicitacao_cirurgia_id; ?>">CADASTRAR</a></div>
+                                <? if ($item->situacao != 'ORCAMENTO_COMPLETO' && $item->situacao != 'EQUIPE_MONTADA') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacao/<?= $item->solicitacao_cirurgia_id; ?>">Cadastrar</a></div>
                                     </td>
                                 <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link" style="width: 60px;">
-                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">EXCLUIR</a></div>
+<!--                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Editar</a></div>
+                                </td> -->
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Excluir</a></div>
                                 </td> 
                             </tr>
                         </tbody>
@@ -104,7 +111,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="8">
+                        <th class="tabela_footer" colspan="10">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

@@ -22,7 +22,7 @@
 
     <h4>PACIENTE: <?= $nomes[0]->paciente; ?></h4>
     <h4>CONVÊNIO: <?= $nomes[0]->convenio; ?></h4>
-    <h4>CIRURGIÃO:<?= $nomes[0]->medico; ?></h4>
+    <h4>MÉDICO SOLICITANTE:<?= $nomes[0]->medico; ?></h4>
 
     <?
     $total = 0;
@@ -49,9 +49,9 @@
                 
                     <thead>
                         <tr style="border:1pt solid gray">
-                            <th width="80px" class="tabela_header">Código</th>
-                            <th class="tabela_header">Procedimento</th>
-                            <th class="tabela_header">Grau de participação</th>
+                            <th width="80px" class="tabela_header">CÓDIGO</th>
+                            <th class="tabela_header">PROCEDIMENTO</th>
+                            <th class="tabela_header">GRAU DE PARTICIPAÇÃO</th>
                         </tr>
                     </thead>
                     <?

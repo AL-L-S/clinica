@@ -75,6 +75,7 @@ class Procedimentoplano extends BaseController {
     function agrupadoradicionar($agrupador_id) {
         $data['agrupador'] = $this->procedimentoplano->buscaragrupador($agrupador_id);
         $data['procedimentos'] = $this->procedimentoplano->listarprocedimento();
+//        die;
         $data['relatorio'] = $this->procedimentoplano->listarprocedimentosagrupador($agrupador_id);
         $this->loadView('ambulatorio/agrupador-adicionar', $data);
     }
@@ -86,7 +87,7 @@ class Procedimentoplano extends BaseController {
         } else {
             $data['mensagem'] = 'Erro ao adicionar.';
         }
-//        $this->session->set_flashdata('message', $data['mensagem']);
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/procedimentoplano/agrupadoradicionar/$agrupador_id");
     }
 

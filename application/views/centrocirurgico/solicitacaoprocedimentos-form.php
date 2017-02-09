@@ -6,6 +6,7 @@
             <div>
                 <label>Paciente</label>
                 <input type="text" class="texto06" readonly value="<?= $dados[0]->nome ?>"/> 
+                <!--<input type="text" class="texto06" readonly value="//<?= $dados[0]->orcamento ?>"/>--> 
             </div>
 
             <div>
@@ -35,7 +36,7 @@
         </fieldset>
         <fieldset > 
             <div class="bt_link">                                  
-                <a onclick="javascript: return confirm('Deseja realmente Liberar a solicitacao?');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/liberar/<?= $solicitacao_id ?>">Liberar</a>
+                <a onclick="javascript: return confirm('Deseja realmente Liberar a solicitacao?');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/liberar/<?= $solicitacao_id ?>/<?= $dados[0]->orcamento ?>">Liberar</a>
             </div>
         </fieldset>
 
@@ -48,6 +49,7 @@
 
                 <tr>
                     <th class="tabela_header">Procedimento</th>
+                    <th class="tabela_header">Convenio</th>
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
             </thead>
@@ -60,6 +62,7 @@
 
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                 <center>
                     <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaoprocedimento/<?= $item->solicitacao_procedimento_id; ?>/<?= $solicitacao_id; ?>" class="delete">

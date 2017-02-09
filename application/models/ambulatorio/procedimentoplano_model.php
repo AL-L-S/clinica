@@ -185,14 +185,17 @@ class procedimentoplano_model extends Model {
     }
 
     function listarprocedimentosagrupador($agrupador_id) {
+//        die;
         $this->db->select('pa.agrupador_id,
                            pa.procedimento_agrupado_id,
                            pt.nome,
+                           c.nome as convenio,
                            pt.codigo,
-                           pt.procedimento_tuss_id
-                            ');
+                           pc.procedimento_convenio_id');
         $this->db->from('tb_procedimentos_agrupados pa');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pa.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pa.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where("pa.ativo", 't');
         $this->db->where('pa.agrupador_id', $agrupador_id);
 
@@ -293,12 +296,15 @@ class procedimentoplano_model extends Model {
     }
 
     function listarprocedimento() {
-        $this->db->select('procedimento_tuss_id,
-                            nome,
-                            codigo');
-        $this->db->from('tb_procedimento_tuss');
-        $this->db->orderby('nome');
-        $this->db->where("ativo", 't');
+        $this->db->select('pc.procedimento_convenio_id,
+                            c.nome as convenio,
+                            pt.nome as procedimento,
+                            pt.codigo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->orderby('pt.nome');
+        $this->db->where("pc.ativo", 't');
         $return = $this->db->get();
         return $return->result();
     }

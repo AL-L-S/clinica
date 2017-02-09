@@ -41,6 +41,33 @@ class centrocirurgico_model extends BaseModel {
                             p.nome,
                             sc.solicitacao_cirurgia_id,
                             sc.data_prevista,
+                            sc.orcamento,
+                            c.nome as convenio,
+                            c.convenio_id,
+                            o.nome as medico,
+                            sc.situacao');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->where('sc.ativo', 't');
+        $this->db->where('sc.excluido', 'f');
+        $this->db->where('sc.autorizado', 'f');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');
+        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_agendado', 'left');
+        if ($args) {
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
+            }
+        }
+        return $this->db;
+    }
+
+    function listarsolicitacoes2($args = array()) {
+
+        $this->db->select(' p.paciente_id,
+                            p.nome,
+                            sc.solicitacao_cirurgia_id,
+                            sc.data_prevista,
+                            sc.orcamento,
                             c.nome as convenio,
                             c.convenio_id,
                             o.nome as medico,
@@ -132,13 +159,19 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
-    function liberarsolicitacao($solicitacao_id) {
+    function liberarsolicitacao($solicitacao_id, $orcamento) {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
+//        var_dump($orcamento);die;
 
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->set('situacao', 'LIBERADA');
+        if($orcamento != 'f'){
+            $this->db->set('situacao', 'LIBERADA');
+        }
+        else{
+            $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
+        }
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->update('tb_solicitacao_cirurgia');
 

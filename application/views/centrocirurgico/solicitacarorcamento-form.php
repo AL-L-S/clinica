@@ -1,6 +1,10 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="bt_link" style="width: 250px; ">
-        <a style="width: 200px;" onclick="javascript: return confirm('Deseja realmente FINALIZAR O ORÇAMENTO? Após esta ação não será possível editar o orçamento.');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/finalizarorcamento/<?= $solicitacao_id; ?>" style="width: 100px;">Finalizar Orçamento</a></div>      
+        <a style="width: 200px;" onclick="javascript: return confirm('Deseja realmente FINALIZAR O ORÇAMENTO? Após esta ação não será possível editar o orçamento.');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/finalizarorcamento/<?= $solicitacao_id; ?>" style="width: 100px;">Finalizar Orçamento</a>
+    </div>      
+    <div class="bt_link">
+        <a href="#">Faturar</a>
+    </div>      
     <fieldset >
         <legend>Fazer Orçamento</legend>
         <div>
@@ -42,7 +46,7 @@
                                     echo 'selected';
                                 endif;
                                 ?>
-                                        ><?= $value->codigo ?> - <?= $value->nome ?></option>
+                                        ><?= $value->codigo ?> - <?= $value->nome ?> - <?= $value->convenio ?></option>
                                     <? } ?>
                         </select>
                     </div>

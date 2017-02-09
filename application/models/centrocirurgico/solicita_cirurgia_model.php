@@ -246,9 +246,12 @@ class solicita_cirurgia_model extends BaseModel {
 
     function listarsolicitacaosprocedimentos($solicitacao_id) {
         $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id,
+                           c.nome as convenio,
                            pt.nome');
         $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = scp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('scp.ativo', 'true');
         $this->db->where('scp.solicitacao_cirurgia_id', $solicitacao_id);
         $return = $this->db->get();
@@ -342,11 +345,15 @@ class solicita_cirurgia_model extends BaseModel {
 
     function listarprocedimentoscirurgia($solicitacao_id) {
         $this->db->select('pt.nome,
-                           pt.procedimento_tuss_id,
+                           pc.procedimento_tuss_id,
+                           c.nome as convenio,
                            pt.codigo');
         $this->db->from('tb_solicitacao_cirurgia_procedimento cp');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = cp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = cp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->where('cp.ativo', 'true');
 
         $return = $this->db->get();
         return $return->result();
@@ -416,6 +423,14 @@ class solicita_cirurgia_model extends BaseModel {
 //            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
             $this->db->set('medico_agendado', $_POST['medicoagenda']);
             $this->db->set('convenio', $_POST['convenio']);
+            
+            if(isset($_POST['orcamento'])){
+                $this->db->set('orcamento', 'true');
+            }
+            else{
+                $this->db->set('orcamento', 'false');
+//                $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
+            }
 
             if ($_POST['solicitacao_cirurgia_id'] == "0" || $_POST['solicitacao_cirurgia_id'] == "") {// insert
                 $this->db->set('data_cadastro', $horario);

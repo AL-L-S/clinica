@@ -30,15 +30,15 @@
                 <div>
                     <label>Sala Agendada</label>                      
                     <select name="salaagendada" id="salaagendada" required>
-                        <option>Selecione</option>
+                        <option value="">Selecione</option>
                         <? foreach ($salas as $item) { ?>
                             <option value="<?= $item->exame_sala_id ?>"><? echo $item->nome; ?></option>    
                         <? } ?>                    
                     </select>
                 </div>
                 <div>
-                    <label>Data/hora Prevista ex.( 20/01/2017 14:30:00)</label>
-                    <input type="text" id="dataprevista" class="texto08" name="dataprevista" alt="39/19/9999 24:59:59" />
+                    <label>Data/hora Prevista ex.( 20/01/2017 14:30)</label>
+                    <input type="text" id="dataprevista" class="texto08" name="dataprevista" alt="39/19/9999 24:59" />
                 </div>
             </fieldset>   
             <button type="submit">Enviar</button>

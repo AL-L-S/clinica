@@ -16,19 +16,13 @@
                         <label>Procedimento</label>
                     </dt>
                     <dd>
-                        <select name="procedimento" id="procedimento" class="texto03">
+                        <select name="procedimento" id="procedimento" class="texto03" required>
                             <option value="">SELECIONE</option>
                             <? foreach ($procedimentos as $value) { ?>
-                                <option value="<?= $value->procedimento_tuss_id ?>"><?= $value->nome ?></option>
+                                <option value="<?= $value->procedimento_convenio_id ?>"><?= $value->procedimento ?> - <?= $value->convenio ?></option>
                             <? } ?>                            
                         </select>
                     </dd>
-                    <!--                    <dt>
-                                            <label>Ajuste (%)</label>
-                                        </dt>
-                                        <dd>
-                                            <input type="text" name="ajuste" class="texto03"  value="<?= $financeiro_grupo[0]->ajuste; ?>"/>
-                                        </dd>-->
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
@@ -44,6 +38,7 @@
                     <thead>
                         <tr>
                             <th class="tabela_header">Nome</th>
+                            <th class="tabela_header">Convenio</th>
                             <th class="tabela_header" width="70px;" colspan="2"><center>Detalhes</center></th>
                     </tr>
                     </thead>
@@ -55,6 +50,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Forma?');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirprocedimentoagrupador/<?= $item->procedimento_agrupado_id ?>/<?= $item->agrupador_id?>">Excluir</a>
                                 </td>
