@@ -143,9 +143,9 @@
                                 <td>Faturado&nbsp;</td>
                             <? }
                             ?>
-                            <td width="40px;">
-                                <div class="bt_link" style="width: 60pt">
-                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturarguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
+                            <td width="110px;">
+                                <div class="bt_link" style="width: 100pt">
+                                    <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturarguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
                                         Faturar guia
                                     </a>
                                 </div>
