@@ -220,7 +220,13 @@ class contaspagar_model extends Model {
             $this->db->where('c.descricao', $_POST['classe']);
             $return = $this->db->get();
             $result = $return->result();
-            $tipo = $result[0]->descricao;
+            if(count($result) > 0){
+             $tipo = $result[0]->descricao;   
+            }else {
+                $tipo = '';
+            }
+           
+            
 //            var_dump($tipo); die;
 
             /* inicia o mapeamento no banco */
