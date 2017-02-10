@@ -1,14 +1,23 @@
-<script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>
+<!--<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
+<link href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
+<!--<script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
 <script type="text/javascript">
-/* Máscaras ER */
-function mascara(data){
-   if(data.value.length == 2)
-      data.value = data.value + '/'; //quando o campo já tiver 3 caracteres (um parênteses e 2 números) o script irá inserir mais um parênteses, fechando assim o código de área.
- 
- if(data.value.length == 5)
-     data.value = data.value + '/'; //quando o campo já tiver 8 caracteres, o script irá inserir um tracinho, para melhor visualização do telefone.
-  
-}
+
+    $(function () {
+        $("#data").datepicker({
+            autosize: true,
+            changeYear: true,
+            maxDate: "<?= date("d/m/Y");?>",
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
+
 </script>
 <body bgcolor="#C0C0C0">
     <div class="content"> <!-- Inicio da DIV content -->
@@ -22,7 +31,7 @@ function mascara(data){
                             <label>Data</label>
                         </dt>
                         <dd>
-                            <input type="text" name="data" id="data" maxlength="10" onkeypress="mascara(this)" class="texto00"/>
+                            <input type="text" name="data" id="data" alt="date" required/>
                             <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" class="texto01" value="<?= $agenda_exames_id; ?>"/>
                         </dd>
                     </dl>    

@@ -409,10 +409,6 @@ class Exametemp extends BaseController {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopaciente");
-        } elseif (trim($_POST['txtNomeid']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
         } elseif (trim($_POST['telefone']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
             $this->session->set_flashdata('message', $data['mensagem']);

@@ -776,6 +776,7 @@ class Guia extends BaseController {
                     $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id);
                 }
             }
+//            die;
 //        $this->novo($paciente_id, $ambulatorio_guia);
             redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
         }
@@ -1060,14 +1061,24 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+//        echo "<pre>";
+//        var_dump($data['exames']);die('morreu');
 
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
+//            echo 'oi';
+//            var_dump($teste);
+//            die;
             if (empty($teste)) {
+//                var_dump($teste);
                 $data['x'] ++;
             }
         }
+//        echo "<hr>";
+//        var_dump($data['x']);
+//        die;
+        
 
         $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
@@ -1094,7 +1105,16 @@ class Guia extends BaseController {
     }
 
     function gravaralterardata($agenda_exames_id) {
-        $this->guia->gravaralterardata($agenda_exames_id);
+        $data_escolhida = date("Y-m-d", strtotime( str_replace("/", "-", $_POST['data']) ) );
+        $hoje = date("Y-m-d");
+        
+        if($hoje <= $data_escolhida){
+            $data['mensagem'] = 'A data não pode ser maior que a de hoje.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+        }
+        else{
+            $this->guia->gravaralterardata($agenda_exames_id);
+        }
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 

@@ -107,18 +107,26 @@
                             <td ><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');"><?= substr($item->procedimento, 0, 16) . " ". $item->numero_sessao; ?></a></td>
                             <td ><div style="margin-left:8pt;"><?= $item->nome; ?></div></td>
                             <td ><?= $item->codigo; ?></td>
-                            <td ><?= substr($item->medico, 0, 10); ?></td>
+                            <td >
+                                <? if( count($item->medico) > 0){ ?>
+                                    <a style="text-decoration: none; color: black;" title="<? echo $item->medico; ?>" href="#"><font color="c60000"><? echo substr($item->medico, 0, 10); ?>(...)</a>
+                                <? } 
+                                else{
+                                     echo $item->medico;
+                                }
+?>
+                            </td>
                             <td ><?= substr($item->data_criacao, 8, 2) . "/" . substr($item->data_criacao, 5, 2) . "/" . substr($item->data_criacao, 0, 4); ?></td>
                             <? if ($item->faturado == "t") { ?>
                                 <td>
-                                    <a style="text-decoration: none; color: black;" title="<? echo $item->paciente; ?>" href="#"><font color="green"><? echo substr($item->paciente, 0, 10); ?>(...)</a>
+                                    <font color="green"><? echo $item->paciente;?>
                                     
                                 </td>
                                 <?
                             } else {
                                 ?>
                                 <td>
-                                    <a style="text-decoration: none; color: black;" title="<? echo $item->paciente; ?>" href="#"><font color="c60000"><? echo substr($item->paciente, 0, 10); ?>(...)</a>
+                                    <font color="c60000"><? echo $item->paciente;?>
                                   
                                 </td>
                             <? } ?>
@@ -143,9 +151,9 @@
                                 <td>Faturado&nbsp;</td>
                             <? }
                             ?>
-                            <td width="40px;">
-                                <div class="bt_link" style="width: 60pt">
-                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturarguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
+                            <td width="110px;">
+                                <div class="bt_link" style="width: 100pt">
+                                    <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturarguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
                                         Faturar guia
                                     </a>
                                 </div>

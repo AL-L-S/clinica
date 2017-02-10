@@ -15,7 +15,7 @@
             </div>
             <div>
                 <label>Dt de nascimento</label>
-                <input type="text" name="nascimento" id="nascimento" class="texto02"/>                
+                <input type="text" name="nascimento" id="nascimento" class="texto02" onblur="calculoIdade();"/>                
             </div>
             <div>
                 <label>Idade</label>

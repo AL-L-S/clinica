@@ -5924,7 +5924,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('valor', $_POST['valor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
-            $this->db->set('percentual_medico', $valor_percentual);
+//            $this->db->set('percentual_medico', $valor_percentual);
             $this->db->set('quantidade', $_POST['qtde1']);
             $this->db->set('autorizacao', $_POST['autorizacao1']);
 //            $this->db->set('observacoes', $_POST['observacao']);
@@ -6147,7 +6147,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
             }
-            return $agenda_exames_id;
+//            var_dump($agenda_exames_id);die;
         } catch (Exception $exc) {
             return -1;
         }
@@ -6205,7 +6205,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('valor', $_POST['valor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
-            $this->db->set('percentual_medico', $valor_percentual);
+//            $this->db->set('percentual_medico', $valor_percentual);
             $this->db->set('quantidade', $_POST['qtde1']);
             $this->db->set('autorizacao', $_POST['autorizacao1']);
 //            $this->db->set('observacoes', $_POST['observacao']);
@@ -6281,7 +6281,7 @@ ORDER BY ae.agenda_exames_id)";
                 if ($dinheiro == "t") {
                     if ($index == 1) {
                         $this->db->set('valor', $_POST['valor1']);
-                        $this->db->set('percentual_medico', $valor_percentual);
+//                        $this->db->set('percentual_medico', $valor_percentual);
                         $this->db->set('valor_total', $_POST['valor1']);
                         $this->db->set('confirmado', 't');
                     } else {

@@ -118,10 +118,10 @@
                                         <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size2" >
                                             <option value="-1">Selecione</option>
                                             <? foreach ($medicos as $value) : ?>
-                                                <option value="//<?= $value->operador_id; ?>" <?
+                                                <option value="<?= $value->operador_id; ?>" <?
                                                 if ($value->operador_id == $item->medico_consulta_id):echo 'selected';
                                                 endif;
-//                                                ?>><?= $value->nome; ?></option>
+                                                ?>><?= $value->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
                                     </td>

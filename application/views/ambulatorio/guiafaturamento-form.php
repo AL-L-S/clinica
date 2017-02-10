@@ -183,7 +183,7 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">&nbsp;</td>                          
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><div class="bt_link_new">
-                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterardata/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">Alterar Data
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterardata/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=450');">Alterar Data
                                         </a>
                                     </div></td>
                             </tr>
