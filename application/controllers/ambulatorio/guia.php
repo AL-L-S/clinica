@@ -776,6 +776,7 @@ class Guia extends BaseController {
                     $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id);
                 }
             }
+//            die;
 //        $this->novo($paciente_id, $ambulatorio_guia);
             redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
         }
@@ -1060,14 +1061,24 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+//        echo "<pre>";
+//        var_dump($data['exames']);die('morreu');
 
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
+//            echo 'oi';
+//            var_dump($teste);
+//            die;
             if (empty($teste)) {
+//                var_dump($teste);
                 $data['x'] ++;
             }
         }
+//        echo "<hr>";
+//        var_dump($data['x']);
+//        die;
+        
 
         $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;

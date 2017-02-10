@@ -11,6 +11,7 @@
     </div>
     <div >
         <?
+//        die;
         $sala = "";
         $ordenador1 = "";
         $sala_id = "";
@@ -165,6 +166,9 @@
                 if ($contador > 0) {
                     foreach ($grupo_pagamento as $grupo) { //buscar exames com forma de pagamento pre-definida (inicio)
                         $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id, $grupo->financeiro_grupo_id);
+                        
+//                        var_dump($exame);
+//                            die;
                         if ($exame != 0) {
                             ?>
                             <table id="table_agente_toxico" border="0">
@@ -260,8 +264,8 @@
 
                                 $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
                                 if (empty($teste)) {
-                                    $exames_sem_formapagamento = $this->exametemp->listarprocedimentosemformapagamento($ambulatorio_guia_id, $value->procedimento_tuss_id);
-
+//                                    die;
+                                    $exames_sem_formapagamento = $this->exametemp->listarprocedimentosemformapagamentogeral($ambulatorio_guia_id, $value->procedimento_tuss_id);
                                     foreach ($exames_sem_formapagamento as $item) {
 
                                         $estilo_linha = "tabela_content01";
