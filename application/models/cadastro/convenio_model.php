@@ -303,8 +303,8 @@ class Convenio_model extends Model {
                 $this->db->where('ativo', 't');
                 $return = $this->db->get();
                 $result = $return->result();
-                
-                
+
+
                 $this->db->select('pc.*');
                 $this->db->from('tb_procedimento_convenio pc');
                 $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
@@ -315,9 +315,9 @@ class Convenio_model extends Model {
                 $result2 = $return2->result();
 //                echo '<pre>';
 //                var_dump($result2); die;
-                
+
                 foreach ($result2 as $value) {
-                
+
                     $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
                     $this->db->set('convenio_id', $value->convenio_id);
                     $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
@@ -330,23 +330,22 @@ class Convenio_model extends Model {
                     $this->db->set('qtdeuco', $value->qtdeuco);
                     $this->db->set('valoruco', $value->valoruco);
                     $this->db->set('valortotal', $value->valortotal);
-                    if($_POST['ajustech'] != ''){
+                    if ($_POST['ajustech'] != '') {
 //                    echo  $ajustech; die;
-                     $this->db->set('percentual_ch', $_POST['ajustech']);  
-                     
+                        $this->db->set('percentual_ch', $_POST['ajustech']);
                     }
-                    if($_POST['ajustefilme'] != ''){
+                    if ($_POST['ajustefilme'] != '') {
 
-                     $this->db->set('percentual_filme', $_POST['ajustefilme']);   
+                        $this->db->set('percentual_filme', $_POST['ajustefilme']);
                     }
-                    if($_POST['$ajusteporte'] != ''){
-                      $this->db->set('percentual_porte', $_POST['$ajusteporte']);  
+                    if ($_POST['$ajusteporte'] != '') {
+                        $this->db->set('percentual_porte', $_POST['$ajusteporte']);
                     }
-                    if($_POST['$ajusteuco'] != ''){
-                      $this->db->set('percentual_uco', $_POST['$ajusteuco']);  
+                    if ($_POST['$ajusteuco'] != '') {
+                        $this->db->set('percentual_uco', $_POST['$ajusteuco']);
                     }
-                    if($_POST['$ajustetotal'] != ''){
-                      $this->db->set('percentual_total', $_POST['$ajustetotal']);  
+                    if ($_POST['$ajustetotal'] != '') {
+                        $this->db->set('percentual_total', $_POST['$ajustetotal']);
                     }
                     $this->db->set('valortotal', $value->valortotal);
                     $this->db->set('data_cadastro', $data);
@@ -362,43 +361,44 @@ class Convenio_model extends Model {
                 $result2 = $return2->result();
 //                echo '<pre>';
 //                var_dump($result2); die;
-                
-                foreach ($result2 as $value) {
-                
-                    $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
-                    $this->db->set('convenio_id', $value->convenio_id);
-                    $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
-                    $this->db->set('qtdech', $value->qtdech);
-                    $this->db->set('valorch', $value->valorch);
-                    $this->db->set('qtdefilme', $value->qtdefilme);
-                    $this->db->set('valorfilme', $value->valorfilme);
-                    $this->db->set('qtdeporte', $value->qtdeporte);
-                    $this->db->set('valorporte', $value->valorporte);
-                    $this->db->set('qtdeuco', $value->qtdeuco);
-                    $this->db->set('valoruco', $value->valoruco);
-                    $this->db->set('valortotal', $value->valortotal);
-                    if($_POST['ajustech'] != ''){
-//                    echo  $ajustech; die;
-                     $this->db->set('percentual_ch', $_POST['ajustech']);  
-                     
-                    }
-                    if($_POST['ajustefilme'] != ''){
+                if (count($result2) > 0) {
 
-                     $this->db->set('percentual_filme', $_POST['ajustefilme']);   
+                    foreach ($result2 as $value) {
+
+                        $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                        $this->db->set('convenio_id', $value->convenio_id);
+                        $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                        $this->db->set('qtdech', $value->qtdech);
+                        $this->db->set('valorch', $value->valorch);
+                        $this->db->set('qtdefilme', $value->qtdefilme);
+                        $this->db->set('valorfilme', $value->valorfilme);
+                        $this->db->set('qtdeporte', $value->qtdeporte);
+                        $this->db->set('valorporte', $value->valorporte);
+                        $this->db->set('qtdeuco', $value->qtdeuco);
+                        $this->db->set('valoruco', $value->valoruco);
+                        $this->db->set('valortotal', $value->valortotal);
+                        if ($_POST['ajustech'] != '') {
+//                    echo  $ajustech; die;
+                            $this->db->set('percentual_ch', $_POST['ajustech']);
+                        }
+                        if ($_POST['ajustefilme'] != '') {
+
+                            $this->db->set('percentual_filme', $_POST['ajustefilme']);
+                        }
+                        if ($_POST['ajusteporte'] != '') {
+                            $this->db->set('percentual_porte', $_POST['$ajusteporte']);
+                        }
+                        if ($_POST['ajusteuco'] != '') {
+                            $this->db->set('percentual_uco', $_POST['ajusteuco']);
+                        }
+                        if ($_POST['ajustetotal'] != '') {
+                            $this->db->set('percentual_total', $_POST['ajustetotal']);
+                        }
+                        $this->db->set('valortotal', $value->valortotal);
+                        $this->db->set('data_cadastro', $data);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimento_convenio_antigo');
                     }
-                    if($_POST['ajusteporte'] != ''){
-                      $this->db->set('percentual_porte', $_POST['$ajusteporte']);  
-                    }
-                    if($_POST['ajusteuco'] != ''){
-                      $this->db->set('percentual_uco', $_POST['ajusteuco']);  
-                    }
-                    if($_POST['ajustetotal'] != ''){
-                      $this->db->set('percentual_total', $_POST['ajustetotal']);  
-                    }
-                    $this->db->set('valortotal', $value->valortotal);
-                    $this->db->set('data_cadastro', $data);
-                    $this->db->set('operador_cadastro', $operador_id);
-                    $this->db->insert('tb_procedimento_convenio_antigo');
                 }
             }
 
