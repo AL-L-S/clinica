@@ -68,27 +68,27 @@
 
                 <input type="text" name="rg"  id="txtDocumento" class="texto04" maxlength="20" value="<?= @$obj->_documento; ?>" />
             </div>
-<!--            <div>
-                <label>UF Expedidor</label>
-
-
-                <input type="text" id="txtuf_rg" class="texto02" name="uf_rg" maxlength="20" value="<?= @$obj->_uf_rg; ?>"/>
-            </div>
-            <div>
-                <div>
-                    <label>Data Emiss&atilde;o</label>
-
-
-                    <input type="text" name="data_emissao" id="txtDataEmissao" class="texto02" alt="date" value="<?php echo substr(@$obj->_data_emissao, 8, 2) . '/' . substr(@$obj->_data_emissao, 5, 2) . '/' . substr(@$obj->_data_emissao, 0, 4); ?>" />
-                </div>
-
-                <div>
-
-                    <label>T. Eleitor</label>
-
-
-                    <input type="text"   name="titulo_eleitor" id="txtTituloEleitor" class="texto02" value="<?= @$obj->_titulo_eleitor; ?>" />
-                </div>-->
+            <!--            <div>
+                            <label>UF Expedidor</label>
+            
+            
+                            <input type="text" id="txtuf_rg" class="texto02" name="uf_rg" maxlength="20" value="<?= @$obj->_uf_rg; ?>"/>
+                        </div>
+                        <div>
+                            <div>
+                                <label>Data Emiss&atilde;o</label>
+            
+            
+                                <input type="text" name="data_emissao" id="txtDataEmissao" class="texto02" alt="date" value="<?php echo substr(@$obj->_data_emissao, 8, 2) . '/' . substr(@$obj->_data_emissao, 5, 2) . '/' . substr(@$obj->_data_emissao, 0, 4); ?>" />
+                            </div>
+            
+                            <div>
+            
+                                <label>T. Eleitor</label>
+            
+            
+                                <input type="text"   name="titulo_eleitor" id="txtTituloEleitor" class="texto02" value="<?= @$obj->_titulo_eleitor; ?>" />
+                            </div>-->
 
 
 
@@ -166,7 +166,7 @@
             </div>
             <div>
                 <label>Telefone 2</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" value="<?= @$obj->_celular; ?>" />
+                <input type="text" id="txtCelular" class="texto02" name="celular" alt="(99) 99999-9999" value="<?= @$obj->_celular; ?>" />
             </div>
             <div>
                 <label>Indicacao</label>
@@ -345,111 +345,124 @@
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-
-
-            $(document).ready(function () {
-                jQuery('#form_paciente').validate({
-                    rules: {
-                        nome: {
-                            required: true,
-                            minlength: 3
-                        },
-                        sexo: {
-                            required: true
-                        },
-                        telefone: {
-                            required: true
-                        },
-                        nascimento: {
-                            required: true
-                        }
-
+            
+//(99) 9999-9999
+        $(document).ready(function () {
+           
+//            $(function () {
+//                $('#txtTelefone').keypress(function () {
+//                    
+//                    if(this.value.length > 13){
+//                        $(this).attr('alt', '(99) 99999-9999');
+//                    }
+//                    else{
+//                        $(this).attr('alt', '(99) 99999-9999');
+//                    }
+//                });
+//            });
+            
+            jQuery('#form_paciente').validate({
+                rules: {
+                    nome: {
+                        required: true,
+                        minlength: 3
                     },
-                    messages: {
-                        nome: {
-                            required: "*",
-                            minlength: "*"
-                        },
-                        sexo: {
-                            required: "*"
-                        },
-                        telefone: {
-                            required: "*"
-                        },
-                        nascimento: {
-                            required: "*"
-                        }
+                    sexo: {
+                        required: true
+                    },
+                    telefone: {
+                        required: true
+                    },
+                    nascimento: {
+                        required: true
                     }
-                });
-            });
 
-            $(function () {
-                $("#txtcbo").autocomplete({
-                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
-                    minLength: 3,
-                    focus: function (event, ui) {
-                        $("#txtcbo").val(ui.item.label);
-                        return false;
+                },
+                messages: {
+                    nome: {
+                        required: "*",
+                        minlength: "*"
                     },
-                    select: function (event, ui) {
-                        $("#txtcbo").val(ui.item.value);
-                        $("#txtcboID").val(ui.item.id);
-                        return false;
+                    sexo: {
+                        required: "*"
+                    },
+                    telefone: {
+                        required: "*"
+                    },
+                    nascimento: {
+                        required: "*"
                     }
-                });
+                }
             });
+        });
 
-            $(function () {
-                $("#txtCidade").autocomplete({
-                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
-                    minLength: 3,
-                    focus: function (event, ui) {
-                        $("#txtCidade").val(ui.item.label);
-                        return false;
-                    },
-                    select: function (event, ui) {
-                        $("#txtCidade").val(ui.item.value);
-                        $("#txtCidadeID").val(ui.item.id);
-                        return false;
-                    }
-                });
+        $(function () {
+            $("#txtcbo").autocomplete({
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
+                minLength: 3,
+                focus: function (event, ui) {
+                    $("#txtcbo").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#txtcbo").val(ui.item.value);
+                    $("#txtcboID").val(ui.item.id);
+                    return false;
+                }
             });
-            $(function () {
-                $("#txtEstado").autocomplete({
-                    source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
-                    minLength: 2,
-                    focus: function (event, ui) {
-                        $("#txtEstado").val(ui.item.label);
-                        return false;
-                    },
-                    select: function (event, ui) {
-                        $("#txtEstado").val(ui.item.value);
-                        $("#txtEstadoID").val(ui.item.id);
-                        return false;
-                    }
-                });
+        });
+
+        $(function () {
+            $("#txtCidade").autocomplete({
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
+                minLength: 3,
+                focus: function (event, ui) {
+                    $("#txtCidade").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#txtCidade").val(ui.item.value);
+                    $("#txtCidadeID").val(ui.item.id);
+                    return false;
+                }
             });
+        });
+        $(function () {
+            $("#txtEstado").autocomplete({
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
+                minLength: 2,
+                focus: function (event, ui) {
+                    $("#txtEstado").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#txtEstado").val(ui.item.value);
+                    $("#txtEstadoID").val(ui.item.id);
+                    return false;
+                }
+            });
+        });
 
 
 
-            $(function () {
-                $("#cep").autocomplete({
-                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cep",
-                    minLength: 3,
-                    focus: function (event, ui) {
-                        $("#cep").val(ui.item.label);
-                        return false;
-                    },
-                    select: function (event, ui) {
-                        $("#cep").val(ui.item.cep);
-                        $("#txtendereco").val(ui.item.logradouro_nome);
-                        $("#txtBairro").val(ui.item.nome_bairro);
+        $(function () {
+            $("#cep").autocomplete({
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=cep",
+                minLength: 3,
+                focus: function (event, ui) {
+                    $("#cep").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#cep").val(ui.item.cep);
+                    $("#txtendereco").val(ui.item.logradouro_nome);
+                    $("#txtBairro").val(ui.item.nome_bairro);
 //                        $("#txtCidade").val(ui.item.localidade_nome);
-                        $("#txtTipoLogradouro").val(ui.item.tipo_logradouro);
+                    $("#txtTipoLogradouro").val(ui.item.tipo_logradouro);
 
-                        return false;
-                    }
-                });
+                    return false;
+                }
             });
+        });
 
 </script>

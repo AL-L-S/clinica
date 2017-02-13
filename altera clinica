@@ -1405,4 +1405,7 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_medico numeric(10,2);
 ALTER TABLE ponto.tb_agenda_exames drop COLUMN valor_medico;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_medico boolean;
 
+-- Dia 13/02/2017
+ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto_laudo TYPE character varying(40000);
+ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto_revisor TYPE character varying(40000);
 

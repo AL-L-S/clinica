@@ -1,3 +1,4 @@
+<?$empresa_logada = $this->session->userdata('empresa_id');?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteencaixegeral" method="post">
@@ -27,6 +28,21 @@
                         <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
                     <? endforeach; ?>
                 </select>
+            </div>
+            <div>
+                <label>Empresa</label>
+                <select name="empresa" id="empresa" class="size1">
+                    <?
+                    foreach ($empresas as $value) :
+                        ?>
+                        <option value="<?= $value->empresa_id; ?>" <?
+                        if ($empresa_logada == $value->empresa_id) {
+                            echo 'selected';
+                        }
+                        ?>><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                </select>
+
             </div>
             <div>
                 <label>Horarios</label>

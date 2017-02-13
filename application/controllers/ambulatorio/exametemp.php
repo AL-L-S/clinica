@@ -66,6 +66,7 @@ class Exametemp extends BaseController {
     function novopacienteconsultaencaixe() {
         $data['idade'] = 0;
         $data['medico'] = $this->exametemp->listarmedicoconsulta();
+        $data['empresas'] = $this->exame->listarempresas();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $this->loadView('ambulatorio/pacientetempconsultaencaixe-form', $data);
     }
@@ -80,6 +81,7 @@ class Exametemp extends BaseController {
 
     function novopacienteencaixegeral() {
         $data['idade'] = 0;
+        $data['empresas'] = $this->exame->listarempresas();
         $data['salas'] = $this->exame->listartodassalas();
         $data['medico'] = $this->exametemp->listarmedicoconsulta();
         $this->loadView('ambulatorio/pacientetempencaixegeral-form', $data);
@@ -198,6 +200,7 @@ class Exametemp extends BaseController {
         $obj_paciente = new paciente_model($pacientetemp_id);
         $data['obj'] = $obj_paciente;
         $data['medico'] = $this->exametemp->listarmedicoconsulta();
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['contador'] = $this->exametemp->contadorconsultapaciente($pacientetemp_id);
         $data['exames'] = $this->exametemp->listaragendatotalpacienteconsulta($pacientetemp_id);
         $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($pacientetemp_id);
@@ -305,42 +308,42 @@ class Exametemp extends BaseController {
 
     function excluir($agenda_exames_id, $ambulatorio_pacientetemp_id) {
         $this->exametemp->excluir($agenda_exames_id);
-        $this->carregarexametemp($ambulatorio_pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarexametemp/$ambulatorio_pacientetemp_id");
     }
 
     function excluirexametemp($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametemp($agenda_exames_id);
-        $this->carregarpacientetemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
     }
 
     function excluirconsultatempgeral($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametemp($agenda_exames_id);
-        $this->carregarpacientetempgeral($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
     }
 
     function excluirconsultatemp($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametemp($agenda_exames_id);
-        $this->carregarpacienteconsultatemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
     
     function excluirconsultatempencaixe($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
-        $this->carregarpacienteconsultatemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
     
     function excluirexametempencaixe($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
-        $this->carregarpacientetemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
     }
     
     function excluirfisioterapiatempencaixe($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
-        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
     }
 
     function excluirfisioterapiatemp($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametemp($agenda_exames_id);
-        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
     }
 
     function gravar() {
@@ -377,7 +380,7 @@ class Exametemp extends BaseController {
     function gravartemp() {
         $ambulatorio_pacientetemp_id = $_POST['txtpaciente_id'];
         $this->exametemp->gravarexames($ambulatorio_pacientetemp_id);
-        $this->carregarexametemp($ambulatorio_pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarexametemp/$ambulatorio_pacientetemp_id");
     }
 
     function gravarpacienteexametemp($agenda_exames_id) {
@@ -455,7 +458,7 @@ class Exametemp extends BaseController {
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
             $paciente_id = $this->exametemp->gravarpacienteconsultas($agenda_exames_id);
             if ($paciente_id != 0) {
-                $this->carregarpacienteconsultatemp($paciente_id);
+                redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$paciente_id");
             } else {
                 $data['mensagem'] = 'Erro ao marcar consulta o horario esta oculpado.';
                 $this->session->set_flashdata('message', $data['mensagem']);
@@ -535,39 +538,39 @@ class Exametemp extends BaseController {
                     }
                 }
 
-                $this->carregarpacientefisioterapiatemp($paciente_id);
+                redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$paciente_id");
             } else {
                 $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
-                $this->carregarpacientefisioterapiatemp($paciente_id);
+                redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$paciente_id");
             }
         }
     }
 
     function reservarexametemp($agenda_exames_id, $paciente_id, $agenda_exames_nome_id, $data) {
         $paciente_id = $this->exametemp->reservarexametemp($agenda_exames_id, $paciente_id, $agenda_exames_nome_id, $data);
-        $this->carregarpacientetemp($paciente_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$paciente_id");
     }
 
     function reservartempgeral($agenda_exames_id, $paciente_id, $agenda_exames_nome_id, $data) {
         $paciente_id = $this->exametemp->reservarexametemp($agenda_exames_id, $paciente_id, $agenda_exames_nome_id, $data);
-        $this->carregarpacientetempgeral($paciente_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$paciente_id");
     }
 
     function reservarconsultatemp($agenda_exames_id, $paciente_id, $medico_consulta_id, $data) {
         $paciente_id = $this->exametemp->reservarconsultatemp($agenda_exames_id, $paciente_id, $medico_consulta_id, $data);
-        $this->carregarpacienteconsultatemp($paciente_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$paciente_id");
     }
 
     function reservarfisioterapiatemp($agenda_exames_id, $paciente_id, $medico_consulta_id, $data) {
         $paciente_id = $this->exametemp->reservarfisioterapiatemp($agenda_exames_id, $paciente_id, $medico_consulta_id, $data);
-        $this->carregarpacientefisioterapiatemp($paciente_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$paciente_id");
     }
 
     function gravarpacientetemp() {
 
         $pacientetemp_id = $_POST['txtpaciente_id'];
         $this->exametemp->gravarexames($pacientetemp_id);
-        $this->carregarpacientetemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
     }
 
     function gravarpacientetempgeral() {
@@ -608,7 +611,7 @@ class Exametemp extends BaseController {
             $agenda_exames_id = $_POST['horarios'];
             $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id);
             if ($paciente_id != 0) {
-                $this->carregarpacientetemp($paciente_id);
+                redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$paciente_id");
             } else {
                 $data['mensagem'] = 'Erro ao marcar exame o horario esta oculpado.';
                 $this->session->set_flashdata('message', $data['mensagem']);
@@ -625,7 +628,7 @@ class Exametemp extends BaseController {
         } else {
             $pacientetemp_id = $this->paciente->gravarpacientetemp();
             $this->exametemp->gravarconsultas($pacientetemp_id);
-            $this->carregarpacienteconsultatemp($pacientetemp_id);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
         }
     }
 
@@ -637,7 +640,7 @@ class Exametemp extends BaseController {
         } else {
             $pacientetemp_id = $this->paciente->gravarpacientetemp();
             $this->exametemp->gravarfisioterapia($pacientetemp_id);
-            $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
         }
     }
 
@@ -661,14 +664,14 @@ class Exametemp extends BaseController {
             $pacientetemp_id = $this->exametemp->gravarconsultasencaixe();
 
 //            enviar email
-            $texto = "Consulta agendada para o dia " . $_POST['data_ficha'] . ", com início às " . $_POST['horarios'] . ".";
-            $email = $this->laudo->email($pacientetemp_id);
-            if (isset($email)) {
-                $this->email($email, $texto);
-            }
+//            $texto = "Consulta agendada para o dia " . $_POST['data_ficha'] . ", com início às " . $_POST['horarios'] . ".";
+//            $email = $this->laudo->email($pacientetemp_id);
+//            if (isset($email)) {
+//                $this->email($email, $texto);
+//            }
 //            fim enviar email
 
-            $this->carregarpacienteconsultatemp($pacientetemp_id);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
         }
     }
 
@@ -764,7 +767,7 @@ class Exametemp extends BaseController {
     function gravapacienteconsultaencaixe() {
         $pacientetemp_id = $_POST['txtpaciente_id'];
         $this->exametemp->gravaconsultasencaixe($pacientetemp_id);
-        $this->carregarpacienteconsultatemp($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
 
     private

@@ -1,3 +1,4 @@
+<?$empresa_logada = $this->session->userdata('empresa_id');?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteconsultaencaixe" method="post">
@@ -19,7 +20,21 @@
                     <? endforeach; ?>
                 </select>
             </div>
+            <div>
+                <label>Empresa</label>
+                <select name="empresa" id="empresa" class="size1">
+                    <?
+                    foreach ($empresas as $value) :
+                        ?>
+                        <option value="<?= $value->empresa_id; ?>" <?
+                        if ($empresa_logada == $value->empresa_id) {
+                            echo 'selected';
+                        }
+                        ?>><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                </select>
 
+            </div>
             <div>
                 <label>Horarios</label>
                 <input type="text" id="horarios" alt="time" class="size1" name="horarios" />
@@ -28,6 +43,7 @@
                 <label>Observa&ccedil;&otilde;es</label>
                 <input type="text" id="observacoes" class="size3" name="observacoes" />
             </div>
+            
 
 
         </fieldset>
@@ -91,90 +107,90 @@
 <script type="text/javascript">
 
 
-                    $(function () {
-                        $("#data_ficha").datepicker({
-                            autosize: true,
-                            changeYear: true,
-                            changeMonth: true,
-                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                            dateFormat: 'dd/mm/yy'
-                        });
-                    });
+    $(function () {
+        $("#data_ficha").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
 
-                    $(function () {
-                        $("#txtNome").autocomplete({
-                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                            minLength: 3,
-                            focus: function (event, ui) {
-                                $("#txtNome").val(ui.item.label);
-                                return false;
-                            },
-                            select: function (event, ui) {
-                                $("#txtNome").val(ui.item.value);
-                                $("#txtNomeid").val(ui.item.id);
-                                $("#txtTelefone").val(ui.item.itens);
-                                $("#txtCelular").val(ui.item.celular);
-                                $("#nascimento").val(ui.item.valor);
-                                $("#txtEnd").val(ui.item.endereco);
-                                return false;
-                            }
-                        });
-                    });
-
-
-                    $(function () {
-                        $('#convenio').change(function () {
-                            if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                    options = '<option value=""></option>';
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                    }
-                                    $('#procedimento').html(options).show();
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#procedimento').html('<option value="">Selecione</option>');
-                            }
-                        });
-                    });
-
-                    $(function () {
-                        $("#accordion").accordion();
-                    });
+    $(function () {
+        $("#txtNome").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#txtNome").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtNome").val(ui.item.value);
+                $("#txtNomeid").val(ui.item.id);
+                $("#txtTelefone").val(ui.item.itens);
+                $("#txtCelular").val(ui.item.celular);
+                $("#nascimento").val(ui.item.valor);
+                $("#txtEnd").val(ui.item.endereco);
+                return false;
+            }
+        });
+    });
 
 
-                    $(document).ready(function () {
-                        jQuery('#form_exametemp').validate({
-                            rules: {
-                                data_ficha: {
-                                    required: true
-                                },
-                                horarios: {
-                                    required: true,
-                                    minlength: 5
-                                }
-                            },
-                            messages: {
-                                data_ficha: {
-                                    required: "*"
-                                },
-                                horarios: {
-                                    required: "*",
-                                    minlength: "!"
-                                }
-                            }
-                        });
-                    });
-                    
-                    jQuery("#txtTelefone").mask("(99) 9999-9999");
-                    jQuery("#txtCelular").mask("(99) 99999-9999");
-                    jQuery("#nascimento").mask("99/99/9999");
-                    jQuery("#horarios").mask("99:99");
-                    
+    $(function () {
+        $('#convenio').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    }
+                    $('#procedimento').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#procedimento').html('<option value="">Selecione</option>');
+            }
+        });
+    });
+
+    $(function () {
+        $("#accordion").accordion();
+    });
+
+
+    $(document).ready(function () {
+        jQuery('#form_exametemp').validate({
+            rules: {
+                data_ficha: {
+                    required: true
+                },
+                horarios: {
+                    required: true,
+                    minlength: 5
+                }
+            },
+            messages: {
+                data_ficha: {
+                    required: "*"
+                },
+                horarios: {
+                    required: "*",
+                    minlength: "!"
+                }
+            }
+        });
+    });
+
+    jQuery("#txtTelefone").mask("(99) 9999-9999");
+    jQuery("#txtCelular").mask("(99) 99999-9999");
+    jQuery("#nascimento").mask("99/99/9999");
+    jQuery("#horarios").mask("99:99");
+
 
 
 </script>

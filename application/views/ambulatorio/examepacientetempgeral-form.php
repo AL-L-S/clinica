@@ -13,7 +13,7 @@
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>"/>
+                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" onblur="calculoIdade()"/>
             </div>
             <div>
                 <label>Idade</label>
@@ -33,7 +33,7 @@
             </div>
             <div>
                 <label>Convenio</label>
-                <input type="text" id="txtCelular" class="texto02" name="convenio" value="<?= @$obj->_descricaoconvenio; ?>" />
+                <input type="text" id="txtCelular" class="texto02" name="convenio" value="<?= @$obj->_descricaoconvenio; ?>" readonly/>
             </div>
         </fieldset>
         <fieldset>
@@ -305,7 +305,9 @@
                         var data = document.getElementById("txtNascimento").value;
                         var ano = data.substring(6, 12);
                         var idade = new Date().getFullYear() - ano;
-                        document.getElementById("idade2").value = idade;
+                        if(idade < 500){
+                            document.getElementById("idade2").value = idade;
+                        }
                     }
                     
                     calculoIdade();

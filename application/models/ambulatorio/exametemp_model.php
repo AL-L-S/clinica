@@ -1303,7 +1303,12 @@ class exametemp_model extends Model {
 
             if ($_POST['horarios'] != "") {
                 $empresa_id = $this->session->userdata('empresa_id');
-                $this->db->set('empresa_id', $empresa_id);
+                if(isset($_POST['empresa']) && $_POST['empresa'] != ''){
+                    $this->db->set('empresa_id', $_POST['empresa']);
+                }
+                else{
+                    $this->db->set('empresa_id', $empresa_id);
+                }
                 $this->db->set('tipo', 'CONSULTA');
                 $this->db->set('medico_consulta_id', $_POST['medico']);
                 $this->db->set('nome', $nome);
@@ -1435,7 +1440,12 @@ class exametemp_model extends Model {
 
 
                 $empresa_id = $this->session->userdata('empresa_id');
-                $this->db->set('empresa_id', $empresa_id);
+//                if(isset($_POST['empresa']) && $_POST['empresa'] != ''){
+//                    $this->db->set('empresa_id', $_POST['empresa']);
+//                }
+//                else{
+                    $this->db->set('empresa_id', $empresa_id);
+//                }
 
                 $tipo = $this->buscartipo($_POST['procedimento1']);
 
@@ -1763,6 +1773,7 @@ class exametemp_model extends Model {
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'CONSULTA');
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 'f');

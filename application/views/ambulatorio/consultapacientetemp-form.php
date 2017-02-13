@@ -75,6 +75,22 @@
                 </select>
             </div>
             <div>
+                <label>Convenio *</label>
+                <select name="convenio" id="convenio" class="size4" required>
+                    <option  value="0">Selecione</option>
+                    <? foreach ($convenio as $value) : ?>
+                        <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label>Procedimento</label>
+                <select  name="procedimento" id="procedimento" class="size1" required>
+                    <option value="">Selecione</option>
+                </select>
+            </div>
+            
+            <div>
                 <label>Obsedrva&ccedil;&otilde;es</label>
                 <input type="text" id="observacoes" class="size3" name="observacoes" />
             </div>
@@ -173,6 +189,23 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+                     $(function () {
+                        $('#convenio').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+                                    $('#procedimento').html(options).show();
+                                    $('.carregando').hide();
+                                });
+                            } else {
+                                $('#procedimento').html('<option value="">Selecione</option>');
+                            }
+                        });
+                    });
 
                     $(function () {
                         $("#data_ficha").datepicker({
