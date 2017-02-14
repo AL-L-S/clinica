@@ -386,7 +386,7 @@ class Convenio_model extends Model {
                             $this->db->set('percentual_filme', $_POST['ajustefilme']);
                         }
                         if ($_POST['ajusteporte'] != '') {
-                            $this->db->set('percentual_porte', $_POST['$ajusteporte']);
+                            $this->db->set('percentual_porte', $_POST['ajusteporte']);
                         }
                         if ($_POST['ajusteuco'] != '') {
                             $this->db->set('percentual_uco', $_POST['ajusteuco']);
