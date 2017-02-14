@@ -357,7 +357,7 @@ class Guia extends BaseController {
             $this->load->View('ambulatorio/impressaofichaexamedez', $data);
         }
 //            
-        if ($data['empresa'][0]->impressao_tipo == 7) {//      CLINICA MED
+        if ($data['empresa'][0]->impressao_tipo == 10) {//      CLINICA MED
             $this->load->View('ambulatorio/impressaofichamed', $data);
         }
 
