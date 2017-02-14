@@ -679,7 +679,7 @@ class Guia extends BaseController {
         $data['paciente_id'] = $paciente_id;
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
-        $this->novo($data);
+        redirect(base_url() . "ambulatorio/guia/novo/$data");
     }
 
     function fecharcaixa() {

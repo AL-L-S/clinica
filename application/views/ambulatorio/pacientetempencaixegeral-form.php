@@ -1,4 +1,4 @@
-<?$empresa_logada = $this->session->userdata('empresa_id');?>
+<? $empresa_logada = $this->session->userdata('empresa_id'); ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteencaixegeral" method="post">
@@ -22,7 +22,7 @@
             </div>
             <div>
                 <label>Medico</label>
-                <select name="medico" id="medico" class="size2">
+                <select name="medico" id="medico" class="size2" required>
                     <option value="" >Selecione</option>
                     <? foreach ($medico as $item) : ?>
                         <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
@@ -60,13 +60,13 @@
                     <option value="">Selecione</option>
                 </select>
             </div>
-<!--            <div>
-                <label>Tipo</label>
-                <select  name="tipo" id="tipo" class="size1" >
-                    <option value="EXAME">Exame</option>
-                    <option value="CONSULTA">Consulta</option>
-                </select>
-            </div>-->
+            <!--            <div>
+                            <label>Tipo</label>
+                            <select  name="tipo" id="tipo" class="size1" >
+                                <option value="EXAME">Exame</option>
+                                <option value="CONSULTA">Consulta</option>
+                            </select>
+                        </div>-->
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
                 <input type="text" id="observacoes" class="size3" name="observacoes" />
@@ -122,84 +122,84 @@
 
 
 
-                    $(function () {
-                        $("#data_ficha").datepicker({
-                            autosize: true,
-                            changeYear: true,
-                            changeMonth: true,
-                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                            dateFormat: 'dd/mm/yy'
-                        });
-                    });
+    $(function () {
+        $("#data_ficha").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
 
-                    $(function () {
-                        $('#medico').change(function () {
-                            if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
-                                    var options = '<option value=""></option>';
-                                    for (var i = 0; i < j.length; i++) {
-                                        options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
-                                    }
-                                    $('#convenio1').html(options).show();
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#convenio1').html('<option value="">-- Escolha um hora --</option>');
-                            }
-                        });
-                    });
+    $(function () {
+        $('#medico').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
+                    var options = '<option value=""></option>';
+                    for (var i = 0; i < j.length; i++) {
+                        options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
+                    }
+                    $('#convenio1').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#convenio1').html('<option value="">-- Escolha um hora --</option>');
+            }
+        });
+    });
 
-                    $(function () {
-                        $('#convenio1').change(function () {
+    $(function () {
+        $('#convenio1').change(function () {
 //                            alert('entrou');
-                            if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#medico").val()}, function (j) {
-                                    options = '<option value=""></option>';
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                    }
-                                    $('#procedimento1').html(options).show();
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#procedimento1').html('<option value="">Selecione</option>');
-                            }
-                        });
-                    });
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#medico").val()}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    }
+                    $('#procedimento1').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#procedimento1').html('<option value="">Selecione</option>');
+            }
+        });
+    });
 
-                    $(function () {
-                        $("#txtNome").autocomplete({
-                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                            minLength: 3,
-                            focus: function (event, ui) {
-                                $("#txtNome").val(ui.item.label);
-                                return false;
-                            },
-                            select: function (event, ui) {
-                                $("#txtNome").val(ui.item.value);
-                                $("#txtNomeid").val(ui.item.id);
-                                $("#telefone").val(ui.item.itens);
-                                $("#nascimento").val(ui.item.valor);
-                                $("#txtEnd").val(ui.item.endereco);
-                                return false;
-                            }
-                        });
-                    });
+    $(function () {
+        $("#txtNome").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#txtNome").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtNome").val(ui.item.value);
+                $("#txtNomeid").val(ui.item.id);
+                $("#telefone").val(ui.item.itens);
+                $("#nascimento").val(ui.item.valor);
+                $("#txtEnd").val(ui.item.endereco);
+                return false;
+            }
+        });
+    });
 
 
-                    $(function () {
-                        $("#accordion").accordion();
-                    });
-                  
-                    
+    $(function () {
+        $("#accordion").accordion();
+    });
 
-                    jQuery("#telefone").mask("(99) 9999-9999");
-                    jQuery("#txtCelular").mask("(99) 99999-9999");
-                    jQuery("#nascimento").mask("99/99/9999");
-                    jQuery("#horarios").mask("99:99");
+
+    $("#telefone").mask("(99) 99999-9999");
+
+    jQuery("#txtCelular").mask("(99) 99999-9999");
+    jQuery("#nascimento").mask("99/99/9999");
+    jQuery("#horarios").mask("99:99");
 
 </script>

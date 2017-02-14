@@ -1,3 +1,4 @@
+<? $empresa_logada = $this->session->userdata('empresa_id'); ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacientefisioterapiaencaixe" method="post">
@@ -7,22 +8,36 @@
             <legend>Manter Especialidade</legend>
             <div>
                 <label>Data</label>
-                <input type="text"  id="data_ficha" name="data_ficha" class="size1"  />
+                <input type="text"  id="data_ficha" name="data_ficha" class="size1"  required/>
                 <input type="hidden" name="txtpaciente_id"  value="<?= @$obj->_ambulatorio_pacientetemp_id; ?>" />
             </div>
             <div>
                 <label>Medico</label>
-                <select name="medico" id="medico" class="size4">
+                <select name="medico" id="medico" class="size4" required>
                     <option value="" >Selecione</option>
                     <? foreach ($medico as $item) : ?>
                         <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
                     <? endforeach; ?>
                 </select>
             </div>
+            <div>
+                <label>Empresa</label>
+                <select name="empresa" id="empresa" class="size1">
+                    <?
+                    foreach ($empresas as $value) :
+                        ?>
+                        <option value="<?= $value->empresa_id; ?>" <?
+                        if ($empresa_logada == $value->empresa_id) {
+                            echo 'selected';
+                        }
+                        ?>><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                </select>
 
+            </div>
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" class="size1" name="horarios"/>
+                <input type="text" id="horarios" class="size1" name="horarios" required/>
             </div>
             <div>
                 <label>Observa&ccedil;&otilde;es</label>
@@ -36,7 +51,7 @@
             <div>
                 <label>Nome</label>
                 <input type="hidden" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
-                <input type="text" id="txtNome" name="txtNome" class="texto10"/>
+                <input type="text" id="txtNome" name="txtNome" class="texto10" required/>
             </div>
             <div>
                 <label>Dt de nascimento</label>

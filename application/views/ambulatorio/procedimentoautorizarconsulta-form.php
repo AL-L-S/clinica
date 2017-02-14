@@ -107,7 +107,7 @@
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
                                     <td class="<?php echo $estilo_linha; ?>">
-                                        <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" >
+                                        <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" required="" >
                                             <option value="-1">Selecione</option>
                                             <? foreach ($salas as $itens) : ?>
                                                 <option value="<?= $itens->exame_sala_id; ?>"><?= $itens->nome; ?></option>
@@ -115,7 +115,7 @@
                                         </select>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                        <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size2" >
+                                        <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size2" required="" >
                                             <option value="-1">Selecione</option>
                                             <? foreach ($medicos as $value) : ?>
                                                 <option value="<?= $value->operador_id; ?>" <?
@@ -126,7 +126,7 @@
                                         </select>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>">
-                                        <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" >
+                                        <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" required=""  >
                                             <option value="-1">Selecione</option>
                                             <? foreach ($convenio as $value) : ?>
                                                 <option value="<?= $value->convenio_id; ?>"<?
@@ -138,7 +138,7 @@
                                     </td>
 
                                     <td class="<?php echo $estilo_linha; ?>">
-                                        <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" >
+                                        <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" required="" >
                                             <option value="-1">-- Escolha um procedimento --</option>
                                         </select>
                                     </td>

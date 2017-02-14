@@ -111,7 +111,7 @@ class Procedimentoplano extends BaseController {
     function carregarprocedimentoplano($procedimentoplano_tuss_id) {
         $obj_procedimentoplano = new procedimentoplano_model($procedimentoplano_tuss_id);
         $data['obj'] = $obj_procedimentoplano;
-        $data['procedimento'] = $this->procedimentoplano->listarprocedimento();
+        $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimentoplano-form', $data);

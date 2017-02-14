@@ -7,7 +7,7 @@
             <legend>Manter Exames</legend>
             <div>
                 <label>Data</label>
-                <input type="text"  id="data_ficha" name="data_ficha" class="size1"  />
+                <input type="text"  id="data_ficha" name="data_ficha" class="size1"  required/>
                 <input type="hidden" name="txtpaciente_id"  value="<?= @$obj->_ambulatorio_pacientetemp_id; ?>" />
             </div>
             <div>
@@ -21,7 +21,7 @@
             </div>
             <div>
                 <label>Medico</label>
-                <select name="medico" id="exame" class="size2">
+                <select name="medico" id="exame" class="size2" required>
                     <option value="" >Selecione</option>
                     <? foreach ($medico as $item) : ?>
                         <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
@@ -37,7 +37,7 @@
             </div>
             <div>
                 <label>Horarios</label>
-                <input type="text" id="horarios" alt="time" class="size1" name="horarios" />
+                <input type="text" id="horarios" alt="time" class="size1" name="horarios" required/>
             </div>
             <div>
                 <label>Observa&ccedil;&otilde;es</label>

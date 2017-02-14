@@ -118,7 +118,7 @@
                         <tbody>
                             <tr>
                                 <td > 
-                                    <select  name="sala1" id="sala1" class="size1" >
+                                    <select  name="sala1" id="sala1" class="size1" required="" >
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $item) : ?>
                                             <option value="<?= $item->exame_sala_id; ?>"<?
@@ -128,7 +128,7 @@
                                                 <? endforeach; ?>
                                     </select></td>
                                 <td > 
-                                    <select  name="medicoagenda" id="medicoagenda" class="size1" >
+                                    <select  name="medicoagenda" id="medicoagenda" class="size1" required="" >
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
                                             <option value="<?= $item->operador_id; ?>"<?
@@ -137,9 +137,9 @@
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
-                                <td  ><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
+                                <td  ><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
                                 <td  >
-                                    <select  name="convenio1" id="convenio1" class="size1" >
+                                    <select  name="convenio1" id="convenio1" class="size1" required="" >
                                         <option value="-1">Selecione</option>
                                         <? foreach ($convenio as $item) : ?>
                                             <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
@@ -148,7 +148,7 @@
                                 </td>
 
                                 <td  >
-                                    <select  name="procedimento1" id="procedimento1" class="size1" >
+                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>

@@ -7,7 +7,7 @@
             <div>
                 <label>Nome</label>
                 <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
-                <input type="text" id="txtNome" name="txtNome" class="texto10"/>
+                <input type="text" id="txtNome" name="txtNome" class="texto10" required=""/>
             </div>
             <div>
                 <label>Dt de nascimento</label>
@@ -28,7 +28,7 @@
             </div>
             <div>
                 <label>Medico</label>
-                <select name="medico" id="exame" class="size2">
+                <select name="medico" id="exame" class="size2" required="">
                     <option value="" >Selecione</option>
                     <? foreach ($medico as $item) : ?>
                         <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
@@ -37,13 +37,13 @@
             </div>
             <div>
                 <label>Convenio *</label>
-                <select name="convenio1" id="convenio1" class="size4">
+                <select name="convenio1" id="convenio1" class="size4" required="">
                     <option value="">Selecione</option>
                 </select>
             </div>
             <div>
                 <label>Procedimento</label>
-                <select  name="procedimento1" id="procedimento1" class="size1" >
+                <select  name="procedimento1" id="procedimento1" class="size1" required="">
                     <option value="">Selecione</option>
                 </select>
             </div>

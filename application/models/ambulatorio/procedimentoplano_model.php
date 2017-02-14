@@ -309,6 +309,17 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimento2() {
+        $this->db->select('procedimento_tuss_id,
+                            nome,
+                            codigo');
+        $this->db->from('tb_procedimento_tuss');
+        $this->db->orderby('nome');
+        $this->db->where("ativo", 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarconvenio() {
         $this->db->select('convenio_id,
                             nome,');
