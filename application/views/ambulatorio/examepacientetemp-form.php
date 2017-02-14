@@ -37,14 +37,14 @@
         <fieldset>
             <div>
                 <label>Data</label>
-                <input type="text"  id="data_ficha" name="data_ficha" class="size1"  />
+                <input type="text"  id="data_ficha" name="data_ficha" class="size1"  required/>
                 <input type="hidden" name="txtpaciente_id" value="<?= @$obj->_paciente_id; ?>" />
             </div>
             <legend>Exames tipo</legend>
 
             <div>
                 <label>Exame</label>
-                <select name="exame" id="exame" class="size1">
+                <select name="exame" id="exame" class="size1" required>
                     <option value="" >Selecione</option>
                     <option value="RX" >RX</option>
                     <option value="TOMOGRAFIA" >TOMOGRAFIA</option>
@@ -63,7 +63,7 @@
 
             <div>
                 <label>Horarios</label>
-                <select name="horarios" id="horarios" class="size2">
+                <select name="horarios" id="horarios" class="size2" required>
                     <option value="" >-- Escolha um exame --</option>
                 </select>
             </div>
@@ -78,7 +78,7 @@
             </div>
             <div>
                 <label>Procedimento</label>
-                <select  name="procedimento1" id="procedimento1" class="size1" >
+                <select  name="procedimento1" id="procedimento1" class="size1" required>
                     <option value="">Selecione</option>
                 </select>
             </div>

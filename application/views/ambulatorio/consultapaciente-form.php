@@ -7,7 +7,7 @@
             <div>
                 <label>Nome</label>
                 <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
-                <input type="text" id="txtNome" name="txtNome" class="texto10" onblur="calculoIdade(document.getElementById('nascimento').value)"  />
+                <input type="text" id="txtNome" required name="txtNome" class="texto10" onblur="calculoIdade(document.getElementById('nascimento').value)"  />
             </div>
             <div>
                 <label>Dt de nascimento</label>
@@ -36,7 +36,7 @@
             </div>
             <div>
                 <label>Convenio *</label>
-                <select name="convenio" id="convenio" class="size4">
+                <select name="convenio" id="convenio" class="size4" required>
                     <option  value="0">Selecione</option>
                     <? foreach ($convenio as $value) : ?>
                         <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
@@ -45,7 +45,7 @@
             </div>
             <div>
                 <label>Procedimento</label>
-                <select  name="procedimento" id="procedimento" class="size1" >
+                <select  name="procedimento" id="procedimento" class="size1" required >
                     <option value="">Selecione</option>
                 </select>
             </div>

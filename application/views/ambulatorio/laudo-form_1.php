@@ -295,6 +295,9 @@
                                                 <td ><div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/gravordevoz/" ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=650');">
                                                             <font size="-1">Gravador</font></a></div></td>
+                                                <td ><div class="bt_link">
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaratestado/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
+                                                            Atestado</a></div></td>
                                             </tr>
                                         </table>
                                     </div>

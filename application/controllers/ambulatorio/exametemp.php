@@ -73,6 +73,7 @@ class Exametemp extends BaseController {
 
     function novopacienteexameencaixe() {
         $data['idade'] = 0;
+        $data['empresas'] = $this->exame->listarempresas();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['salas'] = $this->exame->listartodassalas();
         $data['medico'] = $this->exametemp->listarmedicoconsulta();
@@ -104,6 +105,7 @@ class Exametemp extends BaseController {
 
     function novopacientefisioterapiaencaixe() {
         $data['idade'] = 0;
+        $data['empresas'] = $this->exame->listarempresas();
         $data['medico'] = $this->exametemp->listarmedicoconsulta();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $this->loadView('ambulatorio/pacientetempfisioterapiaencaixe-form', $data);
@@ -411,7 +413,7 @@ class Exametemp extends BaseController {
         if (trim($_POST['txtNome']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopaciente");
+            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
         } elseif (trim($_POST['telefone']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -441,18 +443,18 @@ class Exametemp extends BaseController {
         if (trim($_POST['txtNome']) == "" && trim($_POST['txtNomeid']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            redirect(base_url() . "ambulatorio/exametemp/carregarconsultatemp/$agenda_exames_id");
         } 
         elseif (trim($_POST['convenio']) == "0" ) {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio informar o convênio.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            redirect(base_url() . "ambulatorio/exametemp/carregarconsultatemp/$agenda_exames_id");
         } 
         
         elseif (trim($_POST['procedimento']) == "" ) {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio informar o procedimento.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+            redirect(base_url() . "ambulatorio/exametemp/carregarconsultatemp/$agenda_exames_id");
         } 
         else {
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
@@ -577,11 +579,17 @@ class Exametemp extends BaseController {
 
         $pacientetemp_id = $_POST['txtpaciente_id'];
 
-        if ($_POST['txtNome'] == '' || $_POST['data_ficha'] == '' || $_POST['exame'] == '' || $_POST['convenio1'] == '' || $_POST['procedimento1'] == '' || $_POST['horarios'] == '') {
+        if ($_POST['data_ficha'] == '' || $_POST['exame'] == '' || $_POST['convenio1'] == '' || $_POST['procedimento1'] == '' || $_POST['horarios'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
-        } else {
+        }  
+//        elseif ($_POST['txtNome'] == '') {
+//            $data['mensagem'] = 'Paciente não informado ou inválido.';
+//            $this->session->set_flashdata('message', $data['mensagem']);
+//            redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
+//        } 
+        else{
             $this->exametemp->gravarpacienteexistentegeral($pacientetemp_id);
             redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
         }

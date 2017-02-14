@@ -16,7 +16,7 @@
                 <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Nome: <? echo $laudo[0]->medico; ?></td>
             </tr>
             <tr>
-                <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>End: <span class="endereco_menor"><? echo $laudo[0]->endempresa; ?> <? echo $laudo[0]->numeroempresa . ' ' . $laudo[0]->bairroemp; ?>. <? echo $laudo[0]->cidaempresa; ?> </span></td>
+                <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>End: <span class="endereco_menor"><? echo $laudo[0]->endempresa; ?> <? echo $laudo[0]->numeroempresa . ' ' . $laudo[0]->bairroemp; ?></span></td>
             </tr>
             <tr>
                 <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>CRM:<? echo $laudo[0]->conselho; ?></td>
@@ -115,7 +115,7 @@
                 <? } ?>
             <tr>
             </tr>
-            <td style='font-family: serif; font-size: 8pt;' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:____/____/______ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Assinatura do medico </td>
+            <td style='font-family: serif; font-size: 8pt;' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:<?= date("d/m/Y");?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Assinatura do medico </td>
             </tr>
         </table>
     </div>
@@ -169,7 +169,7 @@
                 <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Nome: <? echo $laudo[0]->medico; ?></td>
             </tr>
             <tr>
-                <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>End: <span class="endereco_menor"><? echo $laudo[0]->endempresa; ?> <? echo $laudo[0]->numeroempresa . ' ' . $laudo[0]->bairroemp; ?>. <? echo $laudo[0]->cidaempresa; ?> </span></td>
+                <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>End: <span class="endereco_menor"><? echo $laudo[0]->endempresa; ?> <? echo $laudo[0]->numeroempresa . ' ' . $laudo[0]->bairroemp; ?></span></td>
             <tr>
                 <td colspan="3" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>CRM:<? echo $laudo[0]->conselho; ?></td>
             </tr>
@@ -267,7 +267,7 @@
                 <? } ?>
             <tr>
             </tr>
-            <td style='font-family: serif; font-size: 8pt;' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:____/____/______ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Assinatura do medico </td>
+            <td style='font-family: serif; font-size: 8pt;' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:<?= date("d/m/Y");?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Assinatura do medico </td>
             </tr>
         </table>
     </div>
