@@ -1265,7 +1265,6 @@ class exametemp_model extends Model {
     function gravarconsultasencaixe() {
         try {
 
-
             $this->db->select('nome');
             $this->db->from('tb_operador');
             $this->db->where('operador_id', $_POST['medico']);
@@ -1283,9 +1282,9 @@ class exametemp_model extends Model {
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
                 }
-                $this->db->set('celular', $_POST['celular']);
+                $this->db->set('celular', $_POST['txtCelular']);
                 $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('telefone', $_POST['telefone']);
+                $this->db->set('telefone', $_POST['txtTelefone']);
                 $this->db->set('nome', $_POST['txtNome']);
                 $this->db->insert('tb_paciente');
                 $paciente_id = $this->db->insert_id();
@@ -1346,7 +1345,7 @@ class exametemp_model extends Model {
 
     function gravarexameencaixe() {
         try {
-
+            
             if ($_POST['txtNomeid'] == '') {
                 if ($_POST['nascimento'] != '') {
                     $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
@@ -1599,9 +1598,9 @@ class exametemp_model extends Model {
                 if ($_POST['idade'] != 0) {
                     $this->db->set('idade', $_POST['idade']);
                 }
-                $this->db->set('celular', $_POST['celular']);
+                $this->db->set('celular', $_POST['txtCelular']);
                 $this->db->set('convenio_id', $_POST['convenio']);
-                $this->db->set('telefone', $_POST['telefone']);
+                $this->db->set('telefone', $_POST['txtTelefone']);
                 $this->db->set('nome', $_POST['txtNome']);
                 $this->db->insert('tb_paciente');
                 $paciente_id = $this->db->insert_id();
@@ -2033,9 +2032,9 @@ class exametemp_model extends Model {
                     if ($_POST['idade'] != 0) {
                         $this->db->set('idade', $_POST['idade']);
                     }
-                    $this->db->set('celular', $_POST['celular']);
+                    $this->db->set('celular', $_POST['txtCelular']);
                     $this->db->set('convenio_id', $_POST['convenio']);
-                    $this->db->set('telefone', $_POST['telefone']);
+                    $this->db->set('telefone', $_POST['txtTelefone']);
                     $this->db->set('nome', $_POST['txtNome']);
                     $this->db->insert('tb_paciente');
                     $paciente_id = $this->db->insert_id();
