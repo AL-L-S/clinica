@@ -218,6 +218,9 @@ class Contasreceber extends BaseController {
         $repetir = $_POST['repitir'];
         $dia = str_replace("/", "-", $_POST['inicio']);
         $parcela = 1;
+        $contador = 0;
+        $a = 0;
+        $c = 0;
         if ($_POST['financeiro_contasreceber_id'] == '') {
             if ($_POST['devedor'] == '') {
                 $mensagem = 'É necessário selecionar o item no campo Receber de: ';
@@ -228,11 +231,111 @@ class Contasreceber extends BaseController {
 
                 $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
             } elseif ($repetir >= 2) {
-                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
-                for ($index = 2; $index <= $repetir; $index++) {
-                    $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
-                    $parcela = $index;
+                if (substr($dia, 0, 2) != 29 && substr($dia, 0, 2) != 30 && substr($dia, 0, 2) != 31) {
                     $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                } else {
+
+                    if (substr($dia, 0, 2) == 29) {
+                        $contador = 29;
+                    }
+                    if (substr($dia, 0, 2) == 30) {
+                        $contador = 30;
+                    }
+                    if (substr($dia, 0, 2) == 31) {
+                        $contador = 30;
+                        $dia = date('d-m-Y', strtotime("-1 day", strtotime($dia)));
+                    }
+                }
+
+                for ($index = 2; $index <= $repetir; $index++) {
+                    if ($contador == 29 || $contador == 30 || $contador == 31) {
+                        if ($contador == 29) {
+                            if (substr($dia, 3, 2) == 01) {
+                                $a ++;
+                                if ($c == 0) {
+                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                }
+                                $dia = date('d-m-Y', strtotime("-1 day", strtotime($dia)));
+
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            } elseif (substr($dia, 3, 2) == 02) {
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                                $dia = date('d-m-Y', strtotime("+1 day", strtotime($dia)));
+
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            } else {
+                                if ($a == 0) {
+                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                }
+                                $a++;
+                                $c++;
+
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            }
+                        } elseif ($contador == 30) {
+                            if (substr($dia, 3, 2) == 01) {
+                                $a ++;
+                                if ($c == 0) {
+                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                }
+
+                                $dia = date('d-m-Y', strtotime("-2 day", strtotime($dia)));
+
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+
+                               $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            } elseif (substr($dia, 3, 2) == 02) {
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                                $dia = date('d-m-Y', strtotime("+2 day", strtotime($dia)));
+
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            } else {
+                                if ($a == 0) {
+//                                    var_dump($dia); die;
+                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                }
+                                $a++;
+                                $c++;
+
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            }
+                        } elseif ($contador == 31) {
+                            if (substr($dia, 3, 2) == 01) {
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $dia = date('d-m-Y', strtotime("-3 day", strtotime($dia)));
+
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            } elseif (substr($dia, 3, 2) == 02) {
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                                $dia = date('d-m-Y', strtotime("+3 day", strtotime($dia)));
+
+                               $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            } elseif (substr($dia, 3, 2) == 02) {
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                                $dia = date('d-m-Y', strtotime("+3 day", strtotime($dia)));
+
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            } elseif (substr($dia, 3, 2) == 02) {
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                                $dia = date('d-m-Y', strtotime("+3 day", strtotime($dia)));
+
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            } else {
+                                $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                            }
+                        }
+                    } else {
+                        $dia = date('d-m-Y', strtotime("+1 month", strtotime($dia)));
+                        $parcela = $index;
+                        $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                    }
                 }
             }
         } else {
