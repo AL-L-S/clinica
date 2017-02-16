@@ -509,7 +509,7 @@ function debug($object) {
                 <li><span class="folder">Financeiro</span>
                     <ul>
                         <li><span class="folder">Rotinas</span>
-                            <? if ($perfil_id == 1) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 13) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa">Manter Entrada</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/pesquisar2">Manter Saida</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/contaspagar">Manter Contas a pagar</a></span></ul>
@@ -521,7 +521,7 @@ function debug($object) {
                         </li> 
                         <li><span class="folder">Relatorios</span>
                             <?
-                            if ($perfil_id == 1) {
+                            if ($perfil_id == 1 || $perfil_id == 13) {
                                 ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaida">Relatorio Saida</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaidagrupo">Relatorio Saida Tipo</a></span></ul>
@@ -536,7 +536,7 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatorioacompanhamentodecontas">Relatorio Acompanhamento de contas</a></span></ul>
                                 <?
                             }
-                            if ($perfil_id == 1 || $perfil_id == 5) {
+                            if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 13) {
                                 ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixafaturado">Relatorio Caixa Faturamento</a></span></ul>
@@ -650,7 +650,7 @@ function debug($object) {
                             <? } ?>
                         </li> 
                         <li><span class="folder">Financeiro</span>
-                            <? if ($perfil_id == 1) { ?>
+                            <? if ($perfil_id == 1 || $perfil_id == 13) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/tipo">Manter Tipo</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/classe">Manter Classe</a></span></ul>
     <!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->

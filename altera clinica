@@ -1409,3 +1409,7 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_medico boolean;
 ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto_laudo TYPE character varying(40000);
 ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto_revisor TYPE character varying(40000);
 
+-- Dia 16/02/2017
+INSERT INTO ponto.tb_perfil(
+            perfil_id, nome, ativo)
+    VALUES (13, 'FINANCEIRO', true);
