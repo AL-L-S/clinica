@@ -452,7 +452,7 @@ class Exame extends BaseController {
 //                $this->gerarcr($agenda_exames_id); //clinica humana
                 $this->gerardicom($laudo_id); //clinica ronaldo
                 
-                $this->laudo->chamada($laudo_id);
+//               $this->laudo->chamada($laudo_id);
             }
         } else {
             $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
