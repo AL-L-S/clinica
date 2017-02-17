@@ -107,16 +107,16 @@
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
                                     <td class="<?php echo $estilo_linha; ?>">
-                                        <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" required="" >
-                                            <option value="-1">Selecione</option>
+                                        <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" required="true" >
+                                            <option value="">Selecione</option>
                                             <? foreach ($salas as $itens) : ?>
                                                 <option value="<?= $itens->exame_sala_id; ?>"><?= $itens->nome; ?></option>
                                             <? endforeach; ?>
                                         </select>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                        <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size2" required="" >
-                                            <option value="-1">Selecione</option>
+                                        <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size2" required="true" >
+                                            <option value="">Selecione</option>
                                             <? foreach ($medicos as $value) : ?>
                                                 <option value="<?= $value->operador_id; ?>" <?
                                                 if ($value->operador_id == $item->medico_consulta_id):echo 'selected';
@@ -127,7 +127,7 @@
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" required=""  >
-                                            <option value="-1">Selecione</option>
+                                            <option value="">Selecione</option>
                                             <? foreach ($convenio as $value) : ?>
                                                 <option value="<?= $value->convenio_id; ?>"<?
 //                                                if ($value->convenio_id == $item->convenio_id):echo'selected';
@@ -139,7 +139,7 @@
 
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" required="" >
-                                            <option value="-1">-- Escolha um procedimento --</option>
+                                            <option value="">-- Escolha um procedimento --</option>
                                         </select>
                                     </td>
 
@@ -179,11 +179,10 @@
 
 <!--</body>-->
 
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
                         $(function () {

@@ -108,16 +108,16 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" >
-                                        <option value="-1">Selecione</option>
+                                    <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" required="true" >
+                                        <option value="">Selecione</option>
                                         <? foreach ($salas as $itens) : ?>
                                             <option value="<?= $itens->exame_sala_id; ?>"><?= $itens->nome; ?></option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size1" >
-                                        <option value="-1">Selecione</option>
+                                    <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size1" required="true" >
+                                        <option value="">Selecione</option>
                                         <? foreach ($medicos as $itens) : ?>
                                             <option value="<?= $itens->operador_id; ?>"><?= $itens->nome; ?></option>
                                         <? endforeach; ?>
@@ -127,14 +127,14 @@
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1"/>
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" >
+                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" required="true" >
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" >
-                                        <option value="-1">-- Escolha um procedimento --</option>
+                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" required="true" >
+                                        <option value="">-- Escolha um procedimento --</option>
                                     </select>
                                 </td>
 
@@ -142,7 +142,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>" alt="numeromask" value="1" class="texto00"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
+                                    <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" required="true" >
                                         <option value="0">Selecione</option>
                                         <? foreach ($forma_pagamento as $value) : ?>
                                             <option value="<?= $value->forma_pagamento_id; ?>"><?= $value->nome; ?></option>
@@ -173,11 +173,10 @@
     </div> <!-- Final da DIV content -->
 </div> <!-- Final da DIV content -->
 
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
                         $(function () {

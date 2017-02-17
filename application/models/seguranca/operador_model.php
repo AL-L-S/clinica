@@ -548,12 +548,44 @@ class Operador_model extends BaseModel {
 
     function gravarrecepcao() {
         try {
+            if ($_POST['criarcredor'] == "on") {
+                $this->db->set('razao_social', $_POST['nome']);
+                $this->db->set('cep', $_POST['cep']);
+                if ($_POST['cpf'] != '') {
+                    $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
+                } else {
+                    $this->db->set('cpf', null);
+                }
+                $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
+                $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
+                if ($_POST['tipo_logradouro'] != '') {
+                    $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
+                }
+                if ($_POST['municipio_id'] != '') {
+                    $this->db->set('municipio_id', $_POST['municipio_id']);
+                }
+                $this->db->set('logradouro', $_POST['endereco']);
+                $this->db->set('numero', $_POST['numero']);
+                $this->db->set('bairro', $_POST['bairro']);
+                $this->db->set('complemento', $_POST['complemento']);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_credor_devedor');
+                $financeiro_credor_devedor_id = $this->db->insert_id();
+            }
 
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['nome']);
             $this->db->set('sexo', $_POST['sexo']);
             $this->db->set('conselho', $_POST['conselho']);
             $this->db->set('ativo', 't');
+            if ($_POST['criarcredor'] == "on") {
+                $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
+            } elseif ($_POST['credor_devedor'] != "") {
+                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
+            }
             if ($_POST['txtcboID'] != "") {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
             }

@@ -90,8 +90,8 @@
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" required="" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" required="" class="size1"/>
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1"  required="">
-                                        <option value="-1">Selecione</option>
+                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1"  required="true">
+                                        <option value="">Selecione</option>
                                         <? foreach ($convenio as $value) : ?>
                                             <option value="<?= $value->convenio_id; ?>"><?= $value->nome; ?></option>
                                         <? endforeach; ?>
@@ -99,8 +99,8 @@
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1"  required="">
-                                        <option value="-1">-- Escolha um procedimento --</option>
+                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1"  required="true">
+                                        <option value="">-- Escolha um procedimento --</option>
                                     </select>
                                 </td>
 
