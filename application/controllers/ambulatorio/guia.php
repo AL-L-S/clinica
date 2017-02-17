@@ -731,7 +731,7 @@ class Guia extends BaseController {
             $medico_id = $_POST['crm1'];
             $paciente_id = $_POST['txtpaciente_id'];
             $resultadoguia = $this->guia->listarguia($paciente_id);
-            
+
             if ($_POST['medicoagenda'] != '') {
                 if ($resultadoguia == null) {
                     $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
@@ -979,6 +979,9 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+        if($ambulatorio_guia_id != null){
+            $data['indicacao_paciente'] = $this->exametemp->listarindicacaoguia($ambulatorio_guia_id);
+        }
         $data['grupos'] = $this->procedimento->listargrupos();
 
         $data['x'] = 0;
@@ -2067,7 +2070,7 @@ class Guia extends BaseController {
 
         $dataFuturo = date("Y-m-d");
 
-        $this->load->View('ambulatorio/impressaorecibomed', $data);
+//        $this->load->View('ambulatorio/impressaorecibomed', $data);
 //        $this->load->View('ambulatorio/impressaorecibo', $data);
     }
 
