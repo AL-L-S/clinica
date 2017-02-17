@@ -7,11 +7,11 @@
             <div>
                 <label>Nome*</label>                      
                 <input type ="hidden" name ="paciente_id"  value ="<?= @$obj->_paciente_id; ?>" id ="txtPacienteId">
-                <input type="text" id="txtNome" name="nome" class="texto10"  value="<?= @$obj->_nome; ?>" />
+                <input type="text" id="txtNome" name="nome" class="texto10"  value="<?= @$obj->_nome; ?>" required="true" />
             </div>
             <div>
                 <label>Nascimento*</label>
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" />
+                <input type="text" name="nascimento" id="txtNascimento" class="texto02" required="true" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" />
             </div>
 
 
@@ -30,7 +30,7 @@
             </div>
             <div>
                 <label>Sexo</label>
-                <select name="sexo" id="txtSexo" class="size1">
+                <select name="sexo" id="txtSexo" class="size1" required="">
                     <option value="" <?
                     if (@$obj->_sexo == ""):echo 'selected';
                     endif;
@@ -162,11 +162,11 @@
                 <label>Telefone 1*</label>
 
 
-                <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="(99) 9999-9999" value="<?= @$obj->_telefone; ?>" />
+                <input type="text"  class="texto02" name="telefone"  value="<?= @$obj->_telefone; ?>" required="true" />
             </div>
             <div>
                 <label>Telefone 2</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="(99) 99999-9999" value="<?= @$obj->_celular; ?>" />
+                <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$obj->_celular; ?>" />
             </div>
             <div>
                 <label>Indicacao</label>
@@ -307,6 +307,51 @@
         </a>
 
     </form>
+    <script>
+			function mascaraTelefone( campo ) {
+			
+				function trata( valor,  isOnBlur ) {
+					
+					valor = valor.replace(/\D/g,"");             			
+					valor = valor.replace(/^(\d{2})(\d)/g,"($1)$2"); 		
+					
+					if( isOnBlur ) {
+						
+						valor = valor.replace(/(\d)(\d{4})$/,"$1-$2");   
+					} else {
+
+						valor = valor.replace(/(\d)(\d{3})$/,"$1-$2"); 
+					}
+					return valor;
+				}
+				
+				campo.onkeypress = function (evt) {
+					 
+					var code = (window.event)? window.event.keyCode : evt.which;	
+					var valor = this.value
+					
+					if(code > 57 || (code < 48 && code != 8 ))  {
+						return false;
+					} else {
+						this.value = trata(valor, false);
+					}
+				}
+				
+				campo.onblur = function() {
+					
+					var valor = this.value;
+					if( valor.length < 13 ) {
+						this.value = ""
+					}else {		
+						this.value = trata( this.value, true );
+					}
+				}
+				
+				campo.maxLength = 14;
+			}
+
+		
+		</script>
 
     <script language="JavaScript">
         Webcam.set({
@@ -345,7 +390,8 @@
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-            
+            mascaraTelefone( form_paciente.telefone );
+            mascaraTelefone( form_paciente.celular );
 //(99) 9999-9999
         $(document).ready(function () {
            
