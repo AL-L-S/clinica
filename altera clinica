@@ -1413,3 +1413,5 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto_revisor TYPE character
 INSERT INTO ponto.tb_perfil(
             perfil_id, nome, ativo)
     VALUES (13, 'FINANCEIRO', true);
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN indicacao_id integer;
+

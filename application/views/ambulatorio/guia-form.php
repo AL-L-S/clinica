@@ -46,12 +46,12 @@
                     <div>
                         <label>Sexo</label>
                         <input name="sexo" id="txtSexo" class="size2" 
-                                value="<?
-                                    if ($paciente['0']->sexo == "M"):echo 'Masculino';
-                                    endif;
-                                    if ($paciente['0']->sexo == "F"):echo 'Feminino';
-                                    endif;
-                                    ?>" readonly="true">
+                               value="<?
+                               if ($paciente['0']->sexo == "M"):echo 'Masculino';
+                               endif;
+                               if ($paciente['0']->sexo == "F"):echo 'Feminino';
+                               endif;
+                               ?>" readonly="true">
                     </div>
 
                     <div>
@@ -72,7 +72,31 @@
                         <label>Nome da M&atilde;e</label>
 
 
-                        <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
+                        <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
+                    </div>
+                    <div>
+                        <label>Indicacao</label>
+                        
+                        <input type="hidden" name="indicacao_paciente" id="indicacao_paciente" class="texto01" value="<?= @$indicacao_paciente[0]->paciente_indicacao_id; ?>" readonly/>
+
+                        <select name="indicacao" id="indicacao" class="size2" >
+                            <option value='' >selecione</option>
+                            <?php
+                            $indicacao = $this->paciente->listaindicacao($_GET);
+                            foreach ($indicacao as $item) {
+                                ?>
+
+                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?
+                                if (@$indicacao_paciente[0]->paciente_indicacao_id == $item->paciente_indicacao_id):
+                                    echo 'selected';
+                                endif;
+                                ?>>
+                                            <?php echo $item->nome; ?>
+                                </option>
+                                <?php
+                            }
+                            ?> 
+                        </select>
                     </div>
                 </fieldset>
 
@@ -399,7 +423,7 @@
                                     $('#grupo1').change(function () {
                                         if ($(this).val()) {
                                             $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val() , convenio1: $('#convenio1').val()}, function (j) {
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
                                                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
@@ -447,13 +471,13 @@
                                         }
                                     });
                                 });
-                                
+
                                 function calculoIdade() {
                                     var data = document.getElementById("txtNascimento").value;
                                     var ano = data.substring(6, 12);
                                     var idade = new Date().getFullYear() - ano;
                                     document.getElementById("txtIdade").value = idade;
                                 }
-                                
+
                                 calculoIdade();
 </script>

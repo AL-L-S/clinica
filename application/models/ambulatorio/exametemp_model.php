@@ -646,6 +646,17 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarindicacaoguia($ambulatorio_guia_id) {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('paciente_indicacao_id, nome');
+        $this->db->from('tb_ambulatorio_guia ag');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = ag.indicacao_id', 'left');
+        $this->db->where("ambulatorio_guia_id", $ambulatorio_guia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
 //    function listarprocedimentocomformapagamentoconsulta($ambulatorio_guia_id, $grupo_pagamento_id) {
 //
@@ -1724,8 +1735,8 @@ class exametemp_model extends Model {
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
             }
-            $this->db->set('celular', $_POST['telefone']);
-            $this->db->set('telefone', $_POST['celular']);
+            $this->db->set('celular', $_POST['celular']);
+            $this->db->set('telefone', $_POST['telefone']);
             $this->db->set('convenio_id', $_POST['convenio1']);
             $this->db->where('paciente_id', $ambulatorio_pacientetemp_id);
             $this->db->update('tb_paciente');

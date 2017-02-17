@@ -103,7 +103,7 @@ a#contatos_chat_lista img{
     padding: 2px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
-    
+
 }
 #login_controles{
     float: right;
@@ -849,3 +849,12 @@ jque/*!
     font-size:14px;
     color:#CCC;
 }
+
+.ui-autocomplete {
+    cursor: pointer;
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}
+

@@ -20,6 +20,11 @@ function debug($object) {
 <!DOCTYPE html PUBLIC "-//carreW3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="pt-BR" >
     <head>
+        <style>
+            .ui-autocomplete-loading {
+                background: white url("<?= base_url(); ?>img/ui-anim_basic_16x16.gif") right center no-repeat;
+            }
+        </style>
         <title>STG - SISTEMA DE GESTAO DE CLINICAS v1.0</title>
         <meta http-equiv="Content-Style-Type" content="text/css" />
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />

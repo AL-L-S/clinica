@@ -1,4 +1,5 @@
 <div class="content"> <!-- Inicio da DIV content -->
+    <meta charset="utf8">
     <? $tipoempresa = ""; ?>
     <table>
         <thead>
@@ -47,15 +48,6 @@
     </table>
 
 
-
-
-
-
-
-
-
-
-
     <? if (count($relatorio) > 0) {
         ?>
 
@@ -85,7 +77,14 @@
 
                         <td><?= utf8_decode($item->paciente); ?></td>
 
-                        <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
+                        <td style='text-align: center;'><font size="-2">
+                            <? if ($item->indicacao_guia != '') {
+                                echo $item->indicacao_guia;
+                            }
+                            else{ 
+                                echo $item->indicacao;
+                            } ?>
+                        </td>
                     </tr>
                 <? endforeach; ?>
 
