@@ -35,6 +35,7 @@
                             <td>Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
                             <td>Sala:<?= @$obj->_sala ?></td>
                         </tr>
+
                     </table>
                 </fieldset>
                 <div>
@@ -51,10 +52,16 @@
                             <input type="hidden" id="txtcid2ID" class="texto_id" name="cid2ID"  />
                             <input type="text" id="txtcid2" class="texto10" name="txtcid2"  />
                         </div>
+                        <div><div class="bt_link_new"><a href="<?php echo base_url() ?>ambulatorio/modeloatestado/carregarmodeloatestado/0" target="_blank">
+                                    Novo Modelo Atestado
+                                </a></div>
+                        </div>
                         <div>
                             <label>Modelos</label>
+                            
                             <select name="exame" id="exame" class="size2" >
-                                <option value='' >selecione</option>
+                                <option value='' ></option>
+                                <option value=''  selected="">Selecione</option>
                                 <?php foreach ($lista as $item) { ?>
                                     <option value="<?php echo $item->ambulatorio_modelo_atestado_id; ?>" ><?php echo $item->nome; ?></option>
                                 <?php } ?>
@@ -67,8 +74,8 @@
 
                             <label for="assinatura">Assinatura</label>
                             <input type="checkbox" id="assinatura" name="assinatura" id="assinatura"/>
-                            
-                            
+
+
                             <label for="imprimircid">Imprimir CID</label>
                             <input type="checkbox"  name="imprimircid" id="imprimircid" />
                         </div>
@@ -163,120 +170,120 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-                                    $(function () {
-                                        $("#data").datepicker({
-                                            autosize: true,
-                                            changeYear: true,
-                                            changeMonth: true,
-                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                            dateFormat: 'dd/mm/yy'
-                                        });
-                                    });
-
-                                    $(function () {
-                                        $("#txtcid1").autocomplete({
-                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-                                            minLength: 2,
-                                            focus: function (event, ui) {
-                                                $("#txtcid1").val(ui.item.label);
-                                                return false;
-                                            },
-                                            select: function (event, ui) {
-                                                $("#txtcid1").val(ui.item.value);
-                                                $("#txtcid1ID").val(ui.item.id);
-                                                return false;
-                                            }
-                                        });
-                                    });
-                                    
-                                    $(function () {
-                                        $("#txtcid2").autocomplete({
-                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-                                            minLength: 2,
-                                            focus: function (event, ui) {
-                                                $("#txtcid2").val(ui.item.label);
-                                                return false;
-                                            },
-                                            select: function (event, ui) {
-                                                $("#txtcid2").val(ui.item.value);
-                                                $("#txtcid2ID").val(ui.item.id);
-                                                return false;
-                                            }
-                                        });
-                                    });
-
-
-                                    $(document).ready(function () {
-                                        $('#sortable').sortable();
-                                    });
-
-
-
-                                    tinyMCE.init({
-                                        // General options
-                                        mode: "textareas",
-                                        theme: "advanced",
-                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                                        // Theme options
-                                        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                                        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-                                        theme_advanced_toolbar_location: "top",
-                                        theme_advanced_toolbar_align: "left",
-                                        theme_advanced_statusbar_location: "bottom",
-                                        theme_advanced_resizing: true,
-                                        // Example content CSS (should be your site CSS)
-                                        //                                    content_css : "css/content.css",
-                                        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                                        // Drop lists for link/image/media/template dialogs
-                                        template_external_list_url: "lists/template_list.js",
-                                        external_link_list_url: "lists/link_list.js",
-                                        external_image_list_url: "lists/image_list.js",
-                                        media_external_list_url: "lists/media_list.js",
-                                        // Style formats
-                                        style_formats: [
-                                            {title: 'Bold text', inline: 'b'},
-                                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                            {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                            {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                            {title: 'Table styles'},
-                                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                        ],
-                                        // Replace values for the template plugin
-                                        template_replace_values: {
-                                            username: "Some User",
-                                            staffid: "991234"
-                                        }
-
-                                    });
-
-                                    $(function () {
-                                        $('#exame').change(function () {
-                                            if ($(this).val()) {
-                                                //$('#laudo').hide();
-                                                $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/modelosatestado', {exame: $(this).val(), ajax: true}, function (j) {
-                                                    options = "";
-
-                                                    options += j[0].texto;
-                                                    //                                                document.getElementById("laudo").value = options
-
-                                                    $('#laudo').val(options)
-                                                    var ed = tinyMCE.get('laudo');
-                                                    ed.setContent($('#laudo').val());
-
-                                                    //$('#laudo').val(options);
-                                                    //$('#laudo').html(options).show();
-                                                    //                                                $('.carregando').hide();
-                                                    //history.go(0) 
+                                            $(function () {
+                                                $("#data").datepicker({
+                                                    autosize: true,
+                                                    changeYear: true,
+                                                    changeMonth: true,
+                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                    dateFormat: 'dd/mm/yy'
                                                 });
-                                            } else {
-                                                $('#laudo').html('value=""');
-                                            }
-                                        });
-                                    });
+                                            });
+
+                                            $(function () {
+                                                $("#txtcid1").autocomplete({
+                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                                                    minLength: 2,
+                                                    focus: function (event, ui) {
+                                                        $("#txtcid1").val(ui.item.label);
+                                                        return false;
+                                                    },
+                                                    select: function (event, ui) {
+                                                        $("#txtcid1").val(ui.item.value);
+                                                        $("#txtcid1ID").val(ui.item.id);
+                                                        return false;
+                                                    }
+                                                });
+                                            });
+
+                                            $(function () {
+                                                $("#txtcid2").autocomplete({
+                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                                                    minLength: 2,
+                                                    focus: function (event, ui) {
+                                                        $("#txtcid2").val(ui.item.label);
+                                                        return false;
+                                                    },
+                                                    select: function (event, ui) {
+                                                        $("#txtcid2").val(ui.item.value);
+                                                        $("#txtcid2ID").val(ui.item.id);
+                                                        return false;
+                                                    }
+                                                });
+                                            });
+
+
+                                            $(document).ready(function () {
+                                                $('#sortable').sortable();
+                                            });
+
+
+
+                                            tinyMCE.init({
+                                                // General options
+                                                mode: "textareas",
+                                                theme: "advanced",
+                                                plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                // Theme options
+                                                theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                                                theme_advanced_toolbar_location: "top",
+                                                theme_advanced_toolbar_align: "left",
+                                                theme_advanced_statusbar_location: "bottom",
+                                                theme_advanced_resizing: true,
+                                                // Example content CSS (should be your site CSS)
+                                                //                                    content_css : "css/content.css",
+                                                content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                // Drop lists for link/image/media/template dialogs
+                                                template_external_list_url: "lists/template_list.js",
+                                                external_link_list_url: "lists/link_list.js",
+                                                external_image_list_url: "lists/image_list.js",
+                                                media_external_list_url: "lists/media_list.js",
+                                                // Style formats
+                                                style_formats: [
+                                                    {title: 'Bold text', inline: 'b'},
+                                                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                    {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                    {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                    {title: 'Table styles'},
+                                                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                ],
+                                                // Replace values for the template plugin
+                                                template_replace_values: {
+                                                    username: "Some User",
+                                                    staffid: "991234"
+                                                }
+
+                                            });
+
+                                            $(function () {
+                                                $('#exame').change(function () {
+                                                    if ($(this).val()) {
+                                                        //$('#laudo').hide();
+                                                        $('.carregando').show();
+                                                        $.getJSON('<?= base_url() ?>autocomplete/modelosatestado', {exame: $(this).val(), ajax: true}, function (j) {
+                                                            options = "";
+
+                                                            options += j[0].texto;
+                                                            //                                                document.getElementById("laudo").value = options
+
+                                                            $('#laudo').val(options)
+                                                            var ed = tinyMCE.get('laudo');
+                                                            ed.setContent($('#laudo').val());
+
+                                                            //$('#laudo').val(options);
+                                                            //$('#laudo').html(options).show();
+                                                            //                                                $('.carregando').hide();
+                                                            //history.go(0) 
+                                                        });
+                                                    } else {
+                                                        $('#laudo').html('value=""');
+                                                    }
+                                                });
+                                            });
 
 
 
