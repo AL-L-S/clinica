@@ -2120,9 +2120,9 @@ class exametemp_model extends Model {
             if ($_POST['idade'] != 0) {
                 $this->db->set('idade', $_POST['idade']);
             }
-            $this->db->set('celular', $_POST['celular']);
+            $this->db->set('celular', $_POST['txtCelular']);
             $this->db->set('convenio_id', $_POST['convenio']);
-            $this->db->set('telefone', $_POST['telefone']);
+            $this->db->set('telefone', $_POST['txtTelefone']);
 //                $this->db->set('numero_sessao', $_POST['sessao']);
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->insert('tb_paciente');

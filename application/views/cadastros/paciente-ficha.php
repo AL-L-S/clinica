@@ -162,7 +162,7 @@
                 <label>Telefone 1*</label>
 
 
-                <input type="text"  class="texto02" name="telefone"  value="<?= @$obj->_telefone; ?>" required="true" />
+                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$obj->_telefone; ?>" required="true" />
             </div>
             <div>
                 <label>Telefone 2</label>
@@ -288,6 +288,46 @@
         </a>
 
     </form>
+
+
+    <script language="JavaScript">
+        Webcam.set({
+            width: 140,
+            height: 160,
+            dest_width: 480,
+            dest_height: 360,
+            image_format: 'jpeg',
+            jpeg_quality: 100
+        });
+        function ativar_camera() {
+            Webcam.attach('#my_camera');
+        }
+        function take_snapshot() {
+            // tira a foto e gera uma imagem para a div
+            Webcam.snap(function (data_uri) {
+                // display results in page
+                document.getElementById('results').innerHTML =
+                        '<img height = "160" width = "140" src="' + data_uri + '"/>';
+                //              Gera uma variável com o código binário em base 64 e joga numa variável
+                var raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
+                //              Pega o valor do campo mydata, campo hidden que armazena temporariamente o código da imagem
+                document.getElementById('mydata').value = raw_image_data;
+
+            });
+        }
+
+
+
+    </script>
+
+</div>
+
+
+
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
     <script>
 			function mascaraTelefone( campo ) {
 			
@@ -333,95 +373,11 @@
 
 		
 		</script>
-
-    <script language="JavaScript">
-        Webcam.set({
-            width: 140,
-            height: 160,
-            dest_width: 480,
-            dest_height: 360,
-            image_format: 'jpeg',
-            jpeg_quality: 100
-        });
-        function ativar_camera() {
-            Webcam.attach('#my_camera');
-        }
-        function take_snapshot() {
-            // tira a foto e gera uma imagem para a div
-            Webcam.snap(function (data_uri) {
-                // display results in page
-                document.getElementById('results').innerHTML =
-                        '<img height = "160" width = "140" src="' + data_uri + '"/>';
-                //              Gera uma variável com o código binário em base 64 e joga numa variável
-                var raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
-                //              Pega o valor do campo mydata, campo hidden que armazena temporariamente o código da imagem
-                document.getElementById('mydata').value = raw_image_data;
-
-            });
-        }
-
-
-
-    </script>
-
-</div>
-
-
-
-<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-            mascaraTelefone( form_paciente.telefone );
-            mascaraTelefone( form_paciente.celular );
+            mascaraTelefone( form_paciente.txtTelefone );
+            mascaraTelefone( form_paciente.txtCelular );
 //(99) 9999-9999
-        $(document).ready(function () {
-           
-//            $(function () {
-//                $('#txtTelefone').keypress(function () {
-//                    
-//                    if(this.value.length > 13){
-//                        $(this).attr('alt', '(99) 99999-9999');
-//                    }
-//                    else{
-//                        $(this).attr('alt', '(99) 99999-9999');
-//                    }
-//                });
-//            });
-            
-            jQuery('#form_paciente').validate({
-                rules: {
-                    nome: {
-                        required: true,
-                        minlength: 3
-                    },
-                    sexo: {
-                        required: true
-                    },
-                    telefone: {
-                        required: true
-                    },
-                    nascimento: {
-                        required: true
-                    }
-
-                },
-                messages: {
-                    nome: {
-                        required: "*",
-                        minlength: "*"
-                    },
-                    sexo: {
-                        required: "*"
-                    },
-                    telefone: {
-                        required: "*"
-                    },
-                    nascimento: {
-                        required: "*"
-                    }
-                }
-            });
-        });
+        
 
         $(function () {
             $("#txtcbo").autocomplete({

@@ -35,15 +35,15 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone" value="<?= @$obj->_telefone; ?>" />
+                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$obj->_telefone; ?>" />
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" value="<?= @$obj->_celular; ?>" />
+                <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$obj->_celular; ?>" />
             </div>
             <div>
                 <label>Convenio</label>
-                <input type="text" id="txtCelular" class="texto02" name="convenio" value="<?= @$obj->_descricaoconvenio; ?>" />
+                <input type="text" id="txtconvenio" class="texto02" name="convenio" value="<?= @$obj->_descricaoconvenio; ?>" readonly />
             </div>
         </fieldset>
         <fieldset>
@@ -167,7 +167,55 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script>
+    function mascaraTelefone(campo) {
+
+        function trata(valor, isOnBlur) {
+
+            valor = valor.replace(/\D/g, "");
+            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+
+            if (isOnBlur) {
+
+                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+            } else {
+
+                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+            }
+            return valor;
+        }
+
+        campo.onkeypress = function (evt) {
+
+            var code = (window.event) ? window.event.keyCode : evt.which;
+            var valor = this.value
+
+            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                return false;
+            } else {
+                this.value = trata(valor, false);
+            }
+        }
+
+        campo.onblur = function () {
+
+            var valor = this.value;
+            if (valor.length < 13) {
+                this.value = ""
+            } else {
+                this.value = trata(this.value, true);
+            }
+        }
+
+        campo.maxLength = 14;
+    }
+
+
+</script>
 <script type="text/javascript">
+    mascaraTelefone(form_exametemp.txtTelefone);
+    mascaraTelefone(form_exametemp.txtCelular);
+
 
                                             $(function () {
                                                 $("#data_ficha").datepicker({
