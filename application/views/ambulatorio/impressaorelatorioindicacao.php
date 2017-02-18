@@ -109,8 +109,22 @@
                         ?>
 
                         <tr>
-                            <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
-                            <td><?= $item->quantidade; ?></td>
+                            <td style='text-align: center;'><font size="-2">
+                                <? if ($item->indicacao_guia != '') {
+                                    echo $item->indicacao_guia;
+                                }
+                                else{ 
+                                    echo $item->indicacao;
+                                } ?>
+                            </td>
+                            <td>
+                                <? if ($item->indicacao_guia != '') {
+                                    echo $item->quantidade_guia;
+                                }
+                                else{ 
+                                    echo $item->quantidade;
+                                } ?>
+                            </td>
                         </tr>
 
     <? endforeach; ?>

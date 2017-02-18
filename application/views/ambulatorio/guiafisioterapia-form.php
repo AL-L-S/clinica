@@ -1,9 +1,9 @@
 <div class="content ficha_ceatox">
-    <div class="bt_link_new" style="width: 150pt">
+<!--    <div class="bt_link_new" style="width: 150pt">
         <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
             Novo Medico Solicitante
         </a>
-    </div>
+    </div>-->
     <div class="bt_link_new">
         <a href="<?= base_url() ?>cadastros/pacientes">
             Cadastros
@@ -70,7 +70,31 @@
                         <label>Nome da M&atilde;e</label>
 
 
-                        <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
+                        <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
+                    </div>
+                    <div>
+                        <label>Indicacao</label>
+                        
+                        <input type="hidden" name="indicacao_paciente" id="indicacao_paciente" class="texto01" value="<?= @$indicacao_paciente[0]->paciente_indicacao_id; ?>" readonly/>
+
+                        <select name="indicacao" id="indicacao" class="size2" >
+                            <option value='' >selecione</option>
+                            <?php
+                            $indicacao = $this->paciente->listaindicacao($_GET);
+                            foreach ($indicacao as $item) {
+                                ?>
+
+                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?
+                                if (@$indicacao_paciente[0]->paciente_indicacao_id == $item->paciente_indicacao_id):
+                                    echo 'selected';
+                                endif;
+                                ?>>
+                                            <?php echo $item->nome; ?>
+                                </option>
+                                <?php
+                            }
+                            ?> 
+                        </select>
                     </div>
                 </fieldset>
                 <fieldset>

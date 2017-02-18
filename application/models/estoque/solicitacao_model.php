@@ -230,6 +230,7 @@ class solicitacao_model extends Model {
 
         $this->db->where('sc.estoque_solicitacao_setor_id', $estoque_solicitacao_id);
         $this->db->where('sc.ativo', 'true');
+        $this->db->where('si.ativo', 'true');
         $this->db->where('sc.situacao', 'LIBERADA');
         $this->db->orderby('sc.estoque_solicitacao_setor_id');
         $return = $this->db->get();

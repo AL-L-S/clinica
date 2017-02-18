@@ -28,9 +28,9 @@
         <tbody>
             <? foreach ($produtossaida as $item) : ?>
                 <tr>
-                    <td><font size="-2"><?= utf8_decode($item->descricao); ?></td>
-                    <td><font size="-2"><?= utf8_decode($item->unidade); ?></td>
-                    <td><font size="-2"><?= utf8_decode($item->quantidade_solicitada); ?></td>
+                    <td><font size="-2"><?= utf8_encode($item->descricao); ?></td>
+                    <td><font size="-2"><?= utf8_encode($item->unidade); ?></td>
+                    <td><font size="-2"><?= utf8_encode($item->quantidade_solicitada); ?></td>
                 </tr>
             <? endforeach; ?>
 

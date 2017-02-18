@@ -850,11 +850,22 @@ jque/*!
     color:#CCC;
 }
 
+/* ESTILIZANDO O AUTOCOMPLETE */
 .ui-autocomplete {
     cursor: pointer;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     /* prevent horizontal scrollbar */
     overflow-x: hidden;
+}
+
+.ui-autocomplete li {
+    background-color: rgba(197, 239, 247, .5);
+    border-radius: 5pt;
+}
+
+.ui-autocomplete li:last-child {
+    border-bottom: 1pt solid black;
+    border-radius: 0pt;
 }
 

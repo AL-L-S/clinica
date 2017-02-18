@@ -70,7 +70,31 @@
                         <label>Nome da M&atilde;e</label>
 
 
-                        <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
+                        <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
+                    </div>
+                    <div>
+                        <label>Indicacao</label>
+                        
+                        <input type="hidden" name="indicacao_paciente" id="indicacao_paciente" class="texto01" value="<?= @$indicacao_paciente[0]->paciente_indicacao_id; ?>" readonly/>
+
+                        <select name="indicacao" id="indicacao" class="size2" >
+                            <option value='' >selecione</option>
+                            <?php
+                            $indicacao = $this->paciente->listaindicacao($_GET);
+                            foreach ($indicacao as $item) {
+                                ?>
+
+                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?
+                                if (@$indicacao_paciente[0]->paciente_indicacao_id == $item->paciente_indicacao_id):
+                                    echo 'selected';
+                                endif;
+                                ?>>
+                                            <?php echo $item->nome; ?>
+                                </option>
+                                <?php
+                            }
+                            ?> 
+                        </select>
                     </div>
                 </fieldset>
 
@@ -90,7 +114,7 @@
                                 <th class="tabela_header">Qtde</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Entrega</th>
-                                <th class="tabela_header">ordenador</th>
+                                <th class="tabela_header">Ordenador</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
                         </thead>
@@ -117,7 +141,7 @@
                                                 <? endforeach; ?>
                                     </select></td>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
-                                <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" required="" class="size1"/></td>
+                                <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
                                 <td  width="50px;">
                                     <select name="convenio1" id="convenio1" class="size1" required="">
