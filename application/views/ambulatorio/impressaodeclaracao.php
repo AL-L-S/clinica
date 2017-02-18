@@ -45,7 +45,7 @@ switch ($MES) {
         break;
 }
 ?>
-<p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
+<p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/cabecalho1.jpg" ?>"></center></p>
 
 
 <?echo $modelo[0]->texto?>
@@ -79,7 +79,7 @@ switch ($MES) {
 <br>
 <p><center><?= $exame[0]->logradouro; ?><?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?> - <?= $exame[0]->municipio ?></center></p>
 <p><center>Fone: (85) <?= $exame[0]->telefone; ?> - (85) <?= $exame[0]->celular; ?></center></p>-->
-<p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p>
+<p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/rodape1.jpg" ?>"></center></p>
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>

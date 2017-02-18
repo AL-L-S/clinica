@@ -141,7 +141,7 @@
             var code = (window.event) ? window.event.keyCode : evt.which;
             var valor = this.value
 
-            if (code > 57 || (code < 48 && code != 8)) {
+            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
                 return false;
             } else {
                 this.value = trata(valor, false);

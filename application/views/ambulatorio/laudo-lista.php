@@ -67,6 +67,7 @@
                                             <option value='AGUARDANDO' >AGUARDANDO</option>
                                             <option value='DIGITANDO' >DIGITANDO</option>
                                             <option value='FINALIZADO' >FINALIZADO</option>
+                                            <option value='REVISAR' >REVISAR</option>
                                         </select>
                                     </th>
                                     <th class="tabela_title">
