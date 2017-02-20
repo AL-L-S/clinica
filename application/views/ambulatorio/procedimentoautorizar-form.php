@@ -48,7 +48,7 @@
                     <label>Nome da M&atilde;e</label>
 
 
-                    <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
+                    <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                 </div>
             </fieldset>
             <input type="hidden" name="paciente_id" value="<?= $paciente_id; ?>" />

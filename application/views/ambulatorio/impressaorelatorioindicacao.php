@@ -1,5 +1,5 @@
 <div class="content"> <!-- Inicio da DIV content -->
-    <meta charset="utf8">
+    <meta charset="utf-8"/>
     <? $tipoempresa = ""; ?>
     <table>
         <thead>
@@ -48,6 +48,15 @@
     </table>
 
 
+
+
+
+
+
+
+
+
+
     <? if (count($relatorio) > 0) {
         ?>
 
@@ -70,21 +79,13 @@
                 $indicacao = "";
                 foreach ($relatorio as $item) :
                     $i++;
-
                     $qtdetotal++;
                     ?>
                     <tr>
 
                         <td><?= utf8_decode($item->paciente); ?></td>
 
-                        <td style='text-align: center;'><font size="-2">
-                            <? if ($item->indicacao_guia != '') {
-                                echo $item->indicacao_guia;
-                            }
-                            else{ 
-                                echo $item->indicacao;
-                            } ?>
-                        </td>
+                        <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
                     </tr>
                 <? endforeach; ?>
 
@@ -109,22 +110,8 @@
                         ?>
 
                         <tr>
-                            <td style='text-align: center;'><font size="-2">
-                                <? if ($item->indicacao_guia != '') {
-                                    echo $item->indicacao_guia;
-                                }
-                                else{ 
-                                    echo $item->indicacao;
-                                } ?>
-                            </td>
-                            <td>
-                                <? if ($item->indicacao_guia != '') {
-                                    echo $item->quantidade_guia;
-                                }
-                                else{ 
-                                    echo $item->quantidade;
-                                } ?>
-                            </td>
+                            <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
+                            <td><?= $item->quantidade; ?></td>
                         </tr>
 
     <? endforeach; ?>
