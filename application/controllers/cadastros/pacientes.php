@@ -121,11 +121,10 @@ class pacientes extends BaseController {
 
         $resultadoguia = $this->guia->listarguia($paciente_id);
         $ambulatorio_guia_id = $resultadoguia['ambulatorio_guia_id'];
-        $indicacao_id = $resultadoguia['indicacao_id'];
         if ($ambulatorio_guia_id == 0) {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
-        $teste = $this->exametemp->autorizarpacientetemp($paciente_id, $ambulatorio_guia_id, $indicacao_id);
+        $teste = $this->exametemp->autorizarpacientetemp($paciente_id, $ambulatorio_guia_id);
         if ($teste == 0) {
 //            $this->gerardicom($ambulatorio_guia_id);
             $data['mensagem'] = 'Paciente gravado com sucesso';

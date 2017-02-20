@@ -74,6 +74,22 @@
 
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
+                    <div>
+                        <label>Indicacao</label>
+                        
+
+                        <select name="indicacao" id="indicacao" class="size2" >
+                            <option value='' >Selecione</option>
+                            <?php
+                            $indicacao = $this->paciente->listaindicacao($_GET);
+                            foreach ($indicacao as $item) {
+                                ?>
+                                <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome; ?></option>
+                                <?php
+                            }
+                            ?> 
+                        </select>
+                    </div>
                 </fieldset>
 
                 <fieldset>

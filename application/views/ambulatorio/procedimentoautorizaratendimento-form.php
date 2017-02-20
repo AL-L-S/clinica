@@ -91,6 +91,7 @@
                             <th class="tabela_header">V. Unit</th>
                             <th class="tabela_header">Qtde</th>
                             <th class="tabela_header">Pagamento</th>
+                            <th class="tabela_header">Indicação</th>
                             <th class="tabela_header">ordenador</th>
                             <th class="tabela_header">Confir.</th>
                             <th class="tabela_header">Descricao</th>
@@ -147,6 +148,21 @@
                                         <? foreach ($forma_pagamento as $value) : ?>
                                             <option value="<?= $value->forma_pagamento_id; ?>"><?= $value->nome; ?></option>
                                         <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select name="indicacao[<?= $i; ?>]" id="indicacao" class="size1" >
+                                        <option value=''>Selecione</option>
+                                        <?php
+                                        $indicacao = $this->paciente->listaindicacao($_GET);
+                                        foreach ($indicacao as $itens) {
+                                            ?>
+                                            <option value="<?php echo $itens->paciente_indicacao_id; ?>">
+                                                <?php echo $itens->nome; ?>
+                                            </option>
+                                            <?php
+                                        }
+                                        ?> 
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="text" name="ordenador" class="texto01"/></td>

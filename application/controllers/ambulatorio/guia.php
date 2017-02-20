@@ -1005,9 +1005,6 @@ class Guia extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
-        if($ambulatorio_guia_id != null){
-            $data['indicacao_paciente'] = $this->exametemp->listarindicacaoguia($ambulatorio_guia_id);
-        }
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
@@ -1034,9 +1031,6 @@ class Guia extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
-        if($ambulatorio_guia_id != null){
-            $data['indicacao_paciente'] = $this->exametemp->listarindicacaoguia($ambulatorio_guia_id);
-        }
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
@@ -1065,9 +1059,6 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
-        if($ambulatorio_guia_id != null){
-            $data['indicacao_paciente'] = $this->exametemp->listarindicacaoguia($ambulatorio_guia_id);
-        }
 
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
