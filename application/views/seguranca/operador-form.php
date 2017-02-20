@@ -12,14 +12,15 @@
                 <legend>Dados do Profissional</legend>
                 <div>
                     <label>Nome *</label>                      
-                    <input type ="hidden" name ="operador_id" value ="<?= @$obj->_operador_id; ?>" id ="txtoperadorId">
-                    <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= @$obj->_nome; ?>" />
+                    <input type ="hidden" name ="operador_id" value ="<?= @$obj->_operador_id; ?>" id ="txtoperadorId" >
+                    <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= @$obj->_nome; ?>" required="true"/>
                 </div>
                 <div>
                     <label>Sexo *</label>
 
 
                     <select name="sexo" id="txtSexo" class="size2">
+                        <option value="">Selecione</option>
                         <option value="M" <?
                         if (@$obj->_sexo == "M"):echo 'selected';
                         endif;
@@ -131,13 +132,13 @@
                     <label>Telefone</label>
 
 
-                    <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone" value="<?= @$obj->_telefone; ?>" />
+                    <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$obj->_telefone; ?>" />
                 </div>
                 <div>
                     <label>Celular *</label>
 
 
-                    <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" value="<?= @$obj->_celular; ?>" />
+                    <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$obj->_celular; ?>" required="true"/>
                 </div>
                 <div>
                     <label>E-mail *</label>
@@ -149,11 +150,14 @@
                 <div>
                     <label>Nome usu&aacute;rio *</label>
 
-                    <input type="text" id="txtUsuario" name="txtUsuario"  class="texto04" value="<?= @$obj->_usuario; ?>" />
+                    <input type="text" id="txtUsuario" name="txtUsuario"  class="texto04" value="<?= @$obj->_usuario; ?>" required="true"/>
                 </div>
                 <div>
                     <label>Senha: *</label>
-                    <input type="password" name="txtSenha" id="txtSenha" class="texto04" value="" />
+                    <input type="password" name="txtSenha" id="txtSenha" class="texto04" value="" <? if(@$obj->_senha == null)
+                        {?>
+                           required="true"
+                    <?}?> />
 
                     <!--                    <label>Confirme a Senha: *</label>
                                         <input type="password" name="verificador" id="txtSenha" class="texto04" value="" onblur="confirmaSenha(this)"/>-->
@@ -161,7 +165,7 @@
                 <div>
                     <label>Tipo perfil *</label>
 
-                    <select name="txtPerfil" id="txtPerfil" class="size4">
+                    <select name="txtPerfil" id="txtPerfil" class="size4" required="true">
                         <option value="">Selecione</option>
                         <?
                         foreach ($listarPerfil as $item) :
@@ -304,7 +308,54 @@
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+    <script>
+			function mascaraTelefone( campo ) {
+			
+				function trata( valor,  isOnBlur ) {
+					
+					valor = valor.replace(/\D/g,"");             			
+					valor = valor.replace(/^(\d{2})(\d)/g,"($1)$2"); 		
+					
+					if( isOnBlur ) {
+						
+						valor = valor.replace(/(\d)(\d{4})$/,"$1-$2");   
+					} else {
+
+						valor = valor.replace(/(\d)(\d{3})$/,"$1-$2"); 
+					}
+					return valor;
+				}
+				
+				campo.onkeypress = function (evt) {
+					 
+					var code = (window.event)? window.event.keyCode : evt.which;	
+					var valor = this.value
+					
+					if(code > 57 || (code < 48 && code != 8 ))  {
+						return false;
+					} else {
+						this.value = trata(valor, false);
+					}
+				}
+				
+				campo.onblur = function() {
+					
+					var valor = this.value;
+					if( valor.length < 13 ) {
+						this.value = ""
+					}else {		
+						this.value = trata( this.value, true );
+					}
+				}
+				
+				campo.maxLength = 14;
+			}
+
+		
+		</script>
 <script type="text/javascript">
+            mascaraTelefone( form_operador.txtTelefone );
+            mascaraTelefone( form_operador.txtCelular );
                         $('#btnVoltar').click(function () {
                             $(location).attr('href', '<?= base_url(); ?>sca/operador');
                         });
@@ -350,22 +401,6 @@
                             });
                         });
 
-                        $(document).ready(function () {
-                            jQuery('#form_operador').validate({
-                                rules: {
-                                    nome: {
-                                        required: true,
-                                        minlength: 6
-                                    }
-                                },
-                                messages: {
-                                    nome: {
-                                        required: "*",
-                                        minlength: "!"
-                                    }
-                                }
-                            });
-                        });
 
                         tinyMCE.init({
                             // General options

@@ -81,10 +81,7 @@
                         
                         if ($item->percentual == "t") {
                             $simbolopercebtual = " %";
-                            if ($item->percentual_medico != "") {
-                                $valorpercentualmedico = $item->percentual_medico;
-                            }
-                            elseif ($testearray > 0) {
+                            if ($testearray > 0) {
                                 $valorpercentualmedico = $percentual[0]->valor;
                             } else {
                                 $valorpercentualmedico = $item->perc_medico;

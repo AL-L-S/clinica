@@ -58,6 +58,7 @@ class Operador_model extends BaseModel {
     }
 
     function listar($args = array()) {
+       
         $this->db->from('tb_operador')
                 ->join('tb_perfil', 'tb_perfil.perfil_id = tb_operador.perfil_id', 'left')
                 ->select('"tb_operador".*, tb_perfil.nome as nomeperfil');
@@ -70,6 +71,9 @@ class Operador_model extends BaseModel {
                 // $this->db->like('tb_operador.nome', $args['nome'], 'left');
                 $this->db->where('tb_operador.nome ilike', "%" . $args['nome'] . "%");
                 $this->db->orwhere('tb_operador.usuario ilike', "%" . $args['nome'] . "%");
+            }
+            if ($args['ativo'] != '') {
+                $this->db->where('tb_operador.ativo', $args['ativo']);
             }
         }
         return $this->db;

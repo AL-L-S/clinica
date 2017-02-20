@@ -9,21 +9,46 @@
         <div>
             <table>
                 <thead>
+                <form method="get" action="<?= base_url() ?>seguranca/operador/pesquisar">
+
+
                     <tr>
-                        <th colspan="5" class="tabela_title">
-                            Lista de Operadores
-                            <form method="get" action="<?= base_url() ?>seguranca/operador/pesquisar">
-                                <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
-                                <button type="submit" id="enviar">Pesquisar</button>
-                            </form>
-                        </th>
+                        <th class="tabela_title">Nome</th>
+                        <th class="tabela_title">Status</th>
+
                     </tr>
+                    </thead>
                     <tr>
-                        <th class="tabela_header">Nome</th>
-                        <th class="tabela_header">Usu&aacute;rio</th>
-                        <th class="tabela_header">Perfil</th>
-                        <th class="tabela_header">Ativo</th>
-                        <th class="tabela_header" colspan="5" width="140px;"><center>A&ccedil;&otilde;es</center></th>
+                        <th class="tabela_title">
+                            <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
+
+                        </th>
+                        <th class="tabela_title">
+                            <select name="ativo" id="empresa" class="size1">
+                                <option value="">Selecione</option>
+                                <option value="t">Ativo</option>
+                                <option value="f">Não-ativo</option>
+
+                            </select>
+
+                        </th>
+
+                        <th colspan="1" class="tabela_title">
+                            <button type="submit" id="enviar">Pesquisar</button>
+                        </th>
+
+                    </tr>
+                </form>
+                
+            </table>
+            <table>
+                <thead>
+                <tr>
+                    <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Usu&aacute;rio</th>
+                    <th class="tabela_header">Perfil</th>
+                    <th class="tabela_header">Ativo</th>
+                    <th class="tabela_header" colspan="5" width="140px;"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -106,14 +131,14 @@
                                     }
                                     ?>> 50 </option>
                                     <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/100');" <?
-                                            if ($limit == 100) {
-                                                echo "selected";
-                                            }
+                                    if ($limit == 100) {
+                                        echo "selected";
+                                    }
                                     ?>> 100 </option>
                                     <option onclick="javascript:window.location.href = ('<?= base_url() ?>seguranca/operador/pesquisar/todos');" <?
-                                            if ($limit == "todos") {
-                                                echo "selected";
-                                            }
+                                    if ($limit == "todos") {
+                                        echo "selected";
+                                    }
                                     ?>> Todos </option>
                                 </select>
                             </div>
