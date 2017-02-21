@@ -2582,10 +2582,10 @@ class guia_model extends Model {
     }
 
     function percentualmedicoconvenio($procedimentopercentual, $medicopercentual) {
-        echo '<pre>';
-        var_dump($procedimentopercentual);
-        var_dump($medicopercentual);
-        die;
+//        echo '<pre>';
+//        var_dump($procedimentopercentual);
+//        var_dump($medicopercentual);
+//        die;
         $this->db->select('mc.valor, mc.percentual');
         $this->db->from('tb_procedimento_percentual_medico_convenio mc');
         $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');

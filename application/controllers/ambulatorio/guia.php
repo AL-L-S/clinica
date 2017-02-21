@@ -711,7 +711,7 @@ class Guia extends BaseController {
         $medicopercentual = $_POST['medicoagenda'];
         $percentual = $this->guia->percentualmedicoconvenio($procedimentopercentual, $medicopercentual);
         $valor_percentual = $percentual[0]->valor;
-        var_dump($percentual); die;
+//        var_dump($percentual); die;
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
