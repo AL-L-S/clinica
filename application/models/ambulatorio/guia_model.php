@@ -1382,6 +1382,64 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listacadaindicacao() {
+
+        $this->db->select('
+            pi.nome as indicacao');
+        $this->db->from('tb_paciente_indicacao pi');
+        $this->db->where("pi.paciente_indicacao_id", $_POST['indicacao']);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioindicacaoexames() {
+        $this->db->select('p.nome as paciente, ae.paciente_id,
+            pi.nome as indicacao');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id');
+
+        if ($_POST['indicacao'] != "0") {
+            $this->db->where("ae.indicacao", $_POST['indicacao']);
+        } else {
+            $this->db->where("ae.indicacao is not null");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('pi.nome');
+        $this->db->orderby('ae.data');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+
+    function relatorioindicacaoexamesconsolidado() {
+
+        $this->db->select('pi.nome as indicacao,
+            count(pi.nome) as quantidade');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id');
+        if ($_POST['indicacao'] != "0") {
+            $this->db->where("ae.indicacao", $_POST['indicacao']);
+        } else {
+            $this->db->where("ae.indicacao is not null");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->groupby('pi.nome');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.data');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function relatorionotafiscal() {
         $inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
@@ -2524,8 +2582,11 @@ class guia_model extends Model {
     }
 
     function percentualmedicoconvenio($procedimentopercentual, $medicopercentual) {
-
-        $this->db->select('mc.valor');
+        echo '<pre>';
+        var_dump($procedimentopercentual);
+        var_dump($medicopercentual);
+        die;
+        $this->db->select('mc.valor, mc.percentual');
         $this->db->from('tb_procedimento_percentual_medico_convenio mc');
         $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
         $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);

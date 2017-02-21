@@ -447,6 +447,7 @@ class procedimentoplano_model extends Model {
         $this->db->from('tb_procedimento_percentual_medico_convenio');
         $this->db->where('medico', $_POST['medico']);
         $this->db->where('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
+        $this->db->where('ativo', 'true');
         $return = $this->db->get();
         $result = $return->result();
 

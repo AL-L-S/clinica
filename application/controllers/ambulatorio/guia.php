@@ -711,6 +711,7 @@ class Guia extends BaseController {
         $medicopercentual = $_POST['medicoagenda'];
         $percentual = $this->guia->percentualmedicoconvenio($procedimentopercentual, $medicopercentual);
         $valor_percentual = $percentual[0]->valor;
+        var_dump($percentual); die;
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
@@ -1733,6 +1734,12 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioindicacao', $data);
     }
+    
+    function relatorioindicacaoexames() {
+        $data['indicacao'] = $this->paciente->listaindicacao();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatorioindicacaoexames', $data);
+    }
 
     function relatorionotafiscal() {
         $data['empresa'] = $this->guia->listarempresas();
@@ -1767,6 +1774,7 @@ class Guia extends BaseController {
 
         if ($_POST['indicacao'] != '0') {
             $data['indicacao'] = $this->guia->listacadaindicacao($_POST['indicacao']);
+            $data['indicacao'] = $data['indicacao'][0]->indicacao;
         } else {
             $data['indicacao'] = '0';
         }
@@ -1779,6 +1787,25 @@ class Guia extends BaseController {
 //        var_dump($data['consolidado']);die;
         
         $this->load->View('ambulatorio/impressaorelatorioindicacao', $data);
+    }
+    
+    function gerarelatorioindicacaoexames() {
+    
+        if ($_POST['indicacao'] != '0') {
+            $data['indicacao'] = $this->guia->listacadaindicacao($_POST['indicacao']);
+            $data['indicacao'] = $data['indicacao'][0]->indicacao;
+        } else {
+            $data['indicacao'] = '0';
+        }
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->guia->relatorioindicacaoexames();
+        $data['consolidado'] = $this->guia->relatorioindicacaoexamesconsolidado();
+//        echo "<pre>";
+//        var_dump($data['consolidado']);die;
+        
+        $this->load->View('ambulatorio/impressaorelatorioindicacaoexames', $data);
     }
 
     function gerarelatorionotafiscal() {
