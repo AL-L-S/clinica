@@ -47,13 +47,13 @@ class caixa_model extends Model {
             $this->db->where('e.conta', $args['conta']);
         }
         if (isset($args['datainicio']) && strlen($args['datainicio']) > 0) {
-            $this->db->where('e.data >=', $args['datainicio']);
+            $this->db->where('e.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datainicio'])) ));
         }
         if (isset($args['obs']) && strlen($args['obs']) != '') {
             $this->db->where('e.observacao ilike', "%" . $args['obs'] . "%");
         }
         if (isset($args['datafim']) && strlen($args['datafim']) > 0) {
-            $this->db->where('e.data <=', $args['datafim']);
+            $this->db->where('e.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datafim'])) ));
         }
         return $this->db;
     }
@@ -85,10 +85,10 @@ class caixa_model extends Model {
             $this->db->where('s.conta', $args['conta']);
         }
         if (isset($args['datainicio']) && strlen($args['datainicio']) > 0) {
-            $this->db->where('s.data >=', $args['datainicio']);
+            $this->db->where('s.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datainicio'])) ) );
         }
         if (isset($args['datafim']) && strlen($args['datafim']) > 0) {
-            $this->db->where('s.data <=', $args['datafim']);
+            $this->db->where('s.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datafim'])) ));
         }
         if (isset($args['obs']) && strlen($args['obs']) != '') {
             $this->db->where('s.observacao ilike', "%" . $args['obs'] . "%");
@@ -111,10 +111,10 @@ class caixa_model extends Model {
             $this->db->where('s.operador_cadastro', $args['nome']);
         }
         if (isset($args['datainicio']) && strlen($args['datainicio']) > 0) {
-            $this->db->where('s.data >=', $args['datainicio']);
+            $this->db->where('s.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datainicio'])) ) );
         }
         if (isset($args['datafim']) && strlen($args['datafim']) > 0) {
-            $this->db->where('s.data <=', $args['datafim']);
+            $this->db->where('s.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datafim'])) ));
         }
         if (isset($args['obs']) && strlen($args['obs']) != '') {
             $this->db->where('s.observacao ilike', "%" . $args['obs'] . "%");
