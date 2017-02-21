@@ -5819,6 +5819,26 @@ ORDER BY ae.agenda_exames_id)";
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarempresamunicipio() {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('razao_social,
+                            logradouro,
+                            numero,
+                            e.nome,
+                            telefone,
+                            producaomedicadinheiro,
+                            m.estado,
+                            m.nome as municipio,
+                            impressao_tipo');
+        $this->db->from('tb_empresa e');
+        $this->db->join('tb_municipio m', 'e.municipio_id = m.municipio_id', 'left');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->orderby('empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function verificasessoesabertas($procedimento_convenio_id, $paciente_id) {
         $this->db->select('pt.grupo,

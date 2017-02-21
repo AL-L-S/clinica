@@ -1170,6 +1170,9 @@ class Guia extends BaseController {
     }
 
     function faturarguia($guia_id, $financeiro_grupo_id = null) {
+       $data['exame'][0] = new stdClass();
+       // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
+       // A linha alima inicia o Objeto antes de atribuir um valor
         if (isset($financeiro_grupo_id)) {
             $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id, $financeiro_grupo_id);
             $data['exame'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);

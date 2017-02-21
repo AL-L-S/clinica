@@ -1,3 +1,38 @@
+<?
+$DIA = substr(date("Y-m-d"), 8, 2);
+$MES = substr(date("Y-m-d"), 5, 2);
+
+switch ($MES) {
+    case 1 : $MES = 'Janeiro';
+        break;
+    case 2 : $MES = 'Fevereiro';
+        break;
+    case 3 : $MES = 'Mar&ccedil;o';
+        break;
+    case 4 : $MES = 'Abril';
+        break;
+    case 5 : $MES = 'Maio';
+        break;
+    case 6 : $MES = 'Junho';
+        break;
+    case 7 : $MES = 'Julho';
+        break;
+    case 8 : $MES = 'Agosto';
+        break;
+    case 9 : $MES = 'Setembro';
+        break;
+    case 10 : $MES = 'Outubro';
+        break;
+    case 11 : $MES = 'Novembro';
+        break;
+    case 12 : $MES = 'Dezembro';
+        break;
+        break;
+}
+//echo $DIA;
+?>
+<meta charset="UTF-8">
+<title>Imp.. Receituário Especial</title>
 <div id="esquerdo" style="float:left;">
     <div >
         <table>
@@ -115,7 +150,7 @@
                 <? } ?>
             <tr>
             </tr>
-            <td style='font-family: serif; font-size: 8pt;' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:<?= date("d/m/Y");?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Assinatura do medico </td>
+            <td style='font-family: serif; font-size: 8pt;' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:<?= date("d/m/Y"); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Assinatura do medico </td>
             </tr>
         </table>
     </div>
@@ -146,6 +181,17 @@
                 <td colspan="2" style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Telefone:</td>
                 <td style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Ass. do Farmac&ecirc;utico - Data:</td>
             </tr>
+        </table>
+        <br>
+    </div>
+    <div>
+        <table>
+            <tr >
+                <td  width="550px"  style="text-align: center;" ><? echo $DIA; ?> De <? echo $MES; ?><br> <? echo $empresa[0]->municipio; ?> - <? echo $empresa[0]->estado; ?>
+                </td>
+
+            </tr>
+
         </table>
     </div>
 </div>
@@ -267,7 +313,7 @@
                 <? } ?>
             <tr>
             </tr>
-            <td style='font-family: serif; font-size: 8pt;' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:<?= date("d/m/Y");?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Assinatura do medico </td>
+            <td style='font-family: serif; font-size: 8pt;' >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:<?= date("d/m/Y"); ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Assinatura do medico </td>
             </tr>
         </table>
     </div>
@@ -299,6 +345,17 @@
                 <td style='vertical-align: bottom; font-family: serif; font-size: 8pt;'>Ass. do Farmac&ecirc;utico - Data:</td>
             </tr>
         </table>
+        <div>
+            <br>
+            <table>
+                <tr>
+                    <td  width="550px"  style="text-align: center;" ><? echo $DIA; ?> De <? echo $MES; ?><br> <? echo $empresa[0]->municipio; ?> - <? echo $empresa[0]->estado; ?>
+                    </td>
+
+                </tr>
+
+            </table>
+        </div>
     </div>
 </div>
 <style>
@@ -321,7 +378,7 @@
     // set empty page footer
 //   jsPrintSetup.setOption('footerStrLeft', '');
 //   jsPrintSetup.setOption('footerStrCenter', '');
-    jsPrintSetup.setOption('scaling', 80.0);
+    jsPrintSetup.setOption('scaling', 77.0);
     jsPrintSetup.setOption('shrinkToFit', 'false');
     // clears user preferences always silent print value
     // to enable using 'printSilent' option
