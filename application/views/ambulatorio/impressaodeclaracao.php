@@ -47,7 +47,7 @@ switch ($MES) {
 ?>
 <p><center><img align = 'center'  width='1000px' height='200px' src="<?= base_url() . "img/cabecalho1.jpg" ?>"></center></p>
 
-
+<p>Paciente: <strong><?= utf8_decode($paciente['0']->nome); ?></strong></p>
 <?echo $modelo[0]->texto?>
 
 <!--<p><center><u><b><?= $empresa[0]->razao_social; ?></b></u></center></p>

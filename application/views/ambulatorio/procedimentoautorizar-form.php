@@ -68,6 +68,7 @@
                             <th class="tabela_header">autorizacao</th>
                             <th class="tabela_header">V. Unit</th>
                             <th class="tabela_header">Pagamento</th>
+                            <th class="tabela_header">Indicação</th>
                             <th class="tabela_header">Entrega</th>
                             <th class="tabela_header">ordenador</th>
                             <th class="tabela_header">Confir.</th>
@@ -86,11 +87,11 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->sala; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>" required="" alt="numeromask" value="1" class="texto00"/></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" required="" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" required="" class="size1"/>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  alt="numeromask" value="1" class="texto00"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1" required=""/>
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1"  required="true">
+                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" >
                                         <option value="">Selecione</option>
                                         <? foreach ($convenio as $value) : ?>
                                             <option value="<?= $value->convenio_id; ?>"><?= $value->nome; ?></option>
@@ -99,7 +100,7 @@
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1"  required="true">
+                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" required="" >
                                         <option value="">-- Escolha um procedimento --</option>
                                     </select>
                                 </td>
@@ -112,6 +113,21 @@
                                         <? //foreach ($forma_pagamento as $item) : ?>
     <!--                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>-->
                                         <? // endforeach;  ?>
+                                    </select>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select name="indicacao[<?= $i; ?>]" id="indicacao" class="size1" >
+                                        <option value=''>Selecione</option>
+                                        <?php
+                                        $indicacao = $this->paciente->listaindicacao($_GET);
+                                        foreach ($indicacao as $item) {
+                                            ?>
+                                            <option value="<?php echo $item->paciente_indicacao_id; ?>">
+                                                <?php echo $item->nome; ?>
+                                            </option>
+                                            <?php
+                                        }
+                                        ?> 
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="text" alt="date" name="data[<?= $i; ?>]" id="data<?= $i; ?>" class="size1" /></td>
@@ -138,11 +154,10 @@
         </form>
     </div> <!-- Final da DIV content -->
 </div> <!-- Final da DIV content -->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
                         $(function () {

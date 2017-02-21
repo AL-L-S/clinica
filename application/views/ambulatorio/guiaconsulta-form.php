@@ -78,17 +78,12 @@
                         <input type="hidden" name="indicacao_paciente" id="indicacao_paciente" class="texto01" value="<?= @$indicacao_paciente[0]->paciente_indicacao_id; ?>" readonly/>
 
                         <select name="indicacao" id="indicacao" class="size2" >
-                            <option value='' >selecione</option>
+                            <option value=''>Selecione</option>
                             <?php
                             $indicacao = $this->paciente->listaindicacao($_GET);
                             foreach ($indicacao as $item) {
                                 ?>
-
-                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?
-                                if (@$indicacao_paciente[0]->paciente_indicacao_id == $item->paciente_indicacao_id):
-                                    echo 'selected';
-                                endif;
-                                ?>>
+                                <option value="<?php echo $item->paciente_indicacao_id; ?>">
                                             <?php echo $item->nome; ?>
                                 </option>
                                 <?php

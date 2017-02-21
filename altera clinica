@@ -1415,3 +1415,7 @@ INSERT INTO ponto.tb_perfil(
     VALUES (13, 'FINANCEIRO', true);
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN indicacao_id integer;
 
+-- Dia 20/02/2017
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN indicacao integer;
+
+

@@ -1382,6 +1382,64 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listacadaindicacao() {
+
+        $this->db->select('
+            pi.nome as indicacao');
+        $this->db->from('tb_paciente_indicacao pi');
+        $this->db->where("pi.paciente_indicacao_id", $_POST['indicacao']);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioindicacaoexames() {
+        $this->db->select('p.nome as paciente, ae.paciente_id,
+            pi.nome as indicacao');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id');
+
+        if ($_POST['indicacao'] != "0") {
+            $this->db->where("ae.indicacao", $_POST['indicacao']);
+        } else {
+            $this->db->where("ae.indicacao is not null");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('pi.nome');
+        $this->db->orderby('ae.data');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+
+    function relatorioindicacaoexamesconsolidado() {
+
+        $this->db->select('pi.nome as indicacao,
+            count(pi.nome) as quantidade');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id');
+        if ($_POST['indicacao'] != "0") {
+            $this->db->where("ae.indicacao", $_POST['indicacao']);
+        } else {
+            $this->db->where("ae.indicacao is not null");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->groupby('pi.nome');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.data');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function relatorionotafiscal() {
         $inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
@@ -1408,7 +1466,7 @@ class guia_model extends Model {
 
     function relatorioindicacaoconsolidado() {
 
-         $this->db->select('pi.nome as indicacao,
+        $this->db->select('pi.nome as indicacao,
             count(pi.nome) as quantidade');
         $this->db->from('tb_paciente p');
         $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao');
@@ -2524,8 +2582,11 @@ class guia_model extends Model {
     }
 
     function percentualmedicoconvenio($procedimentopercentual, $medicopercentual) {
-
-        $this->db->select('mc.valor');
+//        echo '<pre>';
+//        var_dump($procedimentopercentual);
+//        var_dump($medicopercentual);
+//        die;
+        $this->db->select('mc.valor, mc.percentual');
         $this->db->from('tb_procedimento_percentual_medico_convenio mc');
         $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
         $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);
@@ -5926,6 +5987,9 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('ordenador', $_POST['ordenador']);
                 ;
             }
+            if ($_POST['indicacao'] != "") {
+                $this->db->set('indicacao', $_POST['indicacao']);
+            }
             if ($_POST['data'] != "") {
                 $this->db->set('data_entrega', $_POST['data']);
             }
@@ -6066,11 +6130,6 @@ ORDER BY ae.agenda_exames_id)";
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
 
-            if ((isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])) {
-                $this->db->set('indicacao_id', $_POST['indicacao']);
-                $this->db->where('ambulatorio_guia_id', $ambulatorio_guia_id);
-                $this->db->update('tb_ambulatorio_guia');
-            }
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
@@ -6109,7 +6168,9 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('autorizacao', $_POST['autorizacao1']);
                 if ($_POST['ordenador'] != "") {
                     $this->db->set('ordenador', $_POST['ordenador']);
-                    ;
+                }
+                if ($_POST['indicacao'] != "") {
+                    $this->db->set('indicacao', $_POST['indicacao']);
                 }
                 if ($medico_id != "") {
                     $this->db->set('medico_solicitante', $medico_id);
@@ -6201,11 +6262,6 @@ ORDER BY ae.agenda_exames_id)";
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
 
-            if ((isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])) {
-                $this->db->set('indicacao_id', $_POST['indicacao']);
-                $this->db->where('ambulatorio_guia_id', $ambulatorio_guia_id);
-                $this->db->update('tb_ambulatorio_guia');
-            }
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
@@ -6223,7 +6279,9 @@ ORDER BY ae.agenda_exames_id)";
 //            $this->db->set('observacoes', $_POST['observacao']);
             if ($_POST['ordenador'] != "") {
                 $this->db->set('ordenador', $_POST['ordenador']);
-                ;
+            }
+            if ($_POST['indicacao'] != "") {
+                $this->db->set('indicacao', $_POST['indicacao']);
             }
             $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
             $this->db->set('inicio', $hora);
@@ -6278,11 +6336,11 @@ ORDER BY ae.agenda_exames_id)";
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
 
-            if ((isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])) {
-                $this->db->set('indicacao_id', $_POST['indicacao']);
-                $this->db->where('ambulatorio_guia_id', $ambulatorio_guia_id);
-                $this->db->update('tb_ambulatorio_guia');
-            }
+//            if ((isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])) {
+//                $this->db->set('indicacao_id', $_POST['indicacao']);
+//                $this->db->where('ambulatorio_guia_id', $ambulatorio_guia_id);
+//                $this->db->update('tb_ambulatorio_guia');
+//            }
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
@@ -6321,7 +6379,6 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('autorizacao', $_POST['autorizacao1']);
                 if ($_POST['ordenador'] != "") {
                     $this->db->set('ordenador', $_POST['ordenador']);
-                    ;
                 }
                 $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
                 $this->db->set('inicio', $hora);
@@ -6343,6 +6400,9 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('tipo', 'ESPECIALIDADE');
                 $this->db->set('ativo', 'f');
                 $this->db->set('situacao', 'OK');
+                if ($_POST['indicacao'] != "") {
+                    $this->db->set('indicacao', $_POST['indicacao']);
+                }
                 $this->db->set('guia_id', $ambulatorio_guia_id);
                 $this->db->set('agrupador_fisioterapia', $ambulatorio_guia_id);
                 $this->db->set('numero_sessao', $index);
@@ -6416,7 +6476,6 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('autorizacao', $_POST['autorizacao1']);
                 if ($_POST['ordenador'] != "") {
                     $this->db->set('ordenador', $_POST['ordenador']);
-                    ;
                 }
                 $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
                 $this->db->set('inicio', $hora);
@@ -6434,6 +6493,9 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('tipo', 'PSICOLOGIA');
                 $this->db->set('ativo', 'f');
                 $this->db->set('situacao', 'OK');
+                if ($_POST['indicacao'] != "") {
+                    $this->db->set('indicacao', $_POST['indicacao']);
+                }
                 $this->db->set('guia_id', $ambulatorio_guia_id);
                 $this->db->set('agrupador_fisioterapia', $ambulatorio_guia_id);
                 $this->db->set('numero_sessao', $index);

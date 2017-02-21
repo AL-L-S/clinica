@@ -1,8 +1,8 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar Relatório Indicação Cadastro</a></h3>
+        <h3><a href="#">Gerar relatorio Indicação</a></h3>
         <div>
-            <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioindicacao">
+            <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioindicacaoexames">
                 <dl>
                     <dt>
                     <label>Data inicio</label>

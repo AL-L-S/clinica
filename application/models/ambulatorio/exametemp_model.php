@@ -2335,6 +2335,7 @@ class exametemp_model extends Model {
 
     function autorizarpacientetemp($paciente_id, $ambulatorio_guia_id) {
         try {
+//            var_dump($_POST['indicacao']); die;
             $i = 0;
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
@@ -2350,6 +2351,7 @@ class exametemp_model extends Model {
                 $x = 0;
                 $w = 0;
                 $b = 0;
+                $k = 0;
                 $f = 0;
                 $g = 0;
                 $h = 0;
@@ -2388,6 +2390,13 @@ class exametemp_model extends Model {
                         $return = $query->result();
                         $dinheiro = $return[0]->dinheiro;
 
+                        break;
+                    }
+                }
+                foreach ($_POST['indicacao'] as $itemindicacao) {
+                    $k++;
+                    if ($i == $k) {
+                        $indicacao = $itemindicacao;
                         break;
                     }
                 }
@@ -2449,7 +2458,9 @@ class exametemp_model extends Model {
                     if ($_POST['ordenador'] != "") {
                         $this->db->set('ordenador', $_POST['ordenador']);
                     }
-
+                    if ($indicacao != "") {
+                        $this->db->set('indicacao', $indicacao);
+                    }
                     $this->db->set('medico_solicitante', $medico_id);
                     if ($medicoexecutante != "") {
                         $this->db->set('medico_agenda', $medicoexecutante);
@@ -2553,7 +2564,7 @@ class exametemp_model extends Model {
     function autorizarpacientetempconsulta($paciente_id, $ambulatorio_guia_id) {
         try {
 //            $testemedico = $_POST['medico_id'];
-//            var_dump($testemedico);
+//            var_dump($_POST['indicacao']); die;
 //            die;
             $i = 0;
             $confimado = "";
@@ -2573,6 +2584,7 @@ class exametemp_model extends Model {
                 $f = 0;
                 $g = 0;
                 $h = 0;
+                $k = 0;
                 $i++;
 
                 foreach ($_POST['sala'] as $itemnome) {
@@ -2593,6 +2605,13 @@ class exametemp_model extends Model {
                     $e++;
                     if ($i == $e) {
                         $formapagamento = $itemnome;
+                        break;
+                    }
+                }
+                foreach ($_POST['indicacao'] as $itemindicacao) {
+                    $k++;
+                    if ($i == $k) {
+                        $indicacao = $itemindicacao;
                         break;
                     }
                 }
@@ -2657,6 +2676,9 @@ class exametemp_model extends Model {
                         $this->db->set('medico_consulta_id', $medico_id);
                     }
                     $this->db->set('autorizacao', $autorizacao);
+                    if ($indicacao != "") {
+                        $this->db->set('indicacao', $indicacao);
+                    }
                     $this->db->set('guia_id', $ambulatorio_guia_id);
                     $this->db->set('quantidade', '1');
                     $this->db->set('agenda_exames_nome_id', $sala);
@@ -2690,7 +2712,7 @@ class exametemp_model extends Model {
     function autorizarpacientetempfisioterapia($paciente_id, $ambulatorio_guia_id) {
         try {
 //            $testemedico = $_POST['medico_id'];
-//            var_dump($testemedico);
+//            var_dump($_POST['indicacao']);die;
 //            die;
             $i = 0;
             $confimado = "";
@@ -2710,6 +2732,7 @@ class exametemp_model extends Model {
                 $g = 0;
                 $h = 0;
                 $j = 0;
+                $k = 0;
                 $i++;
 
                 foreach ($_POST['sala'] as $itemnome) {
@@ -2730,6 +2753,13 @@ class exametemp_model extends Model {
                     $e++;
                     if ($i == $e) {
                         $formapagamento = $itemnome;
+                        break;
+                    }
+                }
+                foreach ($_POST['indicacao'] as $itemindicacao) {
+                    $k++;
+                    if ($i == $k) {
+                        $indicacao = $itemindicacao;
                         break;
                     }
                 }
@@ -2800,6 +2830,9 @@ class exametemp_model extends Model {
                     if ($medico_id != "") {
                         $this->db->set('medico_agenda', $medico_id);
                         $this->db->set('medico_consulta_id', $medico_id);
+                    }
+                    if ($indicacao != "") {
+                        $this->db->set('indicacao', $indicacao);
                     }
                     $this->db->set('autorizacao', $autorizacao);
                     $this->db->set('guia_id', $ambulatorio_guia_id);
@@ -2903,7 +2936,7 @@ class exametemp_model extends Model {
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
 //            $testemedico = $_POST['medico_id'];
-//            var_dump($testemedico);
+//            var_dump($_POST['indicacao']); die;
 //            die;
             $i = 0;
             $confimado = "";
@@ -2924,6 +2957,7 @@ class exametemp_model extends Model {
                 $h = 0;
                 $j = 0;
                 $t = 0;
+                $k = 0;
                 $i++;
 
 
@@ -2950,6 +2984,13 @@ class exametemp_model extends Model {
                     $e++;
                     if ($i == $e) {
                         $formapagamento = $itemnome;
+                        break;
+                    }
+                }
+                foreach ($_POST['indicacao'] as $itemindicacao) {
+                    $k++;
+                    if ($i == $k) {
+                        $indicacao = $itemindicacao;
                         break;
                     }
                 }
@@ -3027,6 +3068,9 @@ class exametemp_model extends Model {
                     if ($medico_id != "") {
                         $this->db->set('medico_agenda', $medico_id);
                         $this->db->set('medico_consulta_id', $medico_id);
+                    }
+                    if ($indicacao != "") {
+                        $this->db->set('indicacao', $indicacao);
                     }
                     if ($crmsolicitante != "") {
                         $this->db->set('medico_solicitante', $crmsolicitante);

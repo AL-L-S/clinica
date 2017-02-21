@@ -30,7 +30,7 @@
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">EMPRESA: <?= $tipoempresa ?></th>
             </tr>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
             </tr>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
@@ -73,16 +73,21 @@
                     if ($item->medico == $itens->medico) {
                         $procedimentopercentual = $itens->procedimento_tuss_id;
                         $medicopercentual = $itens->medico_parecer1;
+
                         $percentual = $this->guia->percentualmedico($procedimentopercentual, $medicopercentual);
-                        
+
                         $testearray = count($percentual);
+  
                         if ($itens->percentual == "t") {
+
                             if ($testearray > 0) {
+
                                 $valorpercentualmedico = $percentual[0]->valor;
                             } else {
                                 $valorpercentualmedico = $itens->perc_medico;
                             }
                             $perc = $itens->valor_total * ($valorpercentualmedico / 100);
+
                             $medicos = $medicos + $perc;
                         } else {
                             $simbolopercebtual = "";
@@ -95,7 +100,6 @@
                             $medicos = $medicos + $perc;
                         }
                     }
-
                 endforeach;
                 $i++;
                 $total_medicospagar = $total_medicospagar + $medicos;
@@ -200,7 +204,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

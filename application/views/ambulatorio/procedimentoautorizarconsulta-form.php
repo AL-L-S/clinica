@@ -1,181 +1,198 @@
 <!--<body onload="alert('blablab');">-->
-    <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-        <!--<div class="clear"></div>-->
-        <div class="bt_link_new" style="width: 150pt">
-            <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
-                Novo Medico Solicitante
-            </a>
-        </div>
-        <div class="bt_link_new">
-            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/novo/<?= $paciente_id ?>');">
-                Nova guia
-            </a>
-        </div>
+<div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
+    <!--<div class="clear"></div>-->
+    <div class="bt_link_new" style="width: 150pt">
+        <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
+            Novo Medico Solicitante
+        </a>
+    </div>
+    <div class="bt_link_new">
+        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/novo/<?= $paciente_id ?>');">
+            Nova guia
+        </a>
+    </div>
 
-        <div>
-            <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>cadastros/pacientes/autorizarambulatoriotempconsulta/<?= $paciente_id; ?>" method="post">
-                <fieldset>
-                    <legend>Dados do Paciente</legend>
-                    <div>
-                        <label>Nome</label>                      
-                        <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
-                    </div>
-                    <div>
-                        <label>Sexo</label>
-                        <input name="sexo" id="txtSexo" class="size2" 
-                               value="<?
-                               if ($paciente['0']->sexo == "M"):echo 'Masculino';
-                               endif;
-                               if ($paciente['0']->sexo == "F"):echo 'Feminino';
-                               endif;
-                               ?>" readonly="true">
-                    </div>
+    <div>
+        <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>cadastros/pacientes/autorizarambulatoriotempconsulta/<?= $paciente_id; ?>" method="post">
+            <fieldset>
+                <legend>Dados do Paciente</legend>
+                <div>
+                    <label>Nome</label>                      
+                    <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
+                </div>
+                <div>
+                    <label>Sexo</label>
+                    <input name="sexo" id="txtSexo" class="size2" 
+                           value="<?
+                           if ($paciente['0']->sexo == "M"):echo 'Masculino';
+                           endif;
+                           if ($paciente['0']->sexo == "F"):echo 'Feminino';
+                           endif;
+                           ?>" readonly="true">
+                </div>
 
-                    <div>
-                        <label>Nascimento</label>
-
-
-                        <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
-                    </div>
-
-                    <div>
-
-                        <label>Idade</label>
-                        <input type="text" name="txtIdade" id="txtIdade" class="texto01" readonly/>
-
-                    </div>
-
-                    <div>
-                        <label>Nome da M&atilde;e</label>
+                <div>
+                    <label>Nascimento</label>
 
 
-                        <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Consultas anteriores</legend>
-                    <?
-                    if (count($consultasanteriores) > 0) {
-                        foreach ($consultasanteriores as $value) {
+                    <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
+                </div>
 
-                            $data_atual = date('Y-m-d');
-                            $data1 = new DateTime($data_atual);
-                            $data2 = new DateTime($value->data);
+                <div>
 
-                            $intervalo = $data1->diff($data2);
-                            ?>
-                            <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->days ?> dia(s)</h6>
+                    <label>Idade</label>
+                    <input type="text" name="txtIdade" id="txtIdade" class="texto01" readonly/>
 
-                            <?
-                        }
-                    } else {
+                </div>
+
+                <div>
+                    <label>Nome da M&atilde;e</label>
+
+
+                    <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Consultas anteriores</legend>
+                <?
+                if (count($consultasanteriores) > 0) {
+                    foreach ($consultasanteriores as $value) {
+
+                        $data_atual = date('Y-m-d');
+                        $data1 = new DateTime($data_atual);
+                        $data2 = new DateTime($value->data);
+
+                        $intervalo = $data1->diff($data2);
                         ?>
-                        <h6>NENHUMA CONSULTA ENCONTRADA</h6>
+                        <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->days ?> dia(s)</h6>
+
+                        <?
+                    }
+                } else {
+                    ?>
+                    <h6>NENHUMA CONSULTA ENCONTRADA</h6>
+                    <?
+                }
+                ?>
+            </fieldset>
+            <input type="hidden" name="paciente_id" value="<?= $paciente_id; ?>" />
+
+            <fieldset>
+                <legend>Autorizar consultas</legend>
+                <table id="table_justa">
+                    <thead>
+
+                        <tr>
+                            <th class="tabela_header">Hora</th>
+                            <th class="tabela_header">Sala</th>
+                            <th class="tabela_header">Medico</th>
+                            <th class="tabela_header">Convenio</th>
+                            <th class="tabela_header">Procedimento</th>
+                            <th class="tabela_header">autorizacao</th>
+                            <th class="tabela_header">V. Unit</th>
+                            <th class="tabela_header">Pagamento</th>
+                            <th class="tabela_header">Indicação</th>
+                            <th class="tabela_header">ordenador</th>
+                            <th class="tabela_header">Confir.</th>
+                        </tr>
+                    </thead>
+                    <?
+                    $estilo_linha = "tabela_content01";
+                    $i = 0;
+                    foreach ($exames as $item) {
+                        $i++;
+                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        $agenda_exame_id = $item->agenda_exames_id;
+                        ?>
+                        <tbody>
+                            <tr>
+                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" required="true" >
+                                        <option value="">Selecione</option>
+                                        <? foreach ($salas as $itens) : ?>
+                                            <option value="<?= $itens->exame_sala_id; ?>"><?= $itens->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                                    <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size2" required="true" >
+                                        <option value="">Selecione</option>
+                                        <? foreach ($medicos as $value) : ?>
+                                            <option value="<?= $value->operador_id; ?>" <?
+                                            if ($value->operador_id == $item->medico_consulta_id):echo 'selected';
+                                            endif;
+                                            ?>><?= $value->nome; ?></option>
+                                                <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" required=""  >
+                                        <option value="">Selecione</option>
+                                        <? foreach ($convenio as $value) : ?>
+                                            <option value="<?= $value->convenio_id; ?>"<?
+//                                                if ($value->convenio_id == $item->convenio_id):echo'selected';
+//                                                endif;
+//                                                
+                                            ?>><?= $value->nome; ?></option>
+    <? endforeach; ?>
+                                    </select>
+                                </td>
+
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" required="" >
+                                        <option value="">-- Escolha um procedimento --</option>
+                                    </select>
+                                </td>
+
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
+                                        <option value="0">Selecione</option>
+                                        <? foreach ($forma_pagamento as $item) : ?>
+                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+    <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select name="indicacao[<?= $i; ?>]" id="indicacao" class="size1" >
+                                        <option value=''>Selecione</option>
+                                        <?php
+                                        $indicacao = $this->paciente->listaindicacao($_GET);
+                                        foreach ($indicacao as $item) {
+                                            ?>
+                                            <option value="<?php echo $item->paciente_indicacao_id; ?>">
+                                            <?php echo $item->nome; ?>
+                                            </option>
+                                            <?php
+                                        }
+                                        ?> 
+                                    </select>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" ><input type="text" name="ordenador" class="texto01"/></td>
+                                <td class="<?php echo $estilo_linha; ?>" ><input type="checkbox" name="confimado[<?= $i; ?>]" /><input type="hidden" name="agenda_exames_id[<?= $i; ?>]" value="<?= $agenda_exame_id; ?>" /></td>
+
+                            </tr>
+
+                        </tbody>
                         <?
                     }
                     ?>
-                </fieldset>
-                <input type="hidden" name="paciente_id" value="<?= $paciente_id; ?>" />
-
-                <fieldset>
-                    <legend>Autorizar consultas</legend>
-                    <table id="table_justa">
-                        <thead>
-
-                            <tr>
-                                <th class="tabela_header">Hora</th>
-                                <th class="tabela_header">Sala</th>
-                                <th class="tabela_header">Medico</th>
-                                <th class="tabela_header">Convenio</th>
-                                <th class="tabela_header">Procedimento</th>
-                                <th class="tabela_header">autorizacao</th>
-                                <th class="tabela_header">V. Unit</th>
-                                <th class="tabela_header">Pagamento</th>
-                                <th class="tabela_header">ordenador</th>
-                                <th class="tabela_header">Confir.</th>
-                            </tr>
-                        </thead>
-                        <?
-                        $estilo_linha = "tabela_content01";
-                        $i = 0;
-                        foreach ($exames as $item) {
-                            $i++;
-                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            $agenda_exame_id = $item->agenda_exames_id;
-                            ?>
-                            <tbody>
-                                <tr>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" required="true" >
-                                            <option value="">Selecione</option>
-                                            <? foreach ($salas as $itens) : ?>
-                                                <option value="<?= $itens->exame_sala_id; ?>"><?= $itens->nome; ?></option>
-                                            <? endforeach; ?>
-                                        </select>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                        <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size2" required="true" >
-                                            <option value="">Selecione</option>
-                                            <? foreach ($medicos as $value) : ?>
-                                                <option value="<?= $value->operador_id; ?>" <?
-                                                if ($value->operador_id == $item->medico_consulta_id):echo 'selected';
-                                                endif;
-                                                ?>><?= $value->nome; ?></option>
-                                                    <? endforeach; ?>
-                                        </select>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1" required=""  >
-                                            <option value="">Selecione</option>
-                                            <? foreach ($convenio as $value) : ?>
-                                                <option value="<?= $value->convenio_id; ?>"<?
-//                                                if ($value->convenio_id == $item->convenio_id):echo'selected';
-//                                                endif;
-//                                                ?>><?= $value->nome; ?></option>
-                                                    <? endforeach; ?>
-                                        </select>
-                                    </td>
-
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" required="" >
-                                            <option value="">-- Escolha um procedimento --</option>
-                                        </select>
-                                    </td>
-
-                                    <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
-                                            <option value="0">Selecione</option>
-                                            <? foreach ($forma_pagamento as $item) : ?>
-                                                <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                            <? endforeach; ?>
-                                        </select>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" ><input type="text" name="ordenador" class="texto01"/></td>
-                                    <td class="<?php echo $estilo_linha; ?>" ><input type="checkbox" name="confimado[<?= $i; ?>]" /><input type="hidden" name="agenda_exames_id[<?= $i; ?>]" value="<?= $agenda_exame_id; ?>" /></td>
-
-                                </tr>
-
-                            </tbody>
-                            <?
-                        }
-                        ?>
-                        <tfoot>
-                            <tr>
-                                <th class="tabela_footer" colspan="4">
-                                </th>
-                            </tr>
-                        </tfoot>
-                    </table> 
-                    <hr/>
-                    <button type="submit" name="btnEnviar">Enviar</button>
-                    <button type="reset" name="btnLimpar">Limpar</button>
-                </fieldset>
-            </form>
-        </div> <!-- Final da DIV content -->
+                    <tfoot>
+                        <tr>
+                            <th class="tabela_footer" colspan="4">
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table> 
+                <hr/>
+                <button type="submit" name="btnEnviar">Enviar</button>
+                <button type="reset" name="btnLimpar">Limpar</button>
+            </fieldset>
+        </form>
     </div> <!-- Final da DIV content -->
+</div> <!-- Final da DIV content -->
 
 <!--</body>-->
 
