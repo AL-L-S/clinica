@@ -103,7 +103,7 @@
                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                         $agenda_exame_id = $item->agenda_exames_id;
                         ?>
-                        <input type="hidden" name="medico_id" value="<?= $item->medico_consulta_id; ?>" />
+                        <input type="hidden" name="medico_id[<?= $i; ?>]" value="<?= $item->medico_consulta_id; ?>" />
                         <tbody>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>

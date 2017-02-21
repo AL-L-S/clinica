@@ -2582,10 +2582,6 @@ class guia_model extends Model {
     }
 
     function percentualmedicoconvenio($procedimentopercentual, $medicopercentual) {
-//        echo '<pre>';
-//        var_dump($procedimentopercentual);
-//        var_dump($medicopercentual);
-//        die;
         $this->db->select('mc.valor, mc.percentual');
         $this->db->from('tb_procedimento_percentual_medico_convenio mc');
         $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
@@ -2594,8 +2590,30 @@ class guia_model extends Model {
         $this->db->where('mc.ativo', 'true');
         $return = $this->db->get();
 
-//        var_dump($return->result());
-//        die;
+        return $return->result();
+    }
+
+    function percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual) {
+        $this->db->select('mc.valor as perc_medico, mc.percentual');
+        $this->db->from('tb_procedimento_percentual_medico_convenio mc');
+        $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
+        $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);
+        $this->db->where('mc.medico', $medicopercentual);
+        $this->db->where('mc.ativo', 'true');
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
+    function percentualmedicoprocedimento($procedimentopercentual) {
+
+        $this->db->select('pt.perc_medico, pt.percentual');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+        $this->db->where('pc.procedimento_convenio_id', $procedimentopercentual);
+        $this->db->where('pc.ativo', 'true');
+        $this->db->where('pt.ativo', 'true');
+        $return = $this->db->get();
         return $return->result();
     }
 
@@ -5791,6 +5809,7 @@ ORDER BY ae.agenda_exames_id)";
                             nome,
                             telefone,
                             producaomedicadinheiro,
+                            impressao_declaracao,
                             celular,
                             bairro,
                             impressao_tipo');
@@ -5958,7 +5977,7 @@ ORDER BY ae.agenda_exames_id)";
         return $medico_id;
     }
 
-    function gravarexames($ambulatorio_guia_id, $medico_id, $valor_percentual) {
+    function gravarexames($ambulatorio_guia_id, $medico_id, $percentual) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -5971,6 +5990,8 @@ ORDER BY ae.agenda_exames_id)";
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
             if ($_POST['medicoagenda'] != "") {
                 $this->db->set('medico_agenda', $_POST['medicoagenda']);
@@ -6119,7 +6140,7 @@ ORDER BY ae.agenda_exames_id)";
         return $tipo[0]->tipo;
     }
 
-    function gravaratendimemto($ambulatorio_guia_id, $medico_id) {
+    function gravaratendimemto($ambulatorio_guia_id, $medico_id, $percentual) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -6135,7 +6156,9 @@ ORDER BY ae.agenda_exames_id)";
             $data = date("Y-m-d");
             $qtde = $_POST['qtde'];
             for ($index = 1; $index <= $qtde; $index++) {
-
+                
+                $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                $this->db->set('percentual_medico', $percentual[0]->percentual);
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
                 if ($_POST['medicoagenda'] != "") {
                     $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
@@ -6251,7 +6274,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function gravarconsulta($ambulatorio_guia_id, $valor_percentual) {
+    function gravarconsulta($ambulatorio_guia_id, $percentual) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -6265,6 +6288,8 @@ ORDER BY ae.agenda_exames_id)";
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
             if ($_POST['medicoagenda'] != "") {
                 $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
@@ -6325,8 +6350,9 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function gravarfisioterapia($ambulatorio_guia_id, $valor_percentual) {
+    function gravarfisioterapia($ambulatorio_guia_id, $percentual) {
         try {
+//            var_dump($percentual); die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->select('dinheiro');
@@ -6346,7 +6372,8 @@ ORDER BY ae.agenda_exames_id)";
             $data = date("Y-m-d");
             $qtde = $_POST['qtde'];
             for ($index = 1; $index <= $qtde; $index++) {
-
+                $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                $this->db->set('percentual_medico', $percentual[0]->percentual);
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
                 if ($_POST['medicoagenda'] != "") {
                     $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
