@@ -1720,6 +1720,7 @@ class Exame extends BaseController {
         $corpo = "";
 
         if ($modelo == 'cpf') {
+            
             if ($listarexame[0]->grupo != 'CONSULTA') {
 
                 $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -1876,7 +1877,8 @@ class Exame extends BaseController {
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
-                            } else {
+                            } 
+                            else {
                                 $corpo = $corpo . "
                                                       <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
@@ -2006,7 +2008,8 @@ class Exame extends BaseController {
                         }
                     }
                 }
-            } else {
+            } 
+            else {
 
 
                 $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -2134,7 +2137,7 @@ class Exame extends BaseController {
                 }
             }
         } else {
-
+            
             if ($listarexame[0]->grupo != 'CONSULTA') {
                 $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
 <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -2424,7 +2427,8 @@ class Exame extends BaseController {
                         }
                     }
                 }
-            } else {
+            } 
+            else {
 
                 $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
 <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>

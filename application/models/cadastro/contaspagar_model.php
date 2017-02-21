@@ -53,10 +53,10 @@ class contaspagar_model extends Model {
             $this->db->where('fc.conta', $args['conta']);
         }
         if (isset($args['datainicio']) && strlen($args['datainicio']) > 0) {
-            $this->db->where('fc.data >=', $args['datainicio']);
+            $this->db->where('fc.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datainicio'])) ) );
         }
         if (isset($args['datafim']) && strlen($args['datafim']) > 0) {
-            $this->db->where('fc.data <=', $args['datafim']);
+            $this->db->where('fc.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datafim'])) ));
         }
         if (isset($args['obs']) && strlen($args['obs']) != '') {
             $this->db->where('fc.observacao ilike', "%" . $args['obs'] . "%");
