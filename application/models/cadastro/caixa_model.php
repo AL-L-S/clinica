@@ -547,7 +547,7 @@ class caixa_model extends Model {
             $mes = substr($inicio, 3, 2);
             $ano = substr($inicio, 6, 4);
             $datainicio = $ano . '-' . $mes . '-' . $dia;
-            $this->db->set('data', $_POST['inicio']);
+            $this->db->set('data', $datainicio);
             $this->db->set('tipo', $tipo);
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('nome', $_POST['devedor']);
@@ -604,7 +604,7 @@ class caixa_model extends Model {
                 $mes = substr($inicio, 3, 2);
                 $ano = substr($inicio, 6, 4);
                 $datainicio = $ano . '-' . $mes . '-' . $dia;
-                $this->db->set('data', $_POST['inicio']);
+                $this->db->set('data', $datainicio);
                 $this->db->set('tipo', $tipo);
                 $this->db->set('classe', $_POST['classe']);
                 $this->db->set('conta', $_POST['conta']);

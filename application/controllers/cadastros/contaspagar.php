@@ -214,12 +214,12 @@ class Contaspagar extends BaseController {
 
     function gravar() {
         $repetir = $_POST['repitir'];
-        $dia = str_replace("/", "-", $_POST['inicio']);
+        $dia = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['inicio']) ) );
         $parcela = 1;
         $contador = 0;
         $a = 0;
         $c = 0;
-//        var_dump($_POST['credorlabel']); die;
+        var_dump($dia); die;
         if ($_POST['financeiro_contaspagar_id'] == '') {
             if ($_POST['credor'] == '') {
                 $data['mensagem'] = 'É necessário selecionar o item no campo Pagar a ';
