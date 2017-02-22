@@ -7,7 +7,7 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>Medico Convenios</h4>
-    <h4>PERIODO: <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4);?> ate <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?></h4>
+    <h4>PERIODO: <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> ate <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?></h4>
     <? if ($medico == 0) { ?>
         <h4>TODOS</h4>
     <? } else { ?>
@@ -28,9 +28,9 @@
                     <? if ($clinica == 'SIM') { ?>
                         <th class="tabela_header" ><font size="-1">Valor</th>
                     <? } ?>
-                        <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
+                    <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
-                    
+
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
                     <? } ?>
@@ -58,8 +58,6 @@
                     $procedimentopercentual = $item->procedimento_convenio_id;
 //            $medicopercentual = $item->medico_parecer1;
                     $medicopercentual = $item->operador_id;
-                    $percentual = $this->guia->percentualmedicoconvenio($procedimentopercentual, $medicopercentual);
-                    $testearray = count($percentual);
                     if ($item->classificacao == 1) {
                         $totalconsulta++;
                     }
@@ -78,32 +76,26 @@
                             <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_total, 2, ",", "."); ?></td>
                         <? } ?>
                         <?
-                        
-                        if ($item->percentual == "t") {
+                        if ($item->percentual_medico == "t") {
                             $simbolopercebtual = " %";
-                            if ($testearray > 0) {
-                                $valorpercentualmedico = $percentual[0]->valor;
-                            } else {
-                                $valorpercentualmedico = $item->perc_medico;
-                            }
+
+                            $valorpercentualmedico = $item->valor_medico;
+                            
                             $perc = $item->valor_total * ($valorpercentualmedico / 100);
                             $totalperc = $totalperc + $perc;
                             $totalgeral = $totalgeral + $item->valor_total;
                         } else {
                             $simbolopercebtual = "";
-                            if ($testearray > 0) {
-                                $valorpercentualmedico = $percentual[0]->valor;
-                            } else {
-                                $valorpercentualmedico = $item->perc_medico;
-                            }
+                            $valorpercentualmedico = $item->valor_medico;
+                            
                             $perc = $valorpercentualmedico;
                             $totalperc = $totalperc + $perc;
                             $totalgeral = $totalgeral + $item->valor_total;
                         }
                         ?>
-                            <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
+                        <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
                         <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
-                        
+
                         <? if ($solicitante == 'SIM') { ?>
                             <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
                         <? } ?>
@@ -232,7 +224,7 @@
                 }
             }
             ?>
-                    <p>
+            <p>
             <table border="1">
                 <thead>
                     <tr>
@@ -252,7 +244,7 @@
                             <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
                         </tr>
 
-                        <? endforeach; ?>
+                    <? endforeach; ?>
                 </tbody>
             </table>
             <?
