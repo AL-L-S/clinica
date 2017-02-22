@@ -78,24 +78,16 @@
 
                         $testearray = count($percentual);
   
-                        if ($itens->percentual == "t") {
+                        if ($itens->percentual_medico == "t") {
 
-                            if ($testearray > 0) {
-
-                                $valorpercentualmedico = $percentual[0]->valor;
-                            } else {
-                                $valorpercentualmedico = $itens->perc_medico;
-                            }
+                            $valorpercentualmedico = $itens->valor_medico;
+                            
                             $perc = $itens->valor_total * ($valorpercentualmedico / 100);
 
                             $medicos = $medicos + $perc;
                         } else {
                             $simbolopercebtual = "";
-                            if ($testearray > 0) {
-                                $valorpercentualmedico = $percentual[0]->valor;
-                            } else {
-                                $valorpercentualmedico = $itens->perc_medico;
-                            }
+                            $valorpercentualmedico = $itens->valor_medico;
                             $perc = $valorpercentualmedico;
                             $medicos = $medicos + $perc;
                         }

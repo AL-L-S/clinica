@@ -23,7 +23,8 @@
                             <th class="tabela_title">Medico</th>
                         <? } ?>
                         <th class="tabela_title">Data</th>
-                        <th colspan="2" class="tabela_title">Nome</th>
+                        <th colspan="1" class="tabela_title">Nome</th>
+                        <th colspan="1" class="tabela_title">Cid</th>
 
                     </tr>
                     <tr>
@@ -71,8 +72,13 @@
                         <th class="tabela_title">
                             <input type="text"  id="data" alt="date" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
                         </th>
-                        <th colspan="3" class="tabela_title">
-                            <input type="text" name="nome" class="texto06 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                        <th colspan="1" class="tabela_title">
+                            <input type="text" name="nome" class="texto03 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+
+                        </th>
+                        <th colspan="1" class="tabela_title">
+                            <input type="text" name="txtCICPrimariolabel" id="txtCICPrimariolabel" class="texto03" value="<?php echo @$_GET['txtCICPrimariolabel']; ?>" />
+                            <input type="hidden" name="txtCICPrimario" id="txtCICPrimario" value="" class="size2" />
                         </th>
                         <th colspan="3" class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -262,77 +268,93 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-                                                $(document).ready(function () {
+                                    $(document).ready(function () {
 //alert('teste_parada');
-                                                    $(function () {
-                                                        $('#especialidade').change(function () {
+                                        $(function () {
+                                            $('#especialidade').change(function () {
 
-                                                            if ($(this).val()) {
+                                                if ($(this).val()) {
 
 //                                                  alert('teste_parada');
-                                                                $('.carregando').show();
+                                                    $('.carregando').show();
 //                                                        alert('teste_parada');
-                                                                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                                                                    options = '<option value=""></option>';
-                                                                    console.log(j);
+                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        console.log(j);
 
-                                                                    for (var c = 0; c < j.length; c++) {
-
-
-                                                                        if (j[0].operador_id != undefined) {
-                                                                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                                                                        }
-                                                                    }
-                                                                    $('#medico').html(options).show();
-                                                                    $('.carregando').hide();
+                                                        for (var c = 0; c < j.length; c++) {
 
 
-
-                                                                });
-                                                            } else {
-                                                                $('.carregando').show();
-//                                                        alert('teste_parada');
-                                                                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                                                                    options = '<option value=""></option>';
-                                                                    console.log(j);
-
-                                                                    for (var c = 0; c < j.length; c++) {
-
-
-                                                                        if (j[0].operador_id != undefined) {
-                                                                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                                                                        }
-                                                                    }
-                                                                    $('#medico').html(options).show();
-                                                                    $('.carregando').hide();
-
-
-
-                                                                });
+                                                            if (j[0].operador_id != undefined) {
+                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
 
                                                             }
-                                                        });
+                                                        }
+                                                        $('#medico').html(options).show();
+                                                        $('.carregando').hide();
+
+
+
+                                                    });
+                                                } else {
+                                                    $('.carregando').show();
+//                                                        alert('teste_parada');
+                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        console.log(j);
+
+                                                        for (var c = 0; c < j.length; c++) {
+
+
+                                                            if (j[0].operador_id != undefined) {
+                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+
+                                                            }
+                                                        }
+                                                        $('#medico').html(options).show();
+                                                        $('.carregando').hide();
+
+
+
                                                     });
 
+                                                }
+                                            });
+                                        });
+
+                                        $(function () {
+                                            $("#txtCICPrimariolabel").autocomplete({
+                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                                                minLength: 3,
+                                                focus: function (event, ui) {
+                                                    $("#txtCICPrimariolabel").val(ui.item.label);
+                                                    return false;
+                                                },
+                                                select: function (event, ui) {
+                                                    $("#txtCICPrimariolabel").val(ui.item.value);
+                                                    $("#txtCICPrimario").val(ui.item.id);
+                                                    return false;
+                                                }
+                                            });
+                                        });
 
 
-                                                    $(function () {
-                                                        $("#data").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
 
-                                                    $(function () {
-                                                        $("#accordion").accordion();
-                                                    });
+                                        $(function () {
+                                            $("#data").datepicker({
+                                                autosize: true,
+                                                changeYear: true,
+                                                changeMonth: true,
+                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                dateFormat: 'dd/mm/yy'
+                                            });
+                                        });
+
+                                        $(function () {
+                                            $("#accordion").accordion();
+                                        });
 
 //                                                    setTimeout('delayReload()', 20000);
 //                                                    function delayReload()
@@ -344,10 +366,10 @@
 //                                                        }
 //                                                    }
 
-                                                });
-                                                
-                                                setInterval(function () {
-                                                    window.location.reload();
-                                                }, 180000);
+                                    });
+
+                                    setInterval(function () {
+                                        window.location.reload();
+                                    }, 180000);
 
 </script>

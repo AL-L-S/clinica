@@ -2407,6 +2407,9 @@ class exametemp_model extends Model {
                         break;
                     }
                 }
+                if ($medicoexecutante == '') {
+                    $medicoexecutante = 0;
+                }
 //                var_dump($medicoexecutante); die;
                 $this->db->select('mc.valor as perc_medico, mc.percentual');
                 $this->db->from('tb_procedimento_percentual_medico_convenio mc');
@@ -2680,6 +2683,9 @@ class exametemp_model extends Model {
                         break;
                     }
                 }
+                if ($medico_id == '') {
+                    $medico_id = 0;
+                }
 
                 // Função do Percentual
                 $this->db->select('mc.valor as perc_medico, mc.percentual');
@@ -2850,6 +2856,9 @@ class exametemp_model extends Model {
                         $medico_id = $crm;
                         break;
                     }
+                }
+                if ($medico_id == '') {
+                    $medico_id = 0;
                 }
 
                 // Função do Percentual
@@ -3106,7 +3115,10 @@ class exametemp_model extends Model {
                         break;
                     }
                 }
-                
+                if ($medico_id == '') {
+                    $medico_id = 0;
+                }
+
                 // Função do Percentual
                 $this->db->select('mc.valor as perc_medico, mc.percentual');
                 $this->db->from('tb_procedimento_percentual_medico_convenio mc');
@@ -3127,7 +3139,7 @@ class exametemp_model extends Model {
                 }
 //                var_dump($percentual); die;
 
-                
+
                 foreach ($_POST['crm'] as $crmsolicitante) {
                     $t++;
                     if ($i == $t) {
@@ -3255,6 +3267,20 @@ class exametemp_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function asdçasjdlasjdasld() {
+        
+        $this->db->select();
+        $this->db->from('tb_operador');
+        
+        
+        
+        $this->db->set('valor_medico', null);
+        $this->db->set('percentual_medico', $horario);
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->update('tb_agenda_exames');
+        
     }
 
     function verificamedico($crm) {

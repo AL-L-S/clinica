@@ -1428,6 +1428,39 @@ ALTER TABLE ponto.tb_agenda_exames DROP COLUMN percentual_medico;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_medico numeric(10,2);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_medico boolean;
 
+
+
 ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_declaracao integer;
 -- Definir na coluna acima do banco o tipo de impressão de declaração. O NÚMERO >>>>>>>> 1 equivale ao logo pequeno
---. Qualquer coisa diferente ou vazio significa logo grande padrão Hcor
+-- Qualquer coisa diferente ou vazio significa logo grande padrão Hcor
+
+-- Dia 22/02/2017
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_alterarautorizacao integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_alterarautorizacao timestamp without time zone;
+
+
+
+UPDATE ponto.tb_agenda_exames ae
+   SET 
+       valor_medico= pt.perc_medico, percentual_medico= pt.percentual
+       
+FROM ponto.tb_agenda_exames ae1
+
+       LEFT JOIN ponto.tb_procedimento_convenio pc 
+       
+       ON ae1.procedimento_tuss_id = pc.procedimento_convenio_id 
+       
+       LEFT JOIN ponto.tb_procedimento_tuss pt 
+       
+       ON pc.procedimento_tuss_id = pt.procedimento_tuss_id 
+       
+       WHERE pc.procedimento_convenio_id = ae.procedimento_tuss_id
+       
+       AND ae.paciente_id is not null
+
+       AND ae.procedimento_tuss_id is not null 
+       
+       AND pc.ativo = 'true' 
+       
+       AND pt.ativo = 'true'

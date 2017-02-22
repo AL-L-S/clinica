@@ -1609,6 +1609,7 @@ class Laudo extends BaseController {
         $this->load->plugin('mpdf');
         $data['laudo'] = $this->laudo->listarreceitaespecialimpressao($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['empresa'] = $this->guia->listarempresamunicipio();
         $dataFuturo = date("Y-m-d");
         $dataAtual = $data['laudo'][0]->nascimento;
         $date_time = new DateTime($dataAtual);

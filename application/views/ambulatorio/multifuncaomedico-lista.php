@@ -15,14 +15,15 @@
 
                     <tr>
                         <th class="tabela_title">Salas</th>
-                        
-                        <?if ($perfil_id != 4){?>
-                        <th class="tabela_title">Especialidade</th>
-                        <th class="tabela_title">Medico</th>
+
+                        <? if ($perfil_id != 4) { ?>
+                            <th class="tabela_title">Especialidade</th>
+                            <th class="tabela_title">Medico</th>
                         <? } ?>
                         <th class="tabela_title">Data</th>
                         <th class="tabela_title">Prontu&aacute;rio</th>
-                        <th colspan="2" class="tabela_title">Nome</th>
+                        <th colspan="1" class="tabela_title">Nome</th>
+                        <th colspan="1" class="tabela_title">Cid</th>
                     </tr>
                     <tr>
                         <th class="tabela_title">
@@ -36,35 +37,35 @@
                                         <? endforeach; ?>
                             </select>
                         </th>
-                        <?if ($perfil_id != 4){?>
-                        <th class="tabela_title">
-                            <select name="especialidade" id="especialidade" class="size1">
-                                <option value=""></option>
-                                <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->cbo_ocupacao_id; ?>" <?
-                                    if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->descricao; ?></option>
-                                        <? endforeach; ?>
-                            </select>
-                        </th>
+                        <? if ($perfil_id != 4) { ?>
+                            <th class="tabela_title">
+                                <select name="especialidade" id="especialidade" class="size1">
+                                    <option value=""></option>
+                                    <? foreach ($especialidade as $value) : ?>
+                                        <option value="<?= $value->cbo_ocupacao_id; ?>" <?
+                                        if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
+                                        endif;
+                                        ?>><?php echo $value->descricao; ?></option>
+                                            <? endforeach; ?>
+                                </select>
+                            </th>
 
 
-                        <th class="tabela_title">
-                            <select name="medico" id="medico" class="size1">
-                                <option value=""> </option>
-                                <? foreach ($medicos as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>"<?
-                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
-                                    endif;
-                                    ?>>
-                                                <?php echo $value->nome; ?>
+                            <th class="tabela_title">
+                                <select name="medico" id="medico" class="size1">
+                                    <option value=""> </option>
+                                    <? foreach ($medicos as $value) : ?>
+                                        <option value="<?= $value->operador_id; ?>"<?
+                                        if (@$_GET['medico'] == $value->operador_id):echo 'selected';
+                                        endif;
+                                        ?>>
+                                                    <?php echo $value->nome; ?>
 
-                                    </option>
-                                <? endforeach; ?>
+                                        </option>
+                                    <? endforeach; ?>
 
-                            </select>
-                        </th>
+                                </select>
+                            </th>
                         <? } ?>
                         <th class="tabela_title">
                             <input type="text"  id="data" alt="date" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
@@ -72,8 +73,13 @@
                         <th class="tabela_title">
                             <input type="text"  id="prontuario" name="prontuario" class="size1"  value="<?php echo @$_GET['prontuario']; ?>" />
                         </th>
-                        <th colspan="3" class="tabela_title">
-                            <input type="text" name="nome" class="texto06 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                        <th colspan="1" class="tabela_title">
+                            <input type="text" name="nome" class="texto03 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+
+                        </th>
+                        <th colspan="1" class="tabela_title">
+                            <input type="text" name="txtCICPrimariolabel" id="txtCICPrimariolabel" class="texto03" value="<?php echo @$_GET['txtCICPrimariolabel']; ?>" />
+                            <input type="hidden" name="txtCICPrimario" id="txtCICPrimario" value="" class="size2" />
                         </th>
                         <th colspan="3" class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -261,77 +267,94 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <script type="text/javascript">
-                                    $(document).ready(function () {
+    $(document).ready(function () {
 //alert('teste_parada');
-                                        $(function () {
-                                            $('#especialidade').change(function () {
-                                                
-                                                if ($(this).val()) {
+        $(function () {
+            $('#especialidade').change(function () {
+
+                if ($(this).val()) {
 
 //                                                  alert('teste_parada');
-                                                    $('.carregando').show();
+                    $('.carregando').show();
 //                                                        alert('teste_parada');
-                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                                                        options = '<option value=""></option>';
-                                                        console.log(j);
+                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                        options = '<option value=""></option>';
+                        console.log(j);
 
-                                                        for (var c = 0; c < j.length; c++) {
-
-
-                                                            if (j[0].operador_id != undefined) {
-                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                                                            }
-                                                        }
-                                                        $('#medico').html(options).show();
-                                                        $('.carregando').hide();
+                        for (var c = 0; c < j.length; c++) {
 
 
+                            if (j[0].operador_id != undefined) {
+                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
 
-                                                    });
-                                                } else {
-                                                    $('.carregando').show();
+                            }
+                        }
+                        $('#medico').html(options).show();
+                        $('.carregando').hide();
+
+
+
+                    });
+                } else {
+                    $('.carregando').show();
 //                                                        alert('teste_parada');
-                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                                                        options = '<option value=""></option>';
-                                                        console.log(j);
+                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                        options = '<option value=""></option>';
+                        console.log(j);
 
-                                                        for (var c = 0; c < j.length; c++) {
-
-
-                                                            if (j[0].operador_id != undefined) {
-                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                                                            }
-                                                        }
-                                                        $('#medico').html(options).show();
-                                                        $('.carregando').hide();
+                        for (var c = 0; c < j.length; c++) {
 
 
+                            if (j[0].operador_id != undefined) {
+                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
 
-                                                    });
-
-                                                }
-                                            });
-                                        });
+                            }
+                        }
+                        $('#medico').html(options).show();
+                        $('.carregando').hide();
 
 
 
-                                        $(function () {
-                                            $("#data").datepicker({
-                                                autosize: true,
-                                                changeYear: true,
-                                                changeMonth: true,
-                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                dateFormat: 'dd/mm/yy'
-                                            });
-                                        });
+                    });
 
-                                        $(function () {
-                                            $("#accordion").accordion();
-                                        });
+                }
+                
+            });
+        });
+        
+        $(function () {
+                    $("#txtCICPrimariolabel").autocomplete({
+                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                        minLength: 3,
+                        focus: function (event, ui) {
+                            $("#txtCICPrimariolabel").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtCICPrimariolabel").val(ui.item.value);
+                            $("#txtCICPrimario").val(ui.item.id);
+                            return false;
+                        }
+                    });
+                });
+
+
+
+        $(function () {
+            $("#data").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+
+        $(function () {
+            $("#accordion").accordion();
+        });
 
 //                                        setTimeout('delayReload()', 20000);
 //                                        function delayReload()
@@ -343,8 +366,8 @@
 //                                            }
 //                                        }
 
-                                    });
- 						setInterval(function () {
-                                                    window.location.reload();
-                                                }, 180000);
+    });
+    setInterval(function () {
+        window.location.reload();
+    }, 180000);
 </script>

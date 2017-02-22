@@ -79,7 +79,16 @@ switch ($MES) {
 <br>
 <p><center><?= $exame[0]->logradouro; ?><?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?> - <?= $exame[0]->municipio ?></center></p>
 <p><center>Fone: (85) <?= $exame[0]->telefone; ?> - (85) <?= $exame[0]->celular; ?></center></p>-->
-<p><center><img align = 'center'  width='1000px' height='100px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p>
+<!--<br>
+<br>
+<br>
+<br>-->
+
+
+<footer>
+   <p><center><img align = 'center'  width='1000px' height='100px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p> 
+</footer>
+
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
