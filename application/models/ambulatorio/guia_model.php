@@ -3882,6 +3882,9 @@ class guia_model extends Model {
                             c.dinheiro,
                             ae.diabetes,
                             ae.hipertensao,
+                            ae.medico_solicitante,
+                            ae.agenda_exames_nome_id,
+                            ae.medico_agenda,
                             cbo.descricao as profissaos,
                             pt.perc_medico,
                             m.nome as municipio,
@@ -4530,8 +4533,11 @@ AND data <= '$data_fim'";
 
     function gravarfaturamentodetalhe() {
         try {
-            /* inicia o mapeamento no banco */
-            $this->db->set('autorizacao', $_POST['autorizacao']);
+            /* inicia o mapeamento no banco ae.medico_agenda */
+//            var_dump($_POST); die;     
+            $this->db->set('medico_solicitante', $_POST['medico_solicitante']);
+            $this->db->set('agenda_exames_nome_id', $_POST['sala']);
+            $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('observacoes', $_POST['txtobservacao']);
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
             $this->db->update('tb_agenda_exames');

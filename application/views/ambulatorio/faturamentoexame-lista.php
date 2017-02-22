@@ -104,7 +104,7 @@
                         <tr>
                             <td ><?= $item->ambulatorio_guia_id; ?></td>
                             <td ><?= $item->autorizacao; ?></td>
-                            <td ><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');"><?= substr($item->procedimento, 0, 16) . " ". $item->numero_sessao; ?></a></td>
+                            <td ><a style="cursor: pointer; color: blue;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"><?= substr($item->procedimento, 0, 16) . " ". $item->numero_sessao; ?></a></td>
                             <td ><div style="margin-left:8pt;"><?= $item->nome; ?></div></td>
                             <td ><?= $item->codigo; ?></td>
                             <td >

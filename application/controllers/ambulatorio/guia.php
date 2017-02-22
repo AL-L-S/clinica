@@ -1139,6 +1139,8 @@ class Guia extends BaseController {
 
     function faturamentodetalhes($agenda_exames_id) {
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
+        $data['salas'] = $this->exame->listartodassalas();
+        $data['medico'] = $this->exametemp->listarmedicoconsulta();
         $data['agenda_exames_id'] = $agenda_exames_id;
         $this->load->View('ambulatorio/faturamentodetalhe-form', $data);
     }
