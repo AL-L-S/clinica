@@ -2442,6 +2442,10 @@ class exame_model extends Model {
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
+        if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+            $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
+        }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
@@ -2523,6 +2527,10 @@ class exame_model extends Model {
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+            }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
@@ -2718,6 +2726,10 @@ class exame_model extends Model {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
+            }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
@@ -2782,6 +2794,10 @@ class exame_model extends Model {
         } else {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+            }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
@@ -2871,6 +2887,10 @@ class exame_model extends Model {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
+            }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
@@ -2948,6 +2968,10 @@ class exame_model extends Model {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
+            }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
             }
@@ -3021,6 +3045,10 @@ class exame_model extends Model {
 
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+            }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
@@ -3104,6 +3132,10 @@ class exame_model extends Model {
 
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+            }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
@@ -3600,7 +3632,7 @@ class exame_model extends Model {
         $grupo = $retorno[0]->nome;
 //        echo '<pre>';
         var_dump($grupo);
-        
+
 
 
         $i = 1;

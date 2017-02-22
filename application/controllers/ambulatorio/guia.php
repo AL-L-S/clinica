@@ -1112,6 +1112,18 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/alterardata-form', $data);
     }
 
+    function alterarautorizacao($agenda_exames_id) {
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $this->load->View('ambulatorio/alterarautorizacao-form', $data);
+    }
+
+    function gravaralterarautorizacao($agenda_exames_id) {
+
+        $this->guia->gravaralterarautorizacao($agenda_exames_id);
+
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function gravaralterardata($agenda_exames_id) {
         $data_escolhida = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data'])));
         $hoje = date("Y-m-d");
@@ -1170,9 +1182,9 @@ class Guia extends BaseController {
     }
 
     function faturarguia($guia_id, $financeiro_grupo_id = null) {
-       $data['exame'][0] = new stdClass();
-       // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
-       // A linha alima inicia o Objeto antes de atribuir um valor
+        $data['exame'][0] = new stdClass();
+        // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
+        // A linha alima inicia o Objeto antes de atribuir um valor
         if (isset($financeiro_grupo_id)) {
             $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id, $financeiro_grupo_id);
             $data['exame'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);

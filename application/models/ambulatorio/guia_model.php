@@ -4485,6 +4485,27 @@ AND data <= '$data_fim'";
             return -1;
         }
     }
+    
+    function gravaralterarautorizacao($agenda_exames_id) {
+        try {
+//            var_dump($_POST); die;
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $hora = date("H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('data_alterarautorizacao', $horario);
+            $this->db->set('operador_alterarautorizacao', $operador_id);
+            $this->db->set('autorizacao', $_POST['autorizacao']);
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_agenda_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     function gravarfaturamentoconvenio() {
         try {

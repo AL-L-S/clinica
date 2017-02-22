@@ -1428,6 +1428,13 @@ ALTER TABLE ponto.tb_agenda_exames DROP COLUMN percentual_medico;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_medico numeric(10,2);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_medico boolean;
 
+
+
 ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_declaracao integer;
 -- Definir na coluna acima do banco o tipo de impressão de declaração. O NÚMERO >>>>>>>> 1 equivale ao logo pequeno
---. Qualquer coisa diferente ou vazio significa logo grande padrão Hcor
+-- Qualquer coisa diferente ou vazio significa logo grande padrão Hcor
+
+-- Dia 22/02/2017
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_alterarautorizacao integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_alterarautorizacao timestamp without time zone;

@@ -58,7 +58,7 @@
                 </fieldset>
 
                 <fieldset>
-                    
+
                     <table id="table_justa">
                         <thead>
 
@@ -156,7 +156,9 @@
                             <th class="tabela_header">Hora</th>
                             <th class="tabela_header">Valor</th>
                             <th class="tabela_header">convenio</th>
+                            <th class="tabela_header">Autorização</th>
                             <th class="tabela_header">Exame</th>
+
                             <th colspan="3" class="tabela_header">&nbsp;</th>
                         </tr>
                     </thead>
@@ -173,7 +175,13 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data_autorizacao, 11, 8); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor_total, 2, ',', '.'); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterarautorizacao/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=450');">
+                                        =><?= $item->autorizacao; ?>
+                                    </a>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
+
                                 <? if ($item->faturado != "t") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarconvenio/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">Faturar
@@ -194,7 +202,7 @@
                     ?>
                     <tfoot>
                         <tr>
-                            <th class="tabela_footer" colspan="5">
+                            <th class="tabela_footer" colspan="6">
                                 Valor Total: R$ <?php echo number_format($total, 2, ',', '.'); ?>
                             </th>
                             <th colspan="2"><div class="bt_link_new">
@@ -220,7 +228,7 @@
                                             var valortot = document.getElementById("valortot").value;
                                             var valor = valortot * desconto;
                                             var r = valor.toFixed(2);
-                                            
+
                                             document.getElementById("valor1").value = r;
                                         }
 
