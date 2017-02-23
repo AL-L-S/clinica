@@ -1439,7 +1439,37 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_declaracao integer;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_alterarautorizacao integer;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_alterarautorizacao timestamp without time zone;
 
+-- Dia 23/02/2017
 
+-- QUERY RELACIONADA AO PERCENTUAL DOS MEDICOS
+-- RODAR PRIMEIRO A QUERY ABAIXO
+
+UPDATE ponto.tb_agenda_exames
+   SET 
+       valor_medico= mc.valor, percentual_medico= mc.percentual
+
+
+       
+FROM ponto.tb_procedimento_percentual_medico m , ponto.tb_procedimento_percentual_medico_convenio mc
+
+	WHERE ponto.tb_agenda_exames.procedimento_tuss_id = m.procedimento_tuss_id 
+
+	AND m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+       
+        AND mc.medico = ponto.tb_agenda_exames.medico_agenda  
+ 
+       AND ponto.tb_agenda_exames.paciente_id is not null
+
+       AND ponto.tb_agenda_exames.procedimento_tuss_id is not null  
+
+       AND m.ativo = 'true' 
+       
+       AND mc.ativo = 'true'
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+--LOGO APÓS RODAR ESSA QUERY
 
 UPDATE ponto.tb_agenda_exames ae
    SET 
@@ -1457,6 +1487,8 @@ FROM ponto.tb_agenda_exames ae1
        
        WHERE pc.procedimento_convenio_id = ae.procedimento_tuss_id
        
+       AND ae.valor_medico is null
+
        AND ae.paciente_id is not null
 
        AND ae.procedimento_tuss_id is not null 
