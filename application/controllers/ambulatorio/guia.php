@@ -927,8 +927,15 @@ class Guia extends BaseController {
     }
 
     function editarexames() {
+        $procedimentopercentual = $_POST['procedimento1'];
+        $medicopercentual = $_POST['medico_agenda'];
+        // Calcula o Percentual do médico para salvar na agenda_exames
+        $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+        if (count($percentual) == 0) {
+            $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+        }
         $paciente_id = $_POST['txtpaciente_id'];
-        $ambulatorio_guia_id = $this->guia->editarexames();
+        $ambulatorio_guia_id = $this->guia->editarexames($percentual);
         if ($ambulatorio_guia_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Dados. Opera&ccedil;&atilde;o cancelada.';
         } else {
@@ -941,6 +948,7 @@ class Guia extends BaseController {
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
         $data['operadores'] = $this->operador_m->listaroperadores();
+        $data['medico'] = $this->exametemp->listarmedicoconsulta();
         $data['salas'] = $this->guia->listarsalas();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
@@ -1177,8 +1185,14 @@ class Guia extends BaseController {
     }
 
     function gravarfaturamentodetalhe() {
+        $procedimentopercentual = $_POST['procedimento1'];
+        $medicopercentual = $_POST['medico'];
+        $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+        if (count($percentual) == 0) {
+            $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+        }
 
-        $this->guia->gravarfaturamentodetalhe();
+        $this->guia->gravarfaturamentodetalhe($percentual);
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }

@@ -13,6 +13,7 @@
                             <input type="text" name="autorizacao" id="autorizacao" class="texto01" value="<?= $exame[0]->autorizacao; ?>" />
                             <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" class="texto01" value="<?= $agenda_exames_id; ?>"/>
                             <input type="hidden" name="paciente_id" id="paciente_id" class="texto01" value="<?= $exame[0]->paciente_id; ?>"/>
+                            <input type="hidden" name="procedimento1" id="procedimento1" class="texto01" value="<?= $exame[0]->procedimento_tuss_id; ?>"/>
                         </dd>
                         <dt>
                             <label>Faturista</label>

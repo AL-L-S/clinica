@@ -4539,13 +4539,18 @@ AND data <= '$data_fim'";
         }
     }
 
-    function gravarfaturamentodetalhe() {
+    function gravarfaturamentodetalhe($percentual) {
         try {
             /* inicia o mapeamento no banco ae.medico_agenda */
-//            var_dump($_POST); die;     
-            $this->db->set('medico_solicitante', $_POST['medico_solicitante']);
+
+            if ($_POST['medico_solicitante'] != '') {
+                $this->db->set('medico_solicitante', $_POST['medico_solicitante']);
+            }
+
             $this->db->set('agenda_exames_nome_id', $_POST['sala']);
             $this->db->set('medico_agenda', $_POST['medico']);
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('observacoes', $_POST['txtobservacao']);
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
             $this->db->update('tb_agenda_exames');
@@ -6680,9 +6685,10 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function editarexames() {
+    function editarexames($percentual) {
         try {
-
+//            var_dump($percentual);die;
+            
             $this->db->set('autorizacao', $_POST['autorizacao1']);
             $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
             $this->db->set('guia_id', $_POST['guia_id']);
@@ -6690,7 +6696,12 @@ ORDER BY ae.agenda_exames_id)";
             $operador_id = $this->session->userdata('operador_id');
 
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-            $this->db->set('medico_solicitante', $_POST['medico']);
+            if ($_POST['medico'] != '') {
+                $this->db->set('medico_solicitante', $_POST['medico']);
+            }
+            $this->db->set('medico_agenda', $_POST['medico_agenda']);
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('data_editar', $horario);
             $this->db->set('operador_editar', $operador_id);
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
@@ -6714,6 +6725,8 @@ ORDER BY ae.agenda_exames_id)";
 
         $this->db->select('ae.autorizacao,
                               ae.medico_solicitante,
+                              ae.medico_agenda,
+                              ae.procedimento_tuss_id,
                               ae.agenda_exames_nome_id');
         $this->db->from('tb_agenda_exames ae');
         $this->db->where("ae.agenda_exames_id", $ambulatorio_guia_id);
