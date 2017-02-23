@@ -6,6 +6,7 @@
         </a>
     </div>
     <?
+    $classe = $this->classe->listarclasse();
     $empresa = $this->caixa->empresa();
     $saldo = $this->caixa->saldo();
     $conta = $this->forma->listarforma();
@@ -71,6 +72,12 @@
                         <th class="tabela_title">
                             <select name="nome_classe" id="nome_classe" class="size2">
                                 <option value="">TODOS</option>
+                                <? foreach ($classe as $value) : ?>
+                                    <option value="<?= $value->descricao; ?>" <?
+                                    if (@$_GET['nome_classe'] == $value->descricao):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->descricao; ?></option>
+                                        <? endforeach; ?>
                             </select>
                         </th>
                         <th class="tabela_title">

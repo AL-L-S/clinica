@@ -6,6 +6,7 @@
         </a>
     </div>
     <?
+    $classe = $this->classe->listarclasse();
     $saldo = $this->caixa->saldo();
     $empresa = $this->caixa->empresa();
     $conta = $this->forma->listarforma();
@@ -71,6 +72,12 @@
                         <th class="tabela_title">
                             <select name="nome_classe" id="nome_classe" class="size2">
                                 <option value="">TODOS</option>
+                                <? foreach ($classe as $value) : ?>
+                                    <option value="<?= $value->descricao; ?>" <?
+                                    if (@$_GET['nome_classe'] == $value->descricao):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->descricao; ?></option>
+                                        <? endforeach; ?>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -206,49 +213,49 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    
-        $(function () {
-        $('#nome').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
-                    }
-                    $('#nome_classe').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#nome_classe').html('<option value="">TODOS</option>');
-            }
-        });
-    });
-    
-    $(function () {
-        $("#datainicio").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
-    $(function () {
-        $("#datafim").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
-    $(function () {
-        $("#accordion").accordion();
-    });
+
+                                    $(function () {
+                                        $('#nome').change(function () {
+                                            if ($(this).val()) {
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                                                    }
+                                                    $('#nome_classe').html(options).show();
+                                                    $('.carregando').hide();
+                                                });
+                                            } else {
+                                                $('#nome_classe').html('<option value="">TODOS</option>');
+                                            }
+                                        });
+                                    });
+
+                                    $(function () {
+                                        $("#datainicio").datepicker({
+                                            autosize: true,
+                                            changeYear: true,
+                                            changeMonth: true,
+                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                                            dateFormat: 'dd/mm/yy'
+                                        });
+                                    });
+                                    $(function () {
+                                        $("#datafim").datepicker({
+                                            autosize: true,
+                                            changeYear: true,
+                                            changeMonth: true,
+                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                                            dateFormat: 'dd/mm/yy'
+                                        });
+                                    });
+                                    $(function () {
+                                        $("#accordion").accordion();
+                                    });
 
 </script>
