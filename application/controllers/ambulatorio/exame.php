@@ -1717,7 +1717,6 @@ class Exame extends BaseController {
             if ($modelo == 'cpf') {
 
                 if ($listarexame[0]->grupo != 'CONSULTA') {
-
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
        <ans:cabecalho>
@@ -1738,7 +1737,7 @@ class Exame extends BaseController {
           <ans:Padrao>" . $versao . "</ans:Padrao>
        </ans:cabecalho>
        
-       <ans:prestadorOperadora>
+       <ans:prestadorParaOperadora>
           <ans:loteGuias>
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
@@ -1787,41 +1786,48 @@ class Exame extends BaseController {
 
                                 if ($_POST['autorizacao'] == 'SIM') {
                                     $corpo = $corpo . "
-                                                          <ans:guiaSP-SADT>
-                          <ans:cabecalhoGuia>
-                            <ans:registroANS>" . $registroans . "</ans:registroANS>
+                    <ans:guiaSP-SADT>
+                      <ans:cabecalhoGuia>
+                         <ans:registroANS>" . $registroans . "</ans:registroANS>
                          <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
                          <ans:guiaPrincipal>1</ans:guiaPrincipal>
                       </ans:cabecalhoGuia>
+                      
                       <ans:dadosAutorizacao>
-                      <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
-                      <ans:dataAutorizacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataAutorizacao>
-                      <ans:senha>" . $item->autorizacao . "</ans:senha>
-                      <ans:dataValidadeSenha>" . $dataValidadeSenha . "</ans:dataValidadeSenha> 
+                        <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
+                        <ans:dataAutorizacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataAutorizacao>
+                        <ans:senha>" . $item->autorizacao . "</ans:senha>
+                        <ans:dataValidadeSenha>" . $dataValidadeSenha . "</ans:dataValidadeSenha> 
                       </ans:dadosAutorizacao>
+                      
                       <ans:dadosBeneficiario>
                          <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
-                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:atendimentoRN>S</ans:atendimentoRN>
                          <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
                       </ans:dadosBeneficiario>
-                                                      <ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitante>
                          <ans:contratadoSolicitante>
-                               <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
+                            <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
                             <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                          </ans:contratadoSolicitante>
-                         <ans:profissionalSolicitante>
-                            <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
-                            <ans:conselhoProfissional>6</ans:conselhoProfissional>
-                            <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                                <ans:UF>23</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
-                         </ans:profissionalSolicitante>
+                      
+                        <ans:profissionalSolicitante>
+                              <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
+                              <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                              <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
+                              <ans:UF>23</ans:UF>
+                              <ans:CBOS>999999</ans:CBOS>
+                        </ans:profissionalSolicitante>
+                      
                       </ans:dadosSolicitante>
+                      
                       <ans:dadosSolicitacao>
                          <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
                          <ans:caraterAtendimento>1</ans:caraterAtendimento>
                          <ans:indicacaoClinica>I</ans:indicacaoClinica>
                       </ans:dadosSolicitacao>
+                      
                       <ans:dadosExecutante>
                             <ans:contratadoExecutante>
                             <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
@@ -1829,36 +1835,38 @@ class Exame extends BaseController {
                          </ans:contratadoExecutante>
                          <ans:CNES>" . $cnes . "</ans:CNES>
                       </ans:dadosExecutante>
+                      
                       <ans:dadosAtendimento>
-                      <ans:tipoAtendimento>04</ans:tipoAtendimento>
-                      <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
-                      <ans:tipoConsulta>1</ans:tipoConsulta>
-                      <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
                       </ans:dadosAtendimento>
+                      
                       <ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
                                 <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                 <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                 <ans:procedimento>
-                                <ans:codigoTabela>22</ans:codigoTabela>
-                               <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
-                               <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                                   <ans:codigoTabela>22</ans:codigoTabela>
+                                   <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                                   <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                </ans:procedimento>                        
-                        <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
-                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
-                            <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
-                            <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
-                            <ans:equipeSadt>
-                            <ans:codProfissional>
-                            <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-                            </ans:codProfissional>
-                            <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                            <ans:conselho>1</ans:conselho>
-                            <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>23</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
-                            </ans:equipeSadt>
+                               <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                                <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                                    <ans:UF>23</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
                       </ans:procedimentoExecutado>
                       </ans:procedimentosExecutados>
                       <ans:observacao>III</ans:observacao>
@@ -1899,7 +1907,7 @@ class Exame extends BaseController {
                          </ans:contratadoSolicitante>
                          <ans:profissionalSolicitante>
                             <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
-                            <ans:conselhoProfissional>6</ans:conselhoProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                             <ans:UF>23</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
@@ -1946,7 +1954,7 @@ class Exame extends BaseController {
                                         <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
                                     </ans:codProfissional>
                                     <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                                    <ans:conselho>1</ans:conselho>
+                                    <ans:conselho>01</ans:conselho>
                                     <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                                     <ans:UF>23</ans:UF>
                                     <ans:CBOS>999999</ans:CBOS>
@@ -1973,7 +1981,7 @@ class Exame extends BaseController {
                                     $i = 0;
                                     $rodape = "   </ans:guiasTISS>
           </ans:loteGuias>
-       </ans:prestadorOperadora>
+       </ans:prestadorParaOperadora>
        <ans:epilogo>
           <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
        </ans:epilogo>
@@ -1992,7 +2000,7 @@ class Exame extends BaseController {
                                     $i = 0;
                                     $rodape = "   </ans:guiasTISS>
           </ans:loteGuias>
-       </ans:prestadorOperadora>
+       </ans:prestadorParaOperadora>
        <ans:epilogo>
           <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
        </ans:epilogo>
@@ -2011,7 +2019,6 @@ class Exame extends BaseController {
                     }
                 } 
                 else {
-
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -2032,7 +2039,7 @@ class Exame extends BaseController {
           </ans:destino>
           <ans:Padrao>" . $versao . "</ans:Padrao>
        </ans:cabecalho>
-       <ans:prestadorOperadora>
+       <ans:prestadorParaOperadora>
           <ans:loteGuias>
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
@@ -2078,7 +2085,7 @@ class Exame extends BaseController {
                     </ans:contratadoExecutante>
                     <ans:profissionalExecutante>
                         <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
-                        <ans:conselhoProfissional>6</ans:conselhoProfissional>
+                        <ans:conselhoProfissional>06</ans:conselhoProfissional>
                         <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
                         <ans:UF>15</ans:UF>
                         <ans:CBOS>225120</ans:CBOS>
@@ -2100,7 +2107,7 @@ class Exame extends BaseController {
                             $i = 0;
                             $rodape = "</ans:guiasTISS>
         </ans:loteGuias>
-    </ans:prestadorOperadora>
+    </ans:prestadorParaOperadora>
     <ans:epilogo>
     <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
     </ans:epilogo>
@@ -2121,7 +2128,7 @@ class Exame extends BaseController {
 
 
         </ans:loteGuias>
-    </ans:prestadorOperadora>
+    </ans:prestadorParaOperadora>
     <ans:epilogo>
     <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
     </ans:epilogo>
@@ -2161,7 +2168,7 @@ class Exame extends BaseController {
           </ans:destino>
           <ans:Padrao>" . $versao . "</ans:Padrao>
        </ans:cabecalho>
-       <ans:prestadorOperadora>
+       <ans:prestadorParaOperadora>
           <ans:loteGuias>
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
@@ -2232,7 +2239,7 @@ class Exame extends BaseController {
                          </ans:contratadoSolicitante>
                          <ans:profissionalSolicitante>
                             <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
-                            <ans:conselhoProfissional>6</ans:conselhoProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                 <ans:UF>23</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
@@ -2275,7 +2282,7 @@ class Exame extends BaseController {
                             <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
                             </ans:codProfissional>
                             <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                            <ans:conselho>1</ans:conselho>
+                            <ans:conselho>01</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                             <ans:UF>23</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
@@ -2294,7 +2301,8 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } else {
+                                } 
+                                else {
                                     $corpo = $corpo . "
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -2318,7 +2326,7 @@ class Exame extends BaseController {
                          </ans:contratadoSolicitante>
                          <ans:profissionalSolicitante>
                             <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
-                            <ans:conselhoProfissional>6</ans:conselhoProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                 <ans:UF>23</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
@@ -2361,7 +2369,7 @@ class Exame extends BaseController {
                             <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
                             </ans:codProfissional>
                             <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                            <ans:conselho>1</ans:conselho>
+                            <ans:conselho>01</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                             <ans:UF>23</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
@@ -2390,7 +2398,7 @@ class Exame extends BaseController {
                                     $rodape = "   </ans:guiasTISS>
 
           </ans:loteGuias>
-       </ans:prestadorOperadora>
+       </ans:prestadorParaOperadora>
        <ans:epilogo>
           <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
        </ans:epilogo>
@@ -2412,7 +2420,7 @@ class Exame extends BaseController {
                                     $rodape = "   </ans:guiasTISS>
 
           </ans:loteGuias>
-       </ans:prestadorOperadora>
+       </ans:prestadorParaOperadora>
        <ans:epilogo>
           <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
        </ans:epilogo>
@@ -2452,7 +2460,7 @@ class Exame extends BaseController {
           </ans:destino>
           <ans:Padrao>" . $versao . "</ans:Padrao>
        </ans:cabecalho>
-       <ans:prestadorOperadora>
+       <ans:prestadorParaOperadora>
           <ans:loteGuias>
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
@@ -2499,7 +2507,7 @@ class Exame extends BaseController {
                     </ans:contratadoExecutante>
                     <ans:profissionalExecutante>
                         <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
-                        <ans:conselhoProfissional>6</ans:conselhoProfissional>
+                        <ans:conselhoProfissional>06</ans:conselhoProfissional>
                         <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
                         <ans:UF>15</ans:UF>
                         <ans:CBOS>225120</ans:CBOS>
@@ -2520,7 +2528,7 @@ class Exame extends BaseController {
                             $i = 0;
                             $rodape = "</ans:guiasTISS>
         </ans:loteGuias>
-    </ans:prestadorOperadora>
+    </ans:prestadorParaOperadora>
     <ans:epilogo>
     <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
     </ans:epilogo>
@@ -2542,7 +2550,7 @@ class Exame extends BaseController {
 
 
         </ans:loteGuias>
-    </ans:prestadorOperadora>
+    </ans:prestadorParaOperadora>
     <ans:epilogo>
     <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
     </ans:epilogo>

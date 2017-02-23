@@ -147,7 +147,7 @@
 
                                             foreach ($arquivo_pasta as $value) {
                                                 ?>
-                                                <td width="10px"> <img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/cr/" . $covenionome . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "upload/cr/" . $covenionome . "/" . $value ?>"><br><? echo $value ?></td>
+                                                <td width="10px"> <img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/cr/" . $covenionome . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url(); ?>img/archive-zip-icon.png"><br><? echo $value ?></td>
                                                 <td>&nbsp;</td>        
                                             <br><?
                                         }
