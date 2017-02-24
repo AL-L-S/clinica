@@ -9,7 +9,6 @@
         $("#data").datepicker({
             autosize: true,
             changeYear: true,
-            maxDate: "<?= date("d/m/Y");?>",
             changeMonth: true,
             monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
