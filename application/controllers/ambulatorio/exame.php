@@ -81,7 +81,7 @@ class Exame extends BaseController {
         $data['salas'] = $this->exame->listartodassalas();
         $this->loadView('ambulatorio/relatoriomedicoagendaexame', $data);
     }
-    
+
     function relatoriomedicoagendafaltou() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -163,7 +163,7 @@ class Exame extends BaseController {
         $data['relatorio'] = $this->exame->listaragendaexame();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexame', $data);
     }
-    
+
     function gerarelatoriomedicoagendaexamefaltou() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
@@ -235,10 +235,10 @@ class Exame extends BaseController {
         $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
 //        echo "<pre>";
 //        var_dump($data['integracao']);die;
-	if ( count($data['integracao']) > 0) {
+        if (count($data['integracao']) > 0) {
             $this->laudo->atualizacaolaudosintegracaotodos();
         }
-        
+
         $this->loadView('ambulatorio/multifuncaomedico-lista', $args);
     }
 
@@ -251,10 +251,39 @@ class Exame extends BaseController {
 
         $this->loadView('ambulatorio/faturamentoexame');
     }
-    
+
     function faturamentomanual() {
 
         $this->loadView('ambulatorio/faturamentomanual-lista');
+    }
+
+    function gravarguiacirurgica() {
+        $ambulatorio_guia = $this->guia->gravarguiacirurgica();
+
+        if ($ambulatorio_guia == "-1") {
+            $data['mensagem'] = 'Erro ao gravar Guia. Opera&ccedil;&atilde;o cancelada.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/faturamentomanual");
+        } 
+        else {
+            $data['mensagem'] = 'Sucesso ao gravar Guia.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/guiacirurgicaitens/$ambulatorio_guia");
+        }
+    }
+
+    function guiacirurgicaitens($guia_id) {
+
+        $data['guia'] = $this->guia->instanciarguia($guia_id);
+        $data['convenios'] = $this->guia->listarconvenios();
+        $this->loadView('ambulatorio/guiacirurgicaitens', $data);
+    }
+
+    function carregarguiacirurgica($guia_id = null) {
+
+        $data['guia'] = $this->guia->instanciarguia($guia_id);
+        $data['convenios'] = $this->guia->listarconvenios();
+        $this->loadView('ambulatorio/novaguiacirurgica-form', $data);
     }
 
     function fecharfinanceiro() {
@@ -462,7 +491,6 @@ class Exame extends BaseController {
                 $data['mensagem'] = 'Sucesso ao gravar o Exame.';
 //                $this->gerarcr($agenda_exames_id); //clinica humana
                 $this->gerardicom($laudo_id); //clinica ronaldo
-                
 //               $this->laudo->chamada($laudo_id);
             }
         } else {
@@ -657,31 +685,31 @@ class Exame extends BaseController {
 
     function gastosdesala($exames_id, $sala_id = null) {
         $data['sala_id'] = $sala_id;
-        $data['paciente']  = $this->exame->listarpacientegastos($exames_id);
-        $data['produtos']  = $this->exame->listarprodutossalagastos();
+        $data['paciente'] = $this->exame->listarpacientegastos($exames_id);
+        $data['produtos'] = $this->exame->listarprodutossalagastos();
         $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
-        $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']); 
-        $data['laudo'] = $this->exame->mostrarlaudogastodesala($exames_id); 
+        $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']);
+        $data['laudo'] = $this->exame->mostrarlaudogastodesala($exames_id);
 //        echo '<pre>'; var_dump($data['laudo']);
         $data['exames_id'] = $exames_id;
         $this->load->View('ambulatorio/gastosdesala', $data);
     }
-    
+
     function gravargastodesala() {
-        $exame_id  = $_POST['exame_id'];
+        $exame_id = $_POST['exame_id'];
         $this->exame->gravargastodesala();
-        if( isset($_POST['faturar']) ){
+        if (isset($_POST['faturar'])) {
             $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id']);
             $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
-            
+
             $this->exame->faturargastodesala($data['procedimento'][0]);
         }
         redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
 //        $this->gastosdesala($exame_id);
     }
-    
+
     function excluirgastodesala($gasto_id, $exame_id) {
         $this->exame->excluirgastodesala($gasto_id);
         redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
@@ -1469,13 +1497,13 @@ class Exame extends BaseController {
                                 if ($id == 0) {
                                     $id = $this->exame->gravarnome($nome);
                                 }
-                                $this->exame->gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id ,$observacoes, $empresa_id);
+                                $this->exame->gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id);
                             }
                             if (( $horaverifica < $item->horasaida1)) {
                                 $x = 1;
                                 $horaconsulta = $horaverifica;
                                 $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
-                                $this->exame->gravarconsulta($agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $medico_id, $id ,$observacoes, $empresa_id);
+                                $this->exame->gravarconsulta($agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id);
                             }
                             $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
                         } else {
@@ -1486,13 +1514,13 @@ class Exame extends BaseController {
                                 if ($id == 0) {
                                     $id = $this->exame->gravarnome($nome);
                                 }
-                                $this->exame->gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id ,$observacoes, $empresa_id);
+                                $this->exame->gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id);
                             }
                             if ((($horaverifica < $item->intervaloinicio) || ($horaverifica >= $item->intervalofim)) && ( $horaverifica < $item->horasaida1)) {
                                 $x = 1;
                                 $horaconsulta = $horaverifica;
                                 $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
-                                $this->exame->gravarconsulta($agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $medico_id, $id ,$observacoes, $empresa_id);
+                                $this->exame->gravarconsulta($agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id);
                             }
                             $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
                         }
@@ -1686,7 +1714,7 @@ class Exame extends BaseController {
         $listarpacienete = $this->exame->listarpacientesxmlfaturamento();
         $listarexame = $this->exame->listargxmlfaturamento();
         $listarexames = $this->exame->listarxmlfaturamentoexames();
-        
+
         $horario = date("Y-m-d");
         $hora = date("H:i:s");
         $empresa = $this->exame->listarcnpj();
@@ -1892,8 +1920,7 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } 
-                                else {
+                                } else {
                                     $corpo = $corpo . "
                 <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -2028,8 +2055,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -2155,10 +2181,8 @@ class Exame extends BaseController {
                         }
                     }
                 }
-            } 
-            
-            else {
-            
+            } else {
+
                 if ($listarexame[0]->grupo != 'CONSULTA') {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -2312,8 +2336,7 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } 
-                                else {
+                                } else {
                                     $corpo = $corpo . "
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -2449,8 +2472,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -2580,7 +2602,7 @@ class Exame extends BaseController {
                 }
             }
         }
-        
+
         //VERSÃO ANTIGA DO XML
         else {
             if ($modelo == 'cpf') {
@@ -2741,8 +2763,7 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } 
-                                else {
+                                } else {
                                     $corpo = $corpo . "
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -2872,8 +2893,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
 
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -3000,11 +3020,10 @@ class Exame extends BaseController {
                         }
                     }
                 }
-            } 
-            else {
-            
-            if ($listarexame[0]->grupo != 'CONSULTA') {
-                $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
+            } else {
+
+                if ($listarexame[0]->grupo != 'CONSULTA') {
+                    $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
 <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
    <ans:cabecalho>
       <ans:identificacaoTransacao>
@@ -3027,49 +3046,49 @@ class Exame extends BaseController {
       <ans:loteGuias>
          <ans:numeroLote>" . $b . "</ans:numeroLote>
             <ans:guiasTISS>";
-                $contador = count($listarpacienete);
-                foreach ($listarpacienete as $value) {
+                    $contador = count($listarpacienete);
+                    foreach ($listarpacienete as $value) {
 
-                    if ($value->guiaconvenio == '') {
-                        $guianumero = '0000000';
-                    } else {
-                        $guianumero = $value->guiaconvenio;
-                    }
-                    if ($value->convenionumero == '') {
-                        $numerodacarteira = '0000000';
-                    } else {
-                        $numerodacarteira = $value->convenionumero;
-                    }
+                        if ($value->guiaconvenio == '') {
+                            $guianumero = '0000000';
+                        } else {
+                            $guianumero = $value->guiaconvenio;
+                        }
+                        if ($value->convenionumero == '') {
+                            $numerodacarteira = '0000000';
+                        } else {
+                            $numerodacarteira = $value->convenionumero;
+                        }
 
-                    foreach ($listarexames as $item) {
-                        if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
-                            $i++;
-                            $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
-                            $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
-                            $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
-                            if ($item->medico == '') {
-                                $medico = 'ADMINISTRADOR';
-                            } else {
-                                $medico = $item->medico;
-                            }
-                            if ($item->conselho == '') {
-                                $conselho = '0000000';
-                            } else {
-                                $conselho = $item->conselho;
-                            }
-                            if ($item->medicosolicitante == '') {
-                                $medicosolicitante = $item->medico;
-                            } else {
-                                $medicosolicitante = $item->medicosolicitante;
-                            }
-                            if ($item->conselhosolicitante == '') {
-                                $conselhosolicitante = $item->conselho;
-                            } else {
-                                $conselhosolicitante = $item->conselhosolicitante;
-                            }
+                        foreach ($listarexames as $item) {
+                            if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
+                                $i++;
+                                $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
+                                $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
+                                $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
+                                if ($item->medico == '') {
+                                    $medico = 'ADMINISTRADOR';
+                                } else {
+                                    $medico = $item->medico;
+                                }
+                                if ($item->conselho == '') {
+                                    $conselho = '0000000';
+                                } else {
+                                    $conselho = $item->conselho;
+                                }
+                                if ($item->medicosolicitante == '') {
+                                    $medicosolicitante = $item->medico;
+                                } else {
+                                    $medicosolicitante = $item->medicosolicitante;
+                                }
+                                if ($item->conselhosolicitante == '') {
+                                    $conselhosolicitante = $item->conselho;
+                                } else {
+                                    $conselhosolicitante = $item->conselhosolicitante;
+                                }
 
-                            if ($_POST['autorizacao'] == 'SIM') {
-                                $corpo = $corpo . "
+                                if ($_POST['autorizacao'] == 'SIM') {
+                                    $corpo = $corpo . "
                                                       <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
@@ -3156,8 +3175,8 @@ class Exame extends BaseController {
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
-                            } else {
-                                $corpo = $corpo . "
+                                } else {
+                                    $corpo = $corpo . "
                                                       <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
@@ -3242,14 +3261,14 @@ class Exame extends BaseController {
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
-                            }
+                                }
 
 
-                            if ($i == 80) {
-                                $contador = $contador - $i;
+                                if ($i == 80) {
+                                    $contador = $contador - $i;
 
-                                $i = 0;
-                                $rodape = "   </ans:guiasTISS>
+                                    $i = 0;
+                                    $rodape = "   </ans:guiasTISS>
          
       </ans:loteGuias>
    </ans:prestadorParaOperadora>
@@ -3259,19 +3278,19 @@ class Exame extends BaseController {
 </ans:mensagemTISS>
 ";
 
-                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                                $xml = $cabecalho . $corpo . $rodape;
-                                $fp = fopen($nome, "w+");
-                                fwrite($fp, $xml . "\n");
-                                fclose($fp);
-                                $b++;
-                                $corpo = "";
-                                $rodape = "";
-                            }
+                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                    $xml = $cabecalho . $corpo . $rodape;
+                                    $fp = fopen($nome, "w+");
+                                    fwrite($fp, $xml . "\n");
+                                    fclose($fp);
+                                    $b++;
+                                    $corpo = "";
+                                    $rodape = "";
+                                }
 
-                            if ($contador < 80 && $contador == $i) {
-                                $i = 0;
-                                $rodape = "   </ans:guiasTISS>
+                                if ($contador < 80 && $contador == $i) {
+                                    $i = 0;
+                                    $rodape = "   </ans:guiasTISS>
          
       </ans:loteGuias>
    </ans:prestadorParaOperadora>
@@ -3280,22 +3299,21 @@ class Exame extends BaseController {
    </ans:epilogo>
 </ans:mensagemTISS>
 ";
-                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                                $xml = $cabecalho . $corpo . $rodape;
-                                $fp = fopen($nome, "w+");
-                                fwrite($fp, $xml . "\n");
-                                fclose($fp);
-                                $b++;
-                                $corpo = "";
-                                $rodape = "";
+                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                    $xml = $cabecalho . $corpo . $rodape;
+                                    $fp = fopen($nome, "w+");
+                                    fwrite($fp, $xml . "\n");
+                                    fclose($fp);
+                                    $b++;
+                                    $corpo = "";
+                                    $rodape = "";
+                                }
                             }
                         }
                     }
-                }
-            } 
-            else {
+                } else {
 
-                $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
+                    $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
 <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
    <ans:cabecalho>
       <ans:identificacaoTransacao>
@@ -3318,31 +3336,31 @@ class Exame extends BaseController {
       <ans:loteGuias>
          <ans:numeroLote>" . $b . "</ans:numeroLote>
             <ans:guiasTISS>";
-                $contador = count($listarexame);
+                    $contador = count($listarexame);
 
-                foreach ($listarexame as $value) {
-                    $i++;
-                    if ($value->convenionumero == '') {
-                        $numerodacarteira = '0000000';
-                    } else {
-                        $numerodacarteira = $value->convenionumero;
-                    }
-                    if ($value->medico == '') {
-                        $medico = 'ADMINISTRADOR';
-                    } else {
-                        $medico = $value->medico;
-                    }
-                    if ($value->conselho == '') {
-                        $conselho = '0000000';
-                    } else {
-                        $conselho = $value->conselho;
-                    }
-                    if ($value->guiaconvenio == '') {
-                        $guianumero = '0000000';
-                    } else {
-                        $guianumero = $value->guiaconvenio;
-                    }
-                    $corpo = $corpo . "
+                    foreach ($listarexame as $value) {
+                        $i++;
+                        if ($value->convenionumero == '') {
+                            $numerodacarteira = '0000000';
+                        } else {
+                            $numerodacarteira = $value->convenionumero;
+                        }
+                        if ($value->medico == '') {
+                            $medico = 'ADMINISTRADOR';
+                        } else {
+                            $medico = $value->medico;
+                        }
+                        if ($value->conselho == '') {
+                            $conselho = '0000000';
+                        } else {
+                            $conselho = $value->conselho;
+                        }
+                        if ($value->guiaconvenio == '') {
+                            $guianumero = '0000000';
+                        } else {
+                            $guianumero = $value->guiaconvenio;
+                        }
+                        $corpo = $corpo . "
             <ans:guiaConsulta>
                 <ans:cabecalhoConsulta>
                     <ans:registroANS>" . $registroans . "</ans:registroANS>
@@ -3377,10 +3395,10 @@ class Exame extends BaseController {
                     </ans:procedimento>
                 </ans:dadosAtendimento>
             </ans:guiaConsulta>";
-                    if ($i == 80) {
-                        $contador = $contador - $i;
-                        $i = 0;
-                        $rodape = "</ans:guiasTISS>
+                        if ($i == 80) {
+                            $contador = $contador - $i;
+                            $i = 0;
+                            $rodape = "</ans:guiasTISS>
     </ans:loteGuias>
 </ans:prestadorParaOperadora>
 <ans:epilogo>
@@ -3389,18 +3407,18 @@ class Exame extends BaseController {
 </ans:mensagemTISS>
 ";
 
-                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                        $xml = $cabecalho . $corpo . $rodape;
-                        $fp = fopen($nome, "w+");
-                        fwrite($fp, $xml . "\n");
-                        fclose($fp);
-                        $b++;
-                        $corpo = "";
-                        $rodape = "";
-                    }
-                    if ($contador < 80 && $contador == $i) {
-                        $i = 0;
-                        $rodape = "   </ans:guiasTISS>
+                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                            $xml = $cabecalho . $corpo . $rodape;
+                            $fp = fopen($nome, "w+");
+                            fwrite($fp, $xml . "\n");
+                            fclose($fp);
+                            $b++;
+                            $corpo = "";
+                            $rodape = "";
+                        }
+                        if ($contador < 80 && $contador == $i) {
+                            $i = 0;
+                            $rodape = "   </ans:guiasTISS>
          
        
     </ans:loteGuias>
@@ -3410,18 +3428,18 @@ class Exame extends BaseController {
 </ans:epilogo>
 </ans:mensagemTISS>
 ";
-                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                        $xml = $cabecalho . $corpo . $rodape;
-                        $fp = fopen($nome, "w+");
-                        fwrite($fp, $xml . "\n");
-                        fclose($fp);
-                        $b++;
-                        $corpo = "";
-                        $rodape = "";
+                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                            $xml = $cabecalho . $corpo . $rodape;
+                            $fp = fopen($nome, "w+");
+                            fwrite($fp, $xml . "\n");
+                            fclose($fp);
+                            $b++;
+                            $corpo = "";
+                            $rodape = "";
+                        }
                     }
                 }
             }
-        }
         }
         $this->exame->gravarlote($b);
         $zip = new ZipArchive;

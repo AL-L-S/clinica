@@ -61,6 +61,57 @@ class centrocirurgico_model extends BaseModel {
         return $this->db;
     }
 
+    function listarhospitais($args = array()) {
+
+        $this->db->select('hospital_id, 
+                               f.nome,
+                               razao_social,
+                               cnpj,
+                               celular,
+                               telefone,
+                               cep,
+                               logradouro,
+                               numero,
+                               bairro,
+                               cnes,
+                               f.municipio_id,
+                               c.nome as municipio,
+                               c.estado,
+                               cep');
+        $this->db->from('tb_hospital f');
+        $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
+        if ($args) {
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('f.nome ilike', $args['nome'] . "%", 'left');
+            }
+        }
+        return $this->db;
+    }
+    
+    function instanciarhospitais($hospital_id) {
+
+        $this->db->select('hospital_id, 
+                               f.nome,
+                               razao_social,
+                               cnpj,
+                               celular,
+                               telefone,
+                               cep,
+                               logradouro,
+                               numero,
+                               bairro,
+                               cnes,
+                               f.municipio_id,
+                               c.nome as municipio,
+                               c.estado,
+                               cep');
+        $this->db->from('tb_hospital f');
+        $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
+        $this->db->where('f.hospital_id', $hospital_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarsolicitacoes2($args = array()) {
 
         $this->db->select(' p.paciente_id,
@@ -166,10 +217,9 @@ class centrocirurgico_model extends BaseModel {
 
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
-        if($orcamento != 'f'){
+        if ($orcamento != 'f') {
             $this->db->set('situacao', 'LIBERADA');
-        }
-        else{
+        } else {
             $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
         }
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
@@ -268,9 +318,9 @@ class centrocirurgico_model extends BaseModel {
     function autorizarcirurgia() {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        $_POST['dataprevista'] = date( "Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['dataprevista'])) );
-        
-        $this->db->set('data_prevista', $_POST['dataprevista'] );
+        $_POST['dataprevista'] = date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['dataprevista'])));
+
+        $this->db->set('data_prevista', $_POST['dataprevista']);
         $this->db->set('medico_agendado', $_POST['medicoagendadoid']);
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);

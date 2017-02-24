@@ -1468,7 +1468,7 @@ FROM ponto.tb_procedimento_percentual_medico m , ponto.tb_procedimento_percentua
 
 
 
------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 --LOGO APÓS RODAR ESSA QUERY
 
 UPDATE ponto.tb_agenda_exames ae
@@ -1496,3 +1496,67 @@ FROM ponto.tb_agenda_exames ae1
        AND pc.ativo = 'true' 
        
        AND pt.ativo = 'true'
+
+
+-- Dia 24/02/2017
+DROP TABLE ponto.tb_solicitacao_cirurgia_equipe;
+
+CREATE TABLE ponto.tb_equipe_cirurgia
+(
+  equipe_cirurgia_id serial NOT NULL,
+  nome character varying(500),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_equipe_cirurgia_pkey PRIMARY KEY (equipe_cirurgia_id)
+);
+
+-- NAO ESTA FUNCIONAL AINDA
+CREATE TABLE ponto.tb_equipe_cirurgia_operadores
+(
+  equipe_cirurgia_operadores_id serial NOT NULL,
+  funcao integer,
+  operador_responsavel integer,
+  solicitacao_cirurgia_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_equipe_cirurgia_operadores_pkey PRIMARY KEY (equipe_cirurgia_operadores_id)
+);
+
+
+CREATE TABLE ponto.tb_hospital
+(
+  hospital_id serial NOT NULL,
+  razao_social character varying(200),
+  nome character varying(200),
+  cnpj character varying(20),
+  cep character varying(9),
+  logradouro character varying(200),
+  numero character varying(20),
+  complemento character varying(100),
+  bairro character varying(100),
+  municipio_id integer,
+  celular character varying(15),
+  telefone character varying(15),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  tipo_logradouro_id integer,
+  caixa boolean DEFAULT false,
+  cnpjxml character varying(20),
+  razao_socialxml character varying(200),
+  cpfxml character varying(11),
+  registroans character varying(11),
+  dinheiro boolean DEFAULT false,
+  producaomedicadinheiro boolean DEFAULT false,
+  cnes character varying(20),
+  tipo_xml_id integer,
+  CONSTRAINT tb_hospital_pkey PRIMARY KEY (hospital_id )
+);

@@ -45,6 +45,10 @@ class centrocirurgico extends BaseController {
         $this->loadView('internacao/listarsolicitacaointernacao');
     }
 
+    public function pesquisarhospitais($args = array()) {
+        $this->loadView('centrocirurgico/hospital-lista');
+    }
+
     function solicitacirurgia($internacao_id) {
         $data['paciente'] = $this->solicitacirurgia_m->solicitacirurgia($internacao_id);
         $this->loadView('centrocirurgico/solicitacirurgia', $data);
@@ -215,6 +219,14 @@ class centrocirurgico extends BaseController {
         $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador();
         $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentos($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);
+    }
+
+    function carregarhospital($hospital_id) {
+
+        $data['hospital_id'] = $hospital_id;
+        $data['hospital'] = $this->centrocirurgico_m->instanciarhospitais($hospital_id);
+        echo "<pre>";var_dump($data['hospital'] );die;
+        $this->loadView('centrocirurgico/hospital-form', $data);
     }
 
     function excluiritemorcamento($orcamento_id, $solicitacao_id, $convenio_id) {

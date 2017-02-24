@@ -137,6 +137,41 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarconvenios() {
+
+        $this->db->select(' c.convenio_id,
+                            c.nome');
+        $this->db->from('tb_convenio c');
+        $this->db->where("c.ativo", 'true');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+    }
+
+    function instanciarguia($guia_id = null) {
+
+        $this->db->select(' ag.ambulatorio_guia_id,
+                            ag.tipo,
+                            ag.observacoes,
+                            c.convenio_id,
+                            c.nome as convenio,
+                            p.paciente_id,
+                            p.telefone,
+                            p.sexo,
+                            p.nascimento,
+                            p.nome as paciente');
+        $this->db->from('tb_ambulatorio_guia ag');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = ag.convenio_id', 'left');
+        $this->db->where("ag.ambulatorio_guia_id", $guia_id);
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+    }
+
     function listarchamadas() {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -5999,6 +6034,46 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
+    function gravarguiacirurgica($paciente_id) {
+//        var_dump($paciente_id);die;
+        $horario = date("Y-m-d H:i:s");
+        $data = date("Y-m-d");
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('tipo', 'CIRURGICO');
+        $this->db->set('data_criacao', $data);
+        $this->db->set('convenio_id', $_POST['convenio_id']);
+        $this->db->set('paciente_id', $_POST['txtpacienteid']);
+
+        if ($_POST['txtambulatorioguiaid'] == '' || $_POST['txtambulatorioguiaid'] == '0') {
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_ambulatorio_guia');
+            $ambulatorio_guia_id = $this->db->insert_id();
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return -1;
+            } else {
+                return $ambulatorio_guia_id;
+            }
+        }
+        else {
+            $ambulatorio_guia_id = $_POST['txtambulatorioguiaid'];
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where("ambulatorio_guia_id", $ambulatorio_guia_id);
+            $this->db->update('tb_ambulatorio_guia');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return -1;
+            } else {
+                return $ambulatorio_guia_id;
+            }
+        }
+    }
+
     function gravarguia($paciente_id) {
 //        var_dump($paciente_id);die;
         $horario = date("Y-m-d H:i:s");
@@ -6696,7 +6771,7 @@ ORDER BY ae.agenda_exames_id)";
     function editarexames($percentual) {
         try {
 //            var_dump($percentual);die;
-            
+
             $this->db->set('autorizacao', $_POST['autorizacao1']);
             $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
             $this->db->set('guia_id', $_POST['guia_id']);
