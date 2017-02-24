@@ -10,7 +10,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Saida</a></h3>
         <div>
-            <form name="form_contaspagar" id="form_contaspagar" action="<?= base_url() ?>cadastros/contaspagar/confirmar" method="post">
+            <form name="form_contaspagar" id="form_contaspagar" action="<?= base_url() ?>cadastros/contaspagar/confirmar/<?= @$obj->_financeiro_contaspagar_id; ?>" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>

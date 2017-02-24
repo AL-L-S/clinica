@@ -694,6 +694,18 @@ class Guia extends BaseController {
     }
 
     function fecharmedico() {
+//        var_dump($_POST['tipo']); die;
+        if ($_POST['conta'] == '') {
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter uma conta associada ao cadastro do médico';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
+        }
+        
+        if ($_POST['nome'] == '') {
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter um credor associado ao cadastro do médico.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
+        }
         $caixa = $this->guia->fecharmedico();
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';

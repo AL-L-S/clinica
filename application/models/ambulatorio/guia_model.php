@@ -3243,9 +3243,8 @@ class guia_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
         $this->db->join('tb_operador opp', 'opp.operador_id = al.medico_parecer1', 'left');
-
-        $this->db->where('f.cartao', 't');
-//        $this->db->orwhere('f2.cartao', 't');
+        $this->db->where("((f.cartao = 't') OR (f2.cartao = 't') OR (f3.cartao = 't') OR (f4.cartao = 't'))");
+//        $this->db->where('f.cartao', 't');
 //        $this->db->orwhere('f3.cartao', 't');
 //        $this->db->orwhere('f4.cartao', 't');
         $this->db->where('ae.cancelada', 'false');
@@ -5811,14 +5810,12 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->set('valor', $_POST['valor']);
         $this->db->set('tipo', $_POST['tipo']);
         $this->db->set('credor', $_POST['nome']);
-        if ($_POST['conta'] != '') {
-            $this->db->set('conta', $_POST['conta']);
-        }
+        $this->db->set('conta', $_POST['conta']);
         $this->db->set('observacao', $_POST['observacao']);
         $this->db->set('data_cadastro', $horario);
         $this->db->set('operador_cadastro', $operador_id);
         $this->db->insert('tb_financeiro_contaspagar');
-        $saida_id = $this->db->insert_id();
+//        $saida_id = $this->db->insert_id();
     }
 
     function listardados($convenio) {
