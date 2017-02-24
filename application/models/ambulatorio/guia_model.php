@@ -3126,6 +3126,9 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
         if ($_POST['operador'] != "0") {
             $this->db->where('ae.operador_autorizacao', $_POST['operador']);
         }
@@ -3413,6 +3416,9 @@ class guia_model extends Model {
         }
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
         }
         if ($_POST['operador'] != "0") {
             $this->db->where('ae.operador_autorizacao', $_POST['operador']);

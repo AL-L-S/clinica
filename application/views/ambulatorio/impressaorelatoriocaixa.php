@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
     <? if (count($empresa) > 0) { ?>
         <h4><?= $empresa[0]->razao_social; ?></h4>
@@ -6,11 +7,17 @@
     <? } ?>
     <h4>CONFERENCIA CAIXA</h4>
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
-    <? if ($contador > 0 && $operador != 0) { ?>
-        <h3>ATENDENTE: <?= $relatorio[0]->nome; ?></h3>
+    <? if (count($operador) != 0) { ?>
+        <h3>ATENDENTE: <?= $operador[0]->nome; ?></h3>
     <? } ?>
-    <? if ($operador == 0) { ?>
+    <? if (count($operador) == 0) { ?>
         <h3>ATENDENTE: TODOS</h3>
+    <? } ?>
+    <? if (count($medico) != 0) { ?>
+        <h3>MÉDICO: <?= $medico[0]->nome; ?></h3>
+    <? } ?>    
+    <? if (count($medico)  == 0) { ?>
+        <h3>MÉDICO: TODOS</h3>
     <? } ?>
     <hr>
     <?
@@ -498,9 +505,12 @@
                 <tr>
                     <td colspan="5"></td>
                     <? if ($faturado == 't' && $exame == "") { ?>
-                        <? if ($operador == 0 && $financeiro == 'f') { ?>
+                        <? if (count($operador) == 0 && $financeiro == 'f') { ?>
                             <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
-                        <? } else {
+
+                        <?} elseif(count($operador) > 0 && $financeiro == 'f'){?>
+                           <td colspan="2" ><b>Não é possível fechar por operador</b></td> 
+                        <?} else {
                             ?>
                             <td colspan="2" ><b>Caixa Fechado</b></td>
                         <? } ?>
