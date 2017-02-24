@@ -3112,7 +3112,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 't');
-        $this->db->where('ag.tipo', 'ESPECIALIDADE');
+        $this->db->where("( (ag.tipo = 'ESPECIALIDADE') OR (ae.tipo = 'ESPECIALIDADE' AND ae.procedimento_tuss_id IS NULL) )");
         $this->db->orderby('ae.realizada', 'desc');
         $this->db->orderby('al.situacao');
         $this->db->orderby('ae.data_autorizacao');
