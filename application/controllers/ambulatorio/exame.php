@@ -232,7 +232,13 @@ class Exame extends BaseController {
     }
 
     function listarmultifuncaomedico($args = array()) {
-
+        $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
+//        echo "<pre>";
+//        var_dump($data['integracao']);die;
+	if ( count($data['integracao']) > 0) {
+            $this->laudo->atualizacaolaudosintegracaotodos();
+        }
+        
         $this->loadView('ambulatorio/multifuncaomedico-lista', $args);
     }
 
