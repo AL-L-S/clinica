@@ -3179,6 +3179,7 @@ class guia_model extends Model {
                             o.nome,
                             e.exames_id,
                             op.nome as nomefaturamento,
+                            opp.nome as medico,
                             f.nome as forma_pagamento,
                             f2.nome as forma_pagamento_2,
                             f3.nome as forma_pagamento_3,
@@ -3203,6 +3204,7 @@ class guia_model extends Model {
         $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
+        $this->db->join('tb_operador opp', 'opp.operador_id = al.medico_parecer1', 'left');
 
         $this->db->where('f.cartao', 't');
 //        $this->db->orwhere('f2.cartao', 't');

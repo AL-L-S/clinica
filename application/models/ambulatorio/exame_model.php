@@ -283,7 +283,7 @@ class exame_model extends Model {
                             nome');
         $this->db->from('tb_exame_sala');
         $this->db->where('empresa_id', $empresa_id);
-        $this->db->where('ativo', 't');
+        $this->db->where('excluido', 'f');
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();

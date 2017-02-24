@@ -250,6 +250,20 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listaroperador($operador) {
+        $this->db->select('o.operador_id,
+                               o.usuario,
+                               o.nome,
+                               o.perfil_id,
+                               p.nome as perfil');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id', 'left');
+        $this->db->where('o.operador_id', $operador);
+        $this->db->orderby('o.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listaradminitradores() {
         $this->db->select('o.operador_id,
