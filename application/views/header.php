@@ -453,6 +453,7 @@ function debug($object) {
                         <li><span class="folder">Rotinas</span>
                             <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentoexame">Faturar</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentomanual">Faturaramento Manual</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentoexamexml">Gerar xml</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/faturamentolaudoxml">Gerar xml Laudo</a></span></ul>
                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriovalorprocedimento">Ajustar valores</a></span></ul>

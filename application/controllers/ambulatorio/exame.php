@@ -251,6 +251,11 @@ class Exame extends BaseController {
 
         $this->loadView('ambulatorio/faturamentoexame');
     }
+    
+    function faturamentomanual() {
+
+        $this->loadView('ambulatorio/faturamentomanual-lista');
+    }
 
     function fecharfinanceiro() {
         $financeiro = $this->exame->fecharfinanceiro();

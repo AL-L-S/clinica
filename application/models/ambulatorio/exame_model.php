@@ -2427,8 +2427,8 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where("(ag.tipo = 'EXAME' OR ae.tipo = 'EXAME')");
-//        $this->db->where('pt.grupo !=', 'CONSULTA');
+        $this->db->where("( (ag.tipo = 'EXAME') OR (ae.tipo = 'EXAME' AND ae.procedimento_tuss_id IS NULL) )");
+//        $this->db->orderby('ae.procedimento_tuss_id');
 //        $this->db->where('pt.grupo !=', 'LABORATORIAL');
 //        $this->db->where('ae.confirmado', 'true');
 //        $this->db->where('ae.ativo', 'false');
@@ -2511,9 +2511,10 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where("(ag.tipo = 'EXAME' OR ae.tipo = 'EXAME')");
+        $this->db->where("( (ag.tipo = 'EXAME') OR (ae.tipo = 'EXAME' AND ae.procedimento_tuss_id IS NULL) )");
 //        $this->db->where('pt.grupo !=', 'CONSULTA');
 //        $this->db->where('pt.grupo !=', 'LABORATORIAL');
+//        $this->db->orderby('ae.procedimento_tuss_id');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
 //        $this->db->where('ae.confirmado', 'true');
@@ -2704,7 +2705,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where('ag.tipo', 'CONSULTA');
+        $this->db->where("( (ag.tipo = 'CONSULTA') OR (ae.tipo = 'CONSULTA' AND ae.procedimento_tuss_id IS NULL) )");
 //        $this->db->orderby('ae.data');
 //        $this->db->orderby('ae.inicio');
 //        $this->db->orderby('al.situacao');
@@ -2871,7 +2872,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where('ag.tipo', 'CONSULTA');
+        $this->db->where("( (ag.tipo = 'CONSULTA') OR (ae.tipo = 'CONSULTA' AND ae.procedimento_tuss_id IS NULL) )");
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         $this->db->orderby('al.situacao');
@@ -3028,7 +3029,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where('ag.tipo', 'ESPECIALIDADE');
+        $this->db->where("( (ag.tipo = 'ESPECIALIDADE') OR (ae.tipo = 'ESPECIALIDADE' AND ae.procedimento_tuss_id IS NULL) )");
 //        $this->db->where('ae.confirmado', 'true');
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
