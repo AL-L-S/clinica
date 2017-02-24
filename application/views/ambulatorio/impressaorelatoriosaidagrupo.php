@@ -21,7 +21,7 @@
         <h4>TODAS OS CREDORES</h4>
     <? } ?>
     <h4>RELATORIO DE SAIDA</h4>
-    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
+    <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
     <hr>
     <?
     if ($contador > 0) {
@@ -33,10 +33,11 @@
                     <th class="tabela_header">Nome</th>
                     <th class="tabela_header">Tipo</th>
                     <th class="tabela_header">Classe</th>
+                    <th class="tabela_header">Observacao</th>
                     <th class="tabela_header">Dt saida</th>
                     <th class="tabela_header">Valor</th>
 
-                    <th class="tabela_header">Observacao</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -56,13 +57,14 @@
                             <td ><?= utf8_decode($item->razao_social); ?></td>
                             <td ><?= utf8_decode($item->tipo); ?></td>
                             <td ><?= utf8_decode($item->classe); ?></td>
+                            <td ><?= utf8_decode($item->observacao); ?></td>
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
-                            <td ><?= utf8_decode($item->observacao); ?></td>
+
                         </tr>
                     <? } else { ?>
                         <tr>
-                            <td colspan="5" bgcolor="#C0C0C0"><b>SUB-TOTAL</b></td>
+                            <td colspan="6" bgcolor="#C0C0C0"><b>SUB-TOTAL</b></td>
                             <td bgcolor="#C0C0C0"><b><?= number_format($totaltipo, 2, ",", "."); ?></b></td>
 
                         </tr>
@@ -71,20 +73,31 @@
                             <td ><?= utf8_decode($item->razao_social); ?></td>
                             <td ><?= utf8_decode($item->tipo); ?></td>
                             <td ><?= utf8_decode($item->classe); ?></td>
+                            <td ><?= utf8_decode($item->observacao); ?></td>
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
-                            <td ><?= utf8_decode($item->observacao); ?></td>
+
                         </tr>
                         <?
                         $s = $item->tipo;
                         $totaltipo = 0;
                         $totaltipo = $item->valor;
                     }
+                    if ($i == (count($relatorio) - 1)) {
+                        ?>
+                        <tr>
+                            <td colspan="6" bgcolor="#C0C0C0"><b>SUB-TOTAL</b></td>
+                            <td bgcolor="#C0C0C0"><b><?= number_format($totaltipo, 2, ",", "."); ?></b></td>
+
+                        </tr>
+                    <?
+                    }
                     $i++
                     ?>
-                <? endforeach; ?>
+    <? endforeach; ?>
+
                 <tr>
-                    <td colspan="4" bgcolor="#C0C0C0"><b>TOTAL</b></td>
+                    <td colspan="6" bgcolor="#C0C0C0"><b>TOTAL</b></td>
                     <td colspan="2" bgcolor="#C0C0C0"><b><?= number_format($totalgeral, 2, ",", "."); ?></b></td>
                 </tr>
             </tbody>

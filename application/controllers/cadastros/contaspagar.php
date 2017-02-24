@@ -214,12 +214,13 @@ class Contaspagar extends BaseController {
 
     function gravar() {
         $repetir = $_POST['repitir'];
-        $dia = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['inicio']) ) );
+        $dia = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['inicio'])));
         $parcela = 1;
         $contador = 0;
         $a = 0;
         $c = 0;
-        var_dump($dia); die;
+        var_dump($dia);
+        die;
         if ($_POST['financeiro_contaspagar_id'] == '') {
             if ($_POST['credor'] == '') {
                 $data['mensagem'] = 'É necessário selecionar o item no campo Pagar a ';
@@ -349,7 +350,20 @@ class Contaspagar extends BaseController {
         redirect(base_url() . "cadastros/contaspagar");
     }
 
-    function confirmar() {
+    function confirmar($financeiro_contaspagar_id) {
+//        var_dump($_POST['conta']);
+//        die;
+        if ($_POST['conta'] == '') {
+            $data['mensagem'] = 'Associe uma conta a este pagamento';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "cadastros/contaspagar/carregarconfirmacao/$financeiro_contaspagar_id", $data);
+        }
+        
+        if ($_POST['credor'] == '') {
+            $data['mensagem'] = 'Associe um credor a este pagamento.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "cadastros/contaspagar/carregarconfirmacao/$financeiro_contaspagar_id", $data);
+        }
         $financeiro_contaspagar_id = $this->contaspagar->gravarconfirmacao();
         if ($financeiro_contaspagar_id == "-1") {
             $data['mensagem'] = 'Erro ao confirmar a Contas a pagar. Opera&ccedil;&atilde;o cancelada.';
