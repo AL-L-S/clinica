@@ -3208,9 +3208,8 @@ class guia_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
         $this->db->join('tb_operador opp', 'opp.operador_id = al.medico_parecer1', 'left');
-
-        $this->db->where('f.cartao', 't');
-//        $this->db->orwhere('f2.cartao', 't');
+        $this->db->where("((f.cartao = 't') OR (f2.cartao = 't') OR (f3.cartao = 't') OR (f4.cartao = 't'))");
+//        $this->db->where('f.cartao', 't');
 //        $this->db->orwhere('f3.cartao', 't');
 //        $this->db->orwhere('f4.cartao', 't');
         $this->db->where('ae.cancelada', 'false');
