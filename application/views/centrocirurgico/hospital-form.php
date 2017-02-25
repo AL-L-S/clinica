@@ -1,8 +1,8 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Sala</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Hospital</a></h3>
         <div>
-            <form name="form_empresa" id="form_empresa" action="<?= base_url() ?>ambulatorio/empresa/gravar" method="post">
+            <form name="form_empresa" id="form_empresa" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarhospital" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>
@@ -12,13 +12,13 @@
                         <input type="hidden" name="txtempresaid" class="texto10" value="<?= @$hospital[0]->hospital_id; ?>" />
                         <input type="text" name="txtNome" class="texto10" value="<?= @$hospital[0]->nome; ?>" />
                     </dd>
-<dt>
+<!--<dt>
                     <label>Raz&atilde;o social</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtrazaosocial" id="txtrazaosocial" class="texto10" value="<?= @$hospital[0]->razao_social; ?>" />
-                    </dd>
-                    <dt>
+                    </dd>-->
+<!--                    <dt>
                     <label>CNPJ</label>
                     </dt>
                     <dd>
@@ -29,7 +29,7 @@
                     </dt>
                     <dd>
                         <input type="text" name="txtCNES" maxlength="14" class="texto03" value="<?= @$hospital[0]->cnes; ?>" />
-                    </dd>
+                    </dd>-->
                     <dt>
                     <label>Endere&ccedil;o</label>
                     </dt>
@@ -52,7 +52,7 @@
                     <label>CEP</label>
                     </dt>
                     <dd>
-                        <input type="text" id="txtCEP" class="texto02" name="CEP" alt="cep" value="<?= @$hospital[0]->cep; ?>" />
+                        <input type="text" id="txtCEP" class="texto02" name="cep" alt="cep" value="<?= @$hospital[0]->cep; ?>" />
                     </dd>
                     <dt>
                     <label>Telefone</label>

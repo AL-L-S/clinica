@@ -249,6 +249,47 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimentocirurgicoconvenio($convenio_id) {
+        $this->db->select('pc.procedimento_convenio_id,
+                           pt.nome');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('pc.ativo', 'true');
+        $this->db->where('pc.convenio_id', $convenio_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarequipescirurgicas() {
+        $this->db->select('equipe_cirurgia_id, 
+                           nome');
+        $this->db->from('tb_equipe_cirurgia ec');
+        $this->db->where('ec.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarquipeoperadores($equipe_id) {
+        $this->db->select('operador_responsavel, 
+                           valor as percentual,
+                           funcao');
+        $this->db->from('tb_equipe_cirurgia_operadores eco');
+        $this->db->where('eco.ativo', 't');
+        $this->db->where('eco.equipe_cirurgia_id', $equipe_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarhospitais() {
+        $this->db->select('hospital_id, 
+                               f.nome');
+        $this->db->from('tb_hospital f');
+        $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
+        $this->db->where('f.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprodutossalagastos() {
         $operador_id = $this->session->userdata('operador_id');
 

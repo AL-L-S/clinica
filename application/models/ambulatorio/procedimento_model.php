@@ -199,6 +199,14 @@ class procedimento_model extends Model {
         return $return->result();
     }
 
+    function carregavalorprocedimentocirurgico($procedimento_id) {
+        $this->db->select('valor_total');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->where('pc.procedimento_convenio_id', $procedimento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprocedimentocirurgiaautocomplete($parametro = null) {
         $this->db->select('pc.procedimento_convenio_id,
                            pt.descricao');

@@ -80,6 +80,7 @@ class centrocirurgico_model extends BaseModel {
                                cep');
         $this->db->from('tb_hospital f');
         $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
+        $this->db->where('f.ativo', 't');
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('f.nome ilike', $args['nome'] . "%", 'left');
@@ -87,7 +88,21 @@ class centrocirurgico_model extends BaseModel {
         }
         return $this->db;
     }
-    
+
+    function listarequipecirurgica($args = array()) {
+
+        $this->db->select('equipe_cirurgia_id, 
+                           nome');
+        $this->db->from('tb_equipe_cirurgia ec');
+        $this->db->where('ec.ativo', 't');
+        if ($args) {
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('ec.nome ilike', $args['nome'] . "%", 'left');
+            }
+        }
+        return $this->db;
+    }
+
     function instanciarhospitais($hospital_id) {
 
         $this->db->select('hospital_id, 
@@ -194,6 +209,90 @@ class centrocirurgico_model extends BaseModel {
 
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function gravarequipeoperadores() {
+        try {
+            /* inicia o mapeamento no banco */
+            $_POST['valor'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['valor']));
+            
+            $this->db->set('funcao', $_POST['funcao']);
+            $this->db->set('operador_responsavel', $_POST['medico']);
+            $this->db->set('equipe_cirurgia_id', $_POST['equipe_id']);
+            $this->db->set('valor', $_POST['valor']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_equipe_cirurgia_operadores');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarhospital() {
+        try {
+            /* inicia o mapeamento no banco */
+            $this->db->set('nome', $_POST['txtNome']);
+//            $this->db->set('razao_social', $_POST['txtrazaosocial']);
+//            $this->db->set('cep', $_POST['CEP']);
+//            $this->db->set('cnes', $_POST['txtCNES']);
+            if ($_POST['txtCNPJ'] != '') {
+                $this->db->set('cnpj', str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ']))));
+            }
+            $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
+            $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
+            if ($_POST['municipio_id'] != '') {
+                $this->db->set('municipio_id', $_POST['municipio_id']);
+            }
+            $this->db->set('cep', $_POST['cep']);
+            $this->db->set('logradouro', $_POST['endereco']);
+            $this->db->set('numero', $_POST['numero']);
+            $this->db->set('bairro', $_POST['bairro']);
+
+
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['txtempresaid'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_hospital');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $hospital_id = $this->db->insert_id();
+            }
+            else { // update
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $hospital_id = $_POST['txtempresaid'];
+                $this->db->where('hospital_id', $hospital_id);
+                $this->db->update('tb_hospital');
+            }
+            return $hospital_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function excluirhospital($hospital_id) {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('hospital_id', $hospital_id);
+            $this->db->update('tb_hospital');
+        } catch (Exception $exc) {
+            return -1;
+        }
     }
 
     function pegasolicitacaoinformacoes($solicitacao_id) {

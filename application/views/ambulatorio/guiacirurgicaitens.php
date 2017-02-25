@@ -1,6 +1,6 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/exame/carregarguiacirurgica">
+        <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/cadastrarequipe" target="_blank">
             Nova Equipe
         </a>
     </div>
@@ -32,7 +32,83 @@
         </fieldset>
         <fieldset>
 
+            <div >
+                <label>Procedimento *</label>
+                <select  name="procedimento" id="procedimento" class="size2"  required="">
+                    <option value="">Selecione</option>
+                    <? foreach (@$procedimentos as $item) : ?>
+                        <option value="<?= $item->procedimento_convenio_id; ?>"><?= $item->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+
             <div>
+                <label>Equipe *</label> 
+                <select  name="equipe_id" id="equipe_id" class="size2"  required="">
+                    <option value="">Selecione</option>
+                    <? foreach (@$equipes as $item) : ?>
+                        <option value="<?= $item->equipe_cirurgia_id; ?>"><?= $item->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label>Vlr. Cirurgião</label>
+                <input type="text" name="valorMedico" id="valor" alt="decimal" class="texto01" required=""/>
+            </div>
+
+            <div>
+                <label>Vlr. Anestesista</label>
+                <input type="text" name="valorAnestesista" id="valor" alt="decimal" class="texto01" required=""/>
+            </div>
+
+
+
+            <div >
+                <label>Data/Hora Autorização*</label>
+                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="29/29/9999 29:69"class="size2"/>
+            </div>
+
+            <div>
+                <label>Hospital *</label>
+                <select name="hospital_id" id="hospital_id" class="size2"  required="">
+                    <option value="">Selecione</option>
+                    <? foreach (@$hospitais as $item) : ?>
+                        <option value="<?= $item->hospital_id; ?>"><?= $item->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+
+            <div>
+                <label>QTDE*</label>
+                <input type="text" name="qtde" id="qtde" alt="integer" style="width:40pt"/>
+            </div>
+
+            <div style="width: 100%">
+                <div>
+                    <fieldset>
+                        <legend> Leito * </legend>
+                        <p style="font-size: 9pt; "><input type="radio" name="leito" value="enf">Enfermaria</p>
+                        <p style="font-size: 9pt; "><input type="radio" name="leito" value="apt">Apartamento</p>
+                    </fieldset>
+                </div>
+
+                <div>
+                    <fieldset>
+                        <legend> Via* </legend>
+                        <p style="font-size: 9pt; "><input type="radio" name="via" value="m"><span title="Mesma Via">M</span></p>
+                        <p style="font-size: 9pt; "><input type="radio" name="via" value="d"><span title="Via Diferente">D</span></p>
+                    </fieldset>
+                </div>
+
+                <div>
+                    <fieldset>
+                        <legend> H. Especial* </legend>
+                        <input type="checkbox" name="horEspecial">
+                    </fieldset>
+                </div>
+            </div>
+
+            <div style="width: 100%">
                 <label>&nbsp;</label>
                 <button type="submit" name="btnEnviar">Enviar</button>
             </div>
@@ -59,10 +135,10 @@
     ?>
                     <tbody>
                         <tr>
-                            <td class="<?php // echo $estilo_linha;  ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
-                            <td class="<?php // echo $estilo_linha;  ?>"><?= $item->inicio; ?></td>
-                            <td class="<?php // echo $estilo_linha;  ?>"><?= $item->sala; ?></td>  . $item->medico_agenda 
-                            <td class="<?php // echo $estilo_linha;  ?>"><?= $item->observacoes; ?></td>
+                            <td class="<?php // echo $estilo_linha;      ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
+                            <td class="<?php // echo $estilo_linha;      ?>"><?= $item->inicio; ?></td>
+                            <td class="<?php // echo $estilo_linha;      ?>"><?= $item->sala; ?></td>  . $item->medico_agenda 
+                            <td class="<?php // echo $estilo_linha;      ?>"><?= $item->observacoes; ?></td>
                         </tr>
     
     
@@ -87,15 +163,12 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
-    mascaraTelefone(form_exametemp.telefone);
-    mascaraTelefone(form_exametemp.txtCelular);
-
 
     $(function () {
-        $('#convenio1').change(function () {
-            if ($(this).val()) {
+        $('#procedimento').change(function () {
+            if ($(this).val() && $('#equipe_id').val() != '') {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#medico").val()}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $(this).val(), equipe_id: $('#equipe_id').val()}, function (j) {
                     options = '<option value=""></option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -103,111 +176,19 @@
                     $('#procedimento1').html(options).show();
                     $('.carregando').hide();
                 });
-            } else {
-                $('#procedimento1').html('<option value="">Selecione</option>');
             }
-        });
-    });
-
-
-    $(function () {
-        $("#txtNome").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtNome").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtNome").val(ui.item.value);
-                $("#txtNomeid").val(ui.item.id);
-                $("#txtCelular").val(ui.item.celular);
-                $("#telefone").val(ui.item.itens);
-                $("#nascimento").val(ui.item.valor);
-                $("#txtEnd").val(ui.item.endereco);
-                return false;
-            }
-//                            _renderItem: function (ul, item) {
-//                                return $("<li>")
-//                                        .attr("data-value", item.value)
-//                                        .append(item.label)
-//                                        .appendTo(ul);
-//                            }
         });
     });
 
     $(function () {
-        $("#nascimento").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientenascimento",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#nascimento").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtNome").val(ui.item.value);
-                $("#txtNomeid").val(ui.item.id);
-                $("#telefone").val(ui.item.itens);
-                $("#nascimento").val(ui.item.valor);
-                return false;
+        $('#equipe_id').change(function () {
+            if ($(this).val() && $('#procedimento').val() != '') {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $('#procedimento').val(), equipe_id: $(this).val()}, function (j) {
+
+                });
             }
         });
     });
 
-
-
-
-    jQuery("#nascimento").mask("99/99/9999");
-    jQuery("#horarios").mask("99:99");
-
-    function calculoIdade() {
-        var data = document.getElementById("nascimento").value;
-        var ano = data.substring(6, 12);
-        var idade = new Date().getFullYear() - ano;
-        document.getElementById("idade2").value = idade;
-    }
-
-//                    $(function () {
-//                        function split(val) {
-//                            return val.split(/,\s*/);
-//                        }
-//                        function extractLast(term) {
-//                            return split(term).pop();
-//                        }
-//
-//                        $("#txtNome")
-//                                // don't navigate away from the field on tab when selecting an item
-//                                .on("keydown", function (event) {
-//                                    if (event.keyCode === $.ui.keyCode.TAB &&
-//                                            $(this).autocomplete("instance").menu.active) {
-//                                        event.preventDefault();
-//                                    }
-//                                })
-//                                .autocomplete({
-//                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-//                                    minLength: 2,
-//                                    search: function () {
-////                                         custom minLength
-//                                        var term = extractLast(this.value);
-//                                        if (term.length < 2) {
-//                                            return false;
-//                                        }
-//                                    },
-//                                    focus: function (event, ui) {
-//                                        $("#txtNome").val(ui.item.label);
-//                                        return false;
-//                                    },
-//                                    select: function (event, ui) {
-//                                        var terms = split(this.value);
-//                                        // remove the current input
-//                                        terms.pop();
-//                                        // add the selected item
-//                                        terms.push(ui.item.value);
-//                                        // add placeholder to get the comma-and-space at the end
-//                                        terms.push("");
-//                                        this.value = terms.join(", ");
-//                                        return false;
-//                                    }
-//                                });
-//                    });
 </script>

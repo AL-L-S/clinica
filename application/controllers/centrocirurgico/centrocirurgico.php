@@ -49,6 +49,10 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/hospital-lista');
     }
 
+    public function pesquisarequipecirurgica($args = array()) {
+        $this->loadView('centrocirurgico/equipecirurgica-lista');
+    }
+
     function solicitacirurgia($internacao_id) {
         $data['paciente'] = $this->solicitacirurgia_m->solicitacirurgia($internacao_id);
         $this->loadView('centrocirurgico/solicitacirurgia', $data);
@@ -151,6 +155,10 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
     }
 
+    function cadastrarequipe() {
+        $this->loadView("centrocirurgico/equipecirurgica-form");
+    }
+
 //    function adicionarprocedimentosdecisao() {
 ////        if ($_POST['escolha'] == "SIM") {
 //            $solicitacao = $_POST['solicitacao_id'];
@@ -225,8 +233,30 @@ class centrocirurgico extends BaseController {
 
         $data['hospital_id'] = $hospital_id;
         $data['hospital'] = $this->centrocirurgico_m->instanciarhospitais($hospital_id);
-        echo "<pre>";var_dump($data['hospital'] );die;
+//        echo "<pre>";var_dump($data['hospital'] );die;
         $this->loadView('centrocirurgico/hospital-form', $data);
+    }
+
+    function gravarequipeoperadores($equipe_id) {
+        $equipe_id = $_POST['equipe_id'];
+        $this->centrocirurgico_m->gravarequipeoperadores();
+        redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$equipe_id");
+    }
+
+    function gravarhospital() {
+        $hospital_id = $this->centrocirurgico_m->gravarhospital();
+        if ($empresa_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar Hospital. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar Hospital.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarhospitais");
+    }
+
+    function excluirhospital($hospital_id) {
+        $this->centrocirurgico_m->excluirhospital($hospital_id);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarhospitais");
     }
 
     function excluiritemorcamento($orcamento_id, $solicitacao_id, $convenio_id) {
@@ -234,9 +264,9 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/solicitacarorcamento/$solicitacao_id/$convenio_id");
     }
 
-    function excluiritemequipe($equipe_id, $solicitacao_id) {
-        $this->solicitacirurgia_m->excluiritemequipe($equipe_id);
-        redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$solicitacao_id");
+    function excluiritemequipe($cirurgia_operadores_id, $equipe_id) {
+        $this->solicitacirurgia_m->excluiritemequipe($cirurgia_operadores_id);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$equipe_id");
     }
 
     function liberar($solicitacao_id, $orcamento) {
@@ -306,20 +336,18 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/solicitacarorcamento-form', $data);
     }
 
-    function montarequipe($solicitacao_id) {
-        $data['solicitacao_id'] = $solicitacao_id;
+    function montarequipe($equipe_id) {
+        $data['equipe_id'] = $equipe_id;
         $data['medicos'] = $this->operador_m->listarmedicos();
-        $data['funcoes'] = $this->solicitacirurgia_m->listarfuncoes();
-        $data['equipe'] = $this->solicitacirurgia_m->listarequipe($solicitacao_id);
+        $data['equipe'] = $this->solicitacirurgia_m->listarequipe($equipe_id);
+        $data['equipe_operadores'] = $this->solicitacirurgia_m->listarequipeoperadores($equipe_id);
+//        echo "<pre>";var_dump($data['equipe_operadores'] );die;
         $this->loadView('centrocirurgico/montarequipe-form', $data);
     }
 
     function gravarequipe() {
-//        $verifica = $this->solicitacirurgia_m->gravarnovasolicitacao();
-        $this->solicitacirurgia_m->gravarequipe();
-
-        $solicitacao_id = $_POST['solicitacao_id'];
-        redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$solicitacao_id");
+        $equipe_id = $this->solicitacirurgia_m->gravarequipe();
+        redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$equipe_id");
     }
 
     function finalizarrequipe($solicitacao_id) {

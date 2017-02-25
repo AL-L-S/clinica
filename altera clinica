@@ -1560,3 +1560,22 @@ CREATE TABLE ponto.tb_hospital
   tipo_xml_id integer,
   CONSTRAINT tb_hospital_pkey PRIMARY KEY (hospital_id )
 );
+
+-- Dia 25/02/2017
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN solicitacao_cirurgia_id;
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN valor numeric(10,2);
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN equipe_cirurgia_id integer;
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN funcao;
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN funcao character varying(10);
+
+DROP TABLE ponto.tb_funcoes_cirurgia;
+CREATE TABLE ponto.tb_grau_participacao
+(
+  grau_participacao_id serial NOT NULL,
+  codigo character varying(5),
+  descricao character varying(100),
+  ativo boolean DEFAULT true
+  CONSTRAINT tb_grau_participacao_pkey PRIMARY KEY (grau_participacao_id)
+);
+
+

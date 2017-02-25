@@ -394,15 +394,26 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
-    function listarequipe($solicitacao_id) {
-        $this->db->select('o.nome as medico,
-                           fc.nome,
-                           ce.cirurgia_equipe_id');
-        $this->db->from('tb_solicitacao_cirurgia_equipe ce');
-        $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = ce.funcao', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = ce.operador_responsavel', 'left');
-        $this->db->where('ce.solicitacao_cirurgia_id', $solicitacao_id);
-        $this->db->where('ce.ativo', 't');
+    function listarequipe($equipe_id) {
+        $this->db->select('ec.equipe_cirurgia_id,
+                           ec.nome');
+        $this->db->from('tb_equipe_cirurgia ec');
+        $this->db->where('ec.equipe_cirurgia_id', $equipe_id);
+//        $this->db->where('ec.ativo', 't');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarequipeoperadores($equipe_id) {
+        $this->db->select('ec.equipe_cirurgia_operadores_id,
+                           ec.funcao,
+                           o.nome as medico,
+                           ec.valor');
+        $this->db->from('tb_equipe_cirurgia_operadores ec');
+        $this->db->join('tb_operador o', 'o.operador_id = ec.operador_responsavel', 'left');
+        $this->db->where('ec.equipe_cirurgia_id', $equipe_id);
+        $this->db->where('ec.ativo', 't');
 
         $return = $this->db->get();
         return $return->result();
@@ -423,11 +434,10 @@ class solicita_cirurgia_model extends BaseModel {
 //            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
             $this->db->set('medico_agendado', $_POST['medicoagenda']);
             $this->db->set('convenio', $_POST['convenio']);
-            
-            if(isset($_POST['orcamento'])){
+
+            if (isset($_POST['orcamento'])) {
                 $this->db->set('orcamento', 'true');
-            }
-            else{
+            } else {
                 $this->db->set('orcamento', 'false');
 //                $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
             }
@@ -502,23 +512,17 @@ class solicita_cirurgia_model extends BaseModel {
         }
     }
 
-    function excluiritemequipe($equipe_id) {
+    function excluiritemequipe($cirurgia_operadores_id) {
 
-        try {
-            $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
 
-            $this->db->set('ativo', 'f');
-            $this->db->where('cirurgia_equipe_id', $equipe_id);
-            $this->db->update('tb_solicitacao_cirurgia_equipe');
-            $erro = $this->db->_error_message();
-            if (trim($erro) != "") { // erro de banco
-                return false;
-            }
-            return true;
-        } catch (Exception $exc) {
-            return false;
-        }
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('equipe_cirurgia_operadores_id', $cirurgia_operadores_id);
+//        $this->db->where('equipe_cirurgia_id', $equipe_id);
+        $this->db->update('tb_equipe_cirurgia_operadores');
     }
 
     function listarmedicocirurgiaautocomplete($parametro = null) {
@@ -644,18 +648,18 @@ class solicita_cirurgia_model extends BaseModel {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            $this->db->set('funcao', $_POST['funcao']);
-            $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
-            $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-            $this->db->insert('tb_solicitacao_cirurgia_equipe');
-
+            $this->db->set('nome', $_POST['nome']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_equipe_cirurgia');
+            $equipe_id = $this->db->insert_id();
             if (trim($erro) != "") { // erro de banco
-                return false;
+                return -1;
             }
 
-            return true;
+            return $equipe_id;
         } catch (Exception $exc) {
-            return false;
+            return -1;
         }
     }
 

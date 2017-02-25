@@ -124,6 +124,29 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
+    function carregavalorprocedimentocirurgico() {
+
+        if (isset($_GET['procedimento_id']) && isset($_GET['equipe_id']) ) {
+            $procedimento_valor = $this->procedimento->carregavalorprocedimentocirurgico($_GET['procedimento_id']);
+            $equipe = $this->exame->listarquipeoperadores($_GET['equipe_id']);
+            
+            $valorProcedimento = ((float)($procedimento_valor[0]->valor_total));
+            $valorCirurgiao = 0;
+            $valorAnestesista = 0;
+            
+            foreach ($equipe as $value) {
+                if ($value->funcao == '00'){//cirurgiao
+                    
+                }
+                elseif ($value->funcao == '00'){//anestesista
+                    
+                }
+            }
+            
+        }
+        echo json_encode($result);
+    }
+
     function procedimentoconveniomedico() {
 
         if (isset($_GET['convenio1'])) {

@@ -1,71 +1,98 @@
-<div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <div class="bt_link" style="width: 120px;">
-        <a onclick="javascript: return confirm('Deseja realmente FINALIZAR? Após esta ação não será possível editar a equipe.');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/finalizarrequipe/<?= $solicitacao_id; ?>" style="width: 100px;">Finalizar Equipe</a></div>      
-    <fieldset >
-        <legend>Montar Equipe</legend>
-        <div>
-            <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarequipe" method="post">
-                <div style="padding-bottom: 50px;">
-                    <input type="hidden" name="solicitacao_id" id="solicitacao_id" value="<?= @$solicitacao_id; ?>"/>
-                    <div>
-                        <label>Função</label>
-                        <select name="funcao" id="funcao" class="texto03" required>
-                            <option value="">SELECIONE</option>
-                            <? foreach ($funcoes as $value) { ?>
-                                <option value="<?= $value->funcao_cirurgia_id ?>"><?= $value->nome ?></option>
+<div class="content ficha_ceatox"> <!-- Inicio da DIV content --> 
+    <h3 class="singular"><a href="#">Montar Equipe</a></h3>
+    <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarequipeoperadores" method="post">
+        <fieldset >
+            <input type="hidden" name="equipe_id" id="equipe_id" value="<?= @$equipe[0]->equipe_cirurgia_id; ?>"/>
+            <label>Nome</label>
+            <input type="text" name="txtEquipe" class="texto09" id="txtEquipe" value="<?= @$equipe[0]->nome; ?>" readonly=""/>
+
+        </fieldset>
+        <fieldset>
+            <div>
+                <label>Médico</label>
+                <select name="medico" id="medico" class="texto04" required>
+                    <option value="">SELECIONE</option>
+                    <? foreach ($medicos as $value) { ?>
+                        <option value="<?= $value->operador_id ?>"
+                                ><?= $value->nome ?></option>
                             <? } ?>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Médico</label>
-                        <select name="cirurgiao1" id="cirurgiao1" class="texto04" required>
-                            <option value="">SELECIONE</option>
-                            <? foreach ($medicos as $value) { ?>
-                                <option value="<?= $value->operador_id ?>"
-                                        ><?= $value->nome ?></option>
-                                    <? } ?>
-                        </select>
-                    </div>
-                </div> 
+                </select>
+            </div>
+            <div>
+                <label>Função</label>
+                <select name="funcao" id="funcao" class="texto03" required>
+                    <option value="">SELECIONE</option>
+                    <option value="00">00 - Cirurgião</option>
+                    <option value="01">01 - Primeiro Auxiliar</option>
+                    <option value="02">02 - Segundo Auxiliar</option>
+                    <option value="03">03 - Terceiro Auxiliar</option>
+                    <option value="04">04 - Quarto Auxiliar</option>
+                </select>
+            </div>
+            <div>
+                <label>Valor</label>
+                <input type="text" name="valor" id="valor" alt="decimal" class="texto01" required=""/>
+            </div>
+            <div style="width: 100%">
                 <hr/>
                 <div>
                     <button type="submit" name="btnEnviar">Adicionar</button>
                 </div>
+            </div>
+        </fieldset>
+    </form>
 
-            </form>
-        </div>
-    </fieldset>
     <?php
-    if (count($equipe) > 0) {
+    if (count($equipe_operadores) > 0) {
         ?>
         <fieldset>
 
             <table>
                 <thead>
                     <tr>
-                        <th class="tabela_header">Função</th>
                         <th class="tabela_header">Médico</th>
+                        <th class="tabela_header">Função</th>
+                        <th class="tabela_header">Valor (%)</th>
                         <th class="tabela_header" width="30px;" ><center></center></th>
                 </tr>
                 </thead>
                 <tbody>
                     <?php
                     $estilo_linha = "tabela_content01";
-                    foreach ($equipe as $item) {
+                    foreach ($equipe_operadores as $item) {
                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                         ?>
                         <tr>
-                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>">
+                                <?php
+                                if($item->funcao == '00') {
+                                    echo "Cirurgião";
+                                }
+                                elseif($item->funcao == '01') {
+                                    echo "Primeiro Auxiliar";
+                                }
+                                elseif($item->funcao == '02') {
+                                    echo "Segundo Auxiliar";
+                                }
+                                elseif($item->funcao == '03') {
+                                    echo "Terceiro Auxiliar";
+                                }
+                                elseif($item->funcao == '04') {
+                                    echo "Quarto Auxiliar";
+                                }
+                                ?>
+                            </td>
+                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->valor; ?> </td>
                             <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
-                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->cirurgia_equipe_id; ?>/<?= $solicitacao_id; ?>" class="delete">
+                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->equipe_cirurgia_operadores_id; ?>/<?= $equipe_id; ?>" class="delete">
                                 </a>
                             </td>
 
                         </tr>
                     </tbody>
-                <?php }
-                ?>
+    <?php }
+    ?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="8">
@@ -75,8 +102,8 @@
                 </tfoot>
             </table>
         </fieldset>
-    <? }
-    ?>
+<? }
+?>
 
 
 
@@ -87,22 +114,22 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
-            $(function () {
-                $('#procedimento1').change(function () {
-                    if ($(this).val()) {
-                        $('.carregando').show();
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
-                            options = "";
-                            options += j[0].valortotal;
+    $(function () {
+        $('#procedimento1').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
+                    options = "";
+                    options += j[0].valortotal;
 //                    b = options.toPrecision(2);
-                            document.getElementById("valor1").value = options.replace(".", ",");
-                            $('.carregando').hide();
-                        });
-                    } else {
-                        $('#valor1').html('value=""');
-                    }
+                    document.getElementById("valor1").value = options.replace(".", ",");
+                    $('.carregando').hide();
                 });
-            });
+            } else {
+                $('#valor1').html('value=""');
+            }
+        });
+    });
 
 
 </script>
