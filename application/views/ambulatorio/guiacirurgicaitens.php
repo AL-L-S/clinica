@@ -5,7 +5,7 @@
         </a>
     </div>
     <div class="clear"></div>
-    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteexametempgeral" method="post">
+    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarguiacirurgicaprocedimentos" method="post">
         <fieldset>
             <legend>Dados da Guia</legend>
 
@@ -42,70 +42,24 @@
                 </select>
             </div>
 
-            <div>
-                <label>Equipe *</label> 
-                <select  name="equipe_id" id="equipe_id" class="size2"  required="">
-                    <option value="">Selecione</option>
-                    <? foreach (@$equipes as $item) : ?>
-                        <option value="<?= $item->equipe_cirurgia_id; ?>"><?= $item->nome; ?></option>
-                    <? endforeach; ?>
-                </select>
-            </div>
-            <div>
-                <label>Vlr. Cirurgião</label>
-                <input type="text" name="valorMedico" id="valor" alt="decimal" class="texto01" required=""/>
-            </div>
-
-            <div>
-                <label>Vlr. Anestesista</label>
-                <input type="text" name="valorAnestesista" id="valor" alt="decimal" class="texto01" required=""/>
-            </div>
-
-
-
             <div >
                 <label>Data/Hora Autorização*</label>
-                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="29/29/9999 29:69"class="size2"/>
+                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="29/29/9999 29:69"class="size2" required=""/>
+            </div>
+
+            <div >
+                <label>Data/Hora Realização*</label>
+                <input type="text" name="data_realizacao" id="data_realizacao" alt="29/29/9999 29:69"class="size2" required=""/>
             </div>
 
             <div>
-                <label>Hospital *</label>
-                <select name="hospital_id" id="hospital_id" class="size2"  required="">
-                    <option value="">Selecione</option>
-                    <? foreach (@$hospitais as $item) : ?>
-                        <option value="<?= $item->hospital_id; ?>"><?= $item->nome; ?></option>
-                    <? endforeach; ?>
-                </select>
+                <label> H. Especial* </label>
+                <input type="checkbox" name="horEspecial">
             </div>
-
+            
             <div>
                 <label>QTDE*</label>
-                <input type="text" name="qtde" id="qtde" alt="integer" style="width:40pt"/>
-            </div>
-
-            <div style="width: 100%">
-                <div>
-                    <fieldset>
-                        <legend> Leito * </legend>
-                        <p style="font-size: 9pt; "><input type="radio" name="leito" value="enf">Enfermaria</p>
-                        <p style="font-size: 9pt; "><input type="radio" name="leito" value="apt">Apartamento</p>
-                    </fieldset>
-                </div>
-
-                <div>
-                    <fieldset>
-                        <legend> Via* </legend>
-                        <p style="font-size: 9pt; "><input type="radio" name="via" value="m"><span title="Mesma Via">M</span></p>
-                        <p style="font-size: 9pt; "><input type="radio" name="via" value="d"><span title="Via Diferente">D</span></p>
-                    </fieldset>
-                </div>
-
-                <div>
-                    <fieldset>
-                        <legend> H. Especial* </legend>
-                        <input type="checkbox" name="horEspecial">
-                    </fieldset>
-                </div>
+                <input type="text" name="qtde" id="qtde" alt="integer" style="width:40pt" value="1" required=""/>
             </div>
 
             <div style="width: 100%">
@@ -115,35 +69,42 @@
         </fieldset>
     </form>
 
-    <!--    <fieldset>
-    <?
-    ?>
+        <fieldset>
             <table id="table_agente_toxico" border="0">
                 <thead>
     
                     <tr>
-                        <th class="tabela_header">Data</th>
-                        <th class="tabela_header">Hora</th>
-                        <th class="tabela_header">Sala</th>
-                        <th class="tabela_header">Observa&ccedil;&otilde;es</th>
+                        <th class="tabela_header">Procedimento</th>
+                        <th class="tabela_header">Data/Hora Autorizaçao</th>
+                        <th class="tabela_header">Data/Hora Realizaçao</th>
+                        <th class="tabela_header">Horario Especial</th>
                     </tr>
                 </thead>
     <?
-//            $estilo_linha = "tabela_content01";
-//            foreach ($exames as $item) {
-//                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+            $estilo_linha = "tabela_content01";
+            foreach ($procedimentos_cadastrados as $item) {
+                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
     ?>
                     <tbody>
                         <tr>
-                            <td class="<?php // echo $estilo_linha;      ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
-                            <td class="<?php // echo $estilo_linha;      ?>"><?= $item->inicio; ?></td>
-                            <td class="<?php // echo $estilo_linha;      ?>"><?= $item->sala; ?></td>  . $item->medico_agenda 
-                            <td class="<?php // echo $estilo_linha;      ?>"><?= $item->observacoes; ?></td>
+                            <td class="<?php echo $estilo_linha;?>"><?= $item->nome; ?></td>
+                            <td class="<?php echo $estilo_linha;?>"><?= date("d/m/Y H:i", strtotime($item->data_autorizacao)); ?></td> 
+                            <td class="<?php echo $estilo_linha;?>"><?= date("d/m/Y H:i", strtotime($item->data_realizacao)); ?></td>
+                            <td class="<?php echo $estilo_linha;?>">
+                                <? 
+                                    if ($item->horario_especial == 't'){
+                                         echo "SIM";
+                                    } 
+                                    else{
+                                         echo "NAO";
+                                    }
+                                ?>
+                            </td>
                         </tr>
     
     
     <?
-//                }
+                }
     ?>
                 </tbody>
                 <tfoot>
@@ -154,7 +115,7 @@
                 </tfoot>
             </table> 
     
-        </fieldset>-->
+        </fieldset>
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
@@ -164,31 +125,31 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
-    $(function () {
-        $('#procedimento').change(function () {
-            if ($(this).val() && $('#equipe_id').val() != '') {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $(this).val(), equipe_id: $('#equipe_id').val()}, function (j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                    }
-                    $('#procedimento1').html(options).show();
-                    $('.carregando').hide();
-                });
-            }
-        });
-    });
+//    $(function () {
+//        $('#procedimento').change(function () {
+//            if ($(this).val() && $('#equipe_id').val() != '') {
+//                $('.carregando').show();
+//                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $(this).val(), equipe_id: $('#equipe_id').val()}, function (j) {
+//                    options = '<option value=""></option>';
+//                    for (var c = 0; c < j.length; c++) {
+//                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+//                    }
+//                    $('#procedimento1').html(options).show();
+//                    $('.carregando').hide();
+//                });
+//            }
+//        });
+//    });
 
-    $(function () {
-        $('#equipe_id').change(function () {
-            if ($(this).val() && $('#procedimento').val() != '') {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $('#procedimento').val(), equipe_id: $(this).val()}, function (j) {
-
-                });
-            }
-        });
-    });
+//    $(function () {
+//        $('#equipe_id').change(function () {
+//            if ($(this).val() && $('#procedimento').val() != '') {
+//                $('.carregando').show();
+//                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $('#procedimento').val(), equipe_id: $(this).val()}, function (j) {
+//
+//                });
+//            }
+//        });
+//    });
 
 </script>

@@ -1158,6 +1158,34 @@ class exametemp_model extends Model {
         return $return;
     }
 
+    function gravarguiacirurgicaprocedimentos() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $qtde = (int) str_replace('.', '', $_POST['qtde']);
+        for($i = 0; $i < $qtde; $i++){
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('tipo', 'CIRURGICO');
+            $this->db->set('ativo', 'f');
+            $this->db->set('cancelada', 'f');
+            $this->db->set('confirmado', 't');
+            $this->db->set('situacao', 'OK');
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+            $this->db->set('guia_id', $_POST['txtguiaid']);
+            if( isset($_POST['horEspecial']) ){
+                $this->db->set('horario_especial', 't');
+            }
+            $this->db->set('data_autorizacao', date("Y-m-d H:i", strtotime( str_replace('/', '-', $_POST['data_autorizacao']) ) ));
+            $this->db->set('data_realizacao', date("Y-m-d H:i", strtotime( str_replace('/', '-', $_POST['data_realizacao']) ) ));
+            $this->db->set('paciente_id', $_POST['txtNomeid']);
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_agenda_exames');
+        }
+    }
+
     function gravarexames($ambulatorio_pacientetemp_id) {
         try {
             $this->db->set('nome', $_POST['txtNome']);
@@ -3270,17 +3298,16 @@ class exametemp_model extends Model {
     }
 
     function asdçasjdlasjdasld() {
-        
+
         $this->db->select();
         $this->db->from('tb_operador');
-        
-        
-        
+
+
+
         $this->db->set('valor_medico', null);
         $this->db->set('percentual_medico', $horario);
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $this->db->update('tb_agenda_exames');
-        
     }
 
     function verificamedico($crm) {

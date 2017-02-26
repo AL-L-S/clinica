@@ -249,6 +249,21 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimentosadcionados($guia_id) {
+        $this->db->select('ae.agenda_exames_id,
+                           ae.horario_especial,
+                           ae.data_autorizacao,
+                           ae.data_realizacao,
+                           pt.nome');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.guia_id', $guia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprocedimentocirurgicoconvenio($convenio_id) {
         $this->db->select('pc.procedimento_convenio_id,
                            pt.nome');

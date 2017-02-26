@@ -1574,8 +1574,13 @@ CREATE TABLE ponto.tb_grau_participacao
   grau_participacao_id serial NOT NULL,
   codigo character varying(5),
   descricao character varying(100),
-  ativo boolean DEFAULT true
+  ativo boolean DEFAULT true,
   CONSTRAINT tb_grau_participacao_pkey PRIMARY KEY (grau_participacao_id)
 );
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN via character varying(100);
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN leito character varying(100);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horario_especial boolean DEFAULT false;
+
+
 
 

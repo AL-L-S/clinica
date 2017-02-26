@@ -37,6 +37,36 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarguias($args = array()) {
+
+        $this->db->select('ag.ambulatorio_guia_id,
+                            ag.paciente_id,
+                            ag.convenio_id,
+                            ag.tipo,
+                            c.nome as convenio,
+                            p.nome as paciente');
+        $this->db->from('tb_ambulatorio_guia ag');
+        $this->db->join('tb_convenio c', 'c.convenio_id = ag.convenio_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        if(count($args) == 0){
+            $data = date('Y-m-d');
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->where('data_criacao', $data);
+            $this->db->where('empresa_id', $empresa_id);
+        }
+        
+        if (isset($args['guia']) && strlen($args['guia']) > 0) {
+            $this->db->where('ag.ambulatorio_guia_id', $args['guia']);
+        }
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+        }
+        if (isset($args['tipo']) && strlen($args['tipo']) > 0) {
+            $this->db->where('ag.tipo', $args['tipo']);
+        }
+        return $this->db;
+    }
+
     function listar($paciente_id) {
 
         $this->db->select('ag.ambulatorio_guia_id,
@@ -6038,6 +6068,8 @@ ORDER BY ae.agenda_exames_id)";
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
         
+        $this->db->set('via', $_POST['via']);
+        $this->db->set('leito', $_POST['leito']);
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('tipo', 'CIRURGICO');
         $this->db->set('data_criacao', $data);

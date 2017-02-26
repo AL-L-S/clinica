@@ -17,17 +17,50 @@
                         <label>Convenio</label>
                     </dt>
                     <dd>
-                        <select name="convenio_id" id="convenio_id" class="size1" required>
-                            <option value="">SELECIONE</option>
+                        <select name="convenio_id" id="convenio_id" class="size2" required>
+                            <option value="">Selecione</option>
                             <? foreach ($convenios as $value) : ?>
                                 <option value="<?= $value->convenio_id; ?>" <?
                                 if (@$guia[0]->convenio_id == $value->convenio_id):echo 'selected';
                                 endif;
                                 ?>>
-                                    <?= $value->nome; ?>
+                                            <?= $value->nome; ?>
                                 </option>
                             <? endforeach; ?>
                         </select>
+                    </dd>
+                    
+                    <dt>
+                        <label>Hospital *</label>
+                    </dt>
+                    <dd>
+                        <select name="hospital_id" id="hospital_id" class="size2"  required="">
+                            <option value="">Selecione</option>
+                            <? foreach (@$hospitais as $item) : ?>
+                                <option value="<?= $item->hospital_id; ?>"><?= $item->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+
+                    <dt>
+                        <label>Leito </label>
+                    </dt>
+                    <dd>
+                        <div>
+                            <input type="radio" name="leito" id="enf" value="ENFERMARIA" required/> <label for="enf">Enfermaria</label>
+                            <input type="radio" name="leito" id="apt" value="APARTAMENTO" required/> <label for="apt">Apartamento</label>
+                        </div>
+                    </dd>
+                    
+                    
+                     <dt>
+                        <label>Via </label>
+                    </dt>
+                    <dd>
+                        <div>
+                            <input type="radio" name="via" id="m" value="M" required/> <label for="m">Mesma Via</label>
+                            <input type="radio" name="via" id="d" value="D" required/> <label for="d">Via Diferente</label>
+                        </div>
                     </dd>
                 </dl>    
                 <hr/>
@@ -44,7 +77,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
-    
+
     $(function () {
         $("#txtpaciente").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
@@ -61,7 +94,7 @@
         });
     });
 
-    
+
     $(function () {
         $("#accordion").accordion();
     });

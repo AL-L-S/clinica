@@ -252,9 +252,9 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/faturamentoexame');
     }
 
-    function faturamentomanual() {
+    function faturamentomanual($args = array()) {
 
-        $this->loadView('ambulatorio/faturamentomanual-lista');
+        $this->loadView('ambulatorio/faturamentomanual-lista', $args);
     }
 
     function gravarguiacirurgica() {
@@ -276,14 +276,14 @@ class Exame extends BaseController {
 
         $data['guia'] = $this->guia->instanciarguia($guia_id);
         $data['procedimentos'] = $this->exame->listarprocedimentocirurgicoconvenio($data['guia'][0]->convenio_id);
-        $data['equipes'] = $this->exame->listarequipescirurgicas();
-        $data['hospitais'] = $this->exame->listarhospitais();
+        $data['procedimentos_cadastrados'] = $this->exame->listarprocedimentosadcionados($guia_id);
         $this->loadView('ambulatorio/guiacirurgicaitens', $data);
     }
 
     function carregarguiacirurgica($guia_id = null) {
 
         $data['guia'] = $this->guia->instanciarguia($guia_id);
+        $data['hospitais'] = $this->exame->listarhospitais();
         $data['convenios'] = $this->guia->listarconvenios();
         $this->loadView('ambulatorio/novaguiacirurgica-form', $data);
     }
