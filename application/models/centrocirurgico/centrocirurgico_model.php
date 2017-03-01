@@ -103,6 +103,21 @@ class centrocirurgico_model extends BaseModel {
         return $this->db;
     }
 
+    function listargrauparticipacao($args = array()) {
+
+        $this->db->select('grau_participacao_id, 
+                           codigo,
+                           descricao');
+        $this->db->from('tb_grau_participacao ec');
+        $this->db->where('ec.ativo', 't');
+        if ($args) {
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('ec.descricao ilike', $args['nome'] . "%", 'left');
+            }
+        }
+        return $this->db;
+    }
+
     function instanciarhospitais($hospital_id) {
 
         $this->db->select('hospital_id, 
@@ -215,7 +230,7 @@ class centrocirurgico_model extends BaseModel {
         try {
             /* inicia o mapeamento no banco */
             $_POST['valor'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['valor']));
-            
+
             $this->db->set('funcao', $_POST['funcao']);
             $this->db->set('operador_responsavel', $_POST['medico']);
             $this->db->set('equipe_cirurgia_id', $_POST['equipe_id']);
@@ -293,6 +308,17 @@ class centrocirurgico_model extends BaseModel {
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function gravargrauparticipacao() {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('codigo', $_POST['txtcodigo']);
+        $this->db->set('descricao', $_POST['txtNome']);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_grau_participacao');
     }
 
     function pegasolicitacaoinformacoes($solicitacao_id) {

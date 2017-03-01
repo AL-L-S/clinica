@@ -41,6 +41,11 @@
                     <? endforeach; ?>
                 </select>
             </div>
+            
+            <div>
+                <label>QTDE*</label>
+                <input type="text" name="qtde" id="qtde" alt="integer" style="width:40pt" value="1" required=""/>
+            </div>
 
             <div >
                 <label>Data/Hora Autorização*</label>
@@ -57,10 +62,6 @@
                 <input type="checkbox" name="horEspecial">
             </div>
             
-            <div>
-                <label>QTDE*</label>
-                <input type="text" name="qtde" id="qtde" alt="integer" style="width:40pt" value="1" required=""/>
-            </div>
 
             <div style="width: 100%">
                 <label>&nbsp;</label>

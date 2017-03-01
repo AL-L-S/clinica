@@ -1581,6 +1581,11 @@ ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN via character varying(100);
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN leito character varying(100);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horario_especial boolean DEFAULT false;
 
+-- Dia 01/02/2017
+ALTER TABLE ponto.tb_grau_participacao ADD COLUMN data_cadastro timestamp without time zone;
+ALTER TABLE ponto.tb_grau_participacao ADD COLUMN operador_cadastro integer;
+ALTER TABLE ponto.tb_grau_participacao ADD COLUMN data_atualizacao timestamp without time zone;
+ALTER TABLE ponto.tb_grau_participacao ADD COLUMN operador_atualizacao integer;
 
 
 

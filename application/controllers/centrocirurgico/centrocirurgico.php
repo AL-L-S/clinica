@@ -52,6 +52,10 @@ class centrocirurgico extends BaseController {
     public function pesquisarequipecirurgica($args = array()) {
         $this->loadView('centrocirurgico/equipecirurgica-lista');
     }
+    
+    public function pesquisargrauparticipacao($args = array()) {
+        $this->loadView('centrocirurgico/grauparticipacao-lista');
+    }
 
     function solicitacirurgia($internacao_id) {
         $data['paciente'] = $this->solicitacirurgia_m->solicitacirurgia($internacao_id);
@@ -101,6 +105,10 @@ class centrocirurgico extends BaseController {
         $seconds = substr($horario, 18, 4);
 
         $this->loadView('emergencia/solicitacoes-paciente', $data);
+    }
+
+    function novograuparticipacao() {
+        $this->loadView('emergencia/grauparticipacao-form', $data);
     }
 
     function carregar($emergencia_solicitacao_acolhimento_id) {
@@ -167,6 +175,17 @@ class centrocirurgico extends BaseController {
 ////            redirect(base_url() . "centrocirurgico/centrocirurgico/centrocirurgico");
 ////        }
 //    }
+
+    function gravargrauparticipacao() {
+            $solicitacao = $this->centrocirurgico_m->gravargrauparticipacao();
+            if ($solicitacao == -1) {
+                $data['mensagem'] = 'Erro ao efetuar Gravar';
+            } else {
+                $data['mensagem'] = 'Grau de partipação salvo com Sucesso';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisargrauparticipacao");
+    }
 
     function gravarnovasolicitacao() {
         if ($_POST["txtNomeid"] == "") {
