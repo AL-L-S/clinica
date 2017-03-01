@@ -89,6 +89,27 @@ class centrocirurgico_model extends BaseModel {
         return $this->db;
     }
 
+    function listarprocedimentosguiacirurgica($guia) {
+        $data = date("Y-m-d");
+        $this->db->select('a.agenda_exames_id,
+                            a.data,
+                            c.nome as convenio,
+                            a.horario_especial,
+                            a.procedimento_tuss_id,
+                            a.valor_total,
+                            pt.nome as procedimento,
+                            a.observacoes');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("a.guia_id", $guia);
+        $this->db->orderby("a.valor_total DESC");
+//        $this->db->limit(5);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarequipecirurgica($args = array()) {
 
         $this->db->select('equipe_cirurgia_id, 
@@ -101,6 +122,16 @@ class centrocirurgico_model extends BaseModel {
             }
         }
         return $this->db;
+    }
+    
+    function listarequipecirurgica2() {
+
+        $this->db->select('equipe_cirurgia_id, 
+                           nome');
+        $this->db->from('tb_equipe_cirurgia ec');
+        $this->db->where('ec.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listargrauparticipacao($args = array()) {
@@ -226,6 +257,19 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
+    function finalizarcadastroprocedimentosguia($guia) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('equipe', 't');
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('ambulatorio_guia_id', $guia);
+        $this->db->update('tb_ambulatorio_guia');
+    }
+
     function gravarequipeoperadores() {
         try {
             /* inicia o mapeamento no banco */
@@ -290,6 +334,36 @@ class centrocirurgico_model extends BaseModel {
                 $this->db->update('tb_hospital');
             }
             return $hospital_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function excluirequipecirurgica($equipe_id) {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('equipe_cirurgia_id', $equipe_id);
+            $this->db->update('tb_equipe_cirurgia');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function excluirgrauparticipacao($grau_participacao_id) {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('grau_participacao_id', $grau_participacao_id);
+            $this->db->update('tb_grau_participacao');
         } catch (Exception $exc) {
             return -1;
         }
@@ -454,6 +528,19 @@ class centrocirurgico_model extends BaseModel {
         $this->db->set('situacao', 'AUTORIZADA');
         $this->db->where('solicitacao_cirurgia_id', $_POST['idsolicitacaocirurgia']);
         $this->db->update('tb_solicitacao_cirurgia');
+    }
+
+    function listarequipecirurgicaoperadores($equipe_id) {
+        $this->db->select('gp.descricao,
+                           gp.codigo,
+                           o.nome as medico_responsavel');
+        $this->db->from('tb_equipe_cirurgia_operadores eco');
+        $this->db->join('tb_operador o', 'o.operador_id = eco.operador_responsavel');
+        $this->db->join('tb_grau_participacao gp', 'gp.grau_participacao_id = eco.funcao');
+//        $this->db->orderby('ativo', 'true');
+        $this->db->where('equipe_cirurgia_id', $equipe_id);
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listarmedicocirurgiaautocomplete($parametro = null) {

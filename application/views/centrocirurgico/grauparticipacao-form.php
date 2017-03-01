@@ -9,13 +9,13 @@
                         <label>Código</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtcodigo" class="texto10" alt="integer" required=""/>
+                        <input type="text" name="txtcodigo" class="texto01" alt="integer" required=""/>
                     </dd>
                     <dt>
                         <label>Descrição</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtNome" class="texto10" required=""/>
+                        <input type="text" name="txtNome" class="texto06" required=""/>
                     </dd>
                 </dl>    
                 <hr/>

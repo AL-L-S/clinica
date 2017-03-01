@@ -22,11 +22,9 @@
                 <label>Função</label>
                 <select name="funcao" id="funcao" class="texto03" required>
                     <option value="">SELECIONE</option>
-                    <option value="00">00 - Cirurgião</option>
-                    <option value="01">01 - Primeiro Auxiliar</option>
-                    <option value="02">02 - Segundo Auxiliar</option>
-                    <option value="03">03 - Terceiro Auxiliar</option>
-                    <option value="04">04 - Quarto Auxiliar</option>
+                    <? foreach ($grau_participacao as $value) : ?>
+                        <option value="<?= $value->grau_id ?>"><?= $value->grau_participacao ?></option>
+                    <? endforeach; ?>
                 </select>
             </div>
             <div>
@@ -64,25 +62,7 @@
                         ?>
                         <tr>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
-                            <td class="<?php echo $estilo_linha; ?>">
-                                <?php
-                                if($item->funcao == '00') {
-                                    echo "Cirurgião";
-                                }
-                                elseif($item->funcao == '01') {
-                                    echo "Primeiro Auxiliar";
-                                }
-                                elseif($item->funcao == '02') {
-                                    echo "Segundo Auxiliar";
-                                }
-                                elseif($item->funcao == '03') {
-                                    echo "Terceiro Auxiliar";
-                                }
-                                elseif($item->funcao == '04') {
-                                    echo "Quarto Auxiliar";
-                                }
-                                ?>
-                            </td>
+                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->funcao; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->valor; ?> </td>
                             <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
                                 <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->equipe_cirurgia_operadores_id; ?>/<?= $equipe_id; ?>" class="delete">

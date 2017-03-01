@@ -44,6 +44,8 @@ class guia_model extends Model {
                             ag.convenio_id,
                             ag.tipo,
                             c.nome as convenio,
+                            ag.equipe,
+                            ag.equipe_id,
                             p.nome as paciente');
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_convenio c', 'c.convenio_id = ag.convenio_id', 'left');
@@ -185,6 +187,11 @@ class guia_model extends Model {
         $this->db->select(' ag.ambulatorio_guia_id,
                             ag.tipo,
                             ag.observacoes,
+                            ag.via,
+                            ag.leito,
+                            ag.equipe_id,
+                            ag.equipe,
+                            ec.nome as equipe_nome,
                             c.convenio_id,
                             c.nome as convenio,
                             p.paciente_id,
@@ -195,6 +202,7 @@ class guia_model extends Model {
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = ag.convenio_id', 'left');
+        $this->db->join('tb_equipe_cirurgia ec', 'ec.equipe_cirurgia_id = ag.equipe_id', 'left');
         $this->db->where("ag.ambulatorio_guia_id", $guia_id);
         $query = $this->db->get();
         $return = $query->result();
@@ -6119,6 +6127,12 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->insert('tb_ambulatorio_guia');
         $ambulatorio_guia_id = $this->db->insert_id();
         return $ambulatorio_guia_id;
+    }
+
+    function gravarguiacirurgicaequipe() {
+        $this->db->set('equipe_id', $_POST['equipe_id']);
+        $this->db->where('ambulatorio_guia_id', $_POST['txtambulatorioguiaid']);
+        $this->db->update('tb_ambulatorio_guia');
     }
 
     function gravarorcamento($paciente_id) {

@@ -67,6 +67,14 @@ class solicita_cirurgia_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+    function grauparticipacao() {
+        $this->db->select("grau_participacao_id as grau_id, 
+                           codigo || ' - ' || descricao as grau_participacao");
+        $this->db->from('tb_grau_participacao ec');
+        $this->db->where('ec.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listaleitocirugia() {
         $this->db->select('internacao_leito_id,
@@ -407,11 +415,12 @@ class solicita_cirurgia_model extends BaseModel {
 
     function listarequipeoperadores($equipe_id) {
         $this->db->select('ec.equipe_cirurgia_operadores_id,
-                           ec.funcao,
+                           gp.descricao as funcao,
                            o.nome as medico,
                            ec.valor');
         $this->db->from('tb_equipe_cirurgia_operadores ec');
         $this->db->join('tb_operador o', 'o.operador_id = ec.operador_responsavel', 'left');
+        $this->db->join('tb_grau_participacao gp', 'gp.grau_participacao_id = ec.funcao', 'left');
         $this->db->where('ec.equipe_cirurgia_id', $equipe_id);
         $this->db->where('ec.ativo', 't');
 

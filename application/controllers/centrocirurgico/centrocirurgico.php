@@ -14,6 +14,7 @@ class centrocirurgico extends BaseController {
         $this->load->model('internacao/enfermaria_model', 'enfermaria_m');
         $this->load->model('internacao/leito_model', 'leito_m');
         $this->load->model('seguranca/operador_model', 'operador_m');
+        $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('internacao/solicitainternacao_model', 'solicitacaointernacao_m');
         $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico_m');
@@ -81,6 +82,13 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
 
+    function excluirequipecirurgica($equipe_cirurgia_id) {
+        $this->centrocirurgico_m->excluirequipecirurgica($equipe_cirurgia_id);
+        $data['mensagem'] = 'Equipe excluida com Sucesso';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarequipecirurgica");
+    }
+
     function excluirsolicitacaocirurgia($solicitacao_id) {
         $this->solicitacirurgia_m->excluirsolicitacaocirurgia($solicitacao_id);
         $data['mensagem'] = 'Solicitacao excluida com sucesso';
@@ -108,7 +116,7 @@ class centrocirurgico extends BaseController {
     }
 
     function novograuparticipacao() {
-        $this->loadView('emergencia/grauparticipacao-form', $data);
+        $this->loadView('centrocirurgico/grauparticipacao-form');
     }
 
     function carregar($emergencia_solicitacao_acolhimento_id) {
@@ -256,10 +264,24 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/hospital-form', $data);
     }
 
-    function gravarequipeoperadores($equipe_id) {
+    function gravarequipeoperadores() {
         $equipe_id = $_POST['equipe_id'];
         $this->centrocirurgico_m->gravarequipeoperadores();
         redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$equipe_id");
+    }
+
+    function finalizarcadastroprocedimentosguia($guia) {
+        $this->centrocirurgico_m->finalizarcadastroprocedimentosguia($guia);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgica/$guia");
+    }
+    
+    function cadastrarequipeguiacirurgica($guia) {
+
+        $data['guia_id'] = $guia;
+        $data['guia'] = $this->guia->instanciarguia($guia);
+        $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia);
+        $data['equipes'] = $this->centrocirurgico_m->listarequipecirurgica2();
+        $this->loadView('centrocirurgico/equipeguiacirurgica-form', $data);
     }
 
     function gravarhospital() {
@@ -271,6 +293,11 @@ class centrocirurgico extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarhospitais");
+    }
+
+    function excluirgrauparticipacao($grau_participacao_id) {
+        $this->centrocirurgico_m->excluirgrauparticipacao($grau_participacao_id);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisargrauparticipacao");
     }
 
     function excluirhospital($hospital_id) {
@@ -360,6 +387,7 @@ class centrocirurgico extends BaseController {
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['equipe'] = $this->solicitacirurgia_m->listarequipe($equipe_id);
         $data['equipe_operadores'] = $this->solicitacirurgia_m->listarequipeoperadores($equipe_id);
+        $data['grau_participacao'] = $this->solicitacirurgia_m->grauparticipacao($equipe_id);
 //        echo "<pre>";var_dump($data['equipe_operadores'] );die;
         $this->loadView('centrocirurgico/montarequipe-form', $data);
     }

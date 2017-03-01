@@ -44,7 +44,8 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarhospital/" class="delete"></a>
+                                    <a onclick="javascript: return confirm('Deseja realmente excluir <?= $item->descricao; ?>');"
+                                       href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirgrauparticipacao/<?= $item->grau_participacao_id; ?>" class="delete"></a>
                                 </td>
 
                         </tr>

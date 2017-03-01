@@ -1563,29 +1563,36 @@ CREATE TABLE ponto.tb_hospital
 
 -- Dia 25/02/2017
 ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN solicitacao_cirurgia_id;
-ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN valor numeric(10,2);
 ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN equipe_cirurgia_id integer;
 ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN funcao;
 ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN funcao character varying(10);
 
-DROP TABLE ponto.tb_funcoes_cirurgia;
+DROP TABLE IF EXISTS ponto.tb_funcoes_cirurgia;
 CREATE TABLE ponto.tb_grau_participacao
 (
   grau_participacao_id serial NOT NULL,
   codigo character varying(5),
   descricao character varying(100),
   ativo boolean DEFAULT true,
-  CONSTRAINT tb_grau_participacao_pkey PRIMARY KEY (grau_participacao_id)
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_grau_participacao_pkey PRIMARY KEY (grau_participacao_id )
 );
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN via character varying(100);
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN leito character varying(100);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horario_especial boolean DEFAULT false;
 
--- Dia 01/02/2017
-ALTER TABLE ponto.tb_grau_participacao ADD COLUMN data_cadastro timestamp without time zone;
-ALTER TABLE ponto.tb_grau_participacao ADD COLUMN operador_cadastro integer;
-ALTER TABLE ponto.tb_grau_participacao ADD COLUMN data_atualizacao timestamp without time zone;
-ALTER TABLE ponto.tb_grau_participacao ADD COLUMN operador_atualizacao integer;
+-- Dia 01/03/2017
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN funcao;
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN funcao integer;
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe boolean DEFAULT false;
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe_id integer;
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN IF EXISTS valor;
+
+
+
 
 
 

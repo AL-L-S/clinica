@@ -25,6 +25,7 @@ class Exame extends BaseController {
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('ambulatorio/motivocancelamento_model', 'motivocancelamento');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
+        $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico_m');
         $this->load->model('ambulatorio/agenda_model', 'agenda');
         $this->load->model('ponto/Competencia_model', 'competencia');
         $this->load->model('cadastro/convenio_model', 'convenio');
@@ -257,6 +258,12 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/faturamentomanual-lista', $args);
     }
 
+    function gravarguiacirurgicaequipe() {
+        $guia_id = $_POST['txtambulatorioguiaid'];
+        $this->guia->gravarguiacirurgicaequipe();
+        redirect(base_url() . "ambulatorio/exame/guiacirurgicafaturamento/$guia_id");
+    }
+
     function gravarguiacirurgica() {
         $ambulatorio_guia = $this->guia->gravarguiacirurgica();
 
@@ -264,8 +271,7 @@ class Exame extends BaseController {
             $data['mensagem'] = 'Erro ao gravar Guia. Opera&ccedil;&atilde;o cancelada.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exame/faturamentomanual");
-        } 
-        else {
+        } else {
             $data['mensagem'] = 'Sucesso ao gravar Guia.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exame/guiacirurgicaitens/$ambulatorio_guia");
@@ -416,6 +422,15 @@ class Exame extends BaseController {
         $data['medicos'] = $this->exame->listarmedico();
         $data['tipo'] = 1; // exame ou consulta ou fisio
         $this->load->View('ambulatorio/trocarmedico-form', $data);
+    }
+    
+    function guiacirurgicafaturamento($guia) {
+
+        $data['guia_id'] = $guia;
+        $data['guia'] = $this->guia->instanciarguia($guia);
+        $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia);
+        $data['equipe'] = $this->centrocirurgico_m->listarequipecirurgicaoperadores($data['guia'][0]->equipe_id);
+        $this->loadView('centrocirurgico/guiacirurgicafaturamento-lista', $data);
     }
 
     function trocarmedicoconsulta($agenda_exames_id) {

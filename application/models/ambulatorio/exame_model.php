@@ -266,6 +266,7 @@ class exame_model extends Model {
 
     function listarprocedimentocirurgicoconvenio($convenio_id) {
         $this->db->select('pc.procedimento_convenio_id,
+                           pc.valortotal,
                            pt.nome');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');

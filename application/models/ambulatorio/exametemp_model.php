@@ -1160,24 +1160,26 @@ class exametemp_model extends Model {
 
     function gravarguiacirurgicaprocedimentos() {
         $empresa_id = $this->session->userdata('empresa_id');
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $qtde = (int) str_replace('.', '', $_POST['qtde']);
-        for($i = 0; $i < $qtde; $i++){
+        for ($i = 0; $i < $qtde; $i++) {
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('tipo', 'CIRURGICO');
             $this->db->set('ativo', 'f');
             $this->db->set('cancelada', 'f');
             $this->db->set('confirmado', 't');
+            $this->db->set('valor', str_replace(',', '.', $_POST['valor']) );
+            $this->db->set('valor_total', str_replace(',', '.', $_POST['valor']) );
             $this->db->set('situacao', 'OK');
             $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
             $this->db->set('guia_id', $_POST['txtguiaid']);
-            if( isset($_POST['horEspecial']) ){
+            if (isset($_POST['horEspecial'])) {
                 $this->db->set('horario_especial', 't');
             }
-            $this->db->set('data_autorizacao', date("Y-m-d H:i", strtotime( str_replace('/', '-', $_POST['data_autorizacao']) ) ));
-            $this->db->set('data_realizacao', date("Y-m-d H:i", strtotime( str_replace('/', '-', $_POST['data_realizacao']) ) ));
+            $this->db->set('data_autorizacao', date("Y-m-d H:i", strtotime(str_replace('/', '-', $_POST['data_autorizacao']))));
+            $this->db->set('data_realizacao', date("Y-m-d H:i", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
             $this->db->set('paciente_id', $_POST['txtNomeid']);
 
             $this->db->set('data_cadastro', $horario);
@@ -3806,6 +3808,30 @@ class exametemp_model extends Model {
             return false;
         else
             return true;
+    }
+
+    function excluirprocedimentoguia($agenda_exames_id) {
+        
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        
+        $this->db->set('paciente_id', null);
+        $this->db->set('procedimento_tuss_id', null);
+        $this->db->set('guia_id', null);
+        $this->db->set('situacao', "LIVRE");
+        $this->db->set('observacoes', "");
+        $this->db->set('valor', NULL);
+        $this->db->set('ativo', 't');
+        $this->db->set('convenio_id', null);
+        $this->db->set('autorizacao', null);
+        $this->db->set('operador_atualizacao', null);
+        $this->db->set('confirmado', 'f');
+        $this->db->set('data_cancelamento', $horario);
+        $this->db->set('operador_cancelamento', $operador_id);
+        $this->db->set('cancelada', 't');
+        $this->db->set('situacao', 'CANCELADO');
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->update('tb_agenda_exames');
     }
 
     function excluirexametemp($agenda_exames_id) {

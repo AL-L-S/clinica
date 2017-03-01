@@ -42,11 +42,12 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarhospital/<?= $item->equipe_cirurgia_id ?>">Cadastrar</a></div>
+                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= $item->equipe_cirurgia_id ?>">Cadastrar</a></div>
                                 </td>
                                 
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirhospital/<?= $item->equipe_cirurgia_id ?>">Excluir</a></div>
+                                    <a  onclick="javascript: return confirm('Deseja realmente excluir a equipe');"
+                                        href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirequipecirurgica/<?= $item->equipe_cirurgia_id ?>">Excluir</a></div>
                                 </td>
 
                         </tr>
