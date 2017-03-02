@@ -1,4 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
+    
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
     <table>
         <thead>
 
@@ -256,7 +258,6 @@
 
 
 </div> <!-- Final da DIV content -->
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
 

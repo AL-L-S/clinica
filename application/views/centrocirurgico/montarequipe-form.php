@@ -27,10 +27,10 @@
                     <? endforeach; ?>
                 </select>
             </div>
-            <div>
+<!--            <div>
                 <label>Valor</label>
                 <input type="text" name="valor" id="valor" alt="decimal" class="texto01" required=""/>
-            </div>
+            </div>-->
             <div style="width: 100%">
                 <hr/>
                 <div>
@@ -50,7 +50,6 @@
                     <tr>
                         <th class="tabela_header">Médico</th>
                         <th class="tabela_header">Função</th>
-                        <th class="tabela_header">Valor (%)</th>
                         <th class="tabela_header" width="30px;" ><center></center></th>
                 </tr>
                 </thead>
@@ -63,7 +62,6 @@
                         <tr>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->funcao; ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->valor; ?> </td>
                             <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
                                 <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->equipe_cirurgia_operadores_id; ?>/<?= $equipe_id; ?>" class="delete">
                                 </a>

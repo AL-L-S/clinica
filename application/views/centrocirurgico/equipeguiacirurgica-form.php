@@ -1,39 +1,83 @@
-<div class="content"> <!-- Inicio da DIV content -->
-    <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/cadastrarequipe">
-            Nova Equipe
-        </a>
-    </div>
-    <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Equipe</a></h3>
-        <div>
-            <form name="form_sala" id="form_sala" action="<?= base_url() ?>ambulatorio/exame/gravarguiacirurgicaequipe" method="post">
+<div class="content ficha_ceatox"> <!-- Inicio da DIV content --> 
+    <h3 class="singular"><a href="#">Montar Equipe</a></h3>
+    <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarguiacirurgicaequipe" method="post">
 
-                <dl class="dl_desconto_lista">
-                    <dt>
-                        <label>Equipe</label>
-                    </dt>
-                    <dd>
-                        <input type="hidden" name="txtambulatorioguiaid" id="txtambulatorioguiaid" class="texto10" value="<?= @$guia_id; ?>" />
-                        <select name="equipe_id" id="equipe_id" class="size2" required>
-                            <option value="">Selecione</option>
-                            <? foreach ($equipes as $value) : ?>
-                                <option value="<?= $value->equipe_cirurgia_id; ?>">
-                                    <?= $value->nome; ?>
-                                </option>
-                            <? endforeach; ?>
-                        </select>
-                    </dd>
-                </dl>    
+        <fieldset>
+            <div>
+                <input type="hidden" name="txtambulatorioguiaid" value="<?= $guia_id; ?>">                    
+                <label>Médico</label>
+                <select name="medico" id="medico" class="texto04" required>
+                    <option value="">SELECIONE</option>
+                    <? foreach ($medicos as $value) { ?>
+                        <option value="<?= $value->operador_id ?>"
+                                ><?= $value->nome ?></option>
+                            <? } ?>
+                </select>
+            </div>
+            <div>
+                <label>Função</label>
+                <select name="funcao" id="funcao" class="texto03" required>
+                    <option value="">SELECIONE</option>
+                    <? foreach ($grau_participacao as $value) : ?>
+                        <option value="<?= $value->codigo ?>"><?= $value->grau_participacao ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+            <div style="width: 100%">
                 <hr/>
-                <button type="submit" name="btnEnviar">Enviar</button>
-                <button type="reset" name="btnLimpar">Limpar</button>
-            </form>
-        </div>
-    </div>
-</div> <!-- Final da DIV content -->
+                <div>
+                    <button type="submit" name="btnEnviar">Adicionar</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 
-<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+    <?php
+    if (count($equipe_operadores) > 0) {
+        ?>
+        <fieldset>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="tabela_header">Médico</th>
+                        <th class="tabela_header">Função</th>
+                        <!--<th class="tabela_header" width="30px;" ><center></center></th>-->
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $estilo_linha = "tabela_content01";
+                    foreach ($equipe_operadores as $item) {
+                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        ?>
+                        <tr>
+                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->funcao; ?></td>
+<!--                            <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
+                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->agenda_exame_equipe_id; ?>" class="delete">
+                                </a>
+                            </td>-->
+
+                        </tr>
+                    </tbody>
+    <?php }
+    ?>
+                <tfoot>
+                    <tr>
+                        <th class="tabela_footer" colspan="8">
+
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </fieldset>
+<? }
+?>
+
+
+
+</div> <!-- Final da DIV content -->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
@@ -41,25 +85,21 @@
 <script type="text/javascript">
 
     $(function () {
-        $("#txtpaciente").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtpaciente").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtpaciente").val(ui.item.value);
-                $("#txtpacienteid").val(ui.item.id);
-                return false;
+        $('#procedimento1').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
+                    options = "";
+                    options += j[0].valortotal;
+//                    b = options.toPrecision(2);
+                    document.getElementById("valor1").value = options.replace(".", ",");
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#valor1').html('value=""');
             }
         });
     });
 
 
-    $(function () {
-        $("#accordion").accordion();
-    });
-
 </script>
-

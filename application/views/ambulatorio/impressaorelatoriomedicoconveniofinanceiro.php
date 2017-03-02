@@ -80,14 +80,14 @@
                             $simbolopercebtual = " %";
 
                             $valorpercentualmedico = $item->valor_medico;
-                            
+
                             $perc = $item->valor_total * ($valorpercentualmedico / 100);
                             $totalperc = $totalperc + $perc;
                             $totalgeral = $totalgeral + $item->valor_total;
                         } else {
                             $simbolopercebtual = "";
                             $valorpercentualmedico = $item->valor_medico;
-                            
+
                             $perc = $valorpercentualmedico;
                             $totalperc = $totalperc + $perc;
                             $totalgeral = $totalgeral + $item->valor_total;
@@ -247,6 +247,10 @@
                     <? endforeach; ?>
                 </tbody>
             </table>
+            </p>
+
+            <hr>
+
             <?
         } else {
             ?>
