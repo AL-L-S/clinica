@@ -50,13 +50,13 @@ class guia_model extends Model {
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_convenio c', 'c.convenio_id = ag.convenio_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
-        if(count($args) == 0){
+        if (count($args) == 0) {
             $data = date('Y-m-d');
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->where('data_criacao', $data);
             $this->db->where('empresa_id', $empresa_id);
         }
-        
+
         if (isset($args['guia']) && strlen($args['guia']) > 0) {
             $this->db->where('ag.ambulatorio_guia_id', $args['guia']);
         }
@@ -2728,6 +2728,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('e.cancelada', 'false');
         $this->db->where('ae.valor_medico is not null');
+        $this->db->where('ae.paciente_id is not null');
 
         if ($_POST['situacao'] != "0") {
             $this->db->where('al.situacao', 'FINALIZADO');
@@ -3022,6 +3023,8 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('e.cancelada', 'false');
+        $this->db->where('ae.valor_medico is not null');
+        $this->db->where('ae.paciente_id is not null');
 //        $this->db->where('al.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
@@ -5336,8 +5339,8 @@ AND data <= '$data_fim'";
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        $data_inicio = $_POST['data1'];
-        $data_cauculo = substr($_POST['data1'], 6, 4) . "-" . substr($_POST['data1'], 3, 2) . "-" . substr($_POST['data1'], 0, 2);
+        $data_inicio = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['data1'])));
+        $data_cauculo =  date("Y-m-d",strtotime(str_replace("/", "-", $_POST['data1'])));
         $data_fim = $_POST['data2'];
         $observacao = "Periodo de" . $_POST['data1'] . "a" . $_POST['data2'];
         $data = date("Y-m-d");
@@ -5372,7 +5375,7 @@ AND data <= '$data_fim'";
                 }
 
                 if ((empty($value->tempo_receber) || $value->tempo_receber == 0) && (empty($value->dia_receber) || $value->dia_receber == 0)) {
-                    $this->db->set('data', $_POST['data1']);
+                    $this->db->set('data', $data);
                     $this->db->set('valor', $valor_total);
                     $this->db->set('classe', $classe);
                     $this->db->set('nome', $value->credor_devedor);
@@ -5394,10 +5397,11 @@ AND data <= '$data_fim'";
                     $this->db->insert('tb_saldo');
                 } else {
                     if (isset($value->dia_receber) && $value->dia_receber > 0) {
-                        $data_atual = date("Y-m-d");
-                        $dia_atual = substr(date("Y-m-d"), 8);
-                        $mes_atual = substr(date("Y-m-d"), 5, 2);
-                        $ano_atual = substr(date("Y-m-d"), 0, 4);
+//                        echo '5403'; 
+                        $data_atual = $_POST['data1'];
+                        $dia_atual = substr($_POST['data1'], 8);
+                        $mes_atual = substr($_POST['data1'], 5, 2);
+                        $ano_atual = substr($_POST['data1'], 0, 4);
 
                         if ($dia_atual < $value->dia_receber) {
                             $data_receber = $ano_atual . '-' . $mes_atual . '-' . $value->dia_receber;
@@ -5491,6 +5495,7 @@ AND data <= '$data_fim'";
                         $this->db->set('ativo', 'f');
                         $this->db->update('tb_financeiro_contasreceber_temp');
                     } else {
+//                        echo '5501';
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
                             $valor_n_parcelado = $valor_total;
                             $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
@@ -5516,7 +5521,7 @@ AND data <= '$data_fim'";
 
                                 if ($parcelas > 1) {
                                     $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-
+//                                    var_dump($parcelas); die;
                                     if ($jurosporparcelas[0]->taxa_juros > 0) {
                                         $taxa_juros = $jurosporparcelas[0]->taxa_juros;
                                     } else {
@@ -5532,7 +5537,7 @@ AND data <= '$data_fim'";
                                 if ($parcelas > 1) {
                                     for ($i = 2; $i <= $parcelas; $i++) {
                                         $tempo_receber = $tempo_receber + $value->tempo_receber;
-                                        $data_atual = date("Y-m-d");
+                                        $data_atual = $_POST['data1'];
                                         $data_receber_p = date("Y-m-d", strtotime("+$tempo_receber days", strtotime($data_atual)));
 
                                         $this->db->set('valor', $valor_parcelado);
@@ -5549,9 +5554,9 @@ AND data <= '$data_fim'";
                                     $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
                                 }
                             }
-                            $data_atual = date("Y-m-d");
+                            $data_atual = $_POST['data1'];
                             $data_receber = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
-
+//                            var_dump($valor_n_parcelado);
                             $this->db->set('valor', $valor_n_parcelado);
                             $this->db->set('devedor', $value->credor_devedor);
                             $this->db->set('data', $data_receber);
@@ -5582,7 +5587,6 @@ AND data <= '$data_fim'";
                     }
                 }
             }
-
 
 
 //            if ($_POST[$value->nome] != '0,00') {
@@ -6075,7 +6079,7 @@ ORDER BY ae.agenda_exames_id)";
         $data = date("Y-m-d");
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
-        
+
         $this->db->set('via', $_POST['via']);
         $this->db->set('leito', $_POST['leito']);
         $this->db->set('empresa_id', $empresa_id);
@@ -6095,8 +6099,7 @@ ORDER BY ae.agenda_exames_id)";
             } else {
                 return $ambulatorio_guia_id;
             }
-        }
-        else {
+        } else {
             $ambulatorio_guia_id = $_POST['txtambulatorioguiaid'];
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
