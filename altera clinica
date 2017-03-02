@@ -1464,7 +1464,7 @@ FROM ponto.tb_procedimento_percentual_medico m , ponto.tb_procedimento_percentua
 
        AND m.ativo = 'true' 
        
-       AND mc.ativo = 'true'
+       AND mc.ativo = 'true';
 
 
 
@@ -1495,7 +1495,7 @@ FROM ponto.tb_agenda_exames ae1
        
        AND pc.ativo = 'true' 
        
-       AND pt.ativo = 'true'
+       AND pt.ativo = 'true';
 
 
 -- Dia 24/02/2017
@@ -1585,11 +1585,28 @@ ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN leito character varying(100);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horario_especial boolean DEFAULT false;
 
 -- Dia 01/03/2017
-ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN funcao;
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN IF EXISTS funcao;
 ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN funcao integer;
-ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe boolean DEFAULT false;
-ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe_id integer;
 ALTER TABLE ponto.tb_equipe_cirurgia_operadores DROP COLUMN IF EXISTS valor;
+
+-- Dia 02/03/2017
+CREATE TABLE ponto.tb_agenda_exame_equipe
+(
+  agenda_exame_equipe_id serial NOT NULL,
+  operador_responsavel integer,
+  agenda_exames_id integer,
+  funcao character varying(10),
+  valor numeric(10,2),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_agenda_exame_equipe_pkey PRIMARY KEY (agenda_exame_equipe_id)
+);
+
+
+
 
 
 

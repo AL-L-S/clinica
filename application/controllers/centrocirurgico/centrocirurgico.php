@@ -170,10 +170,38 @@ class centrocirurgico extends BaseController {
         $data['solicitacao'] = $solicitacao;
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
     }
+    
+    
+    function gravarguiacirurgicaequipe() {
+        $guia_id = $_POST['txtambulatorioguiaid'];
+//        
+//        var_dump($guia_id);die;
+        $data['guia'] = $this->guia->instanciarguia($guia_id);
+        $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia_id);
+        $this->guia->gravarguiacirurgicaequipe($guia_id, $data['procedimentos'], $data['guia'][0]);       
+        
+        redirect(base_url() . "centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgica/$guia_id");
+    }
+     
+    function cadastrarequipeguiacirurgica($guia) {
 
+        $data['guia_id'] = $guia;
+        $data['guia'] = $this->guia->instanciarguia($guia);
+        
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['grau_participacao'] = $this->solicitacirurgia_m->grauparticipacao();
+        $data['equipe_operadores'] = $this->centrocirurgico_m->listarequipeoperadores($guia);
+//        var_dump($guia);die;
+//        $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia);
+//        $data['equipes'] = $this->centrocirurgico_m->listarequipecirurgica2();
+        $this->loadView('centrocirurgico/equipeguiacirurgica-form', $data);
+    }
+    
+    
     function cadastrarequipe() {
         $this->loadView("centrocirurgico/equipecirurgica-form");
     }
+    
 
 //    function adicionarprocedimentosdecisao() {
 ////        if ($_POST['escolha'] == "SIM") {
@@ -274,15 +302,7 @@ class centrocirurgico extends BaseController {
         $this->centrocirurgico_m->finalizarcadastroprocedimentosguia($guia);
         redirect(base_url() . "centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgica/$guia");
     }
-    
-    function cadastrarequipeguiacirurgica($guia) {
-
-        $data['guia_id'] = $guia;
-        $data['guia'] = $this->guia->instanciarguia($guia);
-        $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia);
-        $data['equipes'] = $this->centrocirurgico_m->listarequipecirurgica2();
-        $this->loadView('centrocirurgico/equipeguiacirurgica-form', $data);
-    }
+   
 
     function gravarhospital() {
         $hospital_id = $this->centrocirurgico_m->gravarhospital();

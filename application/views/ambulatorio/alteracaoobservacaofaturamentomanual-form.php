@@ -2,7 +2,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Alterar Observacao</h3>
         <div>
-            <form name="form_horariostipo" id="form_horariostipo" action="<?= base_url() ?>ambulatorio/exame/observacaofaturargravar/<?= $agenda_exame_id; ?>" method="post">
+            <form name="form_horariostipo" id="form_horariostipo" action="<?= base_url() ?>ambulatorio/exame/observacaofaturaramentomanualgravar/<?= $guia_id; ?>" method="post">
                 <fieldset>
                     
                 <dl class="dl_desconto_lista">

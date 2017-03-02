@@ -255,14 +255,9 @@ class Exame extends BaseController {
 
     function faturamentomanual($args = array()) {
 
-        $this->loadView('ambulatorio/faturamentomanual-lista', $args);
+        $this->loadView('ambulatorio/faturamentomanual', $args);
     }
 
-    function gravarguiacirurgicaequipe() {
-        $guia_id = $_POST['txtambulatorioguiaid'];
-        $this->guia->gravarguiacirurgicaequipe();
-        redirect(base_url() . "ambulatorio/exame/guiacirurgicafaturamento/$guia_id");
-    }
 
     function gravarguiacirurgica() {
         $ambulatorio_guia = $this->guia->gravarguiacirurgica();
@@ -325,6 +320,22 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
     }
 
+    function faturamentomanuallista() {
+        $data['convenio'] = $_POST['convenio'];
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        if ($_POST['convenio'] != '') {
+            $data['convenios'] = $this->guia->listardados($_POST['convenio']);
+        } else {
+            $data['convenios'] = 0;
+        }
+        $data['listar'] = $this->exame->listarguiafaturamentomanual();
+//        echo "<pre>";
+//        var_dump($data['listar']);die;
+        $this->loadView('ambulatorio/faturamentomanual-lista', $data);
+    }
+
     function faturamentoexamelista() {
         $data['convenio'] = $_POST['convenio'];
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
@@ -357,6 +368,16 @@ class Exame extends BaseController {
     function painelrecepcao($args = array()) {
 
         $this->loadView('ambulatorio/painelrecepcao-lista', $args);
+    }
+
+    function faturaramentomanualguia($guia_id, $paciente_id) {
+        $data['guia_id'] = $guia_id;
+        $data['paciente_id'] = $paciente_id;        
+        $data['guia'] = $this->guia->instanciarguia($guia_id);
+        $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia_id);
+        $data['equipe'] = $this->centrocirurgico_m->listarequipecirurgicaoperadores($data['guia'][0]->equipe_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $this->loadView('ambulatorio/guiafaturamentomanual-form', $data);
     }
 
     function faturarguia($guia_id, $paciente_id) {
@@ -596,6 +617,13 @@ class Exame extends BaseController {
         $data['observacao'] = $this->exame->listarobservacoesfaturar($agenda_exame_id);
         $this->load->View('ambulatorio/alteracaoobservacaofaturamento-form', $data);
     }
+    
+    function alterarobservacaofaturaramentomanual($guia_id) {
+        $data['guia_id'] = $guia_id;
+        $data['observacao'] = $this->exame->listarobservacoesfaturaramentomanual($guia_id);
+//        var_dump($data);die;
+        $this->load->View('ambulatorio/alteracaoobservacaofaturamentomanual-form', $data);
+    }
 
     function observacaogravar($agenda_exame_id) {
         $verificar = $this->exame->observacao($agenda_exame_id);
@@ -604,6 +632,11 @@ class Exame extends BaseController {
 
     function observacaofaturargravar($agenda_exame_id) {
         $this->exame->observacaofaturamento($agenda_exame_id);
+        echo '<script type="text/javascript">window.close();</script>';
+    }
+
+    function observacaofaturaramentomanualgravar($guia_id) {
+        $this->exame->observacaofaturamentomanual($guia_id);
         echo '<script type="text/javascript">window.close();</script>';
     }
 

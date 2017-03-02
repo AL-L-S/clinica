@@ -1,9 +1,4 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/finalizarcadastroprocedimentosguia/<?= @$guia[0]->ambulatorio_guia_id; ?>">
-            Finalizar Procedimentos
-        </a>
-    </div>
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarguiacirurgicaprocedimentos" method="post">
         <fieldset>
@@ -47,28 +42,30 @@
 
             <div>
                 <label>Valor</label>
-                <input type="text" id="valor" style="width:40pt" name="valor" alt="decimal"/>
+                <input type="text" id="valor" class="texto01" name="valor" alt="decimal"/>
             </div>
 
             <div>
                 <label>QTDE*</label>
-                <input type="text" name="qtde" id="qtde" alt="integer" style="width:40pt" value="1" required=""/>
+                <input type="text" name="qtde" id="qtde" alt="integer" class="texto01" value="1" required=""/>
             </div>
-
-            <div >
-                <label>Data/Hora Autorização*</label>
-                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="29/29/9999 29:69"class="size2" required=""/>
-            </div>
-
-            <div >
-                <label>Data/Hora Realização*</label>
-                <input type="text" name="data_realizacao" id="data_realizacao" alt="29/29/9999 29:69"class="size2" required=""/>
-            </div>
-
+            
+            
             <div>
                 <label> H. Especial* </label>
                 <input type="checkbox" name="horEspecial">
             </div>
+
+            <div >
+                <label>Data/Hora Autorização*</label>
+                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="29/29/9999 29:69"class="texto03" required=""/>
+            </div>
+
+            <div >
+                <label>Data/Hora Realização*</label>
+                <input type="text" name="data_realizacao" id="data_realizacao" alt="29/29/9999 29:69"class="texto03" required=""/>
+            </div>
+
 
 
             <div style="width: 100%">
@@ -128,8 +125,17 @@
                 </tr>
             </tfoot>
         </table> 
+        <br>
+        <div class="bt_link_new">
+            <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/finalizarcadastroprocedimentosguia/<?= @$guia[0]->ambulatorio_guia_id; ?>">
+                Finalizar Procedimentos
+            </a>
+        </div>
 
     </fieldset>
+    
+    
+    
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
