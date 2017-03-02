@@ -3995,7 +3995,7 @@ class exame_model extends Model {
         return $return->result();
     }
 
-    function gravarexame() {
+    function gravarexame($percentual) {
         try {
             $horario = date("Y-m-d H:i:s");
             $data = date("Y-m-d");
@@ -4018,6 +4018,7 @@ class exame_model extends Model {
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('guia_id', $_POST['txtguia_id']);
                 $this->db->set('tipo', $_POST['txttipo']);
@@ -4054,6 +4055,8 @@ class exame_model extends Model {
                 if ($_POST['txtmedico'] != "") {
                     $this->db->set('medico_consulta_id', $_POST['txtmedico']);
                     $this->db->set('medico_agenda', $_POST['txtmedico']);
+                    $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                    $this->db->set('percentual_medico', $percentual[0]->percentual);
                 }
                 $this->db->set('realizada', 'true');
                 $this->db->set('senha', md5($exame_id));
@@ -4076,7 +4079,6 @@ class exame_model extends Model {
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('guia_id', $_POST['txtguia_id']);
                 $this->db->set('tipo', $_POST['txttipo']);
@@ -4114,6 +4116,8 @@ class exame_model extends Model {
                 if ($_POST['txtmedico'] != "") {
                     $this->db->set('medico_consulta_id', $_POST['txtmedico']);
                     $this->db->set('medico_agenda', $_POST['txtmedico']);
+                    $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                    $this->db->set('percentual_medico', $percentual[0]->percentual);
                 }
                 $this->db->set('realizada', 'true');
                 $this->db->set('senha', md5($exame_id));
@@ -4174,6 +4178,8 @@ class exame_model extends Model {
                 if ($_POST['txtmedico'] != "") {
                     $this->db->set('medico_consulta_id', $_POST['txtmedico']);
                     $this->db->set('medico_agenda', $_POST['txtmedico']);
+                    $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                    $this->db->set('percentual_medico', $percentual[0]->percentual);
                 }
                 $this->db->set('realizada', 'true');
                 $this->db->set('senha', md5($exame_id));
@@ -4196,7 +4202,6 @@ class exame_model extends Model {
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('guia_id', $_POST['txtguia_id']);
                 $this->db->set('tipo', $_POST['txttipo']);
@@ -4234,6 +4239,8 @@ class exame_model extends Model {
                 if ($_POST['txtmedico'] != "") {
                     $this->db->set('medico_consulta_id', $_POST['txtmedico']);
                     $this->db->set('medico_agenda', $_POST['txtmedico']);
+                    $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                    $this->db->set('percentual_medico', $percentual[0]->percentual);
                 }
                 $this->db->set('realizada', 'true');
                 $this->db->set('senha', md5($exame_id));

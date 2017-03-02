@@ -423,7 +423,7 @@ class Exame extends BaseController {
         $data['tipo'] = 1; // exame ou consulta ou fisio
         $this->load->View('ambulatorio/trocarmedico-form', $data);
     }
-    
+
     function guiacirurgicafaturamento($guia) {
 
         $data['guia_id'] = $guia;
@@ -501,7 +501,15 @@ class Exame extends BaseController {
     function gravarexame() {
         $total = $this->exame->contadorexames();
         if ($total == 0) {
-            $laudo_id = $this->exame->gravarexame();
+            $procedimentopercentual = $_POST['txtprocedimento_tuss_id'];
+            $medicopercentual = $_POST['txtmedico'];
+            $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+            if (count($percentual) == 0) {
+                $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            }
+//            var_dump($_POST['txtagenda_exames_id']);
+//            var_dump($percentual); die;
+            $laudo_id = $this->exame->gravarexame($percentual);
             if ($laudo_id == "-1") {
                 $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
             } else {
