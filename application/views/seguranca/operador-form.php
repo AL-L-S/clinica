@@ -154,10 +154,10 @@
                 </div>
                 <div>
                     <label>Senha: *</label>
-                    <input type="password" name="txtSenha" id="txtSenha" class="texto04" value="" <? if(@$obj->_senha == null)
-                        {?>
-                           required="true"
-                    <?}?> />
+                    <input type="password" name="txtSenha" id="txtSenha" class="texto04" value="" <? if (@$obj->_senha == null) {
+                                      ?>
+                               required="true"
+                           <? } ?> />
 
                     <!--                    <label>Confirme a Senha: *</label>
                                         <input type="password" name="verificador" id="txtSenha" class="texto04" value="" onblur="confirmaSenha(this)"/>-->
@@ -207,7 +207,7 @@
 
 
                     <select name="credor_devedor" id="credor_devedor" class="size2" >
-                        <option value='' >selecione</option>
+                        <option value='' >Selecione</option>
                         <?php
                         $credor_devedor = $this->convenio->listarcredordevedor();
                         foreach ($credor_devedor as $item) {
@@ -227,7 +227,7 @@
 
 
                     <select name="conta" id="conta" class="size2" >
-                        <option value='' >selecione</option>
+                        <option value='' >Selecione</option>
                         <?php
                         $conta = $this->forma->listarforma();
                         foreach ($conta as $item) {
@@ -246,8 +246,8 @@
                     <label>Tipo</label>
 
 
-                    <select name="tipo" id="tipo" class="size2" >
-                        <option value='' >selecione</option>
+                    <select name="tipo" id="tipo" class="size2">
+                        <option value='' >Selecione</option>
                         <?php
                         $tipo = $this->tipo->listartipo();
 
@@ -262,6 +262,22 @@
                                   }
                                   ?> 
                     </select>
+                </div>
+                <div>
+                    <label>Classe</label>
+
+
+                    <select name="classe" id="classe" class="size2">
+                            <option value="">Selecione</option>
+                            <? foreach ($classe as $value) : ?>
+                                <option value="<?= $value->descricao; ?>"
+                                <?
+                                if ($value->descricao == @$obj->_classe):echo'selected';
+                                endif;
+                                ?>
+                                        ><?php echo $value->descricao; ?></option>
+                                    <? endforeach; ?>
+                        </select>
                 </div>
                 <div>
                     <label>IR</label>
@@ -307,137 +323,165 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-    <script>
-			function mascaraTelefone( campo ) {
-			
-				function trata( valor,  isOnBlur ) {
-					
-					valor = valor.replace(/\D/g,"");             			
-					valor = valor.replace(/^(\d{2})(\d)/g,"($1)$2"); 		
-					
-					if( isOnBlur ) {
-						
-						valor = valor.replace(/(\d)(\d{4})$/,"$1-$2");   
-					} else {
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script>
+                    function mascaraTelefone(campo) {
 
-						valor = valor.replace(/(\d)(\d{3})$/,"$1-$2"); 
-					}
-					return valor;
-				}
-				
-				campo.onkeypress = function (evt) {
-					 
-					var code = (window.event)? window.event.keyCode : evt.which;	
-					var valor = this.value
-					
-					if(code > 57 || (code < 48 && code != 8 ))  {
-						return false;
-					} else {
-						this.value = trata(valor, false);
-					}
-				}
-				
-				campo.onblur = function() {
-					
-					var valor = this.value;
-					if( valor.length < 13 ) {
-						this.value = ""
-					}else {		
-						this.value = trata( this.value, true );
-					}
-				}
-				
-				campo.maxLength = 14;
-			}
+                        function trata(valor, isOnBlur) {
 
-		
-		</script>
-<script type="text/javascript">
-            mascaraTelefone( form_operador.txtTelefone );
-            mascaraTelefone( form_operador.txtCelular );
-                        $('#btnVoltar').click(function () {
-                            $(location).attr('href', '<?= base_url(); ?>sca/operador');
-                        });
+                            valor = valor.replace(/\D/g, "");
+                            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-                        function confirmaSenha(verificacao) {
-                            var senha = $("#txtSenha");
-                            if (verificacao.value != senha.val()) {
-                                verificacao.setCustomValidity("As senhas não correspondem!");
+                            if (isOnBlur) {
+
+                                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
                             } else {
-                                verificacao.setCustomValidity("");
+
+                                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                            }
+                            return valor;
+                        }
+
+                        campo.onkeypress = function (evt) {
+
+                            var code = (window.event) ? window.event.keyCode : evt.which;
+                            var valor = this.value
+
+                            if (code > 57 || (code < 48 && code != 8)) {
+                                return false;
+                            } else {
+                                this.value = trata(valor, false);
                             }
                         }
 
-                        $(function () {
-                            $("#txtCidade").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#txtCidade").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#txtCidade").val(ui.item.value);
-                                    $("#txtCidadeID").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
+                        campo.onblur = function () {
 
-                        $(function () {
-                            $("#txtcbo").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#txtcbo").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#txtcbo").val(ui.item.value);
-                                    $("#txtcboID").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-
-                        tinyMCE.init({
-                            // General options
-                            mode: "textareas",
-                            theme: "advanced",
-                            plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                            // Theme options
-                            theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,justifyleft,justifycenter,justifyright,justifyfull",
-                            theme_advanced_buttons2: "styleselect,formatselect,fontselect,fontsizeselect",
-                            theme_advanced_toolbar_location: "top",
-                            theme_advanced_toolbar_align: "left",
-                            theme_advanced_statusbar_location: "bottom",
-                            theme_advanced_resizing: true,
-                            // Example content CSS (should be your site CSS)
-                            //                                    content_css : "css/content.css",
-                            content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                            // Drop lists for link/image/media/template dialogs
-                            template_external_list_url: "lists/template_list.js",
-                            external_link_list_url: "lists/link_list.js",
-                            external_image_list_url: "lists/image_list.js",
-                            media_external_list_url: "lists/media_list.js",
-                            // Style formats
-                            style_formats: [
-                                {title: 'Bold text', inline: 'b'},
-                                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                {title: 'Table styles'},
-                                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                            ],
-                            // Replace values for the template plugin
-                            template_replace_values: {
-                                username: "Some User",
-                                staffid: "991234"
+                            var valor = this.value;
+                            if (valor.length < 13) {
+                                this.value = ""
+                            } else {
+                                this.value = trata(this.value, true);
                             }
+                        }
 
-                        });
+                        campo.maxLength = 14;
+                    }
+
+
+</script>
+<script type="text/javascript">
+    mascaraTelefone(form_operador.txtTelefone);
+    mascaraTelefone(form_operador.txtCelular);
+    $('#btnVoltar').click(function () {
+        $(location).attr('href', '<?= base_url(); ?>sca/operador');
+    });
+
+    function confirmaSenha(verificacao) {
+        var senha = $("#txtSenha");
+        if (verificacao.value != senha.val()) {
+            verificacao.setCustomValidity("As senhas não correspondem!");
+        } else {
+            verificacao.setCustomValidity("");
+        }
+    }
+
+    $(function () {
+        $("#txtCidade").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#txtCidade").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtCidade").val(ui.item.value);
+                $("#txtCidadeID").val(ui.item.id);
+                return false;
+            }
+        });
+    });
+    
+
+    $(function () {
+        $('#tipo').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalistadescricao', {nome: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                    }
+                    $('#classe').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalistadescricaotodos', {nome: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                    }
+                    $('#classe').html(options).show();
+                    $('.carregando').hide();
+                });
+            }
+        });
+    });
+
+    $(function () {
+        $("#txtcbo").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#txtcbo").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtcbo").val(ui.item.value);
+                $("#txtcboID").val(ui.item.id);
+                return false;
+            }
+        });
+    });
+
+
+    tinyMCE.init({
+        // General options
+        mode: "textareas",
+        theme: "advanced",
+        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+        // Theme options
+        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,justifyleft,justifycenter,justifyright,justifyfull",
+        theme_advanced_buttons2: "styleselect,formatselect,fontselect,fontsizeselect",
+        theme_advanced_toolbar_location: "top",
+        theme_advanced_toolbar_align: "left",
+        theme_advanced_statusbar_location: "bottom",
+        theme_advanced_resizing: true,
+        // Example content CSS (should be your site CSS)
+        //                                    content_css : "css/content.css",
+        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+        // Drop lists for link/image/media/template dialogs
+        template_external_list_url: "lists/template_list.js",
+        external_link_list_url: "lists/link_list.js",
+        external_image_list_url: "lists/image_list.js",
+        media_external_list_url: "lists/media_list.js",
+        // Style formats
+        style_formats: [
+            {title: 'Bold text', inline: 'b'},
+            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+            {title: 'Example 1', inline: 'span', classes: 'example1'},
+            {title: 'Example 2', inline: 'span', classes: 'example2'},
+            {title: 'Table styles'},
+            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+        ],
+        // Replace values for the template plugin
+        template_replace_values: {
+            username: "Some User",
+            staffid: "991234"
+        }
+
+    });
 
 </script>
