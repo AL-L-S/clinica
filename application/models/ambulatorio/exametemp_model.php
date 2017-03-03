@@ -1173,6 +1173,7 @@ class exametemp_model extends Model {
             $this->db->set('valor', str_replace(',', '.', $_POST['valor']) );
             $this->db->set('valor_total', str_replace(',', '.', $_POST['valor']) );
             $this->db->set('situacao', 'OK');
+            $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
             $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
             $this->db->set('guia_id', $_POST['txtguiaid']);
             if (isset($_POST['horEspecial'])) {
