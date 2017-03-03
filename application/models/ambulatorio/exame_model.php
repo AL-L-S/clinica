@@ -639,6 +639,7 @@ class exame_model extends Model {
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.tipo !=', 'CIRURGICO');
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
