@@ -697,13 +697,25 @@ class Guia extends BaseController {
     function fecharmedico() {
 //        var_dump($_POST['tipo']); die;
         if ($_POST['conta'] == '') {
-            $data['mensagem'] = 'Para fechar o caixa é necessário ter uma conta associada ao cadastro do médico';
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter uma Conta associada ao cadastro do médico';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
         }
 
         if ($_POST['nome'] == '') {
-            $data['mensagem'] = 'Para fechar o caixa é necessário ter um credor associado ao cadastro do médico.';
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter um Credor associado ao cadastro do médico.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
+        }
+        
+        if ($_POST['tipo'] == '') {
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter um Tipo associado ao cadastro do médico.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
+        }
+        
+        if ($_POST['classe'] == '') {
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter uma Classe associada ao cadastro do médico.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
         }
