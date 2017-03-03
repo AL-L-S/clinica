@@ -80,7 +80,8 @@
                     </dt>
                     <dd>
                         <select name="situacao" id="situacao" class="size1" >
-                            <option value='1'  selected="true">FINALIZADO</option>
+                            <option value='' >TODOS</option>
+                            <option value='1'>FINALIZADO</option>
                             <option value='0' >ABERTO</option>
                         </select>
                     </dd>

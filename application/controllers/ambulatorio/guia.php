@@ -2281,6 +2281,8 @@ class Guia extends BaseController {
         $medicos = $_POST['medicos'];
         $data['clinica'] = $_POST['clinica'];
         $data['solicitante'] = $_POST['solicitante'];
+        $data['situacao'] = $_POST['situacao'];
+        
         if ($medicos != 0) {
             $data['medico'] = $this->operador_m->listarCada($medicos);
         } else {
