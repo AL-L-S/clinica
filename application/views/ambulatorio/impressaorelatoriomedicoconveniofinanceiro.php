@@ -130,7 +130,7 @@
             </table>
         <? endif; ?>
 
-        <? if (count($relatoriocirurgico) > 0):
+        <? if (count(@$relatoriocirurgico) > 0):
             $totalprocedimentoscirurgicos = 0;
             ?>
             <br>
@@ -216,7 +216,7 @@
             if ($totalperc >= $medico[0]->valor_base) {
                 $irpf = $totalperc * ($medico[0]->ir / 100);
                 ?>
-                <hr>
+                <br>
                 <table border="1">
                     <tr>
                         <th colspan="2" width="200px;">RESUMO FISCAL</th>
@@ -291,7 +291,7 @@
                 }
             }
             ?>
-
+                    <br>
             <div>
                 <div style="display: inline-block">
                     <table border="1">
@@ -320,7 +320,12 @@
                         </tbody>
                     </table>
                 </div>
-
+                
+                <div style="display: inline-block;margin: 5pt">
+                </div>
+                
+                <? if (count($relatoriocirurgicogeral) > 0):
+                    ?>
                 <div style="display: inline-block">
                     <table border="1">
                         <thead>
@@ -335,7 +340,7 @@
                         </thead>
                         <tbody>
                             <?
-                            foreach ($relatoriogeral as $itens) :
+                            foreach ($relatoriocirurgicogeral as $itens) :
                                 ?>
 
                                 <tr>
@@ -348,6 +353,7 @@
                         </tbody>
                     </table>
                 </div>
+                <?  endif; ?>
             </div>
 
             <hr>
