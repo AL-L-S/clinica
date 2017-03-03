@@ -219,8 +219,6 @@ class Contaspagar extends BaseController {
         $contador = 0;
         $a = 0;
         $c = 0;
-        var_dump($dia);
-        die;
         if ($_POST['financeiro_contaspagar_id'] == '') {
             if ($_POST['credor'] == '') {
                 $data['mensagem'] = 'É necessário selecionar o item no campo Pagar a ';
