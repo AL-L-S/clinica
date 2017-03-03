@@ -203,7 +203,7 @@
                         <td style='text-align: right;'><?= $totalretorno; ?></td>
                     </tr>
         <? endif;
-        if ($totalprocedimentoscirurgicos > 0):
+        if (@$totalprocedimentoscirurgicos > 0):
             ?>
                     <tr>
                         <td>TOTAL PROC. CIRURGICOS</td>
