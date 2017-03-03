@@ -8,6 +8,8 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>Medico Convenios</h4>
+    <? $sit = ($situacao == '') ? "TODOS" : (($situacao == '0') ? 'ABERTO' : 'FINALIZADO' ) ; ?>
+    <h4>SITUAÇÃO: <?= $sit ?></h4>
     <h4>PERIODO: <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> ate <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?></h4>
     <? if ($medico == 0) { ?>
         <h4>Medico: TODOS</h4>

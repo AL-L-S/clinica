@@ -2735,9 +2735,13 @@ class guia_model extends Model {
         $this->db->where('ae.valor_medico is not null');
         $this->db->where('ae.paciente_id is not null');
 
-        if ($_POST['situacao'] != "0") {
+        if ($_POST['situacao'] == "1") {
             $this->db->where('al.situacao', 'FINALIZADO');
         }
+        elseif ($_POST['situacao'] == "0") {
+            $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
+        
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }
@@ -2894,9 +2898,13 @@ class guia_model extends Model {
         $this->db->where('e.cancelada', 'false');
         $this->db->where('ae.valor_medico is not null');
 
-        if ($_POST['situacao'] != "0") {
+        if ($_POST['situacao'] == "1") {
             $this->db->where('al.situacao', 'FINALIZADO');
         }
+        elseif ($_POST['situacao'] == "0") {
+            $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
+        
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }
