@@ -1606,7 +1606,8 @@ CREATE TABLE ponto.tb_agenda_exame_equipe
 );
 
 
-
+-- Dia 03/03/2017
+ALTER TABLE ponto.tb_operador ADD COLUMN classe character varying(60);
 
 
 

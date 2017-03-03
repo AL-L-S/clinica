@@ -11,6 +11,7 @@ class Operador extends BaseController {
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('cadastro/tipo_model', 'tipo');
         $this->load->model('cadastro/forma_model', 'forma');
+        $this->load->model('cadastro/classe_model', 'classe');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -32,6 +33,7 @@ class Operador extends BaseController {
         $data['credor_devedor'] = $this->convenio->listarcredordevedor();
         $data['conta'] = $this->forma->listarforma();
         $data['tipo'] = $this->tipo->listartipo();
+        $data['classe'] = $this->classe->listarclasse();
         $data['listarPerfil'] = $this->operador_m->listarPerfil();
 //        $data['listarempresas'] = $this->operador_m->listarempresas();
         $this->loadView('seguranca/operador-form', $data);
@@ -68,6 +70,7 @@ class Operador extends BaseController {
     function alterar($operador_id) {
         $obj_operador_id = new operador_model($operador_id);
         $data['obj'] = $obj_operador_id;
+        $data['classe'] = $this->classe->listarclasse();
         $data['listarPerfil'] = $this->operador_m->listarPerfil();
         $this->loadView('seguranca/operador-form', $data);
     }

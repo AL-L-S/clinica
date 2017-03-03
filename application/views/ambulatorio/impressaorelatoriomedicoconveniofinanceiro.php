@@ -10,7 +10,7 @@
     <h4>Medico Convenios</h4>
     <h4>PERIODO: <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> ate <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?></h4>
     <? if ($medico == 0) { ?>
-        <h4>TODOS</h4>
+        <h4>Medico: TODOS</h4>
     <? } else { ?>
         <h4>Medico: <?= utf8_decode($medico[0]->operador); ?></h4>
     <? } ?>
@@ -283,6 +283,7 @@
                         <input type="hidden" class="texto3" name="tipo" value="<?= $medico[0]->tipo_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="nome" value="<?= $medico[0]->credor_devedor_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="conta" value="<?= $medico[0]->conta_id; ?>" readonly/>
+                        <input type="hidden" class="texto3" name="classe" value="<?= $medico[0]->classe; ?>" readonly/>
                         <input type="hidden" class="texto3" name="observacao" value="<?= "Período " . $txtdata_inicio . " até " . $txtdata_fim . " médico: " . $medico[0]->operador; ?>" readonly/>
                         <input type="hidden" class="texto3" name="valor" value="<?= $resultado; ?>" readonly/>
                         <button type="submit" name="btnEnviar">Producao medica</button>

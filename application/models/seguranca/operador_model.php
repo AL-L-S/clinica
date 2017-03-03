@@ -180,6 +180,7 @@ class Operador_model extends BaseModel {
                                o.ir,
                                o.pis,
                                o.cofins,
+                               o.classe,
                                o.conta_id,
                                o.tipo_id,
                                o.csll,
@@ -504,6 +505,7 @@ class Operador_model extends BaseModel {
             } elseif ($_POST['credor_devedor'] != "") {
                 $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
+            $this->db->set('classe', $_POST['classe']);
             $this->db->set('tipo_id', $_POST['tipo']);
             if ($_POST['txtconsulta'] != null) {
                 $this->db->set('consulta', $_POST['txtconsulta']);
@@ -732,6 +734,7 @@ class Operador_model extends BaseModel {
                                 o.complemento,
                                 o.municipio_id,
                                 o.credor_devedor_id,
+                                o.classe,
                                 o.conta_id,
                                 o.tipo_id,
                                 o.ir,
@@ -766,6 +769,7 @@ class Operador_model extends BaseModel {
             $this->_sexo = $return[0]->sexo;
             $this->_celular = $return[0]->celular;
             $this->_telefone = $return[0]->telefone;
+            $this->_classe = $return[0]->classe;
             $this->_tipoLogradouro = $return[0]->tipo_logradouro;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;

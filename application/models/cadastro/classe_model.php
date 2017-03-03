@@ -90,6 +90,31 @@ class classe_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarautocompleteclassessaidadescricao($parametro) {
+        $this->db->select(' c.financeiro_classe_id as classe_id,                           
+                            c.descricao as classe');
+        $this->db->from('tb_financeiro_classe c');
+        $this->db->join('tb_tipo_entradas_saida t', 't.tipo_entradas_saida_id = c.tipo_id');
+        $this->db->where("c.ativo", 't');
+        $this->db->where('t.descricao', $parametro);
+        $this->db->orderby("c.descricao");
+//        $this->db->orderby("descricao");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function listarautocompleteclassessaidadescricaotodos() {
+        $this->db->select(' c.financeiro_classe_id as classe_id,                           
+                            c.descricao as classe');
+        $this->db->from('tb_financeiro_classe c');
+        $this->db->join('tb_tipo_entradas_saida t', 't.tipo_entradas_saida_id = c.tipo_id');
+        $this->db->where("c.ativo", 't');
+//        $this->db->where('t.descricao', $parametro);
+        $this->db->orderby("c.descricao");
+//        $this->db->orderby("descricao");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarautocompleteclasse($parametro) {
         $this->db->select(' c.financeiro_classe_id as classe_id,                           

@@ -214,6 +214,24 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function classeportiposaidalistadescricao() {
+        if (isset($_GET['nome'])) {
+            $result = $this->financeiro_classe->listarautocompleteclassessaidadescricao($_GET['nome']);
+        } else {
+            $result = $this->financeiro_classe->listarautocompleteclassessaidadescricao();
+        }
+        echo json_encode($result);
+    }
+    
+    function classeportiposaidalistadescricaotodos() {
+        if (isset($_GET['nome'])) {
+            $result = $this->financeiro_classe->listarautocompleteclassessaidadescricaotodos($_GET['nome']);
+        } else {
+            $result = $this->financeiro_classe->listarautocompleteclassessaidadescricaotodos();
+        }
+        echo json_encode($result);
+    }
 
     function procedimentoconveniotodos5() {
 
