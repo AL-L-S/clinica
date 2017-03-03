@@ -2280,10 +2280,10 @@ class Guia extends BaseController {
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
         $data['relatoriogeral'] = $this->guia->relatoriomedicoconveniofinanceirotodos();
-//        
-//        $data['procedimentos'] = $this->centrocirurgico_m->relatoriomedicoprocedimentosguiacirurgica();
-//        $data['equipe'] = $this->centrocirurgico_m->relatoriomedicoequipecirurgicaoperadores();
-//        $data['guiascirurgicas'] = $this->centrocirurgico_m->relatoriomedicoguiascirurgicas();
+//        die('ok');
+        $data['relatoriocirurgico'] = $this->guia->relatoriocirurgicomedicoconveniofinanceirotodos();
+//        echo "<pre>";
+//        var_dump($data['relatoriocirurgico']);die;
         $this->load->View('ambulatorio/impressaorelatoriomedicoconveniofinanceiro', $data);
     }
 

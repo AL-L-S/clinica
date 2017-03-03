@@ -73,9 +73,9 @@
                 <tr>
                     <td class="tabela_teste" width="80px;">Atend.</th>
                     <td class="tabela_teste" >Emissao</th>
-                    <td class="tabela_teste"  width="350px;">Paciente</th>
-                    <td class="tabela_teste">Autorizacao</th>
-                    <td class="tabela_teste"  >Procedimentos</th>
+                    <td class="tabela_teste" width="350px;">Paciente</th>
+                    <td class="tabela_teste" >Autorizacao</th>
+                    <td class="tabela_teste" >Procedimentos</th>
                     <td class="tabela_teste" >Codigo</th>
                     <td class="tabela_teste" >QTDE</th>
                     <td class="tabela_teste" width="80px;">V. UNIT</th>

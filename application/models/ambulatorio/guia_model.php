@@ -2777,29 +2777,53 @@ class guia_model extends Model {
 
     function relatoriocirurgicomedicoconveniofinanceirotodos() {
 
-        $this->db->select('a.agenda_exames_id,
-                            a.data,
-                            a.tipo,
-                            c.nome as convenio,
-                            a.horario_especial,
-                            a.procedimento_tuss_id,
-                            a.valor_total,
-                            pt.nome as procedimento,
-                            a.observacoes,
-                            o.nome as medico,
-                            gp.codigo,
-                            gp.descricao as funcao');
-        $this->db->from('tb_agenda_exames a');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->select('aee.valor as valor_medico,
+                           o.nome as medico,
+                           c.nome as convenio,
+                           pt.nome as procedimento,
+                           p.nome as paciente,
+                           ae.valor_total,
+                           ae.data,
+                           gp.descricao as funcao,
+                           ae.guia_id');
+        $this->db->from('tb_agenda_exame_equipe aee');
+        $this->db->join('tb_grau_participacao gp', 'gp.codigo = aee.funcao', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = aee.agenda_exames_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = aee.operador_responsavel', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->join('tb_ambulatorio_guia ag', 'ag.ambulatorio_guia_id = a.guia_id', 'left');
-        $this->db->join('tb_equipe_cirurgia_operadores eco', 'eco.equipe_cirurgia_id = ag.equipe_id', 'left');
-        $this->db->join('tb_grau_participacao gp', 'gp.grau_participacao_id = eco.funcao', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = eco.operador_responsavel', 'left');
-        $this->db->where("a.tipo", "CIRURGICO");
-        $this->db->where("eco.ativo", "t");
-        $this->db->orderby("a.valor_total DESC");
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('ae.tipo', 'CIRURGICO');
+
+        if ($_POST['medicos'] != "0") {
+            $this->db->where('aee.operador_responsavel', $_POST['medicos']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['grupoconvenio'] != "0") {
+            $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+//        $this->db->groupby('op.nome');
+//        $this->db->orderby('op.nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -2826,7 +2850,6 @@ class guia_model extends Model {
         if ($_POST['situacao'] != "0") {
             $this->db->where('al.situacao', 'FINALIZADO');
         }
-
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }
