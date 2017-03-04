@@ -125,7 +125,9 @@
                                 <td width="40px;"></td>
                             <? } else { ?>
                                 <td>Faturado&nbsp;</td>
-                            <? } ?>
+                            <? } 
+                            
+                            if ($item->equipe == "t") {?>
                             <td width="110px;">
                                 <div class="bt_link" style="width: 100pt">
                                     <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturaramentomanualguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
@@ -133,6 +135,16 @@
                                     </a>
                                 </div>
                             </td>
+                            <? } 
+                            else {?>
+                            <td width="110px;">
+                                <div class="bt_link" style="width: 100pt">
+                                    <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgica/<?= $item->ambulatorio_guia_id ?>');" >
+                                        Montar Equipe
+                                    </a>
+                                </div>
+                            </td>
+                            <?}?>
                         </tr>
 
                     </tbody>

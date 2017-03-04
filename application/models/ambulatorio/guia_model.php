@@ -189,9 +189,7 @@ class guia_model extends Model {
                             ag.observacoes,
                             ag.via,
                             ag.leito,
-                            ag.equipe_id,
                             ag.equipe,
-                            ec.nome as equipe_nome,
                             c.convenio_id,
                             c.nome as convenio,
                             p.paciente_id,
@@ -202,7 +200,6 @@ class guia_model extends Model {
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = ag.convenio_id', 'left');
-        $this->db->join('tb_equipe_cirurgia ec', 'ec.equipe_cirurgia_id = ag.equipe_id', 'left');
         $this->db->where("ag.ambulatorio_guia_id", $guia_id);
         $query = $this->db->get();
         $return = $query->result();
@@ -2737,11 +2734,10 @@ class guia_model extends Model {
 
         if ($_POST['situacao'] == "1") {
             $this->db->where('al.situacao', 'FINALIZADO');
-        }
-        elseif ($_POST['situacao'] == "0") {
+        } elseif ($_POST['situacao'] == "0") {
             $this->db->where('al.situacao !=', 'FINALIZADO');
         }
-        
+
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }
@@ -2900,11 +2896,10 @@ class guia_model extends Model {
 
         if ($_POST['situacao'] == "1") {
             $this->db->where('al.situacao', 'FINALIZADO');
-        }
-        elseif ($_POST['situacao'] == "0") {
+        } elseif ($_POST['situacao'] == "0") {
             $this->db->where('al.situacao !=', 'FINALIZADO');
         }
-        
+
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }
@@ -5478,8 +5473,8 @@ AND data <= '$data_fim'";
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        $data_inicio = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['data1'])));
-        $data_cauculo =  date("Y-m-d",strtotime(str_replace("/", "-", $_POST['data1'])));
+        $data_inicio = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
+        $data_cauculo = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
         $data_fim = $_POST['data2'];
         $observacao = "Periodo de" . $_POST['data1'] . "a" . $_POST['data2'];
         $data = date("Y-m-d");
@@ -6175,7 +6170,6 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->orderby('ae.numero_sessao');
             $this->db->where('ae.empresa_id', $empresa_id);
             $this->db->where('ae.paciente_id', $paciente_id);
-//            $this->db->where('ae.tipo ', $especialidade);//////////////////////
             $this->db->where('pt.grupo ', $especialidade);
             $this->db->where('c.convenio_id', $convenio_id);
             $this->db->where('ae.ativo', 'false');
@@ -6271,7 +6265,7 @@ ORDER BY ae.agenda_exames_id)";
         return $ambulatorio_guia_id;
     }
 
-    function gravarguiacirurgicaequipe($guia_id, $procedimentos, $guia) {
+    function gravarguiacirurgicaequipe($procedimentos, $guia) {
 //        var_dump($procedimentos);die;
 
         $valMedico = 0;
@@ -6324,8 +6318,15 @@ ORDER BY ae.agenda_exames_id)";
 
 //        $i = 0;
 //        foreach ($procedimentos as $value) {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('operador_responsavel', $_POST['medico']);
             $this->db->set('agenda_exames_id', $procedimentos[$i]->agenda_exames_id);
+//            $this->db->set('guia_id', $guia->ambulatorio_guia_id);
             $this->db->set('valor', $val);
             $this->db->set('funcao', $_POST['funcao']);
             $this->db->insert('tb_agenda_exame_equipe');
