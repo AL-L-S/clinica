@@ -2805,7 +2805,6 @@ class guia_model extends Model {
         $this->db->select('sum(aee.valor) as valor_medico,
                            sum(ae.valor_total) as valor,
                            o.nome as medico,
-                           c.nome as convenio,
                            gp.descricao as funcao,
                            ae.guia_id');
         $this->db->from('tb_agenda_exame_equipe aee');
@@ -2814,15 +2813,13 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_guia ag', 'ag.ambulatorio_guia_id = ae.guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = aee.operador_responsavel', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = ag.convenio_id', 'left');
         $this->db->where('ae.tipo', 'CIRURGICO');
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         
-        $this->db->groupby('o.nome, c.nome, gp.descricao, ae.guia_id');
+        $this->db->groupby('o.nome, gp.descricao, ae.guia_id');
         $this->db->orderby('ae.guia_id');
-        $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
     }
