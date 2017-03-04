@@ -116,6 +116,26 @@
                               }
                               ?> 
                 </select>
+                <label>Indicacao</label>
+
+
+                <select name="indicacao" id="indicacao" class="size2" >
+                    <option value=''>Selecione</option>
+                    <?php
+                    $indicacao = $this->paciente->listaindicacao($_GET);
+                    foreach ($indicacao as $item) {
+                        ?>
+                        <option value="<?php echo $item->paciente_indicacao_id; ?>" 
+                        <?
+                        if (@$obj->_indicacao == $item->paciente_indicacao_id):echo 'selected';
+                        endif;
+                        ?>>
+                                    <?php echo $item->nome; ?>
+                        </option>
+                        <?php
+                    }
+                    ?> 
+                </select>
             </div>
             <div>
                 <label>Endere&ccedil;o</label>
@@ -328,124 +348,124 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-    <script>
-			function mascaraTelefone( campo ) {
-			
-				function trata( valor,  isOnBlur ) {
-					
-					valor = valor.replace(/\D/g,"");             			
-					valor = valor.replace(/^(\d{2})(\d)/g,"($1)$2"); 		
-					
-					if( isOnBlur ) {
-						
-						valor = valor.replace(/(\d)(\d{4})$/,"$1-$2");   
-					} else {
+<script>
+        function mascaraTelefone(campo) {
 
-						valor = valor.replace(/(\d)(\d{3})$/,"$1-$2"); 
-					}
-					return valor;
-				}
-				
-				campo.onkeypress = function (evt) {
-					 
-					var code = (window.event)? window.event.keyCode : evt.which;	
-					var valor = this.value
-					
-					if(code > 57 || (code < 48 && code != 8 ))  {
-						return false;
-					} else {
-						this.value = trata(valor, false);
-					}
-				}
-				
-				campo.onblur = function() {
-					
-					var valor = this.value;
-					if( valor.length < 13 ) {
-						this.value = ""
-					}else {		
-						this.value = trata( this.value, true );
-					}
-				}
-				
-				campo.maxLength = 14;
-			}
+            function trata(valor, isOnBlur) {
 
-		
-		</script>
+                valor = valor.replace(/\D/g, "");
+                valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+
+                if (isOnBlur) {
+
+                    valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                } else {
+
+                    valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                }
+                return valor;
+            }
+
+            campo.onkeypress = function (evt) {
+
+                var code = (window.event) ? window.event.keyCode : evt.which;
+                var valor = this.value
+
+                if (code > 57 || (code < 48 && code != 8)) {
+                    return false;
+                } else {
+                    this.value = trata(valor, false);
+                }
+            }
+
+            campo.onblur = function () {
+
+                var valor = this.value;
+                if (valor.length < 13) {
+                    this.value = ""
+                } else {
+                    this.value = trata(this.value, true);
+                }
+            }
+
+            campo.maxLength = 14;
+        }
+
+
+</script>
 <script type="text/javascript">
-            mascaraTelefone( form_paciente.txtTelefone );
-            mascaraTelefone( form_paciente.txtCelular );
+    mascaraTelefone(form_paciente.txtTelefone);
+    mascaraTelefone(form_paciente.txtCelular);
 //(99) 9999-9999
-        
 
-        $(function () {
-            $("#txtcbo").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
-                minLength: 3,
-                focus: function (event, ui) {
-                    $("#txtcbo").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#txtcbo").val(ui.item.value);
-                    $("#txtcboID").val(ui.item.id);
-                    return false;
-                }
-            });
+
+    $(function () {
+        $("#txtcbo").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cboprofissionais",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#txtcbo").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtcbo").val(ui.item.value);
+                $("#txtcboID").val(ui.item.id);
+                return false;
+            }
         });
+    });
 
-        $(function () {
-            $("#txtCidade").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
-                minLength: 3,
-                focus: function (event, ui) {
-                    $("#txtCidade").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#txtCidade").val(ui.item.value);
-                    $("#txtCidadeID").val(ui.item.id);
-                    return false;
-                }
-            });
+    $(function () {
+        $("#txtCidade").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#txtCidade").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtCidade").val(ui.item.value);
+                $("#txtCidadeID").val(ui.item.id);
+                return false;
+            }
         });
-        $(function () {
-            $("#txtEstado").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
-                minLength: 2,
-                focus: function (event, ui) {
-                    $("#txtEstado").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#txtEstado").val(ui.item.value);
-                    $("#txtEstadoID").val(ui.item.id);
-                    return false;
-                }
-            });
+    });
+    $(function () {
+        $("#txtEstado").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
+            minLength: 2,
+            focus: function (event, ui) {
+                $("#txtEstado").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtEstado").val(ui.item.value);
+                $("#txtEstadoID").val(ui.item.id);
+                return false;
+            }
         });
+    });
 
 
 
-        $(function () {
-            $("#cep").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=cep",
-                minLength: 3,
-                focus: function (event, ui) {
-                    $("#cep").val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    $("#cep").val(ui.item.cep);
-                    $("#txtendereco").val(ui.item.logradouro_nome);
-                    $("#txtBairro").val(ui.item.nome_bairro);
+    $(function () {
+        $("#cep").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cep",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#cep").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#cep").val(ui.item.cep);
+                $("#txtendereco").val(ui.item.logradouro_nome);
+                $("#txtBairro").val(ui.item.nome_bairro);
 //                        $("#txtCidade").val(ui.item.localidade_nome);
-                    $("#txtTipoLogradouro").val(ui.item.tipo_logradouro);
+                $("#txtTipoLogradouro").val(ui.item.tipo_logradouro);
 
-                    return false;
-                }
-            });
+                return false;
+            }
         });
+    });
 
 </script>
