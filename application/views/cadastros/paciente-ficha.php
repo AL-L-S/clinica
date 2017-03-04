@@ -116,24 +116,6 @@
                               }
                               ?> 
                 </select>
-            </div>
-            <div>
-                <label>Endere&ccedil;o</label>
-                <input type="text" id="txtendereco" class="texto10" name="endereco" value="<?= @$obj->_endereco; ?>" />
-            </div>
-            <div>
-                <label>N&uacute;mero</label>
-
-
-                <input type="text" id="txtNumero" class="texto02" name="numero" value="<?= @$obj->_numero; ?>" />
-            </div>
-            <div>
-                <label>Complemento</label>
-
-
-                <input type="text" id="txtComplemento" class="texto04" name="complemento" value="<?= @$obj->_complemento; ?>" />
-            </div>
-            <div>
                 <label>Indicacao</label>
 
 
@@ -154,6 +136,22 @@
                     }
                     ?> 
                 </select>
+            </div>
+            <div>
+                <label>Endere&ccedil;o</label>
+                <input type="text" id="txtendereco" class="texto10" name="endereco" value="<?= @$obj->_endereco; ?>" />
+            </div>
+            <div>
+                <label>N&uacute;mero</label>
+
+
+                <input type="text" id="txtNumero" class="texto02" name="numero" value="<?= @$obj->_numero; ?>" />
+            </div>
+            <div>
+                <label>Complemento</label>
+
+
+                <input type="text" id="txtComplemento" class="texto04" name="complemento" value="<?= @$obj->_complemento; ?>" />
             </div>
             <div>
                 <label>Bairro</label>
