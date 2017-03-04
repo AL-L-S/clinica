@@ -1614,3 +1614,4 @@ ALTER TABLE ponto.tb_operador ADD COLUMN classe character varying(60);
 
 
 
+

@@ -26,10 +26,11 @@
 
         </fieldset>
         <fieldset>
+            <legend>Procedimentos</legend>
 
             <div >
                 <label>Procedimento *</label>
-                <select  name="procedimento" id="procedimento" class="size2"  required="">
+                <select  name="procedimento" id="procedimento" class="texto06"  required="">
                     <option value="">Selecione</option>
                     <? foreach (@$procedimentos as $item) : ?>
                         <option value="<?= $item->procedimento_convenio_id; ?>" 
@@ -38,7 +39,17 @@
                         </option>
                     <? endforeach; ?>
                 </select>
+                
+                <label>Data/Hora Autorização*</label>
+                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="29/29/9999 29:69"class="texto03" required=""/>
             </div>
+
+            <div >
+                <label>Data/Hora Realização*</label>
+                <input type="text" name="data_realizacao" id="data_realizacao" alt="29/29/9999 29:69"class="texto03" required=""/>
+            </div>
+            
+            
 
             <div>
                 <label>Valor</label>
@@ -55,17 +66,6 @@
                 <label> H. Especial* </label>
                 <input type="checkbox" name="horEspecial">
             </div>
-
-            <div >
-                <label>Data/Hora Autorização*</label>
-                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="29/29/9999 29:69"class="texto03" required=""/>
-            </div>
-
-            <div >
-                <label>Data/Hora Realização*</label>
-                <input type="text" name="data_realizacao" id="data_realizacao" alt="29/29/9999 29:69"class="texto03" required=""/>
-            </div>
-
 
 
             <div style="width: 100%">

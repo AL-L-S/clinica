@@ -2856,6 +2856,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.tipo !=', 'CIRURGICO');
         if ($teste == true) {
             $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);
@@ -3029,6 +3030,7 @@ class exame_model extends Model {
         $this->db->orderby('ae.inicio');
         $this->db->orderby('al.situacao');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.tipo !=', 'CIRURGICO');
         if ($teste == true) {
             $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);
@@ -3431,6 +3433,7 @@ class exame_model extends Model {
                             ae.faturado,
                             ae.numero_sessao,
                             g.data_criacao,
+                            g.equipe,
                             ae.autorizacao,
                             c.nome,
                             ae.financeiro,

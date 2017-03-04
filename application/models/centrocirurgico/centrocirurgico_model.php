@@ -112,24 +112,19 @@ class centrocirurgico_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    
+
     function listarequipeoperadores($guia_id) {
         $this->db->select('DISTINCT(o.nome) as medico,
-                           aee.agenda_exames_id,
-                           gp.descricao as funcao,
-                           aee.valor,
-                           aee.agenda_exame_equipe_id');
+                           gp.descricao as funcao');
         $this->db->from('tb_agenda_exame_equipe aee');
         $this->db->join('tb_operador o', 'o.operador_id = aee.operador_responsavel', 'left');
         $this->db->join('tb_grau_participacao gp', 'gp.codigo = aee.funcao', 'left');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = aee.agenda_exames_id', 'left');
         $this->db->where('ae.guia_id', $guia_id);
-//        $this->db->g('ae.guia_id', $guia_id);
+        $this->db->groupby('o.nome, gp.descricao, aee.agenda_exame_equipe_id');
         $return = $this->db->get();
         return $return->result();
     }
-    
 
     function listarprocedimentosguiacirurgica($guia) {
         $data = date("Y-m-d");
@@ -150,7 +145,7 @@ class centrocirurgico_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarequipecirurgica($args = array()) {
 
         $this->db->select('equipe_cirurgia_id, 
@@ -164,7 +159,7 @@ class centrocirurgico_model extends BaseModel {
         }
         return $this->db;
     }
-    
+
     function listarequipecirurgica2() {
 
         $this->db->select('equipe_cirurgia_id, 
@@ -308,19 +303,6 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
-    function finalizarcadastroprocedimentosguia($guia) {
-
-        $horario = date("Y-m-d H:i:s");
-        $operador_id = $this->session->userdata('operador_id');
-
-        $this->db->set('equipe', 't');
-
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('ambulatorio_guia_id', $guia);
-        $this->db->update('tb_ambulatorio_guia');
-    }
-
     function gravarequipeoperadores() {
         try {
             /* inicia o mapeamento no banco */
@@ -338,6 +320,28 @@ class centrocirurgico_model extends BaseModel {
             $this->db->insert('tb_equipe_cirurgia_operadores');
         } catch (Exception $exc) {
             return -1;
+        }
+    }
+
+    function finalizarcadastroequipecirurgica($guia_id) {
+        try {
+            /* inicia o mapeamento no banco */
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('equipe', 't');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('ambulatorio_guia_id', $guia_id);
+            $this->db->update('tb_ambulatorio_guia');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return false;
+            else
+                return true;;
+        } catch (Exception $exc) {
+            return false;
         }
     }
 

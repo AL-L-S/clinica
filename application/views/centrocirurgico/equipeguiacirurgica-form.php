@@ -31,6 +31,7 @@
             </div>
         </fieldset>
     </form>
+    <!--<br>-->
 
     <?php
     if (count($equipe_operadores) > 0) {
@@ -74,6 +75,12 @@
         </fieldset>
 <? }
 ?>
+    
+        <div class="bt_link_new">
+            <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/finalizarcadastroequipecirurgica/<?= @$guia[0]->ambulatorio_guia_id; ?>">
+                Finalizar Equipe
+            </a>
+        </div>
 
 
 

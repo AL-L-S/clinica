@@ -178,7 +178,7 @@ class centrocirurgico extends BaseController {
 //        var_dump($guia_id);die;
         $data['guia'] = $this->guia->instanciarguia($guia_id);
         $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia_id);
-        $this->guia->gravarguiacirurgicaequipe($guia_id, $data['procedimentos'], $data['guia'][0]);       
+        $this->guia->gravarguiacirurgicaequipe($data['procedimentos'], $data['guia'][0]);       
         
         redirect(base_url() . "centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgica/$guia_id");
     }
@@ -191,15 +191,25 @@ class centrocirurgico extends BaseController {
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['grau_participacao'] = $this->solicitacirurgia_m->grauparticipacao();
         $data['equipe_operadores'] = $this->centrocirurgico_m->listarequipeoperadores($guia);
-//        var_dump($guia);die;
-//        $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia);
-//        $data['equipes'] = $this->centrocirurgico_m->listarequipecirurgica2();
         $this->loadView('centrocirurgico/equipeguiacirurgica-form', $data);
     }
     
     
     function cadastrarequipe() {
         $this->loadView("centrocirurgico/equipecirurgica-form");
+    }
+    
+    
+    function finalizarcadastroequipecirurgica($guia) {
+        $verifica = $this->centrocirurgico_m->finalizarcadastroequipecirurgica($guia);
+        if($verifica){
+            $data['mensagem'] = 'Equipe gravada com sucesso';
+        }else{
+            $data['mensagem'] = 'Erro ao finalizar equipe';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        
+        redirect(base_url() . "ambulatorio/exame/faturamentomanual");
     }
     
 
@@ -299,7 +309,6 @@ class centrocirurgico extends BaseController {
     }
 
     function finalizarcadastroprocedimentosguia($guia) {
-        $this->centrocirurgico_m->finalizarcadastroprocedimentosguia($guia);
         redirect(base_url() . "centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgica/$guia");
     }
    
