@@ -57,15 +57,18 @@
                         
                         <tr>
                             <td style="text-align: left">
-                            <input type="text" name="valor1" id="valor1" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                                <input type="text" name="valor1" id="valor1" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                                <input type="hidden" name="valorMinimo1" id="valorMinimo1"/>
                             </td>
                             <td style="text-align: left" >
-                            <select  name="formapamento1" id="formapamento1" class="size1" >
-                                <option value="">Selecione</option>
-                                <? foreach ($forma_pagamento as $item) : ?>
-                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                <? endforeach; ?>
-                            </select>
+                                <select  name="formapamento1" id="formapamento1" class="size1" >
+                                    <option value="">Selecione</option>
+                                    <? foreach ($forma_pagamento as $item) : ?>
+                                        <option value="<?= $item->forma_pagamento_id; ?>" onclick="mudaValor('1', '<?=$item->parcela_minima;?>')">
+                                            <?= $item->nome; ?>
+                                        </option>
+                                    <? endforeach; ?>
+                                </select>
                             </td>
                             <td style="text-align: left">
                             <input type="text" name="ajuste1" id="ajuste1" size="3" value="<?= $valor; ?>" onblur="history.go(0)"/>
@@ -101,13 +104,15 @@
                         
                         <tr>
                             <td style="text-align: left">
-                            <input type="text" name="valor2" id="valor2" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                                <input type="text" name="valor2" id="valor2" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                                <input type="hidden" name="valorMinimo2" id="valorMinimo2"/>
                             </td>
                             <td style="text-align: left">
                                 <select  name="formapamento2" id="formapamento2" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
-                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                    <option value="<?= $item->forma_pagamento_id; ?>"  onclick="mudaValor('2', '<?=$item->parcela_minima;?>')">
+                                        <?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
                             </td>
@@ -145,12 +150,14 @@
                         <tr>
                             <td style="text-align: left">
                                 <input type="text" name="valor3" id="valor3" size="2"  value="<?= $valor; ?>" onblur="history.go(0)"/>
+                                <input type="hidden" name="valorMinimo3" id="valorMinimo3"/>
                             </td>
                             <td style="text-align: left">
                             <select  name="formapamento3" id="formapamento3" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
-                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                    <option value="<?= $item->forma_pagamento_id; ?>" onclick="mudaValor('3', '<?=$item->parcela_minima;?>')">
+                                        <?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>   
                             </td>
@@ -187,13 +194,15 @@
                         
                         <tr>
                             <td style="text-align: left">
-                            <input type="text" name="valor4" id="valor4" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                                <input type="text" name="valor4" id="valor4" size="2" value="<?= $valor; ?>" onblur="history.go(0)"/>
+                                <input type="hidden" name="valorMinimo4" id="valorMinimo4"/>
                             </td>
                             <td style="text-align: left">
                             <select  name="formapamento4" id="formapamento4" class="size1" >
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : ?>
-                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                    <option value="<?= $item->forma_pagamento_id; ?>" onclick="mudaValor('4', '<?=$item->parcela_minima;?>')">
+                                        <?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>  
                             </td>
@@ -249,13 +258,9 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-
-                                //    (function($){
-                                //        $(function(){
-                                //            $('input:text').setMask();
-                                //        });
-                                //    })(jQuery);
-
+                                function mudaValor(id, valor){
+                                    $("#valorMinimo"+id).val(valor);
+                                }
 
                                 $(document).ready(function () {
 

@@ -4255,7 +4255,8 @@ class guia_model extends Model {
 
     function formadepagamento() {
         $this->db->select('forma_pagamento_id,
-                            nome');
+                            nome,
+                            parcela_minima');
         $this->db->from('tb_forma_pagamento');
         $this->db->where('ativo', 't');
         $this->db->orderby('nome');
