@@ -19,6 +19,7 @@ class batepapo_model extends BaseModel {
         $this->db->from('tb_operador o');
         $this->db->where('o.ativo', 't');
         $this->db->where('o.operador_id !=', $operador_id);
+//        $this->db->join('tb_chat_mensagens cm', 'cm.operador_origem = o.operador_id', 'left');
         $this->db->orderby('o.online DESC');
         $this->db->orderby('o.usuario');
         $return = $this->db->get();

@@ -120,8 +120,9 @@
             ?>
             <?
             $valCirurgico = 0;
-            
-            if (count($relatoriocirurgico) > 0): ?>
+
+            if (count($relatoriocirurgico) > 0):
+                ?>
                 <tr>
                     <th style='width:10pt;border:solid windowtext 1.0pt;
                         border-bottom:none;mso-border-top-alt:none;border-left:
@@ -131,25 +132,66 @@
                 <tr>
                     <td colspan="3"><center><font size="-1"><B>PRODUÇÃO CIRURGICA</B></center></td>
             </tr>
-            <? 
-            
-            for ($i = 0; $i < count($relatoriocirurgico); $i++) :
+            <?
+            $i = 0;
+            $ultimo = count($relatoriocirurgico);
+            foreach ($relatoriocirurgico as $item) :
+                if($i == 0){
+                   $guia_anterior = $item->guia_id;
+                   $valGuiaAnterior = (float)$item->valor;
+                }
                 
-                $total_medicospagar += (float)$relatoriocirurgico[$i]->valor_medico;
-            
-                if ( (@$relatoriocirurgico[$i]->guia_id != @$relatoriocirurgico[$i-1]->guia_id) || $i == 0):
-                    $total_medicos += (float) $relatoriocirurgico[$i]->valor;
-                endif; ?>
-            
-                <tr>
-                    <td><font size="-1" width="350px;"><?= utf8_decode($relatoriocirurgico[$i]->medico); ?></td>
-                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($relatoriocirurgico[$i]->valor, 2, ',', '.') ?></td>
-                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($relatoriocirurgico[$i]->valor_medico, 2, ',', '.') ?></td>
-                </tr>
+                if($item->guia_id != $guia_anterior):?>
+                    <tr>                        
+                        <td style='text-align: right;' colspan=""></td>
+                        <td style='text-align: right;' colspan="">
+                            <div style="font-weight: bold">
+                                Produzido: <?= number_format($valGuiaAnterior, 2, ',', '.') ?>
+                            </div>
+                        </td>
+                        <td style='text-align: right;' colspan=""></td>
+                    </tr>
+                <?
+                   $guia_anterior = $item->guia_id; 
+                   $valGuiaAnterior = (float)$item->valor;
+                endif;
+                $total_medicospagar += (float) $item->valor_medico;
+                $i++;
+                ?>
 
-            <? endfor;?>
+                <tr>
+                    <td><font size="-1" width="350px;"><?= $item->guia_id. ' => '.utf8_decode($item->medico); ?></td>
+                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
+                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor_medico, 2, ',', '.') ?></td>
+                </tr>
+                <? if($i == $ultimo): ?>
+                    <tr>
+                        <td style='text-align: right;' colspan=""></td>
+                        <td style='text-align: right;' colspan="">
+                            <div style="font-weight: bold">
+                                Produzido: <?= number_format($item->valor, 2, ',', '.') ?>
+                            </div>
+                        </td>
+                        <td style='text-align: right;' colspan=""></td>
+                    </tr>
+                <? endif;?>
                 
-            <? endif; ?>
+
+            <?
+            endforeach;
+
+            foreach ($procedimentoscirurgicos as $value):
+                $total_medicos += (float) $value->valor;
+            endforeach;?>
+                
+                <tr>
+                    <th style='width:10pt;border:solid windowtext 1.0pt;
+                        border-bottom:none;mso-border-top-alt:none;border-left:
+                        none;border-right:none;' colspan="4">&nbsp;</th>
+                </tr>
+                <?
+        endif;
+        ?>
 
 
         <tr>
