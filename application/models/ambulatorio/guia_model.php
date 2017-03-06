@@ -906,7 +906,7 @@ class guia_model extends Model {
 
     function relatorioresumogeralconvenio() {
 
-        $this->db->select('c.nome as convenio,
+        $this->db->select('c.nome as convenio,c.dinheiro,
             sum(ae.valor_total)as valor');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -925,6 +925,7 @@ class guia_model extends Model {
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('c.nome');
+        $this->db->groupby('c.dinheiro');
         $this->db->orderby('c.nome');
         $return = $this->db->get();
         return $return->result();
