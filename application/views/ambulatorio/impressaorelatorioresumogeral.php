@@ -136,12 +136,13 @@
             $i = 0;
             $ultimo = count($relatoriocirurgico);
             foreach ($relatoriocirurgico as $item) :
-                if($i == 0){
-                   $guia_anterior = $item->guia_id;
-                   $valGuiaAnterior = (float)$item->valor;
+                if ($i == 0) {
+                    $guia_anterior = $item->guia_id;
+                    $valGuiaAnterior = (float) $item->valor;
                 }
-                
-                if($item->guia_id != $guia_anterior):?>
+
+                if ($item->guia_id != $guia_anterior):
+                    ?>
                     <tr>                        
                         <td style='text-align: right;' colspan=""></td>
                         <td style='text-align: right;' colspan="">
@@ -151,20 +152,20 @@
                         </td>
                         <td style='text-align: right;' colspan=""></td>
                     </tr>
-                <?
-                   $guia_anterior = $item->guia_id; 
-                   $valGuiaAnterior = (float)$item->valor;
+                    <?
+                    $guia_anterior = $item->guia_id;
+                    $valGuiaAnterior = (float) $item->valor;
                 endif;
                 $total_medicospagar += (float) $item->valor_medico;
                 $i++;
                 ?>
 
                 <tr>
-                    <td><font size="-1" width="350px;"><?= $item->guia_id. ' => '.utf8_decode($item->medico); ?></td>
+                    <td><font size="-1" width="350px;"><?= $item->guia_id . ' => ' . utf8_decode($item->medico); ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor_medico, 2, ',', '.') ?></td>
                 </tr>
-                <? if($i == $ultimo): ?>
+        <? if ($i == $ultimo): ?>
                     <tr>
                         <td style='text-align: right;' colspan=""></td>
                         <td style='text-align: right;' colspan="">
@@ -174,22 +175,23 @@
                         </td>
                         <td style='text-align: right;' colspan=""></td>
                     </tr>
-                <? endif;?>
-                
+        <? endif; ?>
 
-            <?
+
+                <?
             endforeach;
 
             foreach ($procedimentoscirurgicos as $value):
                 $total_medicos += (float) $value->valor;
-            endforeach;?>
-                
-                <tr>
-                    <th style='width:10pt;border:solid windowtext 1.0pt;
-                        border-bottom:none;mso-border-top-alt:none;border-left:
-                        none;border-right:none;' colspan="4">&nbsp;</th>
-                </tr>
-                <?
+            endforeach;
+            ?>
+
+            <tr>
+                <th style='width:10pt;border:solid windowtext 1.0pt;
+                    border-bottom:none;mso-border-top-alt:none;border-left:
+                    none;border-right:none;' colspan="4">&nbsp;</th>
+            </tr>
+            <?
         endif;
         ?>
 
@@ -208,7 +210,7 @@
         <tbody>           
 
             <tr>
-                <td width="350px;"><font size="-1"><B>Forma de Pagamento</B></th>
+                <td width="350px;"><font size="-1"><B>Valor por Convênio</B></th>
                 <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></th>
             </tr>
             <tr>
@@ -228,12 +230,14 @@
                         }
                     }
                 endforeach;
+                //   if($item->dinheiro == 'f'){
                 ?>
                 <tr>
                     <td><font size="-1" width="350px;"><?= utf8_decode($item->convenio); ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
                 </tr>
                 <?php
+                // }
                 $total_geral = $total_geral + $item->valor;
             endforeach;
 
@@ -242,9 +246,14 @@
             $faturamento_clinica = $liquidodinheiro + $total_convenio;
             ?>
             <tr>
-                <td><font size="-1" width="350px;">VALOR GERAL</td>
-                <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_geral, 2, ',', '.') ?></td>
+                <td><font size="-1" width="350px;"><b>VALOR CONVÊNIO</b></td>
+                <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_convenio, 2, ',', '.') ?></td>
             </tr>
+            <tr>
+                <td><font size="-1" width="350px;"><b>VALOR PARTICULAR</b></td>
+                <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_particular, 2, ',', '.') ?></td>
+            </tr>
+
         </tbody>
     </table>
     <BR>
