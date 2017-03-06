@@ -2826,17 +2826,16 @@ class guia_model extends Model {
         $this->db->from('tb_agenda_exame_equipe aee');
         $this->db->join('tb_grau_participacao gp', 'gp.codigo = aee.funcao', 'left');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = aee.agenda_exames_id', 'left');
-//        $this->db->join('tb_ambulatorio_guia ag', 'ag.ambulatorio_guia_id = ae.guia_id', 'left');
+        $this->db->join('tb_ambulatorio_guia ag', 'ag.ambulatorio_guia_id = ae.guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = aee.operador_responsavel', 'left');
         $this->db->where('ae.tipo', 'CIRURGICO');
-        $this->db->where('aee.ativo', 't');
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         
-        $this->db->groupby('o.nome, gp.descricao,ae.guia_id');
-        $this->db->orderby('ae.guia_id, o.nome');
+        $this->db->groupby('o.nome, gp.descricao, ae.guia_id');
+        $this->db->orderby('ae.guia_id');
         $return = $this->db->get();
         return $return->result();
     }
@@ -2847,8 +2846,14 @@ class guia_model extends Model {
                             sum(ae.quantidade) as quantidade,
                             o.nome as medico');
         $this->db->from('tb_agenda_exame_equipe aee');
+        $this->db->join('tb_grau_participacao gp', 'gp.codigo = aee.funcao', 'left');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = aee.agenda_exames_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = aee.operador_responsavel', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('ae.tipo', 'CIRURGICO');
 
         if ($_POST['medicos'] != "0") {
@@ -4254,8 +4259,7 @@ class guia_model extends Model {
 
     function formadepagamento() {
         $this->db->select('forma_pagamento_id,
-                            nome,
-                            parcela_minima');
+                            nome');
         $this->db->from('tb_forma_pagamento');
         $this->db->where('ativo', 't');
         $this->db->orderby('nome');

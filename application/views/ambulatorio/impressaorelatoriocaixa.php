@@ -505,7 +505,7 @@
                 <tr>
                     <td colspan="5"></td>
                     <? if ($faturado == 't' && $exame == "") { ?>
-                        <? if (count($operador) == 0 && $financeiro == 'f') { ?>
+                        <? if ((count($operador) == 0 && $financeiro == 'f') || 0==0) { ?>
                             <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
 
                         <?} elseif(count($operador) > 0 && $financeiro == 'f'){?>
