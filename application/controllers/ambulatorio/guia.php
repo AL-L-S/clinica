@@ -1699,6 +1699,9 @@ class Guia extends BaseController {
         $data['medicorecebido'] = $this->guia->relatorioresumogeralmedico();
         $data['convenio'] = $this->guia->relatorioresumogeralconvenio();
         $data['convenios'] = $this->convenio->listardados();
+        
+        $data['relatoriocirurgico'] = $this->guia->relatorioresumocirurgicomedico();
+        $data['procedimentoscirurgicos'] = $this->guia->relatorioresumocirurgicomedicotodos();
 
         $this->load->View('ambulatorio/impressaorelatorioresumogeral', $data);
     }

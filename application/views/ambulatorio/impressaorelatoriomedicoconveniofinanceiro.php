@@ -8,7 +8,7 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>Medico Convenios</h4>
-    <? $sit = ($situacao == '') ? "TODOS" : (($situacao == '0') ? 'ABERTO' : 'FINALIZADO' ) ; ?>
+    <? $sit = ($situacao == '') ? "TODOS" : (($situacao == '0') ? 'ABERTO' : 'FINALIZADO' ); ?>
     <h4>SITUAÇÃO: <?= $sit ?></h4>
     <h4>PERIODO: <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> ate <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?></h4>
     <? if ($medico == 0) { ?>
@@ -18,7 +18,9 @@
     <? } ?>
 
     <hr>
-    <? if ($contador > 0 || count($relatoriocirurgico) > 0) {
+    <?
+    if ($contador > 0 || count($relatoriocirurgico) > 0) {
+        $totalperc = 0;
         ?>
 
         <? if (count($relatorio) > 0): ?>
@@ -60,7 +62,6 @@
                     $simbolopercebtual = " %";
                     $iss = 0;
                     $perc = 0;
-                    $totalperc = 0;
                     $totalgeral = 0;
                     $totalconsulta = 0;
                     $totalretorno = 0;
@@ -132,7 +133,8 @@
             </table>
         <? endif; ?>
 
-        <? if (count(@$relatoriocirurgico) > 0):
+        <?
+        if (count(@$relatoriocirurgico) > 0):
             $totalprocedimentoscirurgicos = 0;
             ?>
             <br>
@@ -158,7 +160,7 @@
                     foreach ($relatoriocirurgico as $itens) :
                         $totalprocedimentoscirurgicos++;
                         $totalMedicoCirurgico += (float) $itens->valor_medico;
-                        $totalperc += $totalMedicoCirurgico;
+//                        $totalperc += $totalMedicoCirurgico;
                         ?>
 
                         <tr>
@@ -173,7 +175,8 @@
                             <td style='text-align: right;'><font size="-2"><?= number_format($itens->valor_medico, 2, ",", "."); ?></td>
                         </tr>
 
-        <? endforeach; ?>
+                    <? endforeach; 
+                    $totalperc += $totalMedicoCirurgico;?>
                     <tr>
                         <td ><font size="-1">TOTAL</td>
                         <td style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $totalprocedimentoscirurgicos; ?></td>
@@ -183,18 +186,21 @@
 
                 </tbody>
             </table>
-        <?
+            <?
         endif;
 
         if ($medico != 0) {
-            $resultado = $totalperc;
-            if ($totalretorno > 0 || $totalconsulta > 0) :
-                ?>
-                <hr>
-                <table border="1">
-                    <tr>
-                        <th colspan="2" width="200px;">RESUMO</th>
-                    </tr>
+            ?>
+
+            <hr>
+            <table border="1">
+                <tr>
+                    <th colspan="2" width="200px;">RESUMO</th>
+                </tr>
+                <?
+                $resultado = $totalperc;
+                if (@$totalretorno > 0 || @$totalconsulta > 0) :
+                    ?>
                     <tr>
                         <td>TOTAL CONSULTAS</td>
                         <td style='text-align: right;' width="30px;"><?= $totalconsulta; ?></td>
@@ -204,14 +210,15 @@
                         <td>TOTAL RETORNO</td>
                         <td style='text-align: right;'><?= $totalretorno; ?></td>
                     </tr>
-        <? endif;
-        if (@$totalprocedimentoscirurgicos > 0):
-            ?>
+                    <?
+                endif;
+                if (@$totalprocedimentoscirurgicos > 0):
+                    ?>
                     <tr>
                         <td>TOTAL PROC. CIRURGICOS</td>
                         <td style='text-align: right;'><?= $totalprocedimentoscirurgicos; ?></td>
                     </tr>
-            <? endif; ?>
+                <? endif; ?>
             </table>
             <?
             $irpf = 0;
@@ -265,21 +272,21 @@
                         $iss = $totalperc * ($medico[0]->iss / 100);
                         $resultado = $resultado - $iss;
                     }
-                    if ($iss > 0) {
+                    if (@$iss > 0) {
                         ?>
                         <tr>
                             <td>ISS</td>
                             <td style='text-align: right;'><?= number_format($iss, 2, ",", "."); ?></td>
                         </tr>
-        <? } ?>
+                    <? } ?>
                     <tr>
                         <td>RESULTADO</td>
                         <td style='text-align: right;'><?= number_format($resultado, 2, ",", "."); ?></td>
                     </tr>
                 </table>
                 <? ?>
-        <? if ($medico != 0) {
-            ?>
+                <? if ($medico != 0) {
+                    ?>
 
                     <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharmedico" method="post">
                         <input type="hidden" class="texto3" name="tipo" value="<?= $medico[0]->tipo_id; ?>" readonly/>
@@ -294,7 +301,7 @@
                 }
             }
             ?>
-                    <br>
+            <br>
             <div>
                 <div style="display: inline-block">
                     <table border="1">
@@ -319,44 +326,44 @@
                                     <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
                                 </tr>
 
-    <? endforeach; ?>
+                            <? endforeach; ?>
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div style="display: inline-block;margin: 5pt">
                 </div>
-                
+
                 <? if (count($relatoriocirurgicogeral) > 0):
                     ?>
-                <div style="display: inline-block">
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <td colspan="50"><center>PRODUÇÃO CIRURGICA</center></td>
-                        </tr>
-                        <tr>
-                            <th class="tabela_header"><font size="-1">Medico</th>
-                            <th class="tabela_header"><font size="-1">Qtde</th>
-                            <th class="tabela_header"><font size="-1">Produ&ccedil;&atilde;o Medico</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <?
-                            foreach ($relatoriocirurgicogeral as $itens) :
-                                ?>
-
+                    <div style="display: inline-block">
+                        <table border="1">
+                            <thead>
                                 <tr>
-                                    <td><font size="-2"><?= $itens->medico; ?></td>
-                                    <td ><font size="-2"><?= $itens->quantidade; ?></td>
-                                    <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
-                                </tr>
+                                    <td colspan="50"><center>PRODUÇÃO CIRURGICA</center></td>
+                            </tr>
+                            <tr>
+                                <th class="tabela_header"><font size="-1">Medico</th>
+                                <th class="tabela_header"><font size="-1">Qtde</th>
+                                <th class="tabela_header"><font size="-1">Produ&ccedil;&atilde;o Medico</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <?
+                                foreach ($relatoriocirurgicogeral as $itens) :
+                                    ?>
 
-    <? endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-                <?  endif; ?>
+                                    <tr>
+                                        <td><font size="-2"><?= $itens->medico; ?></td>
+                                        <td ><font size="-2"><?= $itens->quantidade; ?></td>
+                                        <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
+                                    </tr>
+
+                                <? endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <? endif; ?>
             </div>
 
             <hr>

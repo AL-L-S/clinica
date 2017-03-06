@@ -1,4 +1,5 @@
 <div class="content"> <!-- Inicio da DIV content -->
+    <meta charset="utf8"/>
     <? $tipoempresa = ""; ?>
     <table>
         <thead>
@@ -41,16 +42,27 @@
             <?
             $contador = count($convenio);
             ?>
-            <tr>
-                <td width="350px;"><font size="-1"><B>Medico</B></th>
-                <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor Produzido</B></th>
-                <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor Pago</B></th>
+
+            <? if (count($medico) > 0): ?>
+                <tr>
+                    <td colspan="4"><center><font size="-1"><B>PRODUÇÃO AMBULATORIAL</B></center></td>
             </tr>
+        <? endif; ?>
+
+
+        <tr>
+            <td width="350px;"><font size="-1"><B>Medico</B></th>
+            <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor Produzido</B></th>
+            <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor Pago</B></th>
+        </tr>
+
+        <? if (count($medico) > 0): ?>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
                     none;border-right:none;' colspan="4">&nbsp;</th>
             </tr>
+        <? endif; ?>
         </thead>
 
 
@@ -77,11 +89,11 @@
                         $percentual = $this->guia->percentualmedico($procedimentopercentual, $medicopercentual);
 
                         $testearray = count($percentual);
-  
+
                         if ($itens->percentual_medico == "t") {
 
                             $valorpercentualmedico = $itens->valor_medico;
-                            
+
                             $perc = $itens->valor_total * ($valorpercentualmedico / 100);
 
                             $medicos = $medicos + $perc;
@@ -99,18 +111,94 @@
                 <tr>
                     <td><font size="-1" width="350px;"><?= utf8_decode($item->medico); ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
-                    <td style='text-align: right;'><font size="-1" width="200px;"><?=  number_format($medicos, 2, ',', '.') ?></td>
+                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($medicos, 2, ',', '.') ?></td>
                 </tr>
                 <?php
                 $total_medicos = $total_medicos + $item->valor;
                 $medicos = 0;
             endforeach;
             ?>
-            <tr>
-                <td><font size="-1" width="350px;"><b>Valor Total Medicos</b></td>
-                <td style='text-align: right;'><font size="-1" width="200px;"><b><?= number_format($total_medicos, 2, ',', '.') ?></b></td>
-                <td style='text-align: right;'><font size="-1" width="200px;"><b><?= number_format($total_medicospagar, 2, ',', '.') ?></b></td>
+            <?
+            $valCirurgico = 0;
+
+            if (count($relatoriocirurgico) > 0):
+                ?>
+                <tr>
+                    <th style='width:10pt;border:solid windowtext 1.0pt;
+                        border-bottom:none;mso-border-top-alt:none;border-left:
+                        none;border-right:none;' colspan="4">&nbsp;</th>
+                </tr>
+
+                <tr>
+                    <td colspan="3"><center><font size="-1"><B>PRODUÇÃO CIRURGICA</B></center></td>
             </tr>
+            <?
+            $i = 0;
+            $ultimo = count($relatoriocirurgico);
+            foreach ($relatoriocirurgico as $item) :
+                if($i == 0){
+                   $guia_anterior = $item->guia_id;
+                   $valGuiaAnterior = (float)$item->valor;
+                }
+                
+                if($item->guia_id != $guia_anterior):?>
+                    <tr>                        
+                        <td style='text-align: right;' colspan=""></td>
+                        <td style='text-align: right;' colspan="">
+                            <div style="font-weight: bold">
+                                Produzido: <?= number_format($valGuiaAnterior, 2, ',', '.') ?>
+                            </div>
+                        </td>
+                        <td style='text-align: right;' colspan=""></td>
+                    </tr>
+                <?
+                   $guia_anterior = $item->guia_id; 
+                   $valGuiaAnterior = (float)$item->valor;
+                endif;
+                $total_medicospagar += (float) $item->valor_medico;
+                $i++;
+                ?>
+
+                <tr>
+                    <td><font size="-1" width="350px;"><?= $item->guia_id. ' => '.utf8_decode($item->medico); ?></td>
+                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
+                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor_medico, 2, ',', '.') ?></td>
+                </tr>
+                <? if($i == $ultimo): ?>
+                    <tr>
+                        <td style='text-align: right;' colspan=""></td>
+                        <td style='text-align: right;' colspan="">
+                            <div style="font-weight: bold">
+                                Produzido: <?= number_format($item->valor, 2, ',', '.') ?>
+                            </div>
+                        </td>
+                        <td style='text-align: right;' colspan=""></td>
+                    </tr>
+                <? endif;?>
+                
+
+            <?
+            endforeach;
+
+            foreach ($procedimentoscirurgicos as $value):
+                $total_medicos += (float) $value->valor;
+            endforeach;?>
+                
+                <tr>
+                    <th style='width:10pt;border:solid windowtext 1.0pt;
+                        border-bottom:none;mso-border-top-alt:none;border-left:
+                        none;border-right:none;' colspan="4">&nbsp;</th>
+                </tr>
+                <?
+        endif;
+        ?>
+
+
+        <tr>
+            <td><font size="-1" width="350px;"><b>Valor Total Medicos</b></td>
+            <td style='text-align: right;'><font size="-1" width="200px;"><b><?= number_format($total_medicos, 2, ',', '.') ?></b></td>
+            <td style='text-align: right;'><font size="-1" width="200px;"><b><?= number_format($total_medicospagar, 2, ',', '.') ?></b></td>
+        </tr>
         </tbody>
     </table>
     <br>
