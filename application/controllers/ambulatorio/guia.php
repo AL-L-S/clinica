@@ -1225,20 +1225,21 @@ class Guia extends BaseController {
     function faturarguia($guia_id, $financeiro_grupo_id = null) {
         $data['exame'][0] = new stdClass();
         // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
-        // A linha alima inicia o Objeto antes de atribuir um valor
+        // A linha acima inicia o Objeto antes de atribuir um valor
         if (isset($financeiro_grupo_id)) {
             $data['forma_pagamento'] = $this->guia->formadepagamentoguia($guia_id, $financeiro_grupo_id);
             $data['exame'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
         } else {
             $data['forma_pagamento'] = $this->guia->formadepagamento();
-            $data['exame1'] = $this->guia->listarexameguia($guia_id);
-            $data['exame2'] = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
+            $data['exame1']          = $this->guia->listarexameguia($guia_id);
+            $data['exame2']          = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
             $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
 
         $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
+        
         $this->load->View('ambulatorio/faturarguia-form', $data);
     }
 
@@ -1257,6 +1258,7 @@ class Guia extends BaseController {
     function faturarguias($guia_id) {
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia_id);
+        $data['exame'] = $this->guia->listarexameguia($guia_id);
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
         $this->load->View('ambulatorio/faturarguiaconvenio-form', $data);
@@ -1289,11 +1291,33 @@ class Guia extends BaseController {
 
         $resulta = $_POST['valortotal'];
         if ($resulta == "0.00") {
-            $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();
-            if ($ambulatorio_guia_id == "-1") {
-                $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
-            } else {
-                $data['mensagem'] = 'Sucesso ao gravar faturamento.';
+            
+            $erro = false;
+            if($_POST['valorMinimo1'] != '' && ( ((float)$_POST['valorMinimo1']) > ((float)$_POST['valor1']) / $_POST['parcela1'] )){
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 1 é menor que o valor cadastrado.';
+                $erro = true;
+            }
+            if($_POST['valorMinimo2'] != '' && ( ((float)$_POST['valorMinimo2']) > ((float)$_POST['valor2']) / $_POST['parcela2'] )){
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 2 é menor que o valor cadastrado.';
+                $erro = true;
+            }
+            if($_POST['valorMinimo3'] != '' && ( ((float)$_POST['valorMinimo3']) > ((float)$_POST['valor3']) / $_POST['parcela3'] )){
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 3 é menor que o valor cadastrado.';
+                $erro = true;
+            }
+            if($_POST['valorMinimo4'] != '' && ( ((float)$_POST['valorMinimo4']) > ((float)$_POST['valor4']) / $_POST['parcela4'] )){
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor cadastrado.';
+                $erro = true;
+            }
+            
+            if($erro){
+                $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();
+                if ($ambulatorio_guia_id == "-1") {
+                    $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
+                } 
+                else {
+                    $data['mensagem'] = 'Sucesso ao gravar faturamento.';
+                }
             }
 
             $this->session->set_flashdata('message', $data['mensagem']);

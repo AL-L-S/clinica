@@ -37,7 +37,7 @@
                         <label>N° Maximo de Parcelas</label>
                     </dt>
                     <dd>
-                        <input type="text" name="parcelas" class="texto02" id="parcelas" value= "<?= @$obj->_parcelas; ?>" />
+                        <input type="text" name="parcelas" class="texto02" id="parcelas" value= "<?= @$obj->_parcelas; ?>" required=""/>
                     </dd>
                     <dt>
                         <label>Valor Mínimo da Parcela</label>
