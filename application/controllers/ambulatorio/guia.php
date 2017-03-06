@@ -2276,7 +2276,7 @@ class Guia extends BaseController {
         $dataFuturo = date("Y-m-d");
 
 //        $this->load->View('ambulatorio/impressaorecibomed', $data);
-//        $this->load->View('ambulatorio/impressaorecibo', $data);
+        $this->load->View('ambulatorio/impressaorecibo', $data);
     }
 
     function relatoriomedicoconveniofinanceiro() {
