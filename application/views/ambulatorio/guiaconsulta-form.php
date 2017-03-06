@@ -72,25 +72,6 @@
 
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
-                    <div>
-                        <label>Indicacao</label>
-                        
-                        <input type="hidden" name="indicacao_paciente" id="indicacao_paciente" class="texto01" value="<?= @$indicacao_paciente[0]->paciente_indicacao_id; ?>" readonly/>
-
-                        <select name="indicacao" id="indicacao" class="size2" >
-                            <option value=''>Selecione</option>
-                            <?php
-                            $indicacao = $this->paciente->listaindicacao($_GET);
-                            foreach ($indicacao as $item) {
-                                ?>
-                                <option value="<?php echo $item->paciente_indicacao_id; ?>">
-                                            <?php echo $item->nome; ?>
-                                </option>
-                                <?php
-                            }
-                            ?> 
-                        </select>
-                    </div>
                 </fieldset>
                 <fieldset>
                     <legend>Consultas anteriores</legend>
@@ -129,6 +110,7 @@
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Pagamento</th>
+                                <th class="tabela_header">Indicação</th>
                                 <th class="tabela_header">ordenador</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
@@ -179,6 +161,19 @@
                                         <? foreach ($forma_pagamento as $item) : ?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                         <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td  width="50px;">
+                                    <select name="indicacao" id="indicacao" class="size1" >
+                                        <option value='' >Selecione</option>
+                                        <?php
+                                        $indicacao = $this->paciente->listaindicacao($_GET);
+                                        foreach ($indicacao as $item) {
+                                            ?>
+                                            <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome; ?></option>
+                                            <?php
+                                        }
+                                        ?> 
                                     </select>
                                 </td>
 

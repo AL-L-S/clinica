@@ -44,12 +44,12 @@
                     <div>
                         <label>Sexo</label>
                         <input name="sexo" id="txtSexo" class="size2" 
-                                value="<?
-                                    if ($paciente['0']->sexo == "M"):echo 'Masculino';
-                                    endif;
-                                    if ($paciente['0']->sexo == "F"):echo 'Feminino';
-                                    endif;
-                                    ?>" readonly="true">
+                               value="<?
+                               if ($paciente['0']->sexo == "M"):echo 'Masculino';
+                               endif;
+                               if ($paciente['0']->sexo == "F"):echo 'Feminino';
+                               endif;
+                               ?>" readonly="true">
                     </div>
 
                     <div>
@@ -72,30 +72,6 @@
 
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
-                    <div>
-                        <label>Indicacao</label>
-                        
-                        <input type="hidden" name="indicacao_paciente" id="indicacao_paciente" class="texto01" value="<?= @$indicacao_paciente[0]->paciente_indicacao_id; ?>" readonly/>
-
-                        <select name="indicacao" id="indicacao" class="size2" >
-                            <option value='' >selecione</option>
-                            <?php
-                            $indicacao = $this->paciente->listaindicacao($_GET);
-                            foreach ($indicacao as $item) {
-                                ?>
-
-                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?
-                                if (@$indicacao_paciente[0]->paciente_indicacao_id == $item->paciente_indicacao_id):
-                                    echo 'selected';
-                                endif;
-                                ?>>
-                                            <?php echo $item->nome; ?>
-                                </option>
-                                <?php
-                            }
-                            ?> 
-                        </select>
-                    </div>
                 </fieldset>
 
                 <fieldset>
@@ -113,6 +89,7 @@
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Qtde</th>
                                 <th class="tabela_header">Pagamento</th>
+                                <th class="tabela_header">Indicação</th>
                                 <th class="tabela_header">Entrega</th>
                                 <th class="tabela_header">Ordenador</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
@@ -166,6 +143,19 @@
                                         <? endforeach; ?>
                                     </select>
                                 </td>
+                                <td  width="50px;">
+                                    <select name="indicacao" id="indicacao" class="size1" >
+                                        <option value='' >Selecione</option>
+                                        <?php
+                                        $indicacao = $this->paciente->listaindicacao($_GET);
+                                        foreach ($indicacao as $item) {
+                                            ?>
+                                            <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome; ?></option>
+                                            <?php
+                                        }
+                                        ?> 
+                                    </select>
+                                </td>
 
                                 <td  width="70px;"><input type="text" id="data" name="data" class="size1"/></td>
                                 <td  width="70px;"><input type="text" name="ordenador" id="ordenador" value="<?= $ordenador1; ?>" class="texto01"/></td>
@@ -190,7 +180,7 @@
                 if ($contador > 0) {
                     foreach ($grupo_pagamento as $grupo) { //buscar exames com forma de pagamento pre-definida (inicio)
                         $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id, $grupo->financeiro_grupo_id);
-                        
+
 //                        var_dump($exame);
 //                            die;
                         if ($exame != 0) {
@@ -365,9 +355,8 @@
 <script type="text/javascript">
 
 
-<?php 
-    if ($this->session->flashdata('message') != ''): ?>
-        alert("<? echo $this->session->flashdata('message') ?>");
+<?php if ($this->session->flashdata('message') != ''): ?>
+                                    alert("<? echo $this->session->flashdata('message') ?>");
 <? endif; ?>
 
                                 $(function () {
@@ -480,14 +469,14 @@
                                         }
                                     });
                                 });
-                                
+
                                 function calculoIdade() {
                                     var data = document.getElementById("txtNascimento").value;
                                     var ano = data.substring(6, 12);
                                     var idade = new Date().getFullYear() - ano;
                                     document.getElementById("txtIdade").value = idade;
                                 }
-                                
+
                                 calculoIdade();
 
 

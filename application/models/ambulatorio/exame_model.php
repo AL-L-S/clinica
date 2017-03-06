@@ -788,37 +788,7 @@ class exame_model extends Model {
 //        $contador = count($args);
 
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('ae.agenda_exames_id,
-                            ae.agenda_exames_nome_id,
-                            ae.data,
-                            ae.inicio,
-                            ae.fim,
-                            ae.ativo,
-                            ae.situacao,
-                            ae.realizada,
-                            ae.confirmado,
-                            ae.guia_id,
-                            ae.data_atualizacao,
-                            ae.operador_atualizacao,
-                            ae.paciente_id,
-                            ae.telefonema,
-                            ae.observacoes,
-                            ae.encaixe,
-                            p.celular,
-                            ae.bloqueado,
-                            p.telefone,
-                            e.situacao as situacaoexame,
-                            o.nome as medicoagenda,
-                            an.nome as sala,
-                            p.nome as paciente,
-                            op.nome as secretaria,
-                            ae.procedimento_tuss_id,
-                            pt.nome as procedimento,
-                            pt.codigo,
-                            c.nome as convenio,
-                            co.nome as convenio_paciente,
-                            al.situacao as situacaolaudo,
-                            tel.nome as telefonema_operador');
+        $this->db->select('ae.agenda_exames_id');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
