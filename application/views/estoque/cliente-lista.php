@@ -21,6 +21,7 @@
                     <tr>
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">Telefone</th>
+                        <th class="tabela_header">Menu</th>
                         <th class="tabela_header" width="70px;" colspan="2"><center>Detalhes</center></th>
                     </tr>
                 </thead>
@@ -43,6 +44,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->telefone; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->menu; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a href="<?= base_url() ?>estoque/cliente/carregarcliente/<?= $item->estoque_cliente_id ?>">Editar</a>
@@ -59,7 +61,7 @@
                         ?>
                         <tfoot>
                             <tr>
-                                <th class="tabela_footer" colspan="4">
+                                <th class="tabela_footer" colspan="5">
                                    <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                                 </th>

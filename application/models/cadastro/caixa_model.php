@@ -669,7 +669,7 @@ class caixa_model extends Model {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->where('saidas_id', $_POST['saida_id']);
                 $this->db->update('tb_saidas');
-                $saida_id = $this->db->insert_id();
+//                $saida_id = $this->db->insert_id();
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") // erro de banco
                     return -1;
