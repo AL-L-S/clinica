@@ -1611,7 +1611,9 @@ ALTER TABLE ponto.tb_operador ADD COLUMN classe character varying(60);
 
 
 
+-- Dia 07/03/2017
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN checado boolean DEFAULT false;
 
-
-
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN operador_checado integer;
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN data_checado timestamp without time zone;
 

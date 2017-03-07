@@ -2370,6 +2370,11 @@ class Guia extends BaseController {
         $data['verificado'] = $this->guia->verificado($agenda_exames_id);
         $this->load->View('ambulatorio/verificado-form', $data);
     }
+    
+    function procedimentoguianota($ambulatorio_guia_id) {
+        $data['procedimento'] = $this->guia->procedimentoguianota($ambulatorio_guia_id);
+        $this->load->View('ambulatorio/procedimentoguianota-form', $data);
+    }
 
     function graficovalormedio($procedimento, $valor, $txtdata_inicio, $txtdata_fim) {
 //        var_dump($txtdata_inicio);
@@ -2450,6 +2455,16 @@ class Guia extends BaseController {
 
     function gravarverificado($agenda_exame_id) {
         $this->guia->gravarverificado($agenda_exame_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+    function fecharprocedimentonota($agenda_exame_id) {
+//        $this->guia->gravarverificado($agenda_exame_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+    function gravarchecknota($ambulatorio_guia_id) {
+        $this->guia->gravarchecknota($ambulatorio_guia_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
