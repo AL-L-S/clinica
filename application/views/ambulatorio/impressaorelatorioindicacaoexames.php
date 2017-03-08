@@ -63,8 +63,8 @@
         <table border="1">
             <thead>
                 <tr>
-                    <td class="tabela_teste">Nome</th>
-                    <td class="tabela_teste">Indica&ccedil;&atilde;o</th>
+                    <td class="tabela_teste">Nome</td>
+                    <td class="tabela_teste">Recomendação</td>
                 </tr>
             </thead>
             <hr>

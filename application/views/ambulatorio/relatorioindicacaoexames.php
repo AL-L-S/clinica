@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar relatorio Indicação</a></h3>
+        <h3><a href="#">Gerar relatorio Recomendação</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioindicacaoexames">
                 <dl>
@@ -17,7 +17,7 @@
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Indica&ccedil;&atilde;o</label>
+                    <label>Recomendação</label>
                     </dt>
                     <dd>
                         <select name="indicacao" id="indicacao" class="size2">

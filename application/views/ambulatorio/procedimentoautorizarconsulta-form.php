@@ -91,7 +91,7 @@
                             <th class="tabela_header">autorizacao</th>
                             <th class="tabela_header">V. Unit</th>
                             <th class="tabela_header">Pagamento</th>
-                            <th class="tabela_header">Indicação</th>
+                            <th class="tabela_header">Recomendação</th>
                             <th class="tabela_header">ordenador</th>
                             <th class="tabela_header">Confir.</th>
                         </tr>
