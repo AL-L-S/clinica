@@ -20,7 +20,7 @@
             }
             ?>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Indica&ccedil;&atilde;o</th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Recomendação</th>
             </tr>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
@@ -33,11 +33,11 @@
 
             <? if ($indicacao == "0") { ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODOS OS INDICADOS</th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODOS AS RECOMENDAÇÕES</th>
                 </tr>
             <? } else { ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">INDICADO: <?= $indicacao; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">RECOMENDAÇÃO: <?= $indicacao; ?></th>
                 </tr>
             <? } ?>
             <tr>
@@ -117,7 +117,8 @@
     <? endforeach; ?>
             </tbody>
         </table>
-    <? } else {
+    <? } 
+    else {
         ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
     <? }
