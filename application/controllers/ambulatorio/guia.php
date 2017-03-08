@@ -1388,6 +1388,17 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatorioconferencia', $data);
     }
 
+    function relatoriogastosala() {
+        $data['grupo'] = $this->guia->listargrupo();
+        $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
+        $data['procedimentos'] = $this->guia->listarprocedimentos();
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['classificacao'] = $this->guia->listarclassificacao();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriogastosala', $data);
+    }
+
     function relatoriorecolhimento() {
         $data['grupo'] = $this->guia->listargrupo();
         $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
@@ -1409,6 +1420,13 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriopacienteconvenioexame', $data);
+    }
+
+    function gerarelatoriogastosala() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['relatorio'] = $this->guia->relatoriogastosala();
+        $this->load->View('ambulatorio/impressaorelatoriogastosala', $data);
     }
 
     function gerarelatorioexame() {
@@ -1724,6 +1742,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->guia->relatorioresumogeralconvenio();
         $data['convenios'] = $this->convenio->listardados();
         
+        $data['formapagamento'] = $this->formapagamento->listarforma();
         $data['relatoriocirurgico'] = $this->guia->relatorioresumocirurgicomedico();
         $data['procedimentoscirurgicos'] = $this->guia->relatorioresumocirurgicomedicotodos();
 

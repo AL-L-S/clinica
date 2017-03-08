@@ -3431,6 +3431,33 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function relatoriogastosala() {
+
+        $this->db->select('p.nome as paciente,
+                            ag.paciente_id,
+                            ags.descricao,
+                            ags.quantidade,
+                            ep.descricao as produto,
+                            u.descricao as unidade,
+                            pt.nome as procedimento');
+        $this->db->from('tb_ambulatorio_guia ag');
+        $this->db->join('tb_ambulatorio_gasto_sala ags', 'ags.guia_id = ag.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = ep.unidade_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = ep.procedimento_id', 'left');
+        $this->db->where("ag.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ag.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        if ($_POST['txtNomeid'] != "") {
+            $this->db->where('ag.paciente_id !=', $_POST['txtNomeid']);
+        }
+        
+        $this->db->orderby('p.nome');
+//        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
     function relatoriocaixacartao() {
 
         $this->db->select('ae.agenda_exames_id,

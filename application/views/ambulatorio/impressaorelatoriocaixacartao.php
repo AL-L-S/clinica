@@ -4,9 +4,9 @@
         <h4><?= $empresa[0]->razao_social; ?></h4>
     <? } else { ?>
         <h4>TODAS AS CLINICAS</h4>
-    <? }?>
+    <? } ?>
     <h4>CONFERENCIA CAIXA</h4>
-    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
+    <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
     <? if (count($operador) != 0) { ?>
         <h3>ATENDENTE: <?= $operador[0]->nome; ?></h3>
     <? } ?>
@@ -16,15 +16,15 @@
     <? if (count($medico) != 0) { ?>
         <h3>MÉDICO: <?= $medico[0]->nome; ?></h3>
     <? } ?>    
-    <? if (count($medico)  == 0) { ?>
+    <? if (count($medico) == 0) { ?>
         <h3>MÉDICO: TODOS</h3>
     <? } ?>
-        
+
     <hr>
     <?
     if (count($relatorio) > 0) {
         ?>
-        <table >
+        <table border="1">
             <thead>
                 <tr>
                     <th class="tabela_header"><font size="-1">Atendimento</th>
@@ -39,6 +39,7 @@
             </thead>
             <tbody>
                 <?php
+                
                 foreach ($formapagamento as $value) {
                     $data[$value->nome] = 0;
                     $numero[$value->nome] = 0;
@@ -94,7 +95,6 @@
                     $valortotal = $valortotal + $item->valor_total + $item->desconto;
 
                     if ($i == 1 || $item->nome == $operadorexames) {
-
                         $valoroperador = $valoroperador + $item->valor_total;
                         $qtdepaciente++;
                         $qtdeexame++;
@@ -106,11 +106,13 @@
                         <? }
                         ?>
                         <tr>
-                            <? if ($paciente == $item->paciente) { ?>
+                            <?
+                            if ($paciente == $item->paciente) { ?>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                                 <td>&nbsp;</td>
-                            <? } else { ?>
+                            <? } else {
+                                ?>
                                 <td><font size="-2"><?= $item->guia_id; ?></td>
                                 <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
                                     <? if ($item->verificado == 't') {
@@ -124,7 +126,8 @@
                             <? } else { ?>
                                 <td><font size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
                             <? } ?>
-                            <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
+                            <?
+                            if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
                                         <font size="-2"><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></a></td>
                                 <? if ($item->faturado == "f") { ?>
@@ -133,15 +136,17 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
 
                                 <? } ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
-                            }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
+                            }
+                            
+                            if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
                                         <font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></a></td>
@@ -151,15 +156,16 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>
 
 
                                 <? } ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
-                            }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
+                            }
+                            if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
                                         <font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></a></td>
@@ -169,15 +175,16 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>
 
 
                                 <? } ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
-                            }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
+                            }                            
+                            if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
                                         <font size="-2"><?= $item->forma_pagamento; ?></font>
@@ -188,18 +195,19 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?> 
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?> 
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
                                             <font size="-1">  --(*)</font>
                                         </a></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>
+                                        <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>
 
 
                                 <? } ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
-                            } if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
+                            }
+                            if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/verificado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
                                         <font size="-2"><?= $item->forma_pagamento; ?></font>
@@ -210,16 +218,16 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?> 
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?> 
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
                                             <font size="-1">  --(*)</font>
                                         </a></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
 
                                 <? }
                                 ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
                             }
                             if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
@@ -232,13 +240,13 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
                                 <? }
                                 ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
                                 ?>
@@ -251,13 +259,13 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
                                 <? }
                                 ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
                             }
                             ?>
@@ -292,7 +300,8 @@
                         $valor = $valor + $item->valor_total;
                         $paciente = $item->paciente;
                         $operadorexames = $item->nome;
-                    } else {
+                    } 
+                    else {
                         $operadorexames = $item->nome;
                         $paciente = "";
                         ?> 
@@ -309,8 +318,8 @@
                         <tr>
                             <td colspan="8"><font ><b>Operador:&nbsp;<?= utf8_decode($item->nome); ?></b></td>
                         </tr>
-                        <tr><td></td></tr>
-                        <tr><td></td></tr>
+<!--                        <tr><td></td></tr>
+                        <tr><td></td></tr>-->
 
 
                         <tr>
@@ -336,26 +345,26 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>
 
                                 <? }
                                 ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                                 ?>
                                 <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
                                 <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>
 
                                 <? }
                                 ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
@@ -366,13 +375,13 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>
 
                                 <? }
                                 ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
                             }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
@@ -383,13 +392,13 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>
 
                                 <? }
                                 ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
                             } if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                 ?>
@@ -400,13 +409,13 @@
                                     <td><font size="-2"><?= $item->quantidade; ?></td>
                                 <? } ?>
                                 <? if ($item->operador_editar != '') { ?>
-                                    <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') . " (*)" ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') . " (*)" ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
 
                                 <? }
                                 ?>
-                                <td><font size="-2"><?= $item->desconto; ?></td>
+                                <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                 <?
                             }
                             ?>
@@ -414,7 +423,7 @@
                         <?
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento == $value->nome) {
-                                $data[$value->nome] = $data[$value->nome] + $item->valor1;            
+                                $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                 $numero[$value->nome] ++;
                             }
                         }
@@ -442,16 +451,18 @@
                         $y++;
                     }
                 }
-                
-                $w = 0;?>                       
-            <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
-                <? foreach ($formapagamento as $value) { 
-                    
-$w++;?>
 
-                <input type="hidden" class="texto3" name="qtde[<?=$w?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
-                <? }
-                ?>
+                $w = 0;
+                ?>                       
+            <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
+                <? foreach ($formapagamento as $value) {
+
+                    $w++;
+                    ?>
+
+                    <input type="hidden" class="texto3" name="qtde[<?= $w ?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
+    <? }
+    ?>
     <!--                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($DINHEIRO, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="cheque" value="<?= number_format($CHEQUE, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="debito" value="<?= number_format($DEBITO_CONTA, 2, ',', '.'); ?>" readonly/>
@@ -460,7 +471,7 @@ $w++;?>
      <input type="hidden" class="texto3" name="cartaomaster" value="<?= number_format($CARTAOMASTER, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="cartaohiper" value="<?= number_format($CARTAOHIPER, 2, ',', '.'); ?>" readonly/>
      <input type="hidden" class="texto3" name="cartaoelo" value="<?= number_format($CARTAOELO, 2, ',', '.'); ?>" readonly/>-->
-<!--                <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>-->
+    <!--                <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>-->
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
                 <input type="hidden" class="texto3" name="grupo" value="<?= $grupo; ?>"/>
@@ -477,18 +488,18 @@ $w++;?>
                 <tr>
                     <td>&nbsp;</td>
                 </tr>
-<!--                <tr>
+    <!--                <tr>
                     <td colspan="5"></td>
-                    <? if ($faturado == 't' && $exame == "") { ?>
-                        <? if ($operador == 0 && $financeiro == 'f') { ?>
-                            <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
-                        <? } else {
-                            ?>
-                            <td colspan="2" ><b>Caixa Fechado</b></td>
-                        <? } ?>
-                    <? } else { ?>
-                        <td colspan="3" ><b>Pendencias de Faturamento / Finalizar exame</b></td>
+                <? if ($faturado == 't' && $exame == "") { ?>
+                    <? if ($operador == 0 && $financeiro == 'f') { ?>
+                                    <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
+                    <? } else {
+                        ?>
+                                    <td colspan="2" ><b>Caixa Fechado</b></td>
                     <? } ?>
+                <? } else { ?>
+                            <td colspan="3" ><b>Pendencias de Faturamento / Finalizar exame</b></td>
+    <? } ?>
                 </tr>-->
 
 
@@ -501,7 +512,7 @@ $w++;?>
                 <tr>
                     <td colspan="4" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
             </tr>
-            <? foreach ($formapagamento as $value) { ?>
+    <? foreach ($formapagamento as $value) { ?>
                 <tr>
                     <td width="140px;"><font size="-1"><?= $value->nome ?></td>
                     <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
@@ -564,7 +575,7 @@ $w++;?>
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $NUMERODINHEIRO; ?>,<?= $NUMERODEBITO_CONTA; ?>,<?= $NUMEROCARTAOVISA; ?>,<?= $NUMEROCARTAOMASTER; ?>,<?= $NUMEROCARTAOHIPER; ?>,<?= $NUMEROCARTAOELO; ?>,<?= $NUMEROOUTROS; ?>&chtt=QUANTIDADE DE EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALOUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste"/></center>
                 GRAFICO DE VALOR DE EXAMES
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $VALORDINHEIRO; ?>,<?= $VALORDEBITO_CONTA; ?>,<?= $VALORCARTAOVISA; ?>,<?= $VALORCARTAOMASTER; ?>,<?= $VALORCARTAOHIPER; ?>,<?= $VALORCARTAOELO; ?>,<?= $VALOROUTROS; ?>&chtt=VALOR DOS EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALVALORDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOHIPER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALOROUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste2" /></center>-->
-        <? if (count($caixa)) { ?>
+    <? if (count($caixa)) { ?>
             <table border="1">
                 <thead>
                     <tr>
@@ -576,12 +587,12 @@ $w++;?>
                     </tr>
                 </thead>
                 <tbody>
-                    <? foreach ($caixa as $item) : ?>
+        <? foreach ($caixa as $item) : ?>
                         <tr>
                             <td><?= utf8_decode($item->operador_caixa); ?></td>
                             <td><?= number_format($item->valor, 2, ',', '.'); ?></td>
                         </tr>
-                    <? endforeach; ?>
+            <? endforeach; ?>
                 </tbody>
             </table>
             <? //  var_dump($data[$value->nome]);   ?>

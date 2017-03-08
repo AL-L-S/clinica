@@ -62,7 +62,7 @@
                         <input type="number" name="ajustetotal" id="ajustetotal" class="number" step=0.01  />
                     </dd>
                     <dt>
-                        <label>Arredondar p/ cima</label>
+                        <label>Arredondar</label>
                     </dt>
                     <dd>
                         <input type="checkbox" name="arrendondamento" id="arrendondamento" step=0.01  />
