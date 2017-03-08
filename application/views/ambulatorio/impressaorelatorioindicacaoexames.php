@@ -97,7 +97,7 @@
         <table border="1">
             <thead>
                 <tr>
-                    <td class="tabela_teste">Indica&ccedil;&atilde;o</th>
+                    <td class="tabela_teste">Recomendação</th>
                     <td class="tabela_teste">Qtde</th>
                 </tr>
             </thead>
