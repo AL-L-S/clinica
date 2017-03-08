@@ -3453,11 +3453,12 @@ class guia_model extends Model {
         if ($_POST['txtNomeid'] != "") {
             $this->db->where('ag.paciente_id', $_POST['txtNomeid']);
         }
-        
+
         $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();
     }
+
     function relatoriocaixacartao() {
 
         $this->db->select('ae.agenda_exames_id,
@@ -5556,7 +5557,7 @@ AND data <= '$data_fim'";
     }
 
     function relatoriocaixaforma($formapagamento_id) {
-//        var_dump($formapagamento_id);die;
+//        var_dump($_POST['data1']);die;
         $this->db->select('ae.agenda_exames_id,
                             ae.valor1,
                             ae.parcelas1,
@@ -5575,13 +5576,15 @@ AND data <= '$data_fim'";
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where("(ae.forma_pagamento = $formapagamento_id OR ae.forma_pagamento2 = $formapagamento_id OR 
                             ae.forma_pagamento3 = $formapagamento_id OR ae.forma_pagamento4 = $formapagamento_id)");
-        
+
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.financeiro', 'f');
-        
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data1']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data2']))));
+
         $this->db->where('c.dinheiro', 't');
-        
+
         $this->db->where('ae.operador_autorizacao >', 0);
         $return = $this->db->get();
         return $return->result();
@@ -5627,10 +5630,10 @@ AND data <= '$data_fim'";
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        $data_inicio = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
         $data_cauculo = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
+        $data_inicio = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
         $data_fim = $_POST['data2'];
-        $observacao = "Periodo de" . $_POST['data1'] . "a" . $_POST['data2'];
+        $observacao = "Periodo de " . $_POST['data1'] . " a " . $_POST['data2'];
         $data = date("Y-m-d");
         $data30 = date('Y-m-d', strtotime("+30 days", strtotime($data_cauculo)));
         $data4 = date('Y-m-d', strtotime("+4 days", strtotime($data_cauculo)));
@@ -5685,9 +5688,7 @@ AND data <= '$data_fim'";
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_saldo');
                 } else {
-
                     if (isset($value->dia_receber) && $value->dia_receber > 0) {
-//                        echo '5403'; 
                         $data_atual = $_POST['data1'];
                         $dia_atual = substr($_POST['data1'], 8);
                         $mes_atual = substr($_POST['data1'], 5, 2);
@@ -5702,7 +5703,6 @@ AND data <= '$data_fim'";
 
                         $valor_n_parcelado = $valor_total;
                         $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
-
                         foreach ($agenda_exames_id as $item) {
                             if ($item->forma_pagamento == $value->forma_pagamento_id) {
                                 $parcelas = $item->parcelas1;
@@ -5723,7 +5723,7 @@ AND data <= '$data_fim'";
                             }
                             $mes = 1;
 
-                            if ($parcelas > 1) {
+                            if ($parcelas != '') {
                                 $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
 
                                 if ($jurosporparcelas[0]->taxa_juros > 0) {
@@ -5734,46 +5734,34 @@ AND data <= '$data_fim'";
 
                                 $valor_com_juros = $valor + ($valor * ($taxa_juros / 100));
                                 $valor_parcelado = $valor_com_juros / $parcelas;
-                            } 
-                            else {
+                            } else {
                                 $valor_parcelado = $valor;
                             }
 
 //                                if ($parcelas > 1) {
-                                for ($i = 1; $i <= $parcelas; $i++) {
-                                    $tempo_receber = $tempo_receber + $value->tempo_receber;
-                                    $data_atual = $_POST['data1'];
+                            for ($i = 1; $i <= $parcelas; $i++) {
+                                $tempo_receber = $tempo_receber + $value->tempo_receber;
+                                $data_atual = $_POST['data1'];
 
-                                    if ($i == 1) {
-                                        $data_receber_p = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
-                                    }
-
-                                    $this->db->set('valor', $valor_parcelado);
-                                    $this->db->set('devedor', $value->credor_devedor);
-                                    $this->db->set('parcela', $i);
-                                    $this->db->set('data', $data_receber_p);
-                                    $this->db->set('classe', $classe);
-                                    $this->db->set('conta', $value->conta_id);
-                                    $this->db->set('observacao', $observacao);
-                                    $this->db->set('data_cadastro', $horario);
-                                    $this->db->set('operador_cadastro', $operador_id);
-                                    $this->db->insert('tb_financeiro_contasreceber_temp');
-
-                                    $data_receber_p = date("Y-m-d", strtotime("+$tempo_receber days", strtotime($data_atual)));
+                                if ($i == 1) {
+                                    $data_receber_p = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
                                 }
-                                $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
+
+                                $this->db->set('valor', $valor_parcelado);
+                                $this->db->set('devedor', $value->credor_devedor);
+                                $this->db->set('parcela', $i);
+                                $this->db->set('data', $data_receber_p);
+                                $this->db->set('classe', $classe);
+                                $this->db->set('conta', $value->conta_id);
+                                $this->db->set('observacao', $observacao);
+                                $this->db->set('data_cadastro', $horario);
+                                $this->db->set('operador_cadastro', $operador_id);
+                                $this->db->insert('tb_financeiro_contasreceber_temp');
+
+                                $data_receber_p = date("Y-m-d", strtotime("+$tempo_receber days", strtotime($data_atual)));
                             }
-//                            $data_atual = $_POST['data1'];
-//                            $data_receber = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
-//                            $this->db->set('valor', $valor_n_parcelado);
-//                            $this->db->set('devedor', $value->credor_devedor);
-//                            $this->db->set('data', $data_receber);
-//                            $this->db->set('classe', $classe);
-//                            $this->db->set('conta', $value->conta_id);
-//                            $this->db->set('observacao', $observacao);
-//                            $this->db->set('data_cadastro', $horario);
-//                            $this->db->set('operador_cadastro', $operador_id);
-//                            $this->db->insert('tb_financeiro_contasreceber');
+                            $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
+                        }
 
 
                         $receber_temp = $this->burcarcontasrecebertemp();
@@ -5793,10 +5781,11 @@ AND data <= '$data_fim'";
                         $this->db->set('ativo', 'f');
                         $this->db->update('tb_financeiro_contasreceber_temp');
                     } else {
-//                        echo '5501';
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
                             $valor_n_parcelado = $valor_total;
                             $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
+
+
 
                             foreach ($agenda_exames_id as $item) {
                                 if ($item->forma_pagamento == $value->forma_pagamento_id) {
@@ -5817,7 +5806,7 @@ AND data <= '$data_fim'";
 //                                    $retorno = $this->parcelas4($item->agenda_exames_id);
                                 }
 
-                                if ($parcelas > 1) {
+                                if ($parcelas != '') {
                                     $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
 //                                    var_dump($parcelas); die;
                                     if ($jurosporparcelas[0]->taxa_juros > 0) {
@@ -5828,6 +5817,7 @@ AND data <= '$data_fim'";
                                     $taxa_parcela = $valor * ($taxa_juros / 100);
                                     $valor_com_juros = $valor - $taxa_parcela;
                                     $valor_parcelado = $valor_com_juros / $parcelas;
+
                                 } else {
                                     $valor_parcelado = $valor;
                                 }
@@ -5835,6 +5825,7 @@ AND data <= '$data_fim'";
                                 $tempo_receber = $value->tempo_receber;
 //                                if ($parcelas > 1) {
                                 for ($i = 1; $i <= $parcelas; $i++) {
+
                                     $tempo_receber = $tempo_receber + $value->tempo_receber;
                                     $data_atual = $_POST['data1'];
 
@@ -5857,17 +5848,7 @@ AND data <= '$data_fim'";
                                 }
                                 $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
                             }
-//                            $data_atual = $_POST['data1'];
-//                            $data_receber = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
-//                            $this->db->set('valor', $valor_n_parcelado);
-//                            $this->db->set('devedor', $value->credor_devedor);
-//                            $this->db->set('data', $data_receber);
-//                            $this->db->set('classe', $classe);
-//                            $this->db->set('conta', $value->conta_id);
-//                            $this->db->set('observacao', $observacao);
-//                            $this->db->set('data_cadastro', $horario);
-//                            $this->db->set('operador_cadastro', $operador_id);
-//                            $this->db->insert('tb_financeiro_contasreceber');
+
 
                             $receber_temp = $this->burcarcontasrecebertemp();
                             foreach ($receber_temp as $temp) {
@@ -5889,65 +5870,6 @@ AND data <= '$data_fim'";
                     }
                 }
             }
-
-
-//            if ($_POST[$value->nome] != '0,00') {
-//                if ($value->nome == 'dinheiro' || $value->nome == 'DINHEIRO') {
-//                    $this->db->set('data', $_POST['data1']);
-//                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
-//                    $this->db->set('tipo', $tipo);
-//                    $this->db->set('nome', 14);
-//                    $this->db->set('conta', 1);
-//                    $this->db->set('observacao', $observacao);
-//                    $this->db->set('data_cadastro', $horario);
-//                    $this->db->set('operador_cadastro', $operador_id);
-//                    $this->db->insert('tb_entradas');
-//                    $entradas_id = $this->db->insert_id();
-//
-//                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
-//                    $this->db->set('entrada_id', $entradas_id);
-//                    $this->db->set('conta', 1);
-//                    $this->db->set('nome', 14);
-//                    $this->db->set('data_cadastro', $horario);
-//                    $this->db->set('operador_cadastro', $operador_id);
-//                    $this->db->insert('tb_saldo');
-//                } elseif ($value->nome == 'cheque' || $value->nome == 'CHEQUE') {
-//
-//                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
-//                    $this->db->set('devedor', 14);
-//                    $this->db->set('data', $data4);
-//                    $this->db->set('tipo', $tipo);
-//                    $this->db->set('conta', 1);
-//                    $this->db->set('observacao', $observacao);
-//                    $this->db->set('data_cadastro', $horario);
-//                    $this->db->set('operador_cadastro', $operador_id);
-//                    $this->db->insert('tb_financeiro_contasreceber');
-//                } elseif ($value->nome == 'DEBITO' || $value->nome == 'debito' || $value->nome == 'DÉBITO' || $value->nome == 'débito') {
-//
-//                    $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST[$value->nome])));
-//                    $this->db->set('devedor', 14);
-//                    $this->db->set('data', $data4);
-//                    $this->db->set('tipo', 'CAIXA DEBITO EM CONTA');
-//                    $this->db->set('conta', 1);
-//                    $this->db->set('observacao', $observacao);
-//                    $this->db->set('data_cadastro', $horario);
-//                    $this->db->set('operador_cadastro', $operador_id);
-//                    $this->db->insert('tb_financeiro_contasreceber');
-//                } else {
-//                    $cartao[$value->nome] = str_replace(",", ".", str_replace(".", "", $_POST[$value->nome]));
-////            $cartaovisa = $cartaovisa * 0.965;
-//                    $cartao[$value->nome] = $cartao[$value->nome] * 1;
-//                    $this->db->set('valor', $cartao[$value->nome]);
-//                    $this->db->set('devedor', 14);
-//                    $this->db->set('data', $data30);
-//                    $this->db->set('tipo', $tipo);
-//                    $this->db->set('conta', 6);
-//                    $this->db->set('observacao', $observacao);
-//                    $this->db->set('data_cadastro', $horario);
-//                    $this->db->set('operador_cadastro', $operador_id);
-//                    $this->db->insert('tb_financeiro_contasreceber');
-//                }
-//            }
         }
 
         if ($_POST['grupo'] == 0) {
@@ -6008,127 +5930,6 @@ AND c.dinheiro = true
 ORDER BY ae.agenda_exames_id)";
             $this->db->query($sql);
         }
-
-
-//
-//        if ($_POST['dinheiro'] != '0,00') {
-//
-//            $this->db->set('data', $_POST['data1']);
-//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['dinheiro'])));
-//            $this->db->set('tipo', 'CAIXA DINHEIRO');
-//            $this->db->set('nome', 14);
-//            $this->db->set('conta', 1);
-//            $this->db->set('observacao', $observacao);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_entradas');
-//            $entradas_id = $this->db->insert_id();
-//
-//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['dinheiro'])));
-//            $this->db->set('entrada_id', $entradas_id);
-//            $this->db->set('conta', 1);
-//            $this->db->set('nome', 14);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_saldo');
-//        }
-//
-//        if ($_POST['cheque'] != '0,00') {
-//
-//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['cheque'])));
-//            $this->db->set('devedor', 14);
-//            $this->db->set('data', $data4);
-//            $this->db->set('tipo', 'CAIXA CHEQUE');
-//            $this->db->set('conta', 1);
-//            $this->db->set('observacao', $observacao);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_financeiro_contasreceber');
-//        }
-//
-//        if ($_POST['debito'] != '0,00') {
-//
-//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['debito'])));
-//            $this->db->set('devedor', 14);
-//            $this->db->set('data', $data4);
-//            $this->db->set('tipo', 'CAIXA DEBITO EM CONTA');
-//            $this->db->set('conta', 1);
-//            $this->db->set('observacao', $observacao);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_financeiro_contasreceber');
-//        }
-//
-//        if ($_POST['cartaovisa'] != '0,00') {
-//            $cartaovisa = str_replace(",", ".", str_replace(".", "", $_POST['cartaovisa']));
-////            $cartaovisa = $cartaovisa * 0.965;
-//            $cartaovisa = $cartaovisa * 1;
-//            $this->db->set('valor', $cartaovisa);
-//            $this->db->set('devedor', 14);
-//            $this->db->set('data', $data30);
-//            $this->db->set('tipo', 'CAIXA CARTAO VISA');
-//            $this->db->set('conta', 6);
-//            $this->db->set('observacao', $observacao);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_financeiro_contasreceber');
-//        }
-//
-//        if ($_POST['cartaocredito'] != '0,00') {
-//            $cartaocredito = str_replace(",", ".", str_replace(".", "", $_POST['cartaocredito']));
-////            $cartaovisa = $cartaovisa * 0.965;
-//            $cartaocredito = $cartaocredito * 1;
-//            $this->db->set('valor', $cartaocredito);
-//            $this->db->set('devedor', 14);
-//            $this->db->set('data', $data30);
-//            $this->db->set('tipo', 'CAIXA CARTAO CREDITO');
-//            $this->db->set('conta', 6);
-//            $this->db->set('observacao', $observacao);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_financeiro_contasreceber');
-//        }
-//
-//        if ($_POST['cartaomaster'] != '0,00') {
-//            $cartaomaster = str_replace(",", ".", str_replace(".", "", $_POST['cartaomaster']));
-////            $cartaomaster = $cartaomaster * 0.965;
-//            $cartaomaster = $cartaomaster * 1;
-//            $this->db->set('valor', $cartaomaster);
-//            $this->db->set('devedor', 14);
-//            $this->db->set('data', $data30);
-//            $this->db->set('tipo', 'CAIXA CARTAO MASTER');
-//            $this->db->set('conta', 6);
-//            $this->db->set('observacao', $observacao);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_financeiro_contasreceber');
-//        }
-//
-//        if ($_POST['cartaohiper'] != '0,00') {
-//            $cartaohiper = str_replace(",", ".", str_replace(".", "", $_POST['cartaohiper']));
-////            $cartaohiper = $cartaohiper * 0.965;
-//            $cartaohiper = $cartaohiper * 1;
-//            $this->db->set('valor', $cartaomaster);
-//            $this->db->set('devedor', 14);
-//            $this->db->set('data', $data30);
-//            $this->db->set('tipo', 'CAIXA CARTAO HIPER');
-//            $this->db->set('conta', 6);
-//            $this->db->set('observacao', $observacao);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_financeiro_contasreceber');
-//        }
-//        if ($_POST['outros'] != '0,00') {
-//            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['outros'])));
-//            $this->db->set('devedor', 14);
-//            $this->db->set('data', $data2);
-//            $this->db->set('tipo', 'CAIXA OUTROS');
-//            $this->db->set('conta', 1);
-//            $this->db->set('observacao', $observacao);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $operador_id);
-//            $this->db->insert('tb_financeiro_contasreceber');
-//        }
     }
 
     function jurosporparcelas($formapagamento_id, $parcelas) {
