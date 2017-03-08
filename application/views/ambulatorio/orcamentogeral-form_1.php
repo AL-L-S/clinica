@@ -13,7 +13,7 @@
             #valor{ width:50px; }
             fieldset { padding:0; border:0; margin-top:25px; }
             h1 { font-size: 1.2em; margin: .6em 0; }
-            div#users-contain { width: 500px; margin: 20px 0; }
+            div#users-contain { width: 800px; margin: 20px 0; }
             div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
             div#users-contain table td, div#users-contain table th {}
             .ui-dialog .ui-state-error { padding: .3em; }
@@ -23,8 +23,6 @@
 
 
     <div id="dialog-form" title="Adicionar Procedimento">
-<!--        <p class="validateTips">All form fields are required.</p>-->
-
         <form>
             <fieldset>
                 <input type="hidden" name="convenio_nome" id="convenio_nome">
@@ -46,6 +44,9 @@
                 <input type="qtde" name="qtde" id="qtde"  class="text ui-widget-content ui-corner-all">
                 <label for="valor">Valor UND</label>
                 <input type="valor" name="valor" id="valor" class="text ui-widget-content ui-corner-all">
+                <label for="descricao">Descrição</label>
+                <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1"  readonly=""> </textarea>
+                        
 
                 <!-- Allow form submission with keyboard without duplicating the dialog button -->
                 <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
@@ -61,6 +62,7 @@
                     <tr class="ui-widget-header">
                         <th  class="tabela_header">Convênio</th>
                         <th  class="tabela_header">Procedimento</th>
+                        <th  class="tabela_header">Descrição</th>
                         <th  class="tabela_header">Qtde</th>
                         <th  class="tabela_header">Valor UND(R$)</th>
 <!--                        <th  class="tabela_header">Valor Total(R$)</th>-->
@@ -71,7 +73,7 @@
                 </tbody>
                 <tfoot>
                     <tr class="ui-widget-header">
-                        <td class="tabela_header" colspan="4"><center>Valor Total: R$ <? echo $valor_total ?></center></td>
+                        <td class="tabela_header" colspan="6"><center>Valor Total: R$ <? echo $valor_total ?></center></td>
                         <!--<td class="tabela_header" colspan="4"></td>-->
                     </tr>
                 </tfoot>
@@ -81,6 +83,7 @@
                 <table id="form" class="ui-widget ui-widget-content">
                     <thead>
                         <tr class="ui-widget-header">
+                            <th  class="tabela_header"></th>
                             <th  class="tabela_header"></th>
                             <th  class="tabela_header"></th>
                             <th  class="tabela_header"></th>
@@ -113,6 +116,7 @@
                                     // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
                                     convenio = $("#convenio_nome"),
                                     procedimento = $("#procedimento_nome"),
+                                    descricao = $("#descricao"),
                                     qtde = $("#qtde"),
                                     valor = $("#valor"),
                                     valor_parcial = 0,
@@ -130,6 +134,7 @@
                                     $("#users tbody").append("<tr>" +
                                             "<td>" + convenio.val() + "</td>" +
                                             "<td>" + procedimento.val() + "</td>" +
+                                            "<td>" + descricao.val() + "</td>" +
                                             "<td>" + qtde.val() + "</td>" +
                                             "<td >" + valor.val().replace("," , ".") + "</td>" +
                                             "</tr>");
@@ -145,7 +150,7 @@
                                     valor_replace = valor_replace.replace("," , ".");
                                     valor_parcial = valor_parcial + (parseFloat(valor_replace) * parseFloat(qtde.val())) ;
                                     $("#users tfoot").append("<tr>" +
-                                            "<td class='tabela_header' colspan='4' ><center>" + 'Valor Total: R$ ' + valor_parcial + "</center></td>" +
+                                            "<td class='tabela_header' colspan='5' ><center>" + 'Valor Total: R$ ' + valor_parcial + "</center></td>" +
                                             "</tr>");
 
                                     dialog.dialog("close");
@@ -219,6 +224,7 @@
                                         options = options.replace(".", ",")
                                         document.getElementById("valor").value = options;
                                         document.getElementById("qtde").value = "1";
+                                        $("#descricao").val(j[0].descricao_procedimento);
                                         $('.carregando').hide();
                                     });
                                 } else {

@@ -3606,7 +3606,7 @@ class exametemp_model extends Model {
     }
 
     function listarautocompleteprocedimentosvalor($parametro = null) {
-        $this->db->select('pc.valortotal, pt.qtde');
+        $this->db->select('pc.valortotal, pt.qtde, pt.descricao_procedimento');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("pc.ativo", 't');

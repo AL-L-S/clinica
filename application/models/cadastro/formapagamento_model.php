@@ -274,9 +274,9 @@ class formapagamento_model extends Model {
 
 
             $parcelas = $_POST['parcelas'];
-            if ($_POST['parcelas'] == "" || $_POST['parcelas'] == 0) {
-                $parcelas = 1;
-            }
+//            if ($_POST['parcelas'] == "" || $_POST['parcelas'] == 0) {
+//                $parcelas = 1;
+//            }
             $diareceber = $_POST['diareceber'];
             $temporeceber = $_POST['temporeceber'];
             if ($_POST['diareceber'] == '' || $_POST['diareceber'] < 0) {

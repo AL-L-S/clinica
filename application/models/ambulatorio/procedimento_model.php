@@ -11,6 +11,7 @@ class procedimento_model extends Model {
     var $_perc_medico = null;
     var $_qtde = null;
     var $_dencidade_calorica = null;
+    var $_descricao_procedimento = null;
     var $_proteinas = null;
     var $_carboidratos = null;
     var $_entrega = null;
@@ -303,6 +304,9 @@ class procedimento_model extends Model {
             }
             if ($_POST['descricao'] != '') {
                 $this->db->set('descricao_procedimento', $_POST['descricao']);
+            }
+            if ($_POST['observacao'] != '') {
+                $this->db->set('observacao_procedimento', $_POST['observacao']);
             }
             if ($_POST['entrega'] != '') {
                 $this->db->set('entrega', $_POST['entrega']);
