@@ -3448,13 +3448,13 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = ep.procedimento_id', 'left');
         $this->db->where("ag.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ag.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("ags.ativo", 't');
 
         if ($_POST['txtNomeid'] != "") {
-            $this->db->where('ag.paciente_id !=', $_POST['txtNomeid']);
+            $this->db->where('ag.paciente_id', $_POST['txtNomeid']);
         }
         
         $this->db->orderby('p.nome');
-//        $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();
     }
