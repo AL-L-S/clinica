@@ -13,10 +13,13 @@ class cliente_model extends Model {
     }
 
     function listar($args = array()) {
-        $this->db->select('estoque_cliente_id,
-                            nome, telefone');
-        $this->db->from('tb_estoque_cliente');
-        $this->db->where('ativo', 'true');
+        $this->db->select('ec.estoque_cliente_id,
+                            ec.nome, ec.telefone,
+                            m.descricao as menu
+                            ');
+        $this->db->from('tb_estoque_cliente ec');
+        $this->db->join('tb_estoque_menu m', 'm.estoque_menu_id = ec.menu_id');
+        $this->db->where('ec.ativo', 'true');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('descricao ilike', "%" . $args['nome'] . "%");
         }

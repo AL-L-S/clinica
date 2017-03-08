@@ -12,14 +12,14 @@
                     <dd>
                         <input type="hidden" name="txtestoque_entrada_id" id="txtestoque_entrada_id" value="<?= @$obj->_estoque_entrada_id; ?>" />
                         <input type="hidden" name="txtproduto" id="txtproduto" value="<?= @$obj->_produto_id; ?>" />
-                        <input type="text" name="txtprodutolabel" id="txtprodutolabel" class="texto10" value="<?= @$obj->_produto; ?>" />
+                        <input type="text" name="txtprodutolabel" id="txtprodutolabel" class="texto10" value="<?= @$obj->_produto; ?>" required/>
                     </dd>
                     <dt>
                     <label>Fornecedor</label>
                     </dt>
                     <dd>
                         <input type="hidden" name="txtfornecedor" id="txtfornecedor" value="<?= @$obj->_fornecedor_id; ?>" />
-                        <input type="text" name="txtfornecedorlabel" id="txtfornecedorlabel" class="texto10" value="<?= @$obj->_fornecedor; ?>" />
+                        <input type="text" name="txtfornecedorlabel" id="txtfornecedorlabel" class="texto10" value="<?= @$obj->_fornecedor; ?>" required/>
                     </dd>
                     <dt>
                     <label>Armazem</label>
@@ -38,6 +38,12 @@
                     </dt>
                     <dd>
                         <input type="text" id="compra" alt="decimal" class="texto02" name="compra" value="<?= @$obj->_valor_compra; ?>" />
+                    </dd>
+                    <dt>
+                    <label>Lote</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="lote" class="texto02" name="lote" value="<?= @$obj->_lote; ?>" />
                     </dd>
                     <dt>
                     <label>Quantidade</label>

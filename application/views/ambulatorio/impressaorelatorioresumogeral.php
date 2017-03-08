@@ -165,7 +165,7 @@
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor_medico, 2, ',', '.') ?></td>
                 </tr>
-        <? if ($i == $ultimo): ?>
+                <? if ($i == $ultimo): ?>
                     <tr>
                         <td style='text-align: right;' colspan=""></td>
                         <td style='text-align: right;' colspan="">
@@ -175,7 +175,7 @@
                         </td>
                         <td style='text-align: right;' colspan=""></td>
                     </tr>
-        <? endif; ?>
+                <? endif; ?>
 
 
                 <?
@@ -210,7 +210,7 @@
         <tbody>           
 
             <tr>
-                <td width="350px;"><font size="-1"><B>Valor por Convênio</B></th>
+                <td width="350px;"><font size="-1"><B>Valor Convênio</B></th>
                 <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></th>
             </tr>
             <tr>
@@ -230,14 +230,14 @@
                         }
                     }
                 endforeach;
-                //   if($item->dinheiro == 'f'){
+                   if($item->dinheiro == 'f'){
                 ?>
                 <tr>
                     <td><font size="-1" width="350px;"><?= utf8_decode($item->convenio); ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
                 </tr>
                 <?php
-                // }
+                 }
                 $total_geral = $total_geral + $item->valor;
             endforeach;
 
@@ -246,11 +246,51 @@
             $faturamento_clinica = $liquidodinheiro + $total_convenio;
             ?>
             <tr>
-                <td><font size="-1" width="350px;"><b>VALOR CONVÊNIO</b></td>
+                <td><font size="-1" width="350px;"><b>VALOR GERAL</b></td>
                 <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_convenio, 2, ',', '.') ?></td>
             </tr>
+
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <br>
+    <table>
+        <tbody>           
+
             <tr>
-                <td><font size="-1" width="350px;"><b>VALOR PARTICULAR</b></td>
+                <td width="350px;"><font size="-1"><B>Valor Dinheiro</B></th>
+                <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></th>
+            </tr>
+            <tr>
+                <th style='width:10pt;border:solid windowtext 1.0pt;
+                    border-bottom:none;mso-border-top-alt:none;border-left:
+                    none;border-right:none;' colspan="4">&nbsp;</th>
+            </tr>
+            <?
+            foreach ($convenio as $item) :
+                
+                   if($item->dinheiro == 't'){
+                ?>
+                <tr>
+                    <td><font size="-1" width="350px;"><?= utf8_decode($item->convenio); ?></td>
+                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
+                </tr>
+                <?php
+                 }
+            endforeach;
+
+            if ($item->dinheiro == 't') {
+                ?>
+                <tr>
+                    <td><font size="-1" width="350px;"><?= utf8_decode($item->convenio); ?></td>
+                    <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
+                </tr>
+                <?php
+            }
+            ?>
+            <tr>
+                <td><font size="-1" width="350px;"><b>VALOR GERAL</b></td>
                 <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_particular, 2, ',', '.') ?></td>
             </tr>
 

@@ -512,6 +512,7 @@ class inventario_model extends Model {
             $estoque_entrada_id = $_POST['txtestoque_entrada_id'];
             $this->db->set('produto_id', $_POST['txtproduto']);
             $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
+            $this->db->set('lote', $_POST['lote']);
             $this->db->set('inventario', 't');
             $this->db->set('armazem_id', $_POST['txtarmazem']);
             $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
@@ -571,6 +572,7 @@ class inventario_model extends Model {
         if ($estoque_entrada_id != 0) {
             $this->db->select('e.estoque_entrada_id,
                             e.produto_id,
+                            e.lote,
                             p.descricao as produto,
                             e.armazem_id,
                             a.descricao as armazem,
@@ -593,6 +595,7 @@ class inventario_model extends Model {
             $this->_produto = $return[0]->produto;
             $this->_fornecedor_id = $return[0]->fornecedor_id;
             $this->_fornecedor = $return[0]->fornecedor;
+            $this->_lote = $return[0]->lote;
             $this->_armazem_id = $return[0]->armazem_id;
             $this->_armazem = $return[0]->armazem;
             $this->_nota_fiscal = $return[0]->nota_fiscal;

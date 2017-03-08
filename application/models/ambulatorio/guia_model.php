@@ -1524,8 +1524,14 @@ class guia_model extends Model {
         $this->db->select('distinct(g.ambulatorio_guia_id ),
                             data_criacao,
                             g.valor_guia,
+                            g.checado,
                             sum(ae.valor_total) as total,
-                            p.nome as paciente');
+                            p.nome as paciente,
+                            p.celular,
+                            p.cpf,
+                            p.rg,
+                            p.telefone
+                            ');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = g.paciente_id', 'left');
@@ -1534,7 +1540,39 @@ class guia_model extends Model {
         $this->db->where('ae.data >=', $inicio);
         $this->db->where('ae.data <=', $fim);
         $this->db->groupby('g.ambulatorio_guia_id');
+        $this->db->groupby('p.celular');
+        $this->db->groupby('p.telefone');
         $this->db->groupby('p.nome');
+        $this->db->groupby('p.cpf');
+        $this->db->groupby('p.rg');
+        $this->db->orderby('data_criacao');
+        $this->db->orderby('p.nome');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function procedimentoguianota($ambulatorio_guia_id) {
+
+        $this->db->select('
+                           ae.valor_total as total,
+                            pt.nome as procedimento,
+                            f.nome as forma_pagamento,
+                            f2.nome as forma_pagamento_2,
+                            f3.nome as forma_pagamento_3,
+                            f4.nome as forma_pagamento_4,
+                            ');
+        $this->db->from('tb_ambulatorio_guia g');
+        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = g.paciente_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = ae.forma_pagamento', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = ae.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = ae.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
+        $this->db->where('g.ambulatorio_guia_id', $ambulatorio_guia_id);
+        $this->db->orderby('pt.nome');
         $this->db->orderby('p.nome');
 
         $return = $this->db->get();
@@ -4561,6 +4599,23 @@ AND data <= '$data_fim'";
             $this->db->update('tb_agenda_exames');
 
             return $agenda_exame_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarchecknota($ambulatorio_guia_id) {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('checado', 't');
+            $this->db->set('data_checado', $horario);
+            $this->db->set('operador_checado', $operador_id);
+            $this->db->where('ambulatorio_guia_id', $ambulatorio_guia_id);
+            $this->db->update('tb_ambulatorio_guia');
+
+            return $ambulatorio_guia_id;
         } catch (Exception $exc) {
             return -1;
         }

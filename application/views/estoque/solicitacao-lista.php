@@ -39,7 +39,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->solicitacao->listar($_GET)->orderby('es.estoque_solicitacao_setor_id desc')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->solicitacao->listar($_GET)->orderby('es.data_cadastro')->orderby('ec.nome')->orderby('es.estoque_solicitacao_setor_id desc')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
 

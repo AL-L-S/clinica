@@ -30,7 +30,8 @@
                     <label>Unidade</label>
                     </dt>
                     <dd>
-                        <select name="unidade" id="unidade" class="size4">
+                        <select name="unidade" id="unidade" class="size4" required="">
+                            <option value=""></option>
                             <? foreach ($unidade as $value) : ?>
                                 <option value="<?= $value->estoque_unidade_id; ?>"<?
                             if(@$obj->_unidade_id == $value->estoque_unidade_id):echo'selected';
