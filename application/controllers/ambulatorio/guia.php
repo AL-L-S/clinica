@@ -359,7 +359,7 @@ class Guia extends BaseController {
         }
 //            
         if ($data['empresa'][0]->impressao_tipo == 10) {//      CLINICA MED
-            $this->load->View('ambulatorio/impressaofichamed', $data);
+            $this->load->View('ambulatorio/impressaofichageral', $data);
         }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////        
@@ -385,6 +385,10 @@ class Guia extends BaseController {
 ///////////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 9) { // CLINICA SAO PAULO
             $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
+        }
+        
+        else{ //GERAL
+            $this->load->View('ambulatorio/impressaofichageral', $data);
         }
     }
 
@@ -1235,7 +1239,7 @@ class Guia extends BaseController {
             $data['exame2']          = $this->guia->listarexameguiaforma($guia_id, $financeiro_grupo_id);
             $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
-
+        
         $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
@@ -1309,8 +1313,16 @@ class Guia extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor cadastrado.';
                 $erro = true;
             }
+            if($_POST['valorMinimo4'] != '' && $_POST['valorMinimo3'] != '' && $_POST['valorMinimo2'] != '' && $_POST['valorMinimo1'] != ''){
+                $erro = true;
+            }
             
-            if($erro){
+            $_POST['parcela1'] = ($_POST['parcela1'] == '' || $_POST['parcela1'] == 0) ? 1 : $_POST['parcela1'];
+            $_POST['parcela2'] = ($_POST['parcela2'] == '' || $_POST['parcela2'] == 0) ? 1 : $_POST['parcela2'];
+            $_POST['parcela3'] = ($_POST['parcela3'] == '' || $_POST['parcela3'] == 0) ? 1 : $_POST['parcela3'];
+            $_POST['parcela4'] = ($_POST['parcela4'] == '' || $_POST['parcela4'] == 0) ? 1 : $_POST['parcela4'];
+                        
+            if(!$erro){
                 $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();
                 if ($ambulatorio_guia_id == "-1") {
                     $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
@@ -2294,8 +2306,8 @@ class Guia extends BaseController {
 
         $dataFuturo = date("Y-m-d");
 
-//        $this->load->View('ambulatorio/impressaorecibomed', $data);
-        $this->load->View('ambulatorio/impressaorecibo', $data);
+        $this->load->View('ambulatorio/impressaorecibomed', $data);
+//        $this->load->View('ambulatorio/impressaorecibo', $data);
     }
 
     function relatoriomedicoconveniofinanceiro() {

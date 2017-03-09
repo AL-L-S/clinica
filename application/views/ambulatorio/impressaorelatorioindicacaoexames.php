@@ -33,7 +33,7 @@
 
             <? if ($indicacao == "0") { ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODOS AS RECOMENDAÇÕES</th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODAS RECOMENDAÇÕES</th>
                 </tr>
             <? } else { ?>
                 <tr>

@@ -77,7 +77,7 @@
                             <input type="text" name="valorajuste1" id="valorajuste1" size="4" value="<?= $valor; ?>" onblur="history.go(0)"/>
                             </td>
                             <td style="text-align: left">
-                            <input style="width: 60px;" type="number" name="parcela1" id="parcela1"  size="2" min="1" />
+                            <input style="width: 60px;" type="number" name="parcela1" id="parcela1" value="1" size="2" min="1" />
                             </td>
                             
                             <input type="hidden" name="totalpagar" id="totalpagar"  class="texto01" onblur="history.go(0)"/>
@@ -316,7 +316,7 @@
                                                     options = j[0].ajuste;
                                                     parcelas = j[0].parcelas;
                                                     numer_1 = parseFloat(document.form_faturar.valor1.value.replace(",", "."));
-                                                    if (j[0].parcelas != null) {
+                                                    if (j[0].parcelas != null && j[0].parcelas != '0') {
                                                         document.getElementById("parcela1").max = parcelas;
                                                     } else {
                                                         document.getElementById("parcela1").max = '1';
@@ -352,7 +352,7 @@
                                                     options = j[0].ajuste;
                                                     parcelas = j[0].parcelas;
                                                     numer_2 = parseFloat(document.form_faturar.valor2.value.replace(",", "."));
-                                                    if (j[0].parcelas != null) {
+                                                    if (j[0].parcelas != null && j[0].parcelas != '0') {
                                                         document.getElementById("parcela2").max = parcelas;
                                                     } else {
                                                         document.getElementById("parcela2").max = '1';
@@ -390,7 +390,7 @@
                                                     options = j[0].ajuste;
                                                     parcelas = j[0].parcelas;
                                                     numer_3 = parseFloat(document.form_faturar.valor3.value.replace(",", "."));
-                                                    if (j[0].parcelas != null) {
+                                                    if (j[0].parcelas != null && j[0].parcelas != '0') {
                                                         document.getElementById("parcela3").max = parcelas;
                                                     } else {
                                                         document.getElementById("parcela3").max = '1';
@@ -425,7 +425,7 @@
                                                     options = j[0].ajuste;
                                                     parcelas = j[0].parcelas;
                                                     numer_4 = parseFloat(document.form_faturar.valor4.value.replace(",", "."));
-                                                    if (j[0].parcelas != null) {
+                                                    if (j[0].parcelas != null && j[0].parcelas != '0') {
                                                         document.getElementById("parcela4").max = parcelas;
                                                     } else {
                                                         document.getElementById("parcela4").max = '1';
