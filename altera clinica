@@ -1618,3 +1618,20 @@ ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN operador_checado integer;
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN data_checado timestamp without time zone;
 ALTER TABLE ponto.tb_estoque_entrada ADD COLUMN lote character varying(30);
 
+-- Dia 09/03/2017
+ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_recibo integer;
+
+-- FIM DA VERSÃO 1.0.00002
+DROP TABLE ponto.tb_versao;
+CREATE TABLE ponto.tb_versao
+(
+  versao_id SERIAL NOT NULL,
+  sistema character varying(20),
+  banco_de_dados character varying(20),
+  CONSTRAINT tb_versao_pkey PRIMARY KEY (versao_id )
+);
+
+INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+    VALUES ('1.0.00002', '1.0.00002');
+
+---++++++++++ CRIAR NOVO ARQUIVO ++++++++++---

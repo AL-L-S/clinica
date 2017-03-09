@@ -6035,6 +6035,7 @@ ORDER BY ae.agenda_exames_id)";
                             telefone,
                             producaomedicadinheiro,
                             impressao_declaracao,
+                            impressao_recibo,
                             celular,
                             bairro,
                             impressao_tipo');

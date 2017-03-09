@@ -250,27 +250,6 @@ class Guia extends BaseController {
             }
         }
 
-
-//        foreach ($exames as $value) {
-//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/")) {
-//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/");
-//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/", 0777);
-//            }
-//            if (!is_dir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/")) {
-//                mkdir("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/");
-//                chmod("/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/", 0777);
-//            }
-//            $this->utilitario->barcode($value->agenda_exames_id, "/home/sisprod/projetos/clinica/upload/barcodeimg/$value->paciente_id/$value->agenda_exames_id.png", $size = "20", "horizontal", "code128", true, 1);
-//        }
-//
-//        // criar codigo de barras (fim)
-//
-//        if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichausproimagem', $data);
-//        }
-//        if ($grupo == "MAMOGRAFIA") {
-//            $this->load->View('ambulatorio/impressaofichamamografiaproimagem', $data);
-//        }
         if ($data['empresa'][0]->impressao_tipo == 1) { //HUMANA 
             if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
                 $this->load->View('ambulatorio/impressaofichaus', $data);
@@ -316,9 +295,9 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichaconsulta', $data);
             } else {
                 if ($dinheiro == "t") {
-                    $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+                    $this->load->View('ambulatorio/impressaofichageralparticular', $data);
                 } else {
-                    $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+                    $this->load->View('ambulatorio/impressaofichageral', $data);
                 }
             }
         }
@@ -329,9 +308,9 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichaconsultafisioclinica', $data);
             } else {
                 if ($dinheiro == "t") {
-                    $this->load->View('ambulatorio/impressaofichafisioclinicaparticular', $data);
+                    $this->load->View('ambulatorio/impressaofichageralparticular', $data);
                 } else {
-                    $this->load->View('ambulatorio/impressaofichafisioclinica', $data);
+                    $this->load->View('ambulatorio/impressaofichageral', $data);
                 }
             }
         }
@@ -346,16 +325,16 @@ class Guia extends BaseController {
             }
             if ($data['exame'][0]->tipo == "EXAME") {
                 if ($dinheiro == "t") {
-                    $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
+                    $this->load->View('ambulatorio/impressaofichageralparticular', $data);
                 } else {
-                    $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
+                    $this->load->View('ambulatorio/impressaofichageral', $data);
                 }
             }
         }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////       
         elseif ($data['empresa'][0]->impressao_tipo == 6) {// CLINICA dez
-            $this->load->View('ambulatorio/impressaofichaexamedez', $data);
+            $this->load->View('ambulatorio/impressaofichageralparticular', $data);
         }
 //            
         if ($data['empresa'][0]->impressao_tipo == 10) {//      CLINICA MED
@@ -365,9 +344,9 @@ class Guia extends BaseController {
 ///////////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 8) { //RONALDO
             if ($dinheiro == "t") {
-                $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
+                $this->load->View('ambulatorio/impressaofichageralparticular', $data);
             } else {
-                $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+                $this->load->View('ambulatorio/impressaofichageral', $data);
             }
         }
 
@@ -378,7 +357,7 @@ class Guia extends BaseController {
             } elseif ($grupo == "RM") {
                 $this->fichaxml($paciente_id, $guia_id, $exames_id);
             } else {
-                $this->load->View('ambulatorio/impressaofichamedlab', $data);
+                $this->load->View('ambulatorio/impressaofichageral', $data);
             }
         }
 
@@ -388,7 +367,12 @@ class Guia extends BaseController {
         }
         
         else{ //GERAL
-            $this->load->View('ambulatorio/impressaofichageral', $data);
+            if ($dinheiro == "t") {
+                $this->load->View('ambulatorio/impressaofichageralparticular', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaofichageral', $data);
+            }
+//            $this->load->View('ambulatorio/', $data);
         }
     }
 
@@ -2305,9 +2289,13 @@ class Guia extends BaseController {
         }
 
         $dataFuturo = date("Y-m-d");
-
-        $this->load->View('ambulatorio/impressaorecibomed', $data);
-//        $this->load->View('ambulatorio/impressaorecibo', $data);
+        
+        if($data['empresa'][0]->impressao_recibo == 1){
+            $this->load->View('ambulatorio/impressaorecibomed', $data);
+        }
+        else{
+            $this->load->View('ambulatorio/impressaorecibo', $data);
+        }
     }
 
     function relatoriomedicoconveniofinanceiro() {
