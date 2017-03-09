@@ -152,8 +152,8 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->exame->listarexamemultifuncao($_GET);
-                $total = $consulta->count_all_results();
+                $consulta = $this->exame->listarexamemultifuncao($_GET)->get()->result();
+                $total = count($consulta);
                 $limit = 100;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 

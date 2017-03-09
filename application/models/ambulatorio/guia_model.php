@@ -1881,6 +1881,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 't');
         $this->db->where('ae.tipo', 'EXAME');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('medico_parecer1', $_POST['medicos']);
@@ -1926,13 +1927,14 @@ class guia_model extends Model {
 
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-
+        
         $this->db->where('ae.data <=', $data);
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
         $this->db->where('ae.confirmado', 'f');
         $this->db->where('ae.tipo', 'EXAME');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('ae.medico_agenda', $_POST['medicos']);
@@ -1988,6 +1990,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 't');
         $this->db->where('ae.tipo', 'EXAME');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('medico_parecer1', $_POST['medicos']);
@@ -2040,6 +2043,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 'f');
         $this->db->where('ae.tipo', 'EXAME');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('ae.medico_agenda', $_POST['medicos']);
@@ -2098,6 +2102,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 't');
         $this->db->where('ae.tipo', 'EXAME');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('medico_parecer1', $_POST['medicos']);
@@ -2154,6 +2159,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 'f');
         $this->db->where('ae.tipo', 'EXAME');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('ae.medico_agenda', $_POST['medicos']);
@@ -2210,6 +2216,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 't');
         $this->db->where('ae.tipo', 'CONSULTA');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('medico_parecer1', $_POST['medicos']);
@@ -2261,6 +2268,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 'f');
         $this->db->where('ae.tipo', 'CONSULTA');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('ae.medico_consulta_id', $_POST['medicos']);
@@ -2317,6 +2325,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 't');
         $this->db->where('ae.tipo', 'CONSULTA');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('medico_parecer1', $_POST['medicos']);
@@ -2369,6 +2378,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 'f');
         $this->db->where('ae.tipo', 'CONSULTA');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('ae.medico_consulta_id', $_POST['medicos']);
@@ -2416,6 +2426,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 
 
         $this->db->where('ae.data <=', $datafim);
@@ -2485,6 +2496,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 'f');
         $this->db->where('ae.tipo', 'CONSULTA');
         $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('e.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('ae.medico_consulta_id', $_POST['medicos']);

@@ -103,7 +103,7 @@
             $valortotal = $valortotal + $itens->valortotal;
             ?>
             <tr>
-                <td><?= ($itens->data); ?></td>
+                <td><?= str_replace("-","/",date("d-m-Y", strtotime($itens->data))); ?></td>
                 <td><?= utf8_decode($itens->nome); ?></td>
                 <td style='text-align: right;'><?= number_format($itens->valortotal, 2, ',', '.'); ?></td>
             </tr>
@@ -140,7 +140,7 @@
             $valortotal = $valortotal + $itens->valortotal;
             ?>
             <tr>
-                <td><?= ($itens->data); ?></td>
+                <td><?= (str_replace("-","/",date("d-m-Y", strtotime($itens->data)))); ?></td>
                 <td><?= utf8_decode($itens->nome); ?></td>
                 <td style='text-align: right;'><?= number_format($itens->valortotal, 2, ',', '.'); ?></td>
             </tr>
@@ -153,7 +153,7 @@
                 $valortotal = $valortotal + $itens->valortotal;
                 ?>
                 <tr>
-                    <td><?= ($itens->data); ?></td>
+                    <td><?= (str_replace("-","/",date("d-m-Y", strtotime($itens->data)))); ?></td>
                     <td><?= utf8_decode($itens->nome); ?></td>
                     <td style='text-align: right;'><?= number_format($itens->valortotal, 2, ',', '.'); ?></td>
                 </tr>
@@ -179,7 +179,7 @@
             $valortotal = $valortotal + $itens->valortotal;
             ?>
             <tr>
-                <td><?= ($itens->data); ?></td>
+                <td><?= (str_replace("-","/",date("d-m-Y", strtotime($itens->data)))); ?></td>
                 <td><?= utf8_decode($itens->nome); ?></td>
                 <td style='text-align: right;'><?= number_format($itens->valortotal, 2, ',', '.'); ?></td>
             </tr>
