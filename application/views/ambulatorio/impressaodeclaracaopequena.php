@@ -48,7 +48,7 @@ switch ($MES) {
 <p><center><img align = 'center'  width='400px' height='200px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
 
 <p>Paciente: <strong><?= utf8_decode($paciente['0']->nome); ?></strong></p>
-<?echo $modelo[0]->texto?>
+<? echo $modelo[0]->texto ?>
 
 <!--<p><center><u><b><?= $empresa[0]->razao_social; ?></b></u></center></p>
 <br>
@@ -84,9 +84,31 @@ switch ($MES) {
 <br>
 <br>-->
 
+<style>
+    footer {
+        position: absolute; 
+        bottom: 0px; 
+        width: 100%; 
+        /*height: 60px;*/ 
+        /*background-color: green;*/
+    }
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+    body {
+        margin: 0 0 60px; /* altura do seu footer */
+    }
+
+</style>
 
 <footer>
-   <p><center><img align = 'center'  width='1000px' height='100px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p> 
+    <p style="text-align: center"><?= $exame[0]->municipio ?> - <?= $exame[0]->estado ?>
+        , <?= substr($exame[0]->data, 8, 2) . " de " . $MES . " de " . substr($exame[0]->data, 0, 4); ?> /
+
+        <?= date("H:i:s") ?>
+    </p>
+    <p><center><img align = 'center'  width='1000px' height='100px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p> 
 </footer>
 
 

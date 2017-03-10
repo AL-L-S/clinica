@@ -74,7 +74,7 @@
                             <option value='NAO' >NAO</option>
                         </select>
                     </dd>
-                    
+
                     <dt>
                         <label>Situação</label>
                     </dt>
@@ -92,6 +92,17 @@
                         <select name="solicitante" id="solicitante" class="size1" >
                             <option value='SIM' >SIM</option>
                             <option value='NAO' >NAO</option>
+                        </select>
+                    </dd>
+
+                    <dt>
+                        <label>Recibo</label>
+                    </dt>
+                    <dd>
+                        <select name="recibo" id="recibo" class="size1" >
+
+                            <option value='NAO' >NÃO</option>
+                            <option value='SIM' >SIM</option>
                         </select>
                     </dd>
                     <dt>

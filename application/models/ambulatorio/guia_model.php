@@ -4230,6 +4230,7 @@ class guia_model extends Model {
                             cbo.descricao as profissaos,
                             pt.perc_medico,
                             m.nome as municipio,
+                            m.estado,
                             pt.codigo,
                             pt.nome as procedimento');
         $this->db->from('tb_agenda_exames ae');
