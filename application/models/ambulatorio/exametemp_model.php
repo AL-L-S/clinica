@@ -3406,6 +3406,29 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarhorariosespecialidade($parametro = null, $teste = null) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('a.agenda_exames_id,
+                            o.nome as medico,
+                            a.inicio,
+                            a.data');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id');
+        
+        $this->db->where('a.ativo', 'true');
+        $this->db->where('a.bloqueado', 'false');
+        $this->db->where("( (a.tipo = 'FISIOTERAPIA') OR (a.tipo = 'ESPECIALIDADE') )");
+        $this->db->where('a.empresa_id', $empresa_id);
+        if ($parametro != null) {
+            $this->db->where('a.medico_agenda', $parametro);
+            $this->db->where('a.data', $teste);
+        }
+        $this->db->orderby('a.inicio');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarhorariosgeral($parametro = null, $teste = null) {
         $empresa_id = $this->session->userdata('empresa_id');

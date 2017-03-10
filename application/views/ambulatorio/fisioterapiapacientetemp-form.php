@@ -50,7 +50,7 @@
             <div>
                 <label>Data</label>
                 <input type="text"  id="data_ficha" name="data_ficha" class="size1"  required/>
-                <input type="hidden" name="txtpaciente_id" value="<?= @$obj->_paciente_id; ?>" />
+                <input type="hidden" name="txtpaciente_id" id="txtpaciente_id" value="<?= @$obj->_paciente_id; ?>" />
             </div>
             <legend>Medicos</legend>
 
@@ -234,7 +234,7 @@
                                                     if ($(this).val()) {
                                                         $('#horarios').hide();
                                                         $('.carregando').show();
-                                                        $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorioconsulta', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
+                                                        $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorioespecialidade', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
                                                             var options = '<option value=""></option>';
                                                             for (var i = 0; i < j.length; i++) {
                                                                 options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '</option>';

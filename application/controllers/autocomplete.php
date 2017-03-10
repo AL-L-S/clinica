@@ -59,7 +59,7 @@ class Autocomplete extends Controller {
     }
 
     function horariosambulatorioconsulta() {
-
+    $_GET['teste'] = date("Y-m-d",strtotime(str_replace("/", "-", $_GET['teste'])));
         if (isset($_GET['exame'])) {
             $result = $this->exametemp->listarhorariosconsulta($_GET['exame'], $_GET['teste']);
         } else {
@@ -67,9 +67,20 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function horariosambulatorioespecialidade() {
+//    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
+    $_GET['teste'] = date("Y-m-d",strtotime(str_replace("/", "-", $_GET['teste'])));
+        if (isset($_GET['exame'])) {
+            $result = $this->exametemp->listarhorariosespecialidade($_GET['exame'], $_GET['teste']);
+        } else {
+            $result = $this->exametemp->listarhorariosespecialidade();
+        }
+        echo json_encode($result);
+    }
 
     function horariosambulatoriogeral() {
-
+        
         if (isset($_GET['exame'])) {
             $result = $this->exametemp->listarhorariosgeral($_GET['exame'], $_GET['teste']);
         } else {

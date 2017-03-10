@@ -72,7 +72,7 @@ class Operador_model extends BaseModel {
                 $this->db->where('tb_operador.nome ilike', "%" . $args['nome'] . "%");
                 $this->db->orwhere('tb_operador.usuario ilike', "%" . $args['nome'] . "%");
             }
-            if ($args['ativo'] != '') {
+            if (@$args['ativo'] != '') {
                 $this->db->where('tb_operador.ativo', $args['ativo']);
             }
         }
