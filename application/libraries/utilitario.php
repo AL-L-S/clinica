@@ -43,6 +43,101 @@ class Utilitario {
 
         return $retorno;
     }
+    
+    function codigo_uf($codMunIbge, $retorno = 'sigla') {
+        $codUF = substr($codMunIbge, 0, 2);
+        if($retorno != 'sigla'){
+            return $codUF;
+        }
+        else{
+            switch ($codUF) {
+                case '11':
+                    return 'RO';
+                    break;
+                case '12':
+                    return 'AC';
+                    break;
+                case '13':
+                    return 'AM';
+                    break;
+                case '14':
+                    return 'RR';
+                    break;
+                case '15':
+                    return 'PA';
+                    break;
+                case '16':
+                    return 'AP';
+                    break;
+                case '17':
+                    return 'TO';
+                    break;
+                case '21':
+                    return 'MA';
+                    break;
+                case '22':
+                    return 'PI';
+                    break;
+                case '23':
+                    return 'CE';
+                    break;
+                case '24':
+                    return 'RN';
+                    break;
+                case '25':
+                    return 'PB';
+                    break;
+                case '26':
+                    return 'PE';
+                    break;
+                case '27':
+                    return 'AL';
+                    break;
+                case '28':
+                    return 'SE';
+                    break;
+                case '29':
+                    return 'BA';
+                    break;
+                case '31':
+                    return 'MG';
+                    break;
+                case '32':
+                    return 'ES';
+                    break;
+                case '33':
+                    return 'RJ';
+                    break;
+                case '35':
+                    return 'SP';
+                    break;
+                case '41':
+                    return 'PR';
+                    break;
+                case '42':
+                    return 'SC';
+                    break;
+                case '43':
+                    return 'RS';
+                    break;
+                case '50':
+                    return 'MS';
+                    break;
+                case '51':
+                    return 'MT';
+                    break;
+                case '52':
+                    return 'GO';
+                    break;
+                case '53':
+                    return 'DF';
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        }
+    }
 
     function paginacao($url, $total, $pagina, $limit = 10) {
 
