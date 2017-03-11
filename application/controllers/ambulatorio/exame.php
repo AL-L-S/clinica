@@ -1777,6 +1777,9 @@ class Exame extends BaseController {
         $hora = date("H:i:s");
         $empresa = $this->exame->listarcnpj();
         $lote = $this->exame->listarlote();
+        
+        $codigoUF = $this->utilitario->codigo_uf($empresa[0]->codigo_ibge, 'codigo');
+        
         $cnpjxml = $listarexame[0]->codigoidentificador;
         $razao_socialxml = $empresa[0]->razao_socialxml;
         $registroans = $listarexame[0]->registroans;
@@ -1913,7 +1916,7 @@ class Exame extends BaseController {
                               <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
                               <ans:conselhoProfissional>06</ans:conselhoProfissional>
                               <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                              <ans:UF>23</ans:UF>
+                              <ans:UF>" . $codigoUF . "</ans:UF>
                               <ans:CBOS>999999</ans:CBOS>
                         </ans:profissionalSolicitante>
                       
@@ -1961,7 +1964,7 @@ class Exame extends BaseController {
                                     <ans:nomeProf>" . $medico . "</ans:nomeProf>
                                     <ans:conselho>01</ans:conselho>
                                     <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                                    <ans:UF>23</ans:UF>
+                                    <ans:UF>" . $codigoUF . "</ans:UF>
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                       </ans:procedimentoExecutado>
@@ -2005,7 +2008,7 @@ class Exame extends BaseController {
                             <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
                             <ans:conselhoProfissional>06</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                            <ans:UF>23</ans:UF>
+                            <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                          </ans:profissionalSolicitante>
                       </ans:dadosSolicitante>
@@ -2052,7 +2055,7 @@ class Exame extends BaseController {
                                     <ans:nomeProf>" . $medico . "</ans:nomeProf>
                                     <ans:conselho>01</ans:conselho>
                                     <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                                    <ans:UF>23</ans:UF>
+                                    <ans:UF>" . $codigoUF . "</ans:UF>
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                       </ans:procedimentoExecutado>
@@ -2334,7 +2337,7 @@ class Exame extends BaseController {
                             <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
                             <ans:conselhoProfissional>06</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                                <ans:UF>23</ans:UF>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                          </ans:profissionalSolicitante>
                       </ans:dadosSolicitante>
@@ -2377,7 +2380,7 @@ class Exame extends BaseController {
                             <ans:nomeProf>" . $medico . "</ans:nomeProf>
                             <ans:conselho>01</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>23</ans:UF>
+                            <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                             </ans:equipeSadt>
                       </ans:procedimentoExecutado>
@@ -2420,7 +2423,7 @@ class Exame extends BaseController {
                             <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
                             <ans:conselhoProfissional>06</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                                <ans:UF>23</ans:UF>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                          </ans:profissionalSolicitante>
                       </ans:dadosSolicitante>
@@ -2463,7 +2466,7 @@ class Exame extends BaseController {
                             <ans:nomeProf>" . $medico . "</ans:nomeProf>
                             <ans:conselho>01</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>23</ans:UF>
+                            <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                             </ans:equipeSadt>
                       </ans:procedimentoExecutado>
@@ -2761,7 +2764,7 @@ class Exame extends BaseController {
                             <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
                             <ans:conselhoProfissional>6</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                                <ans:UF>23</ans:UF>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                          </ans:profissionalSolicitante>
                       </ans:dadosSolicitante>
@@ -2804,7 +2807,7 @@ class Exame extends BaseController {
                             <ans:nomeProf>" . $medico . "</ans:nomeProf>
                             <ans:conselho>1</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>23</ans:UF>
+                            <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                             </ans:equipeSadt>
                       </ans:procedimentoExecutado>
@@ -2847,7 +2850,7 @@ class Exame extends BaseController {
                             <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
                             <ans:conselhoProfissional>6</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                                <ans:UF>23</ans:UF>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                          </ans:profissionalSolicitante>
                       </ans:dadosSolicitante>
@@ -2890,7 +2893,7 @@ class Exame extends BaseController {
                             <ans:nomeProf>" . $medico . "</ans:nomeProf>
                             <ans:conselho>1</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>23</ans:UF>
+                            <ans:UF>" . $codigoUF . "</ans:UF>
                             <ans:CBOS>999999</ans:CBOS>
                             </ans:equipeSadt>
                       </ans:procedimentoExecutado>
@@ -3173,7 +3176,7 @@ class Exame extends BaseController {
                         <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
                         <ans:conselhoProfissional>6</ans:conselhoProfissional>
                         <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                            <ans:UF>23</ans:UF>
+                            <ans:UF>" . $codigoUF . "</ans:UF>
                         <ans:CBOS>999999</ans:CBOS>
                      </ans:profissionalSolicitante>
                   </ans:dadosSolicitante>
@@ -3216,7 +3219,7 @@ class Exame extends BaseController {
                         <ans:nomeProf>" . $medico . "</ans:nomeProf>
                         <ans:conselho>1</ans:conselho>
                         <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                        <ans:UF>23</ans:UF>
+                        <ans:UF>" . $codigoUF . "</ans:UF>
                         <ans:CBOS>999999</ans:CBOS>
                         </ans:equipeSadt>
                   </ans:procedimentoExecutado>
@@ -3259,7 +3262,7 @@ class Exame extends BaseController {
                         <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
                         <ans:conselhoProfissional>6</ans:conselhoProfissional>
                         <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                            <ans:UF>23</ans:UF>
+                            <ans:UF>" . $codigoUF . "</ans:UF>
                         <ans:CBOS>999999</ans:CBOS>
                      </ans:profissionalSolicitante>
                   </ans:dadosSolicitante>
@@ -3302,7 +3305,7 @@ class Exame extends BaseController {
                         <ans:nomeProf>" . $medico . "</ans:nomeProf>
                         <ans:conselho>1</ans:conselho>
                         <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                        <ans:UF>23</ans:UF>
+                        <ans:UF>" . $codigoUF . "</ans:UF>
                         <ans:CBOS>999999</ans:CBOS>
                         </ans:equipeSadt>
                   </ans:procedimentoExecutado>

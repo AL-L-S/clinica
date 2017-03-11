@@ -365,8 +365,9 @@ class exame_model extends Model {
 
     function listarcnpj() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('cnpjxml, razao_socialxml, cnpj, registroans, cpfxml, cnes');
-        $this->db->from('tb_empresa');
+        $this->db->select('cnpjxml, razao_socialxml, cnpj, registroans, cpfxml, cnes, m.codigo_ibge');
+        $this->db->from('tb_empresa e');
+        $this->db->join('tb_municipio m', 'm.municipio_id = e.municipio_id', 'left');
         $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
