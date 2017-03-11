@@ -102,7 +102,7 @@
                 ?>
                 <tr>
                     <td ><font size = -1><?= $item->quantidade ?></td>
-                    <td ><font size = -1><?= utf8_decode($item->codigo) ?></td>
+                    <td ><font size = -1><? utf8_decode($item->codigo) ?></td>
                     <td width="40%;"><font size = -1><?= utf8_decode($item->procedimento) ?></td>
                     <td ><font size = -1><?= $item->convenio ?></td>
                     <td width="25%;"><font size = -1>Dr(a). <?= utf8_decode($item->medicosolicitante) ?></td>

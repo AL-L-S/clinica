@@ -94,7 +94,7 @@ class paciente_model extends BaseModel {
                 $this->db->orwhere('tb_paciente.cpf ilike', '%' . $args['nome'] . '%');
                 $this->db->where('ativo', 'true');
             } elseif (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
-                $this->db->where('tb_paciente.nascimento', $args['nascimento']);
+                $this->db->where('tb_paciente.nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $args['nascimento']))));
                 $this->db->where('ativo', 'true');
             }
         }
