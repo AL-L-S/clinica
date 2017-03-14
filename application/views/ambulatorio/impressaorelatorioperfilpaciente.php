@@ -1,4 +1,4 @@
-<div class="content"> <!-- Inicio da DIV content -->
+<!--<div class="content">  Inicio da DIV content -->
     <meta charset="utf-8"/>
     <? $tipoempresa = ""; ?>
     <table>
@@ -87,6 +87,15 @@
                 $crianca = 0;
                 $adoles = 0;
                 $adulto = 0;
+                $adulto2 = 0;
+                $adulto3 = 0;
+                $adulto4 = 0;
+                $adulto5 = 0;
+                $adulto6 = 0;
+                $adulto7 = 0;
+                $adulto8 = 0;
+                $adulto9 = 0;
+                $adulto10 = 0;
                 $idosos = 0;
                 $idades = array();
                 foreach ($relatorio as $item) :
@@ -110,6 +119,30 @@
                         }
                         if ($idade <= 59 && $idade >= 19) {
                             $adulto++;
+                            if ($idade <= 25 && $idade > 19) {
+                                $adulto2++;
+                            }
+                            if ($idade <= 30 && $idade > 25) {
+                                $adulto3++;
+                            }
+                            if ($idade <= 35 && $idade > 30) {
+                                $adulto5++;
+                            }
+                            if ($idade <= 40 && $idade > 35) {
+                                $adulto6++;
+                            }
+                            if ($idade <= 45 && $idade > 40) {
+                                $adulto7++;
+                            }
+                            if ($idade <= 50 && $idade > 45) {
+                                $adulto8++;
+                            }
+                            if ($idade <= 55 && $idade > 50) {
+                                $adulto9++;
+                            }
+                            if ($idade <= 59 && $idade > 55) {
+                                $adulto10++;
+                            }
                         }
                         if ($idade >= 60) {
                             $idosos++;
@@ -179,20 +212,20 @@
         $sexo_total = $masculino + $feminino;
         $masculinop = round(($masculino * 100) / $sexo_total);
         $femininop = round(($feminino * 100) / $sexo_total);
-        
+
         $faixa_etaria = $crianca + $adoles + $adulto + $idosos;
         $criancap = round(($crianca * 100) / $faixa_etaria);
         $adolesp = round(($adoles * 100) / $faixa_etaria);
         $adultop = round(($adulto * 100) / $faixa_etaria);
         $idososp = round(($idosos * 100) / $faixa_etaria);
-        
-        $estado_civil = $solteiro + $casado + $divorciado + $viuvo +$outros;
+
+        $estado_civil = $solteiro + $casado + $divorciado + $viuvo + $outros;
         $solteirop = round(($solteiro * 100) / $qtdetotal);
         $casadop = round(($casado * 100) / $qtdetotal);
         $divorciadop = round(($divorciado * 100) / $qtdetotal);
         $viuvop = round(($viuvo * 100) / $qtdetotal);
         $outrosp = round(($outros * 100) / $qtdetotal);
-        
+
         $escolaridade = $fundamental1 + $fundamental2 + $medio1 + $medio2 + $superior1 + $superior2;
         $fundamental1p = round(($fundamental1 * 100) / $escolaridade);
         $fundamental2p = round(($fundamental2 * 100) / $escolaridade);
@@ -315,7 +348,8 @@
                     <td style='text-align: center;'>Adulto(s)</td>
                     <td><?= $adulto; ?></td>
                     <td><?= $adultop . "%"; ?></td>
-                    <td style='text-align: center;'>19 - 59</td>
+                    <td id="teste" class="btn1" style='text-align: center;color: red;cursor: pointer;' title="Mostrar Mais">19 - 59</td>
+
                 </tr>
                 <tr>
                     <td style='text-align: center;'>Idoso(s)</td>
@@ -325,13 +359,20 @@
 
                 </tr>
                 <tr>
-                    <td rowspan="3" colspan="4"><div id="grafico" style="height: 250px;"></div></td>
+                    <td rowspan="3" colspan="4">
+                        <div id="grafico" style="height: 250px;"></div>
+
+                    </td>
                 </tr>
             </tbody>
 
 
         </table>
+        <h3 id="adultoslabel" style="display: none">Adultos</h3> <button id="esconder" style="display: none">Esconder</button>
+
+        <div id="adultos" style="height: 300px;display: none;"></div>
         
+
         <h3>Escolaridade</h3>
         <br>
         <table border="1">
@@ -396,7 +437,7 @@
     ?>
 
 
-</div> <!-- Final da DIV content -->
+<!--</div>  Final da DIV content -->
 
 <link rel="stylesheet" href="<?= base_url() ?>js/morris/morris.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
@@ -483,5 +524,58 @@
         formatter: function (x, data) {
             return data.formatted;
         }
+    });
+
+    new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'adultos',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+            {idade: '20-25', quantidade: <?= $adulto2; ?>},
+            {idade: '26-30', quantidade: <?= $adulto3; ?>},
+            {idade: '31-35', quantidade: <?= $adulto4; ?>},
+            {idade: '36-40', quantidade: <?= $adulto5; ?>},
+            {idade: '41-45', quantidade: <?= $adulto6; ?>},
+            {idade: '46-50', quantidade: <?= $adulto7; ?>},
+            {idade: '51-55', quantidade: <?= $adulto8; ?>},
+            {idade: '51-55', quantidade: <?= $adulto9; ?>},
+            {idade: '56-59', quantidade: <?= $adulto10; ?>}
+        ],
+        // The name of the data record attribute that contains x-values.
+        xkey: 'idade',
+        resize: true,
+        hideHover: true,
+        xLabelAngle: 60,
+//        gridTextSize: 7,
+//        axes: false
+        // A list of names of data record attributes that contain y-values.
+        ykeys: ['quantidade'],
+        barColors: function (row, series, type) {
+            if (type === 'bar') {
+                var red = Math.ceil(200 * row.y / this.ymax);
+                return 'rgb( 50,20,' + red + ')';
+            } else {
+                return '#000';
+            }
+        },
+        // Labels for the ykeys -- will be displayed when you hover over the
+        // chart.
+        labels: ['Quantidade']
+    });
+
+    $(document).ready(function () {
+        $("#teste").click(function () {
+            $("#adultos").fadeIn(1000);
+            $("#adultoslabel").fadeIn(1000);
+            $("#esconder").fadeIn(1000);
+//            $("#adultos").css( "display", "block" );
+//            $("#adultos").css( "display", "none" );
+        });
+        $("#esconder").click(function () {
+            $("#adultos").fadeOut(1000);
+            $("#adultoslabel").fadeOut(1000);
+            $("#esconder").fadeOut(1000);
+        });
     });
 </script>

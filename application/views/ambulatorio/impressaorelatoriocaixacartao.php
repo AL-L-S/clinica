@@ -24,7 +24,7 @@
     <?
     if (count($relatorio) > 0) {
         ?>
-        <table border="1">
+        <table border="0">
             <thead>
                 <tr>
                     <th class="tabela_header"><font size="-1">Atendimento</th>

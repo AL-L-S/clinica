@@ -2,10 +2,17 @@
 
     <table>
         <tr>
-            <td width="60px;">
+            <td width="20px;">
                 <div class="bt_link" style="width: 110pt">
                     <a href="<?php echo base_url() ?>cadastros/pacientes/novo" style="width: 100pt">
                         Novo Cadastro
+                    </a>
+                </div>
+            </td>
+            <td width="20px;">
+                <div class="bt_link" style="width: 110pt">
+                    <a onclick="javascript: return confirm('Esta operação irá exportar todos os emails de paciente para uma planilha\n\nObs: Esse processo pode ser demorado  ');" href="<?php echo base_url() ?>ambulatorio/guia/exportaremails" style="width: 100pt">
+                        Exportar Emails
                     </a>
                 </div>
             </td>

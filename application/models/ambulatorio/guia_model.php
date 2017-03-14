@@ -337,6 +337,22 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function exportaremails() {
+
+        $this->db->select('p.paciente_id,
+                           p.nome as paciente,
+                           p.cns 
+                            ');
+        $this->db->from('tb_paciente p');
+        $this->db->where("p.cns != ''");
+        $this->db->where('p.ativo', 't');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+        
+    }
 
     function relatorioexamesala() {
 

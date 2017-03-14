@@ -278,74 +278,53 @@ $agenda = $exame[0]->agenda;
 <br>
 <br style="page-break-before: always;" /> 
 
-<table>
-    <tbody>
-        <tr>
-            <td ><font size = -1><u>RECIBO</u></font></td>
-        </tr>
-        <tr>
-            <td ><font size = -1>N&SmallCircle;: <?= $exame[0]->agenda_exames_id; ?></font></td>
-        </tr>
-
-        <tr>
-            <td ><font size = -1>DATA: <?= substr($exame[0]->data, 8, 2) . "/" . substr($exame[0]->data, 5, 2) . "/" . substr($exame[0]->data, 0, 4); ?> HORA: <?= substr($dataatualizacao, 10, 6); ?></font></td>
-        </tr>
-        <tr>
-            <td ><font size = -1>Paciente: <?= utf8_decode($paciente['0']->nome); ?></font></td>
-        </tr>
-        <tr>
-            <td ><font size = -1>Idade: <?= $idade; ?></font></td>
-        </tr>
-        <tr>
-            <td ><font size = -1>Convenio: <?= utf8_decode($exame[0]->convenio); ?></font></td>
-        </tr>
-        <tr>
-            <td ><font size = -1>-------------------------------------------------------------</font></td>
-        </tr>
-    <td ><font size = -1><?
-        foreach ($exames as $item) :
-            $totalpagar = $totalpagar + $item->valor_total;
-            if ($item->forma_pagamento != null && $item->formadepagamento != $teste && $item->formadepagamento != $teste2 && $item->formadepagamento != $teste3 && $item->formadepagamento != $teste4) {
-                $teste = $item->formadepagamento;
-                $formapagamento = $formapagamento . "/" . $item->formadepagamento;
-            }
-            if ($item->forma_pagamento2 != null && $item->formadepagamento2 != $teste && $item->formadepagamento2 != $teste2 && $item->formadepagamento2 != $teste3 && $item->formadepagamento2 != $teste4) {
-                $teste2 = $item->formadepagamento2;
-                $formapagamento = $formapagamento . "/" . $item->formadepagamento2;
-            }
-            if ($item->forma_pagamento3 != null && $item->formadepagamento3 != $teste && $item->formadepagamento3 != $teste2 && $item->formadepagamento3 != $teste3 && $item->formadepagamento3 != $teste4) {
-                $teste3 = $item->formadepagamento3;
-                $formapagamento = $formapagamento . "/" . $item->formadepagamento3;
-            }
-            if ($item->forma_pagamento4 != null && $item->formadepagamento4 != $teste && $item->formadepagamento4 != $teste2 && $item->formadepagamento4 != $teste3 && $item->formadepagamento4 != $teste4) {
-                $teste4 = $item->formadepagamento4;
-                $formapagamento = $formapagamento . "/" . $item->formadepagamento4;
-            }
+<p><center><u><?= $exame[0]->razao_social; ?></u></center></p>
+<p><center><?= $exame[0]->logradouro; ?> - <?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?></center></p>
+<p><center>Fone: (85) <?= $exame[0]->telefoneempresa; ?> - (85) <?= $exame[0]->celularempresa; ?></center></p>
+<p>
+<p><center>Recibo</center></p>
+<p>
+<p><center>N&SmallCircle; PEDIDO:<?= $exame[0]->agenda_exames_id; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALOR:# <?= $valor; ?> &nbsp;#</center></p>
+<p>
+<p>Recebi de <?= utf8_decode($paciente['0']->nome); ?>, a importancia de <?= $valor; ?> (<?= $extenso; ?>)  referente
+    a   <?
+    $formapagamento = "";
+    $teste = "";
+    $teste2 = "";
+    $teste3 = "";
+    $teste4 = "";
+    foreach ($exames as $item) :
             echo utf8_decode($item->procedimento);
-            ?><br><? endforeach; ?></font>
-    </td>
-    <tr>
-        <td ><font size = -1>-------------------------------------------------------------</font></td>
-    </tr>
-    <tr>
-        <td ><font size = -1><b>TOTAL R$ <?= number_format($totalpagar, 2, ',', '.') ?> <?= $formapagamento; ?></b></font></td>
-    </tr>
-    <tr>
-        <td ><font size = -1>-------------------------------------------------------------</font></td>
-    </tr>
-    <tr>
-        <td ><font size = -1>Entrega Data</font></td>
-    </tr>
-    <tr>
-        <td ><font size = -1><?= $DT_ENTREGA ?></font></td>
-    </tr>
-</table>
-
+        ?><br><?
+        if ($item->forma_pagamento != null && $item->formadepagamento != $teste && $item->formadepagamento != $teste2 && $item->formadepagamento != $teste3 && $item->formadepagamento != $teste4) {
+            $teste = $item->formadepagamento;
+            $formapagamento = $formapagamento . "/" . $item->formadepagamento;
+        }
+        if ($item->forma_pagamento2 != null && $item->formadepagamento2 != $teste && $item->formadepagamento2 != $teste2 && $item->formadepagamento2 != $teste3 && $item->formadepagamento2 != $teste4) {
+            $teste2 = $item->formadepagamento2;
+            $formapagamento = $formapagamento . "/" . $item->formadepagamento2;
+        }
+        if ($item->forma_pagamento3 != null && $item->formadepagamento3 != $teste && $item->formadepagamento3 != $teste2 && $item->formadepagamento3 != $teste3 && $item->formadepagamento3 != $teste4) {
+            $teste3 = $item->formadepagamento3;
+            $formapagamento = $formapagamento . "/" . $item->formadepagamento3;
+        }
+        if ($item->forma_pagamento4 != null && $item->formadepagamento4 != $teste && $item->formadepagamento4 != $teste2 && $item->formadepagamento4 != $teste3 && $item->formadepagamento4 != $teste4) {
+            $teste4 = $item->formadepagamento4;
+            $formapagamento = $formapagamento . "/" . $item->formadepagamento4;
+        }
+    endforeach;
+    ?></p>
+<p>Recebimento atraves de: <?= $formapagamento; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Categoria: <?= $exame[0]->convenio; ?></p><p align="right"><?= $exame[0]->municipio ?>, <?= substr($exame[0]->data_autorizacao, 8, 2) . "/" . substr($exame[0]->data_autorizacao, 5, 2) . "/" . substr($exame[0]->data_autorizacao, 0, 4); ?></p>
+<p>Atendente: <?= substr($exame[0]->atendente, 0, 13); ?></p>
+<br>
+<h4><center>___________________________________________</center></h4>
+<h4><center>Raz&atilde;o Social: <?= $exame[0]->razao_social; ?></center></h4>
+<h4><center>CNPJ: <?= $exame[0]->cnpj; ?></center></h4>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    window.print()
+    window.print();
 
 
 </script>

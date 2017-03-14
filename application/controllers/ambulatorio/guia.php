@@ -1485,6 +1485,26 @@ class Guia extends BaseController {
         }
 //        $this->load->View('', $data);
     }
+    
+    function exportaremails() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['relatorio'] = $this->guia->exportaremails();
+//    $this->load->view('ambulatorio/impressaorelatorioexportaremails', $data);
+            $html = $this->load->view('ambulatorio/impressaorelatorioexportaremails', $data, true);
+            $horario = date('d-m-Y');
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Pragma: no-cache");
+            header("Content-type: application/x-msexcel");
+            header("Content-Disposition: attachment; filename=\"emailexport $horario.xls\"");
+            header("Content-Description: PHP Generated Data");
+            // Envia o conteúdo do arquivo
+            echo $html;
+            exit;
+
+    }
 
     function gerarelatorioexamesala() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
