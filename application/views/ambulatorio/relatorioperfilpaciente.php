@@ -1,23 +1,23 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar Relatório Indicação Cadastro</a></h3>
+        <h3><a href="#">Gerar relatorio Recomendação</a></h3>
         <div>
-            <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioindicacao">
+            <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioperfilpaciente">
                 <dl>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
-                    <dt>
-                    <label>Indica&ccedil;&atilde;o</label>
+<!--                    <dt>
+                        <label>Recomendação</label>
                     </dt>
                     <dd>
                         <select name="indicacao" id="indicacao" class="size2">
@@ -26,9 +26,9 @@
                                 <option value="<?= $value->paciente_indicacao_id; ?>" ><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
                         </select>
-                    </dd>
+                    </dd>-->
                     <dt>
-                    <label>Gráfico</label>
+                        <label>Gráfico</label>
                     </dt>
                     <dd>
                         <select name="grafico" id="indicacao" class="size2">
@@ -37,7 +37,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Empresa</label>
+                        <label>Empresa</label>
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
@@ -59,7 +59,7 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -71,7 +71,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -84,7 +84,7 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

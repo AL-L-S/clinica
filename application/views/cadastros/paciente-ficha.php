@@ -286,6 +286,50 @@
                     ?>>Outros</option>
                 </select>
             </div>
+            <div>
+                <label>Escolaridade</label>
+
+                <select name="escolaridade" id="escolaridade" class="size2" selected="<?= @$obj->_escolaridade_id; ?>">
+                    <option value=0 <?
+                    if (@$obj->_escolaridade_id == 0):echo 'selected';
+                    endif;
+                    ?>>Selecione</option>
+                    <option value=1 <?
+                    if (@$obj->_escolaridade_id == 1):echo 'selected';
+                    endif;
+                    ?>>Fundamental-Incompleto </option>
+                    <option value=2 <?
+                    if (@$obj->_escolaridade_id == 2):echo 'selected';
+                    endif;
+                    ?>>Fundamental-Completo</option>
+
+                    <option value=3 <?
+                    if (@$obj->_escolaridade_id == 3):echo 'selected';
+                    endif;
+                    ?>>Médio 
+                        -
+                        Incompleto</option>
+                    <option value=4 <?
+                    if (@$obj->_escolaridade_id == 4):echo 'selected';
+                    endif;
+                    ?>>Médio 
+                        -
+                        Completo
+                    </option>
+                    <option value=5 <?
+                    if (@$obj->_escolaridade_id == 5):echo 'selected';
+                    endif;
+                    ?>>Superior 
+                        -
+                        Incompleto</option>
+                    <option value=6 <?
+                    if (@$obj->_escolaridade_id == 6):echo 'selected';
+                    endif;
+                    ?>>Superior-Completo </option>
+                        
+                        
+                </select>
+            </div>
         </fieldset>
         <fieldset>
             <legend>Fotografia</legend>

@@ -1,0 +1,487 @@
+<div class="content"> <!-- Inicio da DIV content -->
+    <meta charset="utf-8"/>
+    <? $tipoempresa = ""; ?>
+    <table>
+        <thead>
+
+            <? if (count($empresa) > 0) { ?>
+                <tr>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4"><?= $empresa[0]->razao_social; ?></th>
+                </tr>
+                <?
+                $tipoempresa = $empresa[0]->razao_social;
+            } else {
+                ?>
+                <tr>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODAS AS CLINICAS</th>
+                </tr>
+                <?
+                $tipoempresa = 'TODAS';
+            }
+            ?>
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Perfil Paciente</th>
+            </tr>
+            <tr>
+                <th style='width:10pt;border:solid windowtext 1.0pt;
+                    border-bottom:none;mso-border-top-alt:none;border-left:
+                    none;border-right:none;' colspan="4">&nbsp;</th>
+            </tr>
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">EMPRESA: <?= $tipoempresa ?></th>
+            </tr>
+
+            <? if ($tipoempresa == "0") { ?>
+                <tr>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODAS RECOMENDAÇÕES</th>
+                </tr>
+            <? } else { ?>
+                <tr>
+                    <!--<th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">RECOMENDAÇÃO: <?= $indicacao; ?></th>-->
+                </tr>
+            <? } ?>
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
+            </tr>
+
+        </thead>
+    </table>
+
+    <? if (count($relatorio) > 0) {
+        ?>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <td class="tabela_teste">Nome</td>
+                    <td class="tabela_teste">Idade</td>
+                    <td class="tabela_teste">Sexo</td>
+                    <td class="tabela_teste">Estado Civil</td>
+                    <td class="tabela_teste">Escolaridade</td>
+                </tr>
+            </thead>
+            <hr>
+            <tbody>
+                <?php
+                $i = 0;
+                $b = 0;
+                $c = 0;
+                $qtde = 0;
+                $qtdetotal = 0;
+                $tecnicos = "";
+                $paciente = "";
+                $indicacao = "";
+                $masculino = 0;
+                $feminino = 0;
+                $solteiro = 0;
+                $casado = 0;
+                $divorciado = 0;
+                $fundamental1 = 0;
+                $fundamental2 = 0;
+                $medio1 = 0;
+                $medio2 = 0;
+                $superior1 = 0;
+                $superior2 = 0;
+                $viuvo = 0;
+                $outros = 0;
+                $crianca = 0;
+                $adoles = 0;
+                $adulto = 0;
+                $idosos = 0;
+                $idades = array();
+                foreach ($relatorio as $item) :
+
+                    $i++;
+                    $qtdetotal++;
+                    ?>
+                    <tr>
+                        <?
+                        $dataFuturo = date("Y-m-d");
+                        $dataAtual = $item->nascimento;
+                        $date_time = new DateTime($dataAtual);
+                        $diff = $date_time->diff(new DateTime($dataFuturo));
+                        $teste = $diff->format('%Ya %mm %dd');
+                        $idade = $teste = $diff->format('%Y');
+                        if ($idade <= 11) {
+                            $crianca ++;
+                        }
+                        if ($idade <= 18 && $idade >= 12) {
+                            $adoles ++;
+                        }
+                        if ($idade <= 59 && $idade >= 19) {
+                            $adulto++;
+                        }
+                        if ($idade >= 60) {
+                            $idosos++;
+                        }
+                        ?>
+                        <td><?= utf8_decode($item->paciente); ?></td>
+
+                        <td style='text-align: center;'><font size="-1"><?= $idade; ?> Anos</td>
+                        <td style='text-align: center;'><?
+                            if ($item->sexo == "M") {
+                                echo 'Masculino';
+                                $masculino ++;
+                            } else {
+                                $feminino ++;
+                                echo 'Feminino';
+                            }
+                            ?></td>
+                        <td style='text-align: center;'><?
+                            if ($item->estado_civil_id == "1") {
+                                echo 'Solteiro(a)';
+                                $solteiro++;
+                            } elseif ($item->estado_civil_id == "2") {
+                                echo 'Casado(a)';
+                                $casado++;
+                            } elseif ($item->estado_civil_id == "3") {
+                                echo 'Divorciado(a)';
+                                $divorciado++;
+                            } elseif ($item->estado_civil_id == "4") {
+                                echo 'Viuvo(a)';
+                                $viuvo++;
+                            } elseif ($item->estado_civil_id == "5") {
+                                echo 'Outros';
+                                $outros++;
+                            }
+                            ?></td>
+
+                        <td style='text-align: center;'><?
+                            if ($item->escolaridade_id == 1) {
+                                echo 'Fundamental-Incompleto';
+                                $fundamental1++;
+                            } elseif ($item->escolaridade_id == 2) {
+                                echo 'Fundamental-Completo';
+                                $fundamental2++;
+                            } elseif ($item->escolaridade_id == 3) {
+                                echo 'Médio-Incompleto';
+                                $medio1++;
+                            } elseif ($item->escolaridade_id == 4) {
+                                echo 'Médio-Completo';
+                                $medio2++;
+                            } elseif ($item->escolaridade_id == 5) {
+                                echo 'Superior-Incompleto';
+                                $superior1++;
+                            } elseif ($item->escolaridade_id == 6) {
+                                echo 'Superior-Completo';
+                                $superior2++;
+                            }
+                            ?></td>
+                    </tr>
+                <? endforeach; ?>
+
+                <tr>
+                    <td width="140px;" align="Right" colspan="4"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
+                </tr>
+            </tbody>
+        </table>
+        <?php
+        $sexo_total = $masculino + $feminino;
+        $masculinop = round(($masculino * 100) / $sexo_total);
+        $femininop = round(($feminino * 100) / $sexo_total);
+        
+        $faixa_etaria = $crianca + $adoles + $adulto + $idosos;
+        $criancap = round(($crianca * 100) / $faixa_etaria);
+        $adolesp = round(($adoles * 100) / $faixa_etaria);
+        $adultop = round(($adulto * 100) / $faixa_etaria);
+        $idososp = round(($idosos * 100) / $faixa_etaria);
+        
+        $estado_civil = $solteiro + $casado + $divorciado + $viuvo +$outros;
+        $solteirop = round(($solteiro * 100) / $qtdetotal);
+        $casadop = round(($casado * 100) / $qtdetotal);
+        $divorciadop = round(($divorciado * 100) / $qtdetotal);
+        $viuvop = round(($viuvo * 100) / $qtdetotal);
+        $outrosp = round(($outros * 100) / $qtdetotal);
+        
+        $escolaridade = $fundamental1 + $fundamental2 + $medio1 + $medio2 + $superior1 + $superior2;
+        $fundamental1p = round(($fundamental1 * 100) / $escolaridade);
+        $fundamental2p = round(($fundamental2 * 100) / $escolaridade);
+        $medio1p = round(($medio1 * 100) / $escolaridade);
+        $medio2p = round(($medio2 * 100) / $escolaridade);
+        $superior1p = round(($superior1 * 100) / $escolaridade);
+        $superior2p = round(($superior2 * 100) / $escolaridade);
+        ?>
+        <br>
+        <h3>Gênero</h3>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th class="tabela_teste">Sexo</th>
+                    <th class="tabela_teste">Quantidade</th>
+                    <th class="tabela_teste">Percentual</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td style='text-align: center;'>Homens</td>
+                    <td><?= $masculino; ?></td>
+                    <td><?= $masculinop . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Mulheres</td>
+                    <td><?= $feminino; ?></td>
+                    <td><?= $femininop . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td colspan="3" rowspan="3" style='text-align: center;'><div id="sexo" style="height: 250px;"></div></td>
+                </tr>
+
+
+            </tbody>
+
+
+            <tbody>
+
+            </tbody>
+        </table>
+        <h3>Estado Civil</h3>
+        <br>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th class="tabela_teste">Estado Civil</th>
+                    <th class="tabela_teste">Quantidade</th>
+                    <th class="tabela_teste">Percentual</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td style='text-align: center;'>Solteiro(a)</td>
+                    <td><?= $solteiro; ?></td>
+                    <td><?= $solteirop . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Casado(a)</td>
+                    <td><?= $casado; ?></td>
+                    <td><?= $casadop . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Divorciado(a)</td>
+                    <td><?= $divorciado; ?></td>
+                    <td><?= $divorciadop . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Viuvo(a)</td>
+                    <td><?= $viuvo; ?></td>
+                    <td><?= $viuvop . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Outros</td>
+                    <td><?= $outros; ?></td>
+                    <td><?= $outrosp . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td rowspan="3" colspan="3"><div id="estado" style="height: 250px;"></div></td>
+                </tr>
+
+
+            </tbody>
+
+
+        </table>
+
+        <h3>Faixa Etária</h3>
+        <br>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th class="tabela_teste">Classificação</th>
+                    <th class="tabela_teste">Quantidade</th>
+                    <th class="tabela_teste">Percentual</th>
+                    <th class="tabela_teste">Faixa Etária</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td style='text-align: center;'>Criança(s)</td>
+                    <td><?= $crianca; ?></td>
+                    <td><?= $criancap . "%"; ?></td>
+                    <td style='text-align: center;'>0 - 11</td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Adolesteste(s)</td>
+                    <td><?= $adoles; ?></td>
+                    <td><?= $adolesp . "%"; ?></td>
+                    <td style='text-align: center;'>12 - 18</td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Adulto(s)</td>
+                    <td><?= $adulto; ?></td>
+                    <td><?= $adultop . "%"; ?></td>
+                    <td style='text-align: center;'>19 - 59</td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Idoso(s)</td>
+                    <td><?= $idosos; ?></td>
+                    <td><?= $idososp . "%"; ?></td>
+                    <td style='text-align: center;'>60+</td>
+
+                </tr>
+                <tr>
+                    <td rowspan="3" colspan="4"><div id="grafico" style="height: 250px;"></div></td>
+                </tr>
+            </tbody>
+
+
+        </table>
+        
+        <h3>Escolaridade</h3>
+        <br>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th class="tabela_teste">Classificação</th>
+                    <th class="tabela_teste">Quantidade</th>
+                    <th class="tabela_teste">Percentual</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td style='text-align: center;'>Fundamental-Incompleto</td>
+                    <td><?= $fundamental1; ?></td>
+                    <td><?= $fundamental1p . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Fundamental-Completo</td>
+                    <td><?= $fundamental2; ?></td>
+                    <td><?= $fundamental2p . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Médio-Incompleto</td>
+                    <td><?= $medio1; ?></td>
+                    <td><?= $medio1p . "%"; ?></td>
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Médio-Completo</td>
+                    <td><?= $medio2; ?></td>
+                    <td><?= $medio2p . "%"; ?></td>
+
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Superior-Incompleto</td>
+                    <td><?= $superior1; ?></td>
+                    <td><?= $superior1p . "%"; ?></td>
+
+                </tr>
+                <tr>
+                    <td style='text-align: center;'>Superior-Completo</td>
+                    <td><?= $superior2; ?></td>
+                    <td><?= $superior2p . "%"; ?></td>
+
+                </tr>
+                <tr>
+                    <td rowspan="3" colspan="4"><div id="escolaridade" style="height: 250px;"></div></td>
+                </tr>
+            </tbody>
+
+
+        </table>
+        <? if ($_POST['grafico'] == '1') { ?>
+
+        <? } ?>
+
+    <? } else {
+        ?>
+        <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+    <? }
+    ?>
+
+
+</div> <!-- Final da DIV content -->
+
+<link rel="stylesheet" href="<?= base_url() ?>js/morris/morris.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/morris/Gruntfile.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/morris/morris.js" ></script>
+<script src="<?= base_url() ?>js/morris/raphael.js"></script>
+
+
+<script>
+    new Morris.Donut({
+        element: 'grafico',
+        data: [
+            {label: "Crianças", value: <?= $criancap; ?>, formatted: '<?= $criancap; ?>%'},
+            {label: "Adolescentes", value: <?= $adolesp; ?>, formatted: '<?= $adolesp; ?>%'},
+            {label: "Adultos", value: <?= $adultop; ?>, formatted: '<?= $adultop; ?>%'},
+            {label: "Idosos", value: <?= $idososp; ?>, formatted: '<?= $idososp; ?>%'}
+        ],
+        colors: [
+            '#E3000E',
+            '#2C82C9',
+            '#2CC990',
+            '#EEE657'
+        ],
+        formatter: function (x, data) {
+            return data.formatted;
+        }
+    });
+
+    new Morris.Donut({
+        element: 'sexo',
+        data: [
+            {label: "Homens", value: <?= $masculinop; ?>, formatted: '<?= $masculinop; ?>%'},
+            {label: "Mulheres", value: <?= $femininop; ?>, formatted: '<?= $femininop; ?>%'}
+
+        ],
+        colors: [
+            '#E3000E',
+            '#2C82C9'
+        ],
+        formatter: function (x, data) {
+            return data.formatted;
+        }
+    });
+    new Morris.Donut({
+        element: 'estado',
+        data: [
+            {label: "Solteiro(a)", value: <?= $solteirop; ?>, formatted: '<?= $solteirop; ?>%'},
+            {label: "Casado(a)", value: <?= $casadop; ?>, formatted: '<?= $casadop; ?>%'},
+            {label: "Divorciado(a)", value: <?= $divorciadop; ?>, formatted: '<?= $divorciadop; ?>%'},
+            {label: "Viuvo(a)", value: <?= $viuvop; ?>, formatted: '<?= $viuvop; ?>%'},
+            {label: "Outros", value: <?= $outrosp; ?>, formatted: '<?= $outrosp; ?>%'}
+
+        ],
+        colors: [
+            '#E3000E',
+            '#2C82C9',
+            '#2CC990',
+            '#EEE657',
+            '#7BB0A6'
+        ],
+        formatter: function (x, data) {
+            return data.formatted;
+        }
+    });
+
+    new Morris.Donut({
+        element: 'escolaridade',
+        data: [
+            {label: "Fundamental-Incompleto", value: <?= $fundamental1p; ?>, formatted: '<?= $fundamental1p; ?>%'},
+            {label: "Fundamental-Completo", value: <?= $fundamental2p; ?>, formatted: '<?= $fundamental2p; ?>%'},
+            {label: "Médio-Incompleto", value: <?= $medio1p; ?>, formatted: '<?= $medio1p; ?>%'},
+            {label: "Médio-Completo", value: <?= $medio2p; ?>, formatted: '<?= $medio2p; ?>%'},
+            {label: "Superior-Incompleto", value: <?= $superior1p; ?>, formatted: '<?= $superior1p; ?>%'},
+            {label: "Superior-Completo", value: <?= $superior2p; ?>, formatted: '<?= $superior2p; ?>%'}
+
+        ],
+        colors: [
+            '#E3000E',
+            '#2C82C9',
+            '#2CC990',
+            '#EEE657',
+            '#7BB0A6'
+        ],
+        formatter: function (x, data) {
+            return data.formatted;
+        }
+    });
+</script>

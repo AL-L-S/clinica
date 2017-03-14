@@ -64,7 +64,7 @@ class Operador_model extends BaseModel {
                 ->select('"tb_operador".*, tb_perfil.nome as nomeperfil');
         
         $this->db->where('tb_operador.usuario IS NOT NULL');
-        $this->db->where('tb_operador.senha IS NOT NULL');
+//        $this->db->where('tb_operador.senha IS NOT NULL');
         
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {

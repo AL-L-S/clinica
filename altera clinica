@@ -1621,6 +1621,10 @@ ALTER TABLE ponto.tb_estoque_entrada ADD COLUMN lote character varying(30);
 -- Dia 09/03/2017
 ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_recibo integer;
 
+-- Dia 13/03/2017
+
+ALTER TABLE ponto.tb_paciente ADD COLUMN escolaridade_id integer;
+
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;
 CREATE TABLE ponto.tb_versao

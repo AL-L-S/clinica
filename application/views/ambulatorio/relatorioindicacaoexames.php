@@ -5,19 +5,19 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioindicacaoexames">
                 <dl>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Recomendação</label>
+                        <label>Recomendação</label>
                     </dt>
                     <dd>
                         <select name="indicacao" id="indicacao" class="size2">
@@ -28,7 +28,16 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Empresa</label>
+                        <label>Gráfico</label>
+                    </dt>
+                    <dd>
+                        <select name="grafico" id="indicacao" class="size2">
+                            <option value="0">NÃO</option>
+                            <option value="1">SIM</option>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Empresa</label>
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
@@ -50,7 +59,7 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -62,7 +71,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -75,7 +84,7 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

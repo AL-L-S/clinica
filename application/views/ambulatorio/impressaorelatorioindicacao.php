@@ -107,16 +107,20 @@
                 foreach ($consolidado as $item) :
                     $b++;
                     $qtde++;
-                        ?>
+                    ?>
 
-                        <tr>
-                            <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
-                            <td><?= $item->quantidade; ?></td>
-                        </tr>
+                    <tr>
+                        <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
+                        <td><?= $item->quantidade; ?></td>
+                    </tr>
 
-    <? endforeach; ?>
+                <? endforeach; ?>
             </tbody>
         </table>
+    <?if($_POST['grafico'] == '1'&& $_POST['indicacao'] == '0'){?>
+        <div id="grafico" style="height: 300px;width: 800px;"></div>
+    <?}?>
+        
     <? } else {
         ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
@@ -125,3 +129,43 @@
 
 
 </div> <!-- Final da DIV content -->
+
+<link rel="stylesheet" href="<?= base_url() ?>js/morris/morris.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/morris/Gruntfile.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/morris/morris.js" ></script>
+<script src="<?= base_url() ?>js/morris/raphael.js"></script>
+
+<script>
+    new Morris.Bar({
+        // ID of the element in which to draw the chart.
+        element: 'grafico',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+<? foreach ($consolidado as $item) { ?>
+                {indicacao: '<?= $item->indicacao; ?>', quantidade: <?= $item->quantidade; ?>, label:'<?= substr($item->indicacao, 0,11); ?>'},
+<? } ?>
+
+        ],
+        // The name of the data record attribute that contains x-values.
+        xkey: 'indicacao',
+        resize: true,
+        hideHover: true,
+        gridTextSize: 10 ,
+//        axes: false
+        // A list of names of data record attributes that contain y-values.
+        ykeys: ['quantidade'],
+        barColors: function (row, series, type) {
+            if (type === 'bar') {
+                var red = Math.ceil(150 * row.y / this.ymax);
+                return 'rgb(' + red + ' ,0,0)';
+            } else {
+                return '#000';
+            }
+        },
+        // Labels for the ykeys -- will be displayed when you hover over the
+        // chart.
+        labels: ['Quantidade']
+    });
+</script>

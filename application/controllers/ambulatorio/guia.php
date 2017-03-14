@@ -681,7 +681,6 @@ class Guia extends BaseController {
     }
 
     function fecharmedico() {
-//        var_dump($_POST['tipo']); die;
         if ($_POST['conta'] == '') {
             $data['mensagem'] = 'Para fechar o caixa é necessário ter uma Conta associada ao cadastro do médico';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -1849,6 +1848,12 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatorioaniversariante', $data);
     }
 
+    function relatorioperfilpaciente() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatorioperfilpaciente', $data);
+    }
+
     function relatorioconveniovalor() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -2176,6 +2181,20 @@ class Guia extends BaseController {
 
             $data['relatorio'] = $this->guia->relatorioaniversariantes();
             $this->load->View('ambulatorio/impressaorelatorioaniversariantes', $data);
+        } else {
+            $data['mensagem'] = 'Insira um periodo válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
+        }
+    }
+
+    function gerarelatorioperfilpaciente() {
+        if ($_POST["txtdata_inicio"] != "" && $_POST["txtdata_fim"] != "") {
+            $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+            $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+            $data['txtdata_fim'] = $_POST['txtdata_fim'];
+            $data['relatorio'] = $this->guia->relatorioperfilpaciente();
+            $this->load->View('ambulatorio/impressaorelatorioperfilpaciente', $data);
         } else {
             $data['mensagem'] = 'Insira um periodo válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
