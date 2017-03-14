@@ -1873,6 +1873,11 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioperfilpaciente', $data);
     }
+    
+    function relatoriounicoretorno() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriounicoretorno', $data);
+    }
 
     function relatorioconveniovalor() {
         $data['convenio'] = $this->convenio->listardados();
@@ -2219,6 +2224,23 @@ class Guia extends BaseController {
             $data['mensagem'] = 'Insira um periodo válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
+        }
+    }
+    
+    function gerarelatoriounicoretorno() {
+        if ($_POST["txtdata_inicio"] != "" && $_POST["txtdata_fim"] != "") {
+            $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+            $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+            $data['txtdata_fim'] = $_POST['txtdata_fim'];
+            $data['relatorio'] = $this->guia->relatoriounicoretorno();
+            $data['relatoriounico'] = $this->guia->relatoriounicoretorno();
+//            echo '<pre>';
+//            var_dump($data['relatorio']); die;
+            $this->load->View('ambulatorio/impressaorelatoriounicoretorno', $data);
+        } else {
+            $data['mensagem'] = 'Insira um periodo válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "/ambulatorio/guia/relatoriounicoretorno");
         }
     }
 

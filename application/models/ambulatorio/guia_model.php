@@ -1534,6 +1534,36 @@ class guia_model extends Model {
         return $return->result();
     }
     
+    function relatoriounicoretorno() {
+        $this->db->select('
+                           p.paciente_id,
+                           p.nome as paciente,
+                           p.sexo,
+                           p.nascimento,
+                           p.estado_civil_id,
+                           p.data_cadastro,
+                           p.escolaridade_id,
+                           count(*) as conta
+                           ');
+        $this->db->from('tb_paciente p');
+        $this->db->join('tb_agenda_exames ae', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+
+        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])))." 00:00:00");
+        $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])))." 23:59:59");
+
+        $this->db->groupby('p.paciente_id');
+       
+        $return = $this->db->get();
+//       echo '<pre>';
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+    
     function relatorioperfilpacienteidade() {
         $this->db->select('
                            distinct(p.nascimento), 

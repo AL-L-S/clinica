@@ -327,7 +327,7 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoordem">Relatorio ordem atendimento</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioconvenioquantidade">Convenio exames/consultas</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioaniversariante">Relatorio Aniversariantes</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioperfilpaciente">Relatorio Perfil Paciente</a></span></ul>
+
                                     <?
                                 }
                                 if ($perfil_id == 1 || $perfil_id == 6) {
@@ -556,6 +556,32 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacaoexames">Relatorio Recomendação</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconveniofinanceiro">Relatorio Produ&ccedil;&atilde;o M&eacute;dica</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenioprevisaofinanceiro">Relatorio Previs&atilde;o M&eacute;dica</a></span></ul>
+                                    <?
+                                }
+                                ?>
+
+                            </li> 
+
+                        </ul>
+                    </li>
+                    <li><span class="folder">Marketing</span>
+                        <ul>
+                            <li><span class="folder">Rotinas</span>
+                                <? if ($perfil_id == 1 || $perfil_id == 13) { ?>
+                                    <ul><span class="file"><a onclick="javascript: return confirm('Esta operação irá exportar todos os emails de paciente para uma planilha\n\nObs: Esse processo pode ser demorado  ');" href="<?php echo base_url() ?>ambulatorio/guia/exportaremails" style="width: 100pt">
+                                                Exportar Emails
+                                            </a></span></ul>
+
+                                <? }
+                                ?>
+                            </li> 
+                            <li><span class="folder">Relatorios</span>
+                                <?
+                                if ($perfil_id == 1 || $perfil_id == 13) {
+                                    ?>
+                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioperfilpaciente">Relatorio Perfil Paciente</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriounicoretorno">Relatório Paciente Unico/Retorno</a></span></ul>
+
                                     <?
                                 }
                                 ?>

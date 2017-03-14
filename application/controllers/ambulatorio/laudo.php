@@ -701,9 +701,9 @@ class Laudo extends BaseController {
                 }
             }
             $grupo = 'laboratorial';
-            $html = $this->load->view('ambulatorio/impressaolaudo_5', $data, true);
+            $html = $this->load->view('ambulatorio/impressaolaudo_8', $data, true);
             pdf($html, $filename, $cabecalho, $rodape, $grupo);
-            $this->load->View('ambulatorio/impressaolaudo_5', $data);
+            $this->load->View('ambulatorio/impressaolaudo_8', $data);
         }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////        
