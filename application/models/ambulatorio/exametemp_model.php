@@ -2818,6 +2818,7 @@ class exametemp_model extends Model {
                 $h = 0;
                 $j = 0;
                 $k = 0;
+                $m = 0;
                 $i++;
 
                 foreach ($_POST['sala'] as $itemnome) {
@@ -2889,6 +2890,14 @@ class exametemp_model extends Model {
                         break;
                     }
                 }
+                
+                foreach ($_POST['crm'] as $crm) {
+                    $m++;
+                    if ($i == $f) {
+                        $medico_solicitante = $crm;
+                        break;
+                    }
+                }
                 if ($medico_id == '') {
                     $medico_id = 0;
                 }
@@ -2942,6 +2951,10 @@ class exametemp_model extends Model {
                     if ($medico_id != "") {
                         $this->db->set('medico_agenda', $medico_id);
                         $this->db->set('medico_consulta_id', $medico_id);
+                    }
+                    
+                    if ($medico_solicitante != "") {
+                        $this->db->set('medico_solicitante', $medico_solicitante);
                     }
                     if ($indicacao != "") {
                         $this->db->set('indicacao', $indicacao);

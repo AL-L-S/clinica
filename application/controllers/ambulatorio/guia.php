@@ -229,8 +229,10 @@ class Guia extends BaseController {
         $valor_total = 0;
 
         foreach ($exames as $item) :
-            if ($dinheiro == "t") {
-                $valor_total = $valor_total + ($item->valor_total);
+            if ($dinheiro == 't') {
+                if ($item->dinheiro == "t") {
+                    $valor_total = $valor_total + ($item->valor_total);
+                }
             }
         endforeach;
 
@@ -249,6 +251,8 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
+//        var_dump($dinheiro);
+//        die;
 
         if ($data['empresa'][0]->impressao_tipo == 1) { //HUMANA 
             if ($grupo == "RX" || $grupo == "US" || $grupo == "CONSULTA" || $grupo == "LABORATORIAL") {
@@ -344,9 +348,9 @@ class Guia extends BaseController {
 ///////////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 8) { //RONALDO
             if ($dinheiro == "t") {
-                $this->load->View('ambulatorio/impressaofichageralparticular', $data);
+                $this->load->View('ambulatorio/impressaofichageralronaldoparticular', $data);
             } else {
-                $this->load->View('ambulatorio/impressaofichageral', $data);
+                $this->load->View('ambulatorio/impressaofichageralronaldo', $data);
             }
         }
 
@@ -395,8 +399,10 @@ class Guia extends BaseController {
         $valor_total = 0;
 
         foreach ($exames as $item) :
-            if ($dinheiro == "t") {
-                $valor_total = $valor_total + ($item->valor_total);
+            if ($dinheiro == 't') {
+                if ($item->dinheiro == "t") {
+                    $valor_total = $valor_total + ($item->valor_total);
+                }
             }
         endforeach;
 
@@ -894,7 +900,8 @@ class Guia extends BaseController {
                     } else {
                         $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                     }
-                    $this->guia->gravarfisioterapia($ambulatorio_guia, $percentual);
+                    $medico_id = $_POST['crm1'];
+                    $this->guia->gravarfisioterapia($ambulatorio_guia, $percentual, $medico_id);
                 }
                 //        $this->gerardicom($ambulatorio_guia);
                 //            $this->session->set_flashdata('message', $data['mensagem']);
@@ -1124,6 +1131,12 @@ class Guia extends BaseController {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $this->load->View('ambulatorio/faturarconvenio-form', $data);
     }
+    
+    function faturarconveniostatus($agenda_exames_id) {
+        $data['exame'] = $this->guia->listarexame($agenda_exames_id);
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $this->load->View('ambulatorio/faturarconveniostatus-form', $data);
+    }
 
     function alterardata($agenda_exames_id) {
         $data['agenda_exames_id'] = $agenda_exames_id;
@@ -1190,6 +1203,12 @@ class Guia extends BaseController {
     function gravarfaturadoconvenio() {
 
         $this->guia->gravarfaturamentoconvenio();
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+    }
+    function gravarfaturadoconveniostatus() {
+
+        $this->guia->gravarfaturamentoconveniostatus();
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
@@ -1485,25 +1504,24 @@ class Guia extends BaseController {
         }
 //        $this->load->View('', $data);
     }
-    
+
     function exportaremails() {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['relatorio'] = $this->guia->exportaremails();
 //    $this->load->view('ambulatorio/impressaorelatorioexportaremails', $data);
-            $html = $this->load->view('ambulatorio/impressaorelatorioexportaremails', $data, true);
-            $horario = date('d-m-Y');
-            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-            header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-            header("Cache-Control: no-cache, must-revalidate");
-            header("Pragma: no-cache");
-            header("Content-type: application/x-msexcel");
-            header("Content-Disposition: attachment; filename=\"emailexport $horario.xls\"");
-            header("Content-Description: PHP Generated Data");
-            // Envia o conteúdo do arquivo
-            echo $html;
-            exit;
-
+        $html = $this->load->view('ambulatorio/impressaorelatorioexportaremails', $data, true);
+        $horario = date('d-m-Y');
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+        header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Pragma: no-cache");
+        header("Content-type: application/x-msexcel");
+        header("Content-Disposition: attachment; filename=\"emailexport $horario.xls\"");
+        header("Content-Description: PHP Generated Data");
+        // Envia o conteúdo do arquivo
+        echo $html;
+        exit;
     }
 
     function gerarelatorioexamesala() {
@@ -1873,10 +1891,15 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioperfilpaciente', $data);
     }
-    
+
     function relatoriounicoretorno() {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriounicoretorno', $data);
+    }
+
+    function relatoriotempoatendimento() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriotempoatendimento', $data);
     }
 
     function relatorioconveniovalor() {
@@ -2226,7 +2249,7 @@ class Guia extends BaseController {
             redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
         }
     }
-    
+
     function gerarelatoriounicoretorno() {
         if ($_POST["txtdata_inicio"] != "" && $_POST["txtdata_fim"] != "") {
             $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
@@ -2237,6 +2260,20 @@ class Guia extends BaseController {
 //            echo '<pre>';
 //            var_dump($data['relatorio']); die;
             $this->load->View('ambulatorio/impressaorelatoriounicoretorno', $data);
+        } else {
+            $data['mensagem'] = 'Insira um periodo válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "/ambulatorio/guia/relatoriounicoretorno");
+        }
+    }
+    
+    function gerarelatoriotempoatendimento() {
+        if ($_POST["txtdata_inicio"] != "" && $_POST["txtdata_fim"] != "") {
+            $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+            $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+            $data['txtdata_fim'] = $_POST['txtdata_fim'];
+            $data['relatorio'] = $this->guia->gerarelatoriotempoatendimento();
+            $this->load->View('ambulatorio/impressaorelatoriotempoatendimento', $data);
         } else {
             $data['mensagem'] = 'Insira um periodo válido.';
             $this->session->set_flashdata('message', $data['mensagem']);

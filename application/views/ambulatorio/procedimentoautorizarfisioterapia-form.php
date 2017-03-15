@@ -83,6 +83,7 @@
                         <tr>
                             <th class="tabela_header">Hora</th>
                             <th class="tabela_header">Sala</th>
+                            <th class="tabela_header">Solicitante</th>
                             <th class="tabela_header">Medico</th>
                             <th class="tabela_header">Convenio</th>
                             <th class="tabela_header">Procedimento</th>
@@ -115,6 +116,8 @@
                                         <? endforeach; ?>
                                     </select>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1" required=""/>
+                                    <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1"  required="true">
@@ -181,11 +184,10 @@
     </div> <!-- Final da DIV content -->
 </div> <!-- Final da DIV content -->
 
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
 

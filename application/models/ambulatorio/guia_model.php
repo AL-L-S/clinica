@@ -290,6 +290,9 @@ class guia_model extends Model {
         if ($_POST['convenio'] == "-1") {
             $this->db->where("c.dinheiro", "t");
         }
+        if ($_POST['situacao_faturamento'] != "") {
+            $this->db->where("ae.situacao_faturamento", $_POST['situacao_faturamento']);
+        }
         if ($_POST['faturamento'] != "0") {
             $this->db->where("ae.faturado", $_POST['faturamento']);
         }
@@ -337,7 +340,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function exportaremails() {
 
         $this->db->select('p.paciente_id,
@@ -351,7 +354,6 @@ class guia_model extends Model {
         $return = $this->db->get();
 //        var_dump($return->result()); die;
         return $return->result();
-        
     }
 
     function relatorioexamesala() {
@@ -490,6 +492,55 @@ class guia_model extends Model {
         $this->db->orderby('c.convenio_id');
         $this->db->orderby('ac.data_cadastro');
         $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gerarelatoriotempoatendimento() {
+
+        $this->db->select('ae.agenda_exames_id,
+                            p.paciente_id,
+                           p.nome as paciente,
+                           p.sexo,
+                           p.nascimento,
+                           p.estado_civil_id,
+                           p.data_cadastro,
+                           p.escolaridade_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.inicio,
+                            ae.fim,
+                            ae.ativo,
+                            ae.situacao,
+                            ae.chegada,
+                            ae.atendimento,
+                            ae.data_atendimento,
+                            
+                            ae.data_chegada,
+                            ae.guia_id,
+                            ae.realizada,
+                            ae.confirmado
+                                        ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio co', 'co.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+
+        $this->db->where("ae.chegada", 't');
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $this->db->orderby('ae.data');
+        $this->db->orderby('ae.inicio');
+
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -1508,7 +1559,7 @@ class guia_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
-    
+
     function relatorioperfilpaciente() {
         $this->db->select('
                            distinct(p.paciente_id), 
@@ -1533,7 +1584,7 @@ class guia_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
-    
+
     function relatoriounicoretorno() {
         $this->db->select('
                            p.paciente_id,
@@ -1553,17 +1604,17 @@ class guia_model extends Model {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
-        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])))." 00:00:00");
-        $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])))." 23:59:59");
+        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
+        $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
 
         $this->db->groupby('p.paciente_id');
-       
+
         $return = $this->db->get();
 //       echo '<pre>';
 //        var_dump($return->result()); die;
         return $return->result();
     }
-    
+
     function relatorioperfilpacienteidade() {
         $this->db->select('
                            distinct(p.nascimento), 
@@ -2018,7 +2069,7 @@ class guia_model extends Model {
 
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        
+
         $this->db->where('ae.data <=', $data);
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.situacao', 'OK');
@@ -4212,6 +4263,7 @@ class guia_model extends Model {
                             p.sexo,
                             es.nome as sala,
                             c.nome as convenio,
+                            c.dinheiro,
                             c.convenio_id,
                             ae.autorizacao,
                             fp.nome as formadepagamento,
@@ -4256,6 +4308,7 @@ class guia_model extends Model {
                             ae.ativo,
                             ae.situacao,
                             ae.guia_id,
+                            ae.situacao_faturamento,
                             ae.tipo,
                             ae.data_atualizacao,
                             ae.data_realizacao,
@@ -4266,6 +4319,7 @@ class guia_model extends Model {
                             p.paciente_id,
                             pc.convenio_id,
                             c.nome as convenio,
+                            c.dinheiro,
                             ae.autorizacao,
                             ae.valor1,
                             ae.valor2,
@@ -4974,6 +5028,23 @@ AND data <= '$data_fim'";
             $this->db->set('data_faturamento', $horario);
             $this->db->set('operador_faturamento', $operador_id);
             $this->db->set('faturado', 't');
+            $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
+            $this->db->update('tb_agenda_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarfaturamentoconveniostatus() {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('situacao_faturamento', $_POST['status']);
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
             $this->db->update('tb_agenda_exames');
             $erro = $this->db->_error_message();
@@ -5921,7 +5992,6 @@ AND data <= '$data_fim'";
                                     $taxa_parcela = $valor * ($taxa_juros / 100);
                                     $valor_com_juros = $valor - $taxa_parcela;
                                     $valor_parcelado = $valor_com_juros / $parcelas;
-
                                 } else {
                                     $valor_parcelado = $valor;
                                 }
@@ -6808,7 +6878,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function gravarfisioterapia($ambulatorio_guia_id, $percentual) {
+    function gravarfisioterapia($ambulatorio_guia_id, $percentual, $medico_id) {
         try {
 //            var_dump($percentual); die;
             $horario = date("Y-m-d H:i:s");
@@ -6893,6 +6963,9 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('numero_sessao', $index);
                 $this->db->set('qtde_sessao', $qtde);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+
+                $this->db->set('medico_solicitante', $medico_id);
+
                 $this->db->set('data', $data);
                 $this->db->set('data_autorizacao', $horario);
                 $this->db->set('data_cadastro', $horario);

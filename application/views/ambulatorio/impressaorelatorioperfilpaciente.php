@@ -426,10 +426,6 @@
 
 
         </table>
-        <? if ($_POST['grafico'] == '1') { ?>
-
-        <? } ?>
-
     <? } else {
         ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>

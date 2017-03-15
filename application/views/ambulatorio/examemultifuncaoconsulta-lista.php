@@ -31,15 +31,18 @@
                         <th class="tabela_title">
                             <select name="empresa" id="empresa" class="size2">
                                 <option value=""></option>
-                                <? $selected = false;
-                                foreach ($empresas as $value) : ?>
+                                <?
+                                $selected = false;
+                                foreach ($empresas as $value) :
+                                    ?>
                                     <option value="<?= $value->empresa_id; ?>" <?
                                     if ((isset($_GET['empresa']) || @$_GET['empresa'] != '') && @$_GET['empresa'] == $value->empresa_id) {
-                                        echo 'selected'; $selected = true;
-                                    } 
-                                    else{
+                                        echo 'selected';
+                                        $selected = true;
+                                    } else {
                                         if ($empresa_logada == $value->empresa_id && $selected == false) {
-                                            echo 'selected'; $selected = true;
+                                            echo 'selected';
+                                            $selected = true;
                                         }
                                     }
                                     ?>><?php echo $value->nome; ?></option>
@@ -55,7 +58,7 @@
                                     if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->descricao; ?></option>
-<? endforeach; ?>
+                                        <? endforeach; ?>
                             </select>
                         </th>
 
@@ -64,26 +67,42 @@
                             <select name="medico" id="medico" class="size1">
                                 <option value=""> </option>
                                 <? foreach ($medicos as $value) : ?>
-                                <option value="<?= $value->operador_id; ?>"<?
+                                    <option value="<?= $value->operador_id; ?>"<?
                                     if (@$_GET['medico'] == $value->operador_id):echo 'selected';
                                     endif;
                                     ?>>
-                                    
-                                    <?php echo $value->nome . ' - CRM: '. $value->conselho; ?>
-                                
-                                    
-                                </option>
-                            <? endforeach; ?>
+
+                                        <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
+
+
+                                    </option>
+                                <? endforeach; ?>
 
                             </select>
                         </th>
                         <th class="tabela_title">
                             <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
-                                <option value="BLOQUEADO" <? if( @$_GET['situacao'] == "BLOQUEADO" ){ echo 'selected'; }?>>BLOQUEADO</option>
-                                <option value="FALTOU" <? if( @$_GET['situacao'] == "FALTOU" ){ echo 'selected'; }?>>FALTOU</option>
-                                <option value="OK" <? if( @$_GET['situacao'] == "OK" ){ echo 'selected'; }?>>OCUPADO</option>
-                                <option value="LIVRE" <? if( @$_GET['situacao'] == "LIVRE" ){ echo 'selected'; }?>>VAGO</option>
+                                <option value="BLOQUEADO" <?
+                                if (@$_GET['situacao'] == "BLOQUEADO") {
+                                    echo 'selected';
+                                }
+                                ?>>BLOQUEADO</option>
+                                <option value="FALTOU" <?
+                                if (@$_GET['situacao'] == "FALTOU") {
+                                    echo 'selected';
+                                }
+                                ?>>FALTOU</option>
+                                <option value="OK" <?
+                                if (@$_GET['situacao'] == "OK") {
+                                    echo 'selected';
+                                }
+                                ?>>OCUPADO</option>
+                                <option value="LIVRE" <?
+                                if (@$_GET['situacao'] == "LIVRE") {
+                                    echo 'selected';
+                                }
+                                ?>>VAGO</option>
                             </select>
                         </th>
                         <th class="tabela_title">
@@ -114,7 +133,7 @@
                         <th class="tabela_header" width="150px;">Convenio</th>
                         <th class="tabela_header">Telefone</th>
                         <th class="tabela_header" width="250px;">Observa&ccedil;&otilde;es</th>
-                        <th class="tabela_header" colspan="3"><center>A&ccedil;&otilde;es</center></th>
+                        <th class="tabela_header" colspan="4"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -234,19 +253,18 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                
-                                <td class="<?php echo $estilo_linha; ?>"><? 
-                                if ($item->encaixe == 't') {
-                                    if ($item->paciente == '') {
-                                        echo '<span class="vermelho">Encaixe H.</span>';
+
+                                <td class="<?php echo $estilo_linha; ?>"><?
+                                    if ($item->encaixe == 't') {
+                                        if ($item->paciente == '') {
+                                            echo '<span class="vermelho">Encaixe H.</span>';
+                                        } else {
+                                            echo '<span class="vermelho">Encaixe</span>';
+                                        }
                                     }
-                                    else{
-                                        echo '<span class="vermelho">Encaixe</span>';
-                                    }
-                                }
-                                ?>
+                                    ?>
                                 </td>
-                                
+
                                 <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="150px;"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></b></td>
                                 <? } else { ?>
@@ -255,20 +273,35 @@
                                 <? } ?>                                
 
                                 <? if ($item->convenio != '') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . ' - ' .$item->procedimento;  ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
                                 <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' .$item->procedimento; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' . $item->procedimento; ?></td>
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                width=500,height=230');">=><?= $item->observacoes; ?></td>
+                               <? if($item->chegada == 't'){?>
+                                    <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
+                                <?}?>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
                                             </a></div>
                                     </td>
+                                     <?if($item->chegada != 't'){?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/chegada/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Chegada
+                                            </a></div>
+                                    </td>
+                                   <? }
+                                    else{?>
+                                    
+                                   <? }?>
+                                    
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
+                                    <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
+
                                     <?
                                 }
                                 if ($item->paciente_id == "" && $item->bloqueado == 'f') {
@@ -312,8 +345,7 @@
                                         <?
                                     }
                                 }
-                                ?>
-
+                                ?> 
                             </tr>
 
                         </tbody>
@@ -323,7 +355,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="14">
+                        <th class="tabela_footer" colspan="15">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total . " - Vago: " . $l . " - Marcado: " . $p; ?>
                         </th>
@@ -346,7 +378,7 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-$(document).ready(function () {
+                                    $(document).ready(function () {
 //alert('teste_parada');
                                         $(function () {
                                             $('#especialidade').change(function () {
@@ -395,7 +427,7 @@ $(document).ready(function () {
 
 
                                                     });
-                                                    
+
                                                 }
                                             });
                                         });

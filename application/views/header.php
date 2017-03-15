@@ -568,7 +568,7 @@ function debug($object) {
                         <ul>
                             <li><span class="folder">Rotinas</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 13) { ?>
-                                    <ul><span class="file"><a onclick="javascript: return confirm('Esta operação irá exportar todos os emails de paciente para uma planilha\n\nObs: Esse processo pode ser demorado  ');" href="<?php echo base_url() ?>ambulatorio/guia/exportaremails" style="width: 100pt">
+                                    <ul><span class="file"><a onclick="javascript: return confirm('Esta operação irá exportar todos os emails de pacientes para uma planilha\n\nObs: Esse processo pode ser demorado  ');" href="<?php echo base_url() ?>ambulatorio/guia/exportaremails" style="width: 100pt">
                                                 Exportar Emails
                                             </a></span></ul>
 
@@ -581,6 +581,7 @@ function debug($object) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioperfilpaciente">Relatorio Perfil Paciente</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriounicoretorno">Relatório Paciente Unico/Retorno</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotempoatendimento">Relatório Tempo de atendimento</a></span></ul>
 
                                     <?
                                 }

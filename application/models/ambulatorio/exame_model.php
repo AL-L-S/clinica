@@ -1748,6 +1748,7 @@ class exame_model extends Model {
                             ae.telefonema,
                             ae.observacoes,
                             ae.encaixe,
+                            ae.chegada,
                             ae.procedimento_tuss_id,
                             p.celular,
                             ae.bloqueado,
@@ -1827,6 +1828,8 @@ class exame_model extends Model {
         }
         return $this->db;
     }
+    
+
 
     function gerarelatoriomedicoagendaexamefaltou($args = array()) {
         $empresa_id = $this->session->userdata('empresa_id');
@@ -3346,6 +3349,7 @@ class exame_model extends Model {
                             ae.agenda_exames_id,
                             ae.faturado,
                             ae.numero_sessao,
+                            ae.situacao_faturamento,
                             g.data_criacao,
                             ae.autorizacao,
                             c.nome,
@@ -4396,6 +4400,36 @@ class exame_model extends Model {
             $this->db->set('telefonema', 't');
             $this->db->set('data_telefonema', $horario);
             $this->db->set('operador_telefonema', $operador_id);
+            $this->db->where('agenda_exames_id', $agenda_exame_id);
+            $this->db->update('tb_agenda_exames');
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function chegada($agenda_exame_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('chegada', 't');
+            $this->db->set('data_chegada', $horario);
+            $this->db->set('operador_chegada', $operador_id);
+            $this->db->where('agenda_exames_id', $agenda_exame_id);
+            $this->db->update('tb_agenda_exames');
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function atendimentohora($agenda_exame_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('atendimento', 't');
+            $this->db->set('data_atendimento', $horario);
+            $this->db->set('operador_atendimento', $operador_id);
             $this->db->where('agenda_exames_id', $agenda_exame_id);
             $this->db->update('tb_agenda_exames');
             return 0;

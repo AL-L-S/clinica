@@ -277,6 +277,11 @@ class Laudo extends BaseController {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
         $situacaolaudo = @$obj_laudo->_situacaolaudo;
+        $agenda_exames_id = @$obj_laudo->_agenda_exames_id;
+        $atendimento = @$obj_laudo->_atendimento;
+        if($atendimento != 't'){
+           $this->exame->atendimentohora($agenda_exames_id); 
+        }
         if ($situacaolaudo != 'FINALIZADO') {
             $this->exame->atenderpacienteconsulta($exame_id);
         }
@@ -674,10 +679,10 @@ class Laudo extends BaseController {
 <td width='30px'></td><td width='400px'>Numero do exame: " . $ambulatorio_laudo_id . "</td><td>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td>
 </tr>
 <tr>
-  <td width='30px'></td><td >Paciente: " . $data['laudo']['0']->paciente . "</td><td>Idade: " . $teste . "</td>
+  <td width='30px'></td><td >Paciente: " . strtoupper($data['laudo']['0']->paciente) . "</td><td>Idade: " . $teste . "</td>
 </tr>
 <tr>
-<td width='30px'></td><td>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "</td><td>Data de Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "</td>
+<td width='30px'></td><td>Solicitante: Dr(a). " . strtoupper($data['laudo']['0']->solicitante) . "</td><td>Data de Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "</td>
 </tr>
 <tr>
 <td width='30px'></td><td>Covenio: " . $data['laudo']['0']->convenio . "</td>

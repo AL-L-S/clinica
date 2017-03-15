@@ -1625,6 +1625,20 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_recibo integer;
 
 ALTER TABLE ponto.tb_paciente ADD COLUMN escolaridade_id integer;
 
+-- Dia 15/03/2017
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN chegada boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_chegada integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_chegada timestamp without time zone;
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN atendimento boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_atendimento integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_atendimento timestamp without time zone;
+
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN situacao_faturamento character varying(30);
+
+
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;
 CREATE TABLE ponto.tb_versao

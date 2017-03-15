@@ -53,6 +53,18 @@
 
                         </select>
                     </dd>
+                    
+                    <dt>
+                    <label>Situação</label>
+                    </dt>
+                    <dd>
+                        <select name="situacao_faturamento" id="grupo" class="size1" >
+                            <option value='' >TODOS</option>
+                            <option value='GLOSADO' >GLOSADO</option>
+                            <option value='PAGO' >PAGO</option>
+                            
+                        </select>
+                    </dd>
                     <dt>
                     <label>Procedimento</label>
                     </dt>

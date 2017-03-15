@@ -52,7 +52,7 @@
                 <? } ?>
 
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="7">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="7">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
                 </tr>
                 <tr>
                     <th style='width:10pt;border:solid windowtext 1.0pt;
@@ -72,7 +72,7 @@
                     <th width="110px;">Nome</th>
                     <th width="180px;">Obs.</th>
                     <th width="60px;">Valor Fatur.</th>
-                    
+
                     <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
             </tr>
             <tr>
@@ -104,40 +104,40 @@
                         <tr>
                             <td ><?= $item->ambulatorio_guia_id; ?></td>
                             <td ><?= $item->autorizacao; ?></td>
-                            <td ><a style="cursor: pointer; color: blue;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"><?= substr($item->procedimento, 0, 16) . " ". $item->numero_sessao; ?></a></td>
+                            <td ><a style="cursor: pointer; color: blue;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"><?= substr($item->procedimento, 0, 16) . " " . $item->numero_sessao; ?></a></td>
                             <td ><div style="margin-left:8pt;"><?= $item->nome; ?></div></td>
                             <td ><?= $item->codigo; ?></td>
                             <td >
-                                <? if( count($item->medico) > 0){ ?>
+                                <? if (count($item->medico) > 0) { ?>
                                     <a style="text-decoration: none; color: black;" title="<? echo $item->medico; ?>" href="#"><font color="c60000"><? echo substr($item->medico, 0, 10); ?>(...)</a>
-                                <? } 
-                                else{
-                                     echo $item->medico;
+                                    <?
+                                } else {
+                                    echo $item->medico;
                                 }
-?>
+                                ?>
                             </td>
                             <td ><?= substr($item->data_criacao, 8, 2) . "/" . substr($item->data_criacao, 5, 2) . "/" . substr($item->data_criacao, 0, 4); ?></td>
                             <? if ($item->faturado == "t") { ?>
                                 <td>
-                                    <font color="green"><? echo $item->paciente;?>
-                                    
+                                    <font color="green"><? echo $item->paciente; ?>
+
                                 </td>
                                 <?
                             } else {
                                 ?>
                                 <td>
-                                    <font color="c60000"><? echo $item->paciente;?>
-                                  
+                                    <font color="c60000"><? echo $item->paciente; ?>
+
                                 </td>
                             <? } ?>
 
-                                <td >
-                                    <div class="observacao">
-                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/alterarobservacaofaturar/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,\n\width=500,height=230');">
-                                            =><?= $item->observacao_faturamento; ?>
-                                        </a>
-                                    </div>
-                                </td>
+                            <td >
+                                <div class="observacao">
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/alterarobservacaofaturar/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,\n\width=500,height=230');">
+                                        =><?= $item->observacao_faturamento; ?>
+                                    </a>
+                                </div>
+                            </td>
                             <td ><?= number_format($item->valortotal, 2, ",", "."); ?></td>
                             <?
                             if ($item->faturado != "t") {
@@ -158,6 +158,32 @@
                                     </a>
                                 </div>
                             </td>
+
+                            <td width="40px;"><div class="bt_link">
+                                    <? if ($item->faturado == "t") { ?>
+
+                                        <? if ($item->situacao_faturamento == "") { ?>
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarconveniostatus/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">
+                                                Situação
+                                            </a>
+                                        <? } ?>
+                                        <? if ($item->situacao_faturamento == "GLOSADO") { ?>       
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarconveniostatus/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">
+                                                Glosado
+                                            </a>
+                                        <? } ?> 
+                                        <? if ($item->situacao_faturamento == "PAGO") { ?>        
+                                            Pago
+                                        <? } ?>
+
+                                    <? } else { ?>   
+                                        Situação
+                                    <? }
+                                    ?>
+                                </div>
+                            </td>
+
+
                         </tr>
 
                     </tbody>
@@ -166,32 +192,32 @@
             }
             ?>
 
-                <tfoot>
-                    <tr>
-                        <th colspan="2" >
-                            Registros: <?php echo $total; ?>
-                        </th>
-                        <th colspan="3" >
-                            Valor Total: <?php echo number_format($valortotal, 2, ',', '.'); ?>
-                        </th>
-                        <? if ($faturado == 0 && $convenios != 0) { ?>
-                                    <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/exame/fecharfinanceiro" method="post">
-                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($valortotal, 2, ',', '.'); ?>" readonly/>
-                <input type="hidden" class="texto3" name="relacao" value="<?= $convenios[0]->credor_devedor_id; ?>"/>
-                <input type="hidden" class="texto3" name="conta" value="<?= $convenios[0]->conta_id; ?>"/>
-                <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
-                <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
-                <input type="hidden" class="texto3" name="convenio" value="<?= $convenio; ?>"/>
-                            <th colspan="3" align="center"><center>
-                        <button type="submit" name="btnEnviar">Financeiro</button></center></th>
-                         </form>
-                <? } else { ?>
-                    <th colspan="3" >PENDENTE DE FATURAMENTO
+            <tfoot>
+                <tr>
+                    <th colspan="2" >
+                        Registros: <?php echo $total; ?>
                     </th>
-                <? } ?>
-                </tr>
-                </tfoot>
-           
+                    <th colspan="3" >
+                        Valor Total: <?php echo number_format($valortotal, 2, ',', '.'); ?>
+                    </th>
+                    <? if ($faturado == 0 && $convenios != 0) { ?>
+                <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/exame/fecharfinanceiro" method="post">
+                    <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($valortotal, 2, ',', '.'); ?>" readonly/>
+                    <input type="hidden" class="texto3" name="relacao" value="<?= $convenios[0]->credor_devedor_id; ?>"/>
+                    <input type="hidden" class="texto3" name="conta" value="<?= $convenios[0]->conta_id; ?>"/>
+                    <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
+                    <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
+                    <input type="hidden" class="texto3" name="convenio" value="<?= $convenio; ?>"/>
+                    <th colspan="3" align="center"><center>
+                        <button type="submit" name="btnEnviar">Financeiro</button></center></th>
+                </form>
+            <? } else { ?>
+                <th colspan="3" >PENDENTE DE FATURAMENTO
+                </th>
+            <? } ?>
+            </tr>
+            </tfoot>
+
         </table>
         <br>
         <table border="1">
@@ -209,7 +235,7 @@
     .observacao{
         max-height: 50pt;
         max-width: 170px;
-        
+
         word-wrap: break-word;
         overflow-y: auto;
     }

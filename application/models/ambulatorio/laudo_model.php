@@ -2975,6 +2975,7 @@ class laudo_model extends Model {
                             age.agenda_exames_id,
                             age.quantidade,
                             age.agrupador_fisioterapia,
+                            age.atendimento,
                             ag.assinatura,
                             ag.cabecalho,
                             ag.situacao,
@@ -3055,6 +3056,7 @@ class laudo_model extends Model {
             $this->_indicacao = $return[0]->indicacao;
             $this->_situacaolaudo = $return[0]->situacaolaudo;
             $this->_agenda_exames_id = $return[0]->agenda_exames_id;
+            $this->_atendimento = $return[0]->atendimento;
             $this->_paciente_id = $return[0]->paciente_id;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;

@@ -1,4 +1,21 @@
 <?
+$dataatualizacao = $exame[0]->data_autorizacao;
+$totalpagar = 0;
+$formapagamento = '';
+$teste = "";
+$teste2 = "";
+$teste3 = "";
+$teste4 = "";
+
+
+$dataFuturo = date("Y-m-d");
+$dataAtual = $paciente['0']->nascimento;
+$date_time = new DateTime($dataAtual);
+$diff = $date_time->diff(new DateTime($dataFuturo));
+$idade = $diff->format('%Y');
+?>
+
+<?
 $sexo = $exame[0]->sexo;
 if ($sexo == "M") {
     $sexopaciente = "Masculino";
@@ -23,13 +40,13 @@ $agenda = $exame[0]->agenda;
             <td ><font size = -1>Idade: <?= $teste; ?>&nbsp; </font></td>
             <td width="280px"><font size = -1><center></center></font></td>
 <td width="30px">&nbsp;</td>
-<td ><font size = -1><u>Clin.Dr Ronaldo Barreira</u></font></td>
+<td ><font size = -1><u><?= $empresa[0]->razao_social ?></u></font></td>
 </tr>
 <tr>
     <td colspan="2" ><font size = -1><?= utf8_decode($exame[0]->convenio); ?>&nbsp;&nbsp; - &nbsp;&nbsp;<?= $exame[0]->guia_id ?></font></td>
     <td ><font size = -1>SEXO: <?= $sexopaciente ?></font></td>
     <td><font size = -2></font></td>
-    <td >&nbsp;</td>
+    <td ><b>&nbsp;</b></td>
     <td ><font size = -1>Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b></td>
 
 </tr>
@@ -44,7 +61,7 @@ $agenda = $exame[0]->agenda;
     <td colspan="2" ><font size = -1>
         <?
         foreach ($exames as $item) :
-            if ($item->dinheiro == 'f') {
+            if ($item->dinheiro == 't') {
                 echo utf8_decode($item->procedimento)."<br>";
             }
             ?><? endforeach; ?>
@@ -54,7 +71,7 @@ $agenda = $exame[0]->agenda;
     <td >&nbsp;</td> 
     <td ><font size = -1><?
         foreach ($exames as $item) :
-            if ($item->dinheiro == 'f') {
+            if ($item->dinheiro == 't') {
                 echo utf8_decode($item->procedimento)."<br>";
             }
             ?><? endforeach; ?></font></td>
@@ -85,7 +102,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -2>PAC: <?= substr($paciente['0']->nome, 0, 18); ?></font></td>
+    <td ><font size = -1>PAC: <?= substr($paciente['0']->nome, 0, 18); ?></font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )TOSSE</font></td>
@@ -135,7 +152,30 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1>PREVISAO ENTREGA:</font></td>
+
+    <?
+    $DT_ENTREGA = substr($exame[0]->data_entrega, 8, 2) . "/" . substr($exame[0]->data_entrega, 5, 2) . "/" . substr($exame[0]->data_entrega, 0, 4);
+//    $b = 0;
+//    foreach ($exames as $item) :
+//    $b++;
+//    $data = $item->data_autorizacao;
+    $data = $exame[0]->data_autorizacao;
+    $dia = strftime("%A", strtotime($data));
+
+    if ($dia == "Saturday") {
+        $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($exame[0]->data_autorizacao)));
+    } elseif ($dia == "Sunday") {
+        $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($exame[0]->data_autorizacao)));
+    }
+//    if ($dia == "Saturday") {    
+//    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($item->data_autorizacao)));
+//    }elseif($dia == "Sunday") {
+//    $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($item->data_autorizacao)));
+//    }
+//    endforeach;
+    ?>
+
+    <td ><font size = -1>PREVISAO ENTREGA: </font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )CONT. DE TRAT.</font></td>
@@ -145,7 +185,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1><?= substr($exame[0]->data_entrega, 8, 2) . "/" . substr($exame[0]->data_entrega, 5, 2) . "/" . substr($exame[0]->data_entrega, 0, 4); ?></font></td>
+    <td ><font size = -1><?= $DT_ENTREGA ?></font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )COMUNICANTE</font></td>
@@ -216,7 +256,7 @@ $agenda = $exame[0]->agenda;
     solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -1><center></center></font></td>
 
 <td >&nbsp;</td>
-<td ><font size = -1>Fone: (85) - <?= $empresa[0]->telefone; ?></font></td>
+<td ><font size = -1>Fone: (85) - <?= $exame[0]->telefone; ?></font></td>
 </tr>
 </table>
 <div style="float:left;">
@@ -243,8 +283,9 @@ $agenda = $exame[0]->agenda;
 <br>
 <br style="page-break-before: always;" /> 
 
-<p><center><u>Cl&iacute;nica Radiol&oacute;gica Dr. Ronaldo Barreira</u></center></p>
-<p><center>Rua 24 de Maio, 961 - Fone: 3226-9536 / 3226-6973</center></p>
+<p><center><u><?= $exame[0]->razao_social; ?></u></center></p>
+<p><center><?= $exame[0]->logradouro; ?> - <?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?></center></p>
+<p><center>Fone: (85) <?= $exame[0]->telefoneempresa; ?> - (85) <?= $exame[0]->celularempresa; ?></center></p>
 <p>
 <p><center>Recibo</center></p>
 <p>
@@ -258,9 +299,8 @@ $agenda = $exame[0]->agenda;
     $teste3 = "";
     $teste4 = "";
     foreach ($exames as $item) :
-        if ($item->dinheiro == 'f') {
+        if ($item->dinheiro == 't') {
             echo utf8_decode($item->procedimento)."<br>";
-
             ?><?
             if ($item->forma_pagamento != null && $item->formadepagamento != $teste && $item->formadepagamento != $teste2 && $item->formadepagamento != $teste3 && $item->formadepagamento != $teste4) {
                 $teste = $item->formadepagamento;
@@ -281,16 +321,17 @@ $agenda = $exame[0]->agenda;
         }
     endforeach;
     ?></p>
-<p>Recebimento atraves de: <?= $formapagamento; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Categoria: <?= $exame[0]->convenio; ?></p><p align="right">Fortaleza, <?= substr($exame[0]->data_autorizacao, 8, 2) . "/" . substr($exame[0]->data_autorizacao, 5, 2) . "/" . substr($exame[0]->data_autorizacao, 0, 4) . " "; ?><?= substr($exame[0]->data_autorizacao, 11, 5); ?></p>
+<p>Recebimento atraves de: <?= $formapagamento; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Categoria: <?= $exame[0]->convenio; ?></p><p align="right"><?= $exame[0]->municipio ?>, <?= substr($exame[0]->data_autorizacao, 8, 2) . "/" . substr($exame[0]->data_autorizacao, 5, 2) . "/" . substr($exame[0]->data_autorizacao, 0, 4); ?></p>
 <p>Atendente: <?= substr($exame[0]->atendente, 0, 13); ?></p>
 <br>
 <h4><center>___________________________________________</center></h4>
-
+<h4><center>Raz&atilde;o Social: <?= $exame[0]->razao_social; ?></center></h4>
+<h4><center>CNPJ: <?= $exame[0]->cnpj; ?></center></h4>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    window.print()
+    window.print();
 
 
 </script>

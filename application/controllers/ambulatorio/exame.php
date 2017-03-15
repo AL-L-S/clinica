@@ -602,9 +602,19 @@ class Exame extends BaseController {
         $data['paciente'] = $paciente;
         $this->load->View('ambulatorio/telefonema-form', $data);
     }
+    function chegada($agenda_exame_id, $paciente) {
+        $data['agenda_exame_id'] = $agenda_exame_id;
+        $data['paciente'] = $paciente;
+        $this->load->View('ambulatorio/chegada-form', $data);
+    }
 
     function telefonemagravar($agenda_exame_id) {
         $this->exame->telefonema($agenda_exame_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+    function chegadagravar($agenda_exame_id) {
+        $this->exame->chegada($agenda_exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 

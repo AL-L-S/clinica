@@ -103,6 +103,7 @@
                             <tr>
                                 <th width="70px;" class="tabela_header">Sala*</th>
                                 <th class="tabela_header">Medico*</th>
+                                <th class="tabela_header">Solicitante*</th>
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
@@ -136,6 +137,10 @@
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
+                                <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"  required=""/>
+                                    <input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/>
+                                </td>
+                                <!--<td  width="50px;"></td>-->
                                 <td  >
                                     <select  name="convenio1" id="convenio1" class="size1"  required="">
                                         <option value="-1">Selecione</option>
