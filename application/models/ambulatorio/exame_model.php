@@ -111,7 +111,7 @@ class exame_model extends Model {
         $this->db->from('tb_paciente');
         $this->db->where('ativo', 'true');
         if ($parametro != null) {
-            $this->db->where('nascimento', $parametro);
+            $this->db->where('nascimento', date("Y-m-d", strtotime(str_replace("/","-",$parametro) ) ));
         }
         $return = $this->db->get();
         return $return->result();

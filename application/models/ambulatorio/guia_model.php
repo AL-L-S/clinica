@@ -2908,7 +2908,8 @@ class guia_model extends Model {
             pt.percentual,
             op.nome as medico,
             ops.nome as medicosolicitante,
-            c.nome as convenio');
+            c.nome as convenio,
+            c.iss');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');

@@ -70,7 +70,9 @@ switch ($MES) {
                     <th class="tabela_header"><font size="-1">Qtde</th>
                     <th class="tabela_header" width="220px;"><font size="-1">Procedimento</th>
                     <? if ($clinica == 'SIM') { ?>
-                        <th class="tabela_header" ><font size="-1">Valor</th>
+                        <th class="tabela_header" ><font size="-1">Valor Bruto</th>
+                        <th class="tabela_header" ><font size="-1">ISS</th>
+                        <th class="tabela_header" ><font size="-1">Valor Liquido</th>
                     <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
@@ -117,6 +119,8 @@ switch ($MES) {
                             <td><font size="-2"><?= utf8_decode($item->procedimento); ?></td>
                             <? if ($clinica == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_total, 2, ",", "."); ?></td>
+                                <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format(((float)$item->valor_total - ((float)$item->valor_total*((float)$item->iss/100))), 2, ",", "."); ?></td>
                             <? } ?>
                             <?
                             if ($item->percentual_medico == "t") {
