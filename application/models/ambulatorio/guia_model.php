@@ -5063,7 +5063,10 @@ AND data <= '$data_fim'";
             if ($_POST['medico_solicitante'] != '') {
                 $this->db->set('medico_solicitante', $_POST['medico_solicitante']);
             }
-
+            
+            if ($_POST['autorizacao'] != '') {
+                $this->db->set('autorizacao', $_POST['autorizacao']);
+            }
             $this->db->set('agenda_exames_nome_id', $_POST['sala']);
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);

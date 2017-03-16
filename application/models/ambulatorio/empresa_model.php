@@ -84,10 +84,14 @@ class empresa_model extends Model {
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
+            $this->db->set('razao_socialxml', $_POST['txtrazaosocialxml']);
             $this->db->set('cep', $_POST['CEP']);
             $this->db->set('cnes', $_POST['txtCNES']);
             if ($_POST['txtCNPJ'] != '') {
                 $this->db->set('cnpj', str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ']))));
+            }
+            if ($_POST['txtCNPJxml'] != '') {
+                $this->db->set('cnpjxml', str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJxml']))));
             }
             $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
             $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));

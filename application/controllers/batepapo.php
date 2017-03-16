@@ -17,22 +17,8 @@ class batepapo extends BaseController {
     public function pesquisar() {
         $operador_id = $this->session->userdata('operador_id');
         $data['usuarios'] = $this->batepapo->listarusuarios();
-        $tot_mensagens[] = array();
 
-        for ($i = 0; $i < count($data['usuarios']); $i++){
-            $tot_mensagens[$i]["total_mensagens"] = $this->batepapo->contamensagensporusuarios($data['usuarios'][$i]->operador_id);
-            $tot_mensagens[$i]["total_mensagens"] = count($tot_mensagens[$i]["total_mensagens"]);
-            $tot_mensagens[$i]["operador_origem"] = $data['usuarios'][$i]->operador_id;
-        }
-
-        for($i = 0; $i< count($data['usuarios']); $i++){
-            for($n = 0; $n < count($tot_mensagens); $n++){
-                if ($tot_mensagens[$n]["operador_origem"] == $data['usuarios'][$i]->operador_id){
-                    $num_mensagens = $tot_mensagens[$n]["total_mensagens"];
-                    break;
-                }
-            }
-            
+        for($i = 0; $i< count($data['usuarios']); $i++){            
             $status = 'off';
             
             if( isset($data['usuarios'][$i]->horario_login) ){
@@ -50,7 +36,7 @@ class batepapo extends BaseController {
                 'usuario' => utf8_encode($data['usuarios'][$i]->usuario),
                 'operador_id' => $data['usuarios'][$i]->operador_id,
                 'status' => $status,
-                'num_mensagens' => $num_mensagens
+                'num_mensagens' => $data['usuarios'][$i]->num_mensagens
             );
         }
         

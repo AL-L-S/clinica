@@ -15,11 +15,11 @@ class batepapo_model extends BaseModel {
         $this->db->select('o.usuario,
                            o.operador_id,
                            o.online,
-                           o.horario_login');
+                           o.horario_login,
+                           (SELECT COUNT(*) FROM ponto.tb_chat_mensagens WHERE ponto.tb_chat_mensagens.operador_destino = o.operador_id) as num_mensagens');
         $this->db->from('tb_operador o');
         $this->db->where('o.ativo', 't');
         $this->db->where('o.operador_id !=', $operador_id);
-//        $this->db->join('tb_chat_mensagens cm', 'cm.operador_origem = o.operador_id', 'left');
         $this->db->orderby('o.online DESC');
         $this->db->orderby('o.usuario');
         $return = $this->db->get();
