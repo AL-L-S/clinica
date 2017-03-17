@@ -1635,8 +1635,28 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN atendimento boolean DEFAULT false;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_atendimento integer;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_atendimento timestamp without time zone;
 
+-- Dia 17/03/17
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN operador_finalizado integer;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_finalizado timestamp without time zone;
+
 
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN situacao_faturamento character varying(30);
+
+
+CREATE TABLE ponto.tb_tempo_medio_atendimento
+(
+  tempo_medio_atendimento_id serial NOT NULL,
+
+  tempo_chegada character varying(20),
+  tempo_atendimento character varying(20),
+  tempo_finalizado character varying(20),
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  CONSTRAINT tb_tempo_medio_atendimento_pkey PRIMARY KEY (tempo_medio_atendimento_id)
+);
 
 
 -- FIM DA VERSÃO 1.0.00002

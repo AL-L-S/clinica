@@ -515,6 +515,9 @@ class guia_model extends Model {
                             ae.chegada,
                             ae.atendimento,
                             ae.data_atendimento,
+                            ae.data_autorizacao,
+                            al.situacao,
+                            al.data_finalizado,
                             
                             ae.data_chegada,
                             ae.guia_id,
@@ -4127,6 +4130,47 @@ class guia_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function gravartempomedioatendimento() {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('tempo_chegada', $_POST['chegada']);
+            $this->db->set('tempo_atendimento', $_POST['atendimento']);
+            $this->db->set('tempo_finalizado', $_POST['finalizado']);
+
+
+            $this->db->select('*');
+            $this->db->from('tb_tempo_medio_atendimento');
+            $return = $this->db->get()->result();
+            if (count($return) > 0) {
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->update('tb_tempo_medio_atendimento');
+            } else {
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->insert('tb_tempo_medio_atendimento');
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function tempomedioatendimento() {
+
+
+            $this->db->select('*');
+            $this->db->from('tb_tempo_medio_atendimento');
+            $return = $this->db->get();
+            return $return->result();
+
     }
 
     function listarexamesguia($guia_id) {

@@ -1487,8 +1487,8 @@ class Exame extends BaseController {
     function gravarconsulta() {
         $agenda_id = $_POST['txthorario'];
         $medico_id = $_POST['txtmedico'];
-        $datainicial = str_replace("/", "-", $_POST['txtdatainicial']);
-        $datafinal = str_replace("/", "-", $_POST['txtdatafinal']);
+        $datainicial = date("Y-m-d", strtotime($_POST['txtdatainicial']));
+        $datafinal = date("Y-m-d", strtotime($_POST['txtdatafinal']));
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;

@@ -138,8 +138,7 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    
+
     function atualizacaolaudosintegracaotodos() {
 
         $this->db->select('il.integracao_laudo_id,
@@ -185,8 +184,8 @@ class laudo_model extends Model {
             $this->db->where('exame_id', $agenda_exames_id);
             $this->db->update('tb_integracao_laudo');
         }
-        
-        
+
+
         $this->db->select('il.integracao_laudo_id,
                             il.exame_id,
                             il.laudo_texto,
@@ -734,7 +733,7 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarhistoricoantigo2($args = array()) {
 
         $this->db->select('distinct(la.paciente_id), p.nome as paciente');
@@ -746,12 +745,12 @@ class laudo_model extends Model {
             $this->db->where('la.paciente_id ', $args['prontuario']);
         }
         if (isset($args['paciente'])) {
-            
+
             $this->db->where('p.nome ilike', '%' . $args['paciente'] . '%');
         }
         return $this->db;
     }
-    
+
     function listarhistoricoantigo($args = array()) {
 
         $this->db->select('distinct(la.paciente_id)');
@@ -1044,7 +1043,7 @@ class laudo_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
         $perfil_id = $this->session->userdata('perfil_id');
-        
+
         $this->db->select('ag.ambulatorio_laudo_id,
                             ag.paciente_id,
                             ag.data_cadastro,
@@ -1070,11 +1069,11 @@ class laudo_model extends Model {
         $this->db->where('ag.empresa_id', $empresa_id);
         $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where("ag.cancelada", 'false');
-        
+
         if ($perfil_id == 4) {
             $this->db->where('age.medico_consulta_id', $operador_id);
         }
-        
+
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
@@ -1111,7 +1110,7 @@ class laudo_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
         $perfil_id = $this->session->userdata('perfil_id');
-        
+
         $this->db->select('ag.ambulatorio_laudo_id,
                             ag.paciente_id,
                             ag.data_cadastro,
@@ -1155,11 +1154,11 @@ class laudo_model extends Model {
         if ($contador == 0) {
             $this->db->where('ag.data >=', $data);
         }
-        
+
         if ($perfil_id == 4) {
             $this->db->where('age.medico_consulta_id', $operador_id);
         }
-        
+
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
@@ -2448,7 +2447,7 @@ class laudo_model extends Model {
                 $this->db->set('hipertensao', $_POST['hipertensao']);
             }
 
-            
+
             if (isset($_POST['assinatura'])) {
                 $this->db->set('assinatura', 't');
             } else {
@@ -2458,6 +2457,10 @@ class laudo_model extends Model {
                 $this->db->set('rodape', 't');
             } else {
                 $this->db->set('rodape', 'f');
+            }
+            if ($_POST['status'] != 'FINALIZADO') {
+                $this->db->set('data_finalizado', $horario);
+                $this->db->set('operador_finalizado', $operador_id);
             }
             $this->db->set('cabecalho', $_POST['cabecalho']);
             $this->db->set('situacao', 'FINALIZADO');

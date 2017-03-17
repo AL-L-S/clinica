@@ -41,7 +41,7 @@
             </tr>
         <? } ?>
         <tr>
-            <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?=$txtdata_inicio ?> ate <?=$txtdata_fim; ?></th>
+            <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= $txtdata_inicio ?> ate <?= $txtdata_fim; ?></th>
         </tr>
 
     </thead>
@@ -54,14 +54,18 @@
         <thead>
             <tr>
                 <th class="tabela_teste">Nome</th>
-                <th class="tabela_teste">Sexo</th>
-                <th class="tabela_teste">Idade</th>
-                <th class="tabela_teste">Data de Nascimento</th>
+                <!--<th class="tabela_teste">Sexo</th>-->
+                <!--<th class="tabela_teste">Idade</th>-->
+                <!--<th class="tabela_teste">Data de Nascimento</th>-->
+                <th class="tabela_teste">Data</th>
                 <!--<th class="tabela_teste">Escolaridade</th>-->
-                <th class="tabela_teste">Hora da chegada</th>
-                <th class="tabela_teste">Tempo Recepção</th>
-                <th class="tabela_teste">Status</th>
-                <th class="tabela_teste">Status</th>
+                <th rowspan="2" class="tabela_teste">Hora de  <br> Chegada</th>
+                <th class="tabela_teste">Tempo entre chegada e <br> Horário</th>
+                <th class="tabela_teste">Horário <br> Marcado</th>
+                <th class="tabela_teste">Tempo Cons/Atend</th>
+                <th class="tabela_teste">Horário do <br> Atendimento</th>
+                <th class="tabela_teste">Tempo Atend/Final</th>
+                <th class="tabela_teste">Atendimento <br> Finalizado</th>
             </tr>
         </thead>
         <hr>
@@ -103,17 +107,20 @@
             $idosos = 0;
             $retorno = 0;
             $unico = 0;
+            $total_chegada = 0;
+            $total_consulta = 0;
+            $total_atendimento = 0;
             $idades = array();
             foreach ($relatorio as $item) :
 
                 $i++;
                 $qtdetotal++;
-                
                 ?>
                 <tr>
                     <?
                     $dataFuturo = date("Y-m-d");
                     $dataAtual = $item->nascimento;
+                    $nascimento = date("d/m/Y", strtotime($item->nascimento));
                     $date_time = new DateTime($dataAtual);
                     $diff = $date_time->diff(new DateTime($dataFuturo));
                     $teste = $diff->format('%Ya %mm %dd');
@@ -157,72 +164,141 @@
                     ?>
                     <td><?= $item->paciente; ?></td>
 
-                    <td style='text-align: center;'><font size="-1"><?= $idade; ?> Anos</td>
+                                                                                                            <!--<td style='text-align: center;'><font size="-1"><?= $nascimento; ?></td>-->
+                    <td style='text-align: center;'><font size="-1"><?= date(" d/m/Y", strtotime($item->data)) ?></td>
+        <!--                    <td style='text-align: center;'><?
+                    if ($item->sexo == "M") {
+//                            echo 'Masculino';
+                        $masculino ++;
+                    } else {
+                        $feminino ++;
+//                            echo 'Feminino';
+                    }
+                    ?></td>-->
+        <!--                    <td style='text-align: center;'><?
+                    if ($item->estado_civil_id == "1") {
+                        echo 'Solteiro(a)';
+                        $solteiro++;
+                    } elseif ($item->estado_civil_id == "2") {
+                        echo 'Casado(a)';
+                        $casado++;
+                    } elseif ($item->estado_civil_id == "3") {
+                        echo 'Divorciado(a)';
+                        $divorciado++;
+                    } elseif ($item->estado_civil_id == "4") {
+                        echo 'Viuvo(a)';
+                        $viuvo++;
+                    } elseif ($item->estado_civil_id == "5") {
+                        echo 'Outros';
+                        $outros++;
+                    }
+                    ?></td>-->
+
+                                                                                                                        <!--                    <td style='text-align: center;'><?
+                    //echo $item->conta;
+                    if ($item->escolaridade_id == 1) {
+                        echo 'Fundamental-Incompleto';
+                        $fundamental1++;
+                    } elseif ($item->escolaridade_id == 2) {
+                        echo 'Fundamental-Completo';
+                        $fundamental2++;
+                    } elseif ($item->escolaridade_id == 3) {
+                        echo 'Médio-Incompleto';
+                        $medio1++;
+                    } elseif ($item->escolaridade_id == 4) {
+                        echo 'Médio-Completo';
+                        $medio2++;
+                    } elseif ($item->escolaridade_id == 5) {
+                        echo 'Superior-Incompleto';
+                        $superior1++;
+                    } elseif ($item->escolaridade_id == 6) {
+                        echo 'Superior-Completo';
+                        $superior2++;
+                    }
+                    ?></td>-->
+
+                    <td style='text-align: center;'><?= date(" H:i:s", strtotime($item->data_autorizacao)) ?></td>
                     <td style='text-align: center;'><?
-                        if ($item->sexo == "M") {
-                            echo 'Masculino';
-                            $masculino ++;
+                        $data_autorizacao = new DateTime($item->data_autorizacao);
+                        $inicio = new DateTime($item->data . $item->inicio);
+                        $diff2 = $data_autorizacao->diff($inicio, true);
+                        if($data_autorizacao > $inicio){
+                            echo 'Atraso:';
+                        }
+                        ?>
+                        <span 
+                        <?
+                        if ($diff2->format('%H:%i:%s') > date("H:i:s", strtotime($tempo[0]->tempo_chegada))) {
+                            echo "style='color:red;'";
+                        }
+                        if (((int) $diff2->format('%H')) > 0) {
+                            $minutos_chegada = (((int) $diff2->format('%H')) * 60 + $diff2->format('%i'));
                         } else {
-                            $feminino ++;
-                            echo 'Feminino';
+                            $minutos_chegada = ((int) $diff2->format('%i'));
                         }
-                        ?></td>
+                        $total_chegada = $total_chegada + $minutos_chegada;
+                        ?>
+                            >
+                            <? echo $diff2->format('%H:%i:%s'); ?></span>
+                    </td>
+                    <td style='text-align: center;'><?= date("H:i:s", strtotime($item->inicio)) ?></td>
                     <td style='text-align: center;'><?
-                        if ($item->estado_civil_id == "1") {
-                            echo 'Solteiro(a)';
-                            $solteiro++;
-                        } elseif ($item->estado_civil_id == "2") {
-                            echo 'Casado(a)';
-                            $casado++;
-                        } elseif ($item->estado_civil_id == "3") {
-                            echo 'Divorciado(a)';
-                            $divorciado++;
-                        } elseif ($item->estado_civil_id == "4") {
-                            echo 'Viuvo(a)';
-                            $viuvo++;
-                        } elseif ($item->estado_civil_id == "5") {
-                            echo 'Outros';
-                            $outros++;
+                        $data_inicio = new DateTime($item->data . $item->inicio);
+                        $data_atendimento = new DateTime($item->data_atendimento);
+                        $diff3 = $data_inicio->diff($data_atendimento, true);
+                        ?>
+                        <span 
+                        <?
+                        if ($diff3->format('%H:%i:%s') > date("H:i:s", strtotime($tempo[0]->tempo_atendimento))) {
+                            echo "style='color:red;'";
                         }
-                        ?></td>
-
-<!--                    <td style='text-align: center;'><?
-                        //echo $item->conta;
-                        if ($item->escolaridade_id == 1) {
-                            echo 'Fundamental-Incompleto';
-                            $fundamental1++;
-                        } elseif ($item->escolaridade_id == 2) {
-                            echo 'Fundamental-Completo';
-                            $fundamental2++;
-                        } elseif ($item->escolaridade_id == 3) {
-                            echo 'Médio-Incompleto';
-                            $medio1++;
-                        } elseif ($item->escolaridade_id == 4) {
-                            echo 'Médio-Completo';
-                            $medio2++;
-                        } elseif ($item->escolaridade_id == 5) {
-                            echo 'Superior-Incompleto';
-                            $superior1++;
-                        } elseif ($item->escolaridade_id == 6) {
-                            echo 'Superior-Completo';
-                            $superior2++;
+                        if (((int) $diff3->format('%H')) > 0) {
+                            $minutos_consulta = (((int) $diff3->format('%H')) * 60 + $diff3->format('%i'));
+                        } else {
+                            $minutos_consulta = ((int) $diff3->format('%i'));
                         }
-                        ?></td>-->
 
-                    <td style='text-align: center;'><? ?></td>
+                        $total_consulta = $total_consulta + $minutos_consulta;
+                        ?>
+                            >
+                            <? echo $diff3->format('%H:%i:%s'); ?></span>
+                    </td>
+                    <td style='text-align: center;'><?= date(" H:i:s", strtotime($item->data_atendimento)) ?></td>
+                    <td style='text-align: center;'><?
+                        $data_finalizado = new DateTime($item->data_finalizado);
+                        $diff4 = $data_finalizado->diff($data_atendimento, true);
+                        ?>
+                        <span 
+                        <?
+                        if ($diff4->format('%H:%i:%s') > date("H:i:s", strtotime($tempo[0]->tempo_finalizado))) {
+                            echo "style='color:red;'";
+                        }
+                        if (((int) $diff4->format('%H')) > 0) {
+                            $minutos_atendimento = (((int) $diff4->format('%H')) * 60 + $diff4->format('%i'));
+                        } else {
+                            $minutos_atendimento = ((int) $diff4->format('%i'));
+                        }
+
+                        $total_atendimento = $total_atendimento + $minutos_atendimento;
+                        ?>
+                            >
+
+                            <? echo $diff4->format('%H:%i:%s'); ?></span>
+                    </td>
+                    <td style='text-align: center;'><?= date("H:i:s", strtotime($item->data_finalizado)) ?></td>
                 </tr>
             <? endforeach; ?>
 
             <tr>
-                <td width="140px;" align="Right" colspan="5"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
+                <td width="140px;" align="Right" colspan="9"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
             </tr>
         </tbody>
     </table>
     <?
-    
     $unicop = round(($unico * 100) / $qtdetotal);
-    $retornop = round(($retorno * 100) / $qtdetotal);
-    
+    $media_chegada = round(($total_chegada) / $qtdetotal);
+    $media_consulta = round(($total_consulta) / $qtdetotal);
+    $media_atendimento = round(($total_atendimento) / $qtdetotal);
     ?>
     <br>
     <h3>Estatísticas</h3>
@@ -231,25 +307,30 @@
         <thead>
             <tr>
                 <th class="tabela_teste">Tipo</th>
-                <th class="tabela_teste">Quantidade</th>
-                <th class="tabela_teste">Percentual</th>
+                <th class="tabela_teste">Tempo Médio</th>
+                <th class="tabela_teste">Tempo Esperado</th>
             </tr>
         </thead>
 
         <tbody>
 
             <tr>
-                <td style='text-align: center;'>Único</td>
-                <td><?= $unico; ?></td>
-                <td><?= $unicop . "%"; ?></td>
+                <td style='text-align: center;'>Chegada/Cons</td>
+                <td style='text-align: center;'><?= $media_chegada; ?> Minutos</td>
+                <td style='text-align: center;'><?= date("i", strtotime($tempo[0]->tempo_chegada)) . " Minutos"; ?></td>
             </tr>
             <tr>
-                <td style='text-align: center;'>Retorno</td>
-                <td><?= $retorno; ?></td>
-                <td><?= $retornop . "%"; ?></td>
+                <td style='text-align: center;'>Consul/Atend</td>
+                <td style='text-align: center;'><?= $media_consulta; ?> Minutos</td>
+                <td style='text-align: center;'><?= date("i", strtotime($tempo[0]->tempo_atendimento)) . " Minutos"; ?></td>
             </tr>
             <tr>
-                <td colspan="3" rowspan="3" style='text-align: center;'><div id="sexo" style="height: 250px;"></div></td>
+                <td style='text-align: center;'>Atend/Final</td>
+                <td style='text-align: center;'><?= $media_atendimento; ?> Minutos</td>
+                <td style='text-align: center;'><?= date("i", strtotime($tempo[0]->tempo_finalizado)) . " Minutos"; ?></td>
+            </tr>
+            <tr>
+                <!--<td colspan="3" rowspan="3" style='text-align: center;'><div id="sexo" style="height: 250px;"></div></td>-->
             </tr>
 
 
@@ -260,8 +341,8 @@
 
         </tbody>
     </table>
-    <?
-    ?>
+    <div id="graph" style="width: 800px;"></div>
+    <? ?>
 <? } else {
     ?>
     <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
@@ -279,36 +360,20 @@
 
 
 <script>
-    
-    new Morris.Donut({
-        element: 'sexo',
-        data: [
-            {label: "Retorno", value: <?= $retornop; ?>, formatted: '<?= $retornop; ?>%'},
-            {label: "Único", value: <?= $unicop; ?>, formatted: '<?= $unicop; ?>%'}
-            
 
+    // Use Morris.Bar
+    Morris.Bar({
+        element: 'graph',
+        data: [
+            {x: 'Chegada/Horário', y: <?= $media_chegada; ?>, z: <?=date("i", strtotime($tempo[0]->tempo_chegada))?>},
+            {x: 'Horário/Atendim', y: <?= $media_consulta; ?>, z: <?=date("i", strtotime($tempo[0]->tempo_atendimento))?>},
+            {x: 'Atendime/Final', y: <?= $media_atendimento; ?>, z: <?=date("i", strtotime($tempo[0]->tempo_finalizado))?>}
         ],
-        colors: [
-            '#E3000E',
-            '#2C82C9'
-        ],
-        formatter: function (x, data) {
-            return data.formatted;
-        }
-    });
-    
-    $(document).ready(function () {
-        $("#teste").click(function () {
-            $("#adultos").fadeIn(1000);
-            $("#adultoslabel").fadeIn(1000);
-            $("#esconder").fadeIn(1000);
-//            $("#adultos").css( "display", "block" );
-//            $("#adultos").css( "display", "none" );
-        });
-        $("#esconder").click(function () {
-            $("#adultos").fadeOut(1000);
-            $("#adultoslabel").fadeOut(1000);
-            $("#esconder").fadeOut(1000);
-        });
+        xkey: 'x',
+        hideHover:true,
+        ykeys: ['y', 'z'],
+        labels: ['Tempo Médio', 'Tempo Esperado']
+    }).on('click', function (i, row) {
+        console.log(i, row);
     });
 </script>

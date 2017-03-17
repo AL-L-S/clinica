@@ -1131,7 +1131,7 @@ class Guia extends BaseController {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $this->load->View('ambulatorio/faturarconvenio-form', $data);
     }
-    
+
     function faturarconveniostatus($agenda_exames_id) {
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
         $data['agenda_exames_id'] = $agenda_exames_id;
@@ -1176,6 +1176,12 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/faturamentodetalhe-form', $data);
     }
 
+    function tempomedioatendimento() {
+        $data['tempo'] = $this->guia->tempomedioatendimento();
+
+        $this->load->View('ambulatorio/tempomedioconsulta-form', $data);
+    }
+
     function gravarfaturar($agenda_exames_id) {
         $this->guia->gravarfaturamento($agenda_exames_id);
         $data['agenda_exames_id'] = $agenda_exames_id;
@@ -1206,6 +1212,14 @@ class Guia extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
+
+    function gravartempomedioatendimento() {
+
+        $this->guia->gravartempomedioatendimento();
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+    }
+
     function gravarfaturadoconveniostatus() {
 
         $this->guia->gravarfaturamentoconveniostatus();
@@ -2266,9 +2280,11 @@ class Guia extends BaseController {
             redirect(base_url() . "/ambulatorio/guia/relatoriounicoretorno");
         }
     }
-    
+
     function gerarelatoriotempoatendimento() {
-        if ($_POST["txtdata_inicio"] != "" && $_POST["txtdata_fim"] != "") {
+        $data['tempo'] = $this->guia->tempomedioatendimento();
+        
+        if (count($data['tempo']) > 0) {
             $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
             $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
             $data['txtdata_fim'] = $_POST['txtdata_fim'];

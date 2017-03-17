@@ -242,6 +242,7 @@
                                 endif;
                                 ?> >FINALIZADO</option>
                             </select>
+                            <input type="hidden" name="status" id="status" value="<?= @$obj->_status; ?>" class="size2" />
                         </div>
                         <hr>
                         <button type="submit" name="btnEnviar">Salvar</button>

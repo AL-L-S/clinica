@@ -568,8 +568,11 @@ function debug($object) {
                         <ul>
                             <li><span class="folder">Rotinas</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 13) { ?>
-                                    <ul><span class="file"><a onclick="javascript: return confirm('Esta operação irá exportar todos os emails de pacientes para uma planilha\n\nObs: Esse processo pode ser demorado  ');" href="<?php echo base_url() ?>ambulatorio/guia/exportaremails" style="width: 100pt">
+                                    <ul><span class="file"><a onclick="javascript: return confirm('Esta operação irá exportar todos os emails de pacientes para uma planilha\n\nObs: Esse processo pode ser demorado  ');" href="<?php echo base_url() ?>ambulatorio/guia/exportaremails">
                                                 Exportar Emails
+                                            </a></span></ul>
+                                    <ul><span class="file"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/tempomedioatendimento/"?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');"  href="#">
+                                                Manter Tempo Médio
                                             </a></span></ul>
 
                                 <? }
