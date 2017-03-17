@@ -256,7 +256,7 @@ $agenda = $exame[0]->agenda;
     solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -1><center></center></font></td>
 
 <td >&nbsp;</td>
-<td ><font size = -1>Fone: (85) - <?= $exame[0]->telefone; ?></font></td>
+<td ><font size = -1>Fone: <?= $exame[0]->telefoneempresa; ?></font></td>
 </tr>
 </table>
 <div style="float:left;">
@@ -285,7 +285,7 @@ $agenda = $exame[0]->agenda;
 
 <p><center><u><?= $exame[0]->razao_social; ?></u></center></p>
 <p><center><?= $exame[0]->logradouro; ?> - <?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?></center></p>
-<p><center>Fone: (85) <?= $exame[0]->telefoneempresa; ?> - (85) <?= $exame[0]->celularempresa; ?></center></p>
+<p><center>Fone: <?= $exame[0]->telefoneempresa; ?> - <?= $exame[0]->celularempresa; ?></center></p>
 <p>
 <p><center>Recibo</center></p>
 <p>
