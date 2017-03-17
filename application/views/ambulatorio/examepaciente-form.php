@@ -13,7 +13,7 @@
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" class="texto02" type="text" maxlength="10" onblur="calculoIdade(this.value)"/>
+                <input type="text" name="nascimento" id="nascimento" alt="99/99/9999 " class="texto02" type="text" maxlength="10" onblur="calculoIdade(this.value)"/>
             </div>
             <div>
                 <label>Idade</label>
@@ -162,7 +162,7 @@
     mascaraTelefone(form_exametemp.txtCelular);
 
 
-                    jQuery("#nascimento").mask("99/99/9999");
+//                    jQuery("#nascimento").mask("99/99/9999");
                     
                     $(function () {
                         $('#convenio1').change(function () {
@@ -205,7 +205,7 @@
                     $(function () {
                         $("#nascimento").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientenascimento",
-                            minLength: 3,
+                            minLength: 9,
                             focus: function (event, ui) {
                                 $("#nascimento").val(ui.item.label);
                                 return false;
@@ -267,8 +267,6 @@
 //            }
 //        });
 //    });
-                    jQuery("#nascimento").mask("99/99/9999");
-                    
                     function calculoIdade() {
                         var data = document.getElementById("nascimento").value;
                         var ano = data.substring(6, 12);

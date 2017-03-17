@@ -2911,7 +2911,8 @@ class guia_model extends Model {
             pt.percentual,
             op.nome as medico,
             ops.nome as medicosolicitante,
-            c.nome as convenio');
+            c.nome as convenio,
+            c.iss');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -5106,7 +5107,10 @@ AND data <= '$data_fim'";
             if ($_POST['medico_solicitante'] != '') {
                 $this->db->set('medico_solicitante', $_POST['medico_solicitante']);
             }
-
+            
+            if ($_POST['autorizacao'] != '') {
+                $this->db->set('autorizacao', $_POST['autorizacao']);
+            }
             $this->db->set('agenda_exames_nome_id', $_POST['sala']);
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
