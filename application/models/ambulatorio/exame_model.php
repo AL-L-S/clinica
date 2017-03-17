@@ -111,7 +111,7 @@ class exame_model extends Model {
         $this->db->from('tb_paciente');
         $this->db->where('ativo', 'true');
         if ($parametro != null) {
-            $this->db->where('nascimento', date("Y-m-d", strtotime(str_replace("/","-",$parametro) ) ));
+            $this->db->where('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $parametro))));
         }
         $return = $this->db->get();
         return $return->result();
@@ -1828,8 +1828,6 @@ class exame_model extends Model {
         }
         return $this->db;
     }
-    
-
 
     function gerarelatoriomedicoagendaexamefaltou($args = array()) {
         $empresa_id = $this->session->userdata('empresa_id');
@@ -3369,7 +3367,7 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id= al.medico_parecer1', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']) ) ) );
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("c.dinheiro", 'f');
         $this->db->where("ae.confirmado", 't');
@@ -3427,7 +3425,7 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id= al.medico_parecer1', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where("g.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']) ) ) );
+        $this->db->where("g.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("g.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 //        $this->db->where("c.dinheiro", 'f');
 //        $this->db->where("ae.confirmado", 't');
@@ -4407,7 +4405,7 @@ class exame_model extends Model {
             return -1;
         }
     }
-    
+
     function chegada($agenda_exame_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -4422,7 +4420,7 @@ class exame_model extends Model {
             return -1;
         }
     }
-    
+
     function atendimentohora($agenda_exame_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -4854,6 +4852,8 @@ class exame_model extends Model {
 
     function gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null) {
         try {
+            
+            $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
 
             /* inicia o mapeamento no banco */
             $this->db->set('horarioagenda_id', $agenda_id);
@@ -4895,6 +4895,7 @@ class exame_model extends Model {
     function gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id) {
         try {
 
+            $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
             /* inicia o mapeamento no banco */
             $this->db->set('horarioagenda_id', $agenda_id);
             $this->db->set('inicio', $horaconsulta);
@@ -4931,7 +4932,8 @@ class exame_model extends Model {
 
     function gravarespecialidade($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $empresa_id, $obs = null) {
         try {
-
+            
+            $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
             /* inicia o mapeamento no banco */
             $this->db->set('horarioagenda_id', $agenda_id);
             $this->db->set('inicio', $horaconsulta);

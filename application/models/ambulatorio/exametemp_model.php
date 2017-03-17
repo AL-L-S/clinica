@@ -1170,8 +1170,8 @@ class exametemp_model extends Model {
             $this->db->set('ativo', 'f');
             $this->db->set('cancelada', 'f');
             $this->db->set('confirmado', 't');
-            $this->db->set('valor', str_replace(',', '.', $_POST['valor']) );
-            $this->db->set('valor_total', str_replace(',', '.', $_POST['valor']) );
+            $this->db->set('valor', str_replace(',', '.', $_POST['valor']));
+            $this->db->set('valor_total', str_replace(',', '.', $_POST['valor']));
             $this->db->set('situacao', 'OK');
             $this->db->set('quantidade', 1);
             $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
@@ -2645,69 +2645,6 @@ class exametemp_model extends Model {
                 $k = 0;
                 $i++;
 
-                foreach ($_POST['sala'] as $itemnome) {
-                    $c++;
-                    if ($i == $c) {
-                        $sala = $itemnome;
-                        break;
-                    }
-                }
-                foreach ($_POST['valor'] as $itemnome) {
-                    $z++;
-                    if ($i == $z) {
-                        $valor = $itemnome;
-                        break;
-                    }
-                }
-                foreach ($_POST['formapamento'] as $itemnome) {
-                    $e++;
-                    if ($i == $e) {
-                        $formapagamento = $itemnome;
-                        break;
-                    }
-                }
-                foreach ($_POST['indicacao'] as $itemindicacao) {
-                    $k++;
-                    if ($i == $k) {
-                        $indicacao = $itemindicacao;
-                        break;
-                    }
-                }
-                foreach ($_POST['convenio'] as $itemconvenio) {
-                    $w++;
-                    if ($i == $w) {
-                        $convenio = $itemconvenio;
-                        $this->db->select('dinheiro');
-                        $this->db->from('tb_convenio');
-                        $this->db->where("convenio_id", $convenio);
-                        $query = $this->db->get();
-                        $return = $query->result();
-                        $dinheiro = $return[0]->dinheiro;
-
-                        break;
-                    }
-                }
-                foreach ($_POST['autorizacao'] as $itemautorizacao) {
-                    $b++;
-                    if ($i == $b) {
-                        $autorizacao = $itemautorizacao;
-                        break;
-                    }
-                }
-                foreach ($_POST['agenda_exames_id'] as $itemagenda_exames_id) {
-                    $x++;
-                    if ($i == $x) {
-                        $agenda_exames_id = $itemagenda_exames_id;
-                        break;
-                    }
-                }
-                foreach ($_POST['medico_id'] as $crm) {
-                    $f++;
-                    if ($i == $f) {
-                        $medico_id = $crm;
-                        break;
-                    }
-                }
                 foreach ($_POST['confimado'] as $key => $itemconfimado) {
                     $y++;
                     if ($i == $key) {
@@ -2715,36 +2652,104 @@ class exametemp_model extends Model {
                         break;
                     }
                 }
-                if ($medico_id == '') {
-                    $medico_id = 0;
-                }
+//Verifica o confirmado e entra de fato na função
+                if ($confimado == "on" && $procedimento_tuss_id > 0) {
 
-                // Função do Percentual
-                $this->db->select('mc.valor as perc_medico, mc.percentual');
-                $this->db->from('tb_procedimento_percentual_medico_convenio mc');
-                $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
-                $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
-                $this->db->where('mc.medico', $medico_id);
-                $this->db->where('mc.ativo', 'true');
-                $percentual = $this->db->get()->result();
+                    foreach ($_POST['sala'] as $itemnome) {
+                        $c++;
+                        if ($i == $c) {
+                            $sala = $itemnome;
+                            break;
+                        }
+                    }
+                    foreach ($_POST['valor'] as $itemnome) {
+                        $z++;
+                        if ($i == $z) {
+                            $valor = $itemnome;
+                            break;
+                        }
+                    }
+                    foreach ($_POST['formapamento'] as $itemnome) {
+                        $e++;
+                        if ($i == $e) {
+                            $formapagamento = $itemnome;
+                            break;
+                        }
+                    }
+                    foreach ($_POST['indicacao'] as $itemindicacao) {
+                        $k++;
+                        if ($i == $k) {
+                            $indicacao = $itemindicacao;
+                            break;
+                        }
+                    }
+                    foreach ($_POST['convenio'] as $itemconvenio) {
+                        $w++;
+                        if ($i == $w) {
+                            $convenio = $itemconvenio;
+                            $this->db->select('dinheiro');
+                            $this->db->from('tb_convenio');
+                            $this->db->where("convenio_id", $convenio);
+                            $query = $this->db->get();
+                            $return = $query->result();
+                            $dinheiro = $return[0]->dinheiro;
 
-                if (count($percentual) == 0) {
-                    $this->db->select('pt.perc_medico, pt.percentual');
-                    $this->db->from('tb_procedimento_convenio pc');
-                    $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
-                    $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
-                    $this->db->where('pc.ativo', 'true');
-                    $this->db->where('pt.ativo', 'true');
+                            break;
+                        }
+                    }
+                    foreach ($_POST['autorizacao'] as $itemautorizacao) {
+                        $b++;
+                        if ($i == $b) {
+                            $autorizacao = $itemautorizacao;
+                            break;
+                        }
+                    }
+                    foreach ($_POST['agenda_exames_id'] as $itemagenda_exames_id) {
+                        $x++;
+                        if ($i == $x) {
+                            $agenda_exames_id = $itemagenda_exames_id;
+                            break;
+                        }
+                    }
+                    foreach ($_POST['medico_id'] as $crm) {
+                        $f++;
+                        if ($i == $f) {
+                            $medico_id = $crm;
+                            break;
+                        }
+                    }
+
+                    if ($medico_id == '') {
+                        $medico_id = 0;
+                    }
+
+                    // Função do Percentual
+                    $this->db->select('mc.valor as perc_medico, mc.percentual');
+                    $this->db->from('tb_procedimento_percentual_medico_convenio mc');
+                    $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
+                    $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+                    $this->db->where('mc.medico', $medico_id);
+                    $this->db->where('mc.ativo', 'true');
                     $percentual = $this->db->get()->result();
-                }
+
+                    if (count($percentual) == 0) {
+                        $this->db->select('pt.perc_medico, pt.percentual');
+                        $this->db->from('tb_procedimento_convenio pc');
+                        $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                        $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+                        $this->db->where('pc.ativo', 'true');
+                        $this->db->where('pt.ativo', 'true');
+                        $percentual = $this->db->get()->result();
+                    }
 //                var_dump($_POST['agenda_exames_id']); die;
 
 
-                $horario = date("Y-m-d H:i:s");
-                $operador_id = $this->session->userdata('operador_id');
-                $procedimento_tuss_id = (int) $procedimento_tuss_id;
-                $agenda_exames_id = (int) $agenda_exames_id;
-                if ($confimado == "on" && $procedimento_tuss_id > 0) {
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+                    $procedimento_tuss_id = (int) $procedimento_tuss_id;
+                    $agenda_exames_id = (int) $agenda_exames_id;
+
+
                     $empresa_id = $this->session->userdata('empresa_id');
                     $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('paciente_id', $paciente_id);
@@ -2890,7 +2895,7 @@ class exametemp_model extends Model {
                         break;
                     }
                 }
-                
+
                 foreach ($_POST['crm'] as $crm) {
                     $m++;
                     if ($i == $f) {
@@ -2952,7 +2957,7 @@ class exametemp_model extends Model {
                         $this->db->set('medico_agenda', $medico_id);
                         $this->db->set('medico_consulta_id', $medico_id);
                     }
-                    
+
                     if ($medico_solicitante != "") {
                         $this->db->set('medico_solicitante', $medico_solicitante);
                     }
@@ -3419,7 +3424,7 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarhorariosespecialidade($parametro = null, $teste = null) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -3429,7 +3434,7 @@ class exametemp_model extends Model {
                             a.data');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id');
-        
+
         $this->db->where('a.ativo', 'true');
         $this->db->where('a.bloqueado', 'false');
         $this->db->where("( (a.tipo = 'FISIOTERAPIA') OR (a.tipo = 'ESPECIALIDADE') )");
@@ -3849,10 +3854,10 @@ class exametemp_model extends Model {
     }
 
     function excluirprocedimentoguia($agenda_exames_id) {
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        
+
         $this->db->set('paciente_id', null);
         $this->db->set('procedimento_tuss_id', null);
         $this->db->set('guia_id', null);

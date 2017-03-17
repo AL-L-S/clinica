@@ -1367,8 +1367,8 @@ class Exame extends BaseController {
         $agenda_id = $_POST['txthorario'];
         $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-        $datainicial = str_replace("/", "-", $_POST['txtdatainicial']);
-        $datafinal = str_replace("/", "-", $_POST['txtdatafinal']);
+        $datainicial = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
@@ -1487,8 +1487,8 @@ class Exame extends BaseController {
     function gravarconsulta() {
         $agenda_id = $_POST['txthorario'];
         $medico_id = $_POST['txtmedico'];
-        $datainicial = date("Y-m-d", strtotime($_POST['txtdatainicial']));
-        $datafinal = date("Y-m-d", strtotime($_POST['txtdatafinal']));
+        $datainicial = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
@@ -1531,7 +1531,7 @@ class Exame extends BaseController {
             }
 
             for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
-
+//                var_dump($index); die;
                 $data = strftime("%A", strtotime($index));
 
                 switch ($data) {
@@ -1606,8 +1606,8 @@ class Exame extends BaseController {
     function gravarespecialidade() {
         $agenda_id = $_POST['txthorario'];
         $medico_id = $_POST['txtmedico'];
-        $datainicial = str_replace("/", "-", $_POST['txtdatainicial']);
-        $datafinal = str_replace("/", "-", $_POST['txtdatafinal']);
+        $datainicial = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;

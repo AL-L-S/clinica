@@ -74,6 +74,28 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/impressaoguiaconsultaconvenio', $data);
     }
+    
+    function impressaoguiaconsultaspsadt($guia_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['relatorio'] = $this->guia->impressaoguiaconsultaspsadt($guia_id);
+//        echo '<pre>';
+//        var_dump($data['relatorio']); die;
+
+
+        $this->load->View('ambulatorio/impressaoguiaspsadt', $data);
+    }
+    
+    function impressaoguiaconsultaspsadtprocedimento($agenda_exames_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['relatorio'] = $this->guia->impressaoguiaconsultaspsadtprocedimento($agenda_exames_id);
+//        echo '<pre>';
+//        var_dump($data['relatorio']); die;
+
+
+        $this->load->View('ambulatorio/impressaoguiaspsadt', $data);
+    }
 
     function chat() {
         $this->loadView('chat/formulario');

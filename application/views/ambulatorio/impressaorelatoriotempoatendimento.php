@@ -20,7 +20,7 @@
         }
         ?>
         <tr>
-            <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Paciente Único/Retorno</th>
+            <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Tempo de Atendimento</th>
         </tr>
         <tr>
             <th style='width:10pt;border:solid windowtext 1.0pt;
@@ -31,15 +31,6 @@
             <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">EMPRESA: <?= $tipoempresa ?></th>
         </tr>
 
-        <? if ($tipoempresa == "0") { ?>
-            <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODAS RECOMENDAÇÕES</th>
-            </tr>
-        <? } else { ?>
-            <tr>
-                <!--<th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">RECOMENDAÇÃO: <?= $indicacao; ?></th>-->
-            </tr>
-        <? } ?>
         <tr>
             <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= $txtdata_inicio ?> ate <?= $txtdata_fim; ?></th>
         </tr>
@@ -60,11 +51,11 @@
                 <th class="tabela_teste">Data</th>
                 <!--<th class="tabela_teste">Escolaridade</th>-->
                 <th rowspan="2" class="tabela_teste">Hora de  <br> Chegada</th>
-                <th class="tabela_teste">Tempo entre chegada e <br> Horário</th>
+                <th class="tabela_teste">Tempo entre chegada e <br> Horário Marcado</th>
                 <th class="tabela_teste">Horário <br> Marcado</th>
-                <th class="tabela_teste">Tempo Cons/Atend</th>
+                <th class="tabela_teste">Tempo entre horário<br> marcado e atendimento</th>
                 <th class="tabela_teste">Horário do <br> Atendimento</th>
-                <th class="tabela_teste">Tempo Atend/Final</th>
+                <th class="tabela_teste">Tempo até<br> Finalizar</th>
                 <th class="tabela_teste">Atendimento <br> Finalizado</th>
             </tr>
         </thead>
@@ -93,20 +84,7 @@
             $viuvo = 0;
             $outros = 0;
             $crianca = 0;
-            $adoles = 0;
-            $adulto = 0;
-            $adulto2 = 0;
-            $adulto3 = 0;
-            $adulto4 = 0;
-            $adulto5 = 0;
-            $adulto6 = 0;
-            $adulto7 = 0;
-            $adulto8 = 0;
-            $adulto9 = 0;
-            $adulto10 = 0;
-            $idosos = 0;
-            $retorno = 0;
-            $unico = 0;
+            
             $total_chegada = 0;
             $total_consulta = 0;
             $total_atendimento = 0;
@@ -125,42 +103,7 @@
                     $diff = $date_time->diff(new DateTime($dataFuturo));
                     $teste = $diff->format('%Ya %mm %dd');
                     $idade = $teste = $diff->format('%Y');
-                    if ($idade <= 11) {
-                        $crianca ++;
-                    }
-                    if ($idade <= 18 && $idade >= 12) {
-                        $adoles ++;
-                    }
-                    if ($idade <= 59 && $idade >= 19) {
-                        $adulto++;
-                        if ($idade <= 25 && $idade > 19) {
-                            $adulto2++;
-                        }
-                        if ($idade <= 30 && $idade > 25) {
-                            $adulto3++;
-                        }
-                        if ($idade <= 35 && $idade > 30) {
-                            $adulto5++;
-                        }
-                        if ($idade <= 40 && $idade > 35) {
-                            $adulto6++;
-                        }
-                        if ($idade <= 45 && $idade > 40) {
-                            $adulto7++;
-                        }
-                        if ($idade <= 50 && $idade > 45) {
-                            $adulto8++;
-                        }
-                        if ($idade <= 55 && $idade > 50) {
-                            $adulto9++;
-                        }
-                        if ($idade <= 59 && $idade > 55) {
-                            $adulto10++;
-                        }
-                    }
-                    if ($idade >= 60) {
-                        $idosos++;
-                    }
+                    
                     ?>
                     <td><?= $item->paciente; ?></td>
 
@@ -228,7 +171,7 @@
                         ?>
                         <span 
                         <?
-                        if ($diff2->format('%H:%i:%s') > date("H:i:s", strtotime($tempo[0]->tempo_chegada))) {
+                        if ($diff2->format('%H:%I:%S') > date("H:i:s", strtotime($tempo[0]->tempo_chegada))) {
                             echo "style='color:red;'";
                         }
                         if (((int) $diff2->format('%H')) > 0) {
@@ -239,7 +182,7 @@
                         $total_chegada = $total_chegada + $minutos_chegada;
                         ?>
                             >
-                            <? echo $diff2->format('%H:%i:%s'); ?></span>
+                            <? echo $diff2->format('%H:%I:%S'); ?></span>
                     </td>
                     <td style='text-align: center;'><?= date("H:i:s", strtotime($item->inicio)) ?></td>
                     <td style='text-align: center;'><?
@@ -249,7 +192,7 @@
                         ?>
                         <span 
                         <?
-                        if ($diff3->format('%H:%i:%s') > date("H:i:s", strtotime($tempo[0]->tempo_atendimento))) {
+                        if ($diff3->format('%H:%I:%S') > date("H:i:s", strtotime($tempo[0]->tempo_atendimento))) {
                             echo "style='color:red;'";
                         }
                         if (((int) $diff3->format('%H')) > 0) {
@@ -261,7 +204,7 @@
                         $total_consulta = $total_consulta + $minutos_consulta;
                         ?>
                             >
-                            <? echo $diff3->format('%H:%i:%s'); ?></span>
+                            <? echo $diff3->format('%H:%I:%S'); ?></span>
                     </td>
                     <td style='text-align: center;'><?= date(" H:i:s", strtotime($item->data_atendimento)) ?></td>
                     <td style='text-align: center;'><?
@@ -270,7 +213,7 @@
                         ?>
                         <span 
                         <?
-                        if ($diff4->format('%H:%i:%s') > date("H:i:s", strtotime($tempo[0]->tempo_finalizado))) {
+                        if ($diff4->format('%H:%I:%S') > date("H:i:s", strtotime($tempo[0]->tempo_finalizado))) {
                             echo "style='color:red;'";
                         }
                         if (((int) $diff4->format('%H')) > 0) {
@@ -283,7 +226,7 @@
                         ?>
                             >
 
-                            <? echo $diff4->format('%H:%i:%s'); ?></span>
+                            <? echo $diff4->format('%H:%I:%S'); ?></span>
                     </td>
                     <td style='text-align: center;'><?= date("H:i:s", strtotime($item->data_finalizado)) ?></td>
                 </tr>
@@ -295,7 +238,6 @@
         </tbody>
     </table>
     <?
-    $unicop = round(($unico * 100) / $qtdetotal);
     $media_chegada = round(($total_chegada) / $qtdetotal);
     $media_consulta = round(($total_consulta) / $qtdetotal);
     $media_atendimento = round(($total_atendimento) / $qtdetotal);
