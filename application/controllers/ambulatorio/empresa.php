@@ -40,6 +40,12 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/empresa-form', $data);
     }
 
+    function configurarsms($empresa_id) {
+        $data['empresa_id'] = $empresa_id;
+        $data['pacotes'] = $this->empresa->pacotesms();
+        $this->loadView('ambulatorio/empresasms-form', $data);
+    }
+
     function excluir($exame_empresa_id) {
         if ($this->procedimento->excluir($exame_empresa_id)) {
             $mensagem = 'Sucesso ao excluir a Empresa';
@@ -48,6 +54,17 @@ class Empresa extends BaseController {
         }
 
         $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa");
+    }
+
+    function gravarconfiguracaosms() {
+        $empresa_id = $this->empresa->gravarconfiguracaosms();
+        if ($empresa_id == "-1") {
+            $data['mensagem'] =  'Erro ao salvar configurações de SMS.';
+        } else {
+            $data['mensagem'] = 'Configuração de SMS efetuada com sucesso.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/empresa");
     }
 

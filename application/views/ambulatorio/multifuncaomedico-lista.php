@@ -107,10 +107,9 @@
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listarmultifuncaomedico($_GET);
-                $total = $consulta->count_all_results();
-                $limit = 100;
+                $total = count($consulta);
+                $limit = 50;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
-
                 if ($total > 0) {
                     ?>
                     <tbody>

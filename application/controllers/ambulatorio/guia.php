@@ -306,7 +306,6 @@ class Guia extends BaseController {
                 $this->utilitario->barcode($value->agenda_exames_id, "./upload/barcodeimg/$value->paciente_id/$value->agenda_exames_id.png", $size = "20", "horizontal", "code128", true, 1);
             }
             // criar codigo de barras (fim)
-
             if ($grupo == "RX" || $grupo == "US" || $grupo == "RM" || $grupo == "DENSITOMETRIA" || $grupo == "TOMOGRAFIA") {
                 $this->load->View('ambulatorio/impressaofichausproimagem', $data);
             }
@@ -390,7 +389,9 @@ class Guia extends BaseController {
 ///////////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 9) { // CLINICA SAO PAULO
             $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
-        } else { //GERAL
+        } 
+        
+        elseif ($data['empresa'][0]->impressao_tipo == '') { //GERAL
             if ($dinheiro == "t") {
                 $this->load->View('ambulatorio/impressaofichageralparticular', $data);
             } else {
