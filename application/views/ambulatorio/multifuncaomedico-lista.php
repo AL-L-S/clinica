@@ -106,11 +106,11 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->exame->listarmultifuncaomedico($_GET);
-                $total = count($consulta);
+//                $consulta = $this->exame->listarmultifuncaomedico($_GET);
+                $total = 2000000000000000000000;
                 $limit = 50;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
-                if ($total > 0) {
+//                if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
@@ -244,13 +244,13 @@
                         </tbody>
                         <?php
                     }
-                }
+//                }
                 ?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="12">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            Total de registros: <?php echo $total; ?>
+                            <!-- Total de registros: <?php // echo $total; ?> -->
                         </th>
                     </tr>
                 </tfoot>
