@@ -108,6 +108,16 @@ class Operador extends BaseController {
     }
 
     function pesquisarrecepcao($filtro = -1, $inicio = 0) {
+        echo '<html>
+        <script type="text/javascript">
+ //       alert("Operação Efetuada Com Sucesso");
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>';
         $this->loadView('seguranca/operador-listarecepcao');
     }
 

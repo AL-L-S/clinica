@@ -74,7 +74,7 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/impressaoguiaconsultaconvenio', $data);
     }
-    
+
     function impressaoguiaconsultaspsadt($guia_id) {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
@@ -85,7 +85,7 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/impressaoguiaspsadt', $data);
     }
-    
+
     function impressaoguiaconsultaspsadtprocedimento($agenda_exames_id) {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
@@ -1928,6 +1928,14 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatorioperfilpaciente', $data);
     }
 
+    function relatoriomedicoagendafaltou() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['salas'] = $this->exame->listartodassalas();
+        $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltou', $data);
+    }
+
     function relatoriounicoretorno() {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriounicoretorno', $data);
@@ -2305,7 +2313,7 @@ class Guia extends BaseController {
 
     function gerarelatoriotempoatendimento() {
         $data['tempo'] = $this->guia->tempomedioatendimento();
-        
+
         if (count($data['tempo']) > 0) {
             $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
             $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
