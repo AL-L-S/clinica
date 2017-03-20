@@ -1,4 +1,5 @@
 <body bgcolor="#C0C0C0">
+    <meta charset="UTF-8">
     <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Faturamento Detalhe</h3>
         <div>
@@ -14,6 +15,13 @@
                             <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" class="texto01" value="<?= $agenda_exames_id; ?>"/>
                             <input type="hidden" name="paciente_id" id="paciente_id" class="texto01" value="<?= $exame[0]->paciente_id; ?>"/>
                             <input type="hidden" name="procedimento1" id="procedimento1" class="texto01" value="<?= $exame[0]->procedimento_tuss_id; ?>"/>
+                        </dd>
+                        <dt>
+                            <label>Guia Convênio</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="guiaconvenio" id="guiaconvenio" class="texto01" value="<?= $exame[0]->guiaconvenio; ?>"/>
+                            <input type="hidden" name="ambulatorio_guia_id" id="ambulatorio_guia_id" class="texto01" value="<?= $exame[0]->ambulatorio_guia_id; ?>"/>
                         </dd>
                         <dt>
                             <label>Faturista</label>

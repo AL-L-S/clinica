@@ -102,7 +102,9 @@
                         }
                         ?>
                         <tr>
-                            <td ><?= $item->ambulatorio_guia_id; ?></td>
+                            <td ><a onmouseover="style='color:red;cursor: pointer;'" onmouseout="style='color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadt/<?= $item->ambulatorio_guia_id; ?>');">
+        <?= $item->ambulatorio_guia_id ?>
+                                    </a></td>
                             <td ><?= $item->autorizacao; ?></td>
                             <td ><a style="cursor: pointer; color: blue;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"><?= substr($item->procedimento, 0, 16) . " " . $item->numero_sessao; ?></a></td>
                             <td ><div style="margin-left:8pt;"><?= $item->nome; ?></div></td>

@@ -39,6 +39,7 @@ class Autocomplete extends Controller {
     }
 
     function horariosambulatorio() {
+        $_GET['teste'] = date("Y-m-d",strtotime(str_replace("/", "-", $_GET['teste'])));
 
         if (isset($_GET['exame'])) {
             $result = $this->exametemp->listarautocompletehorarios($_GET['exame'], $_GET['teste']);
@@ -1730,6 +1731,7 @@ class Autocomplete extends Controller {
     }
 
     function pacientenascimento() {
+        $_GET['term'] = date("Y-m-d",strtotime(str_replace("/", "-", $_GET['term'])));
         if (isset($_GET['term'])) {
             $result = $this->exame->listarautocompletepacientenascimento($_GET['term']);
         } else {
