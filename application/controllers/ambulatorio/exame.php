@@ -258,7 +258,6 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/faturamentomanual', $args);
     }
 
-
     function gravarguiacirurgica() {
         $ambulatorio_guia = $this->guia->gravarguiacirurgica();
 
@@ -372,7 +371,7 @@ class Exame extends BaseController {
 
     function faturaramentomanualguia($guia_id, $paciente_id) {
         $data['guia_id'] = $guia_id;
-        $data['paciente_id'] = $paciente_id;        
+        $data['paciente_id'] = $paciente_id;
         $data['guia'] = $this->guia->instanciarguia($guia_id);
         $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia_id);
         $data['equipe'] = $this->centrocirurgico_m->listarequipecirurgicaoperadores($data['guia'][0]->equipe_id);
@@ -602,6 +601,7 @@ class Exame extends BaseController {
         $data['paciente'] = $paciente;
         $this->load->View('ambulatorio/telefonema-form', $data);
     }
+
     function chegada($agenda_exame_id, $paciente) {
         $data['agenda_exame_id'] = $agenda_exame_id;
         $data['paciente'] = $paciente;
@@ -612,7 +612,7 @@ class Exame extends BaseController {
         $this->exame->telefonema($agenda_exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-    
+
     function chegadagravar($agenda_exame_id) {
         $this->exame->chegada($agenda_exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
@@ -635,7 +635,7 @@ class Exame extends BaseController {
         $data['observacao'] = $this->exame->listarobservacoesfaturar($agenda_exame_id);
         $this->load->View('ambulatorio/alteracaoobservacaofaturamento-form', $data);
     }
-    
+
     function alterarobservacaofaturaramentomanual($guia_id) {
         $data['guia_id'] = $guia_id;
         $data['observacao'] = $this->exame->listarobservacoesfaturaramentomanual($guia_id);
@@ -1367,8 +1367,8 @@ class Exame extends BaseController {
         $agenda_id = $_POST['txthorario'];
         $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-        $datainicial = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
-        $datafinal = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
@@ -1487,8 +1487,8 @@ class Exame extends BaseController {
     function gravarconsulta() {
         $agenda_id = $_POST['txthorario'];
         $medico_id = $_POST['txtmedico'];
-        $datainicial = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
-        $datafinal = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
@@ -1606,8 +1606,8 @@ class Exame extends BaseController {
     function gravarespecialidade() {
         $agenda_id = $_POST['txthorario'];
         $medico_id = $_POST['txtmedico'];
-        $datainicial = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
-        $datafinal = date("Y-m-d",strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $nome = $_POST['txtNome'];
         $horarioagenda = $this->agenda->listarhorarioagenda($agenda_id);
         $id = 0;
@@ -1787,9 +1787,9 @@ class Exame extends BaseController {
         $hora = date("H:i:s");
         $empresa = $this->exame->listarcnpj();
         $lote = $this->exame->listarlote();
-        
+
         $codigoUF = $this->utilitario->codigo_uf($empresa[0]->codigo_ibge, 'codigo');
-        
+
         $cnpjxml = $listarexame[0]->codigoidentificador;
         $razao_socialxml = $empresa[0]->razao_socialxml;
         $registroans = $listarexame[0]->registroans;
@@ -1805,8 +1805,10 @@ class Exame extends BaseController {
         } else {
             $classificacao = 'TODOS';
         }
-        $datainicio = str_replace("/", "", $_POST['datainicio']);
-        $datafim = str_replace("/", "", $_POST['datafim']);
+        $_POST['datainicio'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datainicio'])));
+        $_POST['datafim'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datafim'])));
+        $datainicio = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datainicio'])));
+        $datafim = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datafim'])));
         $nomearquivo = '035753bf836c231bedbc68a08daf4668';
         $nomearquivoconsulta = 'e2eadfe09fd6750a184902545aa41771';
         $origem = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio;

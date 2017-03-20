@@ -3454,6 +3454,8 @@ class exame_model extends Model {
     }
 
     function listargxmlfaturamento($args = array()) {
+        $_POST['datainicio'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datainicio'])));
+        $_POST['datafim'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datafim'])));
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('g.ambulatorio_guia_id,
@@ -3533,6 +3535,8 @@ class exame_model extends Model {
     }
 
     function listarpacientesxmlfaturamento($args = array()) {
+        $_POST['datainicio'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datainicio'])));
+        $_POST['datafim'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datafim'])));
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.paciente_id, g.guiaconvenio, convenionumero, p.nome as paciente, ambulatorio_guia_id');
@@ -3586,6 +3590,8 @@ class exame_model extends Model {
     }
 
     function listarxmlfaturamentoexames($args = array()) {
+        $_POST['datainicio'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datainicio'])));
+        $_POST['datafim'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datafim'])));
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select("g.ambulatorio_guia_id,
@@ -4852,7 +4858,7 @@ class exame_model extends Model {
 
     function gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null) {
         try {
-            
+
             $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
 
             /* inicia o mapeamento no banco */
@@ -4932,7 +4938,7 @@ class exame_model extends Model {
 
     function gravarespecialidade($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $empresa_id, $obs = null) {
         try {
-            
+
             $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
             /* inicia o mapeamento no banco */
             $this->db->set('horarioagenda_id', $agenda_id);

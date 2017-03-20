@@ -1544,7 +1544,7 @@ class exametemp_model extends Model {
 
     function gravarhorarioencaixe() {
         try {
-
+            $_POST['data_ficha'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_ficha'])));
 
             if ($_POST['horarios'] != "") {
                 $empresa_id = $this->session->userdata('empresa_id');
