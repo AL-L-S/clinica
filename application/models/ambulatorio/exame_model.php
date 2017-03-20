@@ -2499,7 +2499,7 @@ class exame_model extends Model {
         } if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_agenda', $args['medico']);
         }
-        return $this->db;
+        return $this->db->get()->result();
     }
 
     function listarmultifuncao2medico($args = array()) {

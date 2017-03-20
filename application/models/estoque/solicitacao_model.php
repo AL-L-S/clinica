@@ -210,7 +210,6 @@ class solicitacao_model extends Model {
         $this->db->join('tb_estoque_solicitacao_itens si', 'si.estoque_solicitacao_itens_id = ep.estoque_solicitacao_itens_id', 'left');
         $this->db->where('ep.solicitacao_cliente_id', $estoque_solicitacao_id);
         $this->db->where('ep.ativo', 'true');
-        $this->db->where('s.data_cadastro <=', $retorno[0]->data_cadastro);
         $this->db->where('s.data_cadastro <=', $data);
         $this->db->groupby('ep.estoque_saida_id, p.descricao, ep.validade , u.descricao , si.quantidade');
         $this->db->orderby('ep.estoque_saida_id');

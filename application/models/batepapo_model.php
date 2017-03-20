@@ -12,11 +12,14 @@ class batepapo_model extends BaseModel {
     function listarusuarios() {
         $operador_id = $this->session->userdata('operador_id');
 
-        $this->db->select('o.usuario,
+        $this->db->select("o.usuario,
                            o.operador_id,
                            o.online,
                            o.horario_login,
-                           (SELECT COUNT(*) FROM ponto.tb_chat_mensagens WHERE ponto.tb_chat_mensagens.operador_destino = o.operador_id) as num_mensagens');
+                           (SELECT COUNT(*) FROM ponto.tb_chat_mensagens 
+                           WHERE ponto.tb_chat_mensagens.operador_destino = o.operador_id
+                           AND ponto.tb_chat_mensagens.ativo = 't' 
+                           AND ponto.tb_chat_mensagens.visualizada = 'f') as num_mensagens");
         $this->db->from('tb_operador o');
         $this->db->where('o.ativo', 't');
         $this->db->where('o.operador_id !=', $operador_id);

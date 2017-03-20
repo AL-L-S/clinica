@@ -1658,6 +1658,38 @@ CREATE TABLE ponto.tb_tempo_medio_atendimento
   CONSTRAINT tb_tempo_medio_atendimento_pkey PRIMARY KEY (tempo_medio_atendimento_id)
 );
 
+-- Dia 18/03/2017
+CREATE TABLE ponto.tb_empresa_sms
+(
+  empresa_sms_id serial NOT NULL,
+  empresa_id integer,
+  pacote_id integer,
+  mensagem_confirmacao character varying(20000),
+  mensagem_agradecimento character varying(20000),
+  mensagem_aniversariante character varying(20000),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_sms_pkey PRIMARY KEY (empresa_sms_id)
+);
+
+CREATE TABLE ponto.tb_pacote_sms
+(
+  pacote_sms_id serial NOT NULL,
+  descricao_pacote character varying(2000),
+  quantidade integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_pacote_sms_pkey PRIMARY KEY (pacote_sms_id)
+);
+
+INSERT INTO ponto.tb_pacote_sms(descricao_pacote, quantidade)
+    VALUES ('PACOTE 100 MENSAGENS', 100),
+	   ('PACOTE 500 MENSAGENS', 500),
+	   ('PACOTE 1000 MENSAGENS', 1000),
+	   ('PACOTE 2000 MENSAGENS', 2000);
+
 
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;

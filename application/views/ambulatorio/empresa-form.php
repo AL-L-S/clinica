@@ -1,6 +1,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
+
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Sala</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Empresa</a></h3>
         <div>
             <form name="form_empresa" id="form_empresa" action="<?= base_url() ?>ambulatorio/empresa/gravar" method="post">
 

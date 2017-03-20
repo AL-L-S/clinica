@@ -225,7 +225,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    verifica(0, 0,<? echo $operador_id ?>);
+//                    verifica(0, 0,<? // echo $operador_id ?>);
                 }
 
 <? } ?>
@@ -564,7 +564,7 @@ function debug($object) {
 
                         </ul>
                     </li>
-                    <li><span class="folder">Marketing</span>
+<!--                    <li><span class="folder">Marketing</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 13) { ?>
@@ -593,7 +593,7 @@ function debug($object) {
                             </li> 
 
                         </ul>
-                    </li>
+                    </li>-->
 
                     <? if ($internacao == 't') { ?>
                         <li><span class="folder">Internacao</span>
@@ -931,7 +931,7 @@ function debug($object) {
                 function buscamensagens() {
                     setInterval(function () {
                         verifica(0, 0,<? echo $operador_id ?>);
-                        mensagensnaolidas();
+//                        mensagensnaolidas();
 
                     }, 10000);
                 }
@@ -948,7 +948,7 @@ function debug($object) {
                 setInterval(function () {
                     atualizastatus();
                     verifica(0, 0,<? echo $operador_id ?>);
-                }, 90000);
+                }, 1000);
 
                 buscamensagens();
                 //            mensagensnaolidas();

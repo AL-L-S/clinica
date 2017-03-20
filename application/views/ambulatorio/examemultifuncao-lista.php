@@ -152,13 +152,13 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->exame->listarexamemultifuncao($_GET)->get()->result();
-                $total = count($consulta);
-                $limit = 100;
+//                $consulta = $this->exame->listarexamemultifuncao($_GET)->get()->result();
+                $total = 2000000000000000000000;
+                $limit = 50;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
-                $l = $this->exame->listarestatisticapaciente($_GET);
-                $p = $this->exame->listarestatisticasempaciente($_GET);
+                //$l = $this->exame->listarestatisticapaciente($_GET);
+                //$p = $this->exame->listarestatisticasempaciente($_GET);
 
                 if ($total > 0) {
                     ?>
@@ -355,7 +355,7 @@
                     <tr>
                         <th class="tabela_footer" colspan="14">
 <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            Total de registros: <?php echo $total . " - Vago: " . $l . " - Marcado: " . $p; ?>
+                           <!-- Total de registros: <?php // echo $total . " - Vago: " . $l . " - Marcado: " . $p; ?> -->
                         </th>
                     </tr>
                 </tfoot>
