@@ -166,7 +166,7 @@ class agenda_model extends Model {
 
             if ($_POST['txtacao'] == 'Alterarmedico') {
 
-                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('Y-m-d', strtotime("+1 days", strtotime($index)))) {
 
                     $data = strftime("%A", strtotime($index));
 

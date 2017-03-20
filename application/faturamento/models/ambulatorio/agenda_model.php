@@ -114,8 +114,8 @@ class agenda_model extends Model {
     function gravarmedico() {
         try {
 
-            $datainicial = str_replace("/", "-", $_POST['datainicio']);
-            $datafinal = str_replace("/", "-", $_POST['datafim']);
+            $datainicial = date('Y-m-d', strtotime(str_replace("/", "-", $_POST['datainicio']) ) );
+            $datafinal = date('Y-m-d', strtotime(str_replace("/", "-", $_POST['datafim']) ) );
 
             if (isset($_POST['txtdomingo'])) {
                 $Domingo = 'Domingo';
@@ -155,7 +155,7 @@ class agenda_model extends Model {
 
             if ($_POST['txtacao'] == 'Alterarmedico') {
 
-                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+                for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('Y-m-d', strtotime("+1 days", strtotime($index)))) {
 
                     $data = strftime("%A", strtotime($index));
 

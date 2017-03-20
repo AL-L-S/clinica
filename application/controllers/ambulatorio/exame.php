@@ -1181,7 +1181,7 @@ class Exame extends BaseController {
 
     function listaragendaexame($agenda_exames_nome_id) {
 
-        $dia = date("d-m-Y");
+        $dia = date("Y-m-d");
         $data['diainicio'] = $dia;
         $data['agenda_exames_nome_id'] = $agenda_exames_nome_id;
         $data['dia1'] = $this->exame->listarexameagenda($dia, $agenda_exames_nome_id);

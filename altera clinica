@@ -1700,6 +1700,22 @@ CREATE TABLE ponto.tb_empresa_sms_verificacao
   CONSTRAINT tb_empresa_sms_verificacao_pkey PRIMARY KEY (sms_verificacao_id)
 );
 
+CREATE TABLE ponto.tb_sms
+(
+  empresa_sms_id serial NOT NULL,
+  empresa_id integer,
+  pacote_id integer,
+  mensagem_confirmacao character varying(20000),
+  mensagem_agradecimento character varying(20000),
+  mensagem_aniversariante character varying(20000),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_sms_pkey PRIMARY KEY (empresa_sms_id)
+)
+
 
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;

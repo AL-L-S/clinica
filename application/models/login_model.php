@@ -77,7 +77,16 @@ class login_model extends Model {
             return false;
         }
     }
-
+    
+    function atualizandotabelasms($exames) {
+        foreach($exames as $item){
+            $this->db->set('horario_login', $horario);
+            $this->db->set('online', 't');
+            $this->db->where('operador_id', $return[0]->operador_id);
+            $this->db->update('tb_operador');
+        }
+    }
+    
     function verificasms() {
         $horario = date("Y-m-d");
         $this->db->select('sms_verificacao_id,
@@ -87,7 +96,7 @@ class login_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function examesagendados() {
         $diaSeguinte = date('d-m-Y', strtotime("+1 day", strtotime( date('d-m-Y') )));
         $this->db->select('ae.agenda_exames_id,
