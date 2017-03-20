@@ -15,15 +15,48 @@ class Login extends Controller {
     function verificasms() {
         //verifica se ja foi feita uma verificaçao hoje.
         $smsVerificacao = $this->login->verificasms();
-        if(count($smsVerificacao) == 0){
-            $examesAgendados = $this->login->examesagendados();            
-            $this->login->atualizandotabelasms();
+        if (count($smsVerificacao) == 0) {
+            //atualizando a data da ultima verificacao
+            $this->login->atualizaultimaverificacao();
+
+            //verificando o total de mensagens utilizadas do pacote
+            $totalUtilizado = (int) $this->login->totalutilizado();
+            $totalPacote = (int) $this->login->listarempresapacote();
+
+            if ($totalPacote < $totalPacote) {
+                //calculando total disponivel
+                $disponivel = $totalPacote - $totalPacote;
+
+                //INSERINDO EXAMES AGENDADOS PARA O DIA SEGUINTE NA TABELA DE CONTROLE
+                $examesAgendados = $this->login->examesagendados();
+                $totalInserido = $this->login->atualizandoagendadostabelasms($examesAgendados, $disponivel);
+
+                //calculando novo total disponivel
+                $disponivel = $disponivel - $totalInserido;
+
+                if ($disponivel > 0) {
+                    //INSERINDO ANIVERSARIANTES NA TABELA DE CONTROLE
+                    $aniversariantes = $this->login->aniversariantes();
+                    $totalInserido = $this->login->atualizandoaniversariantestabelasms($aniversariantes, $disponivel);
+
+                    //calculando novo total disponivel
+                    $disponivel = $disponivel - $totalInserido;
+                }
+
+                if ($disponivel > 0) {
+                    //INSERINDO PACIENTES ATENDIDOS NO DECORRER DO DIA
+                }
+            } else {
+                //Mandar email para o administrador alertando que o pacote foi excedido
+            }
+
+            //ENVIANDO PARA O WEBSERVICE
         }
     }
 
     function autenticar() {
-//        $this->verificasms();
-        
+        $this->verificasms();
+
         $usuario = $_POST['txtLogin'];
         $senha = $_POST['txtSenha'];
         $empresa = $_POST['txtempresa'];
@@ -55,9 +88,9 @@ class Login extends Controller {
 
     function sair() {
         $this->login->sair();
-        
+
         $this->session->sess_destroy();
-        
+
         $data['mensagem'] = $this->mensagem->getMensagem('login003');
         $this->carregarView($data);
     }
