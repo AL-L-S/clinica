@@ -173,13 +173,14 @@ class contaspagar_model extends Model {
 
     function gravarconfirmacao() {
         try {
+           $_POST['inicio']= date("Y-m-d", strtotime ( str_replace('/','-', $_POST['inicio'])));
             /* inicia o mapeamento no banco */
             $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $this->db->set('contas_pagar_id', $financeiro_contaspagar_id);
-            $this->db->set('data', $_POST['inicio']);
+            $this->db->set('data', $_POST['inicio']); 
             $this->db->set('nome', $_POST['credor']);
             $this->db->set('tipo', $_POST['tipo']);
             $this->db->set('classe', $_POST['classe']);

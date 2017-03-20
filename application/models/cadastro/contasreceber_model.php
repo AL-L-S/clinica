@@ -32,7 +32,7 @@ class contasreceber_model extends Model {
             $this->db->where('tes.tipo_entradas_saida_id', $args['nome']);
             $return = $this->db->get()->result();
         }
-        
+
         $this->db->select('fc.financeiro_contasreceber_id,
                             fc.valor,
                             fc.devedor,
@@ -63,10 +63,10 @@ class contasreceber_model extends Model {
             $this->db->where('fc.conta', $args['conta']);
         }
         if (isset($args['datainicio']) && strlen($args['datainicio']) > 0) {
-            $this->db->where('fc.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datainicio'])) ) );
+            $this->db->where('fc.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datainicio']))));
         }
         if (isset($args['datafim']) && strlen($args['datafim']) > 0) {
-            $this->db->where('fc.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datafim'])) ) );
+            $this->db->where('fc.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $args['datafim']))));
         }
         if (isset($args['obs']) && strlen($args['obs']) != '') {
             $this->db->where('fc.observacao ilike', "%" . $args['obs'] . "%");
@@ -172,6 +172,7 @@ class contasreceber_model extends Model {
 
     function gravarconfirmacao() {
         try {
+            $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
             /* inicia o mapeamento no banco */
             $financeiro_contasreceber_id = $_POST['financeiro_contasreceber_id'];
             $horario = date("Y-m-d H:i:s");
@@ -231,10 +232,10 @@ class contasreceber_model extends Model {
             $this->db->where('c.descricao', $_POST['classe']);
             $return = $this->db->get();
             $result = $return->result();
-            if(count($result) > 0){
-            $tipo = $result[0]->descricao;
-            }else{
-               $tipo = ''; 
+            if (count($result) > 0) {
+                $tipo = $result[0]->descricao;
+            } else {
+                $tipo = '';
             }
             /* inicia o mapeamento no banco */
             $financeiro_contasreceber_id = $_POST['financeiro_contasreceber_id'];

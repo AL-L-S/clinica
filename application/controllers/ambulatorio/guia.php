@@ -94,7 +94,7 @@ class Guia extends BaseController {
 //        var_dump($data['relatorio']); die;
 
 
-        $this->load->View('ambulatorio/impressaoguiaspsadt', $data);
+        $this->load->View('ambulatorio/impressaoguiaspsadtprocedimento', $data);
     }
 
     function chat() {
@@ -389,9 +389,7 @@ class Guia extends BaseController {
 ///////////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 9) { // CLINICA SAO PAULO
             $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
-        } 
-        
-        elseif ($data['empresa'][0]->impressao_tipo == '') { //GERAL
+        } elseif ($data['empresa'][0]->impressao_tipo == '') { //GERAL
             if ($dinheiro == "t") {
                 $this->load->View('ambulatorio/impressaofichageralparticular', $data);
             } else {
@@ -557,13 +555,19 @@ class Guia extends BaseController {
 
     function impressaoetiiqueta($paciente_id, $guia_id, $exames_id) {
         $data['emissao'] = date("d-m-Y");
+        $empresa_id = $this->session->userdata('empresa_id');
         $data['exame'] = $this->guia->listarexame($exames_id);
         $grupo = $data['exame'][0]->grupo;
+        $data['empresa_id'] = $this->guia->listarempresa($empresa_id);
         $data['exames'] = $this->guia->listarexamesguia($guia_id);
         $data['empresa'] = $this->guia->listarempresa($guia_id);
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
-        $this->load->View('ambulatorio/impressaoetiquetaexame', $data);
+        if ($data['empresa'][0]->impressao_tipo == 2) {// Proimagem
+            $this->load->View('ambulatorio/impressaoetiquetaexameproimagem', $data);
+        } else {
+            $this->load->View('ambulatorio/impressaoetiquetaexame', $data);
+        }
     }
 
     function impressaoetiquetaunica($paciente_id, $guia_id, $exames_id) {
@@ -971,6 +975,7 @@ class Guia extends BaseController {
         $medicopercentual = $_POST['medico_agenda'];
         // Calcula o Percentual do médico para salvar na agenda_exames
         $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+        
         if (count($percentual) == 0) {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
@@ -1929,7 +1934,7 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatorioperfilpaciente', $data);
     }
 
-    function relatoriomedicoagendafaltou() {
+    function relatoriomedicoagendafaltouemail() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2154,9 +2159,13 @@ class Guia extends BaseController {
 
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $_POST['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $_POST['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-        $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
-        $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
+        $datainicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $datafim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+//        $datainicio = str_replace("/", "-", ($_POST['txtdata_inicio']));
+//        $datafim = str_replace("/", "-", ($_POST['txtdata_fim']));
 
         if ((strtotime($datainicio) < strtotime($database)) && (strtotime($datafim) > strtotime($database))) {
             $atendidos = $this->guia->relatorioconvenioexamesatendidos();

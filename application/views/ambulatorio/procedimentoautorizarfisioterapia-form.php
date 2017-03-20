@@ -109,18 +109,18 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1" required="true" >
+                                    <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1"  >
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $itens) : ?>
                                             <option value="<?= $itens->exame_sala_id; ?>"><?= $itens->nome; ?></option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1" required=""/>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1" />
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1"  required="true">
+                                    <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1"  >
                                         <option value="">Selecione</option>
                                         <? foreach ($convenio as $item) : ?>
                                             <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
@@ -129,7 +129,7 @@
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1" required="true" >
+                                    <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1">
                                         <option value="">-- Escolha um procedimento --</option>
                                     </select>
                                 </td>
@@ -161,7 +161,7 @@
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="text" name="ordenador" class="texto01"/></td>
-                                <td class="<?php echo $estilo_linha; ?>" ><input type="checkbox" name="confimado[<?= $i; ?>]" /><input type="hidden" name="agenda_exames_id[<?= $i; ?>]" value="<?= $agenda_exame_id; ?>" /></td>
+                                <td class="<?php echo $estilo_linha; ?>" ><input type="checkbox" name="confimado[<?= $i; ?>]" id="checkbox<?= $i; ?>" /><input type="hidden" name="agenda_exames_id[<?= $i; ?>]" value="<?= $agenda_exame_id; ?>" /></td>
 
                             </tr>
 
@@ -189,6 +189,31 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
+
+
+
+                        $(document).ready(function () {
+
+<? for ($b = 1; $b <= $i; $b++) { ?>
+
+                                $('#checkbox<?= $b ?>').change(function () {
+                                    if ($(this).is(":checked")) {
+                                        $("#medico<?= $b; ?>").prop('required', true);
+                                        $("#sala<?= $b; ?>").prop('required', true);
+                                        $("#convenio<?= $b; ?>").prop('required', true);
+                                        $("#procedimento<?= $b; ?>").prop('required', true);
+                                    } else {
+                                        $("#medico<?= $b; ?>").prop('required', false);
+                                        $("#sala<?= $b; ?>").prop('required', false);
+                                        $("#convenio<?= $b; ?>").prop('required', false);
+                                        $("#procedimento<?= $b; ?>").prop('required', false);
+                                    }
+                                });
+
+<? }
+?>
+
+                        });
 
 
                         $(function () {

@@ -159,6 +159,7 @@ class guia_model extends Model {
                             ae.situacao,
                             ae.cancelada,
                             ae.autorizacao,
+                            ag.guiaconvenio,
                             e.exames_id,
                             pc.convenio_id,
                             c.nome as convenio,
@@ -176,10 +177,16 @@ class guia_model extends Model {
                             emp.nome as empresa,
                             ae.empresa_id,
                             ms.codigo_ibge,
+                            me.codigo_ibge as codigo_ibge_executante,
                             o.cbo_ocupacao_id as cbo,
                             o.municipio_id,
                             o.conselho,
                             o.nome as solicitante,
+                            oe.cpf as cpf_executante,
+                            oe.cbo_ocupacao_id as cbo_executante,
+                            oe.municipio_id as municipio_executante,
+                            oe.conselho as conselho_executante,
+                            oe.nome as executante,
                             ae.data_autorizacao,
                             ae.entregue,
                             ae.data_entregue,
@@ -203,16 +210,18 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_empresa emp', 'emp.empresa_id = ae.empresa_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_operador oe', 'oe.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_municipio ms', 'ms.municipio_id = o.municipio_id', 'left');
+        $this->db->join('tb_municipio me', 'me.municipio_id = oe.municipio_id', 'left');
         $this->db->where('ae.confirmado', 't');
         $this->db->where("ae.guia_id", $guia_id);
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.agenda_exames_id');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function impressaoguiaconsultaspsadtprocedimento($agenda_exames_id) {
 
         $this->db->select('ae.agenda_exames_id,
@@ -227,6 +236,7 @@ class guia_model extends Model {
                             ae.situacao,
                             ae.cancelada,
                             ae.autorizacao,
+                            ag.guiaconvenio,
                             e.exames_id,
                             pc.convenio_id,
                             c.nome as convenio,
@@ -244,10 +254,16 @@ class guia_model extends Model {
                             emp.nome as empresa,
                             ae.empresa_id,
                             ms.codigo_ibge,
+                            me.codigo_ibge as codigo_ibge_executante,
                             o.cbo_ocupacao_id as cbo,
                             o.municipio_id,
                             o.conselho,
                             o.nome as solicitante,
+                            oe.cpf as cpf_executante,
+                            oe.cbo_ocupacao_id as cbo_executante,
+                            oe.municipio_id as municipio_executante,
+                            oe.conselho as conselho_executante,
+                            oe.nome as executante,
                             ae.data_autorizacao,
                             ae.entregue,
                             ae.data_entregue,
@@ -271,12 +287,14 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_empresa emp', 'emp.empresa_id = ae.empresa_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_operador oe', 'oe.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_municipio ms', 'ms.municipio_id = o.municipio_id', 'left');
+        $this->db->join('tb_municipio me', 'me.municipio_id = oe.municipio_id', 'left');
         $this->db->where('ae.confirmado', 't');
         $this->db->where("ae.agenda_exames_id", $agenda_exames_id);
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.agenda_exames_id');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -2133,7 +2151,7 @@ class guia_model extends Model {
     }
 
     function relatorioconvenioexamesatendidos() {
-        $data = date("d-m-Y");
+        $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
 
         // EXAMES ATENDIDOS
@@ -2152,7 +2170,6 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
-
 
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
@@ -2189,7 +2206,7 @@ class guia_model extends Model {
     }
 
     function relatorioconvenioexamesnaoatendidos() {
-        $data = date("d-m-Y");
+        $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
 
         // EXAMES ATENDIDOS
@@ -2242,7 +2259,7 @@ class guia_model extends Model {
     }
 
     function relatorioconvenioexamesatendidosdatafim() {
-        $data = date("d-m-Y");
+        $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
 
         // EXAMES ATENDIDOS
@@ -2298,7 +2315,7 @@ class guia_model extends Model {
     }
 
     function relatorioconvenioexamesnaoatendidosdatafim() {
-        $data = date("d-m-Y");
+        $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
 
         // EXAMES ATENDIDOS
@@ -2467,7 +2484,7 @@ class guia_model extends Model {
     }
 
     function relatorioconvenioconsultasatendidos() {
-        $data = date("d-m-Y");
+        $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
 
         // EXAMES ATENDIDOS
@@ -2524,7 +2541,7 @@ class guia_model extends Model {
     }
 
     function relatorioconvenioconsultasnaoatendidos() {
-        $data = date("d/m/Y");
+        $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         // EXAMES ATENDIDOS
         $this->db->select('ae.agenda_exames_id,
@@ -2576,7 +2593,7 @@ class guia_model extends Model {
     }
 
     function relatorioconvenioconsultasatendidosdatafim() {
-        $data = date("d-m-Y");
+        $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
 
         // EXAMES ATENDIDOS
@@ -2633,7 +2650,7 @@ class guia_model extends Model {
     }
 
     function relatorioconvenioconsultasnaoatendidosdatafim() {
-        $data = date("d/m/Y");
+        $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
 
         // EXAMES ATENDIDOS
@@ -3020,7 +3037,7 @@ class guia_model extends Model {
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->where('pc.procedimento_convenio_id', $procedimentopercentual);
-        $this->db->where('pc.ativo', 'true');
+//        $this->db->where('pc.ativo', 'true');
         $this->db->where('pt.ativo', 'true');
         $return = $this->db->get();
         return $return->result();
@@ -4544,6 +4561,8 @@ class guia_model extends Model {
                             c.convenio_id,
                             c.nome as convenio,
                             ag.data_cadastro as data_guia,
+                            ag.guiaconvenio,
+                            ag.ambulatorio_guia_id,
                             p.nascimento,
                             p.celular,
                             p.telefone,
@@ -5046,7 +5065,10 @@ AND data <= '$data_fim'";
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('observacoes', $_POST['observacoes']);
         $this->db->set('nota_fiscal', $_POST['nota_fiscal']);
-        $this->db->set('valor_guia', str_replace(",", ".", $_POST['txtvalorguia']));
+        if ($_POST['txtvalorguia'] != '') {
+            $this->db->set('valor_guia', str_replace(",", ".", $_POST['txtvalorguia']));
+        }
+
         $this->db->set('recibo', $_POST['recibo']);
         $this->db->set('data_observacoes', $horario);
         $this->db->set('operador_observacoes', $operador_id);
@@ -5239,6 +5261,12 @@ AND data <= '$data_fim'";
     function gravarfaturamentodetalhe($percentual) {
         try {
             /* inicia o mapeamento no banco ae.medico_agenda */
+            if ($_POST['guiaconvenio'] != '') {
+                $this->db->set('guiaconvenio', $_POST['guiaconvenio']);
+                $this->db->where('ambulatorio_guia_id', $_POST['ambulatorio_guia_id']);
+                $this->db->update('tb_ambulatorio_guia');
+            }
+
 
             if ($_POST['medico_solicitante'] != '') {
                 $this->db->set('medico_solicitante', $_POST['medico_solicitante']);
@@ -5247,6 +5275,7 @@ AND data <= '$data_fim'";
             if ($_POST['autorizacao'] != '') {
                 $this->db->set('autorizacao', $_POST['autorizacao']);
             }
+
             $this->db->set('agenda_exames_nome_id', $_POST['sala']);
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
