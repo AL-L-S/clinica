@@ -1684,11 +1684,21 @@ CREATE TABLE ponto.tb_pacote_sms
   CONSTRAINT tb_pacote_sms_pkey PRIMARY KEY (pacote_sms_id)
 );
 
+-- PACOTES DE MENSAGENS --
 INSERT INTO ponto.tb_pacote_sms(descricao_pacote, quantidade)
-    VALUES ('PACOTE 100 MENSAGENS', 100),
-	   ('PACOTE 500 MENSAGENS', 500),
-	   ('PACOTE 1000 MENSAGENS', 1000),
-	   ('PACOTE 2000 MENSAGENS', 2000);
+    VALUES ('PACOTE 1000 MENSAGENS', 1000),
+	   ('PACOTE 5000 MENSAGENS', 5000),
+	   ('PACOTE 10000 MENSAGENS', 10000),
+	   ('PACOTE 20000 MENSAGENS', 20000);
+
+
+-- Dia 20/03/2017
+CREATE TABLE ponto.tb_empresa_sms_verificacao
+(
+  sms_verificacao_id serial NOT NULL,
+  data_verificacao date,
+  CONSTRAINT tb_empresa_sms_verificacao_pkey PRIMARY KEY (sms_verificacao_id)
+);
 
 
 -- FIM DA VERSÃO 1.0.00002

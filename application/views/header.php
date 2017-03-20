@@ -1,6 +1,5 @@
 <?
 //Da erro no home
-
 if ($this->session->userdata('autenticado') != true) {
     redirect(base_url() . "login/index/login004", "refresh");
 }

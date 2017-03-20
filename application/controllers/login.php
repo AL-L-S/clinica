@@ -12,7 +12,19 @@ class Login extends Controller {
         $this->carregarView();
     }
 
+    function verificasms() {
+        //verifica se ja foi feita uma verificaçao hoje.
+        $smsVerificacao = $this->login->verificasms();
+        if(count($smsVerificacao) == 0){
+            $examesAgendados = $this->login->examesagendados();
+            
+            
+        }
+    }
+
     function autenticar() {
+        $this->verificasms();
+        
         $usuario = $_POST['txtLogin'];
         $senha = $_POST['txtSenha'];
         $empresa = $_POST['txtempresa'];

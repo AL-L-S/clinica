@@ -587,12 +587,9 @@ class caixa_model extends Model {
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('nome', $_POST['devedor']);
             $this->db->set('data_cadastro', $horario);
-            $this->db->set('data', $_POST['inicio']);
+            $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio']))));
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saldo');
-
-
-
 
             return $entradas_id;
         } catch (Exception $exc) {
