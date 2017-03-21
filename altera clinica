@@ -1394,7 +1394,7 @@ CREATE TABLE ponto.tb_procedimento_convenio_antigo
 
 -- Dia 04/02/16
 -- Comando para resolver o erro de duplicate primary key ou de lastval not defined in the season
-⁠⁠⁠SELECT setval('the_primary_key_sequence', (SELECT MAX(the_primary_key) FROM the_table)+1);
+SELECT setval('ponto.tb_financeiro_classe_financeiro_classe_id_seq', (SELECT MAX(financeiro_classe_id) FROM ponto.tb_financeiro_classe)+1);
 
 -- Dia 09/02/2017
 ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN orcamento boolean NOT NULL DEFAULT true;
