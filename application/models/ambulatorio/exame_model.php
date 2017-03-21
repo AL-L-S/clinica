@@ -931,7 +931,7 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
-            $this->db->where('p.nascimento', $args['nascimento']);
+            $this->db->where('p.nascimento', date("Y-m-d", strtotime(str_replace('/', '-', $args['nascimento']))));
         }
         if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
             $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);

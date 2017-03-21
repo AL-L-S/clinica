@@ -91,10 +91,11 @@ class empresa_model extends Model {
     function gravarconfiguracaosms() {
         try {
             /* inicia o mapeamento no banco */
-            $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('razao_social', $_POST['txtrazaosocial']);
-            $this->db->set('razao_socialxml', $_POST['txtrazaosocialxml']);
-            $this->db->set('cep', $_POST['CEP']);
+            $this->db->set('empresa_id', $_POST['empresa_id']);
+            $this->db->set('pacote_id', $_POST['txtpacote']);
+            $this->db->set('mensagem_confirmacao', $_POST['txtMensagemConfirmacao']);
+            $this->db->set('mensagem_agradecimento', $_POST['txtMensagemAgradecimento']);
+            $this->db->set('mensagem_aniversariante', $_POST['txtMensagemAniversariantes']);
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -102,14 +103,14 @@ class empresa_model extends Model {
             if ($_POST['txtempresaid'] == "") {// insert
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_empresa');
+                $this->db->insert('tb_empresa_sms');
             }
             else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $empresa_id = $_POST['txtempresaid'];
                 $this->db->where('empresa_id', $empresa_id);
-                $this->db->update('tb_empresa');
+                $this->db->update('tb_empresa_sms');
             }
             return $empresa_id;
         } catch (Exception $exc) {
