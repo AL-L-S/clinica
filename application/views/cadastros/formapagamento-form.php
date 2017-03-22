@@ -4,33 +4,33 @@
         <div>
             <form name="form_formapagamento" id="form_formapagamento" action="<?= base_url() ?>cadastros/formapagamento/gravar" method="post">
 
-                <dl class="dl_desconto_lista">
-                    <dt>
-                        <label>Nome</label>
+                <dl class="dl_desconto_lista" >
+                    <dt title="Nome da forma de Pagamento">
+                        <label >Nome</label>
                     </dt>
-                    <dd>
+                    <dd title="Nome da forma de Pagamento">
                         <input type="hidden" name="txtcadastrosformapagamentoid" class="texto10" value="<?= @$obj->_forma_pagamento_id; ?>" />
-                        <input type="text" name="txtNome" class="texto05" value="<?= @$obj->_nome; ?>" />
+                        <input type="text" name="txtNome" class="texto05" value="<?= @$obj->_nome; ?>" required/>
                     </dd>
 
-                    <dt>
+                    <dt title="Ajuste percentual da forma de pagamento">
                         <label>Ajuste</label>
                     </dt>
-                    <dd>
+                    <dd title="Ajuste percentual da forma de pagamento">
                         <input type="text" name="ajuste" class="texto02" id="ajuste" value="<?= @$obj->_ajuste; ?>" />%
                     </dd>
 
-                    <dt>
-                        <label>Data de Recebimento</label>
+                    <dt title="Preencha caso a forma de pagamento tenha um dia certo do mês para cair">
+                        <label>Dia de Recebimento</label>
                     </dt>
-                    <dd>
+                    <dd title="Preencha caso a forma de pagamento tenha um dia certo do mês para cair">
                         <input type="text" name="diareceber" class="texto02" id="diareceber" value="<?= @$obj->_dia_receber; ?>"/>
                     </dd>
-                    <dt>
-                        <label>Tempo Recebimento</label>
+                    <dt title="Aqui é digitado o tempo que leva desde o momento do pagamento até o recebimento do dinheiro em si. (Esse campo anula o Dia de recebimento)">
+                        <label>Tempo de Recebimento</label>
                     </dt>
                     <dd>
-                        <input type="text" name="temporeceber" class="texto02" id="temporeceber" value= "<?= @$obj->_tempo_receber; ?>" />
+                        <input title="Aqui é digitado o tempo que leva desde o momento do pagamento até o recebimento do dinheiro em si. (Esse campo anula o Dia de recebimento)" type="text" name="temporeceber" class="texto02" id="temporeceber" value= "<?= @$obj->_tempo_receber; ?>" />
                         <input type="checkbox" name="arrendondamento" id="arrendondamento" <? if (@$obj->_fixar == 't') { ?>checked <? } ?>  />Fixar
                     </dd>
                     <dt>
@@ -45,11 +45,11 @@
                     <dd>
                         <input type="text" name="parcela_minima" class="texto02" id="parcela_minima" value= "<?= @$obj->_parcela_minima; ?>" />
                     </dd>
-                    <dt>
+                    <dt title="Selecione a conta onde o dinheiro irá ingressar">
                         <label>Conta</label>
                     </dt>
-                    <dd>
-                        <select name="conta" id="conta" class="texto03">
+                    <dd title="Selecione a conta onde o dinheiro irá ingressar">
+                        <select name="conta" id="conta" class="texto03" required>
                             <option value="">SELECIONE</option>
                             <? foreach ($conta as $value) { ?>
                                 <option value="<?= $value->forma_entradas_saida_id ?>" <?
@@ -63,7 +63,7 @@
                         <label>Credor/Devedor</label>
                     </dt>
                     <dd>
-                        <select name="credor_devedor" id="credor_devedor" class="texto03">
+                        <select name="credor_devedor" id="credor_devedor" class="texto03" required>
                             <option value="">SELECIONE</option>
                             <? foreach ($credor_devedor as $value) { ?>
                                 <option value="<?= $value->financeiro_credor_devedor_id ?>" <?
@@ -89,7 +89,7 @@
     </div>
 </div> <!-- Final da DIV content -->
 
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
     $('#btnVoltar').click(function () {

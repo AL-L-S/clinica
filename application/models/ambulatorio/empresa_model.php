@@ -126,6 +126,7 @@ class empresa_model extends Model {
             $this->db->set('razao_socialxml', $_POST['txtrazaosocialxml']);
             $this->db->set('cep', $_POST['CEP']);
             $this->db->set('cnes', $_POST['txtCNES']);
+            $this->db->set('email', $_POST['email']);
             if ($_POST['txtCNPJ'] != '') {
                 $this->db->set('cnpj', str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ']))));
             }
@@ -178,6 +179,7 @@ class empresa_model extends Model {
                                cnpj,
                                celular,
                                telefone,
+                               email,
                                cep,
                                logradouro,
                                numero,
@@ -198,6 +200,7 @@ class empresa_model extends Model {
             $this->_razao_social = $return[0]->razao_social;
             $this->_celular = $return[0]->celular;
             $this->_telefone = $return[0]->telefone;
+            $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;

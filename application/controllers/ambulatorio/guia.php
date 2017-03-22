@@ -1970,6 +1970,11 @@ class Guia extends BaseController {
          $empresa = $this->guia->listarempresa($empresa_id);
          
         $emails = $this->guia->gerarelatorioexamefaltouemail();
+        if($empresa[0]->email != ''){
+            $email_empresa = $empresa[0]->email;
+        }else{
+            $email_empresa = 'stgsaude@gmail.com';
+        }
         
         $remetente = $_POST['remetente'];
         $assunto = $_POST['assunto'];
@@ -1986,19 +1991,16 @@ class Guia extends BaseController {
         $config['newline'] = "\r\n";
         $this->load->library('email');
 
-//        foreach ($emails as $item) {
-//            if ($item->cns != null) {
+        foreach ($emails as $item) {
+            if ($item->cns != null) {
                 $this->email->initialize($config);
-                $this->email->from($empresa[0]->email, $empresa[0]->nome);
-                $this->email->to('cleysonalves1999@gmail.com');
+                $this->email->from($email_empresa, $remetente);
+                $this->email->to($item->cns);
                 $this->email->subject($assunto);
                 $this->email->message($mensagem);
                 $this->email->send();
-//            }
-//        }
-
-echo 'asd';
-die;
+            }
+        }
 
         if (1==1) {
             $data['mensagem'] = 'Email enviado com sucesso.';
@@ -2006,7 +2008,7 @@ die;
             $data['mensagem'] = 'Envio de Email malsucedido.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "cadastros/contaspagar/$relatorio/");
+        redirect(base_url() . "ambulatorio/guia/relatoriomedicoagendafaltouemail");
     }
 
     function relatoriounicoretorno() {

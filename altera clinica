@@ -1723,6 +1723,22 @@ CREATE TABLE ponto.tb_empresa_sms_registro
   qtde integer,
   CONSTRAINT tb_empresa_sms_registro_pkey PRIMARY KEY (empresa_sms_registro_id)
 );
+--22/03/17
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_unificacaomedico integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_unificacaomedico timestamp without time zone;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN medico_antigo integer;
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN operador_unificacaomedico integer;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_unificacaomedico timestamp without time zone;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN medico_antigo integer;
+
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN email character varying(40);
+
+INSERT INTO ponto.tb_perfil(
+            perfil_id, nome, ativo)
+    VALUES (14, 'MARKETING', true);
 
 
 -- FIM DA VERSÃO 1.0.00002

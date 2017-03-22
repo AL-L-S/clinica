@@ -114,6 +114,7 @@
             <fieldset>
                 <label for="remetente">Remetente: </label>
                 <input required name="remetente" type="text" value="<?=$empresa[0]->nome?>">
+                <input  name="email" type="hidden" value="<?=$empresa[0]->email?>">
                 <input  name="txtdata_inicio" type="hidden" value="<?=$_POST['txtdata_inicio']?>">
                 <input  name="txtdata_fim" type="hidden" value="<?=$_POST['txtdata_fim']?>">
                 <input  name="situacao" type="hidden" value="<?=$_POST['situacao']?>">
@@ -131,18 +132,18 @@
 <!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">-->
 </div> <!-- Final da DIV content -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<!--<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript">
 
 
 
-    $(function () {
-        $("#accordion").accordion();
-    });
+//    $(function () {
+//        $("#accordion").accordion();
+//    });
     
     
     

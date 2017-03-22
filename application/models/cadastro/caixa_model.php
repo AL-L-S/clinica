@@ -278,6 +278,7 @@ class caixa_model extends Model {
         $this->db->where('s.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('s.tipo');
         $this->db->orderby('fcd.razao_social');
+        $this->db->orderby('s.data');
         $return = $this->db->get();
         return $return->result();
     }

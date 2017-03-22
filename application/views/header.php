@@ -566,7 +566,7 @@ function debug($object) {
                     <li><span class="folder">Marketing</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 13) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 14) { ?>
                                     <ul><span class="file"><a onclick="javascript: return confirm('Esta operação irá exportar todos os emails de pacientes para uma planilha\n\nObs: Esse processo pode ser demorado  ');" href="<?php echo base_url() ?>ambulatorio/guia/exportaremails">
                                                 Exportar Emails
                                             </a></span></ul>
@@ -580,7 +580,7 @@ function debug($object) {
                             </li> 
                             <li><span class="folder">Relatorios</span>
                                 <?
-                                if ($perfil_id == 1 || $perfil_id == 13) {
+                                if ($perfil_id == 1 || $perfil_id == 14) {
                                     ?>
 
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioperfilpaciente">Relatorio Perfil Paciente</a></span></ul>

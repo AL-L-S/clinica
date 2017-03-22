@@ -6521,6 +6521,7 @@ ORDER BY ae.agenda_exames_id)";
                             numero,
                             nome,
                             telefone,
+                            email,
                             cnes,
                             producaomedicadinheiro,
                             impressao_declaracao,

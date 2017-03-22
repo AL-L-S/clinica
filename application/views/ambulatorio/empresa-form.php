@@ -80,6 +80,12 @@
                         <input type="text" id="txtCelular" class="texto03" name="celular" alt="phone" value="<?= @$obj->_celular; ?>" />
                     </dd>
                     <dt>
+                        <label>Email</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="email" class="texto03" name="email" value="<?= @$obj->_email; ?>" />
+                    </dd>
+                    <dt>
                         <label>Município</label>
                     </dt>
                     <dd>

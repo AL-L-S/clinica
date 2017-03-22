@@ -79,7 +79,7 @@
                         <th class="tabela_title">
                             <select name="nome" id="nome" class="size2">
                                 <option value="">TODOS</option>
-                                <option value="TRANSFERENCIA">Transferencia</option>
+                                <option value="TRANSFERENCIA">TRANSFERÊNCIA</option>
                                 <? foreach ($tipo as $value) : ?>
                                     <option value="<?= $value->tipo_entradas_saida_id; ?>" <?
                                     if (@$_GET['nome'] == $value->tipo_entradas_saida_id):echo 'selected';

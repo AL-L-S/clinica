@@ -800,14 +800,13 @@ class Operador_model extends BaseModel {
 //            $this->db->update('tb_laudoantigo');
 
             if ($_POST['operador_id'] != $_POST['operadorid']) {
-//                $this->db->set('ativo', 'f');
-//                $this->db->set('data_exclusao', $horario);
-//                $this->db->set('operador_exclusao', $operador_id);
-//                $this->db->where('operador_id', $_POST['operadorid']);
-//                $this->db->update('tb_operador');
-                echo 'Testa';
-                die;
+                $this->db->set('ativo', 'f');
+                $this->db->where('operador_id', $_POST['operadorid']);
+                $this->db->update('tb_operador');
+                
             }
+            echo 'Testa';
+                die;
             return 0;
         } catch (Exception $exc) {
             return -1;
