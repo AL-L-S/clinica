@@ -37,7 +37,7 @@ endif;
                 </div>
 
             </fieldset>
-            <fieldset>
+<!--            <fieldset>
                 <legend>Financeiro</legend>
                 <div>
                     <label>Criar Credor</label>
@@ -108,7 +108,7 @@ endif;
                     </select>
                 </div>
                 
-            </fieldset>
+            </fieldset>-->
 
 
 

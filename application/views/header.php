@@ -224,7 +224,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-//                    verifica(0, 0,<? // echo $operador_id ?>);
+    //                    verifica(0, 0,<? // echo $operador_id  ?>);
                 }
 
 <? } ?>
@@ -563,16 +563,17 @@ function debug($object) {
 
                         </ul>
                     </li>
-<!--                    <li><span class="folder">Marketing</span>
+                    <li><span class="folder">Marketing</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 13) { ?>
                                     <ul><span class="file"><a onclick="javascript: return confirm('Esta operação irá exportar todos os emails de pacientes para uma planilha\n\nObs: Esse processo pode ser demorado  ');" href="<?php echo base_url() ?>ambulatorio/guia/exportaremails">
                                                 Exportar Emails
                                             </a></span></ul>
-                                    <ul><span class="file"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/tempomedioatendimento/"?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');"  href="#">
+                                    <ul><span class="file"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/tempomedioatendimento/" ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');"  href="#">
                                                 Manter Tempo Médio
                                             </a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoagendafaltouemail">Enviar Emails</a></span></ul>
 
                                 <? }
                                 ?>
@@ -581,6 +582,7 @@ function debug($object) {
                                 <?
                                 if ($perfil_id == 1 || $perfil_id == 13) {
                                     ?>
+
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioperfilpaciente">Relatorio Perfil Paciente</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriounicoretorno">Relatório Paciente Unico/Retorno</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotempoatendimento">Relatório Tempo de atendimento</a></span></ul>
@@ -592,7 +594,7 @@ function debug($object) {
                             </li> 
 
                         </ul>
-                    </li>-->
+                    </li>
 
                     <? if ($internacao == 't') { ?>
                         <li><span class="folder">Internacao</span>
@@ -930,7 +932,7 @@ function debug($object) {
                 function buscamensagens() {
                     setInterval(function () {
                         verifica(0, 0,<? echo $operador_id ?>);
-//                        mensagensnaolidas();
+    //                        mensagensnaolidas();
 
                     }, 10000);
                 }

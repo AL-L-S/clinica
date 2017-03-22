@@ -263,6 +263,42 @@ class Operador extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador", $data);
     }
+    
+    function reativaroperador($operador_id) {
+        $this->operador_m->reativaroperador($operador_id);
+        $data['mensagem'] = 'Operador excluido com sucesso.';
+
+        $data['lista'] = $this->operador_m->listar($filtro = null, $maximo = null, $inicio = null);
+
+//            redirect(base_url()."seguranca/operador/index/$data","refresh");
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador", $data);
+    }
+    
+    function unificar($operador_id) {
+        $data['operador'] = $this->operador_m->listaroperador($operador_id);
+        $data['operador_id'] = $operador_id;
+        $this->loadView('seguranca/unificaroperador-form', $data);
+    }
+
+    function gravarunificar() {
+        $operador_id = $_POST['operador_id'];
+//        var_dump($operador_id); die;
+        if ($_POST['operador_id'] == $_POST['operadorid']) {
+            $data['mensagem'] = 'Erro ao unificar. Você está tentando unificar o mesmo operador';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "seguranca/operador/unificar/$operador_id");
+        } else {
+            $verifica = $this->operador_m->gravarunificacao();
+            if ($verifica == "-1") {
+                $data['mensagem'] = 'Erro ao unificar Operador. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao unificar Operador.';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "seguranca/operador/");
+        }
+    }
 
     private function carregarView($data = null, $view = null) {
         if (!isset($data)) {

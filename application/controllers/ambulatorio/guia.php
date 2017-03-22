@@ -76,6 +76,7 @@ class Guia extends BaseController {
     }
 
     function impressaoguiaconsultaspsadt($guia_id) {
+        $data['guia_id'] = $guia_id;
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['relatorio'] = $this->guia->impressaoguiaconsultaspsadt($guia_id);
@@ -975,7 +976,7 @@ class Guia extends BaseController {
         $medicopercentual = $_POST['medico_agenda'];
         // Calcula o Percentual do médico para salvar na agenda_exames
         $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
-        
+
         if (count($percentual) == 0) {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
@@ -1939,7 +1940,73 @@ class Guia extends BaseController {
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
         $data['salas'] = $this->exame->listartodassalas();
-        $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltou', $data);
+        $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltouemail', $data);
+    }
+
+    function gerarelatoriomedicoagendaexamefaltouemail() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+//        echo '<pre>'; 
+        $data['relatorio'] = $this->guia->gerarelatorioexamefaltou();
+//        echo '<pre>';
+//        var_dump($data['relatorio']); die;
+        $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexamefaltouemail', $data);
+    }
+
+    function formularioemail($emails) {
+        var_dump($emails);
+        die;
+        $data['emails'] = $emails;
+
+
+        $this->load->View('ambulatorio/faturarguia-form', $data);
+    }
+
+    function enviaremail() {
+        
+         $empresa_id = $this->session->userdata('empresa_id');
+         $empresa = $this->guia->listarempresa($empresa_id);
+         
+        $emails = $this->guia->gerarelatorioexamefaltouemail();
+        
+        $remetente = $_POST['remetente'];
+        $assunto = $_POST['assunto'];
+        $mensagem = $_POST['mensagem'];
+
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'ssl://smtp.gmail.com';
+        $config['smtp_port'] = '465';
+        $config['smtp_user'] = 'stgsaude@gmail.com';
+        $config['smtp_pass'] = 'saude123';
+        $config['validate'] = TRUE;
+        $config['mailtype'] = 'html';
+        $config['charset'] = 'utf-8';
+        $config['newline'] = "\r\n";
+        $this->load->library('email');
+
+//        foreach ($emails as $item) {
+//            if ($item->cns != null) {
+                $this->email->initialize($config);
+                $this->email->from($empresa[0]->email, $empresa[0]->nome);
+                $this->email->to('cleysonalves1999@gmail.com');
+                $this->email->subject($assunto);
+                $this->email->message($mensagem);
+                $this->email->send();
+//            }
+//        }
+
+echo 'asd';
+die;
+
+        if (1==1) {
+            $data['mensagem'] = 'Email enviado com sucesso.';
+        } else {
+            $data['mensagem'] = 'Envio de Email malsucedido.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "cadastros/contaspagar/$relatorio/");
     }
 
     function relatoriounicoretorno() {

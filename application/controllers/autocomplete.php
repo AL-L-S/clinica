@@ -39,7 +39,7 @@ class Autocomplete extends Controller {
     }
 
     function horariosambulatorio() {
-        $_GET['teste'] = date("Y-m-d",strtotime(str_replace("/", "-", $_GET['teste'])));
+        $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
 
         if (isset($_GET['exame'])) {
             $result = $this->exametemp->listarautocompletehorarios($_GET['exame'], $_GET['teste']);
@@ -60,7 +60,7 @@ class Autocomplete extends Controller {
     }
 
     function horariosambulatorioconsulta() {
-    $_GET['teste'] = date("Y-m-d",strtotime(str_replace("/", "-", $_GET['teste'])));
+        $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
         if (isset($_GET['exame'])) {
             $result = $this->exametemp->listarhorariosconsulta($_GET['exame'], $_GET['teste']);
         } else {
@@ -68,10 +68,10 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function horariosambulatorioespecialidade() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
-    $_GET['teste'] = date("Y-m-d",strtotime(str_replace("/", "-", $_GET['teste'])));
+        $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
         if (isset($_GET['exame'])) {
             $result = $this->exametemp->listarhorariosespecialidade($_GET['exame'], $_GET['teste']);
         } else {
@@ -81,7 +81,7 @@ class Autocomplete extends Controller {
     }
 
     function horariosambulatoriogeral() {
-        
+
         if (isset($_GET['exame'])) {
             $result = $this->exametemp->listarhorariosgeral($_GET['exame'], $_GET['teste']);
         } else {
@@ -138,23 +138,19 @@ class Autocomplete extends Controller {
 
     function carregavalorprocedimentocirurgico() {
 
-        if (isset($_GET['procedimento_id']) && isset($_GET['equipe_id']) ) {
+        if (isset($_GET['procedimento_id']) && isset($_GET['equipe_id'])) {
             $procedimento_valor = $this->procedimento->carregavalorprocedimentocirurgico($_GET['procedimento_id']);
             $equipe = $this->exame->listarquipeoperadores($_GET['equipe_id']);
-            
-            $valorProcedimento = ((float)($procedimento_valor[0]->valor_total));
+
+            $valorProcedimento = ((float) ($procedimento_valor[0]->valor_total));
             $valorCirurgiao = 0;
             $valorAnestesista = 0;
-            
+
             foreach ($equipe as $value) {
-                if ($value->funcao == '00'){//cirurgiao
-                    
-                }
-                elseif ($value->funcao == '00'){//anestesista
-                    
+                if ($value->funcao == '00') {//cirurgiao
+                } elseif ($value->funcao == '00') {//anestesista
                 }
             }
-            
         }
         echo json_encode($result);
     }
@@ -226,7 +222,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function classeportiposaidalistadescricao() {
         if (isset($_GET['nome'])) {
             $result = $this->financeiro_classe->listarautocompleteclassessaidadescricao($_GET['nome']);
@@ -235,7 +231,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function classeportiposaidalistadescricaotodos() {
         if (isset($_GET['nome'])) {
             $result = $this->financeiro_classe->listarautocompleteclassessaidadescricaotodos($_GET['nome']);
@@ -1327,9 +1323,9 @@ class Autocomplete extends Controller {
     function medicoespecialidadetodos() {
 
         if (isset($_GET['txtcbo'])) {
-            $result = $this->operador_m->listarmedicos($_GET['txtcbo']);
+            $result = $this->operador_m->listarmedicosespecialidade($_GET['txtcbo']);
         } else {
-            $result = $this->operador_m->listarmedicos();
+            $result = $this->operador_m->listarmedicosespecialidade();
         }
 
 
@@ -1674,7 +1670,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
+
     function cep() {
         if (isset($_GET['term'])) {
             $cep = str_replace("-", "", $_GET['term']);
@@ -1688,7 +1684,7 @@ class Autocomplete extends Controller {
             $retorno['logradouro_nome'] = $item->logradouro_nome;
             $retorno['tipo_logradouro'] = $item->tipo_logradouro;
             $retorno['localidade_nome'] = $item->localidade_nome;
-            $retorno['nome_bairro'] = $item->nome_bairro;                      
+            $retorno['nome_bairro'] = $item->nome_bairro;
             $var[] = $retorno;
         }
         echo json_encode($var);
@@ -1711,7 +1707,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
+
     function pacienteunificar() {
         if (isset($_GET['term'])) {
             $result = $this->exame->listarautocompletepaciente($_GET['term']);
@@ -1730,8 +1726,24 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
+    function operadorunificar() {
+        if (isset($_GET['term'])) {
+            $result = $this->operador_m->listaoperadorunificarautocomplete($_GET['term']);
+        } else {
+            $result = $this->operador_m->listaoperadorunificarautocomplete();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nome;
+            $retorno['usuario'] = $item->usuario;
+            $retorno['perfil'] = $item->perfil;
+            $retorno['id'] = $item->operador_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function pacientenascimento() {
-        $_GET['term'] = date("Y-m-d",strtotime(str_replace("/", "-", $_GET['term'])));
+        $_GET['term'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['term'])));
         if (isset($_GET['term'])) {
             $result = $this->exame->listarautocompletepacientenascimento($_GET['term']);
         } else {

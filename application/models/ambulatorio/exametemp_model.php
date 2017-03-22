@@ -3627,6 +3627,7 @@ class exametemp_model extends Model {
         $this->db->where('co.cbo_ocupacao_id', $parametro);
         $this->db->where('o.ativo', 't');
         $this->db->where('o.medico', 't');
+        $this->db->where('o.usuario is not null');
         $this->db->orderby("o.nome");
         $return = $this->db->get();
         return $return->result();

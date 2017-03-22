@@ -121,12 +121,12 @@
                                         ?>&Sqrt;<? }
                                     ?>
                                 </td>
-                                <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>
+                                <td><font size="-2"><?= $item->paciente; ?></td>
                             <? } ?>
                             <? if ($item->exames_id == "") { ?>
-                                <td><font color="red" size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
+                                <td><font color="red" size="-2"><?= $item->exame . " " . $item->numero_sessao; ?></td>
                             <? } else { ?>
-                                <td><font size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
+                                <td><font size="-2"><?= $item->exame . " " . $item->numero_sessao; ?></td>
                             <? } ?>
                             <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                 <td>

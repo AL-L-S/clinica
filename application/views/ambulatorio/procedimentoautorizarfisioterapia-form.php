@@ -214,739 +214,106 @@
 ?>
 
                         });
+<? for ($b = 1; $b <= $i; $b++) { ?>
 
-
-                        $(function () {
-                            $("#medico1").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico1").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico1").val(ui.item.value);
-                                    $("#crm1").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico2").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico2").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico2").val(ui.item.value);
-                                    $("#crm2").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico3").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico3").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico3").val(ui.item.value);
-                                    $("#crm3").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico4").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico4").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico4").val(ui.item.value);
-                                    $("#crm4").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico5").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico5").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico5").val(ui.item.value);
-                                    $("#crm5").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico6").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico6").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico6").val(ui.item.value);
-                                    $("#crm6").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico7").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico7").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico7").val(ui.item.value);
-                                    $("#crm7").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico8").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico8").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico8").val(ui.item.value);
-                                    $("#crm8").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico9").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico9").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico9").val(ui.item.value);
-                                    $("#crm9").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $("#medico10").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#medico10").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#medico10").val(ui.item.value);
-                                    $("#crm10").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
-
-
-
-                        $(function () {
-                            $('#convenio1').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento1').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento1').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor1").value = options;
-                                        document.getElementById("qtde1").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor1').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio2').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia2', {convenio2: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento2').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento2').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento2').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia2', {procedimento2: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor2").value = options;
-                                        document.getElementById("qtde2").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor2').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio3').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia3', {convenio3: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento3').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento3').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento3').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia3', {procedimento3: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor3").value = options;
-                                        document.getElementById("qtde3").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor3').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio4').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia4', {convenio4: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento4').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento4').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento4').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia4', {procedimento4: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor4").value = options;
-                                        document.getElementById("qtde4").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor4').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio5').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia5', {convenio5: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento5').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento5').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento5').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia5', {procedimento5: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor5").value = options;
-                                        document.getElementById("qtde5").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor5').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio6').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia6', {convenio6: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento6').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento6').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento6').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia6', {procedimento6: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor6").value = options;
-                                        document.getElementById("qtde6").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor6').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio7').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia7', {convenio7: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento7').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento7').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento7').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia7', {procedimento7: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor7").value = options;
-                                        document.getElementById("qtde7").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor7').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio8').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia8', {convenio8: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento8').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento8').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento8').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia8', {procedimento8: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor8").value = options;
-                                        document.getElementById("qtde8").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor8').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio9').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia9', {convenio9: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento9').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento9').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento9').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia9', {procedimento9: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor9").value = options;
-                                        document.getElementById("qtde9").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor9').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#convenio10').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia10', {convenio10: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento10').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento10').html('<option value="">-- Escolha um exame --</option>');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento10').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia10', {procedimento10: $(this).val(), ajax: true}, function (j) {
-                                        options = "";
-                                        options += j[0].valortotal;
-                                        qtde = "";
-                                        qtde += j[0].qtde;
-                                        document.getElementById("valor10").value = options;
-                                        document.getElementById("qtde10").value = qtde;
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#valor10').html('value=""');
-                                }
-                            });
-                        });
-
-                        $(function () {
-                            $('#procedimento1').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                            $(function () {
+                                $('#convenio<?= $b ?>').change(function () {
+                                    if ($(this).val()) {
+                                        $('.carregando').show();
+                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                            var options = '<option value=""></option>';
+                                            for (var c = 0; c < j.length; c++) {
+                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                             }
-                                        }
-                                        $('#formapamento1').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento1').html('<option value="0">Selecione</option>');
-                                }
+                                            $('#procedimento<?= $b ?>').html(options).show();
+                                            $('.carregando').hide();
+                                        });
+                                    } else {
+                                        $('#procedimento<?= $b ?>').html('<option value="">-- Escolha um exame --</option>');
+                                    }
+                                });
                             });
-                        });
 
-                        $(function () {
-                            $('#procedimento2').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento2', {procedimento2: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-                                        $('#formapamento2').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento2').html('<option value="0">Selecione</option>');
-                                }
+                            $(function () {
+                                $('#procedimento<?= $b ?>').change(function () {
+                                    if ($(this).val()) {
+                                        $('.carregando').show();
+                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                            options = "";
+                                            options += j[0].valortotal;
+                                            qtde = "";
+                                            qtde += j[0].qtde;
+                                            document.getElementById("valor1").value = options;
+                                            document.getElementById("qtde1").value = qtde;
+                                            $('.carregando').hide();
+                                        });
+                                    } else {
+                                        $('#valor<?= $b ?>').html('value=""');
+                                    }
+                                });
                             });
-                        });
 
-                        $(function () {
-                            $('#procedimento3').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento3', {procedimento3: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                            $(function () {
+                                $('#procedimento<?= $b ?>').change(function () {
+                                    if ($(this).val()) {
+                                        $('.carregando').show();
+                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                            var options = '<option value="0">Selecione</option>';
+                                            for (var c = 0; c < j.length; c++) {
+                                                if (j[c].forma_pagamento_id != null) {
+                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                }
                                             }
-                                        }
-                                        $('#formapamento3').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento3').html('<option value="0">Selecione</option>');
-                                }
+                                            $('#formapamento<?= $b ?>').html(options).show();
+                                            $('.carregando').hide();
+                                        });
+                                    } else {
+                                        $('#formapamento<?= $b ?>').html('<option value="0">Selecione</option>');
+                                    }
+                                });
                             });
-                        });
 
-                        $(function () {
-                            $('#procedimento4').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento4', {procedimento4: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-                                        $('#formapamento4').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento4').html('<option value="0">Selecione</option>');
-                                }
+                            $(function () {
+                                $("#medico<?= $b ?>").autocomplete({
+                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                    minLength: 3,
+                                    focus: function (event, ui) {
+                                        $("#medico<?= $b ?>").val(ui.item.label);
+                                        return false;
+                                    },
+                                    select: function (event, ui) {
+                                        $("#medico<?= $b ?>").val(ui.item.value);
+                                        $("#crm<?= $b ?>").val(ui.item.id);
+                                        return false;
+                                    }
+                                });
                             });
-                        });
 
-                        $(function () {
-                            $('#procedimento5').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento5', {procedimento5: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-                                        $('#formapamento5').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento5').html('<option value="0">Selecione</option>');
-                                }
-                            });
-                        });
+<? }
+?>
 
-                        $(function () {
-                            $('#procedimento6').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento6', {procedimento6: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-                                        $('#formapamento6').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento6').html('<option value="0">Selecione</option>');
-                                }
-                            });
-                        });
 
-                        $(function () {
-                            $('#procedimento7').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento7', {procedimento7: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-                                        $('#formapamento7').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento7').html('<option value="0">Selecione</option>');
-                                }
-                            });
-                        });
 
-                        $(function () {
-                            $('#procedimento8').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento8', {procedimento8: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-                                        $('#formapamento8').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento8').html('<option value="0">Selecione</option>');
-                                }
-                            });
-                        });
 
-                        $(function () {
-                            $('#procedimento9').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento9', {procedimento9: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-                                        $('#formapamento9').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento9').html('<option value="0">Selecione</option>');
-                                }
-                            });
-                        });
+//                        $(function () {
+//                            $('#convenio2').change(function () {
+//                                if ($(this).val()) {
+//                                    $('.carregando').show();
+//                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia2', {convenio2: $(this).val(), ajax: true}, function (j) {
+//                                        var options = '<option value=""></option>';
+//                                        for (var c = 0; c < j.length; c++) {
+//                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+//                                        }
+//                                        $('#procedimento2').html(options).show();
+//                                        $('.carregando').hide();
+//                                    });
+//                                } else {
+//                                    $('#procedimento2').html('<option value="">-- Escolha um exame --</option>');
+//                                }
+//                            });
+//                        });
 
-                        $(function () {
-                            $('#procedimento10').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento10', {procedimento10: $(this).val(), ajax: true}, function (j) {
-                                        var options = '<option value="0">Selecione</option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if (j[c].forma_pagamento_id != null) {
-                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-                                        $('#formapamento10').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#formapamento10').html('<option value="0">Selecione</option>');
-                                }
-                            });
-                        });
+
 
                         //$(function(){     
                         //    $('#exame').change(function(){

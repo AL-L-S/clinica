@@ -703,6 +703,108 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function gerarelatorioexamefaltou() {
+
+        $_POST['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $_POST['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id,
+                            p.celular,
+                            p.telefone,
+                            p.nome as paciente,
+                            p.cns,
+                            pt.nome as procedimento,
+                            m.nome as cidade,
+                            ae.tipo,
+                            ae.data
+                            ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_municipio m', 'p.municipio_id = m.municipio_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        date_default_timezone_set('America/Fortaleza');
+        $data_atual = date('Y-m-d');
+        $this->db->where('ae.data >=', $_POST['txtdata_inicio']);
+        if ($_POST['situacao'] == 'FALTOU') {
+            if ($data_atual > $_POST['txtdata_fim']) {
+                $this->db->where('ae.data <=', $_POST['txtdata_fim']);
+            } else {
+                $this->db->where('ae.data <', $data_atual);
+            }
+
+            $this->db->where('ae.situacao', 'OK');
+            $this->db->where('ae.realizada', 'f');
+            $this->db->where('ae.bloqueado', 'f');
+            $this->db->where('ae.operador_atualizacao is not null');
+        } elseif ($_POST['situacao'] == 'COMPARECEU') {
+            $this->db->where('ae.data <=', $_POST['txtdata_fim']);
+            $this->db->where('ae.realizada', 't');
+            $this->db->where('ae.operador_atualizacao is not null');
+        } else {
+            $this->db->where('ae.data <=', $_POST['txtdata_fim']);
+        }
+
+        $this->db->where('ae.paciente_id is not null');
+        $this->db->orderby('ae.agenda_exames_id');
+        $this->db->orderby('p.nome');
+        if ($_POST['empresa'] != '') {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function gerarelatorioexamefaltouemail() {
+
+        $_POST['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $_POST['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('
+                            p.cns
+                            
+                            ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_municipio m', 'p.municipio_id = m.municipio_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        date_default_timezone_set('America/Fortaleza');
+        $data_atual = date('Y-m-d');
+        $this->db->where('ae.data >=', $_POST['txtdata_inicio']);
+        if ($_POST['situacao'] == 'FALTOU') {
+            if ($data_atual > $_POST['txtdata_fim']) {
+                $this->db->where('ae.data <=', $_POST['txtdata_fim']);
+            } else {
+                $this->db->where('ae.data <', $data_atual);
+            }
+
+            $this->db->where('ae.situacao', 'OK');
+            $this->db->where('ae.realizada', 'f');
+            $this->db->where('ae.bloqueado', 'f');
+            $this->db->where('ae.operador_atualizacao is not null');
+        } elseif ($_POST['situacao'] == 'COMPARECEU') {
+            $this->db->where('ae.data <=', $_POST['txtdata_fim']);
+            $this->db->where('ae.realizada', 't');
+            $this->db->where('ae.operador_atualizacao is not null');
+        } else {
+            $this->db->where('ae.data <=', $_POST['txtdata_fim']);
+        }
+
+        $this->db->where('ae.paciente_id is not null');
+        $this->db->orderby('ae.agenda_exames_id');
+        $this->db->orderby('p.nome');
+        if ($_POST['empresa'] != '') {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function relatoriocancelamentocontador() {
 
         $this->db->select('ac.agenda_exames_id');

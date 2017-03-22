@@ -48,7 +48,7 @@
                     <th class="tabela_header">Usu&aacute;rio</th>
                     <th class="tabela_header">Perfil</th>
                     <th class="tabela_header">Ativo</th>
-                    <th class="tabela_header" colspan="5" width="140px;"><center>A&ccedil;&otilde;es</center></th>
+                    <th class="tabela_header" colspan="6" ><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -60,7 +60,7 @@
 
                 if ($total > 0) {
                     ?>
-                    <tbody>
+                    
                         <?php
                         if ($limit != "todos") {
                             $lista = $this->operador_m->listar($_GET)->orderby('ativo desc')->orderby('nomeperfil')->orderby('nome')->limit($limit, $pagina)->get()->result();
@@ -81,45 +81,63 @@
                                     <td class="<?php echo $estilo_linha; ?>">Não Ativo</td>
                                 <? } ?>
                                 <? if ($item->ativo == 't') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" >
-                                        <a onclick="javascript: confirm('Deseja realmente excluir o operador <?= $item->usuario; ?>'); window.open('<?= base_url() . "seguranca/operador/excluirOperador/$item->operador_id"; ?>', '_blanck')"
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                            <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente excluir o operador <?= $item->usuario; ?>');" href="<?= base_url() . "seguranca/operador/excluirOperador/$item->operador_id"; ?>"
                                            >Excluir
                                         </a>
+                                            </div>
             <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="140px;">
-                                        <a  onclick="javascript:window.open('<?= base_url() . "seguranca/operador/alterar/$item->operador_id"; ?> ', '_blank');">Editar
-                                        </a>
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "seguranca/operador/alterar/$item->operador_id"; ?> ', '_blank');">Editar
+                                        </a></div>
             <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="140px;">
-                                        <a  onclick="javascript:window.open('<?= base_url() . "seguranca/operador/operadorconvenio/$item->operador_id"; ?> ', '_blank');">Convenio
-                                        </a>
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "seguranca/operador/operadorconvenio/$item->operador_id"; ?> ', '_blank');">Convenio
+                                        </a></div>
             <!--                           href="<?= base_url() ?>seguranca/operador/operadorconvenio/<?= $item->operador_id ?>"-->
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <a  onclick="javascript:window.open('<?= base_url() . "seguranca/operador/associarempresas/$item->operador_id"; ?> ', '_blank');">Empresas
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "seguranca/operador/associarempresas/$item->operador_id"; ?> ', '_blank');">Empresas
                                         </a>
+                                            </div>
             <!--                           href="<?= base_url() ?>seguranca/operador/operadorconvenio/<?= $item->operador_id ?>"-->
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <a  onclick="javascript:window.open('<?= base_url() . "seguranca/operador/anexarimagem/$item->operador_id"; ?> ', '_blank');">Assinatura
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link" style="width: 60pt;">
+                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "seguranca/operador/anexarimagem/$item->operador_id"; ?> ', '_blank');">Assinatura
                                         </a>
+                                            </div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "seguranca/operador/unificar/$item->operador_id"; ?> ', '_blank');">Unificar
+                                        </a>
+                                            </div>
                                     </td>
                                 <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="140px;">
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                            <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente reativar o operador <?= $item->usuario; ?>');" href="<?= base_url() . "seguranca/operador/reativaroperador/$item->operador_id"; ?>"
+                                           >Reativar
+                                        </a>
+                                            </div>
+            <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" >
+                                    <td class="<?php echo $estilo_linha; ?>" >
+                                    <td class="<?php echo $estilo_linha; ?>" >
+                                    <td class="<?php echo $estilo_linha; ?>" >
                                     <? } ?>
                                 </td>
                             </tr>
 
-                        </tbody>
+                      
                         <?php
                     }
                 }
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="9">
+                        <th class="tabela_footer" colspan="10">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                             <div style="display: inline">

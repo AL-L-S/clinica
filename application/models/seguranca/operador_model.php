@@ -58,14 +58,14 @@ class Operador_model extends BaseModel {
     }
 
     function listar($args = array()) {
-       
+
         $this->db->from('tb_operador')
                 ->join('tb_perfil', 'tb_perfil.perfil_id = tb_operador.perfil_id', 'left')
                 ->select('"tb_operador".*, tb_perfil.nome as nomeperfil');
-        
+
         $this->db->where('tb_operador.usuario IS NOT NULL');
 //        $this->db->where('tb_operador.senha IS NOT NULL');
-        
+
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 // $this->db->like('tb_operador.nome', $args['nome'], 'left');
@@ -90,7 +90,7 @@ class Operador_model extends BaseModel {
                 $this->db->where('tb_operador.nome ilike', "%" . $args['nome'] . "%");
                 $this->db->orwhere('tb_operador.usuario ilike', "%" . $args['nome'] . "%");
             }
-        }       
+        }
         return $this->db;
     }
 
@@ -251,7 +251,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listaroperador($operador) {
         $this->db->select('o.operador_id,
                                o.usuario,
@@ -288,6 +288,23 @@ class Operador_model extends BaseModel {
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
         $this->db->where('consulta', 'true');
         $this->db->where('o.ativo', 'true');
+        $this->db->orderby('o.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarmedicosespecialidade() {
+        $this->db->select('o.operador_id,
+                               o.usuario,
+                               o.nome,
+                               o.conselho,
+                               o.perfil_id,
+                               p.nome as perfil');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $this->db->where('consulta', 'true');
+        $this->db->where('o.ativo', 'true');
+        $this->db->where('o.usuario is not null');
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
@@ -331,7 +348,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get('tb_cbo');
         return $return->result();
     }
-    
+
     function medicoreceituario($operador_id) {
         $this->db->select('o.nome,
                             o.operador_id,
@@ -344,7 +361,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarempresas() {
         $this->db->select('empresa_id,
                             nome');
@@ -520,7 +537,7 @@ class Operador_model extends BaseModel {
             }
             $this->db->set('usuario', $_POST['txtUsuario']);
             if ($_POST['txtSenha'] != "") {
-                 $this->db->set('senha', md5($_POST['txtSenha']));
+                $this->db->set('senha', md5($_POST['txtSenha']));
             }
             if ($_POST['txtPerfil'] != "") {
                 $this->db->set('perfil_id', $_POST['txtPerfil']);
@@ -666,6 +683,25 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
 
+    function listaoperadorunificarautocomplete($parametro = null) {
+        $this->db->select('o.operador_id,
+                               o.usuario,
+                               o.nome,
+                               o.perfil_id,
+                               p.nome as perfil');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id', 'left');
+        $this->db->where('o.ativo', 'true');
+        $this->db->where('o.usuario is not null');
+        if ($parametro != null) {
+            $this->db->where('o.nome ilike', "%" . $parametro . "%");
+            $this->db->orwhere('o.conselho ilike', "%" . $parametro . "%");
+            $this->db->orwhere('o.cpf ilike', "%" . $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listacboprofissionaisautocomplete($parametro = null) {
         $this->db->select('cbo_ocupacao_id,
                             descricao');
@@ -708,6 +744,74 @@ class Operador_model extends BaseModel {
         $this->db->set('ativo', 'f');
         $this->db->where('operador_id', $operador_id);
         $this->db->update('tb_operador');
+    }
+
+    function reativaroperador($operador_id) {
+
+
+        $this->db->set('ativo', 't');
+        $this->db->where('operador_id', $operador_id);
+        $this->db->update('tb_operador');
+    }
+
+    function gravarunificacao() {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+//            $this->db->set('antigopaciente_id', $_POST['pacienteid']);
+//            $this->db->set('paciente_id', $_POST['paciente_id']);
+//            $this->db->set('data_unificacao', $horario);
+//            $this->db->set('operador_unificacao', $operador_id);
+//            $this->db->where('paciente_id', $_POST['pacienteid']);
+//            $this->db->update('tb_exames');
+
+            $this->db->set('medico_agenda', $_POST['operador_id']);
+            $this->db->set('medico_consulta_id', $_POST['operador_id']);
+            $this->db->set('medico_antigo', $_POST['operadorid']);
+            $this->db->set('data_unificacaomedico', $horario);
+            $this->db->set('operador_unificacaomedico', $operador_id);
+            $this->db->where('medico_agenda', $_POST['operadorid']);
+            $this->db->update('tb_agenda_exames');
+
+//            $this->db->set('antigopaciente_id', $_POST['pacienteid']);
+//            $this->db->set('paciente_id', $_POST['paciente_id']);
+//            $this->db->set('data_unificacao', $horario);
+//            $this->db->set('operador_unificacao', $operador_id);
+//            $this->db->where('paciente_id', $_POST['pacienteid']);
+//            $this->db->update('tb_ambulatorio_consulta');
+//            $this->db->set('antigopaciente_id', $_POST['pacienteid']);
+//            $this->db->set('paciente_id', $_POST['paciente_id']);
+//            $this->db->set('data_unificacao', $horario);
+//            $this->db->set('operador_unificacao', $operador_id);
+//            $this->db->where('paciente_id', $_POST['pacienteid']);
+//            $this->db->update('tb_ambulatorio_guia');
+
+            $this->db->set('medico_parecer1', $_POST['operador_id']);
+            $this->db->set('medico_antigo', $_POST['operadorid']);
+            $this->db->set('data_unificacaomedico', $horario);
+            $this->db->set('operador_unificacaomedico', $operador_id);
+            $this->db->where('medico_parecer1', $_POST['operadorid']);
+            $this->db->update('tb_ambulatorio_laudo');
+
+            // TB_laudo antigo
+//            $this->db->set('paciente_id', $_POST['paciente_id']);
+//            $this->db->where('paciente_id', $_POST['pacienteid']);
+//            $this->db->update('tb_laudoantigo');
+
+            if ($_POST['operador_id'] != $_POST['operadorid']) {
+//                $this->db->set('ativo', 'f');
+//                $this->db->set('data_exclusao', $horario);
+//                $this->db->set('operador_exclusao', $operador_id);
+//                $this->db->where('operador_id', $_POST['operadorid']);
+//                $this->db->update('tb_operador');
+                echo 'Testa';
+                die;
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
     }
 
     function instanciar($operador_id) {

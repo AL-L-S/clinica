@@ -50,6 +50,8 @@ class formapagamento_model extends Model {
                             nome');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
+        $this->db->orderby("nome desc");
+        
         $return = $this->db->get();
         return $return->result();
     }

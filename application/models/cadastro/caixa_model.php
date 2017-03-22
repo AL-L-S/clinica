@@ -70,15 +70,21 @@ class caixa_model extends Model {
     }
 
     function listarsaida($args = array()) {
-        if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->select('
+
+
+            if (isset($args['nome']) && strlen($args['nome']) > 0 && $args['nome'] != 'TRANSFERENCIA') {
+                $this->db->select('
                             tes.descricao
                             ');
-            $this->db->from('tb_tipo_entradas_saida tes');
-            $this->db->where('tes.ativo', 'true');
-            $this->db->where('tes.tipo_entradas_saida_id', $args['nome']);
-            $return = $this->db->get()->result();
-        }
+                $this->db->from('tb_tipo_entradas_saida tes');
+                $this->db->where('tes.ativo', 'true');
+                $this->db->where('tes.tipo_entradas_saida_id', $args['nome']);
+                $return = $this->db->get()->result();
+                $tipo = $return[0]->descricao;
+            }else{
+                $tipo = 'TRANSFERENCIA';
+            }
+        
 
         $this->db->select('s.valor,
                             s.saidas_id,
@@ -97,7 +103,7 @@ class caixa_model extends Model {
             $this->db->where('s.nome', $args['empresa']);
         }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('tipo', $return[0]->descricao);
+            $this->db->where('tipo', $tipo);
         }
         if (isset($args['nome_classe']) && strlen($args['nome_classe']) > 0) {
             $this->db->where('classe', $args['nome_classe']);
@@ -547,7 +553,7 @@ class caixa_model extends Model {
 
     function gravarentrada() {
         try {
-
+            $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
             //busca tipo
             $this->db->select('t.descricao');
             $this->db->from('tb_tipo_entradas_saida t');
@@ -568,7 +574,7 @@ class caixa_model extends Model {
             $mes = substr($inicio, 3, 2);
             $ano = substr($inicio, 6, 4);
             $datainicio = $ano . '-' . $mes . '-' . $dia;
-            $this->db->set('data', $datainicio);
+            $this->db->set('data', $_POST['inicio']);
             $this->db->set('tipo', $tipo);
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('nome', $_POST['devedor']);
@@ -599,7 +605,7 @@ class caixa_model extends Model {
 
     function gravarsaida() {
         try {
-
+            $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
             //busca tipo
             $this->db->select('t.descricao');
             $this->db->from('tb_tipo_entradas_saida t');
@@ -609,7 +615,6 @@ class caixa_model extends Model {
             $return = $this->db->get();
             $result = $return->result();
             $tipo = $result[0]->descricao;
-
 
             if ($_POST['saida_id'] == "") {
                 /* inicia o mapeamento no banco */
@@ -622,7 +627,7 @@ class caixa_model extends Model {
                 $mes = substr($inicio, 3, 2);
                 $ano = substr($inicio, 6, 4);
                 $datainicio = $ano . '-' . $mes . '-' . $dia;
-                $this->db->set('data', $datainicio);
+                $this->db->set('data', $_POST['inicio']);
                 $this->db->set('tipo', $tipo);
                 $this->db->set('classe', $_POST['classe']);
                 $this->db->set('conta', $_POST['conta']);

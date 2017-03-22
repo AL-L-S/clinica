@@ -29,8 +29,11 @@ switch ($MES) {
         break;
 }
 ?>
+<meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
-
+    <div>
+        <p style="text-align: center;"><img align = 'center'  width='300px' height='150px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></p>
+    </div>
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
     <? if (count($empresa) > 0) { ?>
@@ -45,7 +48,7 @@ switch ($MES) {
     <? if ($medico == 0) { ?>
         <h4>Medico: TODOS</h4>
     <? } else { ?>
-        <h4>Medico: <?= utf8_decode($medico[0]->operador); ?></h4>
+        <h4>Medico: <?= $medico[0]->operador; ?></h4>
     <? } ?>
 
     <hr>
@@ -116,11 +119,11 @@ switch ($MES) {
                             <td><font size="-2"><?= $item->medico; ?></td>
                             <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
-                            <td><font size="-2"><?= utf8_decode($item->procedimento); ?></td>
+                            <td><font size="-2"><?= $item->procedimento; ?></td>
                             <? if ($clinica == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_total, 2, ",", "."); ?></td>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>
-                                <td style='text-align: right;'><font size="-2"><?= number_format(((float)$item->valor_total - ((float)$item->valor_total*((float)$item->iss/100))), 2, ",", "."); ?></td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format(((float) $item->valor_total - ((float) $item->valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
                             <? } ?>
                             <?
                             if ($item->percentual_medico == "t") {
@@ -230,97 +233,99 @@ switch ($MES) {
             ?>
 
             <hr>
-            <table border="1">
-                <tr>
-                    <th colspan="2" width="200px;">RESUMO</th>
-                </tr>
-                <?
-                $resultado = $totalperc;
-                if (@$totalretorno > 0 || @$totalconsulta > 0) :
-                    ?>
-                    <tr>
-                        <td>TOTAL CONSULTAS</td>
-                        <td style='text-align: right;' width="30px;"><?= $totalconsulta; ?></td>
-                    </tr>
-
-                    <tr>
-                        <td>TOTAL RETORNO</td>
-                        <td style='text-align: right;'><?= $totalretorno; ?></td>
-                    </tr>
-                    <?
-                endif;
-                if (@$totalprocedimentoscirurgicos > 0):
-                    ?>
-                    <tr>
-                        <td>TOTAL PROC. CIRURGICOS</td>
-                        <td style='text-align: right;'><?= $totalprocedimentoscirurgicos; ?></td>
-                    </tr>
-                <? endif; ?>
-            </table>
-            <?
-            $irpf = 0;
-            if ($totalperc >= $medico[0]->valor_base) {
-                $irpf = $totalperc * ($medico[0]->ir / 100);
-                ?>
-                <br>
+            <? if ($medico != 0 && $recibo == 'NAO') { ?> 
                 <table border="1">
                     <tr>
-                        <th colspan="2" width="200px;">RESUMO FISCAL</th>
-                    </tr>
-                    <tr>
-                        <td>TOTAL</td>
-                        <td style='text-align: right;'><?= number_format($totalperc, 2, ",", "."); ?></td>
-                    </tr>
-
-                    <tr>
-                        <td>IRPF</td>
-                        <td style='text-align: right;'><?= number_format($irpf, 2, ",", "."); ?></td>
+                        <th colspan="2" width="200px;">RESUMO</th>
                     </tr>
                     <?
-                    $resultado = $totalperc - $irpf;
-                } else {
+                    $resultado = $totalperc;
+                    if (@$totalretorno > 0 || @$totalconsulta > 0) :
+                        ?>
+                        <tr>
+                            <td>TOTAL CONSULTAS</td>
+                            <td style='text-align: right;' width="30px;"><?= $totalconsulta; ?></td>
+                        </tr>
+
+                        <tr>
+                            <td>TOTAL RETORNO</td>
+                            <td style='text-align: right;'><?= $totalretorno; ?></td>
+                        </tr>
+                        <?
+                    endif;
+                    if (@$totalprocedimentoscirurgicos > 0):
+                        ?>
+                        <tr>
+                            <td>TOTAL PROC. CIRURGICOS</td>
+                            <td style='text-align: right;'><?= $totalprocedimentoscirurgicos; ?></td>
+                        </tr>
+                    <? endif; ?>
+                </table>
+                <?
+                $irpf = 0;
+                if ($totalperc >= $medico[0]->valor_base) {
+                    $irpf = $totalperc * ($medico[0]->ir / 100);
                     ?>
-                    <hr>
+                    <br>
                     <table border="1">
                         <tr>
                             <th colspan="2" width="200px;">RESUMO FISCAL</th>
                         </tr>
-                        <?
-                    }
-                    if ($totalperc > 215) {
-                        $pis = $totalperc * ($medico[0]->pis / 100);
-                        $csll = $totalperc * ($medico[0]->csll / 100);
-                        $cofins = $totalperc * ($medico[0]->cofins / 100);
-                        $resultado = $resultado - $pis - $csll - $cofins;
-                        ?>
                         <tr>
-                            <td>PIS</td>
-                            <td style='text-align: right;'><?= number_format($pis, 2, ",", "."); ?></td>
+                            <td>TOTAL</td>
+                            <td style='text-align: right;'><?= number_format($totalperc, 2, ",", "."); ?></td>
                         </tr>
+
                         <tr>
-                            <td>CSLL</td>
-                            <td style='text-align: right;'><?= number_format($csll, 2, ",", "."); ?></td>
-                        </tr>
-                        <tr>
-                            <td>COFINS</td>
-                            <td style='text-align: right;'><?= number_format($cofins, 2, ",", "."); ?></td>
+                            <td>IRPF</td>
+                            <td style='text-align: right;'><?= number_format($irpf, 2, ",", "."); ?></td>
                         </tr>
                         <?
-                        $iss = $totalperc * ($medico[0]->iss / 100);
-                        $resultado = $resultado - $iss;
-                    }
-                    if (@$iss > 0) {
+                        $resultado = $totalperc - $irpf;
+                    } else {
                         ?>
+                        <hr>
+                        <table border="1">
+                            <tr>
+                                <th colspan="2" width="200px;">RESUMO FISCAL</th>
+                            </tr>
+                            <?
+                        }
+                        if ($totalperc > 215) {
+                            $pis = $totalperc * ($medico[0]->pis / 100);
+                            $csll = $totalperc * ($medico[0]->csll / 100);
+                            $cofins = $totalperc * ($medico[0]->cofins / 100);
+                            $resultado = $resultado - $pis - $csll - $cofins;
+                            ?>
+                            <tr>
+                                <td>PIS</td>
+                                <td style='text-align: right;'><?= number_format($pis, 2, ",", "."); ?></td>
+                            </tr>
+                            <tr>
+                                <td>CSLL</td>
+                                <td style='text-align: right;'><?= number_format($csll, 2, ",", "."); ?></td>
+                            </tr>
+                            <tr>
+                                <td>COFINS</td>
+                                <td style='text-align: right;'><?= number_format($cofins, 2, ",", "."); ?></td>
+                            </tr>
+                            <?
+                            $iss = $totalperc * ($medico[0]->iss / 100);
+                            $resultado = $resultado - $iss;
+                        }
+                        if (@$iss > 0) {
+                            ?>
+                            <tr>
+                                <td>ISS</td>
+                                <td style='text-align: right;'><?= number_format($iss, 2, ",", "."); ?></td>
+                            </tr>
+                        <? } ?>
                         <tr>
-                            <td>ISS</td>
-                            <td style='text-align: right;'><?= number_format($iss, 2, ",", "."); ?></td>
+                            <td>RESULTADO</td>
+                            <td style='text-align: right;'><?= number_format($resultado, 2, ",", "."); ?></td>
                         </tr>
-                    <? } ?>
-                    <tr>
-                        <td>RESULTADO</td>
-                        <td style='text-align: right;'><?= number_format($resultado, 2, ",", "."); ?></td>
-                    </tr>
-                </table>
+                    </table>
+                <? } ?>
                 <? ?>
                 <? if ($medico != 0) {
                     ?>
@@ -332,42 +337,45 @@ switch ($MES) {
                         <input type="hidden" class="texto3" name="classe" value="<?= $medico[0]->classe; ?>" readonly/>
                         <input type="hidden" class="texto3" name="observacao" value="<?= "Período " . $txtdata_inicio . " até " . $txtdata_fim . " médico: " . $medico[0]->operador; ?>" readonly/>
                         <input type="hidden" class="texto3" name="valor" value="<?= $resultado; ?>" readonly/>
-                        <button type="submit" name="btnEnviar">Producao medica</button>
+                        <? if ($medico != 0 && $recibo == 'NAO') { ?> 
+                            <button type="submit" name="btnEnviar">Producao medica</button>
+                        <? } ?>
                     </form>
                     <?
                 }
             }
             ?>
             <br>
-            <div>
-                <div style="display: inline-block">
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <td colspan="50"><center>PRODUÇÃO AMBULATORIAL</center></td>
-                        </tr>
-                        <tr>
-                            <th class="tabela_header"><font size="-1">Medico</th>
-                            <th class="tabela_header"><font size="-1">Qtde</th>
-                            <th class="tabela_header"><font size="-1">Produ&ccedil;&atilde;o Medico</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <?
-                            foreach ($relatoriogeral as $itens) :
-                                ?>
-
+            <? if ($medico != 0 && $recibo == 'NAO') { ?> 
+                <div>
+                    <div style="display: inline-block">
+                        <table border="1">
+                            <thead>
                                 <tr>
-                                    <td><font size="-2"><?= $itens->medico; ?></td>
-                                    <td ><font size="-2"><?= $itens->quantidade; ?></td>
-                                    <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
-                                </tr>
+                                    <td colspan="50"><center>PRODUÇÃO AMBULATORIAL</center></td>
+                            </tr>
+                            <tr>
+                                <th class="tabela_header"><font size="-1">Medico</th>
+                                <th class="tabela_header"><font size="-1">Qtde</th>
+                                <th class="tabela_header"><font size="-1">Produ&ccedil;&atilde;o Medico</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <?
+                                foreach ($relatoriogeral as $itens) :
+                                    ?>
 
-                            <? endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                                    <tr>
+                                        <td><font size="-2"><?= $itens->medico; ?></td>
+                                        <td ><font size="-2"><?= $itens->quantidade; ?></td>
+                                        <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
+                                    </tr>
 
+                                <? endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <? } ?>
                 <div style="display: inline-block;margin: 5pt">
                 </div>
 
@@ -408,11 +416,11 @@ switch ($MES) {
                 /*.pagebreak { page-break-before: always; }*/
             </style>
             <? if ($medico != 0 && $recibo == 'SIM') { ?>
-            <div>
-                    
-<!--                    <div>
-                        <p><center><img align = 'center'  width='400px' height='200px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
-                    </div>-->
+                <div>
+
+                    <!--                    <div>
+                                            <p><center><img align = 'center'  width='400px' height='200px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
+                                        </div>-->
                     <div>
                         <p style="text-align: center;font-size: 14pt"> <strong>RECIBO</strong></p>
                         <?
@@ -433,7 +441,7 @@ switch ($MES) {
                         </p>
                     <!--<p><center><font size = 4><b>DECLARA&Ccedil;&Atilde;O</b></font></center></p>-->
                         <br>
-                        
+
 
                         <h4><center>______________________________________________________________</center></h4>
                         <h4><center>Assinatura do Profissional</center></h4>
@@ -443,7 +451,7 @@ switch ($MES) {
                         <p style="text-align: center"><b>AVISO:</b> CARO PROFISSIONAL, INFORMAMOS QUE QUSQUER RECLAMAÇÃO DAREMOS UM 
                             PRAZO DE 05(CINCO DIAS) A CONTAR DA DATA DE RECEBIMENTO PARA REINVIDICAR SEUS 
                             DIREITOS. A CLINICA NÃO RECEBERÁ CONTESTAÇÃO SOB HIPÓTESE ALGUMA FORA DO PRAZO DETERMINADO ACIMA
-                            </p>
+                        </p>
                     </div>
                 </div>
             <? } ?>
