@@ -122,12 +122,12 @@
                                             </div>
             <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" >
-                                    <td class="<?php echo $estilo_linha; ?>" >
-                                    <td class="<?php echo $estilo_linha; ?>" >
-                                    <td class="<?php echo $estilo_linha; ?>" >
+                                    <td class="<?php echo $estilo_linha; ?>" ></td>
+                                    <td class="<?php echo $estilo_linha; ?>" ></td>
+                                    <td class="<?php echo $estilo_linha; ?>" ></td>
+                                    <td class="<?php echo $estilo_linha; ?>" ></td>
+                                    <td class="<?php echo $estilo_linha; ?>" ></td>
                                     <? } ?>
-                                </td>
                             </tr>
 
                       

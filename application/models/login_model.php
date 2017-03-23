@@ -131,9 +131,6 @@ class login_model extends Model {
         $this->db->join('tb_pacote_sms ps', 'ps.pacote_sms_id = es.pacote_id', 'left');
         $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get()->result();
-        var_dump($return);
-        echo "<hr>";
-        die;
         return $return[0]->quantidade;
     }
 

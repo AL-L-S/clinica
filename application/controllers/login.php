@@ -55,7 +55,7 @@ class Login extends Controller {
     }
 
     function autenticar() {
-        $this->verificasms();
+//        $this->verificasms();
 
         $usuario = $_POST['txtLogin'];
         $senha = $_POST['txtSenha'];
