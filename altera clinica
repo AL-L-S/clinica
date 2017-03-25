@@ -1740,6 +1740,16 @@ INSERT INTO ponto.tb_perfil(
             perfil_id, nome, ativo)
     VALUES (14, 'MARKETING', true);
 
+-- Dia 23/03/2017
+ALTER TABLE ponto.tb_sms ADD COLUMN registrado boolean DEFAULT false;
+ALTER TABLE ponto.tb_sms ADD COLUMN controle_id integer;
+ALTER TABLE ponto.tb_sms ADD COLUMN mensagem character varying(255);
+ALTER TABLE ponto.tb_sms ADD COLUMN empresa_id integer;
+
+-- Dia 24/03/2017
+ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto TYPE character varying(40000);
+
+
 
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;

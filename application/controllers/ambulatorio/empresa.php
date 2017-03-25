@@ -43,6 +43,7 @@ class Empresa extends BaseController {
     function configurarsms($empresa_id) {
         $data['empresa_id'] = $empresa_id;
         $data['pacotes'] = $this->empresa->pacotesms();
+        $data['mensagem'] = $this->empresa->listarinformacaosms();
         $this->loadView('ambulatorio/empresasms-form', $data);
     }
 

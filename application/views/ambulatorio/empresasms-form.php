@@ -6,32 +6,30 @@
                 <legend>Dados do Pacote</legend>
                 <div style="width: 100%">
                     <label>Pacote</label>
+                    <input type="hidden" name="sms_id" value="<?= @$mensagem[0]->empresa_sms_id ?>"/>
                     <input type="hidden" name="empresa_id" value="<?= $empresa_id ?>"/>
                     <select name="txtpacote" id="txtpacote" class="size2" required="">
                         <option value="">Selecione</option>
                         <? foreach ($pacotes as $item) : ?>
-                            <option value="<?= $item->pacote_sms_id; ?>"><?= $item->descricao_pacote; ?></option>
+                            <option value="<?= $item->pacote_sms_id; ?>" <?= (@$item->pacote_sms_id == @$mensagem[0]->pacote_id) ? "selected" : ''; ?>>
+                                <?= $item->descricao_pacote; ?>
+                            </option>
                         <? endforeach; ?>
                     </select>
                 </div>
-                <div>
+                <div style="width: 100%">
                     <label>Mensagem Confirmaçao</label>
-                    <textarea type="text" id="txtMensagemConfirmacao" name="txtMensagemConfirmacao" rows="8" cols="70">
-
-                    </textarea>
+                    <input type="text" id="txtMensagemConfirmacao" class="mensagem_texto" name="txtMensagemConfirmacao" value="<?= @$mensagem[0]->mensagem_confirmacao ?>"/>
                 </div>
-                <div>
+                <div  style="width: 100%">
                     <label>Mensagem de Agradecimento</label>
-                    <textarea type="text" id="txtMensagemAgradecimento" name="txtMensagemAgradecimento" rows="8" cols="70">
-
-                    </textarea>
+                    <input type="text" id="txtMensagemAgradecimento" class="mensagem_texto" name="txtMensagemAgradecimento" value="<?= @$mensagem[0]->mensagem_agradecimento ?>"/>
                 </div>
                 <div style="width: 100%">
                     <label>Mensagem de Aniversariantes</label>
-                    <textarea type="text" id="txtMensagemAniversariantes" name="txtMensagemAniversariantes" rows="8" cols="70">
-
-                    </textarea>
+                    <input type="text" id="txtMensagemAniversariantes" class="mensagem_texto" name="txtMensagemAniversariantes" value="<?= @$mensagem[0]->mensagem_aniversariante ?>"/>
                 </div>
+
                 <div style="width: 100%">
                     <hr/>
                     <button type="submit" name="btnEnviar">Enviar</button>
@@ -41,7 +39,13 @@
         </form>
     </div> <!-- Final da DIV content -->
 </div> <!-- Final da DIV content -->
-
+<style>
+    .mensagem_texto{
+        width: 500pt;
+        /*font-size: 18pt;*/
+        /*height: 50pt;*/
+    }
+</style>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>

@@ -85,6 +85,15 @@ class login_model extends Model {
     }
 
     function atualizandoagendadostabelasms($exames, $disponivel) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('mensagem_confirmacao');
+        $this->db->from('tb_empresa_sms');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 't');
+        $retorno = $this->db->get()->result();
+        $mensagem = @$retorno[0]->mensagem_confirmacao;
+
         $horario = date('Y-m-d');
         $i = 1;
         foreach ($exames as $item) {
@@ -92,7 +101,9 @@ class login_model extends Model {
 
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
+                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('numero', $item->celular);
+                $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'CONFIRMACAO');
                 $this->db->set('data', $horario);
                 $this->db->insert('tb_sms');
@@ -106,12 +117,23 @@ class login_model extends Model {
     }
 
     function atualizandoaniversariantestabelasms($aniversariantes, $disponivel) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('mensagem_aniversariante');
+        $this->db->from('tb_empresa_sms');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 't');
+        $retorno = $this->db->get()->result();
+        $mensagem = @$retorno[0]->mensagem_aniversariante;
+
         $horario = date('Y-m-d');
         $i = 1;
         foreach ($aniversariantes as $item) {
             if ($i <= $disponivel) {
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('numero', $item->celular);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'ANIVERSARIANTE');
                 $this->db->set('data', $horario);
                 $this->db->insert('tb_sms');
@@ -124,6 +146,29 @@ class login_model extends Model {
         return $i;
     }
 
+    function atualizandoregistro() {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $horario = date('Y-m-d');
+        $this->db->select('COUNT(*) as total');
+        $this->db->from('tb_sms');
+        $this->db->where('registrado', 'f');
+        $this->db->where('data', $horario);
+        $this->db->where('empresa_id', $empresa_id);
+        $retorno = $this->db->get()->result();
+
+        $periodo = date('m/Y');
+        $total = ($retorno[0]->total != "") ? $retorno[0]->total : 0;
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('periodo', $periodo);
+        $this->db->set('qtde', $total);
+        $this->db->insert('tb_empresa_sms_registro');
+
+        $this->db->set('registrado', 't');
+        $this->db->where('data', $horario);
+        $this->db->update('tb_sms');
+    }
+
     function listarempresapacote() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('quantidade');
@@ -131,7 +176,31 @@ class login_model extends Model {
         $this->db->join('tb_pacote_sms ps', 'ps.pacote_sms_id = es.pacote_id', 'left');
         $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get()->result();
-        return $return[0]->quantidade;
+        return (@$return[0]->quantidade != '') ? @$return[0]->quantidade : 0;
+    }
+
+    function listarsms() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('sms_id, numero, mensagem, controle_id, empresa_id, agenda_exames_id, paciente_id');
+        $this->db->from('tb_sms');
+        $this->db->where('enviado', 'f');
+        $this->db->where('empresa_id', $empresa_id);
+        $return = $this->db->get()->result_array();
+
+        $this->db->set('enviado', 't');
+        $this->db->where('enviado', 'f');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->update('tb_sms');
+
+        return $return;
+    }
+
+    function atualizandonumerocontrole($resultado) {
+        foreach ($resultado as $item) {
+            $this->db->set('controle_id', $item["controle_id"]);
+            $this->db->where('sms_id', $item["sms_id"]);
+            $this->db->update('tb_sms');
+        }
     }
 
     function totalutilizado() {
@@ -143,7 +212,7 @@ class login_model extends Model {
         $this->db->where('empresa_id', $empresa_id);
         $this->db->groupby('empresa_id, periodo');
         $return = $this->db->get()->result();
-        return $return[0]->total;
+        return (@$return[0]->total != '') ? @$return[0]->total : '';
     }
 
     function aniversariantes() {
@@ -154,8 +223,8 @@ class login_model extends Model {
                            p.celular');
         $this->db->from('tb_paciente p');
         $this->db->where('p.ativo', 't');
-        $this->db->where('p.celular IS NOT NULL');
-        $this->db->where("EXTRACT(DAY FROM p.nascimento) == $dia AND EXTRACT(MONTH FROM p.nascimento) == $mes");
+        $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
+        $this->db->where("EXTRACT(DAY FROM p.nascimento) = $dia AND EXTRACT(MONTH FROM p.nascimento) = $mes");
         $return = $this->db->get();
         return $return->result();
     }
@@ -173,8 +242,9 @@ class login_model extends Model {
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->where('ae.cancelada', 'f');
         $this->db->where('ae.realizada', 'f');
-        $this->db->where('p.celular IS NOT NULL');
+        $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
         $this->db->where('ae.data', $diaSeguinte);
+//        $this->db->limit(50);
         $return = $this->db->get();
         return $return->result();
     }
