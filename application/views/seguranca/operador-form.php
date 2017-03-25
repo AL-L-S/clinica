@@ -46,7 +46,7 @@
                     <label>CPF *</label>
 
 
-                    <input type="text" name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" />
+                    <input type="text" name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" required />
                 </div>
                 <div>
                     <label>Ocupa&ccedil;&atilde;o</label>
