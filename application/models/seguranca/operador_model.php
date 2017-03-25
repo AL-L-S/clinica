@@ -434,6 +434,29 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
 
+    function listarcpfcontador() {
+        $this->db->select('cpf
+                               ');
+        $this->db->from('tb_operador');
+        $this->db->where('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
+        $this->db->where('ativo', 't');
+
+        $return = $this->db->count_all_results();
+        return $return;
+    }
+
+    function listarusuariocontador() {
+        $this->db->select('usuario
+                               
+                               ');
+        $this->db->from('tb_operador');
+        $this->db->where('usuario', $_POST['txtUsuario']);
+        $this->db->where('ativo', 't');
+
+        $return = $this->db->count_all_results();
+        return $return;
+    }
+
     function gravar() {
         try {
             if ($_POST['criarcredor'] == "on") {
@@ -550,6 +573,27 @@ class Operador_model extends BaseModel {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_operador');
+                $operador_id = $this->db->insert_id();
+                $empresa_id = $this->session->userdata('empresa_id');
+
+
+                $this->db->select('empresa_id
+                               
+                               ');
+                $this->db->from('tb_empresa');
+                $this->db->where('ativo', 't');
+                $return = $this->db->get()->result();
+
+                if (count($return) > 0) {
+                    foreach ($return as $value) {
+                        $this->db->set('operador_id', $operador_id);
+                        $this->db->set('empresa_id', $value->empresa_id);
+                        $this->db->insert('tb_operador_empresas');
+                    }
+                }
+
+
+
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return false;
@@ -803,10 +847,9 @@ class Operador_model extends BaseModel {
                 $this->db->set('ativo', 'f');
                 $this->db->where('operador_id', $_POST['operadorid']);
                 $this->db->update('tb_operador');
-                
             }
             echo 'Testa';
-                die;
+            die;
             return 0;
         } catch (Exception $exc) {
             return -1;

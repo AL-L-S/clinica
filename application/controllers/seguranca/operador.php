@@ -127,17 +127,40 @@ class Operador extends BaseController {
     }
 
     function gravar() {
-        if ($this->operador_m->gravar()) {
-            $data['mensagem'] = 'Operador cadastrado com sucesso.';
-        } else {
-            $data['mensagem'] = 'Erro ao cadastrar novo operador . Opera&ccedil;&atilde;o cancelada.';
-        }
-        $data['lista'] = $this->operador_m->listar($filtro = null, $maximo = null, $inicio = null);
+        $cpf = $this->operador_m->listarcpfcontador();
+        $usuario = $this->operador_m->listarusuariocontador();
+        if ($_POST['operador_id'] == '') {
+            if ($cpf > 0) {
+                $data['mensagem'] = 'Erro. CPF já cadastrado.';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "seguranca/operador", $data);
+            }
+            if ($usuario > 0) {
+                $data['mensagem'] = 'Erro. Usuário já cadastrado.';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "seguranca/operador", $data);
+            }
+            if ($this->operador_m->gravar()) {
+                $data['mensagem'] = 'Operador cadastrado com sucesso.';
+            } else {
+                $data['mensagem'] = 'Erro ao cadastrar novo operador . Opera&ccedil;&atilde;o cancelada.';
+            }
+            $data['lista'] = $this->operador_m->listar($filtro = null, $maximo = null, $inicio = null);
 
-//            redirect(base_url()."seguranca/operador/index/$data","refresh");
-        $this->session->set_flashdata('message', $data['mensagem']);
-//        header("Location: base_url() . seguranca/operador");
-        redirect(base_url() . "seguranca/operador", $data);
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "seguranca/operador", $data);
+            
+        } else {
+            if ($this->operador_m->gravar()) {
+                $data['mensagem'] = 'Operador cadastrado com sucesso.';
+            } else {
+                $data['mensagem'] = 'Erro ao cadastrar novo operador . Opera&ccedil;&atilde;o cancelada.';
+            }
+            $data['lista'] = $this->operador_m->listar($filtro = null, $maximo = null, $inicio = null);
+
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "seguranca/operador", $data);
+        }
     }
 
     function anexarimagem($operador_id) {
@@ -263,7 +286,7 @@ class Operador extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador", $data);
     }
-    
+
     function reativaroperador($operador_id) {
         $this->operador_m->reativaroperador($operador_id);
         $data['mensagem'] = 'Operador excluido com sucesso.';
@@ -274,7 +297,7 @@ class Operador extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador", $data);
     }
-    
+
     function unificar($operador_id) {
         $data['operador'] = $this->operador_m->listaroperador($operador_id);
         $data['operador_id'] = $operador_id;
