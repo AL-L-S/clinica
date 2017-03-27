@@ -275,6 +275,17 @@ class pacientes extends BaseController {
     }
 
     function gravar() {
+        
+        if (!is_dir("./upload/webcam")) {
+            mkdir("./upload/webcam");
+            $destino = "./upload/webcam";
+            chmod($destino, 0777);
+        }
+        if (!is_dir("./upload/webcam/pacientes")) {
+            mkdir("./upload/webcam/pacientes");
+            $destino = "./upload/webcam/pacientes";
+            chmod($destino, 0777);
+        }
 
         $contador = $this->paciente->contador();
 

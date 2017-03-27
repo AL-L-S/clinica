@@ -3031,53 +3031,35 @@ class exame_model extends Model {
 
     function listarmultifuncaofisioterapia($args = array()) {
         $teste = empty($args);
-        $empresa_id = $this->session->userdata('empresa_id');
-        $perfil_id = $this->session->userdata('perfil_id');
         $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $dataAtual = date("Y-m-d");
-        $this->db->select('ae.agenda_exames_id,
-                            ae.agenda_exames_nome_id,
-                            ae.data,
-                            ae.inicio,
-                            ae.fim,
-                            ae.ativo,
-                            ae.telefonema,
-                            ae.situacao,
-                            ae.guia_id,
-                            ae.data_atualizacao,
-                            ae.paciente_id,
-                            ae.observacoes,
-                            ae.realizada,
-                            al.medico_parecer1,
-                            al.ambulatorio_laudo_id,
-                            al.exame_id,
-                            al.procedimento_tuss_id,
-                            p.paciente_id,
-                            an.nome as sala,
-                            p.nome as paciente,
-                            ae.procedimento_tuss_id,
-                            ae.confirmado,
-                            o.nome as medicoconsulta,
-                            pt.nome as procedimento,
-                            al.situacao as situacaolaudo');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
-        $this->db->where("( (ag.tipo = 'ESPECIALIDADE') OR ((ae.tipo = 'FISIOTERAPIA' OR ae.tipo = 'ESPECIALIDADE') AND ae.procedimento_tuss_id IS NULL) )");
+        $this->db->where('ae.confirmado', 't');
+        $this->db->where("( (ag.tipo = 'ESPECIALIDADE') OR ( (ae.tipo = 'FISIOTERAPIA' OR ae.tipo = 'ESPECIALIDADE') AND ae.procedimento_tuss_id IS NULL) )");
+//        $this->db->orderby('ae.realizada', 'desc');
+//        $this->db->orderby('al.situacao');
+//        $this->db->orderby('ae.data_autorizacao');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.inicio');
 //        $this->db->where('ae.confirmado', 'true');
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
 
         if ($teste == true) {
-//        if ((!isset($args['nome'])&& $args['nome'] == 0) || (!isset($args['data'])&& strlen($args['data']) == '') || (!isset($args['sala'])&& strlen($args['sala']) == '') || (!isset($args['medico'])&& strlen($args['medico']) =='')) {
             $this->db->where('ae.data', $dataAtual);
             $this->db->where('ae.medico_consulta_id', $operador_id);
         } else {
