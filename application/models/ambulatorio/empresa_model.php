@@ -60,6 +60,22 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function listarinformacaosms() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        
+        $this->db->select('pacote_id,
+                            empresa_sms_id,
+                            mensagem_confirmacao, 
+                            mensagem_agradecimento,
+                            mensagem_aniversariante');
+        $this->db->from('tb_empresa_sms');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 't');
+        $this->db->limit(1);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarempresa($empresa_id) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -100,7 +116,7 @@ class empresa_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            if ($_POST['txtempresaid'] == "") {// insert
+            if ($_POST['sms_id'] == "") {// insert
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_sms');
@@ -108,8 +124,8 @@ class empresa_model extends Model {
             else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
-                $empresa_id = $_POST['txtempresaid'];
-                $this->db->where('empresa_id', $empresa_id);
+                $sms_id = $_POST['sms_id'];
+                $this->db->where('empresa_sms_id', $sms_id);
                 $this->db->update('tb_empresa_sms');
             }
             return $empresa_id;

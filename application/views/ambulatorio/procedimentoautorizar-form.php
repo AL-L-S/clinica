@@ -105,7 +105,7 @@
                                     </select>
                                 </td>
 
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao<?= $i; ?>" class="size1"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
@@ -172,12 +172,14 @@
                                         $("#sala<?= $b; ?>").prop('required', true);
                                         $("#convenio<?= $b; ?>").prop('required', true);
                                         $("#procedimento<?= $b; ?>").prop('required', true);
+                                        $("#autorizacao<?= $b; ?>").prop('required', true);
                                     } else {
                                         $("#medico_id<?= $b; ?>").prop('required', false);
                                         $("#medico<?= $b; ?>").prop('required', false);
                                         $("#sala<?= $b; ?>").prop('required', false);
                                         $("#convenio<?= $b; ?>").prop('required', false);
                                         $("#procedimento<?= $b; ?>").prop('required', false);
+                                        $("#autorizacao<?= $b; ?>").prop('required', false);
                                     }
                                 });
 
