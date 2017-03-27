@@ -4446,7 +4446,7 @@ class exame_model extends Model {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->set('observacoes', $_POST['txtobservacao']);
+            $this->db->set('observacoes', utf8_encode($_POST['txtobservacao']));
             $this->db->set('data_observacoes', $horario);
             $this->db->set('operador_observacoes', $operador_id);
             $this->db->where('agenda_exames_id', $agenda_exame_id);
