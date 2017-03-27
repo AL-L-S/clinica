@@ -180,13 +180,29 @@
 
             <div>
                 <label>Telefone 1*</label>
+                <?
+                if (@$obj->_telefone != '') {
 
+                    if (preg_match('/\(/', @$obj->_telefone)) {
+                        $telefone = @$obj->_telefone;
+                    } else {
+                        $telefone = "(" . substr(@$obj->_telefone, 0, 2) . ")" . substr(@$obj->_telefone, 2, strlen(@$obj->_telefone) - 2);
+                    }
+                }
+                if (@$obj->_celular != '') {
+                    if (preg_match('/\(/', @$obj->_celular)) {
+                        $celular = @$obj->_celular;
+                    } else {
+                        $celular = "(" . substr(@$obj->_celular, 0, 2) . ")" . substr(@$obj->_celular, 2, strlen(@$obj->_celular) - 2);
+                    }
+                }
+                ?>
 
-                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$obj->_telefone; ?>" required="true" />
+                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$telefone; ?>" required="true" />
             </div>
             <div>
                 <label>Telefone 2</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$obj->_celular; ?>" />
+                <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$celular; ?>" />
             </div>
 
         </fieldset>
@@ -326,8 +342,8 @@
                     if (@$obj->_escolaridade_id == 6):echo 'selected';
                     endif;
                     ?>>Superior-Completo </option>
-                        
-                        
+
+
                 </select>
             </div>
         </fieldset>
@@ -415,7 +431,7 @@
                 var code = (window.event) ? window.event.keyCode : evt.which;
                 var valor = this.value
 
-                if (code > 57 || (code < 48 && code != 8)) {
+                if (code > 57 || (code < 48 && code != 8 && code != 0)) {
                     return false;
                 } else {
                     this.value = trata(valor, false);
