@@ -1,8 +1,6 @@
 <?php
 // User session value 
 $session_id = '1';
-
-
 //$bdcon = pg_connect("host=localhost port=5432 dbname=clinica user=postgres password=123456");
 ////conecta a um banco de dados chamado "cliente"
 //
@@ -33,13 +31,9 @@ $session_id = '1';
 
         <script type="text/javascript">
             $(document).ready(function () {
-
-
-
                 $("body").on('click', '.recordOn', function () {
                     $("#recordContainer").toggle();
                 });
-
                 $("#recordCircle").mousedown(function () {
                     $(this).removeClass('startRecord').addClass('stopRecord');
                     $("#recordContainer").removeClass('startContainer').addClass('stopContainer');
@@ -53,9 +47,7 @@ $session_id = '1';
                     $("#recordText").html("Record");
                     stopRecording(this);
                 });
-
-
-        // Utility method that will give audio formatted time
+                // Utility method that will give audio formatted time
                 getAudioTimeByDec = function (cTime, duration) {
                     var duration = parseInt(duration),
                             currentTime = parseInt(cTime),
@@ -65,11 +57,8 @@ $session_id = '1';
                     minute = Math.floor(left / 60) % 60;
                     second = second < 10 ? "0" + second : second;
                     minute = minute < 10 ? "0" + minute : minute;
-
                     return minute + ":" + second;
                 };
-
-
                 $("body").on("click", ".audioControl", function (e) {
                     var ID = $(this).attr("id");
                     var progressArea = $("#audioProgress" + ID);
@@ -85,8 +74,7 @@ $session_id = '1';
                         $(this).removeClass('audioPause').addClass('audioPlay').attr("rel", "play");
                         audio.trigger('pause');
                     }
-
-        // Audio Event listener, its listens audio time update events and updates Progress area and Timer area
+                    // Audio Event listener, its listens audio time update events and updates Progress area and Timer area
                     audio.bind("timeupdate", function (e) {
                         var audioDOM = audio.get(0);
                         audioTimer.text(getAudioTimeByDec(audioDOM.currentTime, audioDOM.duration));
@@ -98,11 +86,7 @@ $session_id = '1';
                             audio.trigger('pause');
                         }
                     });
-
                 });
-
-
-
             });
         </script>
 
@@ -118,7 +102,7 @@ $session_id = '1';
                     <!--<textarea name="update" id="update" ></textarea>-->
                     <input type="hidden" id="sessionValue" value="<?php echo $session_id; ?>" />
                     <div id="controlButtons">
-                        <img src="<?= base_url() . "img/Microphone.png" ?>" id="recordButton" class="recordOn" > <span id="recordHelp">Microfone</span>
+                        <img src="<?= base_url() . "img/Microphone.png" ?>" id="recordButton" class="recordOff" > <span id="recordHelp">Microfone</span>
 
                         <span class="floatRight">
                             <input type="submit" value=" Update " id="update_button" class="update_button wallbutton update_box">
@@ -142,8 +126,6 @@ $session_id = '1';
                     Note: Click on mice icon, hold the red button and record your voice. 
                     </div></div>
                     </div>
-                    
-                    
                     <div class="stbody"><div class="stimg ">
                     <a href="https://labs.9lessons.info/srinivas"><img src="https://labs_uploads.s3.amazonaws.com/user10_1424491118.jpg" class="big_face " alt="Srinivas Tamada"></a></div><div class="sttext">
                     <div class="sttext_content"><span class="sttext_span"><b><a href="https://labs.9lessons.info/srinivas">Srinivas Tamada</a></b> </span>
@@ -168,3 +150,31 @@ $session_id = '1';
 
     </body>
 </html>
+<script type="text/javascript">
+
+    window.onload = function init() {
+        try {
+            // webkit shim
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            navigator.getUserMedia = (navigator.getUserMedia ||
+                    navigator.webkitGetUserMedia ||
+                    navigator.mozGetUserMedia ||
+                    navigator.msGetUserMedia ||
+                    navigator.mediaDevices.getUserMedia);
+            window.URL = window.URL || window.webkitURL;
+
+            audio_context = new AudioContext;
+            __log('Audio context set up.');
+            __log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+//
+        } catch (e) {
+             alert('No web audio support in this browser!');
+        }
+//
+        navigator.getUserMedia({audio: true}, function(stream){
+            startUserMedia(stream);
+        }, function (e) {
+            __log('No live audio input: ' + e);
+        });
+    };
+</script>

@@ -72,6 +72,15 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Limite</label>
+                    </dt>
+                    <dd>
+                        <select name="limite" id="limite" class="size2">
+                            <option value=0 >NAO</option>
+                            <option value=1 >SIM</option>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Vers&atilde;o XML</label>
                     </dt>
                     <dd>
@@ -90,6 +99,7 @@
                             <option value='cnpj'>cnpj</option>
                         </select>
                     </dd>
+                    
                     <dt>
                         <label>Autorização</label>
                     </dt>

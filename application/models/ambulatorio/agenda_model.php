@@ -2248,7 +2248,7 @@ class agenda_model extends Model {
                            h.observacoes,
                            h.horarioagenda_id');
         $this->db->from('tb_horarioagenda h');
-        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id');
+        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
         $this->db->where('agenda_id', $agenda_id);
         $this->db->orderby('dia');
         $return = $this->db->get();

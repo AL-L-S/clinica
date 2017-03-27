@@ -1749,7 +1749,9 @@ ALTER TABLE ponto.tb_sms ADD COLUMN empresa_id integer;
 -- Dia 24/03/2017
 ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto TYPE character varying(40000);
 
-
+-- 27/03/2017
+UPDATE ponto.tb_horarioagenda
+   SET empresa_id=1;
 
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;

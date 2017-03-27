@@ -1800,6 +1800,8 @@ class Exame extends BaseController {
         $versao = $_POST['xml'];
         $modelo = $_POST['modelo'];
 
+        $limite = ($_POST['limite'] == '0') ? false : true;
+
         if ($_POST['tipo'] != 0) {
             $classificacao = $listarexame[0]->classificacao;
         } else {
@@ -1821,6 +1823,7 @@ class Exame extends BaseController {
             delete_files($origem);
         }
         $i = 0;
+        $totExames = 0;
         $b = $lote[0]->lote;
         $j = $b - 53;
         $zero = '0000000000000000';
@@ -1871,6 +1874,7 @@ class Exame extends BaseController {
 
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $i++;
+                                $totExames++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                                 $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
                                 $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
@@ -2086,11 +2090,12 @@ class Exame extends BaseController {
                       </ans:guiaSP-SADT>";
                                 }
 
-                                if ($i == 80) {
-                                    $contador = $contador - $i;
+                                if (!$limite) {
+                                    if ($totExames == count($listarexames)) {
+                                        $contador = $contador - $i;
 
-                                    $i = 0;
-                                    $rodape = "   </ans:guiasTISS>
+                                        $i = 0;
+                                        $rodape = "   </ans:guiasTISS>
           </ans:loteGuias>
        </ans:prestadorParaOperadora>
        <ans:epilogo>
@@ -2098,32 +2103,55 @@ class Exame extends BaseController {
        </ans:epilogo>
     </ans:mensagemTISS>";
 
-                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                                    $xml = $cabecalho . $corpo . $rodape;
-                                    $fp = fopen($nome, "w+");
-                                    fwrite($fp, $xml . "\n");
-                                    fclose($fp);
-                                    $b++;
-                                    $corpo = "";
-                                    $rodape = "";
-                                }
-                                if ($contador < 80 && $contador == $i) {
-                                    $i = 0;
-                                    $rodape = "   </ans:guiasTISS>
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $xml = $cabecalho . $corpo . $rodape;
+                                        $fp = fopen($nome, "w+");
+                                        fwrite($fp, $xml . "\n");
+                                        fclose($fp);
+                                        $b++;
+                                        $corpo = "";
+                                        $rodape = "";
+                                    }
+                                } else {
+                                    if ($i == 80) {
+                                        $contador = $contador - $i;
+
+                                        $i = 0;
+                                        $rodape = "   </ans:guiasTISS>
           </ans:loteGuias>
        </ans:prestadorParaOperadora>
        <ans:epilogo>
           <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
        </ans:epilogo>
     </ans:mensagemTISS>";
-                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                                    $xml = $cabecalho . $corpo . $rodape;
-                                    $fp = fopen($nome, "w+");
-                                    fwrite($fp, $xml . "\n");
-                                    fclose($fp);
-                                    $b++;
-                                    $corpo = "";
-                                    $rodape = "";
+
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $xml = $cabecalho . $corpo . $rodape;
+                                        $fp = fopen($nome, "w+");
+                                        fwrite($fp, $xml . "\n");
+                                        fclose($fp);
+                                        $b++;
+                                        $corpo = "";
+                                        $rodape = "";
+                                    }
+                                    if ($contador < 80 && $contador == $i) {
+                                        $i = 0;
+                                        $rodape = "   </ans:guiasTISS>
+          </ans:loteGuias>
+       </ans:prestadorParaOperadora>
+       <ans:epilogo>
+          <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
+       </ans:epilogo>
+    </ans:mensagemTISS>";
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $xml = $cabecalho . $corpo . $rodape;
+                                        $fp = fopen($nome, "w+");
+                                        fwrite($fp, $xml . "\n");
+                                        fclose($fp);
+                                        $b++;
+                                        $corpo = "";
+                                        $rodape = "";
+                                    }
                                 }
                             }
                         }
@@ -2211,11 +2239,12 @@ class Exame extends BaseController {
                         </ans:procedimento>
                     </ans:dadosAtendimento>
                 </ans:guiaConsulta>";
-                        if ($i == 80) {
-                            $contador = $contador - $i;
-                            $b++;
-                            $i = 0;
-                            $rodape = "</ans:guiasTISS>
+                        if (!$limite) {
+                            if ($totExames == count($listarexames)) {
+                                $contador = $contador - $i;
+                                $b++;
+                                $i = 0;
+                                $rodape = "</ans:guiasTISS>
         </ans:loteGuias>
     </ans:prestadorParaOperadora>
     <ans:epilogo>
@@ -2223,18 +2252,39 @@ class Exame extends BaseController {
     </ans:epilogo>
     </ans:mensagemTISS>";
 
-                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                            $xml = $cabecalho . $corpo . $rodape;
-                            $fp = fopen($nome, "w+");
-                            fwrite($fp, $xml . "\n");
-                            fclose($fp);
-                            $corpo = "";
-                            $rodape = "";
-                        }
-                        if ($contador < 80 && $contador == $i) {
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $corpo = "";
+                                $rodape = "";
+                            }
+                        } else {
+                            if ($i == 80) {
+                                $contador = $contador - $i;
+                                $b++;
+                                $i = 0;
+                                $rodape = "</ans:guiasTISS>
+        </ans:loteGuias>
+    </ans:prestadorParaOperadora>
+    <ans:epilogo>
+    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+    </ans:epilogo>
+    </ans:mensagemTISS>";
 
-                            $i = 0;
-                            $rodape = "   </ans:guiasTISS>
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $corpo = "";
+                                $rodape = "";
+                            }
+                            if ($contador < 80 && $contador == $i) {
+
+                                $i = 0;
+                                $rodape = "   </ans:guiasTISS>
 
 
         </ans:loteGuias>
@@ -2243,14 +2293,15 @@ class Exame extends BaseController {
     <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
     </ans:epilogo>
     </ans:mensagemTISS>";
-                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                            $xml = $cabecalho . $corpo . $rodape;
-                            $fp = fopen($nome, "w+");
-                            fwrite($fp, $xml . "\n");
-                            fclose($fp);
-                            $b++;
-                            $corpo = "";
-                            $rodape = "";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $b++;
+                                $corpo = "";
+                                $rodape = "";
+                            }
                         }
                     }
                 }
@@ -2297,6 +2348,7 @@ class Exame extends BaseController {
                         foreach ($listarexames as $item) {
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $i++;
+                                $totExames++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                                 $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
                                 $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
@@ -2496,13 +2548,34 @@ class Exame extends BaseController {
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
                                 }
+                                if (!$limite) {
+                                    if ($totExames == count($listarexames)) {
+                                        $contador = $contador - $i;
+                                        $b++;
+                                        $i = 0;
+                                        $rodape = "</ans:guiasTISS>
+        </ans:loteGuias>
+    </ans:prestadorParaOperadora>
+    <ans:epilogo>
+    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+    </ans:epilogo>
+    </ans:mensagemTISS>";
 
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                        $xml = $cabecalho . $corpo . $rodape;
+                                        $fp = fopen($nome, "w+");
+                                        fwrite($fp, $xml . "\n");
+                                        fclose($fp);
+                                        $corpo = "";
+                                        $rodape = "";
+                                    }
+                                } else {
 
-                                if ($i == 80) {
-                                    $contador = $contador - $i;
+                                    if ($i == 80) {
+                                        $contador = $contador - $i;
 
-                                    $i = 0;
-                                    $rodape = "   </ans:guiasTISS>
+                                        $i = 0;
+                                        $rodape = "   </ans:guiasTISS>
 
           </ans:loteGuias>
        </ans:prestadorParaOperadora>
@@ -2512,19 +2585,19 @@ class Exame extends BaseController {
     </ans:mensagemTISS>
     ";
 
-                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                                    $xml = $cabecalho . $corpo . $rodape;
-                                    $fp = fopen($nome, "w+");
-                                    fwrite($fp, $xml . "\n");
-                                    fclose($fp);
-                                    $b++;
-                                    $corpo = "";
-                                    $rodape = "";
-                                }
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $xml = $cabecalho . $corpo . $rodape;
+                                        $fp = fopen($nome, "w+");
+                                        fwrite($fp, $xml . "\n");
+                                        fclose($fp);
+                                        $b++;
+                                        $corpo = "";
+                                        $rodape = "";
+                                    }
 
-                                if ($contador < 80 && $contador == $i) {
-                                    $i = 0;
-                                    $rodape = "   </ans:guiasTISS>
+                                    if ($contador < 80 && $contador == $i) {
+                                        $i = 0;
+                                        $rodape = "   </ans:guiasTISS>
 
           </ans:loteGuias>
        </ans:prestadorParaOperadora>
@@ -2533,14 +2606,15 @@ class Exame extends BaseController {
        </ans:epilogo>
     </ans:mensagemTISS>
     ";
-                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
-                                    $xml = $cabecalho . $corpo . $rodape;
-                                    $fp = fopen($nome, "w+");
-                                    fwrite($fp, $xml . "\n");
-                                    fclose($fp);
-                                    $b++;
-                                    $corpo = "";
-                                    $rodape = "";
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $xml = $cabecalho . $corpo . $rodape;
+                                        $fp = fopen($nome, "w+");
+                                        fwrite($fp, $xml . "\n");
+                                        fclose($fp);
+                                        $b++;
+                                        $corpo = "";
+                                        $rodape = "";
+                                    }
                                 }
                             }
                         }
@@ -2574,6 +2648,7 @@ class Exame extends BaseController {
 
                     foreach ($listarexame as $value) {
                         $i++;
+                        $totExames++;
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
                         } else {
@@ -2629,10 +2704,33 @@ class Exame extends BaseController {
                         </ans:procedimento>
                     </ans:dadosAtendimento>
                 </ans:guiaConsulta>";
-                        if ($i == 80) {
-                            $contador = $contador - $i;
-                            $i = 0;
-                            $rodape = "</ans:guiasTISS>
+
+                        if (!$limite) {
+                            if ($totExames == count($listarexames)) {
+                                $contador = $contador - $i;
+                                $b++;
+                                $i = 0;
+                                $rodape = "</ans:guiasTISS>
+        </ans:loteGuias>
+    </ans:prestadorParaOperadora>
+    <ans:epilogo>
+    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+    </ans:epilogo>
+    </ans:mensagemTISS>";
+
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $corpo = "";
+                                $rodape = "";
+                            }
+                        } else {
+                            if ($i == 80) {
+                                $contador = $contador - $i;
+                                $i = 0;
+                                $rodape = "</ans:guiasTISS>
         </ans:loteGuias>
     </ans:prestadorParaOperadora>
     <ans:epilogo>
@@ -2641,18 +2739,18 @@ class Exame extends BaseController {
     </ans:mensagemTISS>
     ";
 
-                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                            $xml = $cabecalho . $corpo . $rodape;
-                            $fp = fopen($nome, "w+");
-                            fwrite($fp, $xml . "\n");
-                            fclose($fp);
-                            $b++;
-                            $corpo = "";
-                            $rodape = "";
-                        }
-                        if ($contador < 80 && $contador == $i) {
-                            $i = 0;
-                            $rodape = "   </ans:guiasTISS>
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $b++;
+                                $corpo = "";
+                                $rodape = "";
+                            }
+                            if ($contador < 80 && $contador == $i) {
+                                $i = 0;
+                                $rodape = "   </ans:guiasTISS>
 
 
         </ans:loteGuias>
@@ -2662,14 +2760,15 @@ class Exame extends BaseController {
     </ans:epilogo>
     </ans:mensagemTISS>
     ";
-                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                            $xml = $cabecalho . $corpo . $rodape;
-                            $fp = fopen($nome, "w+");
-                            fwrite($fp, $xml . "\n");
-                            fclose($fp);
-                            $b++;
-                            $corpo = "";
-                            $rodape = "";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $xml = $cabecalho . $corpo . $rodape;
+                                $fp = fopen($nome, "w+");
+                                fwrite($fp, $xml . "\n");
+                                fclose($fp);
+                                $b++;
+                                $corpo = "";
+                                $rodape = "";
+                            }
                         }
                     }
                 }

@@ -48,6 +48,10 @@
                                     <td width="400px;">Medico Executante</td>
                                     <td width="150px;"><?= $item->operadorautorizacao?></td>
                                 </tr>
+                                <tr>
+                                    <td width="400px;">Operador Bloqueio</td>
+                                    <td width="150px;"><?= @$item->operador_bloqueio?></td>
+                                </tr>
                             <? endforeach; ?>
                         </tbody>
                     </table>

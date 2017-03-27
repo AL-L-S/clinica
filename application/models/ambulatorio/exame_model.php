@@ -4003,12 +4003,13 @@ class exame_model extends Model {
                             c.nome as convenio,
                             p.nascimento,
                             ae.data_cadastro as datacadastro,
-                            o.usuario as medico,
                             ae.data_autorizacao,
                             ae.data_atualizacao,
+                            o.usuario as medico,
                             op.nome as operadorcadastro,
                             ope.nome as operadoratualizacao,
-                            opa.nome as operadorautorizacao');
+                            opa.nome as operadorautorizacao,
+                            opai.nome as operador_bloqueio');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
@@ -4016,6 +4017,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_cadastro', 'left');
         $this->db->join('tb_operador opa', 'opa.operador_id = ae.operador_autorizacao', 'left');
         $this->db->join('tb_operador ope', 'ope.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador opai', 'opai.operador_id = ae.operador_bloqueio', 'left');
         $this->db->where("ae.agenda_exames_id", $agenda_exames_id);
         $return = $this->db->get();
         return $return->result();
