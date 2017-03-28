@@ -31,9 +31,11 @@ switch ($MES) {
 ?>
 <meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
+    <? if ($medico != 0 && $recibo == 'SIM') { ?>
     <div>
         <p style="text-align: center;"><img align = 'center'  width='300px' height='150px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></p>
     </div>
+    <?  }?>
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
     <? if (count($empresa) > 0) { ?>
