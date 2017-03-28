@@ -50,8 +50,6 @@
         }
 
         this.record = function () {
-//        var valor = '1';
-//    document.write(valor);
             recording = true;
         }
 

@@ -109,6 +109,7 @@
                     <th class="tabela_header">Classe</th>
                     <th class="tabela_header">Dt contasreceber</th>
                     <th class="tabela_header">Conta</th>
+                    <th class="tabela_header">Parcela</th>
                     <th class="tabela_header">Valor</th>
                     <th class="tabela_header">Observacao</th>
                     <th class="tabela_header" colspan="4"><center>Detalhes</center></th>
@@ -144,6 +145,11 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->classe; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                <?if($item->parcela != ''){
+                                    echo $item->parcela, "ª"; 
+                                }?>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", "."); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacao; ?></td>
 

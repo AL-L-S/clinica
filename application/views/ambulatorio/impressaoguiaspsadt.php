@@ -148,7 +148,7 @@
                     <? foreach ($relatorio as $value) { ?>
 
                         <tr>
-                            <td class="semborda"><strong> <a onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadtprocedimento/<? echo $value->agenda_exames_id; ?>');">16 </a></strong></td>
+                            <td class="semborda"><strong> <a onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadtprocedimento/<? echo $value->agenda_exames_id; ?>');">22 </a></strong></td>
                             <td height="16" class="semborda"><strong><a onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadtprocedimento/<? echo $value->agenda_exames_id; ?>');"><? echo $value->codigo_procedimento; ?> </a></strong></td>
 
                             <td colspan="1" class="semborda"><strong><a onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadtprocedimento/<? echo $value->agenda_exames_id; ?>');"><? echo $value->procedimento; ?> </a></strong></td>
@@ -233,7 +233,7 @@
                             <td height="16" class="semborda"><strong><? echo $value->inicio ?></strong></td>
 
                             <td colspan="1" class="semborda"><strong><? echo $value->fim ?></strong></td>
-                            <td colspan="1" class="semborda"><strong>16 </strong></td>
+                            <td colspan="1" class="semborda"><strong>22 </strong></td>
                             <td colspan="1" class="semborda"><strong><? echo $value->codigo_procedimento; ?></strong></td>
                             <td colspan="1" class="semborda"><strong><? echo $value->procedimento; ?></strong></td>
                             <td colspan="1" class="semborda"><strong><? echo $value->quantidade; ?></strong></td>

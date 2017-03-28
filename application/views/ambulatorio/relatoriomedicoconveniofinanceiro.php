@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar relatorio Medico convenio</a></h3>
+        <h3><a href="#">Gerar Relatório Produção Médica</a></h3>
         <div>
             <form name="form_paciente" id="form_paciente"  method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriomedicoconveniofinanceiro">
                 <dl>

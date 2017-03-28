@@ -3338,6 +3338,7 @@ class exame_model extends Model {
                             pt.codigo,
                             o.nome as medico,
                             ae.paciente_id,
+                            ae.tipo,
                             observacao_faturamento');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
@@ -3353,8 +3354,9 @@ class exame_model extends Model {
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("c.dinheiro", 'f');
         $this->db->where("ae.confirmado", 't');
-        $this->db->where('ae.tipo !=', 'CIRURGICO');
-        $this->db->where('ae.cancelada', 'false');
+//        $this->db->where("( (ae.tipo != 'CIRURGICO') OR (pt.grupo != 'CIRURGICO') )");
+        $this->db->where('pt.grupo !=', 'CIRURGICO');
+        $this->db->where('ae.cancelada', 'f');
         if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $_POST['nome'] . "%");
         }

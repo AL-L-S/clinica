@@ -756,7 +756,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function gerarelatorioexamefaltouemail() {
 
         $_POST['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
@@ -3548,6 +3548,16 @@ class guia_model extends Model {
         $this->db->select('op.nome as medico,
                            ae.valor_total,
                            ae.valor_medico,
+                           ae.forma_pagamento,
+                           ae.forma_pagamento2,
+                           ae.forma_pagamento3,
+                           ae.forma_pagamento4,
+                           ae.valor1,
+                           ae.valor2,
+                           ae.valor3,
+                           ae.valor4,
+                           c.dinheiro,
+                           c.nome,
                            ae.percentual_medico,
                            pt.perc_medico,
                            pt.procedimento_tuss_id,
@@ -3559,6 +3569,7 @@ class guia_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('e.cancelada', 'false');
         $this->db->where('ae.valor_medico is not null');
