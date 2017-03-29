@@ -1753,6 +1753,16 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto TYPE character varying
 UPDATE ponto.tb_horarioagenda
    SET empresa_id=1;
 
+-- 29/03/2017
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_laudo integer;
+
+UPDATE ponto.tb_empresa
+   SET 
+       impressao_laudo=impressao_tipo; 
+
+
+
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;
 CREATE TABLE ponto.tb_versao

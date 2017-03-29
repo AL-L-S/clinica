@@ -6545,6 +6545,7 @@ ORDER BY ae.agenda_exames_id)";
                             cnes,
                             producaomedicadinheiro,
                             impressao_declaracao,
+                            impressao_laudo,
                             impressao_recibo,
                             celular,
                             bairro,
