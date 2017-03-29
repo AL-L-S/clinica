@@ -30,6 +30,22 @@ $session_id = '1';
         <script src="<?= base_url() ?>js/recorder.js"></script>
 
         <script type="text/javascript">
+//            function gravar(button) {
+//                $(button).removeClass('startRecord').addClass('stopRecord');
+//                $("#recordContainer").removeClass('startContainer').addClass('stopContainer');
+//                $("#recordText").html("Stop");
+//                $.stopwatch.startTimer('sw');
+//                startRecording(button);
+//            }
+//            
+//            function parar(button) {
+//                $(button).removeClass('startRecord').addClass('stopRecord');
+//                $("#recordContainer").removeClass('startContainer').addClass('stopContainer');
+//                $("#recordText").html("Stop");
+//                $.stopwatch.startTimer('sw');
+//                startRecording(button);
+//            }
+            
             $(document).ready(function () {
                 $("body").on('click', '.recordOn', function () {
                     $("#recordContainer").toggle();
@@ -120,19 +136,6 @@ $session_id = '1';
                 <!-- News feed updates -->
                 <div class="newsfeedContainer recordingslist">
 
-                    <!--<div class="stbody"><div class="stimg ">
-                    <a href="https://labs.9lessons.info/srinivas"><img src="https://labs_uploads.s3.amazonaws.com/user10_1424491118.jpg" class="big_face " alt="Srinivas Tamada"></a></div><div class="sttext">
-                    <div class="sttext_content"><span class="sttext_span"><b><a href="https://labs.9lessons.info/srinivas">Srinivas Tamada</a></b> </span>
-                    Note: Click on mice icon, hold the red button and record your voice. 
-                    </div></div>
-                    </div>
-                    <div class="stbody"><div class="stimg ">
-                    <a href="https://labs.9lessons.info/srinivas"><img src="https://labs_uploads.s3.amazonaws.com/user10_1424491118.jpg" class="big_face " alt="Srinivas Tamada"></a></div><div class="sttext">
-                    <div class="sttext_content"><span class="sttext_span"><b><a href="https://labs.9lessons.info/srinivas">Srinivas Tamada</a></b> </span>
-                    This demo is not storing any audio messages <a href="http://9lessons.info">http://9lessons.info</a>.
-                    </div></div>
-                    </div>-->
-
                 </div>
 
 
@@ -168,10 +171,10 @@ $session_id = '1';
             __log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
 //
         } catch (e) {
-             alert('No web audio support in this browser!');
+            alert('No web audio support in this browser!');
         }
 //
-        navigator.getUserMedia({audio: true}, function(stream){
+        navigator.getUserMedia({audio: true}, function (stream) {
             startUserMedia(stream);
         }, function (e) {
             __log('No live audio input: ' + e);
