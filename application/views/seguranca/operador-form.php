@@ -126,19 +126,39 @@
 
                     <input type="text" id="txtCep" class="texto02" name="cep" alt="cep" value="<?= @$obj->_cep; ?>" />
                 </div>
+                <?
+                if (@$obj->_telefone != '' && strlen(@$obj->_telefone) > 3) {
 
+                    if (preg_match('/\(/', @$obj->_telefone)) {
+                        $telefone = @$obj->_telefone;
+                    } else {
+                        $telefone = "(" . substr(@$obj->_telefone, 0, 2) . ")" . substr(@$obj->_telefone, 2, strlen(@$obj->_telefone) - 2);
+                    }
+                }else{
+                    $telefone = '';
+                }
+                if (@$obj->_celular != '' && strlen(@$obj->_celular) > 3) {
+                    if (preg_match('/\(/', @$obj->_celular) ) {
+                        $celular = @$obj->_celular;
+                    } else {
+                        $celular = "(" . substr(@$obj->_celular, 0, 2) . ")" . substr(@$obj->_celular, 2, strlen(@$obj->_celular) - 2);
+                    }
+                }else{
+                    $celular = '';
+                }
+                ?>
 
                 <div>
                     <label>Telefone</label>
 
 
-                    <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$obj->_telefone; ?>" />
+                    <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?=$telefone ?>" />
                 </div>
                 <div>
                     <label>Celular *</label>
 
 
-                    <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$obj->_celular; ?>" required="true"/>
+                    <input type="text" id="txtCelular" class="texto02" name="celular" value="<?=$celular; ?>" required="true"/>
                 </div>
                 <div>
                     <label>E-mail *</label>
@@ -155,7 +175,7 @@
                 <div>
                     <label>Senha: *</label>
                     <input type="password" name="txtSenha" id="txtSenha" class="texto04" value="" <? if (@$obj->_senha == null) {
-                                      ?>
+                    ?>
                                required="true"
                            <? } ?> />
 
@@ -268,16 +288,16 @@
 
 
                     <select name="classe" id="classe" class="size2">
-                            <option value="">Selecione</option>
-                            <? foreach ($classe as $value) : ?>
-                                <option value="<?= $value->descricao; ?>"
-                                <?
-                                if ($value->descricao == @$obj->_classe):echo'selected';
-                                endif;
-                                ?>
-                                        ><?php echo $value->descricao; ?></option>
-                                    <? endforeach; ?>
-                        </select>
+                        <option value="">Selecione</option>
+                        <? foreach ($classe as $value) : ?>
+                            <option value="<?= $value->descricao; ?>"
+                            <?
+                            if ($value->descricao == @$obj->_classe):echo'selected';
+                            endif;
+                            ?>
+                                    ><?php echo $value->descricao; ?></option>
+                                <? endforeach; ?>
+                    </select>
                 </div>
                 <div>
                     <label>IR</label>
@@ -327,47 +347,47 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script>
-                    function mascaraTelefone(campo) {
+                        function mascaraTelefone(campo) {
 
-                        function trata(valor, isOnBlur) {
+                            function trata(valor, isOnBlur) {
 
-                            valor = valor.replace(/\D/g, "");
-                            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                                valor = valor.replace(/\D/g, "");
+                                valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-                            if (isOnBlur) {
+                                if (isOnBlur) {
 
-                                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-                            } else {
+                                    valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                                } else {
 
-                                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                                    valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                                }
+                                return valor;
                             }
-                            return valor;
-                        }
 
-                        campo.onkeypress = function (evt) {
+                            campo.onkeypress = function (evt) {
 
-                            var code = (window.event) ? window.event.keyCode : evt.which;
-                            var valor = this.value
+                                var code = (window.event) ? window.event.keyCode : evt.which;
+                                var valor = this.value
 
-                            if (code > 57 || (code < 48 && code != 8 && code != 0)) {
-                                return false;
-                            } else {
-                                this.value = trata(valor, false);
+                                if (code > 57 || (code < 48 && code != 8 && code != 0)) {
+                                    return false;
+                                } else {
+                                    this.value = trata(valor, false);
+                                }
                             }
-                        }
 
-                        campo.onblur = function () {
+                            campo.onblur = function () {
 
-                            var valor = this.value;
-                            if (valor.length < 13) {
-                                this.value = ""
-                            } else {
-                                this.value = trata(this.value, true);
+                                var valor = this.value;
+                                if (valor.length < 13) {
+                                    this.value = ""
+                                } else {
+                                    this.value = trata(this.value, true);
+                                }
                             }
-                        }
 
-                        campo.maxLength = 14;
-                    }
+                            campo.maxLength = 14;
+                        }
 
 
 </script>
@@ -402,7 +422,7 @@
             }
         });
     });
-    
+
 
     $(function () {
         $('#tipo').change(function () {

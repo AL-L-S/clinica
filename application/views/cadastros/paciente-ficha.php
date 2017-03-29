@@ -181,20 +181,24 @@
             <div>
                 <label>Telefone 1*</label>
                 <?
-                if (@$obj->_telefone != '') {
+                if (@$obj->_telefone != '' && strlen(@$obj->_telefone) > 3) {
 
                     if (preg_match('/\(/', @$obj->_telefone)) {
                         $telefone = @$obj->_telefone;
                     } else {
                         $telefone = "(" . substr(@$obj->_telefone, 0, 2) . ")" . substr(@$obj->_telefone, 2, strlen(@$obj->_telefone) - 2);
                     }
+                }else{
+                    $telefone = '';
                 }
-                if (@$obj->_celular != '') {
-                    if (preg_match('/\(/', @$obj->_celular)) {
+                if (@$obj->_celular != '' && strlen(@$obj->_celular) > 3) {
+                    if (preg_match('/\(/', @$obj->_celular) ) {
                         $celular = @$obj->_celular;
                     } else {
                         $celular = "(" . substr(@$obj->_celular, 0, 2) . ")" . substr(@$obj->_celular, 2, strlen(@$obj->_celular) - 2);
                     }
+                }else{
+                    $celular = '';
                 }
                 ?>
 
