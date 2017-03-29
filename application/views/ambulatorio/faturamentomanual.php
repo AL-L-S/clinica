@@ -3,7 +3,7 @@
         <tr>
             <td width="70">
                 <div class="bt_link_new">
-                    <a href="#">
+                    <a href="<?php echo base_url() ?>ambulatorio/exame/carregarguiaambulatorial">
                         Nova Guia Ambualtorial
                     </a>
                 </div>

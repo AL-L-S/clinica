@@ -1762,6 +1762,7 @@ UPDATE ponto.tb_empresa
        impressao_laudo=impressao_tipo; 
 
 
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe integer;
 
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;
