@@ -1764,6 +1764,10 @@ UPDATE ponto.tb_empresa
 
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe integer;
 
+--30/03/2017 
+
+ALTER TABLE ponto.tb_convenio ADD COLUMN carteira_obrigatoria boolean DEFAULT false;
+
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;
 CREATE TABLE ponto.tb_versao

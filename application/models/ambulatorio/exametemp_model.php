@@ -3540,6 +3540,15 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompleteconveniocarteira($parametro) {
+        $this->db->select(' c.convenio_id,
+                            c.carteira_obrigatoria');
+        $this->db->from('tb_convenio c');
+        $this->db->where('c.convenio_id', $parametro);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompleteprocedimentosgrupo($parametro, $parametro2) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,

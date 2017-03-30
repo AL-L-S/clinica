@@ -25,6 +25,20 @@
                     <label>Codigo identifica&ccedil;&atilde;o</label>
                     <input type="text" name="txtcodigo" maxlength="20" class="texto03" value="<?= @$obj->_codigoidentificador; ?>" />
                 </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <?php
+                    if (@$obj->_carteira_obrigatoria == "t") {
+                        ?>
+                        <input type="checkbox" name="txtcarteira" checked ="true" />Número da carteira/autorização obrigatorio
+                        <?php
+                    } else {
+                        ?>
+                        <input type="checkbox" name="txtcarteira"  />Número da carteira/autorização obrigatorio
+                        <?php
+                    }
+                    ?>
+                </div>
 
             </fieldset>
             <fieldset>

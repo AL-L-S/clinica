@@ -90,7 +90,7 @@
                 <?
                 $b = substr($item->data, 5, 2);
                 if ($item->cns != '') {
-                    $emails = $emails . " , " . $item->cns;
+                    $emails = $emails . " ; " . $item->cns;
                 }
             }
         }

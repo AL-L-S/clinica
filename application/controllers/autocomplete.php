@@ -370,6 +370,16 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function conveniocarteira() {
+
+        if (isset($_GET['convenio1'])) {
+            $result = $this->exametemp->listarautocompleteconveniocarteira($_GET['convenio1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteconveniocarteira();
+        }
+        echo json_encode($result);
+    }
 
     function procedimentoconveniogrupo() {
 
