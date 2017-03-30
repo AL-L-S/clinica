@@ -344,6 +344,7 @@ class guia_model extends Model {
                             ag.via,
                             ag.leito,
                             ag.equipe,
+                            ag.equipe_id,
                             c.convenio_id,
                             c.nome as convenio,
                             p.paciente_id,

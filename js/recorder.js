@@ -11,7 +11,8 @@
     var caminho = url_atual[2] + '/' + url_atual[3] + '/' + "js/";
     var WORKER_PATH = caminho + 'recorderWorker.js';
     var encoderWorker = new Worker(caminho + 'mp3Worker.js');
-
+    var worker = new Worker(WORKER_PATH);
+    console.log(worker);
     var Recorder = function (source, cfg) {
         var config = cfg || {};
         var bufferLen = config.bufferLen || 4096;
@@ -19,7 +20,6 @@
         this.node = (this.context.createScriptProcessor ||
                 this.context.createJavaScriptNode).call(this.context,
                 bufferLen, 2, 2);
-        var worker = new Worker(config.workerPath || WORKER_PATH);
         worker.postMessage({
             command: 'init',
             config: {
@@ -51,6 +51,9 @@
 
         this.record = function () {
             recording = true;
+
+
+//    console.log(WORKER_PATH);
         }
 
         this.stop = function () {

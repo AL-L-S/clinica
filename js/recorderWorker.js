@@ -4,7 +4,7 @@ var recLength = 0,
         bits = 16,
         sampleRate;
 
-this.onmessage = function(e) {
+this.onmessage = function (e) {
 
     switch (e.data.command) {
         case 'init':
@@ -30,14 +30,18 @@ function init(config) {
 }
 
 function record(inputBuffer) {
-
-    recBuffersL.push(inputBuffer[0]);
-    //recBuffersR.push(inputBuffer[1]);
+    for (var channel = 0; channel < numChannels; channel++) {
+        recBuffers[channel].push(inputBuffer[channel]);
+    }
     recLength += inputBuffer[0].length;
+//    alert('ola');
+//    recBuffersL.push(inputBuffer[0]);
+    //recBuffersR.push(inputBuffer[1]);
+//    recLength += inputBuffer[0].length;
 }
 
 function exportWAV(type) {
-
+//    alert('morreu');
     var bufferL = mergeBuffers(recBuffersL, recLength);
     //var bufferR = mergeBuffers(recBuffersR, recLength);
     //var interleaved = interleave(bufferL, bufferR);
@@ -53,6 +57,7 @@ function getBuffer() {
     buffers.push(mergeBuffers(recBuffersL, recLength));
     buffers.push(mergeBuffers(recBuffersR, recLength));
     this.postMessage(buffers);
+//    alert('ola');
 }
 
 function clear() {

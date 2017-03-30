@@ -1753,6 +1753,14 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto TYPE character varying
 UPDATE ponto.tb_horarioagenda
    SET empresa_id=1;
 
+-- Dia 30/03/2017
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe boolean;
+ALTER TABLE ponto.tb_ambulatorio_guia ALTER COLUMN equipe SET DEFAULT false;
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe_id integer;
+ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN solicitacao_cirurgia_id integer;
+
+
+
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;
 CREATE TABLE ponto.tb_versao

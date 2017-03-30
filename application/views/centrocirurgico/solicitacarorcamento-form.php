@@ -1,10 +1,4 @@
-<div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <div class="bt_link" style="width: 250px; ">
-        <a style="width: 200px;" onclick="javascript: return confirm('Deseja realmente FINALIZAR O ORÇAMENTO? Após esta ação não será possível editar o orçamento.');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/finalizarorcamento/<?= $solicitacao_id; ?>" style="width: 100px;">Finalizar Orçamento</a>
-    </div>      
-    <div class="bt_link">
-        <a href="#">Faturar</a>
-    </div>      
+<div class="content ficha_ceatox"> <!-- Inicio da DIV content -->      
     <fieldset >
         <legend>Fazer Orçamento</legend>
         <div>
@@ -12,7 +6,7 @@
                 <div style="padding-bottom: 50px;">
                     <input type="hidden" name="solicitacao_id" id="solicitacao_id" value="<?= @$solicitacao_id; ?>"/>
                     <input type="hidden" name="convenio_id" id="convenio_id" value="<?= @$convenio_id; ?>"/>
-                    <div>
+<!--                    <div>
                         <label>Função</label>
                         <select name="funcao" id="funcao" class="texto03" required>
                             <option value="">SELECIONE</option>
@@ -20,7 +14,7 @@
                                 <option value="<?= $value->funcao_cirurgia_id ?>"><?= $value->nome ?></option>
                             <? } ?>
                         </select>
-                    </div>
+                    </div>-->
                     <div>
                         <!--                        <label>Médico</label>
                                                 <select name="cirurgiao1" id="cirurgiao1" class="texto04" required>
@@ -67,6 +61,14 @@
             </form>
         </div>
     </fieldset>
+    
+    <div class="bt_link" style="width: 250px; ">
+        <a style="width: 200px;" onclick="javascript: return confirm('Deseja realmente FINALIZAR O ORÇAMENTO? Após esta ação não será possível editar o orçamento.');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/finalizarorcamento/<?= $solicitacao_id; ?>" style="width: 100px;">Finalizar Orçamento</a>
+    </div>      
+    <div class="bt_link">
+        <a href="#">Faturar</a>
+    </div>
+    <br>
     <?php
     $valor_total = 0.00;
     if (count($procedimentos_orcamentados) > 0) {
@@ -76,8 +78,6 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="tabela_header">Grau de Participação</th>
-                        <th class="tabela_header">Médico</th>
                         <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Valor</th>
                         <th class="tabela_header">Obs</th>
@@ -92,8 +92,6 @@
                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                         ?>
                         <tr>
-                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->grau_participacao; ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->procedimento; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo number_format($item->valor, 2, ",", "."); ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->observacao; ?></td>

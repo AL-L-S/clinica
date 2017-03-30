@@ -41,12 +41,12 @@
                 </select>
                 
                 <label>Data/Hora Autorização*</label>
-                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="29/29/9999 29:69"class="texto03" required=""/>
+                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="39/29/9999 29:69"class="texto03" required=""/>
             </div>
 
             <div >
                 <label>Data/Hora Realização*</label>
-                <input type="text" name="data_realizacao" id="data_realizacao" alt="29/29/9999 29:69"class="texto03" required=""/>
+                <input type="text" name="data_realizacao" id="data_realizacao" alt="39/29/9999 29:69"class="texto03" required=""/>
             </div>
             
             

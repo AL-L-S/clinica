@@ -134,11 +134,13 @@ class centrocirurgico_model extends BaseModel {
                             a.horario_especial,
                             a.procedimento_tuss_id,
                             a.valor_total,
+                            pt.nome as procedimento,
+                            c.nome as convenio,
                             a.observacoes');
         $this->db->from('tb_agenda_exames a');
-//        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
-//        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-//        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where("a.guia_id", $guia);
         $this->db->orderby("a.valor_total DESC");
 //        $this->db->limit(5);
@@ -310,7 +312,7 @@ class centrocirurgico_model extends BaseModel {
 
             $this->db->set('funcao', $_POST['funcao']);
             $this->db->set('operador_responsavel', $_POST['medico']);
-            $this->db->set('equipe_cirurgia_id', $_POST['equipe_id']);
+            $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');

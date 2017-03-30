@@ -1,13 +1,8 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content --> 
     <h3 class="singular"><a href="#">Montar Equipe</a></h3>
     <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarequipeoperadores" method="post">
-        <fieldset >
-            <input type="hidden" name="equipe_id" id="equipe_id" value="<?= @$equipe[0]->equipe_cirurgia_id; ?>"/>
-            <label>Nome</label>
-            <input type="text" name="txtEquipe" class="texto09" id="txtEquipe" value="<?= @$equipe[0]->nome; ?>" readonly=""/>
-
-        </fieldset>
         <fieldset>
+            <input type="hidden" name="solicitacao_id" id="solicitacao_id" value="<?= @$solicitacaocirurgia_id; ?>"/>
             <div>
                 <label>Médico</label>
                 <select name="medico" id="medico" class="texto04" required>
@@ -63,7 +58,7 @@
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->funcao; ?></td>
                             <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
-                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->equipe_cirurgia_operadores_id; ?>/<?= $equipe_id; ?>" class="delete">
+                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->equipe_cirurgia_operadores_id; ?>/<?= @$solicitacaocirurgia_id; ?>" class="delete">
                                 </a>
                             </td>
 

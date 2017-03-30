@@ -30,22 +30,6 @@ $session_id = '1';
         <script src="<?= base_url() ?>js/recorder.js"></script>
 
         <script type="text/javascript">
-//            function gravar(button) {
-//                $(button).removeClass('startRecord').addClass('stopRecord');
-//                $("#recordContainer").removeClass('startContainer').addClass('stopContainer');
-//                $("#recordText").html("Stop");
-//                $.stopwatch.startTimer('sw');
-//                startRecording(button);
-//            }
-//            
-//            function parar(button) {
-//                $(button).removeClass('startRecord').addClass('stopRecord');
-//                $("#recordContainer").removeClass('startContainer').addClass('stopContainer');
-//                $("#recordText").html("Stop");
-//                $.stopwatch.startTimer('sw');
-//                startRecording(button);
-//            }
-            
             $(document).ready(function () {
                 $("body").on('click', '.recordOn', function () {
                     $("#recordContainer").toggle();
@@ -109,6 +93,9 @@ $session_id = '1';
 
     </head>
     <body>
+        <audio controls>
+            Your browser does not support the audio tag.
+        </audio> 
         <div style="margin:0 auto; width:980px">
 
 
@@ -175,6 +162,11 @@ $session_id = '1';
         }
 //
         navigator.getUserMedia({audio: true}, function (stream) {
+//            var video = document.querySelector('video');
+//            video.src = window.URL.createObjectURL(localMediaStream);
+//            video.onloadedmetadata = function (e) {
+//                // Faz algo com o vídeo aqui.
+//            };
             startUserMedia(stream);
         }, function (e) {
             __log('No live audio input: ' + e);
