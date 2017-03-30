@@ -1762,8 +1762,6 @@ UPDATE ponto.tb_empresa
        impressao_laudo=impressao_tipo; 
 
 
-ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe integer;
-
 -- Dia 30/03/2017
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN equipe boolean;
 ALTER TABLE ponto.tb_ambulatorio_guia ALTER COLUMN equipe SET DEFAULT false;
@@ -1788,6 +1786,19 @@ INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('11','Auxiliar
 INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('12','Clínico');
 INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('13','Intensivista');
 
+-- Atualizando procedimentos convenio para tuss na tabela produto
+
+UPDATE ponto.tb_estoque_produto produto
+   SET 
+       procedimento_id= pt.procedimento_tuss_id
+       
+FROM ponto.tb_estoque_produto produto1, ponto.tb_procedimento_convenio pc , ponto.tb_procedimento_tuss pt
+
+       WHERE produto.procedimento_id = pc.procedimento_convenio_id 
+              
+       AND pc.procedimento_tuss_id = pt.procedimento_tuss_id 
+       
+       AND pc.procedimento_convenio_id = produto.procedimento_id
 
 
 -- FIM DA VERSÃO 1.0.00002
