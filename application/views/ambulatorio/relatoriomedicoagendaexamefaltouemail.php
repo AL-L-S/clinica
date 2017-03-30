@@ -29,6 +29,15 @@
                         </select>
                     </dd>
                     <dt>
+                    <label>Mala Direta</label>
+                    </dt>
+                    <dd>
+                        <select name="mala" id="empresa" class="size2">
+                            <option value="NAO">NÃO</option>
+                            <option value="SIM">SIM</option>
+                        </select>
+                    </dd>
+                    <dt>
                     <label>Empresa</label>
                     </dt>
                     <dd>
