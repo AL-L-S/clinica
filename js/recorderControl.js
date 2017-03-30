@@ -42,7 +42,7 @@ Modified by Srinivas Tamada http://www.9lessons.info
     button.disabled = true;
     //button.previousElementSibling.disabled = false;
     __log('Stopped recording.');
-    
+//    alert('ola');
     // create WAV download link using audio data blob
     recorder.exportWAV();
 

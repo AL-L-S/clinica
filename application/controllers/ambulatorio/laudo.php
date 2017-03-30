@@ -273,6 +273,11 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/laudoconsultahistorico-form', $data);
     }
 
+    function vozemtexto($ambulatorio_laudo_id) {
+        $data['laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/voz', $data);
+    }
+
     function carregaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
