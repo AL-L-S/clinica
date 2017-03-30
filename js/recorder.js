@@ -12,7 +12,6 @@
     var WORKER_PATH = caminho + 'recorderWorker.js';
     var encoderWorker = new Worker(caminho + 'mp3Worker.js');
     var worker = new Worker(WORKER_PATH);
-    console.log(worker);
     var Recorder = function (source, cfg) {
         var config = cfg || {};
         var bufferLen = config.bufferLen || 4096;
