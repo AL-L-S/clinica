@@ -1772,6 +1772,24 @@ ALTER TABLE ponto.tb_equipe_cirurgia_operadores ADD COLUMN solicitacao_cirurgia_
 
 ALTER TABLE ponto.tb_convenio ADD COLUMN carteira_obrigatoria boolean DEFAULT false;
 
+-- GRAU DE PARTICIPAÇÃO CIRURGICA
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('0','Cirurgião');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('1','Primeiro Auxiliar');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('2','Segundo Auxiliar');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('3','Terceiro Auxiliar');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('4','Quarto Auxiliar');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('5','Instrumentador');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('6','Anestesista');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('7','Auxiliar de Anestesista');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('8','Consultor');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('9','Perfusionista');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('10','Pediatra na sala de parto');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('11','Auxiliar SADT');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('12','Clínico');
+INSERT INTO ponto.tb_grau_participacao(codigo, descricao) VALUES ('13','Intensivista');
+
+
+
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;
 CREATE TABLE ponto.tb_versao
