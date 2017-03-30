@@ -13,15 +13,15 @@
         ?>
         <h3 class="singular"><a href="#">Faturar Guia</a></h3>
         <div>
-            <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentosfaturamento" method="post">
+            <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/exame/gravarprocedimentosfaturamentomanual/<?=$paciente_id?>" method="post">
                 <fieldset>
                     <legend>Dados do Paciente</legend>
                     <div>
                         <label>Nome</label>                      
                         <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
                         <input type="hidden" id="txtpaciente_id" name="txtpaciente_id"  value="<?= $paciente_id; ?>"/>
-                        <input type="hidden" id="txtguia_id" name="txtguia_id"  value="<?= $guia_id; ?>"/>
-                        <input type="hidden" id="txtdata" name="txtdata"  value="<?= $exames['0']->data; ?>"/>
+                        <!--<input type="hidden" id="txtguia_id" name="txtguia_id"  value="<?= $guia_id; ?>"/>-->
+                        <input type="hidden" id="txtdata" name="txtdata"  value="<?= date("Y-m-d"); ?>"/>
                     </div>
                     <div>
                         <label>Sexo</label>
@@ -145,6 +145,7 @@
                 <?
                 $total = 0;
                 $guia = 0;
+                if(count($exames)>0){
                 ?>
                 <table id="table_agente_toxico" border="0">
                     <thead>
@@ -204,12 +205,13 @@
                                 Valor Total: R$ <?php echo number_format($total, 2, ',', '.'); ?>
                             </th>
                             <th colspan="2"><div class="bt_link_new">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguias/" . $guia_id; ?> ');">Faturar todos
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguias/" . $item->ambulatorio_guia_id; ?> ');">Faturar todos
                                     </a>
                                 </div></th>
                         </tr>
                     </tfoot>
                 </table> 
+               <?}?> 
 
             </fieldset>
 

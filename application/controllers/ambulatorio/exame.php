@@ -272,6 +272,22 @@ class Exame extends BaseController {
         }
     }
 
+    function gravarguiaambulatorial() {
+        var_dump($_POST);
+        die;
+        $ambulatorio_guia = $this->guia->gravarguiacirurgica();
+
+        if ($ambulatorio_guia == "-1") {
+            $data['mensagem'] = 'Erro ao gravar Guia. Opera&ccedil;&atilde;o cancelada.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/faturamentomanual");
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar Guia.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/guiacirurgicaitens/$ambulatorio_guia");
+        }
+    }
+
     function guiacirurgicaitens($guia_id) {
 
         $data['guia'] = $this->guia->instanciarguia($guia_id);
@@ -286,6 +302,14 @@ class Exame extends BaseController {
         $data['hospitais'] = $this->exame->listarhospitais();
         $data['convenios'] = $this->guia->listarconvenios();
         $this->loadView('ambulatorio/novaguiacirurgica-form', $data);
+    }
+
+    function carregarguiaambulatorial($guia_id = null) {
+
+        $data['guia'] = $this->guia->instanciarguia($guia_id);
+        $data['hospitais'] = $this->exame->listarhospitais();
+        $data['convenios'] = $this->guia->listarconvenios();
+        $this->loadView('ambulatorio/novaguiaambulatorio-form', $data);
     }
 
     function fecharfinanceiro() {
@@ -388,6 +412,37 @@ class Exame extends BaseController {
         $data['exames'] = $this->exame->listarexamesguia($guia_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guiafaturamento-form', $data);
+    }
+
+    function faturarguiamanual($paciente_id = null) {
+        if ($paciente_id == null) {
+            $paciente_id = $_POST['txtpacienteid'];
+        }
+//        var_dump($_POST); die;
+
+        $data['paciente_id'] = $paciente_id;
+        $data['convenios'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->login->listar();
+        $data['exames'] = $this->exame->listarexamesguiamanual($paciente_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $this->loadView('ambulatorio/guiafaturamentoambulatorial-form', $data);
+    }
+
+    function gravarprocedimentosfaturamentomanual($paciente_id) {
+//        var_dump($_POST); die;
+        
+        $resultadoguia = $this->exame->listarguiafaturamentomanualambulatorial($paciente_id);
+            if ($resultadoguia == null) {
+                $ambulatorio_guia = $this->exame->gravarguiamanual($paciente_id);
+            } else {
+                $ambulatorio_guia = $resultadoguia[0]->ambulatorio_guia_id;
+            }
+//            var_dump($ambulatorio_guia); die;
+            
+        $this->exame->gravarexamesfaturamentomanual($ambulatorio_guia);
+//        var_dump($ambulatorio_guia); die;
+        redirect(base_url() . "ambulatorio/exame/faturarguiamanual/$paciente_id");
     }
 
     function estoqueguia($agenda_exames_id) {

@@ -188,16 +188,16 @@
                     } else {
                         $telefone = "(" . substr(@$obj->_telefone, 0, 2) . ")" . substr(@$obj->_telefone, 2, strlen(@$obj->_telefone) - 2);
                     }
-                }else{
+                } else {
                     $telefone = '';
                 }
                 if (@$obj->_celular != '' && strlen(@$obj->_celular) > 3) {
-                    if (preg_match('/\(/', @$obj->_celular) ) {
+                    if (preg_match('/\(/', @$obj->_celular)) {
                         $celular = @$obj->_celular;
                     } else {
                         $celular = "(" . substr(@$obj->_celular, 0, 2) . ")" . substr(@$obj->_celular, 2, strlen(@$obj->_celular) - 2);
                     }
-                }else{
+                } else {
                     $celular = '';
                 }
                 ?>
@@ -475,6 +475,24 @@
                 $("#txtcbo").val(ui.item.value);
                 $("#txtcboID").val(ui.item.id);
                 return false;
+            }
+        });
+    });
+
+
+    $(function () {
+        $('#txtconvenio').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
+                    options = '<option value=""></option>';
+                    if (j[0].carteira_obrigatoria == 't') {
+                        $("#txtconvenionumero").prop('required', true);
+                    } else {
+                        $("#txtconvenionumero").prop('required', false);
+                    }
+
+                });
             }
         });
     });

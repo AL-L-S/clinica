@@ -392,6 +392,15 @@
     <table>
         <tbody>
             <tr>
+                <td width="350px;"><font size="-1"><B>Valor Não-Convênio</B></th>
+                <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></th>
+            </tr>
+            <tr>
+                <th style='width:10pt;border:solid windowtext 1.0pt;
+                    border-bottom:none;mso-border-top-alt:none;border-left:
+                    none;border-right:none;' colspan="4">&nbsp;</th>
+            </tr>
+            <tr>
                 <td width="350px;"><font size="-1"><B>Resumo</B></th>
                 <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></th>
             </tr>
@@ -401,7 +410,7 @@
                     none;border-right:none;' colspan="4">&nbsp;</th>
             </tr>
             <tr>
-                <td><font size="-1" width="350px;">VALOR LIQUIDO DINHEIRO</td>
+                <td><font size="-1" width="350px;">VALOR LIQUIDO NÃO-CONVÊNIO</td>
                 <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($liquidodinheiro, 2, ',', '.') ?></td>
             </tr>
             <tr>
@@ -414,23 +423,34 @@
             </tr>
         </tbody>
     </table>
-<!--    <table>
+    <br>
+    <br>
+    <table>
         <tr>
-            <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
-        <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
+                <td width="350px;"><font size="-1"><B>Valor Não-Convênio</B></th>
+                <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></th>
+            </tr>
+            <tr>
+                <th style='width:10pt;border:solid windowtext 1.0pt;
+                    border-bottom:none;mso-border-top-alt:none;border-left:
+                    none;border-right:none;' colspan="4">&nbsp;</th>
+            </tr>
+        <tr>
+            <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO NÃO CONVÊNIO</center></td>
+        <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">VALOR</center></td>
         </tr>
         <? foreach ($formapagamento as $value) { ?>
+        <?if($numero[$value->nome] > 0){?>
             <tr>
-                <td width="140px;"><font size="-1"><?= $value->nome ?></td>
-                <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
-                <td width="200px;"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
-                <td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>
-            </tr>    
+                <td ><font size="-1"><?= $value->nome ?></td>
+                <td ><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
+            </tr>  
+            <?}?>
 
 
         <? } ?>
 
-    </table>-->
+    </table>
 
 
 

@@ -74,7 +74,7 @@
 
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
-                    
+
                 </fieldset>
 
                 <fieldset>
@@ -406,6 +406,23 @@
                                             });
                                         } else {
                                             $('#procedimento1').html('<option value="">Selecione</option>');
+                                        }
+                                    });
+                                });
+
+                                $(function () {
+                                    $('#convenio1').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
+                                                options = '<option value=""></option>';
+                                                if (j[0].carteira_obrigatoria == 't') {
+                                                    $("#autorizacao").prop('required', true);
+                                                } else {
+                                                    $("#autorizacao").prop('required', false);
+                                                }
+
+                                            });
                                         }
                                     });
                                 });

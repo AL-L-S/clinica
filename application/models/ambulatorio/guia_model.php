@@ -5514,15 +5514,15 @@ AND data <= '$data_fim'";
                     $valortotal = 0;
                     $desconto = $desconto - $value->valor_total;
                 }
-            echo '<pre>';
-            var_dump($value->valor_total);
-            var_dump($desconto);
-            var_dump($valor1);
-            var_dump($valortotal);
+//            echo '<pre>';
+//            var_dump($value->valor_total);
+//            var_dump($desconto);
+//            var_dump($valor1);
+//            var_dump($valortotal);
 //            die;
                 $i = 0;
                 if ($valor1 > 0 && $valor1 >= $valortotal) {
-                    echo 'if1';
+//                    echo 'if1';
                     $valor1 = $valor1 - $valortotal;
                     $this->db->set('forma_pagamento', $_POST['formapamento1']);
                     $this->db->set('valor1', str_replace(",", ".", $valortotal));
@@ -5535,7 +5535,7 @@ AND data <= '$data_fim'";
                     $this->db->update('tb_agenda_exames');
                     $i = 1;
                 } elseif ($i != 1 && $valor2 > 0 && $valor1 < $valortotal && $valor2 >= ($valortotal - $valor1)) {
-                    echo 'if2';
+//                    echo 'if2';
                     $valor2 = $valor2 - ($valortotal - $valor1);
                     $restovalor2 = $valortotal - $valor1;
                     if ($valor1 > 0) {
@@ -5560,7 +5560,7 @@ AND data <= '$data_fim'";
                     $valor1 = 0;
                     $i = 2;
                 } elseif ($i != 1 && $i != 2 && $valor3 > 0 && $valor2 < $valortotal && $valor3 >= ($valortotal - ($valor1 + $valor2))) {
-                    echo 'if3';
+//                    echo 'if3';
                     $valor3 = $valor3 - ($valortotal - ($valor2 + $valor1));
                     $restovalor3 = $valortotal - ($valor2 + $valor1);
                     if ($valor1 > 0 && $valor2 > 0) {
@@ -5605,7 +5605,7 @@ AND data <= '$data_fim'";
                     $valor1 = 0;
                     $i = 3;
                 } elseif ($i != 1 && $i != 2 && $i != 3 && $valor2 < ($valortotal - $valor1) && $valor3 < ($valortotal - ($valor1 + $valor2)) && $valor4 >= ($valortotal - ($valor1 + $valor2 + $valor3))) {
-                    echo 'if4';
+//                    echo 'if4';
                     $valor4 = $valor4 - ($valortotal - ($valor3 + $valor2 + $valor1));
                     $restovalor4 = $valortotal - ($valor3 + $valor2 + $valor1);
                     if ($valor1 > 0 && $valor2 > 0 && $valor3 > 0) {
@@ -6546,6 +6546,7 @@ ORDER BY ae.agenda_exames_id)";
                             cnes,
                             producaomedicadinheiro,
                             impressao_declaracao,
+                            impressao_laudo,
                             impressao_recibo,
                             celular,
                             bairro,
