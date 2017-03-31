@@ -273,9 +273,17 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/laudoconsultahistorico-form', $data);
     }
 
-    function vozemtexto($ambulatorio_laudo_id) {
+    function vozemtexto($ambulatorio_laudo_id, $operador_id) {
         $data['laudo_id'] = $ambulatorio_laudo_id;
+        $data['operador_id'] = $operador_id;
         $this->load->View('ambulatorio/voz', $data);
+    }
+
+    function gravartextoconvertido() {
+        $this->exametemp->gravartextoconvertido();
+        
+        //O google Chrome não permite fechar a janela pelo javascript a menos que ela tenha sido aberta com javascript
+        echo "<script>window.location.href = 'https://www.google.com';</script>";
     }
 
     function carregaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {

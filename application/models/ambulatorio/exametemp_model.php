@@ -1940,6 +1940,26 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function gravartextoconvertido() {
+        $horario = date("Y-m-d H:i:s");
+        $texto = "<p>".$_POST['texto']."</p>";
+        
+        $this->db->select('texto');
+        $this->db->from('tb_ambulatorio_laudo');
+        $this->db->where("ambulatorio_laudo_id", $_POST['laudo_id']);
+        $return = $this->db->get()->result();
+        
+        
+        $texto = $return[0]->texto . $texto;
+        
+        
+        $this->db->set('texto', $texto);
+        $this->db->set('operador_atualizacao', $_POST['operador_id']);
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->where("ambulatorio_laudo_id", $_POST['laudo_id']);
+        $this->db->update('tb_ambulatorio_laudo');
+    }
+
     function gravarpacienteexames($agenda_exames_id, $tipo = null) {
         try {
 
