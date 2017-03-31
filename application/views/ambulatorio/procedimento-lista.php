@@ -24,7 +24,7 @@
                         <th class="tabela_header" width="10%">Grupo</th>
                         <th class="tabela_header" width="10%">Codigo</th>
                         <th class="tabela_header" width="25%">Descri&ccedil;&atilde;o</th>
-                        <th class="tabela_header">Detalhes</th>
+                        <th style="text-align: center;" colspan="3" class="tabela_header">Detalhes</th>
                     </tr>
                 </thead>
                 <?php
@@ -56,27 +56,44 @@
 
 
 
-                                <td class="<?php echo $estilo_linha; ?>" width="100px;">
+<!--                                <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                     
                                     <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');"
                                        href="<?=base_url()?>ambulatorio/procedimento/excluir/<?= $item->procedimento_tuss_id; ?>">
                                         <img border="0" title="Excluir" alt="Excluir"
                                           src="<?= base_url() ?>img/form/page_white_delete.png" />
                                     </a>
-        <!--                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento <?= $item->nome; ?>');"
+                                            <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento <?= $item->nome; ?>');"
                                        href="<?= base_url() ?>ambulatorio/procedimento/excluir/<?= $item->procedimento_tuss_id; ?>">
                                         <img border="0" title="Excluir" alt="Excluir"
                                              src="<?= base_url() ?>img/form/page_white_delete.png" />
-                                    </a>-->
+                                    </a>
                                     <a  onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/carregarprocedimento/$item->procedimento_tuss_id"; ?> ', '_blank');">
                                         <img border="0" title="Detalhes" alt="Detalhes"
                                              src="<?= base_url() ?>img/form/page_white_edit.png" />
                                     </a>
-<!--                                    <a href="<?= base_url() ?>ambulatorio/procedimento/carregarprocedimento/<?= $item->procedimento_tuss_id ?>">
+                                    <a href="<?= base_url() ?>ambulatorio/procedimento/carregarprocedimento/<?= $item->procedimento_tuss_id ?>">
                                         <img border="0" title="Detalhes" alt="Detalhes"
                                              src="<?= base_url() ?>img/form/page_white_edit.png" />
-                                    </a>-->
-                                </td>
+                                    </a>
+                                </td>-->
+                                <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                            <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente excluir o procedimento');" href="<?= base_url() . "ambulatorio/procedimento/excluir/$item->procedimento_tuss_id"; ?>"
+                                           >Excluir
+                                        </a>
+                                            </div>
+            <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/carregarprocedimento/$item->procedimento_tuss_id"; ?> ', '_blank');">Editar
+                                        </a></div>
+            <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$item->procedimento_tuss_id"; ?> ', '_blank');">Convênio
+                                        </a></div>
+            <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
+                                    </td>
                             </tr>
 
                         </tbody>
@@ -86,7 +103,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="6">
+                        <th class="tabela_footer" colspan="7">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                             <div style="display: inline">

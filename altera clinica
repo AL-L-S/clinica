@@ -1801,6 +1801,19 @@ FROM ponto.tb_estoque_produto produto1, ponto.tb_procedimento_convenio pc , pont
        AND pc.procedimento_convenio_id = produto.procedimento_id
 
 
+CREATE TABLE ponto.tb_procedimento_convenio_produto_valor
+(
+  procedimento_convenio_produto_valor_id serial NOT NULL,
+  procedimento_tuss_id integer,
+  convenio_id integer,
+  ativo boolean DEFAULT true,
+  valor numeric(10,2),
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  CONSTRAINT tb_procedimento_convenio_produto_valor_pkey PRIMARY KEY (procedimento_convenio_produto_valor_id )
+);
 -- FIM DA VERSÃO 1.0.00002
 DROP TABLE ponto.tb_versao;
 CREATE TABLE ponto.tb_versao
@@ -1812,6 +1825,6 @@ CREATE TABLE ponto.tb_versao
 );
 
 INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
-    VALUES ('1.0.00002', '1.0.00002');
+    VALUES ('1.0.00003', '1.0.00003');
 
 ---++++++++++ CRIAR NOVO ARQUIVO ++++++++++---
