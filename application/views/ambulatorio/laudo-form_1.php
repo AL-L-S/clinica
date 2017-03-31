@@ -298,6 +298,9 @@
                                                 <td ><div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaratestado/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                             Atestado</a></div></td>
+                                                <td ><div class="bt_link">
+                                                        <a href="<?= base_url() ?>ambulatorio/laudo/vozemtexto/<?= $ambulatorio_laudo_id ?>">
+                                                            Voz em Texto</a></div></td>
                                             </tr>
                                         </table>
                                     </div>

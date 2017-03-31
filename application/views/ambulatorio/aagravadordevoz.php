@@ -15,7 +15,9 @@ $session_id = '1';
 //    echo 'nao';
 //    die;
 //}
+
 ?>
+<!-- APARENTEMENTE O PROBLEMA É PORQUE NO ARQUIVO recorder.js NÃO ESTÁ INVOCANDO O WORKER recorderWorker.js -->
 <!DOCTYPE html>
 <html>
     <head>
