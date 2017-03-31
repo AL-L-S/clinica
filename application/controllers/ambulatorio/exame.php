@@ -431,15 +431,15 @@ class Exame extends BaseController {
 
     function gravarprocedimentosfaturamentomanual($paciente_id) {
 //        var_dump($_POST); die;
-        
+
         $resultadoguia = $this->exame->listarguiafaturamentomanualambulatorial($paciente_id);
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->exame->gravarguiamanual($paciente_id);
-            } else {
-                $ambulatorio_guia = $resultadoguia[0]->ambulatorio_guia_id;
-            }
+        if ($resultadoguia == null) {
+            $ambulatorio_guia = $this->exame->gravarguiamanual($paciente_id);
+        } else {
+            $ambulatorio_guia = $resultadoguia[0]->ambulatorio_guia_id;
+        }
 //            var_dump($ambulatorio_guia); die;
-            
+
         $this->exame->gravarexamesfaturamentomanual($ambulatorio_guia);
 //        var_dump($ambulatorio_guia); die;
         redirect(base_url() . "ambulatorio/exame/faturarguiamanual/$paciente_id");
@@ -806,10 +806,11 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
     }
 
-    function gastosdesala($exames_id, $sala_id = null) {
+    function gastosdesala($exames_id, $convenio_id, $sala_id = null) {
+        $data['convenio_id'] = $convenio_id;
         $data['sala_id'] = $sala_id;
         $data['paciente'] = $this->exame->listarpacientegastos($exames_id);
-        $data['produtos'] = $this->exame->listarprodutossalagastos();
+        $data['produtos'] = $this->exame->listarprodutossalagastos($convenio_id);
         $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
         $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']);
         $data['laudo'] = $this->exame->mostrarlaudogastodesala($exames_id);
@@ -820,22 +821,24 @@ class Exame extends BaseController {
 
     function gravargastodesala() {
         $exame_id = $_POST['exame_id'];
+        $sala_id = $_POST['sala_id'];
         $this->exame->gravargastodesala();
         if (isset($_POST['faturar'])) {
-            $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id']);
             $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+            $convenio_id = $data['agenda_exames'][0]->convenio_id;
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
-
-            $this->exame->faturargastodesala($data['procedimento'][0]);
+            $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id'], $convenio_id);
+            if (count($data['procedimento']) > 0) {
+                $this->exame->faturargastodesala($data['procedimento'][0]);
+            }
         }
-        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
-//        $this->gastosdesala($exame_id);
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id");
     }
 
-    function excluirgastodesala($gasto_id, $exame_id) {
+    function excluirgastodesala($gasto_id, $exame_id, $convenio_id, $sala_id) {
         $this->exame->excluirgastodesala($gasto_id);
-        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id");
 //        $this->gastosdesala($exame_id);
     }
 
@@ -847,8 +850,11 @@ class Exame extends BaseController {
             sort($data['arquivo_pasta']);
         }
         $data['arquivos_deletados'] = directory_map("/home/sisprod/projetos/clinica/uploadopm/$exame_id/");
+        $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+        $convenio_id = $data['agenda_exames'][0]->convenio_id;
 //        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
         //$data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinica/uploadopm/$exame_id/");
+        $data['convenio_id'] = $convenio_id;
         $data['exame_id'] = $exame_id;
         $data['sala_id'] = $sala_id;
         $this->loadView('ambulatorio/importacao-imagem', $data);

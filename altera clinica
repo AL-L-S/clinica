@@ -1825,6 +1825,6 @@ CREATE TABLE ponto.tb_versao
 );
 
 INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
-    VALUES ('1.0.00002', '1.0.00002');
+    VALUES ('1.0.00003', '1.0.00003');
 
 ---++++++++++ CRIAR NOVO ARQUIVO ++++++++++---

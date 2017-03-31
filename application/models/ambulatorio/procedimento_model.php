@@ -219,7 +219,7 @@ class procedimento_model extends Model {
         $this->db->from('tb_procedimento_tuss pt');
         $this->db->where('pt.ativo', 'true');
         if ($parametro != null) {
-            $this->db->where("(pt.descricao ilike '%$parametro%' OR pt.codigo ilike '%$parametro%')");
+            $this->db->where("(pt.nome ilike '%$parametro%' OR pt.codigo ilike '%$parametro%')");
         }
         $return = $this->db->get();
         return $return->result();

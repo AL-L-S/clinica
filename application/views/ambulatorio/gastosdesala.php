@@ -11,7 +11,9 @@
                 <input type="hidden" name="procedimento_id" id="procedimento_id" value=""/>
                 <input type="hidden" name="exame_id" value="<?= $exames_id; ?>"/>
                 <input type="hidden" name="txtguia_id" value="<?= $guia_id; ?>"/>
+                <input type="hidden" name="sala_id" value="<?= $sala_id; ?>"/>
                 <input type="hidden" name="txtpaciente_id" value="<?= $paciente[0]->paciente_id; ?>"/>
+                <input type="hidden" name="convenio_id" value="<?= $paciente[0]->convenio_id; ?>"/>
                 <table>
                     <tr>
                         <td><label>Nome</label></td>
@@ -68,6 +70,14 @@
                     <tr>
                         <td><input type="text" name="nascimento" class="input_pequeno" value="<?= str_replace('-', '/', date('d-m-Y', strtotime($paciente[0]->nascimento))); ?>" readonly /></td>
                         <td><input type="text" name="celular" class="input_pequeno" value="<?= $paciente[0]->celular; ?>" readonly /></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><label>Procedimento</label></td>
+                        
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="procedimento" class="texto10" value="<?= $laudo[0]->procedimento; ?>" readonly /></td>
                     </tr>
                     <tr>
                         <td width="70px;">
@@ -141,7 +151,7 @@
                             <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->unidade;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->descricao_gasto;  ?></center></td>
                             <td class="<?php echo $estilo_linha;  ?>" width="100px;">
-                                <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>" class="delete">
+                                <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>/<?= $convenio_id; ?>/<?=$sala_id;?>" class="delete">
                                 </a>
                             </td>
                         </tr>

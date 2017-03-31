@@ -14,24 +14,40 @@
                 <th>PACIENTE</th>
                 <th>PRODUTO</th>
                 <th>UNIDADE</th>
-                <th>QUANTIDADE</th>
-                <th>DESCRIÇÃO</th>
                 <th>PROCEDIMENTO</th>
+                <th>QUANTIDADE</th>
+                <th>VALOR UNIT (R$)</th>
+                <th>VALOR TOTAL (R$)</th>
+                <th>DESCRIÇÃO</th>
             </tr>
             
         </thead>
         <tbody>
+            <?
+            $i = 0;
+            ?>
             <?  foreach ($relatorio as $value) :?>
                 <tr>
                     <td><?=$value->paciente;?></td>
                     <td><?=$value->produto;?></td>
                     <td><?=$value->unidade;?></td>
-                    <td><?=$value->quantidade;?></td>
-                    <td><?=$value->descricao;?></td>
                     <td><?=$value->procedimento;?></td>
+                    <td><?=$value->quantidade;?></td>
+                    <td>R$ <?=number_format($value->valor, 2, ',', ' ');?></td>
+                    <td>R$ <?=number_format($value->quantidade * $value->valor, 2, ',', ' ');?></td>
+                    <td><?=$value->descricao;?></td>
                  </tr>
-            <? endforeach; ?>
+            <?
+            $i++;
+            endforeach; 
+            ?>
         </tbody>
+        <tr>
+            <td colspan="6"><b>TOTAL</b></td> 
+            <td><b><?=$i;?></b></td> 
+        </tr>
+            
+
 
 
     </table>
