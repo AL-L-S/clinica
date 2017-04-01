@@ -137,7 +137,7 @@ class guia_model extends Model {
         $this->db->join('tb_operador om', 'om.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_operador oz', 'oz.operador_id = ae.operador_autorizacao', 'left');
         $this->db->where('ae.confirmado', 't');
-//        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->where('pt.nome is not null');
         $this->db->where("ae.paciente_id", $paciente_id);
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.agenda_exames_id');
