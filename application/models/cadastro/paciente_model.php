@@ -112,6 +112,54 @@ class paciente_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+   
+    function relatoriocancelamento($paciente_id) {
+
+        $this->db->select('ac.agenda_exames_id,
+                            ac.data_cadastro as data,
+                            ac.operador_cadastro,
+                            o.nome as operador,
+                            c.nome as convenio,
+                            ac.paciente_id,
+                            ae.data_autorizacao,
+                            ac.observacao_cancelamento,
+                            p.nome as paciente,
+                            ac.procedimento_tuss_id,
+                            pt.nome as exame,
+                            pt.grupo,
+                            ca.descricao,
+                            pt.descricao as procedimento,
+                            pt.codigo');
+        $this->db->from('tb_ambulatorio_atendimentos_cancelamento ac');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = ac.agenda_exames_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ac.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ac.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_ambulatorio_cancelamento ca', 'ca.ambulatorio_cancelamento_id = ac.ambulatorio_cancelamento_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ac.operador_cadastro', 'left');
+        $this->db->where("ac.paciente_id ", $paciente_id);
+        
+        $this->db->orderby('c.convenio_id');
+        $this->db->orderby('ac.data_cadastro');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatoriocancelamentocontador($paciente_id) {
+
+        $this->db->select('ac.agenda_exames_id');
+        $this->db->from('tb_ambulatorio_atendimentos_cancelamento ac');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ac.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ac.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ac.paciente_id ", $paciente_id);
+        
+        $return = $this->db->count_all_results();
+        return $return;
+    }
 
     function listarCidades($parametro = null) {
         $this->db->select('municipio_id,
