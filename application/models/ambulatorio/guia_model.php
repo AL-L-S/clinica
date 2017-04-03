@@ -137,7 +137,7 @@ class guia_model extends Model {
         $this->db->join('tb_operador om', 'om.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_operador oz', 'oz.operador_id = ae.operador_autorizacao', 'left');
         $this->db->where('ae.confirmado', 't');
-//        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->where('pt.nome is not null');
         $this->db->where("ae.paciente_id", $paciente_id);
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.agenda_exames_id');
@@ -344,6 +344,7 @@ class guia_model extends Model {
                             ag.via,
                             ag.leito,
                             ag.equipe,
+                            ag.equipe_id,
                             c.convenio_id,
                             c.nome as convenio,
                             p.paciente_id,
@@ -3858,10 +3859,12 @@ class guia_model extends Model {
 
         $this->db->select('p.nome as paciente,
                             ag.paciente_id,
+                            ag.convenio_id,
                             ags.descricao,
                             ags.quantidade,
                             ep.descricao as produto,
                             u.descricao as unidade,
+                            pv.valor,
                             pt.nome as procedimento');
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_ambulatorio_gasto_sala ags', 'ags.guia_id = ag.ambulatorio_guia_id', 'left');
@@ -3869,9 +3872,11 @@ class guia_model extends Model {
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
         $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = ep.unidade_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = ep.procedimento_id', 'left');
+        $this->db->join('tb_procedimento_convenio_produto_valor pv', 'pv.procedimento_tuss_id = ep.procedimento_id', 'left');
         $this->db->where("ag.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ag.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("ags.ativo", 't');
+        $this->db->where("(ag.convenio_id = pv.convenio_id) ");
 
         if ($_POST['txtNomeid'] != "") {
             $this->db->where('ag.paciente_id', $_POST['txtNomeid']);
@@ -5513,15 +5518,15 @@ AND data <= '$data_fim'";
                     $valortotal = 0;
                     $desconto = $desconto - $value->valor_total;
                 }
-            echo '<pre>';
-            var_dump($value->valor_total);
-            var_dump($desconto);
-            var_dump($valor1);
-            var_dump($valortotal);
+//            echo '<pre>';
+//            var_dump($value->valor_total);
+//            var_dump($desconto);
+//            var_dump($valor1);
+//            var_dump($valortotal);
 //            die;
                 $i = 0;
                 if ($valor1 > 0 && $valor1 >= $valortotal) {
-                    echo 'if1';
+//                    echo 'if1';
                     $valor1 = $valor1 - $valortotal;
                     $this->db->set('forma_pagamento', $_POST['formapamento1']);
                     $this->db->set('valor1', str_replace(",", ".", $valortotal));
@@ -5534,7 +5539,7 @@ AND data <= '$data_fim'";
                     $this->db->update('tb_agenda_exames');
                     $i = 1;
                 } elseif ($i != 1 && $valor2 > 0 && $valor1 < $valortotal && $valor2 >= ($valortotal - $valor1)) {
-                    echo 'if2';
+//                    echo 'if2';
                     $valor2 = $valor2 - ($valortotal - $valor1);
                     $restovalor2 = $valortotal - $valor1;
                     if ($valor1 > 0) {
@@ -5559,7 +5564,7 @@ AND data <= '$data_fim'";
                     $valor1 = 0;
                     $i = 2;
                 } elseif ($i != 1 && $i != 2 && $valor3 > 0 && $valor2 < $valortotal && $valor3 >= ($valortotal - ($valor1 + $valor2))) {
-                    echo 'if3';
+//                    echo 'if3';
                     $valor3 = $valor3 - ($valortotal - ($valor2 + $valor1));
                     $restovalor3 = $valortotal - ($valor2 + $valor1);
                     if ($valor1 > 0 && $valor2 > 0) {
@@ -5604,7 +5609,7 @@ AND data <= '$data_fim'";
                     $valor1 = 0;
                     $i = 3;
                 } elseif ($i != 1 && $i != 2 && $i != 3 && $valor2 < ($valortotal - $valor1) && $valor3 < ($valortotal - ($valor1 + $valor2)) && $valor4 >= ($valortotal - ($valor1 + $valor2 + $valor3))) {
-                    echo 'if4';
+//                    echo 'if4';
                     $valor4 = $valor4 - ($valortotal - ($valor3 + $valor2 + $valor1));
                     $restovalor4 = $valortotal - ($valor3 + $valor2 + $valor1);
                     if ($valor1 > 0 && $valor2 > 0 && $valor3 > 0) {
@@ -6545,6 +6550,7 @@ ORDER BY ae.agenda_exames_id)";
                             cnes,
                             producaomedicadinheiro,
                             impressao_declaracao,
+                            impressao_laudo,
                             impressao_recibo,
                             celular,
                             bairro,

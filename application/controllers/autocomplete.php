@@ -97,9 +97,8 @@ class Autocomplete extends Controller {
             $result = $this->procedimento->listarprocedimentoautocomplete();
         }
         foreach ($result as $item) {
-            $retorno['value'] = $item->nome . ' - ' . $item->convenio;
-            $retorno['id'] = $item->procedimento_convenio_id;
-            $retorno['convenio'] = $item->convenio_id;
+            $retorno['value'] = $item->nome;
+            $retorno['id'] = $item->procedimento_tuss_id;
             $var[] = $retorno;
         }
         echo json_encode($var);
@@ -367,6 +366,16 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompleteprocedimentos($_GET['convenio1']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentos();
+        }
+        echo json_encode($result);
+    }
+    
+    function conveniocarteira() {
+
+        if (isset($_GET['convenio1'])) {
+            $result = $this->exametemp->listarautocompleteconveniocarteira($_GET['convenio1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteconveniocarteira();
         }
         echo json_encode($result);
     }

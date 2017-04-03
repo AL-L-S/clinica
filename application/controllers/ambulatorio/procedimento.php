@@ -33,9 +33,31 @@ class Procedimento extends BaseController {
         $data["limite_paginacao"] = $limite;
         $this->loadView('ambulatorio/procedimento-lista', $data);
     }
+    
+    function procedimentoconveniovalor($procedimento_tuss_id) {
+
+        $data['procedimento'] = $this->procedimento->listarprocedimentoprodutovalor($procedimento_tuss_id);
+        $data['valor'] = $this->procedimento->listarprocedimentoconveniovalor($procedimento_tuss_id);
+        $data['convenio'] = $this->convenio->listardados();
+//        var_dump($data['valor']); die;
+        $this->loadView('ambulatorio/procedimentoconveniovalor-form', $data);
+    }
+    
+    function gravarprocedimentoconveniovalor($procedimento_tuss_id) {
+        
+        $this->procedimento->gravarprocedimentoconveniovalor($procedimento_tuss_id);
+        redirect(base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$procedimento_tuss_id");
+    }
+    
+    function excluirprocedimentoconveniovalor($procedimento_convenio_produto_valor_id, $procedimento_tuss_id) {
+        
+        $this->procedimento->excluirprocedimentoconveniovalor($procedimento_convenio_produto_valor_id);
+        
+        redirect(base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$procedimento_tuss_id");
+    }
 
     function pesquisartuss($args = array()) {
-        $this->loadView('ambulatorio/procedimentotuss-lista', $args);
+        $this->loadView('ambulatorio/procedimento-lista', $args);
     }
 
     function carregarprocedimento($procedimento_tuss_id) {

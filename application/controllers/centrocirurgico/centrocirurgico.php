@@ -303,9 +303,9 @@ class centrocirurgico extends BaseController {
     }
 
     function gravarequipeoperadores() {
-        $equipe_id = $_POST['equipe_id'];
+        $solicitacao_id = $_POST['solicitacao_id'];
         $this->centrocirurgico_m->gravarequipeoperadores();
-        redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$equipe_id");
+        redirect(base_url() . "centrocirurgico/centrocirurgico/montarequipe/$solicitacao_id");
     }
 
     function finalizarcadastroprocedimentosguia($guia) {
@@ -411,12 +411,12 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/solicitacarorcamento-form', $data);
     }
 
-    function montarequipe($equipe_id) {
-        $data['equipe_id'] = $equipe_id;
+    function montarequipe($solicitacaocirurgia_id) {
+        $data['solicitacaocirurgia_id'] = $solicitacaocirurgia_id;
         $data['medicos'] = $this->operador_m->listarmedicos();
-        $data['equipe'] = $this->solicitacirurgia_m->listarequipe($equipe_id);
-        $data['equipe_operadores'] = $this->solicitacirurgia_m->listarequipeoperadores($equipe_id);
-        $data['grau_participacao'] = $this->solicitacirurgia_m->grauparticipacao($equipe_id);
+//        $data['equipe'] = $this->solicitacirurgia_m->listarequipe($solicitacaocirurgia_id);
+        $data['equipe_operadores'] = $this->solicitacirurgia_m->listarequipeoperadores($solicitacaocirurgia_id);
+        $data['grau_participacao'] = $this->solicitacirurgia_m->grauparticipacao();
 //        echo "<pre>";var_dump($data['equipe_operadores'] );die;
         $this->loadView('centrocirurgico/montarequipe-form', $data);
     }

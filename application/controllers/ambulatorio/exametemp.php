@@ -425,18 +425,6 @@ class Exametemp extends BaseController {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
-        } elseif (trim($_POST['telefone']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta. Selecione um paciente válido.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
-        } elseif (trim($_POST['convenio1']) == "-1") {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio seleionar um convenio.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
-        } elseif (trim($_POST['procedimento1']) == "") {
-            $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio selecionar um procedimento.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exametemp/carregarexamegeral3/$agenda_exames_id");
         } else {
             $tipo = $this->exametemp->tipomultifuncaogeral($_POST['procedimento1']);
             $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id, $tipo[0]->tipo);

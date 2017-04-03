@@ -1188,12 +1188,12 @@ class Guia extends BaseController {
         $data_escolhida = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data'])));
         $hoje = date("Y-m-d");
 
-        if ($hoje <= $data_escolhida) {
-            $data['mensagem'] = 'A data não pode ser maior que a de hoje.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-        } else {
+//        if ($hoje <= $data_escolhida) {
+//            $data['mensagem'] = 'A data não pode ser maior que a de hoje.';
+//            $this->session->set_flashdata('message', $data['mensagem']);
+//        } else {
             $this->guia->gravaralterardata($agenda_exames_id);
-        }
+//        }
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 

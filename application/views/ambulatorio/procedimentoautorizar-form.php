@@ -172,23 +172,44 @@
                                         $("#sala<?= $b; ?>").prop('required', true);
                                         $("#convenio<?= $b; ?>").prop('required', true);
                                         $("#procedimento<?= $b; ?>").prop('required', true);
-                                        $("#autorizacao<?= $b; ?>").prop('required', true);
+//                                        $("#autorizacao<?= $b; ?>").prop('required', true);
                                     } else {
                                         $("#medico_id<?= $b; ?>").prop('required', false);
                                         $("#medico<?= $b; ?>").prop('required', false);
                                         $("#sala<?= $b; ?>").prop('required', false);
                                         $("#convenio<?= $b; ?>").prop('required', false);
                                         $("#procedimento<?= $b; ?>").prop('required', false);
-                                        $("#autorizacao<?= $b; ?>").prop('required', false);
+//                                        $("#autorizacao<?= $b; ?>").prop('required', false);
                                     }
                                 });
+
+
+
 
 <? }
 ?>
 
                         });
+<? for ($b = 1; $b <= $i; $b++) { ?>
+                            $(function () {
+                                $('#convenio<?= $b; ?>').change(function () {
+                                    if ($(this).val()) {
+                                        $('.carregando').show();
+                                        $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
+                                            options = '<option value=""></option>';
+                                            if (j[0].carteira_obrigatoria == 't') {
+                                                $("#autorizacao<?= $b; ?>").prop('required', true);
+                                            } else {
+                                                $("#autorizacao<?= $b; ?>").prop('required', false);
+                                            }
 
+                                        });
+                                    }
+                                });
+                            });
 
+<? }
+?>
 
 
                         $(function () {

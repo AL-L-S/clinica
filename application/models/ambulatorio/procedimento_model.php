@@ -74,6 +74,35 @@ class procedimento_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimentoprodutovalor($procedimento_tuss_id) {
+        $this->db->select('procedimento_tuss_id,
+                            nome,
+                            codigo,
+                            descricao');
+        $this->db->from('tb_procedimento_tuss');
+        $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
+        $this->db->where("ativo", 't');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentoconveniovalor($procedimento_tuss_id) {
+        $this->db->select('pv.procedimento_convenio_produto_valor_id,
+                            pv.valor,
+                            pv.procedimento_tuss_id,
+                            pv.convenio_id,
+                            c.nome as convenio,
+                            ');
+        $this->db->from('tb_procedimento_convenio_produto_valor pv');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pv.convenio_id', 'left');
+        $this->db->where("pv.ativo", 't');
+        $this->db->where("pv.procedimento_tuss_id", $procedimento_tuss_id);
+        $this->db->orderby("pv.procedimento_convenio_produto_valor_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listargrupos() {
         $this->db->select('ambulatorio_grupo_id,
                             nome,
@@ -185,16 +214,12 @@ class procedimento_model extends Model {
     }
 
     function listarprocedimentoautocomplete($parametro = null) {
-        $this->db->select('pc.procedimento_convenio_id,
-                           pt.nome,
-                           c.nome as convenio,
-                           pc.convenio_id');
-        $this->db->from('tb_procedimento_convenio pc');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where('pc.ativo', 'true');
+        $this->db->select('pt.procedimento_tuss_id,
+                           pt.nome');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->where('pt.ativo', 'true');
         if ($parametro != null) {
-            $this->db->where("(pt.descricao ilike '%$parametro%' OR pt.codigo ilike '%$parametro%')");
+            $this->db->where("(pt.nome ilike '%$parametro%' OR pt.codigo ilike '%$parametro%')");
         }
         $return = $this->db->get();
         return $return->result();
@@ -389,6 +414,42 @@ class procedimento_model extends Model {
                 $this->db->update('tb_tuss');
             }
 
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarprocedimentoconveniovalor($procedimento_tuss_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            /* inicia o mapeamento no banco */
+            $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
+            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_procedimento_convenio_produto_valor');
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function excluirprocedimentoconveniovalor($procedimento_convenio_produto_valor_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('procedimento_convenio_produto_valor_id', $procedimento_convenio_produto_valor_id);
+            $this->db->update('tb_procedimento_convenio_produto_valor');
 
             return 1;
         } catch (Exception $exc) {

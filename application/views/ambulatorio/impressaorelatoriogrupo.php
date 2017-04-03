@@ -175,10 +175,6 @@
                             $ESPIROMETRIA = $ESPIROMETRIA + $item->valor;
                             $NUMEROESPIROMETRIA = $NUMEROESPIROMETRIA + $item->quantidade;
                         }
-                        if ($item->grupo == "LABORATORIAL") {
-                            $LABORATORIAL = $LABORATORIAL + $item->valor;
-                            $NUMEROLABORATORIAL = $NUMEROLABORATORIAL + $item->quantidade;
-                        }
                         if ($item->grupo == "FISIOTERAPIA") {
                             $FISIOTERAPIA = $FISIOTERAPIA + $item->valor;
                             $NUMEROFISIOTERAPIA = $NUMEROFISIOTERAPIA + $item->quantidade;

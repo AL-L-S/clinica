@@ -29,29 +29,28 @@ Modified by Srinivas Tamada http://www.9lessons.info
   }
 
   function startRecording(button) {
-//    alert('teste');
-//    console.log(recorder);
     recorder.record();
-//    button.disabled = true;
+    button.disabled = true;
+//    console.log(button.nextElementSibling);
 //    button.nextElementSibling.disabled = false;
-//    __log('Recording...');
+    __log('Recording...');
   }
 
   function stopRecording(button) {
-    recorder && recorder.stop();
+    recorder.stop();
+    
     button.disabled = true;
     //button.previousElementSibling.disabled = false;
     __log('Stopped recording.');
-
+//    alert('ola');
     // create WAV download link using audio data blob
-    createDownloadLink();
+    recorder.exportWAV();
 
     recorder.clear();
   }
 
   function createDownloadLink() {
-
-    recorder && recorder.exportWAV(function(blob) {
-        
+    recorder.exportWAV(function(blob) {
+//        alert('ola');
     });
   }

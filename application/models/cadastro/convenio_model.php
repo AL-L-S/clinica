@@ -473,6 +473,11 @@ class Convenio_model extends Model {
             } else {
                 $this->db->set('dinheiro', 'f');
             }
+            if (isset($_POST['txtcarteira'])) {
+                $this->db->set('carteira_obrigatoria', $_POST['txtcarteira']);
+            } else {
+                $this->db->set('carteira_obrigatoria', 'f');
+            }
             $this->db->set('observacao', $_POST['txtObservacao']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -547,6 +552,7 @@ class Convenio_model extends Model {
                                 co.tipo_logradouro_id,
                                 co.telefone,
                                 co.municipio_id,
+                                co.carteira_obrigatoria,
                                 co.logradouro,
                                 co.cnpj,
                                 co.dinheiro,
@@ -575,6 +581,7 @@ class Convenio_model extends Model {
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_celular = $return[0]->celular;
             $this->_telefone = $return[0]->telefone;
+            $this->_carteira_obrigatoria = $return[0]->carteira_obrigatoria;
             $this->_tipo_logradouro_id = $return[0]->tipo_logradouro_id;
             $this->_numero = $return[0]->numero;
             $this->_bairro = $return[0]->bairro;

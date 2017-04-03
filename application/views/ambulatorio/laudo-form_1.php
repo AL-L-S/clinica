@@ -16,7 +16,7 @@
                 <fieldset>
                     <legend>Dados</legend>
                     <table> 
-                        
+
                         <tr>
                             <td width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <td width="400px;">Exame: <?= @$obj->_procedimento ?></td>
@@ -28,7 +28,7 @@
                             <td>Sala:<?= @$obj->_sala ?></td>
                         </tr>
                         <tr>
-                           
+
 
                             <td width="40px;"><div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
@@ -179,9 +179,9 @@
                                         <input type="text" id="linha2" class="texto02" name="linha2"/>
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
-                                        <?php// foreach ($linha as $item) { ?>
-                                                                                                                        <option value="<?php// echo $item->nome; ?>" ><?php// echo $item->nome; ?></option>
-                                        <?php// } ?>
+                                        <?php // foreach ($linha as $item) { ?>
+                                                                                                                        <option value="<?php // echo $item->nome;  ?>" ><?php // echo $item->nome;  ?></option>
+                                        <?php // } ?>
                                         </select>-->
 
                                         <div class="bt_link">
@@ -269,35 +269,48 @@
                                     </div>
                                 </fieldset>
                                 <fieldset>
+                                    <? $operador_id = $this->session->userdata('operador_id'); ?>
                                     <legend>Impress&atilde;o</legend>
                                     <div>
                                         <table>
                                             <tr>
                                                 <td >
-                                                    <div class="bt_link">
+                                                    <div class="bt_link_new">
                                                         <a id="Imprimir" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');">
                                                             <font size="-1"> Imprimir</font></a></div></td>
-                                                <td ><div class="bt_link">
+                                                <td ><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoimagem/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');">
                                                             <font size="-1"> fotos</font></a></div></td>
-                                                <td ><div class="bt_link">
+                                                <td >
+                                                    <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/pesquisarlaudoantigo');">
                                                             <font size="-1">L. Antigo</font></a></div></td>
-                                                <td ><div class="bt_link">
+                                                <td >
+                                                    <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $ambulatorio_laudo_id ?>');" >
                                                             <font size="-1">Arquivos</font></a></div></td>
-                                                <td ><div class="bt_link">
+                                                <td >
+                                                    <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/oit/<?= $ambulatorio_laudo_id ?>');" >
                                                             <font size="-1">OIT</font></a></div></td>
-                                                <td ><div class="bt_link">
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaooit/<?= $ambulatorio_laudo_id ?>');" >
                                                             <font size="-1">Imp. OIT</font></a></div></td>
-                                                <td ><div class="bt_link">
+                                                <td >
+                                                    <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/gravordevoz/" ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=650');">
                                                             <font size="-1">Gravador</font></a></div></td>
-                                                <td ><div class="bt_link">
+                                                <td >
+                                                    <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaratestado/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
-                                                            Atestado</a></div></td>
+                                                            <font size="-1">Atestado</a></div></td>
+                                                <td >
+                                                    <div class="bt_link_new">
+                                                        <a href="<?= base_url() ?>ambulatorio/laudo/vozemtexto/<?= $ambulatorio_laudo_id ?>/<?= $operador_id ?>">
+                                                            <font size="-1">Voz em Texto</a></div></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -335,6 +348,8 @@
                             </div> 
                             </div> <!-- Final da DIV content -->
                             <style>
+                                .bt_link {width: 200pt;}
+
                                 #sortable { list-style-type: none; margin: 0; padding: 0; width: 1300px; }
                                 #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
                             </style>

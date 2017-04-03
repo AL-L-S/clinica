@@ -272,6 +272,22 @@ class Exame extends BaseController {
         }
     }
 
+    function gravarguiaambulatorial() {
+        var_dump($_POST);
+        die;
+        $ambulatorio_guia = $this->guia->gravarguiacirurgica();
+
+        if ($ambulatorio_guia == "-1") {
+            $data['mensagem'] = 'Erro ao gravar Guia. Opera&ccedil;&atilde;o cancelada.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/faturamentomanual");
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar Guia.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/guiacirurgicaitens/$ambulatorio_guia");
+        }
+    }
+
     function guiacirurgicaitens($guia_id) {
 
         $data['guia'] = $this->guia->instanciarguia($guia_id);
@@ -286,6 +302,14 @@ class Exame extends BaseController {
         $data['hospitais'] = $this->exame->listarhospitais();
         $data['convenios'] = $this->guia->listarconvenios();
         $this->loadView('ambulatorio/novaguiacirurgica-form', $data);
+    }
+
+    function carregarguiaambulatorial($guia_id = null) {
+
+        $data['guia'] = $this->guia->instanciarguia($guia_id);
+        $data['hospitais'] = $this->exame->listarhospitais();
+        $data['convenios'] = $this->guia->listarconvenios();
+        $this->loadView('ambulatorio/novaguiaambulatorio-form', $data);
     }
 
     function fecharfinanceiro() {
@@ -388,6 +412,37 @@ class Exame extends BaseController {
         $data['exames'] = $this->exame->listarexamesguia($guia_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guiafaturamento-form', $data);
+    }
+
+    function faturarguiamanual($paciente_id = null) {
+        if ($paciente_id == null) {
+            $paciente_id = $_POST['txtpacienteid'];
+        }
+//        var_dump($_POST); die;
+
+        $data['paciente_id'] = $paciente_id;
+        $data['convenios'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->login->listar();
+        $data['exames'] = $this->exame->listarexamesguiamanual($paciente_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $this->loadView('ambulatorio/guiafaturamentoambulatorial-form', $data);
+    }
+
+    function gravarprocedimentosfaturamentomanual($paciente_id) {
+//        var_dump($_POST); die;
+
+        $resultadoguia = $this->exame->listarguiafaturamentomanualambulatorial($paciente_id);
+        if ($resultadoguia == null) {
+            $ambulatorio_guia = $this->exame->gravarguiamanual($paciente_id);
+        } else {
+            $ambulatorio_guia = $resultadoguia[0]->ambulatorio_guia_id;
+        }
+//            var_dump($ambulatorio_guia); die;
+
+        $this->exame->gravarexamesfaturamentomanual($ambulatorio_guia);
+//        var_dump($ambulatorio_guia); die;
+        redirect(base_url() . "ambulatorio/exame/faturarguiamanual/$paciente_id");
     }
 
     function estoqueguia($agenda_exames_id) {
@@ -751,10 +806,11 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
     }
 
-    function gastosdesala($exames_id, $sala_id = null) {
+    function gastosdesala($exames_id, $convenio_id, $sala_id = null) {
+        $data['convenio_id'] = $convenio_id;
         $data['sala_id'] = $sala_id;
         $data['paciente'] = $this->exame->listarpacientegastos($exames_id);
-        $data['produtos'] = $this->exame->listarprodutossalagastos();
+        $data['produtos'] = $this->exame->listarprodutossalagastos($convenio_id);
         $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
         $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']);
         $data['laudo'] = $this->exame->mostrarlaudogastodesala($exames_id);
@@ -765,22 +821,24 @@ class Exame extends BaseController {
 
     function gravargastodesala() {
         $exame_id = $_POST['exame_id'];
+        $sala_id = $_POST['sala_id'];
         $this->exame->gravargastodesala();
         if (isset($_POST['faturar'])) {
-            $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id']);
             $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+            $convenio_id = $data['agenda_exames'][0]->convenio_id;
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
-
-            $this->exame->faturargastodesala($data['procedimento'][0]);
+            $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id'], $convenio_id);
+            if (count($data['procedimento']) > 0) {
+                $this->exame->faturargastodesala($data['procedimento'][0]);
+            }
         }
-        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
-//        $this->gastosdesala($exame_id);
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id");
     }
 
-    function excluirgastodesala($gasto_id, $exame_id) {
+    function excluirgastodesala($gasto_id, $exame_id, $convenio_id, $sala_id) {
         $this->exame->excluirgastodesala($gasto_id);
-        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id");
+        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id");
 //        $this->gastosdesala($exame_id);
     }
 
@@ -792,8 +850,11 @@ class Exame extends BaseController {
             sort($data['arquivo_pasta']);
         }
         $data['arquivos_deletados'] = directory_map("/home/sisprod/projetos/clinica/uploadopm/$exame_id/");
+        $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+        $convenio_id = $data['agenda_exames'][0]->convenio_id;
 //        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
         //$data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinica/uploadopm/$exame_id/");
+        $data['convenio_id'] = $convenio_id;
         $data['exame_id'] = $exame_id;
         $data['sala_id'] = $sala_id;
         $this->loadView('ambulatorio/importacao-imagem', $data);

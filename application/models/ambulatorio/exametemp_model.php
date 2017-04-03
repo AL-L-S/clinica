@@ -1940,6 +1940,26 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function gravartextoconvertido() {
+        $horario = date("Y-m-d H:i:s");
+        $texto = "<p>".$_POST['texto']."</p>";
+        
+        $this->db->select('texto');
+        $this->db->from('tb_ambulatorio_laudo');
+        $this->db->where("ambulatorio_laudo_id", $_POST['laudo_id']);
+        $return = $this->db->get()->result();
+        
+        
+        $texto = $return[0]->texto . $texto;
+        
+        
+        $this->db->set('texto', $texto);
+        $this->db->set('operador_atualizacao', $_POST['operador_id']);
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->where("ambulatorio_laudo_id", $_POST['laudo_id']);
+        $this->db->update('tb_ambulatorio_laudo');
+    }
+
     function gravarpacienteexames($agenda_exames_id, $tipo = null) {
         try {
 
@@ -3536,6 +3556,15 @@ class exametemp_model extends Model {
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
         $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompleteconveniocarteira($parametro) {
+        $this->db->select(' c.convenio_id,
+                            c.carteira_obrigatoria');
+        $this->db->from('tb_convenio c');
+        $this->db->where('c.convenio_id', $parametro);
         $return = $this->db->get();
         return $return->result();
     }

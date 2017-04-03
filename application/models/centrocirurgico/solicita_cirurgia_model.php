@@ -414,14 +414,14 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
-    function listarequipeoperadores($equipe_id) {
+    function listarequipeoperadores($solicitacaocirurgia_id) {
         $this->db->select('ec.equipe_cirurgia_operadores_id,
                            gp.descricao as funcao,
                            o.nome as medico');
         $this->db->from('tb_equipe_cirurgia_operadores ec');
         $this->db->join('tb_operador o', 'o.operador_id = ec.operador_responsavel', 'left');
         $this->db->join('tb_grau_participacao gp', 'gp.grau_participacao_id = ec.funcao', 'left');
-        $this->db->where('ec.equipe_cirurgia_id', $equipe_id);
+        $this->db->where('ec.solicitacao_cirurgia_id', $solicitacaocirurgia_id);
         $this->db->where('ec.ativo', 't');
 
         $return = $this->db->get();
@@ -620,7 +620,7 @@ class solicita_cirurgia_model extends BaseModel {
             $valor1 = str_replace(",", ".", $valor1);
 //            $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
-            $this->db->set('grau_participacao', $_POST['funcao']);
+//            $this->db->set('grau_participacao', $_POST['funcao']);
             $this->db->set('valor', $valor1);
             $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
             $this->db->set('observacao', $_POST['obs']);
