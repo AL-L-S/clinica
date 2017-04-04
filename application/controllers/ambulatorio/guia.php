@@ -1210,6 +1210,20 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/tempomedioconsulta-form', $data);
     }
+    
+    function procedimentocirurgicovalor($agenda_exames_id) {
+        $data['valor'] = $this->guia->procedimentocirurgicovalor($agenda_exames_id);
+//        var_dump($data['valor']); die;
+
+        $this->load->View('ambulatorio/procedimentocirurgicovalor-form', $data);
+    }
+    
+    function gravarprocedimentocirurgicovalor($agenda_exames_id) {
+        $this->guia->gravarprocedimentocirurgicovalor($agenda_exames_id);
+//        var_dump($data['valor']); die;
+
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
 
     function gravarfaturar($agenda_exames_id) {
         $this->guia->gravarfaturamento($agenda_exames_id);

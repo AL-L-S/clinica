@@ -473,6 +473,11 @@ class Convenio_model extends Model {
             } else {
                 $this->db->set('dinheiro', 'f');
             }
+            if (isset($_POST['txthomecare'])) {
+                $this->db->set('home_care', $_POST['txthomecare']);
+            } else {
+                $this->db->set('dinheiro', 'f');
+            }
             if (isset($_POST['txtcarteira'])) {
                 $this->db->set('carteira_obrigatoria', $_POST['txtcarteira']);
             } else {
@@ -551,6 +556,7 @@ class Convenio_model extends Model {
                                 co.numero,
                                 co.tipo_logradouro_id,
                                 co.telefone,
+                                co.home_care,
                                 co.municipio_id,
                                 co.carteira_obrigatoria,
                                 co.logradouro,
@@ -582,6 +588,7 @@ class Convenio_model extends Model {
             $this->_celular = $return[0]->celular;
             $this->_telefone = $return[0]->telefone;
             $this->_carteira_obrigatoria = $return[0]->carteira_obrigatoria;
+            $this->_home_care = $return[0]->home_care;
             $this->_tipo_logradouro_id = $return[0]->tipo_logradouro_id;
             $this->_numero = $return[0]->numero;
             $this->_bairro = $return[0]->bairro;

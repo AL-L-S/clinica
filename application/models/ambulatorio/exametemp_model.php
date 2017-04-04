@@ -1942,17 +1942,17 @@ class exametemp_model extends Model {
 
     function gravartextoconvertido() {
         $horario = date("Y-m-d H:i:s");
-        $texto = "<p>".$_POST['texto']."</p>";
-        
+        $texto = "<p>" . $_POST['texto'] . "</p>";
+
         $this->db->select('texto');
         $this->db->from('tb_ambulatorio_laudo');
         $this->db->where("ambulatorio_laudo_id", $_POST['laudo_id']);
         $return = $this->db->get()->result();
-        
-        
+
+
         $texto = $return[0]->texto . $texto;
-        
-        
+
+
         $this->db->set('texto', $texto);
         $this->db->set('operador_atualizacao', $_POST['operador_id']);
         $this->db->set('data_atualizacao', $horario);
@@ -3553,6 +3553,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("ag.tipo !=", 'CONSULTA');
         $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
         $this->db->orderby("pt.nome");
@@ -3579,6 +3580,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("ag.tipo !=", 'CONSULTA');
         $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
         $this->db->where('pt.grupo', $parametro2);
@@ -3624,6 +3626,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("ag.tipo !=", 'EXAME');
         $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
         $this->db->orderby("pt.nome");
@@ -3637,9 +3640,10 @@ class exametemp_model extends Model {
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-//        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
 //        $this->db->where("ag.tipo !=", 'EXAME');
 //        $this->db->where("ag.tipo !=", 'CONSULTA');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
         $this->db->orderby("pt.nome");

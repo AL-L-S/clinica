@@ -23,6 +23,25 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function procedimentocirurgicovalor($agenda_exames_id) {
+
+        $this->db->select('valor_total,
+                            agenda_exames_id');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gravarprocedimentocirurgicovalor($agenda_exames_id) {
+//        var_dump($_POST['valor']); die;
+        $this->db->set('valor', str_replace(',', '.', $_POST['valor']));
+        $this->db->set('valor_total', str_replace(',', '.', $_POST['valor']));
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->update('tb_agenda_exames');
+        return 1;
+    }
+
     function listarpacientes($parametro = null) {
 
         $this->db->select('paciente_id,
@@ -7225,13 +7244,14 @@ ORDER BY ae.agenda_exames_id)";
 //            var_dump($percentual); die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->select('dinheiro');
+            $this->db->select('dinheiro, home_care');
             $this->db->from('tb_convenio');
             $this->db->where("convenio_id", $_POST['convenio1']);
             $query = $this->db->get();
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
-
+            $home_care = $return[0]->home_care;
+//            var_dump($home_care); die;
 //            if ((isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])) {
 //                $this->db->set('indicacao_id', $_POST['indicacao']);
 //                $this->db->where('ambulatorio_guia_id', $ambulatorio_guia_id);
@@ -7252,7 +7272,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('convenio_id', $_POST['convenio1']);
                 $this->db->set('quantidade', '1');
                 if ($dinheiro == "t") {
-                    if ($index == 1) {
+                    if ($index == 1 && $home_care == 'f') {
                         $this->db->set('valor', $_POST['valor1']);
 //                        $this->db->set('percentual_medico', $valor_percentual);
                         $this->db->set('valor_total', $_POST['valor1']);
@@ -7263,7 +7283,7 @@ ORDER BY ae.agenda_exames_id)";
                         $this->db->set('confirmado', 'f');
                     }
                 } else {
-                    if ($index == 1) {
+                    if ($index == 1 && $home_care == 'f') {
                         $this->db->set('valor', $_POST['valor1']);
                         $this->db->set('valor_total', $_POST['valor1']);
                         $this->db->set('confirmado', 't');

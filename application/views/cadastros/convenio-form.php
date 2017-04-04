@@ -117,6 +117,7 @@
                         endif;
                         ?>>TUSS</option>
                     </select>
+
                 </div>
                 <div>
                     <label>Grupo convenio</label>
@@ -175,6 +176,20 @@
                 <div>
                     <label>Tempo para pagamento</label>
                     <input type="text" id="pagamento" class="texto02" name="pagamento" alt="integer" value="<?= @$obj->_pagamento; ?>" />
+
+                </div>
+                <div>
+                    <?php
+                    if (@$obj->_home_care == "t") {
+                        ?>
+                        <input type="checkbox" name="txthomecare" checked ="true" />Home Care
+                        <?php
+                    } else {
+                        ?>
+                        <input type="checkbox" name="txthomecare"  />Home Care
+                        <?php
+                    }
+                    ?> 
                 </div>
             </fieldset>
             <fieldset>
@@ -255,7 +270,7 @@
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         jQuery('#form_convenio').validate({
             rules: {
                 txtNome: {
@@ -285,15 +300,15 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtCidade").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
             minLength: 3,
-            focus: function(event, ui) {
+            focus: function (event, ui) {
                 $("#txtCidade").val(ui.item.label);
                 return false;
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $("#txtCidade").val(ui.item.value);
                 $("#txtCidadeID").val(ui.item.id);
                 return false;

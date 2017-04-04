@@ -18,6 +18,7 @@ class Exametemp extends BaseController {
         $this->load->model('ambulatorio/exametemp_model', 'exametemp');
         $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->model('ambulatorio/laudo_model', 'laudo');
+        $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->library('mensagem');
@@ -392,8 +393,30 @@ class Exametemp extends BaseController {
 
     function gravarguiacirurgicaprocedimentos() {
         $guia_id = $_POST['txtguiaid'];
+        $procedimento_valor = $this->procedimento->carregavalorprocedimentocirurgico($_POST['procedimento']);
+        $_POST['valor'] = $procedimento_valor[0]->valortotal;
+//        var_dump($procedimento_valor); die;
         $this->exametemp->gravarguiacirurgicaprocedimentos();
         redirect(base_url() . "ambulatorio/exame/guiacirurgicaitens/$guia_id");
+    }
+
+    function carregavalorprocedimentocirurgico() {
+
+        if (isset($_GET['procedimento_id']) && isset($_GET['equipe_id'])) {
+            $procedimento_valor = $this->procedimento->carregavalorprocedimentocirurgico($_GET['procedimento_id']);
+            $equipe = $this->exame->listarquipeoperadores($_GET['equipe_id']);
+
+            $valorProcedimento = ((float) ($procedimento_valor[0]->valor_total));
+            $valorCirurgiao = 0;
+            $valorAnestesista = 0;
+
+            foreach ($equipe as $value) {
+                if ($value->funcao == '00') {//cirurgiao
+                } elseif ($value->funcao == '00') {//anestesista
+                }
+            }
+        }
+        return $result;
     }
 
     function gravarpacienteexametemp($agenda_exames_id) {

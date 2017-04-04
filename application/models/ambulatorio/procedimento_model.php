@@ -226,7 +226,7 @@ class procedimento_model extends Model {
     }
 
     function carregavalorprocedimentocirurgico($procedimento_id) {
-        $this->db->select('valor_total');
+        $this->db->select('valortotal');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->where('pc.procedimento_convenio_id', $procedimento_id);
         $return = $this->db->get();

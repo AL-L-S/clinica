@@ -21,25 +21,26 @@
             </div>
             <div>
                 <label>Convenio</label>
-                <input type="text" id="convenio" class="texto02" name="convenio" value="<?= @$guia[0]->convenio; ?>" readonly="true"/>
+                <input type="text"  id="convenio" class="texto02" name="convenio" value="<?= @$guia[0]->convenio; ?>" readonly="true"/>
             </div>
 
         </fieldset>
         <fieldset>
             <legend>Procedimentos</legend>
 
-            <div >
+            <div>
                 <label>Procedimento *</label>
-                <select  name="procedimento" id="procedimento" class="texto06"  required="">
+                <select  name="procedimento" id="procedimento" required="true" class="chosen-select" tabindex="1">
                     <option value="">Selecione</option>
                     <? foreach (@$procedimentos as $item) : ?>
-                        <option value="<?= $item->procedimento_convenio_id; ?>" 
+                        <option value="<?= $item->procedimento_convenio_id; ?>"  
                                 onclick="document.getElementById('valor').value = '<?= $item->valortotal; ?>'">
-                                     <?= $item->nome; ?>
+                                    <?= $item->codigo . " - " . $item->nome; ?>
                         </option>
                     <? endforeach; ?>
                 </select>
-                
+
+                <br>
                 <label>Data/Hora Autorização*</label>
                 <input type="text" name="data_autorizacao" id="data_autorizacao" alt="39/29/9999 29:69"class="texto03" required=""/>
             </div>
@@ -48,20 +49,20 @@
                 <label>Data/Hora Realização*</label>
                 <input type="text" name="data_realizacao" id="data_realizacao" alt="39/29/9999 29:69"class="texto03" required=""/>
             </div>
-            
-            
 
-            <div>
-                <label>Valor</label>
-                <input type="text" id="valor" class="texto01" name="valor" alt="decimal"/>
-            </div>
+
+
+            <!--            <div>
+                            <label>Valor</label>
+                            <input type="text" id="valor" class="texto01" name="valor" alt="decimal"/>
+                        </div>-->
 
             <div>
                 <label>QTDE*</label>
                 <input type="text" name="qtde" id="qtde" alt="integer" class="texto01" value="1" required=""/>
             </div>
-            
-            
+
+
             <div>
                 <label> H. Especial* </label>
                 <input type="checkbox" name="horEspecial">
@@ -82,6 +83,7 @@
                 <tr>
                     <th class="tabela_header">Procedimento</th>
                     <th class="tabela_header">Data/Hora Autorizaçao</th>
+                    <th class="tabela_header">Valor</th>
                     <th class="tabela_header">Data/Hora Realizaçao</th>
                     <th class="tabela_header">Horario Especial</th>
                     <th class="tabela_header"></th>
@@ -96,6 +98,11 @@
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y H:i", strtotime($item->data_autorizacao)); ?></td> 
+                        <td class="<?php echo $estilo_linha; ?>">
+                            <a style="cursor: pointer;" onmouseover="style = 'cursor: pointer;color:red;'" onmouseout="style = 'cursor: pointer;color:black;'" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/procedimentocirurgicovalor/$item->agenda_exames_id" ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=500');">
+                                => <?= number_format($item->valor_total, 2, ',', '.') ?>
+                            </a>
+                        </td> 
                         <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y H:i", strtotime($item->data_realizacao)); ?></td>
                         <td class="<?php echo $estilo_linha; ?>">
                             <?
@@ -133,43 +140,29 @@
         </div>
 
     </fieldset>
-    
-    
-    
+
+
+
 </div> <!-- Final da DIV content -->
-<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-    $(function () {
-        $('#procedimento').change(function () {
-            if ($(this).val() && $('#equipe_id').val() != '') {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $(this).val(), equipe_id: $('#equipe_id').val()}, function (j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                    }
-                    $('#procedimento1').html(options).show();
-                    $('.carregando').hide();
-                });
-            }
-        });
-    });
-
-//    $(function () {
-//        $('#equipe_id').change(function () {
-//            if ($(this).val() && $('#procedimento').val() != '') {
-//                $('.carregando').show();
-//                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $('#procedimento').val(), equipe_id: $(this).val()}, function (j) {
-//
-//                });
-//            }
-//        });
-//    });
+//                                $("#procedimento").chosen("destroy");
+                                $(".chosen-select").click(function () {
+                                    alert('asd');
+                                });
+                                
+                                $("#procedimento2").chosen()
 
 </script>
