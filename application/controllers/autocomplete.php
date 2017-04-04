@@ -103,6 +103,21 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
+    
+    function procedimentocirurgia() {
+        if (isset($_GET['procedimento_id'])) {
+            $result = $this->procedimento->listarprocedimentocirurgia2autocomplete($_GET['procedimento_id'], $_GET['convenio_id']);
+        } else {
+            $result = $this->procedimento->listarprocedimentocirurgia2autocomplete();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->codigo . " - " .$item->nome ;
+            $retorno['id'] = $item->procedimento_tuss_id;
+            $retorno['valor'] = $item->procedimento_tuss_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
 
     function procedimentoconveniocirurgia() {
 

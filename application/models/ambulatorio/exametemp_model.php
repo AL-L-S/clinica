@@ -1187,6 +1187,11 @@ class exametemp_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_agenda_exames');
+            
+            $this->db->set('data_criacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
+            $this->db->where('ambulatorio_guia_id', $_POST['txtguiaid']);
+            $this->db->update('tb_ambulatorio_guia');
+            
         }
     }
 

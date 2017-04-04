@@ -29,17 +29,17 @@
             <legend>Procedimentos</legend>
 
             <div >
-                <label>Procedimento *</label>
-                <select  name="procedimento" id="procedimento" class="texto06"  required="">
-                    <option value="">Selecione</option>
-                    <? foreach (@$procedimentos as $item) : ?>
-                        <option value="<?= $item->procedimento_convenio_id; ?>" 
-                                onclick="document.getElementById('valor').value = '<?= $item->valortotal; ?>'">
-                                     <?= $item->nome; ?>
-                        </option>
-                    <? endforeach; ?>
-                </select>
-                
+                            <label>Procedimento *</label>
+                            <select  name="procedimento" id="procedimento" class="texto06"  required="">
+                                <option value="">Selecione</option>
+            <? foreach (@$procedimentos as $item) : ?>
+                                                        <option value="<?= $item->procedimento_convenio_id; ?>" 
+                                                                onclick="document.getElementById('valor').value = '<?= $item->valortotal; ?>'">
+                <?= $item->nome; ?>
+                                                        </option>
+            <? endforeach; ?>
+                            </select>
+            
                 <label>Data/Hora Autorização*</label>
                 <input type="text" name="data_autorizacao" id="data_autorizacao" alt="39/29/9999 29:69"class="texto03" required=""/>
             </div>
@@ -48,8 +48,8 @@
                 <label>Data/Hora Realização*</label>
                 <input type="text" name="data_realizacao" id="data_realizacao" alt="39/29/9999 29:69"class="texto03" required=""/>
             </div>
-            
-            
+
+
 
             <div>
                 <label>Valor</label>
@@ -60,8 +60,8 @@
                 <label>QTDE*</label>
                 <input type="text" name="qtde" id="qtde" alt="integer" class="texto01" value="1" required=""/>
             </div>
-            
-            
+
+
             <div>
                 <label> H. Especial* </label>
                 <input type="checkbox" name="horEspecial">
@@ -133,9 +133,9 @@
         </div>
 
     </fieldset>
-    
-    
-    
+
+
+
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
@@ -145,21 +145,21 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
-    $(function () {
-        $('#procedimento').change(function () {
-            if ($(this).val() && $('#equipe_id').val() != '') {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $(this).val(), equipe_id: $('#equipe_id').val()}, function (j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                    }
-                    $('#procedimento1').html(options).show();
-                    $('.carregando').hide();
-                });
-            }
-        });
-    });
+                    $(function () {
+                        $('#procedimento').change(function () {
+                            if ($(this).val() && $('#equipe_id').val() != '') {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/carregavalorprocedimentocirurgico', {procedimento_id: $(this).val(), equipe_id: $('#equipe_id').val()}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+                                    $('#procedimento1').html(options).show();
+                                    $('.carregando').hide();
+                                });
+                            }
+                        });
+                    });
 
 //    $(function () {
 //        $('#equipe_id').change(function () {
