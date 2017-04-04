@@ -40,6 +40,15 @@ class pacientes extends BaseController {
         $data['listaconvenio'] = $this->paciente->listaconvenio();
         $this->loadView('cadastros/paciente-ficha', $data);
     }
+    
+    function cancelamento($paciente_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        
+        $data['contador'] = $this->paciente->relatoriocancelamentocontador($paciente_id);
+        $data['relatorio'] = $this->paciente->relatoriocancelamento($paciente_id);
+        $this->load->View('cadastros/impressaorelatoriocancelamentopaciente', $data);
+    }
 
     function substituirambulatoriotemp($paciente_id, $paciente_temp_id) {
         $paciente_id = $this->exametemp->substituirpacientetemp($paciente_id, $paciente_temp_id);
