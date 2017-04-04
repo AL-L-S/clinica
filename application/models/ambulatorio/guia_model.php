@@ -3181,7 +3181,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('e.cancelada', 'false');
-        $this->db->where('ae.valor_medico is not null');
+//        $this->db->where('ae.valor_medico is not null');
         $this->db->where('ae.paciente_id is not null');
 
         if ($_POST['situacao'] == "1") {
@@ -3409,7 +3409,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('e.cancelada', 'false');
-        $this->db->where('ae.valor_medico is not null');
+//        $this->db->where('ae.valor_medico is not null');
 
         if ($_POST['situacao'] == "1") {
             $this->db->where('al.situacao', 'FINALIZADO');
