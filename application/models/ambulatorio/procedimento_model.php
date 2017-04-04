@@ -225,6 +225,24 @@ class procedimento_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimentocirurgia2autocomplete($parametro = null, $parametro2 = null) {
+        $this->db->select('pc.procedimento_convenio_id,
+                           pc.valortotal,
+                           pt.codigo,
+                           pt.nome,
+                           pt.procedimento_tuss_id,
+                           pt.descricao');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('pc.ativo', 'true');
+        $this->db->where('pc.convenio_id', $parametro2);
+        if ($parametro != null) {
+            $this->db->where("(pt.nome ilike '%$parametro%' OR pt.codigo ilike '%$parametro%')");
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function carregavalorprocedimentocirurgico($procedimento_id) {
         $this->db->select('valortotal');
         $this->db->from('tb_procedimento_convenio pc');

@@ -68,6 +68,7 @@
                                 <th class="tabela_header">Procedimento</th>
                                 <th class="tabela_header">Medico</th>
                                 <th class="tabela_header">Medico Solicitante</th>
+                                <th class="tabela_header">Data</th>
                                 <th class="tabela_header">Autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Empresa</th>
@@ -102,6 +103,7 @@
                                                 <? endforeach; ?>
                                     </select></td>
                                 <td><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size2"  required=""/></td>
+                                <td><input type="text" name="data" id="data" value="" class="size1"  required=""/></td>
                                 <input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/>
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
@@ -128,7 +130,7 @@
 
                         <tfoot>
                             <tr>
-                                <th class="tabela_footer" colspan="4">
+                                <th class="tabela_footer" colspan="5">
                                 </th>
                             </tr>
                         </tfoot>

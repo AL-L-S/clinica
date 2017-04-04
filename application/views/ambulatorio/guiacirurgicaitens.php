@@ -158,11 +158,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-//                                $("#procedimento").chosen("destroy");
-                                $(".chosen-select").click(function () {
-                                    alert('asd');
-                                });
-                                
-                                $("#procedimento2").chosen()
+
 
 </script>

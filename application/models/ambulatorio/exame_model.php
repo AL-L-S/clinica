@@ -861,7 +861,7 @@ class exame_model extends Model {
                 $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
             }
             if ($_POST['crm1'] != "") {
-            $this->db->set('medico_solicitante', $_POST['crm1']);
+                $this->db->set('medico_solicitante', $_POST['crm1']);
             }
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');
@@ -869,7 +869,7 @@ class exame_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-            $this->db->set('data', $_POST['txtdata']);
+            $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
             $this->db->set('data_autorizacao', $horario);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
@@ -920,7 +920,7 @@ class exame_model extends Model {
         $this->db->from('tb_ambulatorio_guia');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->where('paciente_id', $paciente_id);
-        $this->db->where('data_criacao', $data);
+        $this->db->where('data_criacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
         $return = $this->db->get();
         return $return->result();
     }
@@ -933,7 +933,7 @@ class exame_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('tipo', 'EXAME');
-        $this->db->set('data_criacao', $data);
+        $this->db->set('data_criacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
         $this->db->set('convenio_id', $_POST['convenio1']);
         $this->db->set('paciente_id', $paciente_id);
         $this->db->set('data_cadastro', $horario);
@@ -3572,13 +3572,12 @@ class exame_model extends Model {
         $this->db->where("g.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 //        $this->db->where("c.dinheiro", 'f');
 //        $this->db->where("ae.confirmado", 't');
-        if($_POST['tipo'] != ''){
-            if($_POST['tipo'] == 'CIRURGICO' ){
-                $this->db->where('ae.tipo', 'CIRURGICO');   
-            }else{
-                $this->db->where('ae.tipo !=', 'CIRURGICO');   
+        if ($_POST['tipo'] != '') {
+            if ($_POST['tipo'] == 'CIRURGICO') {
+                $this->db->where('ae.tipo', 'CIRURGICO');
+            } else {
+                $this->db->where('ae.tipo !=', 'CIRURGICO');
             }
-        
         }
         $this->db->where('ae.tipo', 'CIRURGICO');
         $this->db->where('ae.cancelada', 'false');
