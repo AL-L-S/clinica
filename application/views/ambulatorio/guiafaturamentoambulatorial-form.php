@@ -292,8 +292,8 @@
 
                                                             var valorTotal = parseFloat(j[0].valortotal);
                                                             var qt = document.getElementById("qtde1").value;
-                                                            document.getElementById("valor1").value = qt * valorTotal;
-                                                            document.getElementById("valortot").value = qt * valorTotal;
+                                                            document.getElementById("valor1").value =  valorTotal;
+                                                            document.getElementById("valortot").value =  valorTotal;
                                                             $('.carregando').hide();
 
                                                         });
@@ -311,7 +311,7 @@
                                                         var valorTotal = parseFloat(j[0].valortotal);
                                                         var qt = document.getElementById("qtde1").value;
 //                                                    document  .getElementById("valor1").value = qt * valorTotal;
-                                                        document.getElementById("valortot").value = qt * valorTotal;
+                                                        document.getElementById("valortot").value = valorTotal;
                                                         $('.carregando').hide();
 
                                                     });
