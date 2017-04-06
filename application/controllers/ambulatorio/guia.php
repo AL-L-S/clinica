@@ -2741,6 +2741,13 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatoriocaixafaturado', $data);
     }
 
+    function ajustarvalorprocedimentocbhpm() {
+        $data['convenio'] = $this->convenio->listardadoscbhpm();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $this->loadView('ambulatorio/relatoriovalorprocedimentocbhpm', $data);
+    }
+    
     function relatoriovalorprocedimento() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2754,6 +2761,14 @@ class Guia extends BaseController {
         $data['relatorio'] = $this->guia->relatoriovalorprocedimento();
         $data['contador'] = $this->guia->relatoriovalorprocedimentocontador();
         $this->loadView('ambulatorio/ajustarvalorprocedimento', $data);
+    }
+    
+    function gravarajustarvalorprocedimentocbhpm() {
+        $this->guia->gravarajustarvalorprocedimentocbhpm();
+        $data['mensagem'] = 'Valores Alterados Com Sucesso.';
+        
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/guia/ajustarvalorprocedimentocbhpm", $data);
     }
 
     function gravarnovovalorprocedimento() {

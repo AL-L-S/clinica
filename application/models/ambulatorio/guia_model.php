@@ -894,6 +894,94 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function gravarajustarvalorprocedimentocbhpm() {
+
+        $this->db->select('distinct(ae.guia_id)
+                            ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('ae.empresa_id', $_POST['empresa']);
+//        $this->db->where('ae.faturado', 't');
+        $this->db->where("pt.grupo", $_POST['grupo']);
+        $this->db->where("pc.convenio_id", $_POST['convenio1']);
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $return = $this->db->get()->result();
+//        echo '<pre>';
+//        var_dump($return);
+//        die;
+
+        $this->db->select('procedimento1,
+                                procedimento2,
+                                nome,
+                                tabela
+                            ');
+        $this->db->from('tb_convenio c');
+        $this->db->where('c.convenio_id', $_POST['convenio1']);
+        $return_convenio = $this->db->get()->result();
+//        var_dump($return_convenio); die;
+        $tipo = $return_convenio[0]->tabela;
+        if ($return_convenio[0]->procedimento1 != '') {
+            $procedimento1 = $return_convenio[0]->procedimento1;
+        }
+
+        if ($return_convenio[0]->procedimento2 != '') {
+            $procedimento2 = $return_convenio[0]->procedimento2;
+        }
+        foreach ($return as $value) {
+
+            $this->db->select('ae.agenda_exames_id,
+                               ae.valor_total,
+                               pc.*
+                            ');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+            $this->db->where('ae.guia_id', $value->guia_id);
+//            $this->db->groupby('ae.guia_id');
+//            $this->db->groupby('ae.agenda_exames_id');
+            $this->db->orderby('ae.valor_total desc');
+            $return2 = $this->db->get()->result();
+            var_dump($return2);
+
+            $b = 0;
+            
+
+            foreach ($return2 as $value2) {
+                if ($tipo == 'CBHPM') {
+                    if ($b == 0) {
+$valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $value2->valorfilme) + ($value2->qtdeporte * $value2->valorporte)+ (($value2->qtdeuco * $value2->valoruco) * ($procedimento1 / 100));
+                        $b++;
+                        
+                    } else {
+$valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $value2->valorfilme) + ($value2->qtdeporte * $value2->valorporte)+ (($value2->qtdeuco * $value2->valoruco) * ($procedimento2 / 100));
+                    }
+//                die;
+                } 
+                else {
+
+                    if ($b == 0) {
+                        $valor_total = (float) ($value2->valor_total * ($procedimento1 / 100));
+                        $b++;
+                    } else {
+                        $valor_total = (float) ($value2->valor_total * ($procedimento2 / 100));
+                    }
+                }
+//                echo round($valor_total, 2) . '<br>';
+
+                $this->db->set('valor_total', $valor_total);
+                $this->db->where('agenda_exames_id', $value2->agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
+            }
+        }
+//        die;
+    }
+
     function relatoriovalorprocedimentocontador() {
 
         $this->db->select('ae.agenda_exames_id');
