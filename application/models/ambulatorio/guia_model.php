@@ -3677,7 +3677,7 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('e.cancelada', 'false');
-        $this->db->where('ae.valor_medico is not null');
+//        $this->db->where('ae.valor_medico is not null');
         $this->db->where('ae.paciente_id is not null');
 //        $this->db->where('al.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {

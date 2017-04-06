@@ -118,7 +118,7 @@ class Login extends Controller {
                 $this->carregarView($data);
             }
         } else {
-            $data['mensagem'] = $this->mensagem->getMensagem('Navegador n&atilde;o suportado. Utilize o Firefox.');
+            $data['mensagem'] = $this->mensagem->getMensagem('Navegador n&atilde;o suportado. Utilize o Firefox (Em caso de IOS. Atualize sua vers&atilde;o).');
             $this->carregarView($data);
         }
     }

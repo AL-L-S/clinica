@@ -178,7 +178,7 @@
                     <input type="text" id="pagamento" class="texto02" name="pagamento" alt="integer" value="<?= @$obj->_pagamento; ?>" />
 
                 </div>
-                <div>
+<!--                <div>
                     <?php
                     if (@$obj->_home_care == "t") {
                         ?>
@@ -190,7 +190,7 @@
                         <?php
                     }
                     ?> 
-                </div>
+                </div>-->
             </fieldset>
             <fieldset>
                 <legend>Condi&ccedil;&atilde;o de recebimento</legend>

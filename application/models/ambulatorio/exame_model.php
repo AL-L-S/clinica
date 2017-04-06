@@ -4214,9 +4214,9 @@ class exame_model extends Model {
 
             if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO') {
 
-                $this->db->set('ativo', 'f');
-                $this->db->where('exame_sala_id', $_POST['txtsalas']);
-                $this->db->update('tb_exame_sala');
+//                $this->db->set('ativo', 'f');
+//                $this->db->where('exame_sala_id', $_POST['txtsalas']);
+//                $this->db->update('tb_exame_sala');
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);

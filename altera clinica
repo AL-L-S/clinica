@@ -1798,7 +1798,7 @@ FROM ponto.tb_estoque_produto produto1, ponto.tb_procedimento_convenio pc , pont
               
        AND pc.procedimento_tuss_id = pt.procedimento_tuss_id 
        
-       AND pc.procedimento_convenio_id = produto.procedimento_id
+       AND pc.procedimento_convenio_id = produto.procedimento_id;
 
 
 CREATE TABLE ponto.tb_procedimento_convenio_produto_valor
