@@ -947,7 +947,6 @@ class guia_model extends Model {
 //            $this->db->groupby('ae.agenda_exames_id');
             $this->db->orderby('ae.valor_total desc');
             $return2 = $this->db->get()->result();
-            var_dump($return2);
 
             $b = 0;
             

@@ -28,7 +28,7 @@
         <fieldset>
             <legend>Procedimentos</legend>
 
-            <div>
+            <div style="width:100%">
                 <label>Procedimento *</label>
                 <select  name="procedimento" id="procedimento" required="true" class="chosen-select" tabindex="1">
                     <option value="">Selecione</option>
@@ -39,10 +39,15 @@
                         </option>
                     <? endforeach; ?>
                 </select>
+                <!--
+                                <br>--> 
+            </div>
 
-                <br>
+            <div >
+
                 <label>Data/Hora Autorização*</label>
                 <input type="text" name="data_autorizacao" id="data_autorizacao" alt="39/29/9999 29:69"class="texto03" required=""/>
+
             </div>
 
             <div >
