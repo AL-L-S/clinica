@@ -2574,6 +2574,8 @@ class Guia extends BaseController {
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
         $data['relatoriogeral'] = $this->guia->relatoriomedicoconveniofinanceirotodos();
+        $data['relatoriohomecare'] = $this->guia->relatoriomedicoconveniofinanceirohomecare();
+        $data['relatoriohomecaregeral'] = $this->guia->relatoriomedicoconveniofinanceirohomecaretodos();
         $data['relatoriocirurgico'] = $this->guia->relatoriocirurgicomedicoconveniofinanceiro();
         $data['relatoriocirurgicogeral'] = $this->guia->relatoriocirurgicomedicoconveniofinanceirotodos();
 //        echo "<pre>";
@@ -2821,6 +2823,7 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixa();
+        $data['relatoriohomecare'] = $this->guia->relatoriocaixahomecare();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarforma();

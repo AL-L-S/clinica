@@ -949,20 +949,18 @@ class guia_model extends Model {
             $return2 = $this->db->get()->result();
 
             $b = 0;
-            
+
 
             foreach ($return2 as $value2) {
                 if ($tipo == 'CBHPM') {
                     if ($b == 0) {
-$valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $value2->valorfilme) + ($value2->qtdeporte * $value2->valorporte)+ (($value2->qtdeuco * $value2->valoruco) * ($procedimento1 / 100));
+                        $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $value2->valorfilme) + ($value2->qtdeporte * $value2->valorporte) + (($value2->qtdeuco * $value2->valoruco) * ($procedimento1 / 100));
                         $b++;
-                        
                     } else {
-$valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $value2->valorfilme) + ($value2->qtdeporte * $value2->valorporte)+ (($value2->qtdeuco * $value2->valoruco) * ($procedimento2 / 100));
+                        $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $value2->valorfilme) + ($value2->qtdeporte * $value2->valorporte) + (($value2->qtdeuco * $value2->valoruco) * ($procedimento2 / 100));
                     }
 //                die;
-                } 
-                else {
+                } else {
 
                     if ($b == 0) {
                         $valor_total = (float) ($value2->valor_total * ($procedimento1 / 100));
@@ -3289,6 +3287,7 @@ $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $val
         $this->db->where('e.cancelada', 'false');
 //        $this->db->where('ae.valor_medico is not null');
         $this->db->where('ae.paciente_id is not null');
+        $this->db->where('pt.home_care', 'f');
 
         if ($_POST['situacao'] == "1") {
             $this->db->where('al.situacao', 'FINALIZADO');
@@ -3323,6 +3322,89 @@ $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $val
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+
+        $this->db->orderby('al.medico_parecer1');
+        $this->db->orderby('pc.convenio_id');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('ae.paciente_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriomedicoconveniofinanceirohomecare() {
+
+        $this->db->select('ae.quantidade,
+            p.nome as paciente,
+            pt.nome as procedimento,
+            pc.procedimento_convenio_id,
+            ae.autorizacao,
+            ae.percentual_medico,
+            ae.valor_medico,
+            ae.data,
+            e.situacao,
+            op.operador_id,
+            ae.valor_total,
+            pc.procedimento_tuss_id,
+            al.medico_parecer1,
+            pt.perc_medico,
+            al.situacao as situacaolaudo,
+            tu.classificacao,
+            o.nome as revisor,
+            pt.percentual,
+            op.nome as medico,
+            ops.nome as medicosolicitante,
+            c.nome as convenio,
+            c.iss');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('pt.home_care', 't');
+        $this->db->where('ae.paciente_id is not null');
+
+        if ($_POST['situacao'] == "1") {
+            $this->db->where('al.situacao', 'FINALIZADO');
+        } elseif ($_POST['situacao'] == "0") {
+            $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
+
+        if ($_POST['medicos'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['grupoconvenio'] != "0") {
+            $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+
+
+
+
+        $this->db->where("ae.data_faturamento >=", date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'] . " 00:00:00"))));
+        $this->db->where("ae.data_faturamento <=", date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['txtdata_fim'] . " 23:59:59"))));
 
 
         $this->db->orderby('al.medico_parecer1');
@@ -3413,6 +3495,7 @@ $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $val
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('ae.tipo', 'CIRURGICO');
+        $this->db->where('pt.home_care', 'f');
 
         if ($_POST['medicos'] != "0") {
             $this->db->where('aee.operador_responsavel', $_POST['medicos']);
@@ -3466,6 +3549,7 @@ $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $val
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('ae.tipo', 'CIRURGICO');
+        $this->db->where('pt.home_care', 'f');
 
         if ($_POST['medicos'] != "0") {
             $this->db->where('aee.operador_responsavel', $_POST['medicos']);
@@ -3516,6 +3600,7 @@ $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $val
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
         $this->db->where('e.cancelada', 'false');
 //        $this->db->where('ae.valor_medico is not null');
+        $this->db->where('pt.home_care', 'f');
 
         if ($_POST['situacao'] == "1") {
             $this->db->where('al.situacao', 'FINALIZADO');
@@ -3550,6 +3635,66 @@ $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $val
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $this->db->groupby('op.nome');
+        $this->db->orderby('op.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriomedicoconveniofinanceirohomecaretodos() {
+
+        $this->db->select('sum(ae.valor_total)as valor,
+            sum(ae.quantidade) as quantidade,
+            op.nome as medico');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('pt.home_care', 't');
+
+        if ($_POST['situacao'] == "1") {
+            $this->db->where('al.situacao', 'FINALIZADO');
+        } elseif ($_POST['situacao'] == "0") {
+            $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
+
+        if ($_POST['medicos'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['grupoconvenio'] != "0") {
+            $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+
+
+
+
+        $this->db->where("ae.data_faturamento >=", date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'] . " 00:00:00"))));
+        $this->db->where("ae.data_faturamento <=", date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['txtdata_fim'] . " 23:59:59"))));
+
 
         $this->db->groupby('op.nome');
         $this->db->orderby('op.nome');
@@ -3933,9 +4078,104 @@ $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $val
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
+        $this->db->where('pt.home_care', 'f');
         $this->db->where('ae.operador_autorizacao >', 0);
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
+        if ($_POST['operador'] != "0") {
+            $this->db->where('ae.operador_autorizacao', $_POST['operador']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where('c.dinheiro', "t");
+        $this->db->orderby('ae.operador_autorizacao');
+//        $this->db->orderby('pc.convenio_id');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriocaixahomecare() {
+
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.guia_id,
+                            ae.inicio,
+                            ae.fim,
+                            ae.financeiro,
+                            ae.faturado,
+                            ae.ativo,
+                            ae.verificado,
+                            al.ambulatorio_laudo_id as laudo,
+                            ae.situacao,
+                            pt.grupo,
+                            c.nome as convenio,
+                            ae.guia_id,
+                            pc.valortotal,
+                            ae.quantidade,
+                            ae.valor_total,
+                            ae.valor1,
+                            ae.forma_pagamento2,
+                            ae.valor2,
+                            ae.forma_pagamento3,
+                            ae.valor3,
+                            ae.numero_sessao,
+                            ae.forma_pagamento4,
+                            ae.valor4,
+                            ae.autorizacao,
+                            ae.operador_autorizacao,
+                            ae.paciente_id,
+                            ae.operador_editar,
+                            p.nome as paciente,
+                            ae.procedimento_tuss_id,
+                            pt.nome as exame,
+                            o.nome,
+                            e.exames_id,
+                            op.nome as nomefaturamento,
+                            f.nome as forma_pagamento,
+                            f2.nome as forma_pagamento_2,
+                            f3.nome as forma_pagamento_3,
+                            f4.nome as forma_pagamento_4,
+                            pt.descricao as procedimento,
+                            pt.codigo,
+                            ae.desconto,
+                            ae.parcelas1,
+                            ae.parcelas2,
+                            ae.parcelas3,
+                            ae.parcelas4');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = ae.forma_pagamento', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = ae.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = ae.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.confirmado', 'true');
+        $this->db->where('pt.home_care', 't');
+        $this->db->where('ae.operador_autorizacao >', 0);
+        $this->db->where("ae.data_faturamento >=", date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'] . " 00:00:00"))));
+        $this->db->where("ae.data_faturamento <=", date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['txtdata_fim'] . " 23:59:59"))));
+
 
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
@@ -7331,22 +7571,26 @@ ORDER BY ae.agenda_exames_id)";
 //            var_dump($percentual); die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->select('dinheiro, home_care');
+            $this->db->select('dinheiro');
             $this->db->from('tb_convenio');
             $this->db->where("convenio_id", $_POST['convenio1']);
             $query = $this->db->get();
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
-            $home_care = $return[0]->home_care;
 //            var_dump($home_care); die;
 //            if ((isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])) {
 //                $this->db->set('indicacao_id', $_POST['indicacao']);
 //                $this->db->where('ambulatorio_guia_id', $ambulatorio_guia_id);
 //                $this->db->update('tb_ambulatorio_guia');
 //            }
-
             $hora = date("H:i:s");
-            $data = date("Y-m-d");
+            if ($_POST['data_homecare'] != '') {
+                $data = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_homecare'])));
+            } else {
+                $data = date("Y-m-d");
+            }
+//            var_dump($data); die;
+
             $qtde = $_POST['qtde'];
             for ($index = 1; $index <= $qtde; $index++) {
                 $this->db->set('valor_medico', $percentual[0]->perc_medico);
@@ -7359,7 +7603,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('convenio_id', $_POST['convenio1']);
                 $this->db->set('quantidade', '1');
                 if ($dinheiro == "t") {
-                    if ($index == 1 && $home_care == 'f') {
+                    if ($index == 1) {
                         $this->db->set('valor', $_POST['valor1']);
 //                        $this->db->set('percentual_medico', $valor_percentual);
                         $this->db->set('valor_total', $_POST['valor1']);
@@ -7370,7 +7614,7 @@ ORDER BY ae.agenda_exames_id)";
                         $this->db->set('confirmado', 'f');
                     }
                 } else {
-                    if ($index == 1 && $home_care == 'f') {
+                    if ($index == 1) {
                         $this->db->set('valor', $_POST['valor1']);
                         $this->db->set('valor_total', $_POST['valor1']);
                         $this->db->set('confirmado', 't');

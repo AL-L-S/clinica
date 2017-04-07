@@ -32,10 +32,10 @@ switch ($MES) {
 <meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
     <? if ($medico != 0 && $recibo == 'SIM') { ?>
-    <div>
-        <p style="text-align: center;"><img align = 'center'  width='300px' height='150px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></p>
-    </div>
-    <?  }?>
+        <div>
+            <p style="text-align: center;"><img align = 'center'  width='300px' height='150px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></p>
+        </div>
+    <? } ?>
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
     <? if (count($empresa) > 0) { ?>
@@ -55,7 +55,7 @@ switch ($MES) {
 
     <hr>
     <?
-    if ($contador > 0 || count($relatoriocirurgico) > 0) {
+    if ($contador > 0 || count($relatoriocirurgico) > 0 || count($relatoriohomecare) > 0) {
         $totalperc = 0;
         ?>
 
@@ -172,6 +172,123 @@ switch ($MES) {
                 </tbody>
             </table>
         <? endif; ?>
+        
+        <? if (count($relatoriohomecare) > 0): ?>
+    <hr>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td colspan="50"><center>PRODUÇÃO HOME CARE</center></td>
+                </tr>
+                <tr>
+
+
+                    <th class="tabela_header"><font size="-1">Convenio</th>
+                    <th class="tabela_header"><font size="-1">Nome</th>
+                    <th class="tabela_header"><font size="-1">Medico</th>
+                    <th class="tabela_header"><font size="-1">Data</th>
+                    <th class="tabela_header"><font size="-1">Qtde</th>
+                    <th class="tabela_header" width="220px;"><font size="-1">Procedimento</th>
+                    <? if ($clinica == 'SIM') { ?>
+                        <th class="tabela_header" ><font size="-1">Valor Bruto</th>
+                        <th class="tabela_header" ><font size="-1">ISS</th>
+                        <th class="tabela_header" ><font size="-1">Valor Liquido</th>
+                    <? } ?>
+                    <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
+                    <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
+
+                    <? if ($solicitante == 'SIM') { ?>
+                        <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
+                    <? } ?>
+                </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $i = 0;
+                    $valor = 0;
+                    $valortotal = 0;
+                    $convenio = "";
+                    $y = 0;
+                    $qtde = 0;
+                    $qtdetotal = 0;
+                    $resultado = 0;
+                    $simbolopercebtual = " %";
+                    $iss = 0;
+                    $totalperchome = 0;
+                    $totalgeralhome = 0;
+                    $perchome = 0;
+                    $totalgeral = 0;
+                    $totalconsulta = 0;
+                    $totalretorno = 0;
+                    foreach ($relatoriohomecare as $item) :
+                        $i++;
+                        $procedimentopercentual = $item->procedimento_convenio_id;
+//            $medicopercentual = $item->medico_parecer1;
+                        $medicopercentual = $item->operador_id;
+                        if ($item->classificacao == 1) {
+                            $totalconsulta++;
+                        }
+                        if ($item->classificacao == 2) {
+                            $totalretorno++;
+                        }
+                        ?>
+                        <tr>
+                            <td><font size="-2"><?= $item->convenio; ?></td>
+                            <td><font size="-2"><?= $item->paciente; ?></td>
+                            <td><font size="-2"><?= $item->medico; ?></td>
+                            <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                            <td ><font size="-2"><?= $item->quantidade; ?></td>
+                            <td><font size="-2"><?= $item->procedimento; ?></td>
+                            <? if ($clinica == 'SIM') { ?>
+                                <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_total, 2, ",", "."); ?></td>
+                                <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format(((float) $item->valor_total - ((float) $item->valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
+                            <? } ?>
+                            <?
+                            if ($item->percentual_medico == "t") {
+                                $simbolopercebtual = " %";
+
+                                $valorpercentualmedico = $item->valor_medico;
+
+                                $perc = $item->valor_total * ($valorpercentualmedico / 100);
+                                $totalperchome = $totalperchome + $perc;
+                                $totalgeralhome = $totalgeralhome + $item->valor_total;
+                            } else {
+                                $simbolopercebtual = "";
+                                $valorpercentualmedico = $item->valor_medico;
+
+                                $perchome = $valorpercentualmedico;
+                                $totalperchome = $totalperchome + $perchome;
+                                $totalgeralhome = $totalgeralhome + $item->valor_total;
+                            }
+                            ?>
+                            <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
+                            <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
+
+                            <? if ($solicitante == 'SIM') { ?>
+                                <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
+                            <? } ?>
+                        </tr>
+
+
+                        <?php
+                        $qtdetotal = $qtdetotal + $item->quantidade;
+                    endforeach;
+                    $resultadototalgeralhome = $totalgeralhome - $totalperchome;
+                    ?>
+                    <tr>
+                        <td ><font size="-1">TOTAL</td>
+                        <td style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
+                        <? if ($clinica == 'SIM') { ?>
+                            <td colspan="5" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeralhome, 2, ",", "."); ?></td>
+                        <? } else { ?>
+                            <td colspan="4" style='text-align: right;'><font size="-1">&nbsp;</td>
+                        <? } ?>
+                        <td colspan="2" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperchome, 2, ",", "."); ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        <? endif; ?>
 
         <?
         if (count(@$relatoriocirurgico) > 0):
@@ -264,6 +381,10 @@ switch ($MES) {
                     <? endif; ?>
                 </table>
                 <?
+                if(@$totalperchome != 0){
+                    $totalperc = $totalperc + $totalperchome;
+                }
+                
                 $irpf = 0;
                 if ($totalperc >= $medico[0]->valor_base) {
                     $irpf = $totalperc * ($medico[0]->ir / 100);
@@ -398,6 +519,36 @@ switch ($MES) {
                             <tbody>
                                 <?
                                 foreach ($relatoriocirurgicogeral as $itens) :
+                                    ?>
+
+                                    <tr>
+                                        <td><font size="-2"><?= $itens->medico; ?></td>
+                                        <td ><font size="-2"><?= $itens->quantidade; ?></td>
+                                        <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
+                                    </tr>
+
+                                <? endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <? endif; ?>
+                <? if (count($relatoriohomecaregeral) > 0):
+                    ?>
+                    <div style="display: inline-block">
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <td colspan="50"><center>PRODUÇÃO HOME CARE</center></td>
+                            </tr>
+                            <tr>
+                                <th class="tabela_header"><font size="-1">Medico</th>
+                                <th class="tabela_header"><font size="-1">Qtde</th>
+                                <th class="tabela_header"><font size="-1">Produ&ccedil;&atilde;o Medico</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <?
+                                foreach ($relatoriohomecaregeral as $itens) :
                                     ?>
 
                                     <tr>

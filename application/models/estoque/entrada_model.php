@@ -590,6 +590,7 @@ class entrada_model extends Model {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->where('estoque_entrada_id', $estoque_entrada_id);
+                $this->db->where('estoque_saida_id is null');
                 $this->db->update('tb_estoque_saldo');
             }
             return $estoque_entrada_id;

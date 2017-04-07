@@ -156,6 +156,26 @@
                             ?>>N&Atilde;O</option>
                         </select>
                     </dd>
+                    
+                    <dt>
+                        <label>Home Care</label>
+                    </dt>
+                    <dd>
+                        <select name="homecare" id="homecare" class="size2">
+                            <option value="" <?
+                            if (@$obj->_home_care == ""):echo 'selected';
+                            endif;
+                            ?>>Selecione</option>
+                            <option value="1" <?
+                            if (@$obj->_home_care == "t"):echo 'selected';
+                            endif;
+                            ?>>SIM</option>
+                            <option value="0" <?
+                            if (@$obj->_home_care == "f"):echo 'selected';
+                            endif;
+                            ?>>N&Atilde;O</option>
+                        </select>
+                    </dd>
                     <dt>
                         <label>Qtde de sess&otilde;es</label>
                     </dt>
