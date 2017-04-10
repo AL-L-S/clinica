@@ -575,6 +575,7 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
+        
         if ($total == 0) {
             $procedimentopercentual = $_POST['txtprocedimento_tuss_id'];
             $medicopercentual = $_POST['txtmedico'];

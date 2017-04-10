@@ -4338,7 +4338,7 @@ class exame_model extends Model {
                 $this->db->insert('tb_ambulatorio_chamada');
             }
 
-            if ($_POST['txttipo'] == 'ESPECIALIDADE') {
+            if ($_POST['txttipo'] == 'ESPECIALIDADE' || $_POST['txttipo'] == 'FISIOTERAPIA') {
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
