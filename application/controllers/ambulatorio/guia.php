@@ -2728,6 +2728,27 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/valoralterado-form', $data);
     }
 
+    function relatoriocaixapersonalizado() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriocaixapersonalizado', $data);
+    }
+
+    function gerarelatoriocaixapersonalizando() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['paciente'] = $_POST['txtNome'];
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
+        $data['relatorioprocedimentos'] = $this->guia->relatoriocaixapersonalizadoprocedimentos();
+        $data['valortotal'] = $this->guia->relatoriocaixapersonalizadoprocedimentosvalortotal();
+//        var_dump($data['valortotal']);die;
+        
+//        $data['caixa'] = $this->caixa->listarsangriacaixa();
+//        $data['contador'] = $this->guia->relatoriocaixacontador();
+        $data['formapagamento'] = $this->formapagamento->listarforma();
+        $this->load->View('ambulatorio/impressaorelatoriocaixapersonalizando', $data);
+    }
+
     function relatoriocaixa() {
         $data['operadores'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();

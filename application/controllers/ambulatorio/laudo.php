@@ -2263,7 +2263,7 @@ class Laudo extends BaseController {
     }
 
     function gravarlaudo($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $sala_id) {
-
+        
         if ($_POST['situacao'] == 'FINALIZADO') {
             $validar = $this->laudo->validar();
             //$validar = $this->laudo->validar();
