@@ -25,6 +25,7 @@ class produto_model extends Model {
         if ($parametro != null) {
             $this->db->where('descricao ilike', $parametro . "%");
         }
+        $this->db->where('ativo', 't');
         $this->db->from('tb_estoque_produto');
         $return = $this->db->get();
         return $return->result();

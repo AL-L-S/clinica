@@ -65,6 +65,19 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listardadoscbhpm() {
+        $this->db->select('convenio_id,
+                            nome,
+                            dinheiro,
+                            conta_id');
+        $this->db->from('tb_convenio');
+        $this->db->where("ativo", 't');
+        $this->db->where("(tabela = 'CBHPM' OR tabela = 'PROPRIA')");
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarconveniodesconto($convenio_id) {
         $this->db->select('convenio_id,
@@ -473,10 +486,10 @@ class Convenio_model extends Model {
             } else {
                 $this->db->set('dinheiro', 'f');
             }
-            if (isset($_POST['txthomecare'])) {
-                $this->db->set('home_care', $_POST['txthomecare']);
+            if (isset($_POST['cbhpm'])) {
+                $this->db->set('cbhpm', $_POST['cbhpm']);
             } else {
-                $this->db->set('dinheiro', 'f');
+                $this->db->set('cbhpm', 'f');
             }
             if (isset($_POST['txtcarteira'])) {
                 $this->db->set('carteira_obrigatoria', $_POST['txtcarteira']);

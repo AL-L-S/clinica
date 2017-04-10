@@ -126,22 +126,22 @@
                             $adulto3++;
                         }
                         if ($idade <= 35 && $idade > 30) {
-                            $adulto5++;
+                            $adulto4++;
                         }
                         if ($idade <= 40 && $idade > 35) {
-                            $adulto6++;
+                            $adulto5++;
                         }
                         if ($idade <= 45 && $idade > 40) {
-                            $adulto7++;
+                            $adulto6++;
                         }
                         if ($idade <= 50 && $idade > 45) {
-                            $adulto8++;
+                            $adulto7++;
                         }
                         if ($idade <= 55 && $idade > 50) {
-                            $adulto9++;
+                            $adulto8++;
                         }
                         if ($idade <= 59 && $idade > 55) {
-                            $adulto10++;
+                            $adulto9++;
                         }
                     }
                     if ($idade >= 60) {
@@ -546,8 +546,7 @@
             {idade: '41-45', quantidade: <?= $adulto6; ?>},
             {idade: '46-50', quantidade: <?= $adulto7; ?>},
             {idade: '51-55', quantidade: <?= $adulto8; ?>},
-            {idade: '51-55', quantidade: <?= $adulto9; ?>},
-            {idade: '56-59', quantidade: <?= $adulto10; ?>}
+            {idade: '56-59', quantidade: <?= $adulto9; ?>}
         ],
         // The name of the data record attribute that contains x-values.
         xkey: 'idade',

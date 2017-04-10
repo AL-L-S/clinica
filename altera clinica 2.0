@@ -3,3 +3,29 @@
 
 -- 04/04/2017
 ALTER TABLE ponto.tb_convenio ADD COLUMN home_care boolean DEFAULT false;
+
+
+-- 06/04/2017
+
+
+DROP TABLE ponto.tb_versao;
+CREATE TABLE ponto.tb_versao
+(
+  versao_id SERIAL NOT NULL,
+  sistema character varying(20),
+  banco_de_dados character varying(20),
+  CONSTRAINT tb_versao_pkey PRIMARY KEY (versao_id )
+);
+
+INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+    VALUES ('1.0.00005', '1.0.00004');
+
+-- Versão 1.0.00005 Adicionado ajuste de valores relacionados ao relatório de conferência
+
+
+-- 07/04/2017 Procedimentos Home Care
+
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN home_care boolean DEFAULT false;
+
+
+

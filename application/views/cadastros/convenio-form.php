@@ -116,6 +116,14 @@
                         if (@$obj->_tabela == "TUSS"):echo 'selected';
                         endif;
                         ?>>TUSS</option>
+                        <option value="CBHPM" <?
+                        if (@$obj->_tabela == "CBHPM"):echo 'selected';
+                        endif;
+                        ?>>CBHPM</option>
+                        <option value="PROPRIA" <?
+                        if (@$obj->_tabela == "PROPRIA"):echo 'selected';
+                        endif;
+                        ?>>TABELA PROPRIA</option>
                     </select>
 
                 </div>
@@ -178,19 +186,7 @@
                     <input type="text" id="pagamento" class="texto02" name="pagamento" alt="integer" value="<?= @$obj->_pagamento; ?>" />
 
                 </div>
-<!--                <div>
-                    <?php
-                    if (@$obj->_home_care == "t") {
-                        ?>
-                        <input type="checkbox" name="txthomecare" checked ="true" />Home Care
-                        <?php
-                    } else {
-                        ?>
-                        <input type="checkbox" name="txthomecare"  />Home Care
-                        <?php
-                    }
-                    ?> 
-                </div>-->
+
             </fieldset>
             <fieldset>
                 <legend>Condi&ccedil;&atilde;o de recebimento</legend>
@@ -269,33 +265,56 @@
 
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        jQuery('#form_convenio').validate({
-            rules: {
-                txtNome: {
-                    required: true,
-                    minlength: 2
-                },
-                txtrazaosocial: {
-                    required: true
-                },
-                txtCNPJ: {
-                    required: true
-                }
+//    $(document).ready(function () {
+//        jQuery('#form_convenio').validate({
+//            rules: {
+//                txtNome: {
+//                    required: true,
+//                    minlength: 2
+//                },
+//                txtrazaosocial: {
+//                    required: true
+//                },
+//                txtCNPJ: {
+//                    required: true
+//                }
+//
+//            },
+//            messages: {
+//                txtNome: {
+//                    required: "*",
+//                    minlength: "*"
+//                },
+//                txtrazaosocial: {
+//                    required: "*"
+//                },
+//                txtCNPJ: {
+//                    required: "*"
+//                }
+//            }
+//        });
+//    });
+    var teste = '<? echo $obj->_tabela; ?>';
+    if (teste == 'CBHPM' || teste == 'PROPRIA') {
+        $("#procedimento1").prop('required', true);
+        $("#procedimento2").prop('required', true);
+    } else {
+        $("#procedimento1").prop('required', false);
+        $("#procedimento2").prop('required', false);
+    }
 
-            },
-            messages: {
-                txtNome: {
-                    required: "*",
-                    minlength: "*"
-                },
-                txtrazaosocial: {
-                    required: "*"
-                },
-                txtCNPJ: {
-                    required: "*"
-                }
+    $(function () {
+        $('#tipo').change(function () {
+            if ($(this).val() == 'PROPRIA' || $(this).val() == 'CBHPM') {
+                $("#procedimento1").prop('required', true);
+                $("#procedimento2").prop('required', true);
+
+            } else {
+                $("#procedimento1").prop('required', false);
+                $("#procedimento2").prop('required', false);
             }
         });
     });

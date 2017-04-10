@@ -2574,6 +2574,8 @@ class Guia extends BaseController {
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
         $data['relatoriogeral'] = $this->guia->relatoriomedicoconveniofinanceirotodos();
+        $data['relatoriohomecare'] = $this->guia->relatoriomedicoconveniofinanceirohomecare();
+        $data['relatoriohomecaregeral'] = $this->guia->relatoriomedicoconveniofinanceirohomecaretodos();
         $data['relatoriocirurgico'] = $this->guia->relatoriocirurgicomedicoconveniofinanceiro();
         $data['relatoriocirurgicogeral'] = $this->guia->relatoriocirurgicomedicoconveniofinanceirotodos();
 //        echo "<pre>";
@@ -2762,6 +2764,13 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatoriocaixafaturado', $data);
     }
 
+    function ajustarvalorprocedimentocbhpm() {
+        $data['convenio'] = $this->convenio->listardadoscbhpm();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $this->loadView('ambulatorio/relatoriovalorprocedimentocbhpm', $data);
+    }
+    
     function relatoriovalorprocedimento() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2775,6 +2784,14 @@ class Guia extends BaseController {
         $data['relatorio'] = $this->guia->relatoriovalorprocedimento();
         $data['contador'] = $this->guia->relatoriovalorprocedimentocontador();
         $this->loadView('ambulatorio/ajustarvalorprocedimento', $data);
+    }
+    
+    function gravarajustarvalorprocedimentocbhpm() {
+        $this->guia->gravarajustarvalorprocedimentocbhpm();
+        $data['mensagem'] = 'Valores Alterados Com Sucesso.';
+        
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/guia/ajustarvalorprocedimentocbhpm", $data);
     }
 
     function gravarnovovalorprocedimento() {
@@ -2827,6 +2844,7 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixa();
+        $data['relatoriohomecare'] = $this->guia->relatoriocaixahomecare();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarforma();
