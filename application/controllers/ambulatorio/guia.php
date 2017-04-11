@@ -2740,7 +2740,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
         $data['relatorioprocedimentos'] = $this->guia->relatoriocaixapersonalizadoprocedimentos();
-        $data['valortotal'] = $this->guia->relatoriocaixapersonalizadoprocedimentosvalortotal();
+//        $data['valortotal'] = $this->guia->relatoriocaixapersonalizadoprocedimentosvalortotal();
 //        var_dump($data['valortotal']);die;
         
 //        $data['caixa'] = $this->caixa->listarsangriacaixa();

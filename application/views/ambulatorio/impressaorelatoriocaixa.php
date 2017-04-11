@@ -1140,7 +1140,7 @@
             $QTDECARTAO = 0;
             foreach ($formapagamento as $value) {
                 /* A linha abaixo era a condiçao do IF antigamente. Agora tudo que nao for cartao sera DINHEIRO */
-//                ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') && 
+//                ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') 
                 if ($value->cartao != 'f') {
                     $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
                     $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];

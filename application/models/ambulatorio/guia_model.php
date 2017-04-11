@@ -4024,20 +4024,21 @@ class guia_model extends Model {
         return $return->result();
     }
 
-    function relatoriocaixapersonalizadoprocedimentosvalortotal() {
+    function relatoriocaixapersonalizadoprocedimentosvalortotal($guia_id) {
 
         $this->db->select('sum(ae.quantidade * ae.valor_total) as valor_total');
-        $this->db->from('tb_agenda_exames ae');
+        $this->db->from('tb_agenda_exames ae');        
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.operador_autorizacao >', 0);
         
+        $this->db->where("ae.guia_id", $guia_id);
+        
         $this->db->where("ae.paciente_id", $_POST['txtNomeid']);
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        $this->db->groupby('ae.quantidade, ae.valor_total');
-        $return = $this->db->get();
-        return $return->result();
+        $return = $this->db->get()->result();
+        return $return[0]->valor_total;
     }
     function relatoriocaixapersonalizadoprocedimentos() {
 
@@ -4073,7 +4074,7 @@ class guia_model extends Model {
                             ae.operador_editar,
                             p.nome as paciente,
                             ae.procedimento_tuss_id,
-                            pt.nome as exame,
+                            pt.nome as procedimento,
                             o.nome,
                             e.exames_id,
                             op.nome as nomefaturamento,
@@ -4081,7 +4082,6 @@ class guia_model extends Model {
                             f2.nome as forma_pagamento_2,
                             f3.nome as forma_pagamento_3,
                             f4.nome as forma_pagamento_4,
-                            pt.descricao as procedimento,
                             pt.codigo,
                             ae.desconto,
                             ae.parcelas1,

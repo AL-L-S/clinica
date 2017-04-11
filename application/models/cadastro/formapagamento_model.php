@@ -48,6 +48,7 @@ class formapagamento_model extends Model {
     function listarforma() {
         $this->db->select('forma_pagamento_id,
                             nome,
+                            ajuste,
                             cartao');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
