@@ -97,20 +97,25 @@
                             ?>
                         </td>
                         <td><?= utf8_decode($item->telefone); ?></td>
-                        <td><?= number_format($item->valor_guia, 2, ',', '.'); ?></td>
-                        <td>
+                        <? $cor = ((float)$item->valor_guia < (float)$item->total)?'green':'blue';?>
+                        <td style="text-align: right">
+                            <a style="cursor: pointer; color: <?=$cor; ?>" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/procedimentoguianotaform/$item->ambulatorio_guia_id/$item->total/$item->valor_guia"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=400,height=300');">
+                                    <?= number_format($item->valor_guia, 2, ',', '.'); ?>
+                                </a>
+                        </td>
+                        <td style="text-align: right">
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/procedimentoguianota/$item->ambulatorio_guia_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1300,height=800');">
                                     <?= number_format($item->total, 2, ',', '.'); ?>
                                 </a></td>
                         </td>
-                        <td><?= str_replace("-", "/", date("d-m-Y", strtotime($item->data_criacao))); ?></td>
+                        <td style="text-align: right"><?= str_replace("-", "/", date("d-m-Y", strtotime($item->data_criacao))); ?></td>
                         <td style="text-align: center">
                             <? if ($item->checado == 't') {
                                 ?>
                             <font size="+1"> &#8730;</font>
                             <? } else { ?>
-                                <a style="cursor: pointer;color: red" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/gravarchecknota/$item->ambulatorio_guia_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
-                                    Check
+                                <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/gravarchecknota/$item->ambulatorio_guia_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
+                                    
                                 </a></td>
                         <? } ?>
                     </tr>

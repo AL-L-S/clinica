@@ -62,11 +62,10 @@
                         $data[$item2->nome] = 0;
                         $numero[$item2->nome] = 0;
                         $desconto[$item2->nome] = 0;
-                        $procedimento[$item2->nome] = 0;
+                        $parcela[$item2->nome] = 0;
                     }
 
                     foreach ($relatorioprocedimentos as $item) :
-//                        var_dump($item->guia_id);die;
                         if ($value->ambulatorio_guia_id == $item->guia_id):
                             if ($verificador) {
                                 ?>
@@ -77,8 +76,8 @@
                             ?>
                             <tr>
                                 <?
-                                $cor = ($item->faturado == 'f')? "red": 'black';
-                                
+                                $cor = ($item->faturado == 'f') ? "red" : 'black';
+
                                 if ($verificador):
                                     $verificador = false;
                                     ?>
@@ -86,43 +85,55 @@
                                 <? else: ?>
                                     <td style="text-align: left">&nbsp;</td>
                                 <? endif; ?>
-                                <td style="text-align: left; color: <?=$cor?>"><?= $item->procedimento; ?></td>
-                                <td style="text-align: left; color: <?=$cor?>"><?= $item->convenio; ?></td>
-                                <td style="text-align: right; color: <?=$cor?>"><?= $item->quantidade; ?></td>
+                                <td style="text-align: left; color: <?= $cor ?>"><?= $item->procedimento; ?></td>
+                                <td style="text-align: left; color: <?= $cor ?>"><?= $item->convenio; ?></td>
+                                <td style="text-align: right; color: <?= $cor ?>"><?= $item->quantidade; ?></td>
                                 <?
                                 $perc = (((int) $item->quantidade * (float) $item->valor_total) / $valTotal) * 100;
-                                $desc = ( ((int) $item->quantidade * (float) $item->valor_total) * (float) $item->desconto) / 100;
-                                $desconto_tot += $desc;
-                                
+//                                $desc = ( ((int) $item->quantidade * (float) $item->valor_total) * (float) $item->desconto) / 100;
+//                                $desconto_tot += $desc;
+
                                 foreach ($formapagamento as $value5) {
                                     if ($item->forma_pagamento == $value5->nome) {
                                         $data[$value5->nome] = $data[$value5->nome] + $item->valor1;
+                                        if ($item->valor1 != 0 && isset($item->valor1)) {
+                                            $parcela[$value5->nome] = $item->parcelas1;
+                                        }
                                         $numero[$value5->nome] ++;
-                                        $desconto[$value5->nome] = $desconto[$value5->nome] + $item->desconto;
+//                                        $desconto[$value5->nome] = $desconto[$value5->nome] + $item->desconto;
                                     }
                                 }
                                 foreach ($formapagamento as $value5) {
                                     if ($item->forma_pagamento_2 == $value5->nome) {
                                         $data[$value5->nome] = $data[$value5->nome] + $item->valor2;
                                         $numero[$value5->nome] ++;
-                                        $desconto[$value5->nome] = $desconto[$value5->nome] + $item->desconto;
+                                        if ($item->valor2 != 0 && isset($item->valor2)) {
+                                            $parcela[$value5->nome] = $item->parcelas2;
+                                        }
+//                                        $desconto[$value5->nome] = $desconto[$value5->nome] + $item->desconto;
                                     }
                                 }
                                 foreach ($formapagamento as $value5) {
                                     if ($item->forma_pagamento_3 == $value5->nome) {
                                         $data[$value5->nome] = $data[$value5->nome] + $item->valor3;
                                         $numero[$value5->nome] ++;
-                                        $desconto[$value5->nome] = $desconto[$value5->nome] + $item->desconto;
+                                        if ($item->valor3 != 0 && isset($item->valor3)) {
+                                            $parcela[$value5->nome] = $item->parcelas3;
+                                        }
+//                                        $desconto[$value5->nome] = $desconto[$value5->nome] + $item->desconto;
                                     }
                                 }
                                 foreach ($formapagamento as $value5) {
                                     if ($item->forma_pagamento_4 == $value5->nome) {
                                         $data[$value5->nome] = $data[$value5->nome] + $item->valor4;
                                         $numero[$value5->nome] ++;
-                                        $desconto[$value5->nome] = $desconto[$value5->nome] + $item->desconto;
+                                        if ($item->valor4 != 0 && isset($item->valor4)) {
+                                            $parcela[$value5->nome] = $item->parcelas4;
+                                        }
+//                                        $desconto[$value5->nome] = $desconto[$value5->nome] + $item->desconto;
                                     }
                                 }
-                                
+
                                 if ($item->forma_pagamento == "") {
                                     $OUTROS = $OUTROS + $item->valor_total;
                                     $NUMEROOUTROS++;
@@ -135,7 +146,7 @@
                                 $y = 0;
                                 $y++;
                                 ?>
-                                <td style="text-align: right; color: <?=$cor?>"><?= number_format($perc, 2, ',', '.'); ?> %</td>
+                                <td style="text-align: right; color: <?= $cor ?>"><?= number_format($perc, 2, ',', '.'); ?> %</td>
                             </tr>
                             <?
                         endif;
@@ -143,66 +154,65 @@
                     endforeach;
 
                     if (!$verificador):
+                        $TOTALCARTAO = 0;
+                        $QTDECARTAO = 0;
+                        $TOTALDINHEIRO = 0;
+                        foreach ($formapagamento as $value) {
+                            if ($value->cartao != 'f') {
+                                $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
+                                $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
+                            } else {
+                                $TOTALDINHEIRO = $TOTALDINHEIRO + $data[$value->nome];
+                            }
+                        }
+                        $valortotal = $TOTALDINHEIRO + $TOTALCARTAO;
+                        $desconto_tot = $valTotal - $valortotal;
                         ?>
-                        <tr><td colspan="8"><span class="totais">Valor Total = R$ <?= number_format($valTotal, 2, ',', '.') ?>  <span class="barra">|</span>  Desconto = R$ <?= $desconto_tot ?>  <span class="barra">|</span>  Valor Ajustado = R$ <?= number_format(($valTotal - $desconto_tot), 2, ',', '.') ?></span></td></tr>
-                        
+                        <tr><td colspan="8"><span class="totais">Valor Total = R$ <?= number_format($valTotal, 2, ',', '.') ?>  <span class="barra">|</span>  Desconto = R$ <?= number_format($desconto_tot, 2, ',', '.') ?>  <span class="barra">|</span>  Valor Ajustado = R$ <?= number_format(($valTotal - $desconto_tot), 2, ',', '.') ?></span></td></tr>
+
                         <tr><td colspan="8"></td></tr>
-                        
+
                         <tr>
                             <td colspan="8">
 
-                                <table>
+                                <table border="1">
                                     <thead>
                                         <tr>
                                             <th width="270px;"><font size="2">Forma Pagamento</font></th>
                                             <th style="text-align: right" width="70px;"><font size="2">Ajuste (%)</font></th>
-                                                        <!--<th class="tabela_header"><font size="4">Parcela</font></th>-->
-                                            <!--<th style="text-align: right" width="70px;"><font size="2">Vlr Proc</font></th>-->
+                                            <th style="text-align: right" width="70px;"><font size="2">Parcela</font></th>
+                                            <th style="text-align: right" width="70px;"><font size="2">Vlr Proc</font></th>
                                             <th style="text-align: right" width="70px;"><font size="2">Vlr Total</font></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <? foreach ($formapagamento as $value) {
-                                            if(@$data[$value->nome] == 0 || !isset($data[$value->nome])){
+                                        <?
+                                        foreach ($formapagamento as $value) {
+                                            if (@$data[$value->nome] == 0 || !isset($data[$value->nome])) {
                                                 continue;
-                                            } ?>
-                                        
-                                        
+                                            }
+                                            ?>
+
+
                                             <tr>
                                                 <td ><font size="-1"><?= $value->nome ?></td>
                                                 <td style="text-align: right"><font size="-1"><?= $value->ajuste; ?></td>
-                                                <!--<td style="text-align: right"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>-->
+                                                <td style="text-align: right"><font size="-1"><?= $parcela[$value->nome]; ?></td>
+                                                <td style="text-align: right"><font size="-1"><?= number_format(((float) $data[$value->nome] / (int) $parcela[$value->nome]), 2, ',', '.'); ?></td>
                                                 <td style="text-align: right"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
                                             </tr>   
-                                        <? } ?>
+            <? } ?>
                                         <tr>
-                                            <td width="140px;"><font size="-1">PENDENTES</td>
+                                            <td width="140px;" colspan="3"><font size="-1">PENDENTES</td>
                                             <td width="140px;" style="text-align: right"><font size="-1"><?= $NUMEROOUTROS ?></td>
                                             <td width="200px;" style="text-align: right"><font size="-1"><?= number_format($OUTROS, 2, ',', '.'); ?></td>
                                         </tr>  
-                                        <?
-                                        $TOTALCARTAO = 0;
-                                        $QTDECARTAO = 0;
-                                        $TOTALDINHEIRO = 0;
-                                        foreach ($formapagamento as $value) {
-                                            if ($value->cartao != 'f') {
-                                                $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
-                                                $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
-                                            }
-                                            else{
-                                                $TOTALDINHEIRO = $TOTALDINHEIRO + $data[$value->nome];
-                                            }
-                                        }
-                                        $valortotal = $TOTALDINHEIRO + $TOTALCARTAO;
-                                        ?>
                                         <tr>
                                             <td width="140px;"><font size="-1">TOTAL CARTAO</td>
-                                            <!--<td width="140px;"><font size="-1">Nr. Cart&otilde;es: <?= $QTDECARTAO; ?></td>-->
                                             <td width="200px;" colspan="2"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
                                         </tr>
                                         <tr>
                                             <td width="140px;"><font size="-1">TOTAL GERAL</td>
-                                            <!--<td width="140px;"><font size="-1">Nr. Exa: <?= @$i; ?></td>-->
                                             <td width="200px;" colspan="2"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
                                         </tr>
                                     </tbody>
@@ -210,12 +220,12 @@
                             </td>
                         </tr>
 
-                        <tr><td colspan="8"><hr></td></tr>
+                        <tr><td colspan="8"><br></td></tr>
                         <?
                     endif;
                 endforeach;
                 ?>
-                        
+
             </tbody>
         </table>
     <? } else {
