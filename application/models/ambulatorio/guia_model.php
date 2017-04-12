@@ -422,6 +422,8 @@ class guia_model extends Model {
                             ae.guia_id,
                             pc.valortotal,
                             ae.quantidade,
+                            ae.valor1,
+                            ae.ajuste_cbhpm,
                             ae.valor_total,
                             ae.autorizacao,
                             pc.qtdech,
@@ -894,7 +896,8 @@ class guia_model extends Model {
     }
 
     function gravarajustarvalorprocedimentocbhpm() {
-
+//        echo 'aqui';
+//        die;
         $this->db->select('distinct(ae.guia_id)
                             ');
         $this->db->from('tb_agenda_exames ae');
@@ -941,6 +944,9 @@ class guia_model extends Model {
             $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+            $this->db->where("pt.grupo", $_POST['grupo']);
+            $this->db->where("pc.convenio_id", $_POST['convenio1']);
+            $this->db->where('ae.ajuste_cbhpm', 'f');
             $this->db->where('ae.guia_id', $value->guia_id);
 //            $this->db->groupby('ae.guia_id');
 //            $this->db->groupby('ae.agenda_exames_id');
@@ -970,6 +976,7 @@ class guia_model extends Model {
                 }
 //                echo round($valor_total, 2) . '<br>';
 
+                $this->db->set('ajuste_cbhpm', 't');
                 $this->db->set('valor_total', $valor_total);
                 $this->db->where('agenda_exames_id', $value2->agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
@@ -5670,7 +5677,7 @@ AND data <= '$data_fim'";
         }
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        
+
         $this->db->set('checado', 't');
         $this->db->set('data_checado', $horario);
         $this->db->set('operador_checado', $operador_id);

@@ -3515,6 +3515,7 @@ class exame_model extends Model {
         $this->db->where("ae.confirmado", 't');
 //        $this->db->where("( (ae.tipo != 'CIRURGICO') OR (pt.grupo != 'CIRURGICO') )");
         $this->db->where('pt.grupo !=', 'CIRURGICO');
+//        $this->db->where('pt.grupo !=', 'MEDICAMENTO');
         $this->db->where('ae.cancelada', 'f');
         if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $_POST['nome'] . "%");

@@ -57,7 +57,7 @@ class Procedimento extends BaseController {
     }
 
     function pesquisartuss($args = array()) {
-        $this->loadView('ambulatorio/procedimento-lista', $args);
+        $this->loadView('ambulatorio/procedimentotuss-lista', $args);
     }
 
     function carregarprocedimento($procedimento_tuss_id) {
