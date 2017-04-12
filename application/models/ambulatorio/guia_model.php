@@ -422,6 +422,7 @@ class guia_model extends Model {
                             ae.guia_id,
                             pc.valortotal,
                             ae.quantidade,
+                            ae.valor,
                             ae.valor1,
                             ae.ajuste_cbhpm,
                             ae.valor_total,
