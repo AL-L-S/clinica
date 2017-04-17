@@ -2041,6 +2041,7 @@ class guia_model extends Model {
                             g.checado,
                             sum(ae.valor_total) as total,
                             p.nome as paciente,
+                            p.paciente_id,
                             p.celular,
                             p.cpf,
                             p.rg,
@@ -2057,6 +2058,7 @@ class guia_model extends Model {
         $this->db->groupby('p.celular');
         $this->db->groupby('p.telefone');
         $this->db->groupby('p.nome');
+        $this->db->groupby('p.paciente_id');
         $this->db->groupby('p.cpf');
         $this->db->groupby('p.rg');
         $this->db->orderby('data_criacao');

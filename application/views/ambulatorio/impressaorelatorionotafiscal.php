@@ -72,7 +72,7 @@
                     <tr>
 
                         <td><?= utf8_decode($item->ambulatorio_guia_id); ?></td>
-                        <td><?= utf8_decode($item->paciente); ?></td>
+                        <td><a href="#<?$item->paciente_id?>"><?= utf8_decode($item->paciente); ?></a></td>
                         <td>
                             <?
                             if ($item->cpf != '') {
