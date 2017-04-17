@@ -11,22 +11,26 @@ class batepapo_model extends BaseModel {
 
     function listarusuarios() {
         $operador_id = $this->session->userdata('operador_id');
-
-        $this->db->select("o.usuario,
-                           o.operador_id,
-                           o.online,
-                           o.horario_login,
-                           (SELECT COUNT(*) FROM ponto.tb_chat_mensagens 
-                           WHERE ponto.tb_chat_mensagens.operador_destino = o.operador_id
-                           AND ponto.tb_chat_mensagens.ativo = 't' 
-                           AND ponto.tb_chat_mensagens.visualizada = 'f') as num_mensagens");
-        $this->db->from('tb_operador o');
-        $this->db->where('o.ativo', 't');
-        $this->db->where('o.operador_id !=', $operador_id);
-        $this->db->orderby('o.online DESC');
-        $this->db->orderby('o.usuario');
-        $return = $this->db->get();
-        return $return->result();
+        
+        $sql = 'SELECT "o"."usuario" as usuario, "o"."operador_id", 
+                        ( 
+                                SELECT COUNT(*) 
+                                FROM ponto.tb_chat_mensagens 
+                                WHERE ponto.tb_chat_mensagens.operador_origem = o.operador_id 
+                                AND ponto.tb_chat_mensagens.ativo = \'t\' AND ponto.tb_chat_mensagens.visualizada = \'f\' 
+                                AND ponto.tb_chat_mensagens.operador_destino = 1 
+                        ) as num_mensagens, 
+                        ( 	
+                                SELECT COALESCE((SELECT true WHERE (o.horario_login + INTERVAL\'3 minute\') >=  current_timestamp), false) 
+                        ) as status 
+                FROM "ponto"."tb_operador" o 
+                WHERE "o"."ativo" = \'t\' AND "o"."operador_id" != \'1\' 
+                AND "o"."usuario" != \'\' AND "o"."operador_id" IS NOT NULL
+                ORDER BY status DESC, "o"."usuario"';
+        
+        $return = $this->db->query($sql);
+        
+        return $return->result_array();
     }
 
     function listarusuariosabrircontato() {
@@ -47,13 +51,14 @@ class batepapo_model extends BaseModel {
     function totalmensagensnaolidas() {
         $operador_id = $this->session->userdata('operador_id');
 
-        $this->db->select('*');
+        $this->db->select('COUNT(chat_mensagens_id) as total');
         $this->db->from('tb_chat_mensagens');
         $this->db->where('ativo', 't');
         $this->db->where('operador_destino', $operador_id);
         $this->db->where('visualizada', 'f');
         $return = $this->db->get();
-        return $return->result();
+        $return = $return->result();
+        return $return[0]->total;
     }
     
     

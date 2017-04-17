@@ -34,6 +34,7 @@
         <fieldset id="cadastro"> 
             <!-- NAO REMOVA ESSE FIELDSET POIS O JAVASCRIPT IRA FUNCIONAR NELE!!! -->
         </fieldset>
+        
         <fieldset > 
             <div class="bt_link">                                  
                 <a onclick="javascript: return confirm('Deseja realmente Liberar a solicitacao?');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/liberar/<?= $solicitacao_id ?>/<?= $dados[0]->orcamento ?>">Liberar</a>
@@ -94,7 +95,17 @@
     }
 </style>
 
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>-->
 <script type="text/javascript">
                     function legend() {
                         var leg = "<legend>Cadastrar procedimento</legend>";
@@ -129,9 +140,15 @@
                     function mostraprocedimentos() {
                         legend();
                         var tags = '<div id="div_procedimento"><label for="procedimento">Procedimento</label>';
-                        tags += '<input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2" value="" />';
-                        tags += '<input type="text" name="procedimento" id="procedimento" class="texto10" value="" />';
-                        tags += '</div>';
+                        tags += '<select style="width: 400pt" name="procedimentoID" id="procedimento" class="chosen-select" tabindex="1" required="true" >';
+                        tags += '<option value="">Selecione</option>';
+                    <? foreach (@$procedimento as $item3) : ?>
+                        tags += '<option value="<? echo $item3->procedimento_convenio_id; ?>"><? echo $item3->codigo . " - " . $item3->nome; ?></option>';
+                    <? endforeach; ?>
+                        tags += '</select></div>';
+//                        tags += '<input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2" value="" />';
+//                        tags += '<input type="text" name="procedimento" id="procedimento" class="texto10" value="" />';
+//                        tags += '';
 
                         var verifica = jQuery("#cadastro #div_procedimento").length;
                         if (verifica == 0) {
@@ -141,21 +158,21 @@
                         }
 
                         //autocomplete dos procedimentos
-                        $(function () {
-                            $("#procedimento").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentoproduto",
-                                minLength: 3,
-                                focus: function (event, ui) {
-                                    $("#procedimento").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#procedimento").val(ui.item.value);
-                                    $("#procedimentoID").val(ui.item.id);
-                                    return false;
-                                }
-                            });
-                        });
+//                        $(function () {
+//                            $("#procedimento").autocomplete({
+//                                source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentoproduto",
+//                                minLength: 3,
+//                                focus: function (event, ui) {
+//                                    $("#procedimento").val(ui.item.label);
+//                                    return false;
+//                                },
+//                                select: function (event, ui) {
+//                                    $("#procedimento").val(ui.item.value);
+//                                    $("#procedimentoID").val(ui.item.id);
+//                                    return false;
+//                                }
+//                            });
+//                        });
 
                     }
                     

@@ -216,7 +216,7 @@ class Contasreceber extends BaseController {
 
     function gravar() {
         $repetir = $_POST['repitir'];
-        $dia = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['inicio']) ) );
+        $dia = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['inicio'])));
         $parcela = 1;
         $contador = 0;
         $a = 0;
@@ -286,7 +286,7 @@ class Contasreceber extends BaseController {
 
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
 
-                               $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
                             } elseif (substr($dia, 3, 2) == 02) {
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                                 $dia = date('Y-m-d', strtotime("+2 day", strtotime($dia)));
@@ -315,7 +315,7 @@ class Contasreceber extends BaseController {
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                                 $dia = date('Y-m-d', strtotime("+3 day", strtotime($dia)));
 
-                               $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
                             } elseif (substr($dia, 3, 2) == 02) {
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                                 $dia = date('Y-m-d', strtotime("+3 day", strtotime($dia)));
@@ -382,6 +382,10 @@ class Contasreceber extends BaseController {
     }
 
     function anexarimagemcontasareceber($financeiro_contasreceber_id) {
+        if (!is_dir("./upload/contasareceber")) {
+            mkdir("./upload/contasareceber");
+            chmod("./upload/contasareceber", 0777);
+        }
 
         $this->load->helper('directory');
         $data['arquivo_pasta'] = directory_map("./upload/contasareceber/$financeiro_contasreceber_id/");
@@ -395,9 +399,12 @@ class Contasreceber extends BaseController {
 
     function importarimagemcontasareceber() {
         $financeiro_contasreceber_id = $_POST['paciente_id'];
-//        $data = $_FILES['userfile'];
-//        var_dump($data);
-//        die;
+        
+        if (!is_dir("./upload/contasareceber")) {
+            mkdir("./upload/contasareceber");
+            chmod("./upload/contasareceber", 0777);
+        }
+        
         if (!is_dir("./upload/contasareceber/$financeiro_contasreceber_id")) {
             mkdir("./upload/contasareceber/$financeiro_contasreceber_id");
             $destino = "./upload/contasareceber/$financeiro_contasreceber_id";

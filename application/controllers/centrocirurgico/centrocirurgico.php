@@ -287,8 +287,8 @@ class centrocirurgico extends BaseController {
     function carregarsolicitacao($solicitacao_id) {
 
         $data['solicitacao_id'] = $solicitacao_id;
-        $data['dados'] = $this->centrocirurgico_m->listarsolicitacoes()->where('solicitacao_cirurgia_id', $solicitacao_id)->get()->result();
-        $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaoprocedimento();
+        $data['dados'] = $this->centrocirurgico_m->listarsolicitacoes3($solicitacao_id);
+        $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaoprocedimento($data['dados'][0]->convenio_id);
         $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador();
         $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentos($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);

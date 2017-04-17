@@ -3580,7 +3580,7 @@ class exame_model extends Model {
                 $this->db->where('ae.tipo !=', 'CIRURGICO');
             }
         }
-        $this->db->where('ae.tipo', 'CIRURGICO');
+        
         $this->db->where('ae.cancelada', 'false');
         if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $_POST['nome'] . "%");
