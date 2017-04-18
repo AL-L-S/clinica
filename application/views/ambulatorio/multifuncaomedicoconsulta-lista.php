@@ -45,10 +45,17 @@
                                     <option value=""></option>
                                     <? foreach ($especialidade as $value) : ?>
                                         <option value="<?= $value->cbo_ocupacao_id; ?>" <?
-                                        if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
+                                        if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
                                         endif;
-                                        ?>><?php echo $value->descricao; ?></option>
-                                            <? endforeach; ?>
+                                        ?>>
+                                                    <?
+//                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
+//                                                    echo '<script>carregaMedicoEspecialidade();</script>';
+//                                                endif;
+                                                    ?>
+                                                    <?php echo $value->descricao; ?>
+                                        </option>
+                                    <? endforeach; ?>
                                 </select>
                             </th>
 

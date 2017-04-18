@@ -33,7 +33,7 @@ class contasreceber_model extends Model {
             $return = $this->db->get()->result();
         }
 
-        $this->db->select('fc.financeiro_contasreceber_id,
+        $this->db->select("fc.financeiro_contasreceber_id,
                             fc.valor,
                             fc.devedor,
                             fc.parcela,
@@ -44,7 +44,7 @@ class contasreceber_model extends Model {
                             fc.classe,
                             fc.data,
                             cd.razao_social,
-                            fc.tipo_numero');
+                            fc.tipo_numero");
         $this->db->from('tb_financeiro_contasreceber fc');
         $this->db->where('fc.ativo', 'true');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = fc.conta', 'left');

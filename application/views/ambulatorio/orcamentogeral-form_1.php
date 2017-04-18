@@ -45,7 +45,7 @@
                 <label for="valor">Valor UND</label>
                 <input type="valor" name="valor" id="valor" class="text ui-widget-content ui-corner-all">
                 <label for="descricao">Descrição</label>
-                <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1"  readonly=""> </textarea>
+                <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1"> </textarea>
                         
 
                 <!-- Allow form submission with keyboard without duplicating the dialog button -->
@@ -143,6 +143,7 @@
                                             "<td><input name='procedimento[]' type='hidden' value='" + procedimento.val() + "' /></td>" +
                                             "<td><input name='qtde[]' type='hidden' value='" + qtde.val() + "' /></td>" +
                                             "<td ><input name='valor[]' type='hidden' value='" + valor.val() + "' /></td>" +
+                                            "<td ><input name='descricao[]' type='hidden' value='" + descricao.val() + "' /></td>" +
                                             "</tr>");
 
                                     $("#users tfoot tr").remove();

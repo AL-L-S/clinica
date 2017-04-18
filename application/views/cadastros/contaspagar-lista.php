@@ -145,7 +145,8 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                 <?if($item->parcela != ''){
-                                    echo $item->parcela, "ª"; 
+//                                    echo $item->parcela, "ª"; 
+                                    echo $item->parcela, "/", $item->numero_parcela;
                                 }?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", "."); ?></td>
@@ -176,7 +177,7 @@
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?> 
                         </th>
-                        <th class="tabela_footer" colspan="4">
+                        <th class="tabela_footer" colspan="5">
                             Total a Pagar:  <?= number_format($valortotal, 2, ",", "."); ?>
                         </th>
                     </tr>

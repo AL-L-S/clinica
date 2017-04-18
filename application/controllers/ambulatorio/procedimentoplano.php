@@ -132,6 +132,9 @@ class Procedimentoplano extends BaseController {
 
     function imprimirorcamento() {
         $data = $_POST;
+//        echo "<pre>";
+//        var_dump($data);
+//        die;
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);

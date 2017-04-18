@@ -92,7 +92,7 @@ CREATE TABLE ponto.tb_paciente_indicacao
 
 ALTER TABLE ponto.tb_paciente ALTER column indicacao  type integer USING indicacao::integer; 
 USING x::int; 
-atualiza 22/09/2015
+-- atualiza 22/09/2015
 
 CREATE TABLE ponto.tb_ambulatorio_atendimentos_excluiragendado
 (
@@ -111,7 +111,7 @@ CREATE TABLE ponto.tb_ambulatorio_atendimentos_excluiragendado
 ALTER TABLE ponto.tb_empresa add column caixa boolean DEFAULT false;
 
 
-atualiza 01/10/2015
+-- atualiza 01/10/2015
 
 CREATE TABLE ponto.tb_ambulatorio_desconto
 (
@@ -126,7 +126,7 @@ CREATE TABLE ponto.tb_ambulatorio_desconto
   CONSTRAINT tb_ambulatorio_desconto_pkey PRIMARY KEY (ambulatorio_desconto_id )
 )
 
-atualiza 07/10/2015
+-- atualiza 07/10/2015
 
 ALTER TABLE ponto.tb_ambulatorio_guia add column observacoes character varying(8000);
 ALTER TABLE ponto.tb_ambulatorio_guia add column data_observacoes timestamp without time zone;
@@ -134,11 +134,11 @@ ALTER TABLE ponto.tb_ambulatorio_guia add column operador_observacoes integer;
 ALTER TABLE ponto.tb_ambulatorio_guia add column nota_fiscal boolean DEFAULT false;
 ALTER TABLE ponto.tb_ambulatorio_guia add column recibo boolean DEFAULT false;
 
-atualiza 16/10/2015
+-- atualiza 16/10/2015
 
 INSERT INTO ponto.tb_ambulatorio_grupo(nome) VALUES ('PSICOLOGIA');
 
-atualiza 02/11/2015
+-- atualiza 02/11/2015
 
 ALTER TABLE ponto.tb_convenio add column entrega integer;
 ALTER TABLE ponto.tb_convenio add column pagamento integer;
@@ -149,7 +149,7 @@ ALTER TABLE ponto.tb_convenio add column csll decimal;
 ALTER TABLE ponto.tb_convenio add column iss decimal;
 ALTER TABLE ponto.tb_convenio add column valor_base decimal;
 
-atualiza 10/11/2015
+-- atualiza 10/11/2015
 
 CREATE TABLE ponto.tb_ambulatorio_nome_endoscopia_imagem
 (
@@ -161,14 +161,14 @@ CREATE TABLE ponto.tb_ambulatorio_nome_endoscopia_imagem
   CONSTRAINT tb_ambulatorio_nome_endoscopia_imagem_pkey PRIMARY KEY (ambulatorio_nome_endoscopia_imagem_id )
 )
 
-atualiza 27/11/2015
+-- atualiza 27/11/2015
 
 ALTER TABLE ponto.tb_ambulatorio_guia add column peso numeric(10,2);
 ALTER TABLE ponto.tb_ambulatorio_guia add column altura integer;
 ALTER TABLE ponto.tb_ambulatorio_guia add column pasistolica integer;
 ALTER TABLE ponto.tb_ambulatorio_guia add column padiastolica integer;
 
-atualiza 28/11/2015
+-- atualiza 28/11/2015
 
 ALTER TABLE ponto.tb_empresa add column cnpjxml character varying(20);
 ALTER TABLE ponto.tb_empresa add column razao_socialxml character varying(200);
@@ -208,13 +208,13 @@ ALTER TABLE ponto.tb_operador add column  credor_devedor_id integer;
 ALTER TABLE ponto.tb_operador add column valor_base decimal;
 
 
-atualiza 16/12/2015
+-- atualiza 16/12/2015
 
 ALTER TABLE ponto.tb_empresa add column registroans character varying(11);
 
 
 
-atualiza 11/01/2015
+-- atualiza 11/01/2015
 
 CREATE TABLE ponto.tb_ambulatorio_orcamento
 (
@@ -245,7 +245,7 @@ CREATE TABLE ponto.tb_ambulatorio_orcamento_item
   CONSTRAINT tb_ambulatorio_orcamento_item_pkey PRIMARY KEY (ambulatorio_orcamento_item_id )
 )
 
-atualiza 19/01/2015
+-- atualiza 19/01/2015
 
 ALTER TABLE ponto.tb_operador add column conta_id  integer;
 ALTER TABLE ponto.tb_operador add column tipo_id  character varying(60);
@@ -314,7 +314,7 @@ CREATE TABLE ponto.tb_integracao_laudo
 )
 
 
-atualiza 24/02/2015
+-- atualiza 24/02/2015
 
 ALTER TABLE ponto.tb_agenda_exames_nome add column ativo boolean NOT NULL DEFAULT true;
 ALTER TABLE ponto.tb_ambulatorio_laudo ALTER column peso type numeric(10,2);
@@ -323,30 +323,30 @@ ALTER TABLE ponto.tb_ambulatorio_guia add column declaracao character varying(30
 ALTER TABLE ponto.tb_ambulatorio_guia add column operador_declaracao integer;
 ALTER TABLE ponto.tb_ambulatorio_guia add column data_declaracao timestamp without time zone;
 
-atualiza 02/02/2015
+-- atualiza 02/02/2015
 
 ALTER TABLE ponto.tb_agenda_exames add column operador_aterardatafaturamento integer;
 ALTER TABLE ponto.tb_agenda_exames add column data_aterardatafaturamento timestamp without time zone;
 
-atualiza 02/02/2015
+-- atualiza 02/02/2015
 
 ALTER TABLE ponto.tb_integracao add column wkl_id serial;
 
-atualiza 15/03/2015
+-- atualiza 15/03/2015
 
 ALTER TABLE ponto.tb_convenio add column registroans character varying(11);
 ALTER TABLE ponto.tb_convenio add column codigoidentificador character varying(20);
 
 
-atualiza 24/03/2015
+-- atualiza 24/03/2015
 
 ALTER TABLE ponto.tb_ambulatorio_guia add column guiaconvenio character varying(25);
 
-atualiza 26/03/2015
+-- atualiza 26/03/2015
 
 ALTER TABLE ponto.tb_procedimento_tuss add column percentual boolean default true;
 
-atualiza 30/03/2015
+-- atualiza 30/03/2015
 
 ALTER TABLE ponto.tb_procedimento_tuss add column entrega integer;
 
@@ -378,15 +378,15 @@ ALTER TABLE ponto.tb_integracao_laudo add column laudo_conselho_medico_revisor c
 ALTER TABLE ponto.tb_integracao_laudo add column laudo_conselho_uf_medico_revisor character varying(2)
 ALTER TABLE ponto.tb_integracao_laudo add column laudo_status character varying(20);
 
-atualiza 18/04/2015
+-- atualiza 18/04/2015
 
 ALTER TABLE ponto.tb_agenda_exames add column guiaconvenio character varying(25);
 
-atualiza 18/04/2015
+-- atualiza 18/04/2015
 
 ALTER TABLE ponto.tb_procedimento_tuss add column medico boolean default false;
 
-atualiza 09/05/2015
+-- atualiza 09/05/2015
 
 CREATE TABLE ponto.tb_ambulatorio_convenio_operador
 (
@@ -403,20 +403,20 @@ CREATE TABLE ponto.tb_ambulatorio_convenio_operador
 )
 
 
-atualiza 12/05/2016
+-- atualiza 12/05/2016
 
 ALTER TABLE ponto.tb_agenda_exames add column tipo_agenda character varying(20);
 
-atualiza 27/05/2016
+-- atualiza 27/05/2016
 
 ALTER TABLE ponto.tb_tuss add column ativo boolean default true;
 
-atualiza 29/05/2016
+-- atualiza 29/05/2016
 
 ALTER TABLE ponto.tb_integracao add column wkl_exame_id integer;
 ALTER TABLE ponto.tb_estoque_fornecedor add column  credor_devedor_id integer;
 
-atualiza 13/06/2016
+-- atualiza 13/06/2016
 
 CREATE TABLE ponto.tb_convenio_grupo
 (
@@ -430,11 +430,11 @@ CREATE TABLE ponto.tb_convenio_grupo
   CONSTRAINT tb_convenio_grupo_pkey PRIMARY KEY (convenio_grupo_id )
 )
 
-atualiza 14/06/2016
+-- atualiza 14/06/2016
 
 ALTER TABLE ponto.tb_convenio add column convenio_grupo_id integer;
 
-atualiza 17/06/2016
+-- atualiza 17/06/2016
 
 CREATE TABLE ponto.tb_convenio_operador_procedimento
 (
@@ -479,7 +479,7 @@ CREATE TABLE ponto.tb_procedimento_percentual_medico_convenio
 ALTER TABLE ponto.tb_agenda_exames add column internet boolean DEFAULT false;
 ALTER TABLE ponto.tb_paciente add column internet boolean DEFAULT false;
 
-atualiza 04/08/2016
+-- atualiza 04/08/2016
 
 ALTER TABLE ponto.tb_estoque_entrada add column inventario boolean DEFAULT false;
 
@@ -809,7 +809,7 @@ ALTER TABLE ponto.tb_forma_pagamento ADD COLUMN taxa_juros integer;
 
 ALTER TABLE ponto.tb_financeiro_grupo ADD COLUMN ajuste numeric(10,2);
 
-atualiza 22/10/16
+-- atualiza 22/10/16
 
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN parcelas1 integer;
 ALTER TABLE ponto.tb_agenda_exames ALTER COLUMN parcelas1 SET DEFAULT 1;

@@ -1,7 +1,5 @@
+<meta charset="utf8">
 <div class="content ficha_ceatox">
-
-
-
     <table>
         <tbody>
             <tr>
@@ -19,13 +17,14 @@
         </tbody>
     </table>
     <hr>
-    <table>
+    <table border="1">
         <tr>
             <td >Procedimento</td>
+            <td >Convenio</td>
             <td >Qtde</td>
             <td >V. Unit</td>
-            <td >CONVENIO</td>
             <td >V. Total</td>
+            <td >Descriçao</td>
         </tr>
         <?
         $total = 0;
@@ -38,24 +37,22 @@
             <tr>
 
                 <td width="25%;"><?= utf8_decode($procedimento[$i]) ?></td>
-                <td ><?= utf8_decode($qtde[$i]) ?></td>
-                <td width="25%;"><?= $valor[$i] ?></td>
                 <td width="25%;"><?= $convenio[$i] ?></td>
-                <td width="25%;"><?= number_format($valor_total, 2, ',', '.') ?></td>
+                <td style="text-align: right"><?= utf8_decode($qtde[$i]) ?></td>
+                <td width="25%;" style="text-align: right"><?= $valor[$i] ?></td>
+                <td width="25%;" style="text-align: right"><?= number_format($valor_total, 2, ',', '.') ?></td>
+                <td width="25%;" style="text-align: right"><?= $descricao[$i] ?></td>
             </tr>
 
             <?
         endfor;
         ?>
-            <tr>
+<!--            <tr>
                 <td>&nbsp;</td>
-            </tr>
+            </tr>-->
         <tr>
-            <td width="25%;"><b>Total Geral</b></td>
-            <td ><b></b></td>
-            <td ><b></b></td>
-            <td ><b></b></td>
-            <td width="25%;"><b><?= number_format($total, 2, ',', '.') ?></b></td>
+            <td width="25%;" colspan="7" style="text-align: right"><b>Total Geral: <?= number_format($total, 2, ',', '.') ?></b></td>
+            <!--<td width="25%;"><b></b></td>-->
         </tr>
         </tbody>
     </table>

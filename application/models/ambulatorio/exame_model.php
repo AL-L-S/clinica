@@ -2666,7 +2666,6 @@ class exame_model extends Model {
     }
 
     function listarmultifuncao2medico($args = array()) {
-
         $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
         $dataAtual = date("Y-m-d");
@@ -2749,6 +2748,9 @@ class exame_model extends Model {
             }
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_agenda', $args['medico']);
+            }
+            if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+                $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
             }
         }
         return $this->db;
@@ -3107,6 +3109,9 @@ class exame_model extends Model {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
+            if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+                $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
+            }
         }
         return $this->db;
     }
@@ -3334,6 +3339,9 @@ class exame_model extends Model {
                 $this->db->where('ae.situacao', $args['situacao']);
             } if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
+            }
+            if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+                $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
             }
         }
         return $this->db;
@@ -3584,7 +3592,7 @@ class exame_model extends Model {
                 $this->db->where('ae.tipo !=', 'CIRURGICO');
             }
         }
-        
+
         $this->db->where('ae.cancelada', 'false');
         if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $_POST['nome'] . "%");

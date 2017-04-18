@@ -147,7 +147,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                 <?if($item->parcela != ''){
-                                    echo $item->parcela, "ª"; 
+                                    echo $item->parcela, "/", $item->numero_parcela; 
                                 }?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", "."); ?></td>
