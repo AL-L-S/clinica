@@ -143,6 +143,52 @@ class laudo_model extends Model {
 
     function atualizacaolaudosintegracaotodos() {
 
+        $this->db->select('il.integracao_laudo_id,
+                            il.exame_id,
+                            il.laudo_texto,
+                            il.laudo_data_hora,
+                            al.ambulatorio_laudo_id,
+                            il.laudo_status,
+                            al.ambulatorio_laudo_id,
+                            o.operador_id as medico,
+                            op.operador_id as revisor');
+        $this->db->from('tb_integracao_laudo il');
+        $this->db->join('tb_operador o', 'o.conselho = il.laudo_conselho_medico', 'left');
+        $this->db->join('tb_operador op', 'op.conselho = il.laudo_conselho_medico_revisor', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = il.exame_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+//        $this->db->where('il.exame_id', $agenda_exames_id);
+        $this->db->where("((il.laudo_status = 'PUBLICADO') OR (il.laudo_status = 'REPUBLICADO') ) ");
+        $this->db->orderby('il.laudo_status');
+        $this->db->orderby('il.integracao_laudo_id');
+        $query = $this->db->get();
+        $return = $query->result();
+
+        foreach ($return as $value) {
+            $laudo_texto = $value->laudo_texto;
+            $laudo_data_hora = $value->laudo_data_hora;
+            $ambulatorio_laudo_id = $value->ambulatorio_laudo_id;
+            $medico = $value->medico;
+            $revisor = $value->revisor;
+            $agenda_exames_id = $value->exame_id;
+            $this->db->set('texto', $laudo_texto);
+            $this->db->set('situacao', 'FINALIZADO');
+            $this->db->set('medico_parecer1', $medico);
+            $this->db->set('medico_parecer2', $revisor);
+            $this->db->set('data_atualizacao', $laudo_data_hora);
+            $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);
+            $this->db->update('tb_ambulatorio_laudo');
+
+            $this->db->set('medico_consulta_id', $medico);
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_agenda_exames');
+
+            $this->db->set('laudo_status', 'LIDO');
+            $this->db->where('exame_id', $agenda_exames_id);
+            $this->db->update('tb_integracao_laudo');
+        }
+//
+//
 //        $this->db->select('il.integracao_laudo_id,
 //                            il.exame_id,
 //                            il.laudo_texto,
@@ -158,9 +204,8 @@ class laudo_model extends Model {
 //        $this->db->join('tb_exames e', 'e.agenda_exames_id = il.exame_id', 'left');
 //        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
 ////        $this->db->where('il.exame_id', $agenda_exames_id);
-//        $this->db->where('(il.laudo_status = PUBLICADO OR il.laudo_status = REPUBLICADO)');
-//        $this->db->orderby('il.laudo_status');
-//        $this->db->orderby('il.integracao_laudo_i');
+//        $this->db->where('il.laudo_status', 'REPUBLICADO');
+//        $this->db->orderby('il.integracao_laudo_id');
 //        $query = $this->db->get();
 //        $return = $query->result();
 //
@@ -187,51 +232,6 @@ class laudo_model extends Model {
 //            $this->db->where('exame_id', $agenda_exames_id);
 //            $this->db->update('tb_integracao_laudo');
 //        }
-
-
-        $sql = "UPDATE ponto.tb_ambulatorio_laudo SET texto = integracao_tabela.laudo_texto, situacao = 'FINALIZADO',
-                medico_parecer1 = integracao_tabela.medico, medico_parecer2 = integracao_tabela.revisor,
-                data_atualizacao = integracao_tabela.laudo_data_hora
-                FROM (
-                    SELECT il.laudo_texto, il.laudo_data_hora, al.ambulatorio_laudo_id as ambulatorio_id, o.operador_id as medico, op.operador_id as revisor
-                    FROM ponto.tb_integracao_laudo il LEFT JOIN ponto.tb_operador o ON o.conselho = il.laudo_conselho_medico 
-                    LEFT JOIN ponto.tb_operador op ON op.conselho = il.laudo_conselho_medico_revisor 
-                    LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = il.exame_id 
-                    LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
-                    WHERE (il.laudo_status = 'PUBLICADO' OR il.laudo_status = 'REPUBLICADO' 
-                    )
-                AND o.ativo = 'true' 
-                ORDER BY il.laudo_status, il.integracao_laudo_id)  integracao_tabela
-                WHERE ambulatorio_laudo_id  = integracao_tabela.ambulatorio_id; 
-                ------------------------------------
-                UPDATE ponto.tb_agenda_exames
-                SET medico_consulta_id = integracao_tabela.medico
-                FROM (
-                    SELECT il.integracao_laudo_id, il.exame_id, il.laudo_texto, il.laudo_data_hora, al.ambulatorio_laudo_id as ambulatorio_id, il.laudo_status, o.operador_id as medico, op.operador_id as revisor 
-                    FROM ponto.tb_integracao_laudo il 
-                    LEFT JOIN ponto.tb_operador o 
-                    ON o.conselho = il.laudo_conselho_medico 
-                    LEFT JOIN ponto.tb_operador op 
-                    ON op.conselho = il.laudo_conselho_medico_revisor 
-                    LEFT JOIN ponto.tb_exames e 
-                    ON e.agenda_exames_id = il.exame_id 
-                    LEFT JOIN ponto.tb_ambulatorio_laudo al 
-                    ON al.exame_id = e.exames_id 
-                    WHERE (il.laudo_status = 'PUBLICADO' OR il.laudo_status = 'REPUBLICADO' 
-                )
-                AND o.ativo = 'true' 
-                ORDER BY il.laudo_status, il.integracao_laudo_id)  integracao_tabela
-                WHERE agenda_exames_id = integracao_tabela.exame_id;
-                --------------------------
-                UPDATE ponto.tb_integracao_laudo
-                SET laudo_status = 'LIDO'
-                WHERE exame_id IN (
-                    SELECT il.exame_id FROM ponto.tb_integracao_laudo il 
-                    WHERE (il.laudo_status = 'PUBLICADO' OR il.laudo_status = 'REPUBLICADO' )
-                    ORDER BY il.laudo_status, il.integracao_laudo_id
-                    )";
-        
-        $this->db->query($sql);
     }
 
     function email($paciente_id) {
