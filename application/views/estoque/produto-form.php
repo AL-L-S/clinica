@@ -45,7 +45,7 @@
                     </dt>
                     <dd>
                         <input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2" value="" />
-                        <input type="text" name="procedimento" id="procedimento" class="texto10" value="" />
+                        <input type="text" name="procedimento" id="procedimento" class="texto10" value="<?=@$obj->_procedimento?>" />
                     </dd>
                     
                     <dt>
