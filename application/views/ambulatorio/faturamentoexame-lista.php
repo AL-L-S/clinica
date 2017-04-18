@@ -102,9 +102,9 @@
                         }
                         ?>
                         <tr>
-                            <td ><a onmouseover="style='color:red;cursor: pointer;'" onmouseout="style='color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadt/<?= $item->ambulatorio_guia_id; ?>');">
-        <?= $item->ambulatorio_guia_id ?>
-                                    </a></td>
+                            <td ><a onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadt/<?= $item->ambulatorio_guia_id; ?>');">
+                                    <?= $item->ambulatorio_guia_id ?>
+                                </a></td>
                             <td ><?= $item->autorizacao; ?></td>
                             <td ><a style="cursor: pointer; color: blue;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"><?= substr($item->procedimento, 0, 16) . " " . $item->numero_sessao; ?></a></td>
                             <td ><div style="margin-left:8pt;"><?= $item->nome; ?></div></td>
@@ -193,7 +193,7 @@
                 }
             }
             ?>
-
+         
             <tfoot>
                 <tr>
                     <th colspan="2" >
@@ -202,7 +202,11 @@
                     <th colspan="3" >
                         Valor Total: <?php echo number_format($valortotal, 2, ',', '.'); ?>
                     </th>
-                    <? if ($faturado == 0 && $convenios != 0) { ?>
+                    <? if ($financeiro == 't') { ?>
+                    <td width="40px;" style="color:green;"><div class="bt_link">Financeiro</div></td>
+                    <? 
+                    ?>
+                    <? } elseif ($faturado == 0 && $convenios != 0) { ?>
                 <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/exame/fecharfinanceiro" method="post">
                     <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($valortotal, 2, ',', '.'); ?>" readonly/>
                     <input type="hidden" class="texto3" name="relacao" value="<?= $convenios[0]->credor_devedor_id; ?>"/>

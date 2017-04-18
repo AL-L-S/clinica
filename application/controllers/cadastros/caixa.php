@@ -915,7 +915,11 @@ class Caixa extends BaseController {
     }
 
     function anexarimagementrada($entradas_id) {
-
+        if (!is_dir("./upload/entrada")) {
+            mkdir("./upload/entrada");
+            chmod("./upload/entrada", 0777);
+        }
+        
         $this->load->helper('directory');
         $data['arquivo_pasta'] = directory_map("./upload/entrada/$entradas_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
@@ -931,6 +935,11 @@ class Caixa extends BaseController {
 //        $data = $_FILES['userfile'];
 //        var_dump($data);
 //        die;
+        if (!is_dir("./upload/entrada")) {
+            mkdir("./upload/entrada");
+            chmod("./upload/entrada", 0777);
+        }
+        
         if (!is_dir("./upload/entrada/$entradas_id")) {
             mkdir("./upload/entrada/$entradas_id");
             $destino = "./upload/entrada/$entradas_id";
@@ -957,6 +966,11 @@ class Caixa extends BaseController {
 
     function anexarimagemsaida($saidas_id) {
 
+        if (!is_dir("./upload/saida")) {
+            mkdir("./upload/saida");
+            chmod("./upload/saida", 0777);
+        }
+        
         $this->load->helper('directory');
         $data['arquivo_pasta'] = directory_map("./upload/saida/$saidas_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
@@ -968,6 +982,11 @@ class Caixa extends BaseController {
     }
 
     function importarimagemsaida() {
+        if (!is_dir("./upload/saida")) {
+            mkdir("./upload/saida");
+            chmod("./upload/saida", 0777);
+        }
+        
         $saidas_id = $_POST['paciente_id'];
 //        $data = $_FILES['userfile'];
 //        var_dump($data);

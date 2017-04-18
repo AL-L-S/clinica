@@ -17,30 +17,8 @@ class batepapo extends BaseController {
     public function pesquisar() {
         $operador_id = $this->session->userdata('operador_id');
         $data['usuarios'] = $this->batepapo->listarusuarios();
-
-        for($i = 0; $i< count($data['usuarios']); $i++){            
-            $status = 'off';
-            
-            if( isset($data['usuarios'][$i]->horario_login) ){
-                $horario = date("Y-m-d H:i:s");
-                $data['usuarios'][$i]->horario_login = strtotime("+3 minutes", strtotime($data['usuarios'][$i]->horario_login));
-                $horario_login = date("Y-m-d H:i:s", $data['usuarios'][$i]->horario_login);    
-                
-                if(($horario_login > $horario) || ($data['usuarios'][$i]->online == 't')){
-                    $status = 'on';
-                }
-                
-            }
-            
-            $usuarios[] = array(
-                'usuario' => utf8_encode($data['usuarios'][$i]->usuario),
-                'operador_id' => $data['usuarios'][$i]->operador_id,
-                'status' => $status,
-                'num_mensagens' => $data['usuarios'][$i]->num_mensagens
-            );
-        }
         
-        die(json_encode($usuarios));
+        die(json_encode($data['usuarios']));
     }
     
     
@@ -87,10 +65,7 @@ class batepapo extends BaseController {
                 'id_destino' => $item->operador_destino,
                 'data_envio' => date("d/m/Y H:i", strtotime($item->data_envio) )
             );
-        }
-//        var_dump($mensagens);die;
-
-        
+        }        
         die(json_encode($mensagens));
     }
     
@@ -103,11 +78,7 @@ class batepapo extends BaseController {
     
     function totalmensagensnaolidas() {        
         $operador_id = $this->session->userdata('operador_id');
-        $total = $this->batepapo->totalmensagensnaolidas();
-//        var_dump($historico); die;
-        
-        $total = count($total);
-        
+        $total = $this->batepapo->totalmensagensnaolidas();        
         die(json_encode($total));
     }
        

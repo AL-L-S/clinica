@@ -233,12 +233,12 @@ class Exame extends BaseController {
     }
 
     function listarmultifuncaomedico($args = array()) {
-        $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
+//        $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
 //        echo "<pre>";
 //        var_dump($data['integracao']);die;
-        if (count($data['integracao']) > 0) {
-            $this->laudo->atualizacaolaudosintegracaotodos();
-        }
+//        if (count($data['integracao']) > 0) {
+//            $this->laudo->atualizacaolaudosintegracaotodos();
+//        }
 
         $this->loadView('ambulatorio/multifuncaomedico-lista', $args);
     }
@@ -575,6 +575,7 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
+        
         if ($total == 0) {
             $procedimentopercentual = $_POST['txtprocedimento_tuss_id'];
             $medicopercentual = $_POST['txtmedico'];

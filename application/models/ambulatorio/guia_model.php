@@ -422,6 +422,9 @@ class guia_model extends Model {
                             ae.guia_id,
                             pc.valortotal,
                             ae.quantidade,
+                            ae.valor,
+                            ae.valor1,
+                            ae.ajuste_cbhpm,
                             ae.valor_total,
                             ae.autorizacao,
                             pc.qtdech,
@@ -894,7 +897,8 @@ class guia_model extends Model {
     }
 
     function gravarajustarvalorprocedimentocbhpm() {
-
+//        echo 'aqui';
+//        die;
         $this->db->select('distinct(ae.guia_id)
                             ');
         $this->db->from('tb_agenda_exames ae');
@@ -941,6 +945,9 @@ class guia_model extends Model {
             $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+            $this->db->where("pt.grupo", $_POST['grupo']);
+            $this->db->where("pc.convenio_id", $_POST['convenio1']);
+            $this->db->where('ae.ajuste_cbhpm', 'f');
             $this->db->where('ae.guia_id', $value->guia_id);
 //            $this->db->groupby('ae.guia_id');
 //            $this->db->groupby('ae.agenda_exames_id');
@@ -970,6 +977,7 @@ class guia_model extends Model {
                 }
 //                echo round($valor_total, 2) . '<br>';
 
+                $this->db->set('ajuste_cbhpm', 't');
                 $this->db->set('valor_total', $valor_total);
                 $this->db->where('agenda_exames_id', $value2->agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
@@ -2033,6 +2041,7 @@ class guia_model extends Model {
                             g.checado,
                             sum(ae.valor_total) as total,
                             p.nome as paciente,
+                            p.paciente_id,
                             p.celular,
                             p.cpf,
                             p.rg,
@@ -2049,6 +2058,7 @@ class guia_model extends Model {
         $this->db->groupby('p.celular');
         $this->db->groupby('p.telefone');
         $this->db->groupby('p.nome');
+        $this->db->groupby('p.paciente_id');
         $this->db->groupby('p.cpf');
         $this->db->groupby('p.rg');
         $this->db->orderby('data_criacao');
@@ -4017,28 +4027,32 @@ class guia_model extends Model {
         $this->db->select('ag.ambulatorio_guia_id');
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
-        $this->db->where("ag.paciente_id", $_POST['txtNomeid']);
+        if ($_POST['txtNomeid'] != '') {
+            $this->db->where("ag.paciente_id", $_POST['txtNomeid']);
+        }
         $this->db->where("ag.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ag.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $return = $this->db->get();
         return $return->result();
     }
 
-    function relatoriocaixapersonalizadoprocedimentosvalortotal() {
+    function relatoriocaixapersonalizadoprocedimentosvalortotal($guia_id) {
 
-        $this->db->select('sum(ae.quantidade * ae.valor_total) as valor_total');
+        $this->db->select('sum(ae.quantidade * ae.valor) as valor_total');
         $this->db->from('tb_agenda_exames ae');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.operador_autorizacao >', 0);
-        
-        $this->db->where("ae.paciente_id", $_POST['txtNomeid']);
+
+        $this->db->where("ae.guia_id", $guia_id);
+
+//        $this->db->where("ae.paciente_id", $_POST['txtNomeid']);
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        $this->db->groupby('ae.quantidade, ae.valor_total');
-        $return = $this->db->get();
-        return $return->result();
+        $return = $this->db->get()->result();
+        return $return[0]->valor_total;
     }
+
     function relatoriocaixapersonalizadoprocedimentos() {
 
         $this->db->select('ae.agenda_exames_id,
@@ -4073,7 +4087,7 @@ class guia_model extends Model {
                             ae.operador_editar,
                             p.nome as paciente,
                             ae.procedimento_tuss_id,
-                            pt.nome as exame,
+                            pt.nome as procedimento,
                             o.nome,
                             e.exames_id,
                             op.nome as nomefaturamento,
@@ -4081,7 +4095,6 @@ class guia_model extends Model {
                             f2.nome as forma_pagamento_2,
                             f3.nome as forma_pagamento_3,
                             f4.nome as forma_pagamento_4,
-                            pt.descricao as procedimento,
                             pt.codigo,
                             ae.desconto,
                             ae.parcelas1,
@@ -4104,8 +4117,11 @@ class guia_model extends Model {
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.operador_autorizacao >', 0);
-        
-        $this->db->where("ae.paciente_id", $_POST['txtNomeid']);
+
+        if ($_POST['txtNomeid'] != '') {
+            $this->db->where("ae.paciente_id", $_POST['txtNomeid']);
+        }
+
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('ae.operador_autorizacao');
@@ -4555,6 +4571,19 @@ class guia_model extends Model {
     }
 
     function verificaobservacao($guia_id) {
+
+        $this->db->select('ambulatorio_guia_id,
+                            nota_fiscal,
+                            recibo,
+                            valor_guia,
+                            observacoes');
+        $this->db->from('tb_ambulatorio_guia');
+        $this->db->where("ambulatorio_guia_id", $guia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function verificaobservacaorelatorio($guia_id) {
 
         $this->db->select('ambulatorio_guia_id,
                             nota_fiscal,
@@ -5637,6 +5666,24 @@ AND data <= '$data_fim'";
         $this->db->set('recibo', $_POST['recibo']);
         $this->db->set('data_observacoes', $horario);
         $this->db->set('operador_observacoes', $operador_id);
+        $this->db->where('ambulatorio_guia_id', $guia_id);
+        $this->db->update('tb_ambulatorio_guia');
+    }
+
+    function gravarnotavalor($guia_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+//        $this->db->set('observacoes', $_POST['observacoes']);
+        $this->db->set('nota_fiscal', 't');
+        if ($_POST['txtvalorguia'] != '') {
+            $this->db->set('valor_guia', str_replace(",", ".", $_POST['txtvalorguia']));
+        }
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('checado', 't');
+        $this->db->set('data_checado', $horario);
+        $this->db->set('operador_checado', $operador_id);
         $this->db->where('ambulatorio_guia_id', $guia_id);
         $this->db->update('tb_ambulatorio_guia');
     }

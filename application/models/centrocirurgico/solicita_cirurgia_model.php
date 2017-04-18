@@ -203,16 +203,27 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
-    function carregarsolicitacaoprocedimento() {
+    function carregarsolicitacaoprocedimento($convenio_id) {
 
 
-        $this->db->select(' pt.procedimento_tuss_id,
-                            pt.descricao');
-        $this->db->from('tb_procedimento_tuss pt');
-        $this->db->where('pt.ativo', 't');
-        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
-        $this->db->where('ag.tipo', 'EXAME');
-
+//        $this->db->select(' pt.procedimento_tuss_id,
+//                            pt.descricao');
+//        $this->db->from('tb_procedimento_tuss pt');
+//        $this->db->where('pt.ativo', 't');
+//        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+//        $this->db->where('ag.tipo', 'EXAME');
+//
+//        $return = $this->db->get();
+//        return $return->result();
+//        
+        $this->db->select('pc.procedimento_convenio_id,
+                           pc.valortotal,
+                           pt.codigo,
+                           pt.nome');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('pc.ativo', 'true');
+        $this->db->where('pc.convenio_id', $convenio_id);
         $return = $this->db->get();
         return $return->result();
     }

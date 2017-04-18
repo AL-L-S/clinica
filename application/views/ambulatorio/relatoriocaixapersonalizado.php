@@ -5,11 +5,11 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriocaixapersonalizando">
                 <dl>
                     <dt>
-                        <label>Nome</label>
+                        <label>Paciente</label>
                     </dt>
                     <dd>
                         <input type="hidden" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
-                        <input type="text" id="txtNome" required name="txtNome" class="texto10" required/>
+                        <input type="text" id="txtNome" name="txtNome" class="texto10"/>
                     </dd>
                     <dt>
                         <label>Data inicio</label>

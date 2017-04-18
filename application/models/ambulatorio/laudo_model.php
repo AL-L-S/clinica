@@ -135,8 +135,10 @@ class laudo_model extends Model {
         //$this->db->where('exame_id');
         $this->db->where('laudo_status', 'PUBLICADO');
         $this->db->orwhere('laudo_status', 'REPUBLICADO');
-        $return = $this->db->get();
-        return $return->result();
+//        $this->db->limit(1);
+        $return = $this->db->count_all_results();
+        var_dump($return);
+        die;
     }
 
     function atualizacaolaudosintegracaotodos() {

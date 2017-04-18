@@ -1192,7 +1192,7 @@ class Guia extends BaseController {
 //            $data['mensagem'] = 'A data não pode ser maior que a de hoje.';
 //            $this->session->set_flashdata('message', $data['mensagem']);
 //        } else {
-            $this->guia->gravaralterardata($agenda_exames_id);
+        $this->guia->gravaralterardata($agenda_exames_id);
 //        }
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
@@ -1210,14 +1210,14 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/tempomedioconsulta-form', $data);
     }
-    
+
     function procedimentocirurgicovalor($agenda_exames_id) {
         $data['valor'] = $this->guia->procedimentocirurgicovalor($agenda_exames_id);
 //        var_dump($data['valor']); die;
 
         $this->load->View('ambulatorio/procedimentocirurgicovalor-form', $data);
     }
-    
+
     function gravarprocedimentocirurgicovalor($agenda_exames_id) {
         $this->guia->gravarprocedimentocirurgicovalor($agenda_exames_id);
 //        var_dump($data['valor']); die;
@@ -1979,17 +1979,17 @@ class Guia extends BaseController {
     }
 
     function enviaremail() {
-        
-         $empresa_id = $this->session->userdata('empresa_id');
-         $empresa = $this->guia->listarempresa($empresa_id);
-         
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $empresa = $this->guia->listarempresa($empresa_id);
+
         $emails = $this->guia->gerarelatorioexamefaltouemail();
-        if($empresa[0]->email != ''){
+        if ($empresa[0]->email != '') {
             $email_empresa = $empresa[0]->email;
-        }else{
+        } else {
             $email_empresa = 'stgsaude@gmail.com';
         }
-        
+
         $remetente = $_POST['remetente'];
         $assunto = $_POST['assunto'];
         $mensagem = $_POST['mensagem'];
@@ -2016,7 +2016,7 @@ class Guia extends BaseController {
             }
         }
 
-        if (1==1) {
+        if (1 == 1) {
             $data['mensagem'] = 'Email enviado com sucesso.';
         } else {
             $data['mensagem'] = 'Envio de Email malsucedido.';
@@ -2631,6 +2631,33 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/procedimentoguianota-form', $data);
     }
 
+    function procedimentoguianotaform($ambulatorio_guia_id, $valorguia, $valor = 0.00) {
+        $data['valorguia'] = $valorguia;
+        $data['valor'] = $valor;
+        $data['guia_id'] = $ambulatorio_guia_id;
+//        var_dump($ambulatorio_guia_id,$data['guia_id']);die;
+        $this->load->View('ambulatorio/procedimentoguianota2-form', $data);
+    }
+
+    function gravarnotavalor($guia_id) {
+        if ((float) $_POST['txtvalorguia'] <= (float) $_POST['totguia']) {
+            $this->guia->gravarnotavalor($guia_id);
+             redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        } else {
+            echo '<html>
+        <script type="text/javascript">
+        alert("Valor informado excede o valor da guia!");
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>';
+        }
+
+    }
+
     function graficovalormedio($procedimento, $valor, $txtdata_inicio, $txtdata_fim) {
 //        var_dump($txtdata_inicio);
 //        var_dump($txtdata_fim);
@@ -2736,13 +2763,11 @@ class Guia extends BaseController {
     function gerarelatoriocaixapersonalizando() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
-        $data['paciente'] = $_POST['txtNome'];
+        $data['paciente'] = ($_POST['txtNomeid'] != '') ? $_POST['txtNome'] : "TODOS";
+
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
         $data['relatorioprocedimentos'] = $this->guia->relatoriocaixapersonalizadoprocedimentos();
-        $data['valortotal'] = $this->guia->relatoriocaixapersonalizadoprocedimentosvalortotal();
-//        var_dump($data['valortotal']);die;
-        
 //        $data['caixa'] = $this->caixa->listarsangriacaixa();
 //        $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarforma();
@@ -2770,7 +2795,7 @@ class Guia extends BaseController {
         $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriovalorprocedimentocbhpm', $data);
     }
-    
+
     function relatoriovalorprocedimento() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2785,11 +2810,11 @@ class Guia extends BaseController {
         $data['contador'] = $this->guia->relatoriovalorprocedimentocontador();
         $this->loadView('ambulatorio/ajustarvalorprocedimento', $data);
     }
-    
+
     function gravarajustarvalorprocedimentocbhpm() {
         $this->guia->gravarajustarvalorprocedimentocbhpm();
         $data['mensagem'] = 'Valores Alterados Com Sucesso.';
-        
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/guia/ajustarvalorprocedimentocbhpm", $data);
     }

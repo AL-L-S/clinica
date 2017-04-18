@@ -28,4 +28,9 @@ INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN home_care boolean DEFAULT false;
 
 
+-- 12/04/2017 Flag para verificar se já foi feito o ajuste de valores relacionados com o convênio
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN ajuste_cbhpm boolean DEFAULT false;
+
+
 

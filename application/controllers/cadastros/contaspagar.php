@@ -356,7 +356,7 @@ class Contaspagar extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "cadastros/contaspagar/carregarconfirmacao/$financeiro_contaspagar_id", $data);
         }
-        
+
         if ($_POST['credor'] == '') {
             $data['mensagem'] = 'Associe um credor a este pagamento.';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -393,7 +393,10 @@ class Contaspagar extends BaseController {
     }
 
     function anexarimagemcontasapagar($financeiro_contaspagar_id) {
-
+        if (!is_dir("./upload/contasapagar")) {
+            mkdir("./upload/contasapagar");
+            chmod("./upload/contasapagar", 0777);
+        }
         $this->load->helper('directory');
         $data['arquivo_pasta'] = directory_map("./upload/contasapagar/$financeiro_contaspagar_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
@@ -405,6 +408,11 @@ class Contaspagar extends BaseController {
     }
 
     function importarimagemcontasapagar() {
+        if (!is_dir("./upload/contasapagar")) {
+            mkdir("./upload/contasapagar");
+            chmod("./upload/contasapagar", 0777);
+        }
+        
         $financeiro_contaspagar_id = $_POST['paciente_id'];
 //        $data = $_FILES['userfile'];
 //        var_dump($data);

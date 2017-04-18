@@ -98,7 +98,6 @@ function debug($object) {
                                     }
                                     if (!aberta) {
                                         adicionarJanela(id, nome, status);
-                                        retorna_historico(retorno[obj].operador_id);
                                     }
                                 }
                             }
@@ -123,9 +122,9 @@ function debug($object) {
                                     // TAG <div> dentro de <li> com o classe imgPerfil (onde ficara a foto de perfil do usuario)
                                     // TAG <a> dentro de <li> que ira servir de link para iniciar a janela de batepapo. Esta estruturada da seguinte forma:
                                     //     href com endereco cego 
-                                    //     id com id do operador logado e do operador clicado, separado por ':'. Exemplo id="1:4327"
+                                    //     id com id do operador logado e do operador clicado, separado por ':'. Exemplo id="1:4327";
                                     //     class com o valor "comecarChat", que ira servir para impedir que o usuario abra duas vezes o mesmo contato.
-                                    //          quando e clicado em um item o valor automaticamente e removido
+                                    //          quando é clicado em um item o valor da class automaticamente é removido
                                     // TAG <span> com class='total_mensagens' mostrando o numero de mensagens nao lidas daquele contato
                                     // TAG <span> que futuramente indicara se o uusuario esta online ou offline
                                     tags = "<li id='" + usr.operador_id + "'><div class='imgPerfil'></div>";
@@ -133,7 +132,13 @@ function debug($object) {
                                     if (usr.num_mensagens != 0) {
                                         tags += "<span class='total_mensagens'> +" + usr.num_mensagens + " </span>";
                                     }
-                                    tags += "<span id='" + usr.operador_id + "' class='status " + usr.status + "'></span></li>";
+                                    if(usr.status == 't'){
+                                        var status = 'on';
+                                    }
+                                    else{
+                                        var status = 'off';
+                                    }
+                                    tags += "<span id='" + usr.operador_id + "' class='status " + status + "'></span></li>";
 
                                     //apos criar o item, adciona ele a lista e cria-se o item seguinte
                                     jQuery("#principalChat #usuarios_online ul").append(tags);
@@ -196,7 +201,8 @@ function debug($object) {
                         //adiciona a janela criada na lista de janelas abertas
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
-                        verifica(0, 0,<? echo $operador_id ?>);
+                        retorna_historico(operadorDestino);
+//                        verifica(0, 0,<? // echo $operador_id ?>);
                     }
                 }
 
@@ -209,7 +215,6 @@ function debug($object) {
                         data: "operador_origem=" + operadorOrigem + "&operador_destino=" + idJanela,
                         dataType: 'json',
                         success: function (retorno) {
-                            //                        console.log(retorno);
                             jQuery.each(retorno, function (i, msg) {
                                 if (jQuery('#janela_' + msg.janela).length > 0) {
 
@@ -224,7 +229,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-    //                    verifica(0, 0,<? // echo $operador_id  ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id   ?>);
                 }
 
 <? } ?>
@@ -791,7 +796,7 @@ function debug($object) {
                         if (jQuery("#janela_" + idJanela).length == 0) {
                             var nome = jQuery(this).text();
                             adicionarJanela(id, nome, status);
-                            retorna_historico(idJanela);
+//                            retorna_historico(idJanela);
                         } else {
                             jQuery(this).removeClass("comecarChat");
                         }
@@ -934,9 +939,9 @@ function debug($object) {
                 function buscamensagens() {
                     setInterval(function () {
                         verifica(0, 0,<? echo $operador_id ?>);
-    //                        mensagensnaolidas();
+                        mensagensnaolidas();
 
-                    }, 10000);
+                    }, 5000);
                 }
 
                 function atualizastatus() {
@@ -951,7 +956,7 @@ function debug($object) {
                 setInterval(function () {
                     atualizastatus();
                     verifica(0, 0,<? echo $operador_id ?>);
-                }, 1000);
+                }, 3000);
 
                 buscamensagens();
                 //            mensagensnaolidas();
