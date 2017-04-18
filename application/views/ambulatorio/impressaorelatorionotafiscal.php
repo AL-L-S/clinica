@@ -72,7 +72,11 @@
                     <tr>
 
                         <td><?= utf8_decode($item->ambulatorio_guia_id); ?></td>
-                        <td><a href="#<?$item->paciente_id?>"><?= utf8_decode($item->paciente); ?></a></td>
+                        <td>
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listardadospacienterelatorionota/$item->paciente_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=700');">
+                                    <?= utf8_decode($item->paciente); ?>
+                                </a>
+                            <!--<a href="#"></a></td>-->
                         <td>
                             <?
                             if ($item->cpf != '') {

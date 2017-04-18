@@ -89,7 +89,12 @@
                                 <td style="text-align: left; color: <?= $cor ?>"><?= $item->convenio; ?></td>
                                 <td style="text-align: right; color: <?= $cor ?>"><?= $item->quantidade; ?></td>
                                 <?
-                                $perc = (((int) $item->quantidade * (float) $item->valor_total) / $valTotal) * 100;
+                                if($valTotal != 0){
+                                    $perc = (((int) $item->quantidade * (float) $item->valor_total) / $valTotal) * 100;
+                                }
+                                else{
+                                    $perc = 0;
+                                }
 //                                $desc = ( ((int) $item->quantidade * (float) $item->valor_total) * (float) $item->desconto) / 100;
 //                                $desconto_tot += $desc;
 
@@ -208,12 +213,12 @@
                                             <td width="200px;" style="text-align: right"><font size="-1"><?= number_format($OUTROS, 2, ',', '.'); ?></td>
                                         </tr>  
                                         <tr>
-                                            <td width="140px;"><font size="-1">TOTAL CARTAO</td>
-                                            <td width="200px;" colspan="2"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
+                                            <td width="140px;" colspan="4"><font size="-1">TOTAL CARTAO</td>
+                                            <td width="200px;" style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
                                         </tr>
                                         <tr>
-                                            <td width="140px;"><font size="-1">TOTAL GERAL</td>
-                                            <td width="200px;" colspan="2"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
+                                            <td width="140px;" colspan="4"><font size="-1">TOTAL GERAL</td>
+                                            <td width="200px;" style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($valortotal, 2, ',', '.'); ?></td>
                                         </tr>
                                     </tbody>
                                 </table>
