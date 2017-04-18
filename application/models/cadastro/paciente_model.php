@@ -102,6 +102,18 @@ class paciente_model extends BaseModel {
         return $this->db;
     }
 
+    function listardadospacienterelatorionota($paciente_id) {
+        $this->db->select('tp.tipo_logradouro_id as codigo_logradouro,co.nome as nome_convenio, co.convenio_id as convenio,tp.descricao,p.*,c.estado, c.nome as cidade_desc,c.municipio_id as cidade_cod');
+        $this->db->from('tb_paciente p');
+        $this->db->join('tb_municipio c', 'c.municipio_id = p.municipio_id', 'left');
+        $this->db->join('tb_convenio co', 'co.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_tipo_logradouro tp', 'p.tipo_logradouro = tp.tipo_logradouro_id', 'left');
+        $this->db->where("p.paciente_id", $paciente_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+   
+
     function listardados($paciente_id) {
         $this->db->select('tp.tipo_logradouro_id as codigo_logradouro,co.nome as nome_convenio, co.convenio_id as convenio,tp.descricao,p.*,c.estado, c.nome as cidade_desc,c.municipio_id as cidade_cod');
         $this->db->from('tb_paciente p');

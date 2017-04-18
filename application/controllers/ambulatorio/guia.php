@@ -2125,6 +2125,18 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriovalormedio', $data);
     }
+    
+    function listardadospacienterelatorionota($paciente_id) {
+        $data['paciente'] = $this->paciente->listardadospacienterelatorionota($paciente_id);
+        $data['paciente_id'] = $paciente_id;
+        $horario = date(" Y-m-d H:i:s");
+
+        $hour = substr($horario, 11, 3);
+        $minutes = substr($horario, 15, 2);
+        $seconds = substr($horario, 18, 4);
+
+        $this->load->view('ambulatorio/dadospacienterelatorionota', $data);
+    }
 
     function gerarelatoriotecnicoconvenio() {
 

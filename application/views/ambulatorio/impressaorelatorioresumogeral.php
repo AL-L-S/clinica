@@ -358,26 +358,26 @@
                     none;border-right:none;' colspan="4">&nbsp;</th>
             </tr>
             <?
-            foreach ($convenio as $item) :
+            foreach ($convenio as $item2) :
 
-                   if($item->dinheiro == 't'){
+                   if($item2->dinheiro == 't'){
                     ?>
                     <tr>
-                        <td><font size="-1" width="350px;"><?= utf8_decode($item->convenio); ?></td>
-                        <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
+                        <td><font size="-1" width="350px;"><?= utf8_decode($item2->convenio); ?></td>
+                        <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item2->valor, 2, ',', '.') ?></td>
                     </tr>
                     <?php
                 }
             endforeach;
 
-            if ($item->dinheiro == 't') {
+//            if ($item->dinheiro == 't') {
                 ?>
-                <tr>
+<!--                <tr>
                     <td><font size="-1" width="350px;"><?= utf8_decode($item->convenio); ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
-                </tr>
+                </tr>-->
                 <?php
-            }
+//            }
             ?>
             <tr>
                 <td><font size="-1" width="350px;"><b>VALOR GERAL</b></td>
@@ -391,15 +391,15 @@
     <BR>
     <table>
         <tbody>
-            <tr>
+<!--            <tr>
                 <td width="350px;"><font size="-1"><B>Valor Não-Convênio</B></th>
                 <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></th>
-            </tr>
-            <tr>
+            </tr>-->
+<!--            <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
                     none;border-right:none;' colspan="4">&nbsp;</th>
-            </tr>
+            </tr>-->
             <tr>
                 <td width="350px;"><font size="-1"><B>Resumo</B></th>
                 <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></th>

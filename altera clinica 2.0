@@ -27,10 +27,21 @@ INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
 
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN home_care boolean DEFAULT false;
 
-
+INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+    VALUES ('1.0.00006', '1.0.00005');
 -- 12/04/2017 Flag para verificar se já foi feito o ajuste de valores relacionados com o convênio
 
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN ajuste_cbhpm boolean DEFAULT false;
 
 
 
+---++++++++++ VERSÃO 1.0.00007 ++++++++++---
+
+-- Versão 1.0.00007 
+--     1 - Correções no relatorio de caixa personalizado (aparencia e layout)
+--     2 - Correções no relatorio de nota (ao clicar no nome do paciente o sistema abre um pop-up com os dados do paciente)
+
+INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+    VALUES ('1.0.00007', '1.0.00005');
+
+---++++++++ FIM VERSÃO 1.0.00007 ++++++++---
