@@ -74,10 +74,12 @@
                     
                     <tr>
                         <td><label>Procedimento</label></td>
+                        <td><label>Convênio</label></td>
                         
                     </tr>
                     <tr>
                         <td><input type="text" name="procedimento" class="texto10" value="<?= $laudo[0]->procedimento; ?>" readonly /></td>
+                        <td><input type="text" name="convenio" class="texto03" value="<?= $laudo[0]->convenio; ?>" readonly /></td>
                     </tr>
                     <tr>
                         <td width="70px;">

@@ -243,8 +243,8 @@
                                             options += j[0].valortotal;
                                             qtde = "";
                                             qtde += j[0].qtde;
-                                            document.getElementById("valor1").value = options;
-                                            document.getElementById("qtde1").value = qtde;
+                                            document.getElementById("valor<?= $b ?>").value = options;
+                                            document.getElementById("qtde<?= $b ?>").value = qtde;
                                             $('.carregando').hide();
                                         });
                                     } else {

@@ -220,11 +220,13 @@ class exame_model extends Model {
                             al.ambulatorio_laudo_id,
                             al.procedimento_tuss_id,
                             e.sala_id,           
+                            c.nome as convenio,           
                             pt.nome as procedimento,
                             al.situacao as situacaolaudo');
         $this->db->from('tb_exames e');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->where('e.exames_id', $exame_id);
@@ -2335,7 +2337,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
 //        $this->db->orderby('ae.data');
 //        $this->db->orderby('ae.inicio');
-        $this->db->where('ae.data >=', $data);
+//        $this->db->where('ae.data >=', $data);
         $this->db->where('(numero_sessao is null OR numero_sessao = 1)');
 //        $this->db->where('numero_sessao', null);
         $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
@@ -2431,7 +2433,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
-        $this->db->where('ae.data >=', $data);
+//        $this->db->where('ae.data >=', $data);
         $this->db->where('(numero_sessao is null OR numero_sessao = 1)');
 //        $this->db->where('(numero_sessao is null OR confirmado = true)');
 //        $this->db->where('inicio is not null');
