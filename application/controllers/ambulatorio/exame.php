@@ -575,7 +575,7 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
-        
+
         if ($total == 0) {
             $procedimentopercentual = $_POST['txtprocedimento_tuss_id'];
             $medicopercentual = $_POST['txtmedico'];
@@ -824,9 +824,11 @@ class Exame extends BaseController {
         $exame_id = $_POST['exame_id'];
         $sala_id = $_POST['sala_id'];
         $this->exame->gravargastodesala();
+
+        $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+        $convenio_id = $data['agenda_exames'][0]->convenio_id;
         if (isset($_POST['faturar'])) {
-            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
-            $convenio_id = $data['agenda_exames'][0]->convenio_id;
+
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
             $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id'], $convenio_id);
