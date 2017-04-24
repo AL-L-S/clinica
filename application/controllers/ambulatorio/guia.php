@@ -2769,6 +2769,7 @@ class Guia extends BaseController {
 
     function relatoriocaixapersonalizado() {
         $data['empresa'] = $this->guia->listarempresas();
+        $data['operadores'] = $this->operador_m->listartecnicos();
         $this->loadView('ambulatorio/relatoriocaixapersonalizado', $data);
     }
 
@@ -2776,6 +2777,7 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['paciente'] = ($_POST['txtNomeid'] != '') ? $_POST['txtNome'] : "TODOS";
+//        $data['operador'] = ($_POST['txtNomeid'] != '') ? $_POST['txtNome'] : "TODOS";
 
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();

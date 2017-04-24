@@ -4036,6 +4036,19 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function relatoriocaixapersonalizadooperadores() {
+        $this->db->select('ag.ambulatorio_guia_id');
+        $this->db->from('tb_ambulatorio_guia ag');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        if ($_POST['txtNomeid'] != '') {
+            $this->db->where("ag.paciente_id", $_POST['txtNomeid']);
+        }
+        $this->db->where("ag.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ag.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function relatoriocaixapersonalizadoprocedimentosvalortotal($guia_id) {
 
         $this->db->select('sum(ae.quantidade * ae.valor) as valor_total');
@@ -4076,6 +4089,7 @@ class guia_model extends Model {
                             ae.valor1,
                             ae.forma_pagamento2,
                             ae.valor2,
+                            ae.realizada,
                             ae.forma_pagamento3,
                             ae.valor3,
                             ae.numero_sessao,
