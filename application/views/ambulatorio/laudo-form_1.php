@@ -311,6 +311,10 @@
                                                     <div class="bt_link_new">
                                                         <a href="<?= base_url() ?>ambulatorio/laudo/vozemtexto/<?= $ambulatorio_laudo_id ?>/<?= $operador_id ?>">
                                                             <font size="-1">Voz em Texto</a></div></td>
+                                                <td >
+                                                    <div class="bt_link_new">
+                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/carregaruploadcliente/" ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=650');" >
+                                                            <font size="-1">Upload de Imagens</a></div></td>
                                             </tr>
                                         </table>
                                     </div>

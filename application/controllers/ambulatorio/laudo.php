@@ -219,6 +219,16 @@ class Laudo extends BaseController {
 //        $this->load->View('ambulatorio/laudo-form', $data);
     }
 
+    function carregaruploadcliente() {
+        $this->load->View('ambulatorio/uploadimagens');
+    }
+    function redirecionauploadcliente() {
+        $caminho = $_POST['caminho'];
+        $arquivo = (isset($_POST['arquivo']))?$_POST['arquivo']:'';
+        $todos = (isset($_POST['todos']))?'true':'false';
+        header("Location: http://localhost/conexao.php?caminho={$caminho}&arquivo={$arquivo}&todos={$todos}");
+    }
+
     function carregarlaudolaboratorial($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
