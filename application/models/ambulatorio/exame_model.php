@@ -2400,6 +2400,7 @@ class exame_model extends Model {
                             ae.realizada,
                             ae.confirmado,
                             ae.data_atualizacao,
+                            ae.medico_agenda,
                             ae.operador_atualizacao,
                             ae.paciente_id,
                             ae.telefonema,
@@ -3250,10 +3251,29 @@ class exame_model extends Model {
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
             }
-            if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-                $this->db->where('ae.situacao', $args['situacao']);
-            } if (isset($args['medico']) && strlen($args['medico']) > 0) {
+             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
+            }
+            if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
+                if ($args['situacao'] == "BLOQUEADO") {
+                    $this->db->where('ae.bloqueado', 't');
+                }
+                if ($args['situacao'] == "LIVRE") {
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.situacao', 'LIVRE');
+                }
+                if ($args['situacao'] == "OK") {
+                    $this->db->where('ae.situacao', 'OK');
+                }
+                if ($args['situacao'] == "FALTOU") {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $this->db->where('ae.data <', $data_atual);
+                    $this->db->where('ae.situacao', 'OK');
+                    $this->db->where('ae.realizada', 'f');
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.operador_atualizacao is not null');
+                }
             }
         }
         return $this->db;
@@ -3277,6 +3297,7 @@ class exame_model extends Model {
                             ae.guia_id,
                             ae.data_atualizacao,
                             ae.paciente_id,
+                            ae.bloqueado,
                             ae.observacoes,
                             ae.realizada,
                             al.medico_parecer1,
@@ -3337,13 +3358,32 @@ class exame_model extends Model {
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
             }
-            if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-                $this->db->where('ae.situacao', $args['situacao']);
-            } if (isset($args['medico']) && strlen($args['medico']) > 0) {
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
             if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
                 $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
+            }
+            if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
+                if ($args['situacao'] == "BLOQUEADO") {
+                    $this->db->where('ae.bloqueado', 't');
+                }
+                if ($args['situacao'] == "LIVRE") {
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.situacao', 'LIVRE');
+                }
+                if ($args['situacao'] == "OK") {
+                    $this->db->where('ae.situacao', 'OK');
+                }
+                if ($args['situacao'] == "FALTOU") {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $this->db->where('ae.data <', $data_atual);
+                    $this->db->where('ae.situacao', 'OK');
+                    $this->db->where('ae.realizada', 'f');
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.operador_atualizacao is not null');
+                }
             }
         }
         return $this->db;
@@ -4185,6 +4225,18 @@ class exame_model extends Model {
         $this->db->join('tb_operador ope', 'ope.operador_id = ae.operador_atualizacao', 'left');
         $this->db->join('tb_operador opai', 'opai.operador_id = ae.operador_bloqueio', 'left');
         $this->db->where("ae.agenda_exames_id", $agenda_exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listaragendamedicocurriculo($medico_agenda) {
+
+        $this->db->select('o.operador_id,
+                            o.curriculo,
+                            o.nome as medico
+                            ');
+        $this->db->from('tb_operador o');
+        $this->db->where("o.operador_id", $medico_agenda);
         $return = $this->db->get();
         return $return->result();
     }

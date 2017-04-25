@@ -50,7 +50,7 @@ SET numero_parcela =
 			AND ponto.tb_financeiro_contasreceber.conta = fc.conta
 			AND ponto.tb_financeiro_contasreceber.classe = fc.classe	
 			AND TO_CHAR(ponto.tb_financeiro_contasreceber.data_cadastro, 'YYYY-DD-MM HH24:MI') = TO_CHAR(fc.data_cadastro, 'YYYY-DD-MM HH24:MI')
-		)
+		);
 
 
 --| Versão 1.0.00007 
@@ -66,3 +66,10 @@ INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
     VALUES ('1.0.00007', '1.0.00005');
 
 ---++++++++ FIM VERSÃO 1.0.00007 ++++++++---
+
+
+--| Versão 1.0.00007 
+--|     1 - Médicos não tem mais acesso a recepção, com exceção do cadastro de pacientes.
+--|     2 - Médicos não tem mais acesso a recepção, com exceção do cadastro de pacientes.
+ALTER TABLE ponto.tb_operador ADD COLUMN curriculo character varying(20000);
+

@@ -329,6 +329,10 @@
                     <label>Carimbo</label>
                     <textarea name="carimbo" id="carimbo" rows="5" cols="30"  ><?= @$obj->_carimbo; ?></textarea>
                 </div>
+                <div>
+                    <label>Mini-Curriculo</label>
+                    <textarea name="curriculo" id="curriculo" rows="5" cols="50"  ><?= @$obj->_curriculo; ?></textarea>
+                </div>
             </fieldset>
             <fieldset style="dislpay:block">
 

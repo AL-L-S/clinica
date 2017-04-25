@@ -490,6 +490,12 @@ class Exame extends BaseController {
         $data['guia'] = $this->exame->listaragendadoauditoria($agenda_exames_id);
         $this->load->View('ambulatorio/agendadoauditoria-form', $data);
     }
+    
+    function agendamedicocurriculo($medico_agenda) {
+        $data['guia'] = $this->exame->listaragendamedicocurriculo($medico_agenda);
+//        var_dump($data['guia']); die;
+        $this->load->View('ambulatorio/agendamedicocurriculo-form', $data);
+    }
 
     function trocarmedico($agenda_exames_id) {
         $data['agenda_exames_id'] = $agenda_exames_id;
@@ -1063,83 +1069,17 @@ class Exame extends BaseController {
         //HUMANA
         //
         
-        
-        $this->load->helper('directory');
-        if ($sala_id == 1) {
-
-            //$arquivo_pasta = directory_map("/home/hamilton/teste/");
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
-            //$origem = "/home/hamilton/teste";
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
-            foreach ($arquivo_pasta as $value) {
-
-                $nova = substr($value, 11, 6);
-
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
-                    chmod($destino, 0777);
-                }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
-                $local = "$origem/$value";
-                copy($local, $destino);
-            }
-        }
-        if ($sala_id == 2) {
-
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
-            foreach ($arquivo_pasta as $value) {
-
-                $nova = substr($value, 11, 6);
-
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
-                    chmod($destino, 0777);
-                }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
-                $local = "$origem/$value";
-                copy($local, $destino);
-            }
-        }
-        if ($sala_id == 9) {
-
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
-            foreach ($arquivo_pasta as $value) {
-
-                $nova = substr($value, 8, 6);
-
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
-                    chmod($destino, 0777);
-                }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
-                $local = "$origem/$value";
-                copy($local, $destino);
-            }
-        }
-
-        delete_files($origem);
-
-        redirect(base_url() . "ambulatorio/exame/anexarimagemmedico/$exame_id/$sala_id");
-
-//      CAGE/GASTROSUL
 //        
 //        $this->load->helper('directory');
-//        $i=0;
 //        if ($sala_id == 1) {
 //
 //            //$arquivo_pasta = directory_map("/home/hamilton/teste/");
 //            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
-//            sort($arquivo_pasta);
 //            //$origem = "/home/hamilton/teste";
 //            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
 //            foreach ($arquivo_pasta as $value) {
-//                $i++;
-//                $nova = $i . ".jpg";
+//
+//                $nova = substr($value, 11, 6);
 //
 //                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
 //                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
@@ -1153,14 +1093,11 @@ class Exame extends BaseController {
 //        }
 //        if ($sala_id == 2) {
 //
-//            
 //            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
-//            sort($arquivo_pasta);
 //            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
 //            foreach ($arquivo_pasta as $value) {
 //
-//                $i++;
-//                $nova = $i . ".jpg";
+//                $nova = substr($value, 11, 6);
 //
 //                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
 //                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
@@ -1175,12 +1112,10 @@ class Exame extends BaseController {
 //        if ($sala_id == 9) {
 //
 //            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
-//            sort($arquivo_pasta);
 //            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
 //            foreach ($arquivo_pasta as $value) {
 //
-//                $i++;
-//                $nova = $i . ".jpg";
+//                $nova = substr($value, 8, 6);
 //
 //                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
 //                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
@@ -1196,6 +1131,77 @@ class Exame extends BaseController {
 //        delete_files($origem);
 //
 //        redirect(base_url() . "ambulatorio/exame/anexarimagemmedico/$exame_id/$sala_id");
+
+//      CAGE/GASTROSUL
+        
+        $this->load->helper('directory');
+        $i=0;
+        if ($sala_id == 1) {
+
+            //$arquivo_pasta = directory_map("/home/hamilton/teste/");
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
+            sort($arquivo_pasta);
+            //$origem = "/home/hamilton/teste";
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
+            foreach ($arquivo_pasta as $value) {
+                $i++;
+                $nova = $i . ".jpg";
+
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                    chmod($destino, 0777);
+                }
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $local = "$origem/$value";
+                copy($local, $destino);
+            }
+        }
+        if ($sala_id == 2) {
+
+            
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
+            sort($arquivo_pasta);
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
+            foreach ($arquivo_pasta as $value) {
+
+                $i++;
+                $nova = $i . ".jpg";
+
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                    chmod($destino, 0777);
+                }
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $local = "$origem/$value";
+                copy($local, $destino);
+            }
+        }
+        if ($sala_id == 9) {
+
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
+            sort($arquivo_pasta);
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
+            foreach ($arquivo_pasta as $value) {
+
+                $i++;
+                $nova = $i . ".jpg";
+
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                    chmod($destino, 0777);
+                }
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $local = "$origem/$value";
+                copy($local, $destino);
+            }
+        }
+
+        delete_files($origem);
+
+        redirect(base_url() . "ambulatorio/exame/anexarimagemmedico/$exame_id/$sala_id");
     }
 
     function restaurarimagem($exame_id, $nome) {

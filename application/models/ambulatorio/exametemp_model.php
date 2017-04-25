@@ -2169,6 +2169,7 @@ class exametemp_model extends Model {
     }
 
     function crianovopacienteespecialidade() {
+        $_POST['txtNome'] = strtoupper($_POST['txtNome']);
         if ($_POST['txtNomeid'] == '') {
             if ($_POST['nascimento'] != '') {
                 $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));

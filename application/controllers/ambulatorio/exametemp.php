@@ -308,6 +308,15 @@ class Exametemp extends BaseController {
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/fisioterapiapaciente-form', $data);
     }
+    
+    function carregarfisioterapiatempmedico($agenda_exames_id) {
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['consultas'] = $this->exametemp->listaragendasconsultapaciente($agenda_exames_id);
+
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/fisioterapiapacientemedico-form', $data);
+    }
 
     function excluir($agenda_exames_id, $ambulatorio_pacientetemp_id) {
         $this->exametemp->excluir($agenda_exames_id);
