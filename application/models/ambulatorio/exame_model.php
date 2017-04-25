@@ -3251,7 +3251,7 @@ class exame_model extends Model {
             if (isset($args['sala']) && strlen($args['sala']) > 0) {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
             }
-             if (isset($args['medico']) && strlen($args['medico']) > 0) {
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
@@ -4020,6 +4020,77 @@ class exame_model extends Model {
         $this->db->set('data_cadastro', $horario);
         $this->db->set('operador_cadastro', $operador_id);
         $this->db->insert('tb_ambulatorio_gasto_sala');
+        $ambulatorio_gasto_sala_id = $this->db->insert_id();
+
+       
+        
+        
+        
+// ESTOQUE SAIDA E SALDO
+     //   SELECIONA
+        
+         $this->db->select('estoque_entrada_id,
+                            produto_id,
+                            fornecedor_id,
+                            armazem_id,
+                            valor_compra,
+                            quantidade,
+                            nota_fiscal,
+                            validade');
+        $this->db->from('tb_estoque_entrada e');
+        $this->db->where('produto_id', $_POST['produto_id']);
+        $this->db->where('ativo', 't');
+        $this->db->where('quantidade >', $_POST['txtqtde']);
+        $this->db->orderby("validade");
+//        echo '<pre>';
+
+        $return = $this->db->get()->result();
+//        var_dump($return);
+//        die;
+        
+   //GRAVA     
+        
+        // SAIDA 
+        $this->db->set('estoque_entrada_id', $return[0]->estoque_entrada_id);
+//        $this->db->set('solicitacao_cliente_id', $_POST['txtestoque_solicitacao_id']);
+        if ($_POST['txtexame'] != '') {
+            $this->db->set('exames_id', $_POST['txtexame']);
+        }
+        $this->db->set('produto_id', $return[0]->produto_id);
+        $this->db->set('fornecedor_id', $return[0]->fornecedor_id);
+        $this->db->set('armazem_id', $return[0]->armazem_id);
+        $this->db->set('valor_venda', $return[0]->valor_compra);
+        $this->db->set('ambulatorio_gasto_sala_id', $ambulatorio_gasto_sala_id);
+        $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['txtqtde'])));
+        $this->db->set('nota_fiscal', $return[0]->nota_fiscal);
+        if ($return[0]->validade != "") {
+            $this->db->set('validade', $return[0]->validade);
+        }
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_estoque_saida');
+        
+        
+               // SALDO 
+        $this->db->set('estoque_entrada_id', $return[0]->estoque_entrada_id);
+//        $this->db->set('estoque_saida_id', $estoque_saida_id);
+        $this->db->set('produto_id', $return[0]->produto_id);
+        $this->db->set('fornecedor_id', $return[0]->fornecedor_id);
+        $this->db->set('armazem_id', $return[0]->armazem_id);
+        $this->db->set('valor_compra', $return[0]->valor_compra);
+        $this->db->set('ambulatorio_gasto_sala_id', $ambulatorio_gasto_sala_id);
+        $quantidade = -(str_replace(",", ".", str_replace(".", "", $_POST['txtqtde'])));
+        $this->db->set('quantidade', $quantidade);
+        $this->db->set('nota_fiscal', $return[0]->nota_fiscal);
+        if ($return[0]->validade != "") {
+                $this->db->set('validade', $return[0]->validade);
+        }
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_estoque_saldo');
     }
 
     function excluirgastodesala($gasto_id) {
@@ -4031,6 +4102,16 @@ class exame_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
         $this->db->update('tb_ambulatorio_gasto_sala');
+        
+        
+        
+        $this->db->set('ativo', 'f');
+        $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
+        $this->db->update('tb_estoque_saida');
+        
+        $this->db->set('ativo', 'f');
+        $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
+        $this->db->update('tb_estoque_saldo');
     }
 
     function faturargastodesala($dados) {

@@ -3,7 +3,7 @@
         z-index: 100;
         position: fixed;
         margin-top: 50px;
-        margin-left: 60%;
+        margin-left: 37%;
         list-style-type: none; /* retira o marcador de listas*/ 
 
 

@@ -71,5 +71,13 @@ INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
 --| Versão 1.0.00007 
 --|     1 - Médicos não tem mais acesso a recepção, com exceção do cadastro de pacientes.
 --|     2 - Médicos não tem mais acesso a recepção, com exceção do cadastro de pacientes.
+--Dia 24/04/2017
 ALTER TABLE ponto.tb_operador ADD COLUMN curriculo character varying(20000);
+
+
+--Dia 25/04/2017
+
+ALTER TABLE ponto.tb_estoque_saida ADD COLUMN ambulatorio_gasto_sala_id integer;
+ALTER TABLE ponto.tb_estoque_saldo ADD COLUMN ambulatorio_gasto_sala_id integer;
+
 
