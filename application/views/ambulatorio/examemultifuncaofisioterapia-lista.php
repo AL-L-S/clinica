@@ -14,18 +14,24 @@
         margin:0px;
         background-color: #ebf7f9;
         list-style:none;
+        margin-bottom: 30px;
 
     }
     #sidebar-wrapper ul li a {
         color: #ff004a;
         border: 20px;
         text-decoration: none;
-        padding: 3px;
-        border: 2px solid #00BDFF; 
+        /*padding: 3px;*/
+        /*border: 2px solid #00BDFF;*/ 
+        margin-bottom: 20px;
     }
-    
+
     #botaosalaesconder {
         border: 1px solid #8399f6
+    }
+    #botaosala {
+        border: 1px solid #8399f6;
+        width: 80pt;   
     }
 
 </style>
@@ -38,17 +44,27 @@
         <div>
             <ul class="sidebar-nav">
 
-
+                <li class="tabela_content01">
+                    <span> Agenda</span> - <span style="color:#ff004a">Paciente - <span style="color: #5659C9">Procedimento</span> - <span style="color: black"> Tempo de Espera</span>
+                            
+                        </li>
                 <?
                 $listaespera = $this->exame->listarexameagendaconfirmada2()->get()->result();
 
                 if (count($listaespera) > 0) {
-
+                    @$estilo_linha == "tabela_content01";
                     foreach ($listaespera as $item) {
+                        $dataFuturo = date("Y-m-d H:i:s");
+                        $dataAtual = $item->data_autorizacao;
+                        $date_time = new DateTime($dataAtual);
+                        $diff = $date_time->diff(new DateTime($dataFuturo));
+                        $teste = $diff->format('%H:%I:%S');
+
+                        (@$estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                         ?>
-                        <li class="sidebar-brand">
+                        <li class="<?= $estilo_linha ?>">
                             <a href="<?= base_url() ?>ambulatorio/exame/examesala/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>" target="_blank">
-                                <span> <?= $item->paciente ?></span> - <span style="color: black"><?= $item->procedimento ?></span>
+                             <span style="color: black"><?= $item->inicio; ?></span> -  <span> <?= $item->paciente ?></span> - <span style="color: #5659C9"><?= $item->procedimento ?></span> - <span style="color: black"><?= $teste ?></span> - 
                             </a>
                         </li>
 
@@ -172,15 +188,15 @@
                         <th class="tabela_title">
                             <input type="text"  id="data" alt="date" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
                         </th>
-                        <th colspan="3" class="tabela_title">
-                            <input type="text" name="nome" class="texto06 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                        <th colspan="2" class="tabela_title">
+                            <input type="text" name="nome" class="texto05 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
                         <th colspan="2" class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
                         </th>
                 </form>
-                <th colspan="1" class="tabela_title">
-                    <button id="botaosala">Sala de Espera</button>
+                <th colspan="3" class="tabela_title">
+                    <button id="botaosala">S/ de Espera</button>
                 </th>
 
                 </tr>
@@ -330,7 +346,7 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="250px;"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                width=500,height=230');">=><?= $item->observacoes; ?></td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
