@@ -15,6 +15,7 @@ class Autocomplete extends Controller {
         $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->model('estoque/fornecedor_model', 'fornecedor_m');
         $this->load->model('estoque/produto_model', 'produto_m');
+        $this->load->model('estoque/armazem_model', 'armazem');
         $this->load->model('ambulatorio/laudo_model', 'laudo');
         $this->load->model('ponto/cargo_model', 'cargo');
         $this->load->model('ponto/setor_model', 'setor');
@@ -76,6 +77,16 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarhorariosespecialidade($_GET['exame'], $_GET['teste']);
         } else {
             $result = $this->exametemp->listarhorariosespecialidade();
+        }
+        echo json_encode($result);
+    }
+    
+    function armazemtransferenciaentrada() {
+//    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
+        if (isset($_GET['produto'])) {
+            $result = $this->armazem->armazemtransferenciaentradajson($_GET['produto'], $_GET['armazem']);
+        } else {
+            $result = $this->armazem->armazemtransferenciaentradajson();
         }
         echo json_encode($result);
     }

@@ -80,4 +80,7 @@ ALTER TABLE ponto.tb_operador ADD COLUMN curriculo character varying(20000);
 ALTER TABLE ponto.tb_estoque_saida ADD COLUMN ambulatorio_gasto_sala_id integer;
 ALTER TABLE ponto.tb_estoque_saldo ADD COLUMN ambulatorio_gasto_sala_id integer;
 
+--Dia 26/04/2017
+
+ALTER TABLE ponto.tb_exame_sala ADD COLUMN armazem_id integer;
 

@@ -27,6 +27,15 @@ class sala_model extends Model {
         }
         return $this->db;
     }
+    
+    function listararmazem() {
+        $this->db->select('estoque_armazem_id,
+                            descricao');
+        $this->db->from('tb_estoque_armazem');
+        $this->db->where('ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarsalas() {
 
@@ -90,6 +99,10 @@ class sala_model extends Model {
             /* inicia o mapeamento no banco */
             $empresa_id = $this->session->userdata('empresa_id');
             $exame_sala_id = $_POST['txtexamesalaid'];
+            if($_POST['armazem'] != ''){
+              $this->db->set('armazem_id', $_POST['armazem']);  
+            }
+            
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('nome_chamada', $_POST['txtnomechamada']);
@@ -140,7 +153,7 @@ class sala_model extends Model {
     private function instanciar($exame_sala_id) {
 
         if ($exame_sala_id != 0) {
-            $this->db->select('exame_sala_id, nome, tipo, nome_chamada');
+            $this->db->select('exame_sala_id, nome, tipo, nome_chamada, armazem_id');
             $this->db->from('tb_exame_sala');
             $this->db->where("exame_sala_id", $exame_sala_id);
             $query = $this->db->get();
@@ -148,6 +161,7 @@ class sala_model extends Model {
             $this->_exame_sala_id = $exame_sala_id;
             $this->_nome = $return[0]->nome;
             $this->_tipo = $return[0]->tipo;
+            $this->_armazem_id = $return[0]->armazem_id;
             $this->_nome_chamada = $return[0]->nome_chamada;
         } else {
             $this->_exame_sala_id = null;

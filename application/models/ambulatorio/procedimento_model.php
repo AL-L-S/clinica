@@ -446,11 +446,12 @@ class procedimento_model extends Model {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
+//            var_dump((float)str_replace(".", "", str_replace(",", "", $_POST['valor']))); die;
+            
             /* inicia o mapeamento no banco */
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('convenio_id', $_POST['convenio']);
-            $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+            $this->db->set('valor',str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_procedimento_convenio_produto_valor');

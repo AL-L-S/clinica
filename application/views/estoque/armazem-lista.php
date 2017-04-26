@@ -20,7 +20,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header" width="70px;" colspan="2"><center>Detalhes</center></th>
+                        <th class="tabela_header" width="70px;" colspan="3"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
@@ -42,6 +42,9 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
 
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;">                                  
+                                    <a href="<?= base_url() ?>estoque/armazem/armazemtransferencia/<?= $item->estoque_armazem_id ?>">Transferência</a>
+                            </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a href="<?= base_url() ?>estoque/armazem/carregararmazem/<?= $item->estoque_armazem_id ?>">Editar</a>
                             </td>

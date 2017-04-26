@@ -57,7 +57,7 @@ if ($contador > 0) {
                         <tbody>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->valor; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?=number_format($item->valor, 2, ',', '.'); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
                                     <a href="<?= base_url() ?>ambulatorio/procedimento/excluirprocedimentoconveniovalor/<?= $item->procedimento_convenio_produto_valor_id; ?>/<?= $item->procedimento_tuss_id; ?>">Excluir
                                     </a></div>

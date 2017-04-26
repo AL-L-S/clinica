@@ -23,6 +23,70 @@ class armazem_model extends Model {
         return $this->db;
     }
 
+    function listararmazem() {
+        $this->db->select('estoque_armazem_id,
+                            descricao');
+        $this->db->from('tb_estoque_armazem');
+        $this->db->where('ativo', 'true');
+       
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarproduto() {
+        $this->db->select('p.estoque_produto_id,
+                            p.descricao,
+                            p.unidade_id,
+                            u.descricao as unidade,
+                            p.sub_classe_id,
+                            sc.descricao as sub_classe,
+                            p.valor_compra');
+        $this->db->from('tb_estoque_produto p');
+        $this->db->join('tb_estoque_sub_classe sc', 'sc.estoque_sub_classe_id = p.sub_classe_id', 'left');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = p.unidade_id', 'left');
+        $this->db->where('p.ativo', 'true');
+       
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function armazemtransferenciaentrada() {
+        $this->db->select('p.estoque_produto_id,
+                            p.descricao,
+                            p.unidade_id,
+                            u.descricao as unidade,
+                            p.sub_classe_id,
+                            sc.descricao as sub_classe,
+                            p.valor_compra');
+        $this->db->from('tb_estoque_produto p');
+        $this->db->join('tb_estoque_sub_classe sc', 'sc.estoque_sub_classe_id = p.sub_classe_id', 'left');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = p.unidade_id', 'left');
+        $this->db->where('p.ativo', 'true');
+       
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function armazemtransferenciaentradajson($produto = null, $armazem = null) {
+        $this->db->select('ep.estoque_entrada_id,
+                            p.descricao,
+                            ep.validade,
+                            ea.descricao as armazem,
+                            sum(ep.quantidade) as total');
+        $this->db->from('tb_estoque_saldo ep');
+        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
+//        $this->db->join('tb_estoque_solicitacao_itens esi', 'esi.produto_id = ep.produto_id');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = ep.armazem_id');
+        $this->db->where('ep.ativo', 'true');
+        $this->db->where('ep.armazem_id', $armazem);
+        $this->db->where('ep.produto_id', $produto);
+        $this->db->groupby('ep.estoque_entrada_id, p.descricao, ep.validade, ea.descricao');
+        $this->db->orderby('ep.validade');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function excluir($estoque_armazem_id) {
 
         $horario = date("Y-m-d H:i:s");
@@ -65,6 +129,133 @@ class armazem_model extends Model {
                 $this->db->update('tb_estoque_armazem');
             }
             return $estoque_armazem_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravartransferencia($estoque_armazem_id) {
+        try {
+            /* inicia o mapeamento no banco */
+            $this->db->select('estoque_entrada_id,
+                            produto_id,
+                            fornecedor_id,
+                            armazem_id,
+                            valor_compra,
+                            lote,
+                            quantidade,
+                            nota_fiscal,
+                            validade');
+            $this->db->from('tb_estoque_entrada');
+            $this->db->where("estoque_entrada_id", $_POST['entrada']);
+            $query = $this->db->get();
+            $returno = $query->result();
+//            echo '<pre>';
+//            var_dump($returno); die;
+
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            $estoque_entrada_id = $_POST['entrada'];
+            $this->db->set('estoque_entrada_id', $estoque_entrada_id);
+//            $this->db->set('estoque_solicitacao_itens_id', $_POST['txtestoque_solicitacao_itens_id']);
+//            $this->db->set('solicitacao_cliente_id', $_POST['txtestoque_solicitacao_id']);
+//            if ($_POST['txtexame'] != '') {
+//                $this->db->set('exames_id', $_POST['txtexame']);
+//            }
+            $this->db->set('produto_id', $returno[0]->produto_id);
+            $this->db->set('fornecedor_id', $returno[0]->fornecedor_id);
+            $this->db->set('armazem_id', $returno[0]->armazem_id);
+            $this->db->set('valor_venda', $returno[0]->valor_compra);
+            $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
+            $this->db->set('nota_fiscal', $returno[0]->nota_fiscal);
+            if ($returno[0]->validade != "") {
+                $this->db->set('validade', $returno[0]->validade);
+            }
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_estoque_saida');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                $estoque_saida_id = $this->db->insert_id();
+
+            $this->db->set('estoque_entrada_id', $estoque_entrada_id);
+//            $this->db->set('estoque_saida_id', $estoque_saida_id);
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            $this->db->set('produto_id', $returno[0]->produto_id);
+            $this->db->set('fornecedor_id', $returno[0]->fornecedor_id);
+            $this->db->set('armazem_id', $returno[0]->armazem_id);
+            $this->db->set('valor_compra', $returno[0]->valor_compra);
+            $quantidade = -(str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
+            $this->db->set('quantidade', $quantidade);
+            $this->db->set('nota_fiscal', $returno[0]->nota_fiscal);
+            if ($returno[0]->validade != "") {
+                $this->db->set('validade', $returno[0]->validade);
+            }
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_estoque_saldo');
+            
+            
+            // ENTRADA AGORA
+            // ENTRADA AGORA
+            // ENTRADA AGORA
+            // ENTRADA AGORA
+            // ENTRADA AGORA
+            // ENTRADA AGORA
+            
+            $this->db->set('produto_id', $returno[0]->produto_id);
+            $this->db->set('fornecedor_id', $returno[0]->fornecedor_id);
+            $this->db->set('armazem_id', $estoque_armazem_id);
+            $this->db->set('lote', $returno[0]->lote);
+            $this->db->set('valor_compra', $returno[0]->valor_compra);
+            $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
+            $this->db->set('nota_fiscal', $returno[0]->nota_fiscal);
+            if ($returno[0]->validade != "//") {
+                $this->db->set('validade', $returno[0]->validade);
+            }
+//            $horario = date("Y-m-d H:i:s");
+//            $operador_id = $this->session->userdata('operador_id');
+            
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_estoque_entrada');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $estoque_entrada_id = $this->db->insert_id();
+
+                $this->db->set('estoque_entrada_id', $estoque_entrada_id);
+                $this->db->set('produto_id', $returno[0]->produto_id);
+                $this->db->set('fornecedor_id', $returno[0]->fornecedor_id);
+                $this->db->set('armazem_id', $estoque_armazem_id);
+                $this->db->set('valor_compra', $returno[0]->valor_compra);
+                $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
+                $this->db->set('nota_fiscal', $returno[0]->nota_fiscal);
+                if ($returno[0]->validade != "//") {
+                $this->db->set('validade', $returno[0]->validade);
+            }
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_estoque_saldo');
+            
+            
+            return $estoque_saida_id;
         } catch (Exception $exc) {
             return -1;
         }

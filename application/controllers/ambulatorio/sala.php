@@ -36,6 +36,7 @@ class Sala extends BaseController {
     function carregarsala($exame_sala_id) {
         $obj_sala = new sala_model($exame_sala_id);
         $data['obj'] = $obj_sala;
+        $data['armazem'] = $this->sala->listararmazem();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/sala-form', $data);
     }

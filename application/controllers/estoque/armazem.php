@@ -40,12 +40,36 @@ class Armazem extends BaseController {
         $this->loadView('estoque/armazem-form', $data);
     }
 
+    function armazemtransferencia($estoque_armazem_id) {
+
+        $obj_armazem = new armazem_model($estoque_armazem_id);
+        $data['obj'] = $obj_armazem;
+        $data['estoque_armazem_id'] = $estoque_armazem_id;
+//        var_dump($data['obj']); die;
+        $data['armazem'] = $this->armazem->listararmazem();
+        $data['produto'] = $this->armazem->listarproduto();
+        $this->loadView('estoque/transferencia-form', $data);
+    }
+
     function excluir($estoque_armazem_id) {
         $valida = $this->armazem->excluir($estoque_armazem_id);
         if ($valida == 0) {
             $data['mensagem'] = 'Sucesso ao excluir a Armazem';
         } else {
             $data['mensagem'] = 'Erro ao excluir a armazem. Opera&ccedil;&atilde;o cancelada.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "estoque/armazem");
+    }
+
+    function gravartransferencia($estoque_armazem_id) {
+//        var_dump($_POST);
+//        die;
+        $exame_armazem_id = $this->armazem->gravartransferencia($estoque_armazem_id);
+        if ($exame_armazem_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar transferência. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar a Transferência.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "estoque/armazem");
