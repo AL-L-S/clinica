@@ -5,7 +5,11 @@
         margin-top: 50px;
         margin-left: 37%;
         list-style-type: none; /* retira o marcador de listas*/ 
-
+        overflow-y: scroll;
+        overflow-x: auto;
+        /*height: 900px;*/
+        /*width: 500px;*/
+        max-height: 900px;
 
     }
 
