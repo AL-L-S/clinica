@@ -119,7 +119,7 @@
                         <tbody>
                             <tr >
                                 <td id="data_td" style="display: none;"> 
-                                    <input type="text"  name="data_homecare" id="data" value="" class="size1"/>
+                                    <input type="text"  name="homecare" id="homecare" value="" class="size1"/>
                                 </td>
                                 <td > 
                                     <select  name="sala1" id="sala1" class="size1"  required="">
@@ -430,13 +430,10 @@
                                             $('.carregando').show();
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                 if (j[0].home_care == 't') {
-                                                    $('#data_td').show();
-                                                    $('#data_th').show();
-                                
+                                                    $('#homecare').val("t");
+                                                    
                                                 }else{
-                                                    $('#data_td').hide();
-                                                    $('#data_th').hide();
-                                                    $('#data').val("");
+                                                    $('#homecare').val("");
                                                 }
 
                                                 options = "";

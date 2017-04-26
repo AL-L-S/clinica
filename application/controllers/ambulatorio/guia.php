@@ -934,7 +934,13 @@ class Guia extends BaseController {
                 //        $this->gerardicom($ambulatorio_guia);
                 //            $this->session->set_flashdata('message', $data['mensagem']);
                 //        $this->novo($paciente_id, $ambulatorio_guia);
-                redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
+                if ($_POST['homecare'] == 't') {
+                    $messagem = 'Operação Realizada com Sucesso';
+                    $this->session->set_flashdata('message', $messagem);
+                    redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id", $data);
+                } else {
+                    redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
+                }
             } else {
                 $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 $messagem = 'Não autorizado, existem sessões abertas para essa especialidade';
@@ -2125,7 +2131,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriovalormedio', $data);
     }
-    
+
     function listardadospacienterelatorionota($paciente_id) {
         $data['paciente'] = $this->paciente->listardadospacienterelatorionota($paciente_id);
         $data['paciente_id'] = $paciente_id;
@@ -2654,7 +2660,7 @@ class Guia extends BaseController {
     function gravarnotavalor($guia_id) {
         if ((float) $_POST['txtvalorguia'] <= (float) $_POST['totguia']) {
             $this->guia->gravarnotavalor($guia_id);
-             redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+            redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
         } else {
             echo '<html>
         <script type="text/javascript">
@@ -2667,7 +2673,6 @@ class Guia extends BaseController {
             </script>
             </html>';
         }
-
     }
 
     function graficovalormedio($procedimento, $valor, $txtdata_inicio, $txtdata_fim) {
