@@ -849,8 +849,8 @@ class Operador_model extends BaseModel {
                 $this->db->where('operador_id', $_POST['operadorid']);
                 $this->db->update('tb_operador');
             }
-            echo 'Testa';
-            die;
+//            echo 'Testa';
+//            die;
             return 0;
         } catch (Exception $exc) {
             return -1;

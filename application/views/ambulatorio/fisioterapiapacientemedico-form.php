@@ -24,7 +24,7 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="txtTelefone" class="texto02" name="txtTelefone" required/>
+                <input type="text" id="txtTelefone" class="texto02" name="txtTelefone"/>
             </div>
             <div>
                 <label>Celular</label>

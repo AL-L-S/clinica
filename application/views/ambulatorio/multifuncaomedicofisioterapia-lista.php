@@ -196,6 +196,8 @@
                                         </a></div>
                                 </td>-->
         <? if ($item->confirmado == 't') { ?>
+                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                        </td>
                                     <? if (($item->medico_parecer1 == $operador_id && $item->situacao == 'FINALIZADO') || $item->situacao != 'FINALIZADO' || $operador_id == 1) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaranaminese/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
@@ -223,6 +225,7 @@
                                                 </a></div>
                                         </td>
                                     <? } ?>
+                                       
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                         <a></a></font>
