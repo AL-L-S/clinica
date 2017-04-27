@@ -109,7 +109,6 @@
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                             <a href="<?= base_url() ?>estoque/solicitacao/excluirsaida/<?= $item->estoque_saida_id; ?>/<?=$estoque_solicitacao_id?>/<?= $estoque_solicitacao_itens_id; ?>" class="delete">
                             </a>
-
                         </td>
                     </tr>
 
