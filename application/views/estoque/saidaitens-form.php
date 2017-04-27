@@ -63,7 +63,8 @@
                         if ($value->total != 0) {
                             ?>
                             <option onclick="verificacao(<?= $value->total ?>)" value="<?= $value->estoque_entrada_id; ?>"><?php echo $value->descricao; ?> - QTDE: <?php echo $value->total; ?> - Armazem: <?php echo $value->armazem; ?> - VALIDADE: <?php echo substr($value->validade, 8, 2) . "/" . substr($value->validade, 5, 2) . "/" . substr($value->validade, 0, 4); ?></option>
-                        <? }
+                        <?
+                        }
                     endforeach;
                     ?>
                 </select>
@@ -72,11 +73,11 @@
                 <label>Quantidade</label>
                 <input type="text" name="txtqtde" id="txtqtde" class="size1" alt="integer"/>
             </div>
-            
+
             <div style="display: none">
                 <input type="hidden" name="qtdedisponivel" id="qtdedisponivel" class="size1" alt="integer" value=''>
             </div>
-            
+
             <div>
                 <label>&nbsp;</label>
                 <button type="submit" name="btnEnviar">Adicionar</button>
@@ -97,26 +98,28 @@
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
             </thead>
-            <?
-            $estilo_linha = "tabela_content01";
-            foreach ($produtossaida as $item) {
-                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                ?>
-                <tbody>
+
+            <tbody>
+                <?
+                $estilo_linha = "tabela_content01";
+                foreach ($produtossaida as $item) {
+                    ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                    ?>
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                            <a href="<?= base_url() ?>estoque/solicitacao/excluirsaida/<?= $item->estoque_saida_id; ?>/<?=$estoque_solicitacao_id?>/<?= $estoque_solicitacao_itens_id; ?>" class="delete">
+                            <a href="<?= base_url() ?>estoque/solicitacao/excluirsaida/<?= $item->estoque_saida_id; ?>/<?= $estoque_solicitacao_id ?>/<?= $estoque_solicitacao_itens_id; ?>" class="delete">
                             </a>
                         </td>
                     </tr>
 
-                </tbody>
-                <?
+
+                    <?
+                }
             }
-        }
-        ?>
+            ?>
+        </tbody>
         <tfoot>
             <tr>
                 <th class="tabela_footer" colspan="4">
@@ -134,9 +137,9 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-function verificacao(valor){
-    document.getElementById("qtdedisponivel").value = valor;
-}
+            function verificacao(valor) {
+                document.getElementById("qtdedisponivel").value = valor;
+            }
 
 
 
@@ -163,12 +166,12 @@ function verificacao(valor){
 
 
 
-            $(function() {
+            $(function () {
                 $("#accordion").accordion();
             });
 
 
-            $(document).ready(function() {
+            $(document).ready(function () {
                 jQuery('#form_exametemp').validate({
                     rules: {
                         txtNome: {

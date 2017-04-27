@@ -40,7 +40,7 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN ajuste_cbhpm boolean DEFAULT false
 -- Seja mostrado o valor da parcela, seguido do total de parcelas. Ex: 1/7
 UPDATE ponto.tb_financeiro_contasreceber fc
 SET parcela = '1'
-WHERE parcela IS NULL
+WHERE parcela IS NULL;
 
 UPDATE ponto.tb_financeiro_contasreceber fc
 SET numero_parcela =

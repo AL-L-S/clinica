@@ -154,22 +154,27 @@ class Solicitacao extends BaseController {
 
     function excluirsolicitacao($estoque_solicitacao_itens_id, $estoque_solicitacao_id) {
         $this->solicitacao->excluirsolicitacao($estoque_solicitacao_itens_id);
-        $this->carregarsolicitacao($estoque_solicitacao_id);
+        redirect(base_url() . "estoque/solicitacao/carregarsolicitacao/$estoque_solicitacao_id");
     }
 
     function excluirsaida($estoque_saida_id, $estoque_solicitacao_id, $estoque_solicitacao_itens_id) {
         $this->solicitacao->excluirsaida($estoque_saida_id);
-        $this->saidaitens($estoque_solicitacao_itens_id, $estoque_solicitacao_id);
+        redirect(base_url() . "estoque/solicitacao/saidaitens/$estoque_solicitacao_itens_id/$estoque_solicitacao_id");
+    }
+
+    function excluirsaidasolicitacao($estoque_saida_id, $estoque_solicitacao_id) {
+        $this->solicitacao->excluirsaida($estoque_saida_id);
+        redirect(base_url() . "estoque/solicitacao/carregarsaida/$estoque_solicitacao_id");
     }
 
     function liberarsolicitacao($estoque_solicitacao_id) {
         $this->solicitacao->liberarsolicitacao($estoque_solicitacao_id);
-        $this->pesquisar();
+        redirect(base_url() . "estoque/solicitacao/pesquisar");
     }
 
     function fecharsolicitacao($estoque_solicitacao_id) {
         $this->solicitacao->fecharsolicitacao($estoque_solicitacao_id);
-        $this->pesquisar();
+        redirect(base_url() . "estoque/solicitacao/pesquisar");
     }
 
     function pesquisar($args = array()) {
