@@ -104,6 +104,24 @@ class armazem_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function armazemtransferenciaentradajsonquantidadegasto($produto_id = null) {
+        $this->db->select('ep.estoque_entrada_id,
+                            p.descricao,
+                            ep.validade,
+                            ea.descricao as armazem,
+                            sum(ep.quantidade) as total');
+        $this->db->from('tb_estoque_saldo ep');
+        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
+//        $this->db->join('tb_estoque_solicitacao_itens esi', 'esi.produto_id = ep.produto_id');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = ep.armazem_id');
+        $this->db->where('ep.ativo', 'true');
+        $this->db->where('ep.produto_id', $produto_id);
+        $this->db->groupby('ep.estoque_entrada_id, p.descricao, ep.validade, ea.descricao');
+        $this->db->orderby('ep.validade');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function excluir($estoque_armazem_id) {
 
@@ -152,8 +170,9 @@ class armazem_model extends Model {
         }
     }
     
-    function gravartransferencia($estoque_armazem_id) {
+    function gravartransferencia() {
         try {
+            $estoque_armazem_id = $_POST['armazementrada'];
             /* inicia o mapeamento no banco */
             $this->db->select('estoque_entrada_id,
                             produto_id,

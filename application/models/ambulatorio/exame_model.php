@@ -321,43 +321,43 @@ class exame_model extends Model {
     function listarprodutossalagastos($convenio_id, $armazem_id) {
 
 
-        $this->db->select('ep.estoque_entrada_id,
-                            p.estoque_produto_id as produto_id,
-                            p.descricao,
-                            ep.validade,
-                            p.procedimento_id, 
-                            ea.descricao as armazem,
-                            eu.descricao as unidade,
-                            sum(ep.quantidade) as total');
-        $this->db->from('tb_estoque_saldo ep');
-        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
-        $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = p.unidade_id');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = p.procedimento_id', 'left');
-        $this->db->join('tb_procedimento_convenio_produto_valor pv', 'pv.procedimento_tuss_id = p.procedimento_id', 'left');
-//        $this->db->join('tb_estoque_solicitacao_itens esi', 'esi.produto_id = ep.produto_id');
-        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = ep.armazem_id');
-        $this->db->where('ep.ativo', 'true');
-        $this->db->where('pv.ativo', 'true');
-        $this->db->where('pv.convenio_id', $convenio_id);
-        $this->db->where('ep.armazem_id', $armazem_id);
-        $this->db->groupby('ep.estoque_entrada_id, p.descricao, ep.validade, ea.descricao,p.procedimento_id,eu.descricao, p.estoque_produto_id');
-        $this->db->orderby('ep.validade');
-
-
-//        $this->db->select('p.estoque_produto_id as produto_id, 
-//                            p.descricao, 
+//        $this->db->select('ep.estoque_entrada_id,
+//                            p.estoque_produto_id as produto_id,
+//                            p.descricao,
+//                            ep.validade,
 //                            p.procedimento_id, 
-//                            eu.descricao as unidade
-//                                ');
-//        $this->db->from('tb_estoque_produto p');
+//                            ea.descricao as armazem,
+//                            eu.descricao as unidade,
+//                            sum(ep.quantidade) as total');
+//        $this->db->from('tb_estoque_saldo ep');
+//        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
 //        $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = p.unidade_id');
-//        $this->db->join('tb_estoque_saldo ep', 'p.estoque_produto_id = ep.produto_id');
 //        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = p.procedimento_id', 'left');
 //        $this->db->join('tb_procedimento_convenio_produto_valor pv', 'pv.procedimento_tuss_id = p.procedimento_id', 'left');
-//        $this->db->where('ep.armazem_id', $armazem_id);
-//        $this->db->where('pv.convenio_id', $convenio_id);
+////        $this->db->join('tb_estoque_solicitacao_itens esi', 'esi.produto_id = ep.produto_id');
+//        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = ep.armazem_id');
+//        $this->db->where('ep.ativo', 'true');
 //        $this->db->where('pv.ativo', 'true');
-//        $this->db->orderby('p.descricao');
+//        $this->db->where('pv.convenio_id', $convenio_id);
+//        $this->db->where('ep.armazem_id', $armazem_id);
+//        $this->db->groupby('ep.estoque_entrada_id, p.descricao, ep.validade, ea.descricao,p.procedimento_id,eu.descricao, p.estoque_produto_id');
+//        $this->db->orderby('ep.validade');
+
+
+        $this->db->select('distinct(p.estoque_produto_id) as produto_id, 
+                            p.descricao, 
+                            p.procedimento_id, 
+                            eu.descricao as unidade
+                                ');
+        $this->db->from('tb_estoque_produto p');
+        $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = p.unidade_id');
+        $this->db->join('tb_estoque_saldo ep', 'p.estoque_produto_id = ep.produto_id');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = p.procedimento_id', 'left');
+        $this->db->join('tb_procedimento_convenio_produto_valor pv', 'pv.procedimento_tuss_id = p.procedimento_id', 'left');
+        $this->db->where('ep.armazem_id', $armazem_id);
+        $this->db->where('pv.convenio_id', $convenio_id);
+        $this->db->where('pv.ativo', 'true');
+        $this->db->orderby('p.descricao');
         $return = $this->db->get();
         return $return->result();
     }
@@ -4052,11 +4052,6 @@ class exame_model extends Model {
         $operador_id = $this->session->userdata('operador_id');
 
 
-
-
-
-
-
 // ESTOQUE SAIDA E SALDO
         //   SELECIONA
 
@@ -4069,9 +4064,9 @@ class exame_model extends Model {
                             nota_fiscal,
                             validade');
         $this->db->from('tb_estoque_entrada e');
-        $this->db->where('estoque_entrada_id', $_POST['produto_id']);
+        $this->db->where('produto_id', $_POST['produto_id']);
         $this->db->where('ativo', 't');
-//        $this->db->where('quantidade >', $_POST['txtqtde']);
+        $this->db->where('quantidade >', '0');
         $this->db->orderby("validade");
 //        echo '<pre>';
 
@@ -4084,7 +4079,7 @@ class exame_model extends Model {
             $this->db->set('descricao', $_POST['descricao']);
         }
         $this->db->set('guia_id', $_POST['txtguia_id']);
-        $this->db->set('produto_id', $return[0]->produto_id);
+        $this->db->set('produto_id', $_POST['produto_id']);
         $this->db->set('quantidade', $_POST['txtqtde']);
         $this->db->set('data_cadastro', $horario);
         $this->db->set('operador_cadastro', $operador_id);

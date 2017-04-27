@@ -3,7 +3,7 @@
         <h3 class="singular"><a href="#">Transferência de Armazem</a></h3>
 
         <div>
-            <form name="form_entrada" id="form_entrada" action="<?= base_url() ?>estoque/armazem/gravartransferencia/<?=$estoque_armazem_id?>" method="post">
+            <form name="form_entrada" id="form_entrada" action="<?= base_url() ?>estoque/armazem/gravartransferencia/" method="post">
 
                 <dl class="dl_desconto_lista">
                     
@@ -11,7 +11,14 @@
                     <label>Armazem De Entrada</label>
                     </dt>
                     <dd>
-                        <input value="<?=$obj->_descricao?>" readonly="" class="texto06"> </inpu>
+                        <select name="armazementrada" id="armazementrada" class="size4" required="">
+                            <option value="">SELECIONE</option>
+                            <? foreach ($armazem as $value) : ?>
+                                <option value="<?= $value->estoque_armazem_id; ?>"<?
+                            if(@$obj->_armazem_id == $value->estoque_armazem_id):echo'selected';
+                            endif;?>><?php echo $value->descricao; ?></option>
+                                    <? endforeach; ?>
+                        </select>
                     </dd>
                     <dt>
                     <label>Armazem De Saída</label>

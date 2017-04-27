@@ -100,6 +100,16 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function armazemtransferenciaentradaquantidadegastos() {
+//    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
+        if (isset($_GET['produto'])) {
+            $result = $this->armazem->armazemtransferenciaentradajsonquantidadegasto($_GET['produto']);
+        } else {
+            $result = $this->armazem->armazemtransferenciaentradajsonquantidadegasto();
+        }
+        echo json_encode($result);
+    }
 
     function horariosambulatoriogeral() {
 

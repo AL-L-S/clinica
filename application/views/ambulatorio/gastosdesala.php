@@ -1,6 +1,4 @@
-<?
-
-?>
+<? ?>
 <meta charset="utf-8">
 
 <div id="conteudo"> <!-- Inicio da DIV content -->
@@ -56,26 +54,28 @@
                     </tr>
                     <tr>
                         <td><input type="text" name="paciente" class="input_grande" value="<?= $paciente[0]->nome; ?>" readonly /></td>
-                        <td><input type="text" name="sexo" class="input_pequeno" value="<? if ($paciente[0]->sexo == 'F') {
+                        <td><input type="text" name="sexo" class="input_pequeno" value="<?
+if ($paciente[0]->sexo == 'F') {
     echo 'Feminino';
 } else {
     echo 'masculino';
-} ?>" readonly /></td>
+}
+?>" readonly /></td>
                     </tr>
                     <tr>
                         <td><label>Nascimento</label></td>
                         <td><label>Telefone</label></td>
-                        
+
                     </tr>
                     <tr>
                         <td><input type="text" name="nascimento" class="input_pequeno" value="<?= str_replace('-', '/', date('d-m-Y', strtotime($paciente[0]->nascimento))); ?>" readonly /></td>
                         <td><input type="text" name="celular" class="input_pequeno" value="<?= $paciente[0]->celular; ?>" readonly /></td>
                     </tr>
-                    
+
                     <tr>
                         <td><label>Procedimento</label></td>
                         <td><label>Convênio</label></td>
-                        
+
                     </tr>
                     <tr>
                         <td><input type="text" name="procedimento" class="texto10" value="<?= $laudo[0]->procedimento; ?>" readonly /></td>
@@ -84,16 +84,16 @@
                     <tr>
                         <td width="70px;">
                             <div class="bt_link_new">
-                                        <a onclick="javascript: return confirm('Deseja realmente executar a ação a seguir?');" href="<?= base_url() ?>ambulatorio/exame/finalizarexame/<?= $exames_id ?>/<?= $sala_id ?> ">
-                                            Finalizar
-                                        </a>
+                                <a onclick="javascript: return confirm('Deseja realmente executar a ação a seguir?');" href="<?= base_url() ?>ambulatorio/exame/finalizarexame/<?= $exames_id ?>/<?= $sala_id ?> ">
+                                    Finalizar
+                                </a>
                             </div>
                     </tr>
                 </table>
-                
+
                 <div>
-                            
-                        </div>
+
+                </div>
 
             </div>
         </fieldset>  
@@ -110,13 +110,13 @@
                     <td> 
                         <select name="produto_id" id="produto_id" class="size4" style="width: 250px" required="true">
                             <option value="">SELECIONE</option>
-<? foreach ($produtos as $value) : ?>
-                            <?if($value->total > 0){?>
-                                
-                            
-                            <option value="<?= $value->estoque_entrada_id; ?>" onclick="procedimento_id(<?= $value->procedimento_id; ?>)"><?php echo $value->descricao . " (" ."$value->unidade".")"; ?>  QTDE: <?php echo $value->total; ?></option>
-                            <?}?>
-<? endforeach; ?>
+                            <? foreach ($produtos as $value) : ?>
+
+
+
+                                <option value="<?= $value->produto_id; ?>" onclick="procedimento_id(<?= $value->procedimento_id; ?>)"><?php echo $value->descricao . " (" . "$value->unidade" . ")"; ?></option>
+
+                            <? endforeach; ?>
                         </select> 
                     </td>
                     <td> <input style="width: 100px" type="number" name="txtqtde" id="txtqtde" min="1" required="true"/> </td>
@@ -129,56 +129,56 @@
             </table>
         </fieldset>
 
-    <fieldset>
-<?
-    if (count($produtos_gastos) > 0) {
-?>
-            <table id="table_agente_toxico" border="0">
-                <thead>
-    
-                    <tr>
-                        <th class="tabela_header">Produto</th>
-                        <th class="tabela_header">Qtde</th>
-                        <th class="tabela_header">Unidade</th>
-                        <th class="tabela_header">Descricao</th>
-                        <th class="tabela_header">&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-    <?
-            $estilo_linha = "tabela_content01";
-            foreach ($produtos_gastos as $item) {
-                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-    ?>
+        <fieldset>
+            <?
+            if (count($produtos_gastos) > 0) {
+                ?>
+                <table id="table_agente_toxico" border="0">
+                    <thead>
 
                         <tr>
-                            <td class="<?php echo $estilo_linha;  ?>" width="450px;"><center><? echo $item->descricao;  ?></center></td>
-                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->quantidade;  ?></center></td>
-                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->unidade;  ?></center></td>
-                            <td class="<?php echo $estilo_linha;  ?>"><center><? echo $item->descricao_gasto;  ?></center></td>
-                            <td class="<?php echo $estilo_linha;  ?>" width="100px;">
-                                <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id;  ?>/<?= $exames_id; ?>/<?= $convenio_id; ?>/<?=$sala_id;?>" class="delete">
-                                </a>
-                            </td>
+                            <th class="tabela_header">Produto</th>
+                            <th class="tabela_header">Qtde</th>
+                            <th class="tabela_header">Unidade</th>
+                            <th class="tabela_header">Descricao</th>
+                            <th class="tabela_header">&nbsp;</th>
                         </tr>
-    
-                    
-        <?
-            }
+                    </thead>
+                    <tbody>
+                        <?
+                        $estilo_linha = "tabela_content01";
+                        foreach ($produtos_gastos as $item) {
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            ?>
+
+                            <tr>
+                        <td class="<?php echo $estilo_linha; ?>" width="450px;"><center><? echo $item->descricao; ?></center></td>
+                        <td class="<?php echo $estilo_linha; ?>"><center><? echo $item->quantidade; ?></center></td>
+                        <td class="<?php echo $estilo_linha; ?>"><center><? echo $item->unidade; ?></center></td>
+                        <td class="<?php echo $estilo_linha; ?>"><center><? echo $item->descricao_gasto; ?></center></td>
+                        <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                            <a href="<?= base_url() ?>ambulatorio/exame/excluirgastodesala/<?= $item->ambulatorio_gasto_sala_id; ?>/<?= $exames_id; ?>/<?= $convenio_id; ?>/<?= $sala_id; ?>" class="delete">
+                            </a>
+                        </td>
+                        </tr>
+
+
+                        <?
+                    }
+                    ?>
+                    </tbody>
+                    <?
+                }
                 ?>
-                </tbody>
-            <?    
-    }
- ?>
-            <tfoot>
-                <tr>
-                    <th class="tabela_footer" colspan="5">
-                    </th>
-                </tr>
-            </tfoot>
-        </table> 
-    </fieldset>
-</form>
+                <tfoot>
+                    <tr>
+                        <th class="tabela_footer" colspan="5">
+                        </th>
+                    </tr>
+                </tfoot>
+            </table> 
+        </fieldset>
+    </form>
 
 </div> <!-- Final da DIV content -->
 
@@ -211,48 +211,54 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-                                    function procedimento_id(id) {
-                                        if(id != undefined){
-                                            $('#procedimento_id').val(id);
-                                            
-                                            var verifica = $("#faturar").length;
-                                            if (verifica == 0){
-                                                var faturar = '<td> <input type="checkbox" name="faturar" id="faturar"/> <label>Faturar</label></td>';
-                                                $('#gastos').append(faturar);
-                                            }
-                                        } 
-                                        else{
-                                            var verifica = $("#faturar").length;
-                                            if (verifica == 1){
-                                                $("#faturar").parent().remove();
+                                function procedimento_id(id) {
+                                    if (id != undefined) {
+                                        $('#procedimento_id').val(id);
+
+                                        var verifica = $("#faturar").length;
+                                        if (verifica == 0) {
+                                            var faturar = '<td> <input type="checkbox" name="faturar" id="faturar"/> <label>Faturar</label></td>';
+                                            $('#gastos').append(faturar);
+                                        }
+                                    } else {
+                                        var verifica = $("#faturar").length;
+                                        if (verifica == 1) {
+                                            $("#faturar").parent().remove();
 //                                                console.log(i);
-                                            }
                                         }
                                     }
-                                    
-                                    
-        $(function() {
-        $('#produto_id').change(function() {
-            if ($(this).val()) {
-                
+                                }
+
+
+                                $(function () {
+                                    $('#produto_id').change(function () {
+                                        if ($(this).val()) {
+
 //                $('#entrada').hide();
 //                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidade', {produto: $(this).val()}, function(j) {
-                    var options = '<option value=""></option>';
-                    for (var i = 0; i < j.length; i++) {
-                        options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total +  '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
-                    }
-                    $("#txtqtde").prop('max',j[0].total);
+                                            $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidadegastos', {produto: $(this).val()}, function (j) {
+                                                var options = '<option value=""></option>';
+                                                var  b = 0;
+                                                for (var i = 0; i < j.length; i++) {
+                                                    options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
+                                                    if (j[i].total > 0 && b == 0){
+
+                                                        $("#txtqtde").prop('max', j[i].total);
+                                                        b++;
+                                                    }
+                                                }
+
+
 //                    alert(j[0].total);
 //                    if(){
 //                        
 //                    }
 //                    $('#entrada').html(options).show();
 //                    $('.carregando').hide();
-                });
-            } else {
+                                            });
+                                        } else {
 //                $('#entrada').html('<option value="">ESCOLHA UM ARMAZEM E UM PRODUTO</option>');
-            }
-        });
-    });
+                                        }
+                                    });
+                                });
 </script>
