@@ -1061,9 +1061,18 @@
                 foreach ($formapagamento as $value) {
 
                     $w++;
+//                    echo "<pre>";
+//                    var_dump($data);
+//                    die;
+//                    
+                    // Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
+                    // tais como '-', ' ', entre outros ao se fazer isso:
+                    //          name="qtde['<? $value->nome; \?\>']
+                    $nomeForma = str_replace(array('0','1','2','3','4','5','6','7','8','9', ' '), '', $value->nome);
+                    $nomeForma = strtolower($nomeForma);
                     ?>
-
-                    <input type="hidden" class="texto3" name="qtde[<?= $w ?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
+                    
+                    <input type="hidden" class="texto3" name="qtde[<?= $nomeForma; ?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
                 <? }
                 ?>
     <!--                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($DINHEIRO, 2, ',', '.'); ?>" readonly/>

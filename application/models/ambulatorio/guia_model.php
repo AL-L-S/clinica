@@ -6595,9 +6595,8 @@ AND data <= '$data_fim'";
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where("(ae.forma_pagamento = $formapagamento_id OR ae.forma_pagamento2 = $formapagamento_id OR 
-                            ae.forma_pagamento3 = $formapagamento_id OR ae.forma_pagamento4 = $formapagamento_id)");
-
+        $this->db->where("(ae.forma_pagamento  = $formapagamento_id OR ae.forma_pagamento2 = $formapagamento_id OR 
+                           ae.forma_pagamento3 = $formapagamento_id OR ae.forma_pagamento4 = $formapagamento_id)");
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.financeiro', 'f');
@@ -6659,8 +6658,7 @@ AND data <= '$data_fim'";
         $data30 = date('Y-m-d', strtotime("+30 days", strtotime($data_cauculo)));
         $data4 = date('Y-m-d', strtotime("+4 days", strtotime($data_cauculo)));
         $data2 = date('Y-m-d', strtotime("+2 days", strtotime($data_cauculo)));
-
-
+        
         $this->db->select('forma_pagamento_id,
                             nome, 
                             conta_id, 
@@ -6670,23 +6668,34 @@ AND data <= '$data_fim'";
                             parcelas');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
+//        $this->db->orderby("nome");
         $return = $this->db->get();
         $forma_pagamento = $return->result();
 
+        $valor_total = '0.00';
+
         $teste = $_POST['qtde'];
-        $w = 0;
         foreach ($forma_pagamento as $value) {
             $classe = "CAIXA" . " " . $value->nome;
-            $w++;
-            $valor_total = (str_replace(".", "", $teste[$w]));
-            $valor_total = (str_replace(",", ".", $valor_total));
+
+            foreach ($teste as $j => $t) {
+                //Por limitacoes do CodeIgniter, tem que fazer isso.
+                $j = strtolower(str_replace(array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '), '', $j));
+                if ($j == strtolower(str_replace(array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '), '', $value->nome))) {
+                    $valor_total = (str_replace(".", "", $t));
+                    $valor_total = (str_replace(",", ".", $valor_total));
+                }
+            }
+
+//            var_dump($valor_total, "<hr>");
+
             if ($valor_total != '0.00') {
 
                 if ($value->nome == '' || $value->conta_id == '' || $value->credor_devedor == '' || $value->parcelas == '') {
                     return 10;
                 }
 
-                if ((empty($value->tempo_receber) || $value->tempo_receber == 0) && (empty($value->dia_receber) || $value->dia_receber == 0)) {
+                if ((!isset($value->tempo_receber) || $value->tempo_receber == 0) && (!isset($value->dia_receber) || $value->dia_receber == 0)) {
 
                     $this->db->set('data', $data);
                     $this->db->set('valor', $valor_total);
@@ -6709,6 +6718,7 @@ AND data <= '$data_fim'";
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_saldo');
                 } else {
+
                     if (isset($value->dia_receber) && $value->dia_receber > 0) {
                         $data_atual = $_POST['data1'];
                         $dia_atual = substr($_POST['data1'], 8);
@@ -6806,8 +6816,7 @@ AND data <= '$data_fim'";
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
                             $valor_n_parcelado = $valor_total;
                             $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
-
-
+                            
 
                             foreach ($agenda_exames_id as $item) {
                                 if ($item->forma_pagamento == $value->forma_pagamento_id) {
@@ -6893,6 +6902,7 @@ AND data <= '$data_fim'";
                 }
             }
         }
+//        die;
 
         if ($_POST['grupo'] == 0) {
 
