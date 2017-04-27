@@ -242,6 +242,7 @@ class entrada_model extends Model {
 //            $this->db->where('ae.empresa_id', $_POST['empresa']);
 //        }
         $this->db->groupby('ea.descricao, ef.fantasia, ep.descricao');
+//        $this->db->orderby('ea.descricao, ef.fantasia, ep.descricao');
         $return = $this->db->get();
         return $return->result();
     }

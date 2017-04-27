@@ -86,6 +86,24 @@ class armazem_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function armazemtransferenciaentradajsonquantidade($entrada = null) {
+        $this->db->select('ep.estoque_entrada_id,
+                            p.descricao,
+                            ep.validade,
+                            ea.descricao as armazem,
+                            sum(ep.quantidade) as total');
+        $this->db->from('tb_estoque_saldo ep');
+        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
+//        $this->db->join('tb_estoque_solicitacao_itens esi', 'esi.produto_id = ep.produto_id');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = ep.armazem_id');
+        $this->db->where('ep.ativo', 'true');
+        $this->db->where('ep.estoque_entrada_id', $entrada);
+        $this->db->groupby('ep.estoque_entrada_id, p.descricao, ep.validade, ea.descricao');
+        $this->db->orderby('ep.validade');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function excluir($estoque_armazem_id) {
 
@@ -153,15 +171,15 @@ class armazem_model extends Model {
 //            echo '<pre>';
 //            var_dump($returno); die;
 
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+
             $estoque_entrada_id = $_POST['entrada'];
             $this->db->set('estoque_entrada_id', $estoque_entrada_id);
 //            $this->db->set('estoque_solicitacao_itens_id', $_POST['txtestoque_solicitacao_itens_id']);
@@ -191,11 +209,11 @@ class armazem_model extends Model {
                 $estoque_saida_id = $this->db->insert_id();
 
             $this->db->set('estoque_entrada_id', $estoque_entrada_id);
-//            $this->db->set('estoque_saida_id', $estoque_saida_id);
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
-            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE. GRATO
+            $this->db->set('estoque_saida_id', $estoque_saida_id);
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
+            // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
             $this->db->set('produto_id', $returno[0]->produto_id);
             $this->db->set('fornecedor_id', $returno[0]->fornecedor_id);
             $this->db->set('armazem_id', $returno[0]->armazem_id);

@@ -111,11 +111,15 @@
                         <select name="produto_id" id="produto_id" class="size4" style="width: 250px" required="true">
                             <option value="">SELECIONE</option>
 <? foreach ($produtos as $value) : ?>
-                            <option value="<?= $value->produto_id; ?>" onclick="procedimento_id(<?= $value->procedimento_id; ?>)"><?php echo $value->descricao . " (" ."$value->unidade".")"; ?></option>
+                            <?if($value->total > 0){?>
+                                
+                            
+                            <option value="<?= $value->estoque_entrada_id; ?>" onclick="procedimento_id(<?= $value->procedimento_id; ?>)"><?php echo $value->descricao . " (" ."$value->unidade".")"; ?>  QTDE: <?php echo $value->total; ?></option>
+                            <?}?>
 <? endforeach; ?>
                         </select> 
                     </td>
-                    <td> <input style="width: 100px" type="number" name="txtqtde" min="1" required="true"/> </td>
+                    <td> <input style="width: 100px" type="number" name="txtqtde" id="txtqtde" min="1" required="true"/> </td>
                     <td><textarea name="descricao" id="descricao" style="margin-left: 10px; width: 300px"></textarea></td>
                     <td></td>
                 </tr>
@@ -225,4 +229,30 @@
                                             }
                                         }
                                     }
+                                    
+                                    
+        $(function() {
+        $('#produto_id').change(function() {
+            if ($(this).val()) {
+                
+//                $('#entrada').hide();
+//                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidade', {produto: $(this).val()}, function(j) {
+                    var options = '<option value=""></option>';
+                    for (var i = 0; i < j.length; i++) {
+                        options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total +  '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
+                    }
+                    $("#txtqtde").prop('max',j[0].total);
+//                    alert(j[0].total);
+//                    if(){
+//                        
+//                    }
+//                    $('#entrada').html(options).show();
+//                    $('.carregando').hide();
+                });
+            } else {
+//                $('#entrada').html('<option value="">ESCOLHA UM ARMAZEM E UM PRODUTO</option>');
+            }
+        });
+    });
 </script>
