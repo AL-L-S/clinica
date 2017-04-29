@@ -1,9 +1,9 @@
 <div class="content ficha_ceatox">
-<!--    <div class="bt_link_new" style="width: 150pt">
-        <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
-            Novo Medico Solicitante
-        </a>
-    </div>-->
+    <!--    <div class="bt_link_new" style="width: 150pt">
+            <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
+                Novo Medico Solicitante
+            </a>
+        </div>-->
     <div class="bt_link_new">
         <a href="<?= base_url() ?>cadastros/pacientes">
             Cadastros
@@ -11,6 +11,7 @@
     </div>
     <div >
         <?
+        $perfil_id = $this->session->userdata('perfil_id');
         $sala = "";
         $ordenador1 = "";
         $sala_id = "";
@@ -30,7 +31,7 @@
             $ordenador1 = $exames[0]->ordenador;
         }
         ?>
-       
+
         <div>
             <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentosconsulta" method="post">
                 <fieldset>
@@ -44,12 +45,12 @@
                     <div>
                         <label>Sexo</label>
                         <input name="sexo" id="txtSexo" class="size2" 
-                                value="<?
-                                    if ($paciente['0']->sexo == "M"):echo 'Masculino';
-                                    endif;
-                                    if ($paciente['0']->sexo == "F"):echo 'Feminino';
-                                    endif;
-                                    ?>" readonly="true">
+                               value="<?
+                               if ($paciente['0']->sexo == "M"):echo 'Masculino';
+                               endif;
+                               if ($paciente['0']->sexo == "F"):echo 'Feminino';
+                               endif;
+                               ?>" readonly="true">
                     </div>
 
                     <div>
@@ -244,11 +245,13 @@
                                                     </a></div>
                                             </td>
                                             <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-                                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
+                                                <? if ($perfil_id != 11) { ?>
+                                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
 
-                                                        </a></div>
-                                                </td>
+                                                            </a></div>
+                                                    </td>
+                                                <? } ?>
                                             <? } ?>
                                         </tr>
                                     </tbody>
@@ -260,10 +263,12 @@
                                         <th class="tabela_footer" colspan="6">
                                             Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                         </th>
-                                        <th colspan="2" align="center"><center><div class="bt_linkf">
-                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
+                                        <? if ($perfil_id != 11) { ?>
+                                            <th colspan="2" align="center"><center><div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
 
-                                        </a></div></center></th>
+                                            </a></div></center></th>
+                                <? } ?>
                                 </tr>
                                 </tfoot>
                             </table> 
@@ -454,7 +459,7 @@
                                                 }
                                             });
                                         });
-                                        
+
                                         function calculoIdade() {
                                             var data = document.getElementById("txtNascimento").value;
                                             var ano = data.substring(6, 12);

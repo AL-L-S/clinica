@@ -19,9 +19,6 @@
                     <td width="80px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/novofisioterapia/<?= $paciente_id ?>">Nova Especialidade</a></div></td>
                     <td width="80px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/novoatendimento/<?= $paciente_id ?>">Novo Atendimento</a></div></td>
                     <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>ambulatorio/guia/pesquisar/<?= $args['paciente'] ?>">Guias</a></div></td>
-
-
-
                     <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>cadastros/pacientes/anexarimagem/<?= $paciente_id ?>">Arquivos</a></div></td>
                     <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>cadastros/pacientes/cancelamento/<?= $paciente_id ?>" target="_blank">Cancelamentos</a></div></td>
                 </tr>

@@ -51,7 +51,7 @@
                     <td class="tabela_teste">Valor da Nota</td>
                     <td class="tabela_teste">Valor da Guia</td>
                     <td class="tabela_teste">Data da Guia</td>
-                    <td class="tabela_teste">Checado</td>
+                    <!--<td class="tabela_teste">Checado</td>-->
                 </tr>
             </thead>
             <hr>
@@ -77,6 +77,7 @@
                                     <?= utf8_decode($item->paciente); ?>
                                 </a>
                             <!--<a href="#"></a></td>-->
+                        
                         <td>
                             <?
                             if ($item->cpf != '') {
@@ -113,15 +114,6 @@
                                 </a></td>
                         </td>
                         <td style="text-align: right"><?= str_replace("-", "/", date("d-m-Y", strtotime($item->data_criacao))); ?></td>
-                        <td style="text-align: center">
-                            <? if ($item->checado == 't') {
-                                ?>
-                            <font size="+1"> &#8730;</font>
-                            <? } else { ?>
-                                <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/gravarchecknota/$item->ambulatorio_guia_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
-                                    
-                                </a></td>
-                        <? } ?>
                     </tr>
                 <? endforeach; ?>
 

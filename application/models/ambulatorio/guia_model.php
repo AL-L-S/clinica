@@ -2070,27 +2070,70 @@ class guia_model extends Model {
 
     function procedimentoguianota($ambulatorio_guia_id) {
 
-        $this->db->select('
-                           ae.valor_total as total,
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.guia_id,
+                            ae.inicio,
+                            ae.fim,
+                            ae.financeiro,
+                            ae.faturado,
+                            ae.ativo,
+                            ae.verificado,
+                            al.ambulatorio_laudo_id as laudo,
+                            ae.situacao,
+                            pt.grupo,
+                            c.nome as convenio,
+                            ae.guia_id,
+                            pc.valortotal,
+                            ae.quantidade,
+                            ae.valor_total,
+                            ae.valor,
+                            ae.valor1,
+                            ae.forma_pagamento2,
+                            ae.valor2,
+                            ae.realizada,
+                            ae.forma_pagamento3,
+                            ae.valor3,
+                            ae.numero_sessao,
+                            ae.forma_pagamento4,
+                            ae.valor4,
+                            ae.autorizacao,
+                            ae.operador_autorizacao,
+                            ae.paciente_id,
+                            ae.operador_editar,
+                            p.nome as paciente,
+                            ae.procedimento_tuss_id,
                             pt.nome as procedimento,
+                            o.nome,
+                            e.exames_id,
+                            op.nome as nomefaturamento,
+                            ae.operador_faturamento,
                             f.nome as forma_pagamento,
                             f2.nome as forma_pagamento_2,
                             f3.nome as forma_pagamento_3,
                             f4.nome as forma_pagamento_4,
-                            ');
-        $this->db->from('tb_ambulatorio_guia g');
-        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+                            pt.codigo,
+                            ae.desconto,
+                            ae.parcelas1,
+                            ae.parcelas2,
+                            ae.parcelas3,
+                            ae.parcelas4');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_paciente p', 'p.paciente_id = g.paciente_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = ae.forma_pagamento', 'left');
         $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = ae.forma_pagamento2', 'left');
         $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = ae.forma_pagamento3', 'left');
         $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
-        $this->db->where('g.ambulatorio_guia_id', $ambulatorio_guia_id);
-        $this->db->orderby('pt.nome');
-        $this->db->orderby('p.nome');
-
+        $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.guia_id', $ambulatorio_guia_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -4073,6 +4116,19 @@ class guia_model extends Model {
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function relatorionotaprocedimentosvalortotal($guia_id) {
+
+        $this->db->select('sum(ae.quantidade * ae.valor) as valor_total');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ae.guia_id", $guia_id);
+//        $this->db->where('g.nota_fiscal', 't');
+        $this->db->where('ae.empresa_id', '1');
+        $return = $this->db->get()->result();
+        return $return[0]->valor_total;
     }
 
     function relatoriocaixapersonalizadoprocedimentosvalortotal($guia_id) {

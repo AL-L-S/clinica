@@ -2658,7 +2658,9 @@ class Guia extends BaseController {
     }
 
     function procedimentoguianota($ambulatorio_guia_id) {
+        $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $data['procedimento'] = $this->guia->procedimentoguianota($ambulatorio_guia_id);
+        $data['formapagamento'] = $this->formapagamento->listarforma();
         $this->load->View('ambulatorio/procedimentoguianota-form', $data);
     }
 
@@ -2795,7 +2797,8 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['paciente'] = ($_POST['txtNomeid'] != '') ? $_POST['txtNome'] : "TODOS";
-        $data['operador'] = ($_POST['operador'] != '' && $_POST['operador'] != '0') ? $_POST['operador'] : "TODOS";
+        
+        $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
 
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 //        $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();

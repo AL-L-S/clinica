@@ -20,13 +20,13 @@ class Operador extends BaseController {
 
     function index() {
 
-        if ($this->utilitario->autorizar(1, $this->session->userdata('modulo')) == true) {
-            $this->pesquisar();
-        } else {
-            $data['mensagem'] = 'Usuario sem permissao';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "cadastros/pacientes/pesquisarbe", $data);
-        }
+//        if ($this->utilitario->autorizar(1, $this->session->userdata('modulo')) == true) {
+        $this->pesquisar();
+//        } else {
+//            $data['mensagem'] = 'Usuario sem permissao';
+//            $this->session->set_flashdata('message', $data['mensagem']);
+//            redirect(base_url() . "cadastros/pacientes/pesquisarbe", $data);
+//        }
     }
 
     function novo() {
@@ -149,7 +149,6 @@ class Operador extends BaseController {
 
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "seguranca/operador", $data);
-            
         } else {
             if ($this->operador_m->gravar()) {
                 $data['mensagem'] = 'Operador cadastrado com sucesso.';
