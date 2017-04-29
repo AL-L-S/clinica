@@ -12,6 +12,18 @@
                         <input type="text" id="txtNome" name="txtNome" class="texto10"/>
                     </dd>
                     <dt>
+                        <label>Operador Faturamento</label>
+                    </dt>
+                    <dd>
+                        <select name="operador" id="operador" class="size2">
+                            <option value="0">TODOS</option>
+                            <option value="1">Administrador</option>
+                            <? foreach ($operadores as $value) : ?>
+                                <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Data inicio</label>
                     </dt>
                     <dd>
@@ -27,7 +39,7 @@
                         <label>Empresa</label>
                     </dt>
                     <dd>
-                        <select name="empresa" id="empresa" class="size2">
+                        <select name="empresa" id="empresa" class="size2" required="">
                             <? foreach ($empresa as $value) : ?>
                                 <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
                             <? endforeach; ?>

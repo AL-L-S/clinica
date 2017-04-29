@@ -1065,14 +1065,16 @@
 //                    var_dump($data);
 //                    die;
 //                    
-                    // Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
-                    // tais como '-', ' ', entre outros ao se fazer isso:
-                    //          name="qtde['<? $value->nome; \?\>']
+                    /* 
+                     * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
+                     * tais como '-', ' ', entre outros ao se fazer isso:
+                     * name="qtde['<? $value->nome; \?\>']
+                     */
                     $nomeForma = str_replace(array('0','1','2','3','4','5','6','7','8','9', ' '), '', $value->nome);
                     $nomeForma = strtolower($nomeForma);
                     ?>
                     
-                    <input type="hidden" class="texto3" name="qtde[<?= $nomeForma; ?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
+                     <input type="hidden" class="texto3" name="qtde[<?= $nomeForma; ?>]" value="<?= number_format($data[$value->nome], 2, ',', '.'); ?>"/>
                 <? }
                 ?>
     <!--                <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($DINHEIRO, 2, ',', '.'); ?>" readonly/>
@@ -1107,7 +1109,7 @@
                             <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
 
                         <? } elseif (count($operador) > 0 && $financeiro == 'f') { ?>
-                            <td colspan="2" ><b>Não é possível fechar por operador</b></td> 
+                            <td colspan="2" ><b>Só é possível fechar por operador</b></td> 
                         <? } else {
                             ?>
                             <td colspan="2" ><b>Caixa Fechado</b></td>

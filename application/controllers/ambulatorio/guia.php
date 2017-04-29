@@ -701,6 +701,19 @@ class Guia extends BaseController {
         redirect(base_url() . "ambulatorio/guia/novo/$data");
     }
 
+    function fecharcaixapersonalizado() {
+        $caixa = $this->guia->fecharcaixapersonalizado();
+        if ($caixa == "-1") {
+            $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
+        } elseif ($caixa == 10) {
+            $data['mensagem'] = 'Erro ao fechar caixa. Forma de pagamento não configurada corretamente.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao fechar caixa.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/guia/relatoriocaixapersonalizado", $data);
+    }
+
     function fecharcaixa() {
         $caixa = $this->guia->fecharcaixa();
         if ($caixa == "-1") {
@@ -2782,11 +2795,14 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['paciente'] = ($_POST['txtNomeid'] != '') ? $_POST['txtNome'] : "TODOS";
-//        $data['operador'] = ($_POST['txtNomeid'] != '') ? $_POST['txtNome'] : "TODOS";
+        $data['operador'] = ($_POST['operador'] != '' && $_POST['operador'] != '0') ? $_POST['operador'] : "TODOS";
 
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-        $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
+//        $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
         $data['relatorioprocedimentos'] = $this->guia->relatoriocaixapersonalizadoprocedimentos();
+        $data['operadores'] = $this->guia->relatoriocaixapersonalizadooperadores();
+        
+//        var_dump($data['operador']);die;
 //        $data['caixa'] = $this->caixa->listarsangriacaixa();
 //        $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarforma();
