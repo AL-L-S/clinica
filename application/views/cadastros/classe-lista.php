@@ -43,12 +43,25 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->tipo; ?></td>
+                                 <?
+                                $perfil_id = $this->session->userdata('perfil_id');
+                                ?>
+                                <? if ($perfil_id != 10) { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a href="<?= base_url() ?>cadastros/classe/carregarclasse/<?= $item->financeiro_classe_id ?>">Editar</a>
                             </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Classe?');" href="<?= base_url() ?>cadastros/classe/excluir/<?= $item->financeiro_classe_id ?>">Excluir</a>
                             </td>
+                            <?}else{?>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
+                                   Editar
+                            </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
+                                    Excluir
+                            </td>
+                                
+                           <? }?>
                         </tr>
 
                         </tbody>

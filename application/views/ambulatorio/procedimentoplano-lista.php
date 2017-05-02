@@ -5,6 +5,9 @@
             Novo Procedimento
         </a>
     </div>
+    <?
+    $perfil_id = $this->session->userdata('perfil_id');
+    ?>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento Convenio</a></h3>
         <div>
@@ -81,7 +84,8 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->valortotal; ?></td>
 
 
-
+                                <?if($perfil_id != 10){?>
+                                
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                     <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');"
                                        href="<?=base_url()?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
@@ -99,6 +103,19 @@
                                         Pagamento
                                     </a>
                                 </td>
+                                
+                                <?}else{?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                        Excluir
+<!--                                    href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id; ?>"-->
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"> 
+                                        Editar
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                        Pagamento
+                                </td>
+                                <?}?>
                             </tr>
 
                         </tbody>

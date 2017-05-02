@@ -11,6 +11,7 @@
     $saldo = $this->caixa->saldo();
     $conta = $this->forma->listarforma();
     $tipo = $this->tipo->listartipo();
+    $perfil_id = $this->session->userdata('perfil_id');
     ?>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Contas a Receber</a></h3>
@@ -152,6 +153,7 @@
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", "."); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacao; ?></td>
+                                <?if($perfil_id != 10){?>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/contasreceber/carregar/<?= $item->financeiro_contasreceber_id ?>">Editar</a></div>
@@ -165,6 +167,23 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/contasreceber/anexarimagemcontasareceber/<?= $item->financeiro_contasreceber_id ?>">Arquivos</a></div>
                                 </td>
+                                
+                                <?}else{?>
+                                
+                                    <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                        Editar</div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                        Excluir</div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                        Confirmar</div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                        Arquivos</div>
+                                </td>
+                                    
+                                <?}?>
                             </tr>
 
                         </tbody>

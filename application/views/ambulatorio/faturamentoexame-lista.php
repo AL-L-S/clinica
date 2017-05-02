@@ -2,7 +2,10 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
         <link href="<?= base_url() ?>css/form.css" rel="stylesheet" type="text/css" />
-        <? $tipoempresa = ""; ?>
+        <? $tipoempresa = "";
+        $perfil_id = $this->session->userdata('perfil_id');
+        ?>
+        
         <table>
             <thead>
 
@@ -146,18 +149,32 @@
                                 $faturado = 1;
                                 ?>
                                 <td width="40px;"><div class="bt_link">
+                                        <?if($perfil_id != 10 ){?>
+                                            
+                                       
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarconvenio/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">Faturar
-                                        </a></div>
+                                        </a>
+                                        <? }else{?>
+                                          Faturar  
+                                        <?}?>
+                                    </div>
                                 </td>
                             <? } else { ?>
                                 <td>Faturado&nbsp;</td>
                             <? }
                             ?>
+                               
+                                    
+                                
                             <td width="110px;">
                                 <div class="bt_link" style="width: 100pt">
+                                     <?if($perfil_id != 10){?>
                                     <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturarguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
                                         Faturar guia
                                     </a>
+                                    <?}else{?>
+                                        Faturar guia
+                                    <?}?>
                                 </div>
                             </td>
 
@@ -165,9 +182,16 @@
                                     <? if ($item->faturado == "t") { ?>
 
                                         <? if ($item->situacao_faturamento == "") { ?>
+                                            <?if($perfil_id != 10){?>
+                                            
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarconveniostatus/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">
                                                 Situação
                                             </a>
+                                    
+                                            <?}else{?>
+                                                Situação
+                                            <?}
+                                            ?>
                                         <? } ?>
                                         <? if ($item->situacao_faturamento == "GLOSADO") { ?>       
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarconveniostatus/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">

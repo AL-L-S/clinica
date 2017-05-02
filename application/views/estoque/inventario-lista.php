@@ -4,6 +4,9 @@
         <a href="<?php echo base_url() ?>estoque/inventario/carregarinventario/0">
             Novo Inventario
         </a>
+        <?
+        $perfil_id = $this->session->userdata('perfil_id');
+        ?>
     </div>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Inventario</a></h3>
@@ -12,27 +15,27 @@
                 <thead>
                     <tr>
                         <th colspan="5" class="tabela_title">
-                <form method="get" action="<?= base_url() ?>estoque/inventario/pesquisar">
-                    <tr>
-                        <th class="tabela_title">Produto</th>
-                        <th class="tabela_title">Fornecedor</th>
-                        <th class="tabela_title">Nota</th>
-                    </tr>
-                    <tr>
-                        <th class="tabela_title">
-                            <input type="text" name="produto" value="<?php echo @$_GET['produto']; ?>" />
-                        </th>
-                        <th class="tabela_title">
-                            <input type="text" name="fornecedor" value="<?php echo @$_GET['fornecedor']; ?>" />
-                        </th>
-                        <th class="tabela_title">
-                            <input type="text" name="nota" value="<?php echo @$_GET['nota']; ?>" colspan="2"/>
-                        </th>
-                        <th class="tabela_title">
-                            <button type="submit" id="enviar">Pesquisar</button>
-                        </th>
-                    </tr>
-                </form>
+                            <form method="get" action="<?= base_url() ?>estoque/inventario/pesquisar">
+                                <tr>
+                                    <th class="tabela_title">Produto</th>
+                                    <th class="tabela_title">Fornecedor</th>
+                                    <th class="tabela_title">Nota</th>
+                                </tr>
+                                <tr>
+                                    <th class="tabela_title">
+                                        <input type="text" name="produto" value="<?php echo @$_GET['produto']; ?>" />
+                                    </th>
+                                    <th class="tabela_title">
+                                        <input type="text" name="fornecedor" value="<?php echo @$_GET['fornecedor']; ?>" />
+                                    </th>
+                                    <th class="tabela_title">
+                                        <input type="text" name="nota" value="<?php echo @$_GET['nota']; ?>" colspan="2"/>
+                                    </th>
+                                    <th class="tabela_title">
+                                        <button type="submit" id="enviar">Pesquisar</button>
+                                    </th>
+                                </tr>
+                            </form>
             </table>
             <table>
                 <tr>
@@ -66,12 +69,24 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->armazem; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nota_fiscal; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">                                  
-                                    <a href="<?= base_url() ?>estoque/inventario/carregarinventario/<?= $item->estoque_entrada_id ?>">Editar</a></div>
-                                </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
-                                    <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Entrada?');" href="<?= base_url() ?>estoque/inventario/excluir/<?= $item->estoque_entrada_id ?>">Excluir</a></div>
-                                </td>
+                                <? if ($perfil_id != 10) { ?>
+
+
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">                                  
+                                            <a href="<?= base_url() ?>estoque/inventario/carregarinventario/<?= $item->estoque_entrada_id ?>">Editar</a></div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
+                                            <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Entrada?');" href="<?= base_url() ?>estoque/inventario/excluir/<?= $item->estoque_entrada_id ?>">Excluir</a></div>
+                                    </td>
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">                                  
+                                            Editar</div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
+                                            Excluir</div>
+                                    </td>  
+                                <? }
+                                ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>estoque/inventario/anexarimagementrada/<?= $item->estoque_entrada_id ?>">Arquivos</a></div>
                                 </td>
@@ -97,8 +112,8 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
-                                $(function() {
-                                    $("#accordion").accordion();
-                                });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 </script>

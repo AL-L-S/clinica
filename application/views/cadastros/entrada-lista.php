@@ -11,6 +11,8 @@
     $empresa = $this->caixa->empresa();
     $conta = $this->forma->listarforma();
     $tipo = $this->tipo->listartipo();
+    
+    $perfil_id = $this->session->userdata('perfil_id');
     ?>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Entrada</a></h3>
@@ -150,13 +152,25 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacao; ?></td>
 
-
+                                <?if($perfil_id != 10){?>
+                                
+                                
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
                                         <a onclick="javascript: return confirm('Deseja realmente excluir a entrada?');" href="<?= base_url() ?>cadastros/caixa/excluirentrada/<?= $item->entradas_id ?>">Excluir</a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/caixa/anexarimagementrada/<?= $item->entradas_id ?>">Arquivos</a></div>
                                 </td>
+                                <?}else{?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
+                                            Excluir
+                                    </div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                        Editar
+                                    </div>
+                                </td>
+                                <?}?>
                             </tr>
 
                         </tbody>

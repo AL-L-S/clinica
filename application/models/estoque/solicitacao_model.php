@@ -187,6 +187,27 @@ class solicitacao_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function listarsaidaitemrelatorio($estoque_solicitacao_id) {
+
+        $this->db->select(' ep.estoque_saida_id,
+                            p.descricao,
+                            ep.validade,
+                            ep.quantidade,
+                            si.quantidade as quantidade_solicitada,
+                            sum(s.quantidade) as saldo,
+                            u.descricao as unidade');
+        $this->db->from('tb_estoque_saida ep');
+        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id= p.unidade_id');
+        $this->db->join('tb_estoque_saldo s', 's.produto_id = ep.produto_id', 'left');
+        $this->db->join('tb_estoque_solicitacao_itens si', 'si.estoque_solicitacao_itens_id = ep.estoque_solicitacao_itens_id', 'left');
+        $this->db->where('ep.solicitacao_cliente_id', $estoque_solicitacao_id);
+        $this->db->where('ep.ativo', 'true');
+        $this->db->groupby('ep.estoque_saida_id,si.quantidade, p.descricao, ep.validade , u.descricao ');
+        $this->db->orderby('ep.estoque_saida_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listaritemliberado($estoque_solicitacao_id) {
         $this->db->select('sc.estoque_solicitacao_setor_id,

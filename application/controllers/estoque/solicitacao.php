@@ -74,7 +74,7 @@ class Solicitacao extends BaseController {
         $data['estoque_solicitacao_id'] = $estoque_solicitacao_id;
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['nome'] = $this->solicitacao->solicitacaonome($estoque_solicitacao_id);
-        $data['produtossaida'] = $this->solicitacao->listarsaidaitem($estoque_solicitacao_id);
+        $data['produtossaida'] = $this->solicitacao->listarsaidaitemrelatorio($estoque_solicitacao_id);
         $this->load->View('estoque/impressaosaida', $data);
     }
 

@@ -28,6 +28,8 @@
     $empresa = $this->caixa->empresa();
     $conta = $this->forma->listarforma();
     $tipo = $this->tipo->listartipo();
+    
+    $perfil_id = $this->session->userdata('perfil_id');
     ?>
 
     <div id="accordion">
@@ -166,6 +168,8 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacao; ?></td>
 
+                               <?if($perfil_id != 10){?> 
+                                
                                 
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
                                    <?if($item->tipo != 'TRANSFERENCIA'){?>   <a href="<?= base_url() ?>cadastros/caixa/carregar/<?= $item->saidas_id ?>">Editar</a><?}?></div>
@@ -176,6 +180,20 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/caixa/anexarimagemsaida/<?= $item->saidas_id ?>">Arquivos</a></div>
                                 </td>
+                                
+                                <?}else{?>
+                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
+                                   <?if($item->tipo != 'TRANSFERENCIA'){?> Editar<?}?></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
+                                    <?if($item->tipo != 'TRANSFERENCIA'){?>   Excluir<?}?></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                        Arquivos</div>
+                                </td>   
+                                <?}
+                                
+                                ?>
                             </tr>
 
                         </tbody>

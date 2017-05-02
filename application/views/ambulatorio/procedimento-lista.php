@@ -5,6 +5,9 @@
             Novo Procedimento
         </a>
     </div>
+    <?
+    $perfil_id = $this->session->userdata('perfil_id');
+    ?>
 
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento</a></h3>
@@ -42,7 +45,6 @@
                             $lista = $this->procedimento->listar($_GET)->orderby('grupo')->orderby('nome')->limit($limit, $pagina)->get()->result();
                         } else {
                             $lista = $this->procedimento->listar($_GET)->orderby('grupo')->orderby('nome')->get()->result();
-
                         }
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
@@ -56,44 +58,43 @@
 
 
 
-<!--                                <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                    
-                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');"
-                                       href="<?=base_url()?>ambulatorio/procedimento/excluir/<?= $item->procedimento_tuss_id; ?>">
-                                        <img border="0" title="Excluir" alt="Excluir"
-                                          src="<?= base_url() ?>img/form/page_white_delete.png" />
-                                    </a>
-                                            <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento <?= $item->nome; ?>');"
-                                       href="<?= base_url() ?>ambulatorio/procedimento/excluir/<?= $item->procedimento_tuss_id; ?>">
-                                        <img border="0" title="Excluir" alt="Excluir"
-                                             src="<?= base_url() ?>img/form/page_white_delete.png" />
-                                    </a>
-                                    <a  onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/carregarprocedimento/$item->procedimento_tuss_id"; ?> ', '_blank');">
-                                        <img border="0" title="Detalhes" alt="Detalhes"
-                                             src="<?= base_url() ?>img/form/page_white_edit.png" />
-                                    </a>
-                                    <a href="<?= base_url() ?>ambulatorio/procedimento/carregarprocedimento/<?= $item->procedimento_tuss_id ?>">
-                                        <img border="0" title="Detalhes" alt="Detalhes"
-                                             src="<?= base_url() ?>img/form/page_white_edit.png" />
-                                    </a>
-                                </td>-->
-                                <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                <? if ($perfil_id != 10) { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
                                             <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente excluir o procedimento');" href="<?= base_url() . "ambulatorio/procedimento/excluir/$item->procedimento_tuss_id"; ?>"
-                                           >Excluir
-                                        </a>
-                                            </div>
+                                               >Excluir
+                                            </a>
+                                        </div>
             <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
-                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/carregarprocedimento/$item->procedimento_tuss_id"; ?> ', '_blank');">Editar
-                                        </a></div>
+                                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/carregarprocedimento/$item->procedimento_tuss_id"; ?> ', '_blank');">Editar
+                                            </a></div>
+                <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$item->procedimento_tuss_id"; ?> ', '_blank');">Convênio
+                                            </a></div>
+                <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
+                                    </td>
+
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                            Excluir
+                                        </div>
+            <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                            Editar
+                                        </div>
             <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
-                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$item->procedimento_tuss_id"; ?> ', '_blank');">Convênio
-                                        </a></div>
+                                            Convênio
+                                        </div>
             <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
                                     </td>
+
+                                <? } ?>
                             </tr>
 
                         </tbody>
@@ -109,9 +110,21 @@
                             <div style="display: inline">
                                 <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>
                                 <select style="width: 50px">
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/procedimento/pesquisar/50');" <? if ($limit == 50) { echo "selected"; } ?>> 50 </option>
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/procedimento/pesquisar/100');" <? if ($limit == 100) { echo "selected"; } ?>> 100 </option>
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/procedimento/pesquisar/todos');" <? if ($limit == "todos") { echo "selected"; } ?>> Todos </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/procedimento/pesquisar/50');" <?
+                                    if ($limit == 50) {
+                                        echo "selected";
+                                    }
+                                    ?>> 50 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/procedimento/pesquisar/100');" <?
+                                            if ($limit == 100) {
+                                                echo "selected";
+                                            }
+                                    ?>> 100 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/procedimento/pesquisar/todos');" <?
+                                            if ($limit == "todos") {
+                                                echo "selected";
+                                            }
+                                    ?>> Todos </option>
                                 </select>
                             </div>
                         </th>
