@@ -39,9 +39,7 @@
                     <dd>
                         <select name="produto" id="produto" class="size4" required disabled="">
                             <option value="">SELECIONE</option>
-                            <? foreach ($produto as $value) : ?>
-                                <option value="<?= $value->estoque_produto_id; ?>"><?php echo $value->descricao; ?></option>
-                                    <? endforeach; ?>
+                            
                         </select>
                     </dd>
                     <dt>
@@ -87,6 +85,26 @@
                 $("#produto").prop('disabled',false);
             } else {
                 $("#produto").prop('disabled',true);
+            }
+        });
+    });
+    
+    $(function() {
+        $('#armazem').change(function() {
+            if ($(this).val()) {
+                
+//                $('#entrada').hide();
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaproduto', {produto: $(this).val(), armazem: $("#armazem").val()}, function(j) {
+                    var options = '<option value=""></option>';
+                    for (var i = 0; i < j.length; i++) {
+                        options += '<option value="' + j[i].produto_id + '">' + j[i].descricao + '</option>';
+                    }
+                    $('#produto').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#produto').html('<option value="">ESCOLHA UM ARMAZEM</option>');
             }
         });
     });

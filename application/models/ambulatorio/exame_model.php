@@ -4054,7 +4054,7 @@ class exame_model extends Model {
 
 // ESTOQUE SAIDA E SALDO
         //   SELECIONA
-
+        
         $this->db->select('estoque_entrada_id,
                             produto_id,
                             fornecedor_id,
@@ -4065,14 +4065,14 @@ class exame_model extends Model {
                             validade');
         $this->db->from('tb_estoque_entrada e');
         $this->db->where('produto_id', $_POST['produto_id']);
+        $this->db->where('armazem_id', $_POST['armazem_id']);
         $this->db->where('ativo', 't');
         $this->db->where('quantidade >', '0');
         $this->db->orderby("validade");
 //        echo '<pre>';
 
         $return = $this->db->get()->result();
-//        var_dump($return);
-//        die;
+        
 
 
         if ($_POST['descricao'] != '') {

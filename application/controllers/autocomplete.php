@@ -91,6 +91,16 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
     
+    function armazemtransferenciaentradaproduto() {
+//    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
+        if (isset($_GET['produto'])) {
+            $result = $this->armazem->armazemtransferenciaentradaproduto($_GET['produto'], $_GET['armazem']);
+        } else {
+            $result = $this->armazem->armazemtransferenciaentradaproduto();
+        }
+        echo json_encode($result);
+    }
+    
     function armazemtransferenciaentradaquantidade() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
         if (isset($_GET['produto'])) {
@@ -104,7 +114,7 @@ class Autocomplete extends Controller {
     function armazemtransferenciaentradaquantidadegastos() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
         if (isset($_GET['produto'])) {
-            $result = $this->armazem->armazemtransferenciaentradajsonquantidadegasto($_GET['produto']);
+            $result = $this->armazem->armazemtransferenciaentradajsonquantidadegasto($_GET['produto'], $_GET['armazem']);
         } else {
             $result = $this->armazem->armazemtransferenciaentradajsonquantidadegasto();
         }

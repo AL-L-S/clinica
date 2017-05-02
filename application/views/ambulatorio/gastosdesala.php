@@ -12,6 +12,7 @@
                 <input type="hidden" name="sala_id" value="<?= $sala_id; ?>"/>
                 <input type="hidden" name="txtpaciente_id" value="<?= $paciente[0]->paciente_id; ?>"/>
                 <input type="hidden" name="convenio_id" value="<?= $paciente[0]->convenio_id; ?>"/>
+                <input type="hidden" name="armazem_id" id="armazem_id" value="<?= @$armazem_id; ?>"/>
                 <table>
                     <tr>
                         <td><label>Nome</label></td>
@@ -55,12 +56,12 @@
                     <tr>
                         <td><input type="text" name="paciente" class="input_grande" value="<?= $paciente[0]->nome; ?>" readonly /></td>
                         <td><input type="text" name="sexo" class="input_pequeno" value="<?
-if ($paciente[0]->sexo == 'F') {
-    echo 'Feminino';
-} else {
-    echo 'masculino';
-}
-?>" readonly /></td>
+                            if ($paciente[0]->sexo == 'F') {
+                                echo 'Feminino';
+                            } else {
+                                echo 'masculino';
+                            }
+                            ?>" readonly /></td>
                     </tr>
                     <tr>
                         <td><label>Nascimento</label></td>
@@ -119,7 +120,7 @@ if ($paciente[0]->sexo == 'F') {
                             <? endforeach; ?>
                         </select> 
                     </td>
-                    <td> <input style="width: 100px" type="number" name="txtqtde" id="txtqtde" min="1" required="true"/> </td>
+                    <td> <input style="width: 100px" type="number" name="txtqtde" id="txtqtde" min="0" required="true"/> </td>
                     <td><textarea name="descricao" id="descricao" style="margin-left: 10px; width: 300px"></textarea></td>
                     <td></td>
                 </tr>
@@ -152,7 +153,7 @@ if ($paciente[0]->sexo == 'F') {
                             ?>
 
                             <tr>
-                        <td class="<?php echo $estilo_linha; ?>" width="450px;"><center><? echo $item->descricao; ?></center></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="450px;"><center><? echo $item->descricao; ?></center></td>
                         <td class="<?php echo $estilo_linha; ?>"><center><? echo $item->quantidade; ?></center></td>
                         <td class="<?php echo $estilo_linha; ?>"><center><? echo $item->unidade; ?></center></td>
                         <td class="<?php echo $estilo_linha; ?>"><center><? echo $item->descricao_gasto; ?></center></td>
@@ -234,30 +235,25 @@ if ($paciente[0]->sexo == 'F') {
                                     $('#produto_id').change(function () {
                                         if ($(this).val()) {
 
-//                $('#entrada').hide();
-//                $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidadegastos', {produto: $(this).val()}, function (j) {
+                                            $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidadegastos', {produto: $(this).val(), armazem: $('#armazem_id').val()}, function (j) {
                                                 var options = '<option value=""></option>';
-                                                var  b = 0;
+                                                var b = 0;
                                                 for (var i = 0; i < j.length; i++) {
                                                     options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
-                                                    if (j[i].total > 0 && b == 0){
+                                                    if (j[i].total > 0 && b == 0) {
 
                                                         $("#txtqtde").prop('max', j[i].total);
                                                         b++;
                                                     }
                                                 }
+                                                if (b == 0) {
+                                                    alert('Sem saldo deste produto');
+                                                    $("#txtqtde").prop('max', '0');
+                                                }
 
-
-//                    alert(j[0].total);
-//                    if(){
-//                        
-//                    }
-//                    $('#entrada').html(options).show();
-//                    $('.carregando').hide();
                                             });
                                         } else {
-//                $('#entrada').html('<option value="">ESCOLHA UM ARMAZEM E UM PRODUTO</option>');
+
                                         }
                                     });
                                 });
