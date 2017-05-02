@@ -590,8 +590,8 @@ class Exame extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
             } else {
                 $data['mensagem'] = 'Sucesso ao gravar o Exame.';
-//                $this->gerarcr($agenda_exames_id); //clinicas humana
-                $this->gerardicom($laudo_id); //clinicas ronaldo
+//                $this->gerarcr($agenda_exames_id); //clinica humana
+                $this->gerardicom($laudo_id); //clinica ronaldo
 //               $this->laudo->chamada($laudo_id);
             }
         } else {
@@ -610,9 +610,9 @@ class Exame extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
             } else {
                 $data['mensagem'] = 'Sucesso ao gravar o Exame.';
-//                $this->gerarcr($agenda_exames_id); //clinicas humana
+//                $this->gerarcr($agenda_exames_id); //clinica humana
                 foreach ($laudo_id as $value) {
-                    $this->gerardicom($value); //clinicas ronaldo
+                    $this->gerardicom($value); //clinica ronaldo
                 }
             }
         } else {
@@ -851,15 +851,15 @@ class Exame extends BaseController {
     function anexarimagem($exame_id, $sala_id) {
 
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinicas/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
         }
-        $data['arquivos_deletados'] = directory_map("/home/sisprod/projetos/clinicas/uploadopm/$exame_id/");
+        $data['arquivos_deletados'] = directory_map("/home/sisprod/projetos/clinica/uploadopm/$exame_id/");
         $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
         $convenio_id = $data['agenda_exames'][0]->convenio_id;
-//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinicas/upload/$exame_id/");
-        //$data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinicas/uploadopm/$exame_id/");
+//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
+        //$data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinica/uploadopm/$exame_id/");
         $data['convenio_id'] = $convenio_id;
         $data['exame_id'] = $exame_id;
         $data['sala_id'] = $sala_id;
@@ -869,13 +869,13 @@ class Exame extends BaseController {
     function anexarimagemmedico($exame_id, $sala_id) {
 
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinicas/upload/$exame_id/");
-//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinicas/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             natcasesort($data['arquivo_pasta']);
         }
-        $data['arquivos_deletados'] = directory_map("/home/sisprod/projetos/clinicas/uploadopm/$exame_id/");
-//        $data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinicas/uploadopm/$exame_id/");
+        $data['arquivos_deletados'] = directory_map("/home/sisprod/projetos/clinica/uploadopm/$exame_id/");
+//        $data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinica/uploadopm/$exame_id/");
         $data['exame_id'] = $exame_id;
         $data['sala_id'] = $sala_id;
         $this->load->View('ambulatorio/importacao-imagem2', $data);
@@ -893,7 +893,7 @@ class Exame extends BaseController {
             chmod($destino, 0777);
         }
 
-        $config['upload_path'] = "/home/sisprod/projetos/clinicas/upload/" . $exame_id . "/";
+        $config['upload_path'] = "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/";
         $config['allowed_types'] = 'gif|jpg|png|jpeg';
         $config['max_size'] = '1000';
         $config['overwrite'] = TRUE;
@@ -945,49 +945,49 @@ class Exame extends BaseController {
         if ($sala_id == 1) {
 
             //$arquivo_pasta = directory_map("/home/hamilton/teste/");
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom1/");
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
             //$origem = "/home/hamilton/teste";
-            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom1";
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
             foreach ($arquivo_pasta as $value) {
                 $nova = substr($value, 11, 6);
-                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
         }
         if ($sala_id == 2) {
 
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom2/");
-            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom2";
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
             foreach ($arquivo_pasta as $value) {
                 $nova = substr($value, 11, 6);
-                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
         }
         if ($sala_id == 9) {
 
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom3/");
-            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom3";
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
             foreach ($arquivo_pasta as $value) {
                 $nova = substr($value, 8, 6);
-                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
@@ -1003,55 +1003,55 @@ class Exame extends BaseController {
 //        if ($sala_id == 1) {
 //
 //            //$arquivo_pasta = directory_map("/home/hamilton/teste/");
-//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom1/");
+//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
 //            sort($arquivo_pasta);
 //            //$origem = "/home/hamilton/teste";
-//            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom1";
+//            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
 //            foreach ($arquivo_pasta as $value) {
 //                $i++;
 //                $nova = $i . ".jpg";
-//                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-//                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-//                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+//                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+//                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                    chmod($destino, 0777);
 //                }
-//                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                $local = "$origem/$value";
 //                copy($local, $destino);
 //            }
 //        }
 //        if ($sala_id == 2) {
 //
-//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom2/");
+//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
 //            sort($arquivo_pasta);
-//            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom2";
+//            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
 //            foreach ($arquivo_pasta as $value) {
 //                $i++;
 //                $nova = $i . ".jpg";
-//                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-//                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-//                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+//                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+//                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                    chmod($destino, 0777);
 //                }
-//                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                $local = "$origem/$value";
 //                copy($local, $destino);
 //            }
 //        }
 //        if ($sala_id == 9) {
 //
-//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom3/");
+//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
 //            sort($arquivo_pasta);
-//            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom3";
+//            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
 //            foreach ($arquivo_pasta as $value) {
 //                $i++;
 //                $nova = $i . ".jpg";
-//                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-//                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-//                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+//                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+//                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                    chmod($destino, 0777);
 //                }
-//                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                $local = "$origem/$value";
 //                copy($local, $destino);
 //            }
@@ -1071,55 +1071,55 @@ class Exame extends BaseController {
 //        if ($sala_id == 1) {
 //
 //            //$arquivo_pasta = directory_map("/home/hamilton/teste/");
-//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom1/");
+//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
 //            //$origem = "/home/hamilton/teste";
-//            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom1";
+//            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
 //            foreach ($arquivo_pasta as $value) {
 //
 //                $nova = substr($value, 11, 6);
 //
-//                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-//                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-//                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+//                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+//                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                    chmod($destino, 0777);
 //                }
-//                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                $local = "$origem/$value";
 //                copy($local, $destino);
 //            }
 //        }
 //        if ($sala_id == 2) {
 //
-//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom2/");
-//            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom2";
+//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
+//            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
 //            foreach ($arquivo_pasta as $value) {
 //
 //                $nova = substr($value, 11, 6);
 //
-//                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-//                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-//                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+//                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+//                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                    chmod($destino, 0777);
 //                }
-//                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                $local = "$origem/$value";
 //                copy($local, $destino);
 //            }
 //        }
 //        if ($sala_id == 9) {
 //
-//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom3/");
-//            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom3";
+//            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
+//            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
 //            foreach ($arquivo_pasta as $value) {
 //
 //                $nova = substr($value, 8, 6);
 //
-//                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-//                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-//                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+//                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+//                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                    chmod($destino, 0777);
 //                }
-//                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+//                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
 //                $local = "$origem/$value";
 //                copy($local, $destino);
 //            }
@@ -1135,22 +1135,22 @@ class Exame extends BaseController {
         if ($sala_id == 1) {
 
             //$arquivo_pasta = directory_map("/home/hamilton/teste/");
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom1/");
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
 
             natcasesort($arquivo_pasta);
 
             //$origem = "/home/hamilton/teste";
-            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom1";
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
             foreach ($arquivo_pasta as $value) {
                 $i++;
                 $nova = $i;
 
-                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
@@ -1158,40 +1158,40 @@ class Exame extends BaseController {
         if ($sala_id == 2) {
 
 
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom2/");
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
             natcasesort($arquivo_pasta);
-            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom2";
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
             foreach ($arquivo_pasta as $value) {
 
                 $i++;
                 $nova = $i;
 
-                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
         }
         if ($sala_id == 9) {
 
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/ultrasom3/");
+            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
             natcasesort($arquivo_pasta);
-            $origem = "/home/sisprod/projetos/clinicas/upload/ultrasom3";
+            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
             foreach ($arquivo_pasta as $value) {
 
                 $i++;
                 $nova = $i;
 
-                if (!is_dir("/home/sisprod/projetos/clinicas/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinicas/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
+                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
+                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinicas/upload/$exame_id/$nova";
+                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
@@ -1845,10 +1845,10 @@ class Exame extends BaseController {
         $data = "STDDATE=" . str_replace("-", "", date("Y-m-d"));
         $hora = "STDTIME=" . str_replace(":", "", date("H:i:s"));
 
-        if (!is_dir("/home/sisprod/projetos/clinicas/cr/")) {
-            mkdir("/home/sisprod/projetos/clinicas/cr/");
+        if (!is_dir("/home/sisprod/projetos/clinica/cr/")) {
+            mkdir("/home/sisprod/projetos/clinica/cr/");
         }
-        $nome = "/home/sisprod/projetos/clinicas/cr/" . $agenda_exames_id . ".txt";
+        $nome = "/home/sisprod/projetos/clinica/cr/" . $agenda_exames_id . ".txt";
         $fp = fopen($nome, "w+");
         fwrite($fp, $titulo . "\n");
         fwrite($fp, $comando . "\n");
@@ -1901,10 +1901,10 @@ class Exame extends BaseController {
         $datafim = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datafim'])));
         $nomearquivo = '035753bf836c231bedbc68a08daf4668';
         $nomearquivoconsulta = 'e2eadfe09fd6750a184902545aa41771';
-        $origem = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio;
+        $origem = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio;
 
-        if (!is_dir("/home/sisprod/projetos/clinicas/upload/cr/" . $convenio)) {
-            mkdir("/home/sisprod/projetos/clinicas/upload/cr/" . $convenio);
+        if (!is_dir("/home/sisprod/projetos/clinica/upload/cr/" . $convenio)) {
+            mkdir("/home/sisprod/projetos/clinica/upload/cr/" . $convenio);
             chmod($origem, 0777);
         }
         if ($_POST['apagar'] == 1) {
@@ -2191,7 +2191,7 @@ class Exame extends BaseController {
        </ans:epilogo>
     </ans:mensagemTISS>";
 
-                                        $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                         $xml = $cabecalho . $corpo . $rodape;
                                         $fp = fopen($nome, "w+");
                                         fwrite($fp, $xml . "\n");
@@ -2213,7 +2213,7 @@ class Exame extends BaseController {
        </ans:epilogo>
     </ans:mensagemTISS>";
 
-                                        $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                         $xml = $cabecalho . $corpo . $rodape;
                                         $fp = fopen($nome, "w+");
                                         fwrite($fp, $xml . "\n");
@@ -2231,7 +2231,7 @@ class Exame extends BaseController {
           <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
        </ans:epilogo>
     </ans:mensagemTISS>";
-                                        $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                         $xml = $cabecalho . $corpo . $rodape;
                                         $fp = fopen($nome, "w+");
                                         fwrite($fp, $xml . "\n");
@@ -2340,7 +2340,7 @@ class Exame extends BaseController {
     </ans:epilogo>
     </ans:mensagemTISS>";
 
-                                $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                                 $xml = $cabecalho . $corpo . $rodape;
                                 $fp = fopen($nome, "w+");
                                 fwrite($fp, $xml . "\n");
@@ -2361,7 +2361,7 @@ class Exame extends BaseController {
     </ans:epilogo>
     </ans:mensagemTISS>";
 
-                                $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                                 $xml = $cabecalho . $corpo . $rodape;
                                 $fp = fopen($nome, "w+");
                                 fwrite($fp, $xml . "\n");
@@ -2381,7 +2381,7 @@ class Exame extends BaseController {
     <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
     </ans:epilogo>
     </ans:mensagemTISS>";
-                                $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                                 $xml = $cabecalho . $corpo . $rodape;
                                 $fp = fopen($nome, "w+");
                                 fwrite($fp, $xml . "\n");
@@ -2649,7 +2649,7 @@ class Exame extends BaseController {
     </ans:epilogo>
     </ans:mensagemTISS>";
 
-                                        $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                                         $xml = $cabecalho . $corpo . $rodape;
                                         $fp = fopen($nome, "w+");
                                         fwrite($fp, $xml . "\n");
@@ -2673,7 +2673,7 @@ class Exame extends BaseController {
     </ans:mensagemTISS>
     ";
 
-                                        $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                         $xml = $cabecalho . $corpo . $rodape;
                                         $fp = fopen($nome, "w+");
                                         fwrite($fp, $xml . "\n");
@@ -2694,7 +2694,7 @@ class Exame extends BaseController {
        </ans:epilogo>
     </ans:mensagemTISS>
     ";
-                                        $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                        $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                         $xml = $cabecalho . $corpo . $rodape;
                                         $fp = fopen($nome, "w+");
                                         fwrite($fp, $xml . "\n");
@@ -2806,7 +2806,7 @@ class Exame extends BaseController {
     </ans:epilogo>
     </ans:mensagemTISS>";
 
-                                $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                                 $xml = $cabecalho . $corpo . $rodape;
                                 $fp = fopen($nome, "w+");
                                 fwrite($fp, $xml . "\n");
@@ -2827,7 +2827,7 @@ class Exame extends BaseController {
     </ans:mensagemTISS>
     ";
 
-                                $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                                 $xml = $cabecalho . $corpo . $rodape;
                                 $fp = fopen($nome, "w+");
                                 fwrite($fp, $xml . "\n");
@@ -2848,7 +2848,7 @@ class Exame extends BaseController {
     </ans:epilogo>
     </ans:mensagemTISS>
     ";
-                                $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                                 $xml = $cabecalho . $corpo . $rodape;
                                 $fp = fopen($nome, "w+");
                                 fwrite($fp, $xml . "\n");
@@ -3123,7 +3123,7 @@ class Exame extends BaseController {
        </ans:epilogo>
     </ans:mensagemTISS>";
 
-                                    $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                     $xml = $cabecalho . $corpo . $rodape;
                                     $fp = fopen($nome, "w+");
                                     fwrite($fp, $xml . "\n");
@@ -3141,7 +3141,7 @@ class Exame extends BaseController {
           <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
        </ans:epilogo>
     </ans:mensagemTISS>";
-                                    $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                     $xml = $cabecalho . $corpo . $rodape;
                                     $fp = fopen($nome, "w+");
                                     fwrite($fp, $xml . "\n");
@@ -3249,7 +3249,7 @@ class Exame extends BaseController {
     </ans:epilogo>
     </ans:mensagemTISS>";
 
-                            $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                             $xml = $cabecalho . $corpo . $rodape;
                             $fp = fopen($nome, "w+");
                             fwrite($fp, $xml . "\n");
@@ -3269,7 +3269,7 @@ class Exame extends BaseController {
     <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
     </ans:epilogo>
     </ans:mensagemTISS>";
-                            $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                             $xml = $cabecalho . $corpo . $rodape;
                             $fp = fopen($nome, "w+");
                             fwrite($fp, $xml . "\n");
@@ -3538,7 +3538,7 @@ class Exame extends BaseController {
 </ans:mensagemTISS>
 ";
 
-                                    $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                     $xml = $cabecalho . $corpo . $rodape;
                                     $fp = fopen($nome, "w+");
                                     fwrite($fp, $xml . "\n");
@@ -3559,7 +3559,7 @@ class Exame extends BaseController {
    </ans:epilogo>
 </ans:mensagemTISS>
 ";
-                                    $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
+                                    $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivo . ".xml";
                                     $xml = $cabecalho . $corpo . $rodape;
                                     $fp = fopen($nome, "w+");
                                     fwrite($fp, $xml . "\n");
@@ -3667,7 +3667,7 @@ class Exame extends BaseController {
 </ans:mensagemTISS>
 ";
 
-                            $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                             $xml = $cabecalho . $corpo . $rodape;
                             $fp = fopen($nome, "w+");
                             fwrite($fp, $xml . "\n");
@@ -3688,7 +3688,7 @@ class Exame extends BaseController {
 </ans:epilogo>
 </ans:mensagemTISS>
 ";
-                            $nome = "/home/sisprod/projetos/clinicas/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                            $nome = "/home/sisprod/projetos/clinica/upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
                             $xml = $cabecalho . $corpo . $rodape;
                             $fp = fopen($nome, "w+");
                             fwrite($fp, $xml . "\n");
@@ -3704,15 +3704,15 @@ class Exame extends BaseController {
         $this->exame->gravarlote($b);
         $zip = new ZipArchive;
         $this->load->helper('directory');
-        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinicas/upload/cr/$convenio/");
+        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/cr/$convenio/");
         if ($arquivo_pasta != false) {
             foreach ($arquivo_pasta as $value) {
-                $deletar[] = "/home/sisprod/projetos/clinicas/upload/cr/$convenio/$value";
+                $deletar[] = "/home/sisprod/projetos/clinica/upload/cr/$convenio/$value";
             }
             foreach ($arquivo_pasta as $value) {
-                $zip->open("/home/sisprod/projetos/clinicas/upload/cr/$convenio/$value.zip", ZipArchive::CREATE);
-                $zip->addFile("/home/sisprod/projetos/clinicas/upload/cr/$convenio/$value", "$value");
-//           $deletarxml = "/home/sisprod/projetos/clinicas/upload/cr/$convenio/$value";
+                $zip->open("/home/sisprod/projetos/clinica/upload/cr/$convenio/$value.zip", ZipArchive::CREATE);
+                $zip->addFile("/home/sisprod/projetos/clinica/upload/cr/$convenio/$value", "$value");
+//           $deletarxml = "/home/sisprod/projetos/clinica/upload/cr/$convenio/$value";
 //           unlink($deletarxml);
             }
             $zip->close();
