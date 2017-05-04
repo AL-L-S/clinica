@@ -231,17 +231,17 @@ class Contasreceber extends BaseController {
 
                 $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
             } elseif ($repetir >= 2) {
-                if (date("m",strtotime($dia)) != 29 && date("m",strtotime($dia)) != 30 && date("m",strtotime($dia)) != 31) {
+                if (date("d",strtotime($dia)) != 29 && date("d",strtotime($dia)) != 30 && date("d",strtotime($dia)) != 31) {
                     $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
                 } else {
 
-                    if (date("m",strtotime($dia)) == 29) {
+                    if (date("d",strtotime($dia)) == 29) {
                         $contador = 29;
                     }
-                    if (date("m",strtotime($dia)) == 30) {
+                    if (date("d",strtotime($dia)) == 30) {
                         $contador = 30;
                     }
-                    if (date("m",strtotime($dia)) == 31) {
+                    if (date("d",strtotime($dia)) == 31) {
                         $contador = 30;
                         $dia = date('Y-m-d', strtotime("-1 day", strtotime($dia)));
                     }
