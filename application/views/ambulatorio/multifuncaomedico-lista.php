@@ -168,6 +168,7 @@
                                     $situacao = "agenda";
                                     $verifica = 1;
                                 } else {
+                                    echo 'bla  ' . $item->situacaoexame;
                                     $situacao = "espera";
                                     $verifica = 3;
                                 }
@@ -206,7 +207,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="120px;"><?= $item->sala; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . " " . $item->agenda_exames_id; ?></td>
                                 <? if ($item->situacaolaudo == 'FINALIZADO' || $item->situacaolaudo == 'REVISAR') { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->situacaolaudo; ?></b></td>
                                 <? } else { ?>

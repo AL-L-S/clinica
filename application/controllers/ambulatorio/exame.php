@@ -590,8 +590,8 @@ class Exame extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
             } else {
                 $data['mensagem'] = 'Sucesso ao gravar o Exame.';
-//                $this->gerarcr($agenda_exames_id); //clinicas humana
-                $this->gerardicom($laudo_id); //clinicas ronaldo
+//                $this->gerarcr($agenda_exames_id); //clinica humana
+                $this->gerardicom($laudo_id); //clinica ronaldo
 //               $this->laudo->chamada($laudo_id);
             }
         } else {
@@ -610,9 +610,9 @@ class Exame extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
             } else {
                 $data['mensagem'] = 'Sucesso ao gravar o Exame.';
-//                $this->gerarcr($agenda_exames_id); //clinicas humana
+//                $this->gerarcr($agenda_exames_id); //clinica humana
                 foreach ($laudo_id as $value) {
-                    $this->gerardicom($value); //clinicas ronaldo
+                    $this->gerardicom($value); //clinica ronaldo
                 }
             }
         } else {
@@ -858,8 +858,8 @@ class Exame extends BaseController {
         $data['arquivos_deletados'] = directory_map("./uploadopm/$exame_id/");
         $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
         $convenio_id = $data['agenda_exames'][0]->convenio_id;
-//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinicas/upload/$exame_id/");
-        //$data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinicas/uploadopm/$exame_id/");
+//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
+        //$data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinica/uploadopm/$exame_id/");
         $data['convenio_id'] = $convenio_id;
         $data['exame_id'] = $exame_id;
         $data['sala_id'] = $sala_id;
@@ -870,12 +870,12 @@ class Exame extends BaseController {
 
         $this->load->helper('directory');
         $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
-//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinicas/upload/$exame_id/");
+//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             natcasesort($data['arquivo_pasta']);
         }
         $data['arquivos_deletados'] = directory_map("./uploadopm/$exame_id/");
-//        $data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinicas/uploadopm/$exame_id/");
+//        $data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinica/uploadopm/$exame_id/");
         $data['exame_id'] = $exame_id;
         $data['sala_id'] = $sala_id;
         $this->load->View('ambulatorio/importacao-imagem2', $data);
@@ -1144,7 +1144,6 @@ class Exame extends BaseController {
             $arquivo_pasta = directory_map("./upload/ultrasom1/");
 
             natcasesort($arquivo_pasta);
-
             
             $origem = "./upload/ultrasom1";
             foreach ($arquivo_pasta as $value) {
