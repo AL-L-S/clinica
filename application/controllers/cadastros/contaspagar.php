@@ -252,6 +252,7 @@ class Contaspagar extends BaseController {
                                 $a ++;
                                 if ($c == 0) {
                                     $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
+                                    $parcela++;
                                 }
                                 $dia = date('Y-m-d', strtotime("-1 day", strtotime($dia)));
 
@@ -266,6 +267,7 @@ class Contaspagar extends BaseController {
                             } else {
                                 if ($a == 0) {
                                     $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
+                                    $parcela++;
                                 }
                                 $a++;
                                 $c++;
@@ -273,11 +275,13 @@ class Contaspagar extends BaseController {
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                                 $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
                             }
+                            $parcela++;
                         } elseif ($contador == 30) {
                             if (date("m",strtotime($dia)) == 01) {
-                                $a ++;
+                                $a++;
                                 if ($c == 0) {
                                     $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
+                                    $parcela++;
                                 }
 
                                 $dia = date('Y-m-d', strtotime("-2 day", strtotime($dia)));
@@ -294,13 +298,16 @@ class Contaspagar extends BaseController {
                                 if ($a == 0) {
 //                                    var_dump($dia); die;
                                     $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
+                                    $parcela++;
                                 }
                                 $a++;
                                 $c++;
 
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                                 $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
+                                
                             }
+                            $parcela++;
                         } elseif ($contador == 31) {
                             if (date("m",strtotime($dia)) == 01) {
                                 $financeiro_contaspagar_id = $this->contaspagar->gravar($dia, $parcela);
