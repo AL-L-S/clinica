@@ -84,3 +84,10 @@ ALTER TABLE ponto.tb_estoque_saldo ADD COLUMN ambulatorio_gasto_sala_id integer;
 
 ALTER TABLE ponto.tb_exame_sala ADD COLUMN armazem_id integer;
 
+--Dia 04/05/2017
+
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN revisao boolean DEFAULT false;
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN revisao_dias integer;
+ALTER TABLE ponto.tb_empresa_sms ADD COLUMN mensagem_revisao character varying(20000);
+
+

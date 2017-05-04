@@ -174,6 +174,73 @@ class Operador extends BaseController {
         $this->loadView('seguranca/operador_assinatura', $data);
     }
 
+    function anexarlogo($operador_id) {
+
+        $this->load->helper('directory');
+
+//        if (!is_dir("./upload/operadorLOGO")) {
+//            mkdir("./upload/operadorLOGO");
+//            $destino = "./upload/operadorLOGO";
+//            chmod($destino, 0777);
+//        }
+
+
+        $data['arquivo_pasta'] = directory_map("./upload/operadorLOGO/");
+
+        if ($data['arquivo_pasta'] != false) {
+            sort($data['arquivo_pasta']);
+        }
+        $data['operador_id'] = $operador_id;
+        $this->loadView('seguranca/operador_logo', $data);
+    }
+
+    function importarlogo() {
+        $this->load->helper('directory');
+        $operador_id = $_POST['operador_id'];
+        $_FILES['userfile']['name'] = $operador_id . ".jpg";
+
+        if (!is_dir("./upload/operadorLOGO")) {
+            mkdir("./upload/operadorLOGO");
+            $destino = "./upload/operadorLOGO";
+            chmod($destino, 0777);
+        }
+
+        $arquivos = directory_map("./upload/operadorLOGO/");
+        foreach ($arquivos as $value) {
+            if ($value == $operador_id . ".jpg") {
+                $arquivo_existe = true;
+                break;
+            } else {
+                $arquivo_existe = false;
+            }
+        }
+
+        if (!$arquivo_existe) {
+            //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
+            $config['upload_path'] = "./upload/operadorLOGO/";
+            $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar';
+            $config['max_size'] = '0';
+            $config['overwrite'] = FALSE;
+            $config['encrypt_name'] = FALSE;
+            $config['name'] = FALSE;
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) {
+                $error = array('error' => $this->upload->display_errors());
+            } else {
+                $error = null;
+                $data = array('upload_data' => $this->upload->data());
+                $data['mensagem'] = 'Sucesso ao adcionar Logo.';
+            }
+            $data['operador_id'] = $operador_id;
+        } else{
+            $data['mensagem'] = 'Este operador ja possui uma logo associada a ele.';
+        }
+        
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/anexarlogo/$operador_id");
+    }
+
     function importarimagem() {
         $this->load->helper('directory');
         $operador_id = $_POST['operador_id'];
@@ -217,10 +284,16 @@ class Operador extends BaseController {
         redirect(base_url() . "seguranca/operador/anexarimagem/ $operador_id");
     }
 
+    function excluirlogo($operador_id) {
+
+        unlink("./upload/operadorLOGO/$operador_id.jpg");
+        redirect(base_url() . "seguranca/operador/anexarlogo/$operador_id");
+    }
+
     function ecluirimagem($operador_id) {
 
         unlink("./upload/1ASSINATURAS/$operador_id.jpg");
-        $this->anexarimagem($operador_id);
+        redirect(base_url() . "seguranca/operador/anexarimagem/$operador_id");
     }
 
     function operadorconvenio($operador_id) {

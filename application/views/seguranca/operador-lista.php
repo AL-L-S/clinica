@@ -121,6 +121,12 @@
                                             </div>
                                     </td>
                                     
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link" style="width: 60pt;">
+                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "seguranca/operador/anexarlogo/$item->operador_id"; ?> ', '_blank');">Logo
+                                        </a>
+                                            </div>
+                                    </td>
+                                    
                                     <?if($perfil_id != 5){?>
                                     <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
                                         <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "seguranca/operador/unificar/$item->operador_id"; ?> ', '_blank');">Unificar

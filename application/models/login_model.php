@@ -84,6 +84,38 @@ class login_model extends Model {
         $this->db->insert('tb_empresa_sms_verificacao');
     }
 
+    function atualizandoatendidostabelasms($exames, $disponivel) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('mensagem_agradecimento');
+        $this->db->from('tb_empresa_sms');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 't');
+        $retorno = $this->db->get()->result();
+        $mensagem = @$retorno[0]->mensagem_agradecimento;
+
+        $horario = date('Y-m-d');
+        $i = 1;
+        foreach ($exames as $item) {
+            if ($i <= $disponivel) {
+
+                $this->db->set('agenda_exames_id', $item->agenda_exames_id);
+                $this->db->set('paciente_id', $item->paciente_id);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('numero', $item->celular);
+                $this->db->set('mensagem', $mensagem);
+                $this->db->set('tipo', 'AGRADECIMENTO');
+                $this->db->set('data', $horario);
+                $this->db->insert('tb_sms');
+
+                $i++;
+            } else {
+                break;
+            }
+        }
+        return $i;
+    }
+    
     function atualizandoagendadostabelasms($exames, $disponivel) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -116,6 +148,62 @@ class login_model extends Model {
         return $i;
     }
 
+    function revisoes() {
+        $horario = date("Y-m-d");
+        
+        $this->db->select('ae.agenda_exames_id,
+                           p.paciente_id,
+                           p.nome as paciente,
+                           p.celular,
+                           pt.nome,
+                           pt.revisao_dias');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.realizada', 'f');
+        $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
+        $this->db->where("pt.procedimento_tuss_id IN (
+                            SELECT procedimento_tuss_id FROM ponto.tb_procedimento_tuss
+                            WHERE revisao = 't'
+                          )
+                          AND (ae.data + pt.revisao_dias) =  '{$horario}'");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function atualizandorevisoestabelasms($revisoes, $disponivel) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('mensagem_revisao');
+        $this->db->from('tb_empresa_sms');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 't');
+        $retorno = $this->db->get()->result();
+        $mensagem = @$retorno[0]->mensagem_revisao;
+
+        $horario = date('Y-m-d');
+        $i = 1;
+        foreach ($revisoes as $item) {
+            if ($i <= $disponivel) {
+                $msg = $mensagem . " Procedimento: " . $item->nome;
+                $this->db->set('paciente_id', $item->paciente_id);
+                $this->db->set('numero', $item->celular);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('mensagem', $msg);
+                $this->db->set('tipo', 'REVISAO');
+                $this->db->set('data', $horario);
+                $this->db->insert('tb_sms');
+
+                $i++;
+            } else {
+                break;
+            }
+        }
+        return $i;
+    }
+    
     function atualizandoaniversariantestabelasms($aniversariantes, $disponivel) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -225,6 +313,22 @@ class login_model extends Model {
         $this->db->where('p.ativo', 't');
         $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
         $this->db->where("EXTRACT(DAY FROM p.nascimento) = $dia AND EXTRACT(MONTH FROM p.nascimento) = $mes");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function atendimentos() {
+        $horario = date('d-m-Y');
+        $this->db->select('ae.agenda_exames_id,
+                           p.paciente_id,
+                           p.nome as paciente,
+                           p.celular');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.realizada', 't');
+        $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
+        $this->db->where('ae.data', $horario);
         $return = $this->db->get();
         return $return->result();
     }

@@ -15,7 +15,7 @@ class Login extends Controller {
     function verificasms() {
         //verifica se ja foi feita uma verificaçao hoje.
         $smsVerificacao = $this->login->verificasms();
-
+        
         if (count($smsVerificacao) == 0) {
             //atualizando a data da ultima verificacao
             $this->login->atualizaultimaverificacao();
@@ -41,8 +41,19 @@ class Login extends Controller {
                     //calculando novo total disponivel
                     $disponivel = $disponivel - $totalInserido;
                 }
+                
                 if ($disponivel > 0) {
                     //INSERINDO PACIENTES ATENDIDOS NO DECORRER DO DIA
+                    $pacientesDia = $this->login->atendimentos();
+                    $totalInserido = $this->login->atualizandoatendidostabelasms($pacientesDia, $disponivel);
+                    $disponivel = $disponivel - $totalInserido;
+                }
+                
+                if ($disponivel > 0) {
+                    //INSERINDO REVISÕES NA TABELA DE CONTROLE
+                    $revisoes = $this->login->revisoes();
+                    $totalInserido = $this->login->atualizandorevisoestabelasms($revisoes, $disponivel);
+                    $disponivel = $disponivel - $totalInserido;
                 }
 
                 $this->login->atualizandoregistro();
@@ -72,8 +83,8 @@ class Login extends Controller {
             /* ENVIANDO PARA O WEBSERVICE */
             // Criando um Cliente 
             $cliente = new SoapClient(null, array(
-                'location' => "http://192.168.25.26/weservice/webservice/servidor.php",
-                'uri' => "http://192.168.25.26/weservice/webservice/",
+                'location' => "http://192.168.25.15/weservice/webservice/servidor.php",
+                'uri' => "http://192.168.25.15/weservice/webservice/",
                 'trace' => 1
             ));
 
@@ -82,7 +93,7 @@ class Login extends Controller {
                     "dados" => $dados
                 ));
             } catch (SoapFault $fault) {
-                die("SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
+//                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
             }
             //Salvando o numero de controle recebido pelo WEBSERVICE no banco
             $this->login->atualizandonumerocontrole($resultado);
@@ -109,7 +120,7 @@ class Login extends Controller {
                     ($this->session->userdata('autenticado') == true)) {
                 $valuecalculado = 0;
 
-//                $this->verificasms();
+                $this->verificasms();
 
                 setcookie("TestCookie", $valuecalculado);
                 redirect(base_url() . "home", "refresh");

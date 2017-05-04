@@ -79,7 +79,7 @@
                             <tr>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" onchange="alteraQuantidade()" class="texto00"/></td>
                                 <td  width="50px;">
-                                    <select  name="convenio1" id="convenio1" class="size1" >
+                                    <select  name="convenio1" id="convenio1" class="size1" required="">
                                         <option value="-1">Selecione</option>
                                         <? foreach ($convenios as $item) : ?>
                                             <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
@@ -87,12 +87,12 @@
                                     </select>
                                 </td>
                                 <td  width="50px;">
-                                    <select  name="procedimento1" id="procedimento1" class="size1" >
+                                    <select  name="procedimento1" id="procedimento1" class="size1" required="">
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
                                 <td > 
-                                    <select  name="medicoagenda" id="medicoagenda" class="size6" >
+                                    <select  name="medicoagenda" id="medicoagenda" class="size6" required="">
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
                                             <option value="<?= $item->operador_id; ?>"<?

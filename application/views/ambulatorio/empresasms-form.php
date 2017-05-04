@@ -29,6 +29,11 @@
                     <label>Mensagem de Aniversariantes</label>
                     <input type="text" id="txtMensagemAniversariantes" class="mensagem_texto" name="txtMensagemAniversariantes" value="<?= @$mensagem[0]->mensagem_aniversariante ?>"/>
                 </div>
+                
+                <div style="width: 100%">
+                    <label>Mensagem de Revisão</label>
+                    <input type="text" id="txtMensagemAniversariantes" class="mensagem_texto" name="txtMensagemAniversariantes" value="<?= @$mensagem[0]->mensagem_aniversariante ?>"/>
+                </div>
 
                 <div style="width: 100%">
                     <hr/>

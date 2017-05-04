@@ -34,6 +34,13 @@ switch ($MES) {
 <meta charset="UTF-8">
 <title>Imp.. Receituário Especial</title>
 <div id="esquerdo" style="float:left;">
+    <center>
+        <?
+        if ($arquivo_existe) {
+            ?>
+            <img width="300px" height="50px" src="<?= base_url() . "upload/operadorLOGO/" . $medico_parecer1 ?>" />
+        <? } ?>
+    </center>
     <div >
         <table>
             </tr>        
@@ -198,6 +205,13 @@ switch ($MES) {
 
 
 <div id="direito" style="float:right;" >
+    <center>
+        <?
+        if ($arquivo_existe) {
+            ?>
+            <img width="300px" height="50px" src="<?= base_url() . "upload/operadorLOGO/" . $medico_parecer1 .' jpg' ?>" />
+        <? } ?>
+    </center>
     <div >
         <table>
             </tr>        

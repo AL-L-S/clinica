@@ -43,7 +43,7 @@ class Laudo extends BaseController {
 
 //            $this->carregarView($data);
     }
-    
+
     function pesquisarconsultaantigo($args = array()) {
         $this->loadView('ambulatorio/laudoconsultaantigo-lista', $args);
 
@@ -222,10 +222,11 @@ class Laudo extends BaseController {
     function carregaruploadcliente() {
         $this->load->View('ambulatorio/uploadimagens');
     }
+
     function redirecionauploadcliente() {
         $caminho = $_POST['caminho'];
-        $arquivo = (isset($_POST['arquivo']))?$_POST['arquivo']:'';
-        $todos = (isset($_POST['todos']))?'true':'false';
+        $arquivo = (isset($_POST['arquivo'])) ? $_POST['arquivo'] : '';
+        $todos = (isset($_POST['todos'])) ? 'true' : 'false';
         header("Location: http://localhost/conexao.php?caminho={$caminho}&arquivo={$arquivo}&todos={$todos}");
     }
 
@@ -291,7 +292,7 @@ class Laudo extends BaseController {
 
     function gravartextoconvertido() {
         $this->exametemp->gravartextoconvertido();
-        
+
         //O google Chrome não permite fechar a janela pelo javascript a menos que ela tenha sido aberta com javascript
         echo "<script>window.location.href = 'https://www.google.com';</script>";
     }
@@ -302,8 +303,8 @@ class Laudo extends BaseController {
         $situacaolaudo = @$obj_laudo->_situacaolaudo;
         $agenda_exames_id = @$obj_laudo->_agenda_exames_id;
         $atendimento = @$obj_laudo->_atendimento;
-        if($atendimento != 't'){
-           $this->exame->atendimentohora($agenda_exames_id); 
+        if ($atendimento != 't') {
+            $this->exame->atendimentohora($agenda_exames_id);
         }
         if ($situacaolaudo != 'FINALIZADO') {
             $this->exame->atenderpacienteconsulta($exame_id);
@@ -323,13 +324,13 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/laudoconsulta-form', $data);
     }
-    
+
     function carregaranamineseantigo($paciente_id) {
-        
+
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
-        
+
         $this->load->View('ambulatorio/laudoconsultaantigo-form', $data);
     }
 
@@ -1024,7 +1025,7 @@ class Laudo extends BaseController {
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
-        
+
 //                GERAL
 //                $filename = "laudo.pdf";
 //                $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/CABECALHO.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
@@ -1032,7 +1033,6 @@ class Laudo extends BaseController {
 //                $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
 //                pdf($html, $filename, $cabecalho, $rodape);
 //                $this->load->View('ambulatorio/impressaolaudo_1', $data);
-
         //PROIMAGEM
 //        $filename = "laudo.pdf";
 //        $cabecalho = "<table>
@@ -1117,29 +1117,29 @@ class Laudo extends BaseController {
         //        $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
         //        pdf($html, $filename, $cabecalho, $rodape);
         //        $this->load->View('ambulatorio/impressaolaudo_1', $data);
-      
 
-        
-        
+
+
+
         if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
-        $filename = "laudo.pdf";
-        $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-        $rodape = "";
-        $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
-        pdf($html, $filename, $cabecalho, $rodape);
-        $this->load->View('ambulatorio/impressaolaudo_1', $data);
+            $filename = "laudo.pdf";
+            $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+            $rodape = "";
+            $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape);
+            $this->load->View('ambulatorio/impressaolaudo_1', $data);
         }
 
 /////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 13) {//CAGE        
-                if ($data['laudo']['0']->sexo == "F"){
-                    $SEXO= 'FEMININO';
-                }else{
-                    $SEXO= 'MASCULINO';
-                }
-                
-                $filename = "laudo.pdf";
-                $cabecalho = "<table>
+            if ($data['laudo']['0']->sexo == "F") {
+                $SEXO = 'FEMININO';
+            } else {
+                $SEXO = 'MASCULINO';
+            }
+
+            $filename = "laudo.pdf";
+            $cabecalho = "<table>
         <tr>
           <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='img/cage.jpg'></td>
         </tr>
@@ -1162,37 +1162,37 @@ class Laudo extends BaseController {
         <td width='30px'></td><td><b>VIDEOENDOSCOPIO:</b> Olympus Exera CV 145</td><td><b>MONITORIZA&Ccedil;&Atilde;O:</b> Oximetria de pulso</td>
         </tr>
         </table>";
-                $rodape = "";
-        
-                                                                                                                                                                                                                $grupo = 'laboratorial';
-                $html = $this->load->view('ambulatorio/impressaolaudo_6', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
-                $this->load->View('ambulatorio/impressaolaudo_6', $data);
+            $rodape = "";
+
+            $grupo = 'laboratorial';
+            $html = $this->load->view('ambulatorio/impressaolaudo_6', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape, $grupo);
+            $this->load->View('ambulatorio/impressaolaudo_6', $data);
         }
 
 ///////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 10) {//CDC
-                $filename = "laudo.pdf";
-                $cabecalho = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td><img align = 'left'  width='180px' height='80px' src='img/logo2.png'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-                $rodape = "<table><tr><td>Rua Juiz Renato Silva, 20 - Papicu | Fone (85)3234-3907</td></tr></table>";
-                $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape);
-                $this->load->View('ambulatorio/impressaolaudo_1', $data);
+            $filename = "laudo.pdf";
+            $cabecalho = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td><img align = 'left'  width='180px' height='80px' src='img/logo2.png'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+            $rodape = "<table><tr><td>Rua Juiz Renato Silva, 20 - Papicu | Fone (85)3234-3907</td></tr></table>";
+            $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape);
+            $this->load->View('ambulatorio/impressaolaudo_1', $data);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////            
         } elseif ($data['empresa'][0]->impressao_tipo == 6) {//CLINICA DEZ     
-                $filename = "laudo.pdf";
-                $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='90px' src='img/clinicadez.jpg'></td></tr><tr><td>&nbsp;</td></tr><tr><td>Paciente:" . $data['laudo']['0']->paciente . "<br>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-                $rodape = "<table><tr><td><center>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rua Dr. Batista de Oliveira, 302 - Papicu - Fortaleza - Ceará</center></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contato: (85) 3017-0010 - (85) 3265-7007</tr></table>";
-                $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape);
-                $this->load->View('ambulatorio/impressaolaudo_1', $data);
+            $filename = "laudo.pdf";
+            $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='90px' src='img/clinicadez.jpg'></td></tr><tr><td>&nbsp;</td></tr><tr><td>Paciente:" . $data['laudo']['0']->paciente . "<br>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+            $rodape = "<table><tr><td><center>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rua Dr. Batista de Oliveira, 302 - Papicu - Fortaleza - Ceará</center></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contato: (85) 3017-0010 - (85) 3265-7007</tr></table>";
+            $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape);
+            $this->load->View('ambulatorio/impressaolaudo_1', $data);
         }
 
 /////////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 8) {//RONALDO BARREIRA
-                $medicoparecer = $data['laudo']['0']->medico_parecer1;
-                $cabecalho = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 10pt;'>
+            $medicoparecer = $data['laudo']['0']->medico_parecer1;
+            $cabecalho = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 10pt;'>
                     <tr><td style='vertical-align: bottom; font-family: serif; font-size: 14pt;' colspan='2'><center><u>Clinica Radiol&oacute;gica Dr. Ronaldo Barreira</u><center></td></tr>
                     <tr><td colspan='2'><center>Rua 24 de maio, 961 - Fone: 3226-9536<center></td></tr>
                     <tr><td></td><td></td></tr>
@@ -1201,8 +1201,8 @@ class Laudo extends BaseController {
                     <tr><td>Atendimento:" . $data['laudo']['0']->guia_id . "</td><td>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr>
                     <tr><td>Convenio: " . $data['laudo']['0']->convenio . "<td>Solicitante: " . $data['laudo']['0']->solicitante . "<br></td></tr>
                     </table>";
-                if ($data['laudo']['0']->convenio_id >= 29 && $data['laudo']['0']->convenio_id <= 84) {
-                    $cabecalho = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 9pt;'>
+            if ($data['laudo']['0']->convenio_id >= 29 && $data['laudo']['0']->convenio_id <= 84) {
+                $cabecalho = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 9pt;'>
                     <tr><td width='70%' style='vertical-align: bottom; font-family: serif; font-size: 12pt;'><center><u>Clinica Radiol&oacute;gica Dr. Ronaldo Barreira</u><center></td><td rowspan='2'><center><img align = 'left'  width='140px' height='40px' src='img/sesi.jpg'><center></td></tr>
                     <tr><td ><center>Rua 24 de maio, 961-Fone: 3226-9536<center></td><td></td></tr>            
                     <tr><td colspan='2'>Exame de:" . $data['laudo']['0']->paciente . "</td></tr>
@@ -1210,42 +1210,41 @@ class Laudo extends BaseController {
                     <tr><td>Atendimento:" . $data['laudo']['0']->guia_id . "</td><td>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr>
                     <tr><td>Convenio: " . $data['laudo']['0']->convenio . "<td>Solicitante: " . substr($data['laudo']['0']->solicitante, 0, 15) . "<br></td></tr>
                     </table>";
-                }
-                if ($data['laudo']['0']->medico_parecer1 != 929) {
-                    $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
+            }
+            if ($data['laudo']['0']->medico_parecer1 != 929) {
+                $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
                     <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
-                }
-                if ($data['laudo']['0']->medico_parecer1 == 929 && $data['laudo']['0']->situacao != "FINALIZADO") {
-                    $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
+            }
+            if ($data['laudo']['0']->medico_parecer1 == 929 && $data['laudo']['0']->situacao != "FINALIZADO") {
+                $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
                     <tr><td><center>Radiologista - Leitor Qualificado Padrao OIT</td></tr>
                     <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
-                }
-                if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 929) {
-                    $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            }
+            if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 929) {
+                $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  width='200px' height='130px' src='upload/1ASSINATURAS/$medicoparecer.bmp'>";
-                }
-                if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 930) {
-                    $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            }
+            if ($data['laudo']['0']->situacao == "FINALIZADO" && $data['laudo']['0']->medico_parecer1 == 930) {
+                $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <img  width='120px' height='80px' src='upload/1ASSINATURAS/$medicoparecer.bmp'>";
-                }
-                $grupo = $data['laudo']['0']->grupo;
-                $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
-                $this->load->View('ambulatorio/impressaolaudo_2', $data);
+            }
+            $grupo = $data['laudo']['0']->grupo;
+            $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape, $grupo);
+            $this->load->View('ambulatorio/impressaolaudo_2', $data);
 
 ///////////////////////////////////////////////////////////////////////////////////////            
         } else {//GERAL        //  este item fica sempre por ultimo
-                $filename = "laudo.pdf";
-                $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/CABECALHO.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-                $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
-                $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape);
-                $this->load->View('ambulatorio/impressaolaudo_1', $data);
+            $filename = "laudo.pdf";
+            $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/CABECALHO.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
+            $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+            $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape);
+            $this->load->View('ambulatorio/impressaolaudo_1', $data);
         }
-        
     }
 
     function impressaoreceita($ambulatorio_laudo_id) {
@@ -1285,7 +1284,7 @@ class Laudo extends BaseController {
             $carimbo = $data['laudo'][0]->medico_carimbo;
         } else {
             $carimbo = "";
-        }       
+        }
 
 //        var_dump($carimbo);die;
         $meses = array('01' => "Janeiro", '02' => "Fevereiro", '03' => "Março", '04' => "Abril", '05' => "Maio", '06' => "Junho", '07' => "Julho", '08' => "Agosto", '09' => "Setembro", '10' => "Outubro", '11' => "Novembro", '12' => "Dezembro");
@@ -1295,7 +1294,7 @@ class Laudo extends BaseController {
         $ano = substr($data['laudo'][0]->data_cadastro, 0, 4);
 
         $nomemes = $meses[$mes];
-        
+
 
 
         $texto_rodape = "Fortaleza, " . $dia . " de " . $nomemes . " de " . $ano;
@@ -1506,6 +1505,18 @@ class Laudo extends BaseController {
 
         $base_url = base_url();
 
+        $this->load->helper('directory');
+        $arquivos = directory_map("./upload/operadorLOGO/");
+        $arquivo_existe = false;
+        foreach ($arquivos as $value) {
+            if ($value == $data['laudo'][0]->medico_parecer1 . ".jpg") {
+                $arquivo_existe = true;
+                $data['medico_parecer1'] = $data['laudo'][0]->medico_parecer1;
+                break;
+            }
+        }
+//        var_dump($data['laudo'][0]->medico_parecer1);die;
+
         if ($data['laudo'][0]->assinatura == 't') {
             if (isset($data['laudo'][0]->medico_parecer1)) {
                 $this->load->helper('directory');
@@ -1542,8 +1553,14 @@ class Laudo extends BaseController {
 
 
         if ($data['empresa'][0]->impressao_tipo == 14) {//MEDLAB
+            if($arquivo_existe){
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
+            }
+            else{
+                $src = 'img/medlab.jpg';
+            }
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/medlab.jpg'></td></tr></table>";
+            $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='{$src}'></td></tr></table>";
 //        $rodape = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
             $html = $this->load->view('ambulatorio/impressaoreceituariomedlab', $data, true);
             pdf($html, $filename, $cabecalho);
@@ -1551,9 +1568,15 @@ class Laudo extends BaseController {
         }
 
 //////////////////////////////////////////////////////////////////////////////////////        
-        elseif ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
+        elseif ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA   
+            if($arquivo_existe){
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
+            }
+            else{
+                $src = 'img/humana.jpg';
+            }
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/humana.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
+            $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='{$src}'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
             $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'>";
             $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
@@ -1561,9 +1584,15 @@ class Laudo extends BaseController {
         }
 
 //////////////////////////////////////////////////////////////////////////////////////        
-        elseif ($data['empresa'][0]->impressao_tipo == 13) {//CAGE        
+        elseif ($data['empresa'][0]->impressao_tipo == 13) {//CAGE      
+            if($arquivo_existe){
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
+            }
+            else{
+                $src = 'img/cage.jpg';
+            }
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/cage.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
+            $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='{$src}'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
             $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapecage.jpg'>";
             $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
@@ -1572,8 +1601,14 @@ class Laudo extends BaseController {
 
 //////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 10) {//CDC
+            if($arquivo_existe){
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
+            }
+            else{
+                $src = 'img/logo2.png';
+            }
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td><img align = 'left'  width='180px' height='80px' src='img/logo2.png'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Data: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
+            $cabecalho = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td><img align = 'left'  width='180px' height='80px' src='{$src}'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Data: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
             $rodape = "<table><tr><td>Rua Juiz Renato Silva, 20 - Papicu | Fone (85)3234-3907</td></tr></table>";
             $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
@@ -1581,9 +1616,15 @@ class Laudo extends BaseController {
         }
 
 /////////////////////////////////////////////////////////////////////////////////////        
-        elseif ($data['empresa'][0]->impressao_tipo == 6) {//CLINICA DEZ     
+        elseif ($data['empresa'][0]->impressao_tipo == 6) {//CLINICA DEZ    
+            if($arquivo_existe){
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
+            }
+            else{
+                $src = 'img/cabecalho.jpg';
+            }
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td><img align = 'left'  src='img/cabecalho.jpg'></td></tr><tr><td>&nbsp;</td></tr><tr><td>Paciente:" . $data['laudo']['0']->paciente . "<br>Data: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
+            $cabecalho = "<table><tr><td><img align = 'left'  src='{$src}'></td></tr><tr><td>&nbsp;</td></tr><tr><td>Paciente:" . $data['laudo']['0']->paciente . "<br>Data: " . substr($data['laudo']['0']->data, 8, 2) . '/' . substr($data['laudo']['0']->data, 5, 2) . '/' . substr($data['laudo']['0']->data, 0, 4) . "</td></tr></table>";
             $rodape = "<table><tr><td><center><img align = 'left' src='img/rodape.jpg'></center></td></tr></table>";
             $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
@@ -1622,8 +1663,14 @@ class Laudo extends BaseController {
             $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
             pdf($html, $filename, $cabecalho, $rodape, $grupo);
         } else { //GERAL        //este item fica sempre por útimo
+            if($arquivo_existe){
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
+            }
+            else{
+                $src = 'img/cabecalho.jpg';
+            }
             $filename = "laudo.pdf";
-            $cabecalho = "<table ><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td><center><b>ATESTADO MÉDICO</b></center><br/><br/><br/></td></tr><tr><td><b>Para:" . $data['laudo']['0']->paciente . "<br></b></td></tr></table>";
+            $cabecalho = "<table ><tr><td><img align = 'left'  width='1000px' height='300px' src='{$src}'></td></tr><tr><td><center><b>ATESTADO MÉDICO</b></center><br/><br/><br/></td></tr><tr><td><b>Para:" . $data['laudo']['0']->paciente . "<br></b></td></tr></table>";
             $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td  >$carimbo</td></tr></table><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
             $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
@@ -1646,6 +1693,18 @@ class Laudo extends BaseController {
 
         if ($data['laudo'][0]->assinatura == 't') {
             $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
+        }
+
+        $this->load->helper('directory');
+        $arquivos = directory_map("./upload/operadorLOGO/");
+        $data['arquivo_existe'] = false;
+//        var_dump($arquivos);die;
+        foreach ($arquivos as $value) {
+            if ($value == $data['laudo'][0]->medico_parecer1 . ".jpg") {
+                $data['arquivo_existe'] = true;
+                $data['medico_parecer1'] = $data['laudo'][0]->medico_parecer1;
+                break;
+            }
         }
 
         $this->load->View('ambulatorio/impressaoreceituarioespecial', $data);
@@ -1804,7 +1863,7 @@ class Laudo extends BaseController {
             $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
         }
 
-	if ($verificador == 1) {
+        if ($verificador == 1) {
             $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
         }
         if ($verificador == 2) {
@@ -2273,7 +2332,7 @@ class Laudo extends BaseController {
     }
 
     function gravarlaudo($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $sala_id) {
-        
+
         if ($_POST['situacao'] == 'FINALIZADO') {
             $validar = $this->laudo->validar();
             //$validar = $this->laudo->validar();
