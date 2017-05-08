@@ -3787,7 +3787,7 @@ class guia_model extends Model {
         $this->db->where('ae.procedimento_tuss_id is not null');
 //        $this->db->where('al.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
-            $this->db->where('ae.medico_consulta_id', $_POST['medicos']);
+            $this->db->where('ae.medico_agenda', $_POST['medicos']);
         }
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
@@ -3805,12 +3805,8 @@ class guia_model extends Model {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-
-
-
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-
 
         $this->db->orderby('al.medico_parecer1');
         $this->db->orderby('pc.convenio_id');
@@ -8448,6 +8444,97 @@ ORDER BY ae.agenda_exames_id)";
         return $query->result();
     }
 
+    function valorexamesfaturamento() {
+        try {
+            $exame_id = "";
+
+            $this->db->select('dinheiro');
+            $this->db->from('tb_convenio');
+            $this->db->where("convenio_id", $_POST['convenio1']);
+            $query = $this->db->get();
+            $return = $query->result();
+            $dinheiro = $return[0]->dinheiro;
+
+            $agenda_exames_id = $_POST['agenda_exames_id'];
+            $this->db->select('exames_id');
+            $this->db->from('tb_exames');
+            $this->db->where("agenda_exames_id", $agenda_exames_id);
+            $retorno = $this->db->count_all_results();
+
+            if ($retorno > 0) {
+                $agenda_exames_id = $_POST['agenda_exames_id'];
+                $this->db->select('exames_id');
+                $this->db->from('tb_exames');
+                $this->db->where("agenda_exames_id", $agenda_exames_id);
+                $query = $this->db->get();
+                $return = $query->result();
+                $exame_id = $return[0]->exames_id;
+            }
+
+            $dadosantigos = $this->listarvalor($agenda_exames_id);
+            $this->db->set('editarforma_pagamento', $dadosantigos[0]->forma_pagamento);
+            $this->db->set('editarquantidade', $dadosantigos[0]->quantidade);
+            $this->db->set('editarprocedimento_tuss_id', $dadosantigos[0]->procedimento_tuss_id);
+            $this->db->set('editarvalor_total', $dadosantigos[0]->valor_total);
+            $this->db->set('operador_faturamentoantigo', $dadosantigos[0]->operador_faturamento);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+            $this->db->set('valor', $_POST['valor1']);
+            $valortotal = $_POST['valor1'] * $_POST['qtde1'];
+            $this->db->set('valor_total', $valortotal);
+            $this->db->set('quantidade', $_POST['qtde1']);
+            $this->db->set('autorizacao', $_POST['autorizacao1']);
+            $this->db->set('guia_id', $_POST['guia_id']);
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            if ($_POST['formapamento'] != 0 && $dinheiro == "t") {
+                $this->db->set('faturado', 't');
+                $this->db->set('forma_pagamento', $_POST['formapamento']);
+                $this->db->set('valor1', $valortotal);
+                $this->db->set('forma_pagamento2', NULL);
+                $this->db->set('valor2', 0);
+                $this->db->set('forma_pagamento3', NULL);
+                $this->db->set('valor3', 0);
+                $this->db->set('forma_pagamento4', NULL);
+                $this->db->set('valor4', 0);
+                $this->db->set('operador_faturamento', $operador_id);
+                $this->db->set('data_faturamento', $horario);
+            } elseif ($_POST['formapamento'] == 0 && $dinheiro == "t") {
+                $this->db->set('faturado', 'f');
+                $this->db->set('forma_pagamento', NULL);
+                $this->db->set('valor1', 0);
+                $this->db->set('forma_pagamento2', NULL);
+                $this->db->set('valor2', 0);
+                $this->db->set('forma_pagamento3', NULL);
+                $this->db->set('valor3', 0);
+                $this->db->set('forma_pagamento4', NULL);
+                $this->db->set('valor4', 0);
+            }
+            $this->db->set('data_editar', $horario);
+            $this->db->set('operador_editar', $operador_id);
+            $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
+            $this->db->update('tb_agenda_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return -1;
+            }
+
+            if ($exame_id != "") {
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+                $this->db->where('exames_id', $exame_id);
+                $this->db->update('tb_exames');
+
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+                $this->db->where('exame_id', $exame_id);
+                $this->db->update('tb_ambulatorio_laudo');
+            }
+
+
+
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
     function valorexames() {
         try {
             $exame_id = "";

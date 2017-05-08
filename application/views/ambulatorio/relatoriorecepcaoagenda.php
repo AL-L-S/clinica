@@ -1,53 +1,32 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar relatorio Medico convenio</a></h3>
-
-        <?
-        $operador_id = $this->session->userdata('operador_id');
-        $perfil_id = $this->session->userdata('perfil_id');
-        ?>
+        <h3><a href="#">Gerar relatorio Agenda</a></h3>
         <div>
-            <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriorecepcaomedicoconvenio">
+            <form method="post" action="<?= base_url() ?>ambulatorio/exame/gerarelatoriorecepcaoagenda">
                 <dl>
                     <dt>
                         <label>Medico</label>
                     </dt>
                     <dd>
                         <select name="medicos" id="medicos" class="size2">
-                            <? if ($perfil_id != 4) { ?>
-                                <option value="0">TODOS</option>
-                            <?
-                            }
-                            foreach ($medicos as $value) :
-
-                                if ($perfil_id == 4) {
-                                    if ($operador_id != $value->operador_id) {
-                                        continue;
-                                    }
-                                    ?>
-
-                                    <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
-                                <? } else { ?>
-                                    <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
-                                <?
-                                }
-                            endforeach;
-                            ?>
-
+                            <option value="" >Todos</option>
+                            <? foreach ($medicos as $value) : ?>
+                                <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
                         </select>
                     </dd>
                     <dt>
-                        <label>Convenio</label>
+                        <label>Sala</label>
                     </dt>
                     <dd>
-                        <select name="convenio" id="convenio" class="size2">
-                            <option value='0' >TODOS</option>
-                            <option value="" >SEM PARTICULAR</option>
-                            <? foreach ($convenio as $value) : ?>
-                                <option value="<?= $value->convenio_id; ?>" ><?php echo $value->nome; ?></option>
-<? endforeach; ?>
+                        <select name="salas" id="salas" class="size2">
+                            <? foreach ($salas as $value) : ?>
+                                <option value="<?= $value->exame_sala_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
                         </select>
-                    </dd>
+
+                    <dt>
+
                     <dt>
                         <label>Data inicio</label>
                     </dt>
@@ -61,32 +40,26 @@
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
-                        <label>Especialidade</label>
-                    </dt>
-                    <dd>
-                        <select name="grupo" id="grupo" class="size2" >
-                            <option value='0' >TODOS</option>
-                            <option value='1' >SEM RM</option>
-                            <? foreach ($grupos as $grupo) { ?>                                
-                                <option value='<?= $grupo->nome ?>' <?
-                                        if (@$obj->_grupo == $grupo->nome):echo 'selected';
-                                        endif;
-                                        ?>><?= $grupo->nome ?></option>
-<? } ?>
-                        </select>
-                    </dd>
-                    <dt>
                         <label>Empresa</label>
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
                             <? foreach ($empresa as $value) : ?>
                                 <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
-<? endforeach; ?>
+                            <? endforeach; ?>
                             <option value="0">TODOS</option>
                         </select>
                     </dd>
                     <dt>
+                        <label>Relatorio</label>
+                    </dt>
+                    <dd>
+                        <select name="tipoRelatorio" id="tipoRelatorio" class="size2">
+                            <option value="0">Agenda Consulta</option>
+                            <option value="1">Agenda Exame</option>
+                            <option value="2">Faltas</option>
+                        </select>
+                    </dd>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>

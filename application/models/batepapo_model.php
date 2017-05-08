@@ -22,7 +22,7 @@ class batepapo_model extends BaseModel {
                         ) as num_mensagens, 
                         ( 	
                                 SELECT COALESCE((SELECT true WHERE (o.horario_login + INTERVAL\'3 minute\') >=  current_timestamp), false) 
-                        ) as status 
+                        ) as status                        
                 FROM "ponto"."tb_operador" o 
                 WHERE "o"."ativo" = \'t\' AND "o"."operador_id" != \'1\' 
                 AND "o"."usuario" != \'\' AND "o"."operador_id" IS NOT NULL

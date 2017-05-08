@@ -46,6 +46,7 @@ class produto_model extends Model {
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.descricao ilike', "%" . $args['nome'] . "%");
         }
+
         return $this->db;
     }
 

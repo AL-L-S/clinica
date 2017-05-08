@@ -1023,6 +1023,18 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/editarexame-form', $data);
     }
 
+    function valorexamesfaturamento() {
+        $paciente_id = $_POST['txtpaciente_id'];
+        $guia_id = $_POST['guia_id'];
+        $verifica = $this->guia->valorexamesfaturamento();
+        if ($verifica == "-1") {
+            $data['mensagem'] = 'Erro ao gravar a Dados. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar a Dados.';
+        }
+        redirect(base_url() . "ambulatorio/exame/faturarguia/{$guia_id}/{$paciente_id}");
+    }
+
     function valorexames() {
         $paciente_id = $_POST['txtpaciente_id'];
         $ambulatorio_guia_id = $this->guia->valorexames();
@@ -1032,6 +1044,16 @@ class Guia extends BaseController {
             $data['mensagem'] = 'Sucesso ao gravar a Dados.';
         }
         $this->pesquisar($paciente_id);
+    }
+
+    function valorexamefaturamento($paciente_id, $guia_id, $ambulatorio_guia_id) {
+        $data['paciente_id'] = $paciente_id;
+        $data['convenio'] = $this->convenio->listardados();
+        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
+        $data['guia_id'] = $guia_id;
+        $this->loadView('ambulatorio/valorexamefaturamento-form', $data);
     }
 
     function valorexame($paciente_id, $guia_id, $ambulatorio_guia_id) {

@@ -40,7 +40,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->produto->listar($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->produto->listar($_GET)->orderby('p.descricao')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";

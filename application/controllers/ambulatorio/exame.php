@@ -91,6 +91,14 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltou', $data);
     }
 
+    function relatoriorecepcaoagenda() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['salas'] = $this->exame->listartodassalas();
+        $this->loadView('ambulatorio/relatoriorecepcaoagenda', $data);
+    }
+
     function relatoriomedicoagendaconsultas() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -106,7 +114,19 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriomedicoordem', $data);
     }
-
+    
+    function gerarelatoriorecepcaoagenda() {
+        if($_POST['tipoRelatorio'] == '0'){
+            $this->gerarelatoriomedicoagendaconsultas();
+        }
+        else if($_POST['tipoRelatorio'] == '1'){
+            $this->gerarelatoriomedicoagendaexame();
+        }
+        else if($_POST['tipoRelatorio'] == '2'){
+            $this->gerarelatoriomedicoagendaexamefaltou();
+        }
+    }
+    
     function gerarelatoriomedicoagendaconsultas() {
         $medicos = $_POST['medicos'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
@@ -384,7 +404,6 @@ class Exame extends BaseController {
     }
 
     function listarexamependente($args = array()) {
-
         $this->loadView('ambulatorio/examependente-lista', $args);
     }
 
@@ -783,6 +802,17 @@ class Exame extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
+    }
+
+    function finalizarexamependente($exames_id, $sala_id, $agenda_exames_id) {
+        $verificar = $this->exame->finalizarexamependente($exames_id, $sala_id, $agenda_exames_id);
+        if ($verificar == -1) {
+            $data['mensagem'] = 'Erro ao finalizar o Exame. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exame/listarexamependente", $data);
     }
 
     function finalizarexametodos($sala_id, $guia_id, $grupo) {

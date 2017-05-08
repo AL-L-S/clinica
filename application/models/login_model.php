@@ -29,6 +29,8 @@ class login_model extends Model {
         $this->db->select('empresa_id,
                             nome,
                             internacao,
+                            centrocirurgico,
+                            relatoriorm,
                             chat');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa);
@@ -38,6 +40,8 @@ class login_model extends Model {
             $empresanome = $retorno[0]->nome;
             $internacao = $retorno[0]->internacao;
             $chat = $retorno[0]->chat;
+            $centrocirurgico = $retorno[0]->centrocirurgico;
+            $relatoriorm = $retorno[0]->relatoriorm;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -65,6 +69,8 @@ class login_model extends Model {
                 'perfil_id' => $return[0]->perfil_id,
                 'perfil' => $return[0]->perfil,
                 'modulo' => $modulo,
+                'centrocirurgico' => $centrocirurgico,
+                'relatoriorm' => $relatoriorm,
                 'internacao' => $internacao,
                 'chat' => $chat,
                 'empresa_id' => $empresa,

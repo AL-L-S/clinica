@@ -1,4 +1,4 @@
-<meta charset="UTF-8">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <div class="content"> <!-- Inicio da DIV content -->
     <? if (count($empresa) > 0) { ?>
         <h4><?= $empresa[0]->razao_social; ?></h4>
@@ -87,10 +87,9 @@
         ?>
                 </tbody>
     </table>
-    <h4>Toatl de exames marcados <?= $contador; ?></h4>
+    <h4>Total de exames marcados <?= $contador; ?></h4>
 
 </div> <!-- Final da DIV content -->
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
 

@@ -91,3 +91,9 @@ ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN revisao_dias integer;
 ALTER TABLE ponto.tb_empresa_sms ADD COLUMN mensagem_revisao character varying(20000);
 
 
+-- Dia 05/05/2017
+-- Essa coluna serve para indicar se o centro cirurgico irá aparecer ou não no menu.
+--      Para alterar, basta ir no PGADMIN e setar essa coluna para 'true'
+ALTER TABLE ponto.tb_empresa add column centrocirurgico boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa add column relatoriorm boolean DEFAULT false;
+

@@ -3929,6 +3929,31 @@ class exametemp_model extends Model {
         $this->db->update('tb_agenda_exames');
     }
 
+    function excluirexametempmultifuncaomedico($agenda_exames_id) {
+
+        $this->db->set('paciente_id', null);
+        $this->db->set('procedimento_tuss_id', null);
+        $this->db->set('convenio_id', null);
+//        $this->db->set('medico_consulta_id', null);
+//        $this->db->set('medico_agenda', null);
+        $this->db->set('ativo', 't');
+        $this->db->set('encaixe', 'f');
+        $this->db->set('situacao', 'LIVRE');
+        $this->db->set('observacoes', "");
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ambulatorio_pacientetemp_id', null);
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->update('tb_agenda_exames');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
     function excluirexametemp($agenda_exames_id) {
 
         $this->db->set('paciente_id', null);

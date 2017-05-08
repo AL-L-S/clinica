@@ -527,8 +527,9 @@ class Caixa extends BaseController {
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorioentrada'] = $this->caixa->relatorioentrada();
-
+//        var_dump($_POST['email']);die;
         if ($_POST['email'] == "NAO") {
+//            die;
             $this->load->View('cadastros/impressaorelatorioentrada', $data);
         } elseif ($_POST['email'] == "SIM") {
             if (count($data['tipo']) > 0) {
@@ -571,9 +572,9 @@ class Caixa extends BaseController {
                 <tr>
                     <th width="100px;" class="tabela_header">Conta</th>
                     <th class="tabela_header">Nome</th>
-                    <th class="tabela_header">Dt entrada</th>
                     <th class="tabela_header">Tipo</th>
                     <th class="tabela_header">Classe</th>
+                    <th class="tabela_header">Dt entrada</th>
                     <th class="tabela_header">Valor</th>
                     <th class="tabela_header">Observacao</th>
                 </tr>

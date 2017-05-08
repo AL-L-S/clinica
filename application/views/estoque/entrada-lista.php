@@ -62,7 +62,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->entrada->listar($_GET)->orderby('f.razao_social')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->entrada->listar($_GET)->orderby('e.estoque_entrada_id DESC, p.descricao, f.razao_social')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";

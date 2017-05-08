@@ -486,11 +486,11 @@ class Convenio_model extends Model {
             } else {
                 $this->db->set('dinheiro', 'f');
             }
-            if (isset($_POST['cbhpm'])) {
-                $this->db->set('cbhpm', $_POST['cbhpm']);
-            } else {
-                $this->db->set('cbhpm', 'f');
-            }
+//            if (isset($_POST['cbhpm'])) {
+//                $this->db->set('cbhpm', $_POST['cbhpm']);
+//            } else {
+//                $this->db->set('cbhpm', 'f');
+//            }
             if (isset($_POST['txtcarteira'])) {
                 $this->db->set('carteira_obrigatoria', $_POST['txtcarteira']);
             } else {

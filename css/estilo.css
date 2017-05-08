@@ -132,7 +132,9 @@ a#login_sair{
     overflow: hidden;
 }
 #login div#user_info{
+    /*width: 170pt;*/
     float: left;
+    
 }
 #login label{
     clear: left;

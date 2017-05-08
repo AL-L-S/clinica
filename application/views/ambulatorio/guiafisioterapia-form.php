@@ -1,9 +1,9 @@
 <div class="content ficha_ceatox">
-    <!--    <div class="bt_link_new" style="width: 150pt">
-            <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
-                Novo Medico Solicitante
-            </a>
-        </div>-->
+    <div class="bt_link_new" style="width: 150pt">
+        <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
+            Novo Medico Solicitante
+        </a>
+    </div>
     <div class="bt_link_new">
         <a href="<?= base_url() ?>cadastros/pacientes">
             Cadastros

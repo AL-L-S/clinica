@@ -38,35 +38,35 @@
                             </select>
                         </th>
                         <? if ($perfil_id != 4) { ?>
-<!--                            <th class="tabela_title">
+    <!--                            <th class="tabela_title">
+                                    <select name="especialidade" id="especialidade" class="size1">
+                                        <option value=""></option>
+                            <? foreach ($especialidade as $value) : ?>
+                                                <option value="<?= $value->cbo_ocupacao_id; ?>" <?
+                                if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
+                                endif;
+                                ?>><?php echo $value->descricao; ?></option>
+                            <? endforeach; ?>
+                                    </select>
+                                </th>-->
+                            <th class="tabela_title">
                                 <select name="especialidade" id="especialidade" class="size1">
                                     <option value=""></option>
                                     <? foreach ($especialidade as $value) : ?>
                                         <option value="<?= $value->cbo_ocupacao_id; ?>" <?
-                                        if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
+                                        if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
                                         endif;
-                                        ?>><?php echo $value->descricao; ?></option>
-                                            <? endforeach; ?>
-                                </select>
-                            </th>-->
-                            <th class="tabela_title">
-                            <select name="especialidade" id="especialidade" class="size1">
-                                <option value=""></option>
-                                <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->cbo_ocupacao_id; ?>" <?
-                                    if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
-                                    endif;
-                                    ?>>
-                                                <?
+                                        ?>>
+                                                    <?
 //                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
 //                                                    echo '<script>carregaMedicoEspecialidade();</script>';
 //                                                endif;
-                                                ?>
-                                                <?php echo $value->descricao; ?>
-                                    </option>
-                                <? endforeach; ?>
-                            </select>
-                        </th>
+                                                    ?>
+                                                    <?php echo $value->descricao; ?>
+                                        </option>
+                                    <? endforeach; ?>
+                                </select>
+                            </th>
 
 
                             <th class="tabela_title">
@@ -119,6 +119,7 @@
                         <th class="tabela_header" width="75px;">Sala</th>
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">laudo</th>
+                        <th class="tabela_header">Observações</th>
                         <th class="tabela_header" colspan="3"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
@@ -129,147 +130,149 @@
                 $limit = 50;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 //                if ($total > 0) {
-                    ?>
-                    <tbody>
-                        <?php
-                        $lista = $this->exame->listarmultifuncao2medico($_GET)->limit($limit, $pagina)->get()->result();
-                        $estilo_linha = "tabela_content01";
-                        $operador_id = $this->session->userdata('operador_id');
-                        foreach ($lista as $item) {
-                            $dataFuturo = date("Y-m-d H:i:s");
-                            $dataAtual = $item->data_autorizacao;
-                            $date_time = new DateTime($dataAtual);
-                            $diff = $date_time->diff(new DateTime($dataFuturo));
-                            $teste = $diff->format('%H:%I:%S');
+                ?>
+                <tbody>
+                    <?php
+                    $lista = $this->exame->listarmultifuncao2medico($_GET)->limit($limit, $pagina)->get()->result();
+                    $estilo_linha = "tabela_content01";
+                    $operador_id = $this->session->userdata('operador_id');
+                    foreach ($lista as $item) {
+                        $dataFuturo = date("Y-m-d H:i:s");
+                        $dataAtual = $item->data_autorizacao;
+                        $date_time = new DateTime($dataAtual);
+                        $diff = $date_time->diff(new DateTime($dataFuturo));
+                        $teste = $diff->format('%H:%I:%S');
 
-                            $verifica = 0;
-
-
+                        $verifica = 0;
 
 
 
 
 
-                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            if ($item->paciente == "" && $item->bloqueado == 't') {
-                                $situacao = "Bloqueado";
-                                $paciente = "Bloqueado";
-                                $verifica = 5;
+
+
+                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        if ($item->paciente == "" && $item->bloqueado == 't') {
+                            $situacao = "Bloqueado";
+                            $paciente = "Bloqueado";
+                            $verifica = 5;
+                        } else {
+                            $paciente = "";
+
+                            if ($item->realizada == 't' && $item->situacaoexame == 'EXECUTANDO') {
+                                $situacao = "Atendendo";
+                                $verifica = 2;
+                            } elseif ($item->realizada == 't' && $item->situacaoexame == 'FINALIZADO') {
+                                $situacao = "Finalizado";
+                                $verifica = 4;
+                            } elseif ($item->confirmado == 'f') {
+                                $situacao = "agenda";
+                                $verifica = 1;
                             } else {
-                                $paciente = "";
-
-                                if ($item->realizada == 't' && $item->situacaoexame == 'EXECUTANDO') {
-                                    $situacao = "Atendendo";
-                                    $verifica = 2;
-                                } elseif ($item->realizada == 't' && $item->situacaoexame == 'FINALIZADO') {
-                                    $situacao = "Finalizado";
-                                    $verifica = 4;
-                                } elseif ($item->confirmado == 'f') {
-                                    $situacao = "agenda";
-                                    $verifica = 1;
-                                } else {
-                                    echo 'bla  ' . $item->situacaoexame;
-                                    $situacao = "espera";
-                                    $verifica = 3;
-                                }
+                                echo 'bla  ' . $item->situacaoexame;
+                                $situacao = "espera";
+                                $verifica = 3;
                             }
-                            if ($item->paciente == "" && $item->bloqueado == 'f') {
-                                $paciente = "vago";
-                            }
-                            ?>
-                            <tr>
-                                <? if ($verifica == 1) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><b><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
-                                <? }if ($verifica == 2) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="green"><b><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="green"><b><?= $item->paciente; ?></b></td>
-                                <? }if ($verifica == 3) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $item->paciente; ?></b></td>
-                                <? }if ($verifica == 4) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->paciente; ?></b></td>
-                                <? } if ($verifica == 5) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><?= $item->paciente; ?></b></td>
-                                <? } ?>
-                                <? if ($verifica == 4) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
-                                <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $teste; ?></td>
-                                <? } ?>
-                                <? if ($item->convenio != '') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
-                                <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente; ?></td>
-                                <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="120px;"><?= $item->sala; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . " " . $item->agenda_exames_id; ?></td>
-                                <? if ($item->situacaolaudo == 'FINALIZADO' || $item->situacaolaudo == 'REVISAR') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->situacaolaudo; ?></b></td>
-                                <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->situacaolaudo; ?></td>
-                                <? } ?>
+                        }
+                        if ($item->paciente == "" && $item->bloqueado == 'f') {
+                            $paciente = "vago";
+                        }
+                        ?>
+                        <tr>
+                            <? if ($verifica == 1) { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><b><?= $situacao; ?></b></td>
+                                <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
+                            <? }if ($verifica == 2) { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="green"><b><?= $situacao; ?></b></td>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="green"><b><?= $item->paciente; ?></b></td>
+                            <? }if ($verifica == 3) { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $situacao; ?></b></td>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $item->paciente; ?></b></td>
+                            <? }if ($verifica == 4) { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $situacao; ?></b></td>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->paciente; ?></b></td>
+                            <? } if ($verifica == 5) { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><?= $situacao; ?></b></td>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><?= $item->paciente; ?></b></td>
+                            <? } ?>
+                            <? if ($verifica == 4) { ?>
+                                <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
+                            <? } else { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $teste; ?></td>
+                            <? } ?>
+                            <? if ($item->convenio != '') { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                            <? } else { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente; ?></td>
+                            <? } ?>
+                            <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>" width="120px;"><?= $item->sala; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . " " . $item->agenda_exames_id; ?></td>
+                            <? if ($item->situacaolaudo == 'FINALIZADO' || $item->situacaolaudo == 'REVISAR') { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->situacaolaudo; ?></b></td>
+                            <? } else { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->situacaolaudo; ?></td>
+                            <? } ?>
+                            <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
+                                                                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
                                 <? if ($item->situacaolaudo != '') { ?>
                                     <?
                                     if (($item->medico_parecer1 == $operador_id && $item->situacaolaudo == 'FINALIZADO') || ($item->situacaolaudo != 'FINALIZADO' && $item->situacaolaudo != '') || $operador_id == 1) {
                                         if ($item->grupo == 'ECOCARDIOGRAMA') {
                                             ?>
-                                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarlaudoeco/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
-                                                        Laudo</a></div>
-                                            </td>
-                                            <?
-                                        } else {
-                                            ?>
-                                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarlaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
-                                                        Laudo</a></div>
-                                            </td>
-                                            <?
-                                        }
+                                        <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarlaudoeco/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
+                                                    Laudo</a></div>
+                                        </td>
+                                        <?
                                     } else {
                                         ?>
-                                        <td class="<?php echo $estilo_linha; ?>" width="40px;"><font size="-2">
-                                            <a>Bloqueado</a></font>
+                                        <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarlaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
+                                                    Laudo</a></div>
                                         </td>
-                                    <? }
+                                        <?
+                                    }
+                                } else {
                                     ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="40px;"><font size="-2">
+                                        <a>Bloqueado</a></font>
+                                    </td>
+                                <? }
+                                ?>
 
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
-                                                Imprimir</a></div>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo2via/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
-                                                2º via</a></div>
-                                    </td>
-                                <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                        <a></a></font>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                        <a></a></font>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                        <a></a></font>
-                                    </td>
-                                <? } ?>
-                            </tr>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
+                                            Imprimir</a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo2via/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
+                                            2º via</a></div>
+                                </td>
+                            <? } else { ?>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                    <a></a></font>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                    <a></a></font>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                    <a></a></font>
+                                </td>
+                            <? } ?>
+                        </tr>
 
-                        </tbody>
-                        <?php
-                    }
+                    </tbody>
+                    <?php
+                }
 //                }
                 ?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="12">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            <!-- Total de registros: <?php // echo $total; ?> -->
+                            <!-- Total de registros: <?php // echo $total;  ?> -->
                         </th>
                     </tr>
                 </tfoot>
@@ -336,25 +339,25 @@
                     });
 
                 }
-                
+
             });
         });
-        
+
         $(function () {
-                    $("#txtCICPrimariolabel").autocomplete({
-                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-                        minLength: 3,
-                        focus: function (event, ui) {
-                            $("#txtCICPrimariolabel").val(ui.item.label);
-                            return false;
-                        },
-                        select: function (event, ui) {
-                            $("#txtCICPrimariolabel").val(ui.item.value);
-                            $("#txtCICPrimario").val(ui.item.id);
-                            return false;
-                        }
-                    });
-                });
+            $("#txtCICPrimariolabel").autocomplete({
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                minLength: 3,
+                focus: function (event, ui) {
+                    $("#txtCICPrimariolabel").val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#txtCICPrimariolabel").val(ui.item.value);
+                    $("#txtCICPrimario").val(ui.item.id);
+                    return false;
+                }
+            });
+        });
 
 
 

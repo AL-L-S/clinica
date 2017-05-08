@@ -69,6 +69,11 @@
                                             Voltar
                                         </a></div>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/exame/finalizarexamependente/<?= $item->exames_id ?>/<?= $item->sala_id ?>/<?= $item->agenda_exames_id ?> ">
+                                            Finalizar
+                                        </a></div>
+                                </td>
                             </tr>
 
                         </tbody>

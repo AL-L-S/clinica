@@ -29,9 +29,9 @@
                         <th class="tabela_header" ><font size="-1">Valor</th>
                     <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
-                    <? if ($clinica == 'SIM') { ?>
-                        <th class="tabela_header" width="80px;"><font size="-1">Valor Total</th>
-                    <? } ?>
+                    <? // if ($clinica == 'SIM') { ?>
+                        <!--<th class="tabela_header" width="80px;"><font size="-1">Valor Total</th>-->
+                    <? // } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
@@ -104,9 +104,9 @@
                         <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
 
                         <? $valor_total = $item->valor_total + $perc; ?>
-                        <? if ($clinica == 'SIM') { ?>
-                            <td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>
-                        <? } ?>
+                        <? // if ($clinica == 'SIM') { ?>
+                            <!--<td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>-->
+                        <? // } ?>
 
                         <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
                         <? if ($solicitante == 'SIM') { ?>

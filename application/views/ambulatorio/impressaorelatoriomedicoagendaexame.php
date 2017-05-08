@@ -134,7 +134,7 @@
         ?>
 
     </table>
-     <h4>Toatl de exames marcados <?= $contador; ?></h4>
+     <h4>Total de exames marcados <?= $contador; ?></h4>
 
 </div> <!-- Final da DIV content -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
