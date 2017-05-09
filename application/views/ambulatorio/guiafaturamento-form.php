@@ -67,7 +67,7 @@
                                 <th class="tabela_header">Convenio</th>
                                 <th class="tabela_header">Procedimento</th>
                                 <th class="tabela_header">Medico</th>
-                                <th class="tabela_header">Tipo</th>
+                                <!--<th class="tabela_header">Tipo</th>-->
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Empresa</th>
@@ -101,12 +101,12 @@
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
-                                <td  width="50px;">
+<!--                                <td  width="50px;">
                                     <select  name="tipo" id="tipo" class="size1" >
                                         <option value="EXAME">EXAME</option>
                                         <option value="CONSULTA">CONSULTA</option>
                                     </select>
-                                </td>
+                                </td>-->
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
                                 <td  width="20px;">
@@ -261,7 +261,7 @@
                                             $('#convenio1').change(function () {
                                                 if ($(this).val()) {
                                                     $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofaturar', {convenio1: $(this).val(), ajax: true}, function (j) {
                                                         options = '<option value=""></option>';
                                                         for (var c = 0; c < j.length; c++) {
                                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';

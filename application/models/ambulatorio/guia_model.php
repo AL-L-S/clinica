@@ -8321,7 +8321,15 @@ ORDER BY ae.agenda_exames_id)";
 
     function gravarexamesfaturamento() {
         try {
-
+            
+            $this->db->select('ag.tipo');
+            $this->db->from('tb_procedimento_convenio pc');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+            $this->db->where('pc.procedimento_convenio_id', $_POST['procedimento1']);
+            $return = $this->db->get()->result();
+            $tipo = $return[0]->tipo;
+//            var_dump($tipo); die;
             $hora = date("H:i:s");
             $data = date("Y-m-d");
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
@@ -8338,7 +8346,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('autorizacao', $_POST['autorizacao1']);
             $this->db->set('empresa_id', $_POST['txtempresa']);
             $this->db->set('confirmado', 't');
-            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('tipo', $tipo);
             $this->db->set('ativo', 'f');
             $this->db->set('realizada', 't');
             if ($_POST['medicoagenda'] != "") {
@@ -8383,7 +8391,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
                 $this->db->set('exame_id', $exames_id);
                 $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['tipo']);
+                $this->db->set('tipo', $tipo);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
 
