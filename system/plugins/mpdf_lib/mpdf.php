@@ -7576,7 +7576,7 @@ function _puthtmlheaders() {
 		else { $pntstr = ''; }
 		$html = str_replace($this->aliasNbPgGp,$pntstr,$html );	// {nbpg}
 		$html = str_replace($this->aliasNbPg,$nb,$html );	// {nb}
-		$html = preg_replace('/\{DATE\s+(.*?)\}/e',"date('\\1')",$html );
+		$html= preg_replace_callback('/\&\#x([0-9a-fA-F]+)\;/m', function($m) use ($lo){return codeHex2utf($m[1],$lo);}, $html);
 
 		$this->HTMLheaderPageLinks = array();
 		$this->HTMLheaderPageAnnots = array();
@@ -7659,7 +7659,7 @@ function _puthtmlheaders() {
 		else { $pntstr = ''; }
 		$html = str_replace($this->aliasNbPgGp,$pntstr,$html );	// {nbpg}
 		$html = str_replace($this->aliasNbPg,$nb,$html );	// {nb}
-		$html = preg_replace('/\{DATE\s+(.*?)\}/e',"date('\\1')",$html );
+		$html= preg_replace_callback('/\&\#x([0-9a-fA-F]+)\;/m', function($m) use ($lo){return codeHex2utf($m[1],$lo);}, $html);
 
 
 		$this->HTMLheaderPageLinks = array();
