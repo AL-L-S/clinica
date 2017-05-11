@@ -6704,12 +6704,15 @@ AND data <= '$data_fim'";
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.financeiro', 'f');
+//        $this->db->where('pt.home_care', 'f');
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data1']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data2']))));
 
         $this->db->where('c.dinheiro', 't');
-
-        $this->db->where('ae.operador_autorizacao >', 0);
+        if(isset($_POST['empresa'])){
+            $this->db->where('ae.empresa_id', $_POST['empresa']); 
+        }
+        
         $return = $this->db->get();
         return $return->result();
     }
@@ -7090,7 +7093,10 @@ AND data <= '$data_fim'";
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_saldo');
                 } else {
-
+                    
+            
+//                    echo $classe, ' => ';
+                    
                     if (isset($value->dia_receber) && $value->dia_receber > 0) {
                         $data_atual = $_POST['data1'];
                         $dia_atual = substr($_POST['data1'], 8);
@@ -7106,6 +7112,7 @@ AND data <= '$data_fim'";
 
                         $valor_n_parcelado = $valor_total;
                         $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
+                        
                         foreach ($agenda_exames_id as $item) {
                             if ($item->forma_pagamento == $value->forma_pagamento_id) {
                                 $parcelas = $item->parcelas1;
@@ -7128,7 +7135,7 @@ AND data <= '$data_fim'";
 
                             if ($parcelas != '') {
                                 $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-
+                                
                                 if ($jurosporparcelas[0]->taxa_juros > 0) {
                                     $taxa_juros = $jurosporparcelas[0]->taxa_juros;
                                 } else {
@@ -7184,12 +7191,12 @@ AND data <= '$data_fim'";
                         }
                         $this->db->set('ativo', 'f');
                         $this->db->update('tb_financeiro_contasreceber_temp');
-                    } else {
+                    } 
+                    else {
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
+                            
                             $valor_n_parcelado = $valor_total;
                             $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
-
-
                             foreach ($agenda_exames_id as $item) {
                                 if ($item->forma_pagamento == $value->forma_pagamento_id) {
                                     $parcelas = $item->parcelas1;
@@ -7211,8 +7218,8 @@ AND data <= '$data_fim'";
 
                                 if ($parcelas != '') {
                                     $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-//                                    var_dump($parcelas); die;
-                                    if ($jurosporparcelas[0]->taxa_juros > 0) {
+//                                    var_dump($jurosporparcelas); die;
+                                    if (@$jurosporparcelas[0]->taxa_juros > 0) {
                                         $taxa_juros = $jurosporparcelas[0]->taxa_juros;
                                     } else {
                                         $taxa_juros = 0;
@@ -7250,9 +7257,9 @@ AND data <= '$data_fim'";
                                 }
                                 $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
                             }
-
-
+                            
                             $receber_temp = $this->burcarcontasrecebertemp();
+                            
                             foreach ($receber_temp as $temp) {
                                 $receber_temp2 = $this->burcarcontasrecebertemp2($temp->data);
                                 $this->db->set('valor', $receber_temp2[0]->valor);
@@ -7274,7 +7281,6 @@ AND data <= '$data_fim'";
                 }
             }
         }
-//        die;
 
         if ($_POST['grupo'] == 0) {
 
@@ -7431,9 +7437,12 @@ ORDER BY ae.agenda_exames_id)";
     }
 
     function listarempresa($empresa_id = null) {
-
-        $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('razao_social,
+        if($empresa_id == null){
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
+        
+        $this->db->select('empresa_id,
+                            razao_social,
                             logradouro,
                             numero,
                             nome,

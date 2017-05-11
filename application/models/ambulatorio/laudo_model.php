@@ -727,9 +727,25 @@ class laudo_model extends Model {
         $DB1->query($sql);
     }
 
+    function editaranaminesehistorico() {
+        $this->db->set('laudo', $_POST['laudo']);
+        $this->db->where('laudoantigo_id', $_POST['laudoantigo_id']);
+        $this->db->update('tb_laudoantigo');
+    }
+
+    function listarconsultahistoricoantigoeditar($laudoantigo_id) {
+
+        $this->db->select('laudo, data_cadastro, laudoantigo_id, paciente_id');
+        $this->db->from('tb_laudoantigo');
+        $this->db->where('laudoantigo_id', $laudoantigo_id);
+//        $this->db->orderby('data_cadastro desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarconsultahistoricoantigo($paciente_id) {
 
-        $this->db->select('laudo, data_cadastro');
+        $this->db->select('laudo, data_cadastro, laudoantigo_id, paciente_id');
         $this->db->from('tb_laudoantigo');
         $this->db->where('paciente_id', $paciente_id);
         $this->db->orderby('data_cadastro desc');

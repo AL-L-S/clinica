@@ -84,6 +84,8 @@
                                         <a style="text-align: center;cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaranamineseantigo/<?= $item->paciente_id; ?>');" >
                                                 Histórico</a></div>
                                 </td>
+<!--                                <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link_new">
+                                </td>-->
                                 
                             </tr>
 

@@ -192,7 +192,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data)) . " " . $item->inicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
         <!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
                                         <a href="<?= base_url() ?>ambulatorio/exame/anexarimagem/">
                                             Chamar
@@ -231,32 +231,39 @@
 
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;">
-                                        <font size="-2">
-                                        <? if (($perfil_id == 4 && ($item->medico_parecer1 == $operador_id)) || $perfil_id == 1) { 
-                                            
-                                            $url = explode('?',$_SERVER['REQUEST_URI']); 
-                                            $args = str_replace('=','!', str_replace('&','@', $url[1]));?>
-                                        
-                                            <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>/<?= @$args; ?>">
-                                                Cancelar</a>
-                                        <? } ?>
-                                        </font>
+                                        <font size="-2"><a></a></font>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                         <a></a></font>
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                        <a></a></font>
-                                    </td>
+
                                     <? if ($item->paciente_id == "" && $item->bloqueado == 'f') { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><font size="-2">
+                                            <a></a></font>
+                                        </td>
+                                        
 
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarfisioterapiatempmedico/<?= $item->agenda_exames_id ?>');">Consultas
                                                 </a></div>
                                         </td>
+
                                     <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                             <a></a></font>
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+
+                                            <?
+                                            if (($perfil_id == 4 && ($item->medico_parecer1 == $operador_id)) || $perfil_id == 1) {
+
+                                                $url = explode('?', $_SERVER['REQUEST_URI']);
+                                                $args = str_replace('=', '!', str_replace('&', '@', $url[1]));
+                                                ?>
+                                                <div class="bt_link">
+                                                    <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>/<?= @$args; ?>">
+                                                        Cancelar</a></div>
+                                            <? } ?></font>
                                         </td>
                                     <? } ?>
                                 <? } ?>

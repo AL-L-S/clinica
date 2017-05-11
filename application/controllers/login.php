@@ -14,11 +14,11 @@ class Login extends Controller {
 
     function verificasms() {
         //verifica se ja foi feita uma verificaçao hoje.
-        $smsVerificacao = $this->login->verificasms();
-        
-        if (count($smsVerificacao) == 0) {
+//        $smsVerificacao = $this->login->verificasms();
+//        
+//        if (count($smsVerificacao) == 0) {
             //atualizando a data da ultima verificacao
-            $this->login->atualizaultimaverificacao();
+//            $this->login->atualizaultimaverificacao();
 
             //verificando o total de mensagens utilizadas do pacote
             $totalUtilizado = (int) $this->login->totalutilizado();
@@ -27,6 +27,7 @@ class Login extends Controller {
             if ($totalUtilizado < $totalPacote) {
                 //calculando total disponivel
                 $disponivel = $totalPacote - $totalUtilizado;
+                
                 //INSERINDO EXAMES AGENDADOS PARA O DIA SEGUINTE NA TABELA DE CONTROLE
                 $examesAgendados = $this->login->examesagendados();
                 $totalInserido = $this->login->atualizandoagendadostabelasms($examesAgendados, $disponivel);
@@ -83,8 +84,8 @@ class Login extends Controller {
             /* ENVIANDO PARA O WEBSERVICE */
             // Criando um Cliente 
             $cliente = new SoapClient(null, array(
-                'location' => "http://192.168.25.15/weservice/webservice/servidor.php",
-                'uri' => "http://192.168.25.15/weservice/webservice/",
+                'location' => "http://200.98.64.240/webservice/webservice/servidor.php",
+                'uri' => "http://200.98.64.240/webservice/webservice/",
                 'trace' => 1
             ));
 
@@ -97,7 +98,8 @@ class Login extends Controller {
             }
             //Salvando o numero de controle recebido pelo WEBSERVICE no banco
             $this->login->atualizandonumerocontrole($resultado);
-        }
+//            die;
+//        }
     }
 
     function autenticar() {

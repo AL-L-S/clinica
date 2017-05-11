@@ -334,6 +334,17 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/laudoconsultaantigo-form', $data);
     }
 
+    function editaranaminesehistorico() {
+
+        $this->laudo->editaranaminesehistorico();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    function carregaranaminesehistorico($laudoantigo_id) {
+
+        $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigoeditar($laudoantigo_id);
+        $this->load->View('ambulatorio/editarhistoricoconsulta-form', $data);
+    }
+
     function carregarreceituario($ambulatorio_laudo_id) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
