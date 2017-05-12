@@ -1764,8 +1764,15 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('e.cancelada', 'false');
         $this->db->where('e.situacao', 'FINALIZADO');
-        if ($_POST['medicos'] != "0") {
-            $this->db->where('al.medico_parecer1', $_POST['medicos']);
+
+        $perfil_id = $this->session->userdata('perfil_id');
+        if ($perfil_id == 4) { // medico so pode ver o relatorio dele
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->where('al.medico_parecer1', $operador_id);
+        } else {
+            if ($_POST['medicos'] != "0") {
+                $this->db->where('al.medico_parecer1', $_POST['medicos']);
+            }
         }
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
@@ -6709,10 +6716,10 @@ AND data <= '$data_fim'";
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data2']))));
 
         $this->db->where('c.dinheiro', 't');
-        if(isset($_POST['empresa'])){
-            $this->db->where('ae.empresa_id', $_POST['empresa']); 
+        if (isset($_POST['empresa'])) {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -6756,7 +6763,7 @@ AND data <= '$data_fim'";
 //        try {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
-        
+
         $operador_id = $this->session->userdata('operador_id');
         $data_cauculo = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
         $data_inicio = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
@@ -7010,7 +7017,7 @@ AND data <= '$data_fim'";
         }
 
         // Update na tabela agenda exames
-        $procedimentos = substr($_POST['agenda_exames_id'], 0, (strlen($_POST['agenda_exames_id']) - 1) );
+        $procedimentos = substr($_POST['agenda_exames_id'], 0, (strlen($_POST['agenda_exames_id']) - 1));
         $sql = "UPDATE ponto.tb_agenda_exames
             SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
             WHERE agenda_exames_id in (
@@ -7093,10 +7100,10 @@ AND data <= '$data_fim'";
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_saldo');
                 } else {
-                    
-            
+
+
 //                    echo $classe, ' => ';
-                    
+
                     if (isset($value->dia_receber) && $value->dia_receber > 0) {
                         $data_atual = $_POST['data1'];
                         $dia_atual = substr($_POST['data1'], 8);
@@ -7112,7 +7119,7 @@ AND data <= '$data_fim'";
 
                         $valor_n_parcelado = $valor_total;
                         $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
-                        
+
                         foreach ($agenda_exames_id as $item) {
                             if ($item->forma_pagamento == $value->forma_pagamento_id) {
                                 $parcelas = $item->parcelas1;
@@ -7135,7 +7142,7 @@ AND data <= '$data_fim'";
 
                             if ($parcelas != '') {
                                 $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-                                
+
                                 if ($jurosporparcelas[0]->taxa_juros > 0) {
                                     $taxa_juros = $jurosporparcelas[0]->taxa_juros;
                                 } else {
@@ -7191,10 +7198,9 @@ AND data <= '$data_fim'";
                         }
                         $this->db->set('ativo', 'f');
                         $this->db->update('tb_financeiro_contasreceber_temp');
-                    } 
-                    else {
+                    } else {
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
-                            
+
                             $valor_n_parcelado = $valor_total;
                             $agenda_exames_id = $this->relatoriocaixaforma($value->forma_pagamento_id);
                             foreach ($agenda_exames_id as $item) {
@@ -7257,9 +7263,9 @@ AND data <= '$data_fim'";
                                 }
                                 $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
                             }
-                            
+
                             $receber_temp = $this->burcarcontasrecebertemp();
-                            
+
                             foreach ($receber_temp as $temp) {
                                 $receber_temp2 = $this->burcarcontasrecebertemp2($temp->data);
                                 $this->db->set('valor', $receber_temp2[0]->valor);
@@ -7437,10 +7443,10 @@ ORDER BY ae.agenda_exames_id)";
     }
 
     function listarempresa($empresa_id = null) {
-        if($empresa_id == null){
+        if ($empresa_id == null) {
             $empresa_id = $this->session->userdata('empresa_id');
         }
-        
+
         $this->db->select('empresa_id,
                             razao_social,
                             logradouro,
@@ -8330,7 +8336,7 @@ ORDER BY ae.agenda_exames_id)";
 
     function gravarexamesfaturamento() {
         try {
-            
+
             $this->db->select('ag.tipo');
             $this->db->from('tb_procedimento_convenio pc');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -8552,6 +8558,7 @@ ORDER BY ae.agenda_exames_id)";
             return -1;
         }
     }
+
     function valorexames() {
         try {
             $exame_id = "";

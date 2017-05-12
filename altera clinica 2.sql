@@ -97,3 +97,4 @@ ALTER TABLE ponto.tb_empresa_sms ADD COLUMN mensagem_revisao character varying(2
 ALTER TABLE ponto.tb_empresa add column centrocirurgico boolean DEFAULT false;
 ALTER TABLE ponto.tb_empresa add column relatoriorm boolean DEFAULT false;
 
+ALTER TABLE ponto.tb_laudoantigo ADD COLUMN laudoantigo_id serial NOT NULL;

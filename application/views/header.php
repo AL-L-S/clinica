@@ -203,7 +203,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id          ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id           ?>);
                     }
                 }
 
@@ -230,7 +230,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id            ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id             ?>);
                 }
 
 <? } ?>
@@ -309,7 +309,7 @@ function debug($object) {
                     <li><span class="folder">Recep&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 7) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 /* || $perfil_id == 7 */) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>cadastros/pacientes">Cadastro</a></span></ul>
                                     <? if ($perfil_id != 11 && $perfil_id != 4 && $perfil_id != 7) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperacaixa">Fila Caixa</a></span></ul>
@@ -354,12 +354,12 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogruporm">Relatorio Rm(</a></span></ul>
                                     <?
                                 }
-                                if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 11 || $perfil_id == 12) {
+                                if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 11 || $perfil_id == 12) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriorecepcaomedicoconvenio">Relatorio Medico Convenio</a></span></ul>
                                     <?
                                 }
-                                if ($perfil_id != 9 && $perfil_id != 4) {
+                                if ($perfil_id != 9 && $perfil_id != 4 && $perfil_id != 7) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioatendenteconvenio">Relatorio Atendente Convenio</a></span></ul>
                                 <? } ?>    
@@ -395,7 +395,7 @@ function debug($object) {
                                 <? } ?>     
                             </li>
                             <li><span class="folder">Relatorios</span>
-                                <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
+                                <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 7) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                 <? } ?>    
                             </li>    
@@ -527,7 +527,7 @@ function debug($object) {
                                 <? } ?>
                             </li> 
                             <li><span class="folder">Relatorios</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 8) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 8 || $perfil_id == 10) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatorioentradaarmazem">Relatorio Entrada Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaidaarmazem">Relatorio Saida Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldoarmazem">Relatorio Saldo Produtos/Entrada</a></span></ul>
@@ -570,7 +570,7 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatorioacompanhamentodecontas">Relatorio Acompanhamento de contas</a></span></ul>
                                     <?
                                 }
-                                if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 13) {
+                                if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 13 || $perfil_id == 10) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixapersonalizado">Relatorio Caixa Personalizado</a></span></ul>
@@ -632,14 +632,14 @@ function debug($object) {
                         </li>
 
 
-                    <?
+                        <?
                     }
                     if ($centrocirurgico == 't') {
                         ?>
                         <li><span class="folder">Centro Cirurgico</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-    <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7) { ?>
+                                    <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7) { ?>
                                         <ul>
                                             <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico">Listar Solicitacoes</a></span></li>
                                             <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarcirurgia">Fila de Cirurgia</a></span></li>
@@ -647,12 +647,12 @@ function debug($object) {
                                             <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarequipecirurgica">Equipe Cirurgica</a></span></li>
                                             <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisargrauparticipacao">Grau de Participação</a></span></li>
                                         </ul>
-    <? } ?>
+                                    <? } ?>
                                 </li>
                                 <li><span class="folder">Relatorios</span></li>
                             </ul>
                         </li>
-                    <?
+                        <?
                     }
                     if ($relatoriorm == 't') {
                         ?>
@@ -667,14 +667,14 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicosolicitanterm">Relatorio Medico Solicitante</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconveniorm">Relatorio Medico Convenio</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriofaturamentorm">Relatorio Faturamento</a></span></ul>
-                        <? } ?>
+                                <? } ?>
                             </ul>
                         </li>
-<? } ?>
+                    <? } ?>
                     <li><span class="folder">Configura&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Recep&ccedil;&atilde;o</span>
-<? if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 10) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 10) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador">Listar Profissionais</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/motivocancelamento">Motivo cancelamento</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/tipoconsulta">Tipo consulta</a></span></ul>
@@ -682,20 +682,20 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>
                                 <? } ?>
-                                <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
+                                <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 4 && $perfil_id != 7) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/sala">Manter Salas</a></span></ul>
                                 <? } ?>
-                                <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
+                                <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 4 && $perfil_id != 7) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelodeclaracao">Modelo Declara&ccedil;&atilde;o</a></span></ul>
                                 <? } ?>
                             </li>
                             <li><span class="folder">Procedimento</span>                    
-<? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>
 
 
 
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento">Manter Procedimentos</a></span></ul>
-    <? if ($perfil_id != 10) { ?> 
+                                    <? if ($perfil_id != 10) { ?> 
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/relatorioprocedimento">Relatorio Procedimentos</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/pesquisartuss">Manter Procedimentos TUSS</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/gerarelatorioprocedimentotuss">Relatorio Procedimentos TUSS</a></span></ul>
@@ -703,27 +703,27 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/convenio">Manter convenio</a></span></ul>
                                     <? } ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano">Manter Procedimentos Convenio</a></span></ul>
-    <? if ($perfil_id != 10) { ?> 
+                                    <? if ($perfil_id != 10) { ?> 
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/relatorioprocedimentoconvenio">Relatorio Procedimentos Convenio</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">Manter Percentual M&eacute;dico</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificacao</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/agrupador">Manter Agrupador</a></span></ul>
-    <? } ?>
+                                    <? } ?>
                                 <? } ?>
                             </li>
                             <li><span class="folder">Imagem</span> 
-                                <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 10) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 10) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelolaudo">Manter Modelo Laudo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelolinha">Manter Modelo Linha</a></span></ul>
-                            <? } ?>
+                                <? } ?>
                             </li>
-<? if ($internacao == 't') { ?>
+                            <? if ($internacao == 't') { ?>
                                 <li><span class="folder">Interna&ccedil;&atilde;o</span>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarmotivosaida">Manter Motivo Saida</a></span></ul> 
                                 </li>
-                                <? } ?>
+                            <? } ?>
                             <li><span class="folder">Consulta</span> 
-<? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 10) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 10) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloreceita">Manter Modelo Receita</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloatestado">Manter Modelo Atestado</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloreceitaespecial">Manter Modelo R. Especial</a></span></ul>
@@ -733,7 +733,7 @@ function debug($object) {
                                 <? } ?>
                             </li>
                             <li><span class="folder">Estoque</span>
-<? if ($perfil_id == 1 || $perfil_id == 8) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 8) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/menu">Manter Menu</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/tipo">Manter Tipo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/classe">Manter Classe</a></span></ul>
@@ -745,20 +745,23 @@ function debug($object) {
                                 <? } ?>
                             </li> 
                             <li><span class="folder">Financeiro</span>
-<? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>cadastros/tipo">Manter Tipo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>cadastros/classe">Manter Classe</a></span></ul>
         <!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->
                                     <ul><span class="file"><a href="<?= base_url() ?>cadastros/forma">Manter Conta</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento">Manter Forma de Pagamento</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Forma de Pagamento Grupo</a></span></ul>
+                                    <? if ($perfil_id != 10) { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento">Manter Forma de Pagamento</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Forma de Pagamento Grupo</a></span></ul>
+
+                                    <? } ?>
                                 <? } ?>
                             </li> 
                             <li><span class="folder">Administrativas</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa">Manter Empresa</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/versao">Vers&atilde;o</a></span></ul>
-<? } ?>
+                                <? } ?>
                             </li> 
                         </ul>
                     </li>
