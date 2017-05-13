@@ -829,9 +829,10 @@ class Laudo extends BaseController {
         ///////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_laudo == 8) {//RONALDO BARREIRA
             $medicoparecer = $data['laudo']['0']->medico_parecer1;
-            $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='90px' src='img/cabecalho.jpg'><center></td></tr>
+//            echo "<pre>"; var_dump($data['laudo']['0']);die;
+            $cabecalho = "<table><tr><td><center></td></tr>
                    
-                    <tr><td colspan='2'>Exame de:" . $data['laudo']['0']->paciente . "</td></tr>
+                    <tr><td colspan='2'>Exame de: " . $data['laudo']['0']->paciente . "</td></tr>
                     <tr><td>Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "----Idade: " . $teste . "</td></tr>
                     <tr><td>Atendimento:" . $data['laudo']['0']->guia_id . "----Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr>
                     <tr><td>Convenio: " . $data['laudo']['0']->convenio . "----Solicitante: " . $data['laudo']['0']->solicitante . "<br></td></tr>

@@ -275,8 +275,11 @@ class login_model extends Model {
 
     function listarsms() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('sms_id, numero, mensagem, controle_id, empresa_id, agenda_exames_id, paciente_id');
-        $this->db->from('tb_sms');
+        $this->db->select('sms_id, numero, mensagem, controle_id, e.razao_social, e.cnpj, agenda_exames_id, paciente_id');
+        $this->db->from('tb_sms s');
+        $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id');
+        $this->db->where('e.razao_social IS NOT NULL');
+        $this->db->where('e.cnpj IS NOT NULL');
         $this->db->where('enviado', 'f');
         $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get()->result_array();

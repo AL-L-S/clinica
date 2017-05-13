@@ -7079,7 +7079,7 @@ AND data <= '$data_fim'";
 
                 if ((!isset($value->tempo_receber) || $value->tempo_receber == 0) && (!isset($value->dia_receber) || $value->dia_receber == 0)) {
 
-                    $this->db->set('data', $data);
+                    $this->db->set('data', $data_inicio);
                     $this->db->set('valor', $valor_total);
                     $this->db->set('classe', $classe);
                     $this->db->set('nome', $value->credor_devedor);

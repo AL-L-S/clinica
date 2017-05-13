@@ -57,6 +57,16 @@ function debug($object) {
                 });
             })(jQuery);
 
+            // Fazendo atualização da tabela de SMS
+            jQuery(function () {
+                jQuery.ajax({
+                    type: "GET",
+                    url: "<?= base_url(); ?>" + "login/verificasms",
+                    dataType: "json"
+                });
+            });
+            
+
 <? if ($chat == 't') { ?>
 
                 var chatsAbertos = new Array();
@@ -203,7 +213,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id           ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id             ?>);
                     }
                 }
 
@@ -230,7 +240,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id             ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id               ?>);
                 }
 
 <? } ?>

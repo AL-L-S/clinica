@@ -13,12 +13,15 @@ class Login extends Controller {
     }
 
     function verificasms() {
+        set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
+        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão
+        
         //verifica se ja foi feita uma verificaçao hoje.
-//        $smsVerificacao = $this->login->verificasms();
+        $smsVerificacao = $this->login->verificasms();
 //        
-//        if (count($smsVerificacao) == 0) {
+        if (count($smsVerificacao) == 0) {
             //atualizando a data da ultima verificacao
-//            $this->login->atualizaultimaverificacao();
+            $this->login->atualizaultimaverificacao();
 
             //verificando o total de mensagens utilizadas do pacote
             $totalUtilizado = (int) $this->login->totalutilizado();
@@ -27,7 +30,7 @@ class Login extends Controller {
             if ($totalUtilizado < $totalPacote) {
                 //calculando total disponivel
                 $disponivel = $totalPacote - $totalUtilizado;
-                
+
                 //INSERINDO EXAMES AGENDADOS PARA O DIA SEGUINTE NA TABELA DE CONTROLE
                 $examesAgendados = $this->login->examesagendados();
                 $totalInserido = $this->login->atualizandoagendadostabelasms($examesAgendados, $disponivel);
@@ -42,14 +45,14 @@ class Login extends Controller {
                     //calculando novo total disponivel
                     $disponivel = $disponivel - $totalInserido;
                 }
-                
+
                 if ($disponivel > 0) {
                     //INSERINDO PACIENTES ATENDIDOS NO DECORRER DO DIA
                     $pacientesDia = $this->login->atendimentos();
                     $totalInserido = $this->login->atualizandoatendidostabelasms($pacientesDia, $disponivel);
                     $disponivel = $disponivel - $totalInserido;
                 }
-                
+
                 if ($disponivel > 0) {
                     //INSERINDO REVISÕES NA TABELA DE CONTROLE
                     $revisoes = $this->login->revisoes();
@@ -98,8 +101,8 @@ class Login extends Controller {
             }
             //Salvando o numero de controle recebido pelo WEBSERVICE no banco
             $this->login->atualizandonumerocontrole($resultado);
-//            die;
-//        }
+//        die;
+        }
     }
 
     function autenticar() {
@@ -122,7 +125,7 @@ class Login extends Controller {
                     ($this->session->userdata('autenticado') == true)) {
                 $valuecalculado = 0;
 
-                $this->verificasms();
+//                $this->verificasms();
 
                 setcookie("TestCookie", $valuecalculado);
                 redirect(base_url() . "home", "refresh");
