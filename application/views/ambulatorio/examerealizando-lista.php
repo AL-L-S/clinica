@@ -57,7 +57,7 @@
                     <tbody>
                         <?php
                         $perfil_id = $this->session->userdata('perfil_id');
-                        $lista = $this->exame->listarexames($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->exame->listarexames($_GET)->orderby('e.data_cadastro')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             $dataFuturo = date("Y-m-d H:i:s");
