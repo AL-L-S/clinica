@@ -147,7 +147,7 @@
                             <td><?= utf8_decode($item->exame); ?></td>
                             <td><?= $item->codigo; ?></td>
                             <td><?= $item->quantidade; ?></td>
-                            <td ><?= number_format($item->valor / $item->quantidade, 2, ',', '.') ?></td>
+                            <td ><?= number_format($item->valor, 2, ',', '.') ?></td>
                             <td <?if($item->ajuste_cbhpm == 't' && $item->valor != $item->valor_total){?>style="color: blue;" title="Ajustado" <?}?>><?= number_format($item->valor_total, 2, ',', '.') ?></td>
                             <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
                             <td><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
