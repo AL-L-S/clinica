@@ -49,8 +49,8 @@
                                         <a href="<?= base_url() ?>ambulatorio/empresa/carregarempresa/<?= $item->empresa_id ?>">Editar</a></div>
                                 </td>
                                 <?
-                                $operador_id = $this->session->userdata('operador_id');
-                                if ($operador_id == 1):
+                                $perfil_id = $this->session->userdata('perfil_id');
+                                if ($perfil_id == 1):
                                     ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="100pt;"><div class="bt_link" style="width: 100pt">
                                             <a style="width: 100pt" href="<?= base_url() ?>ambulatorio/empresa/configurarsms/<?= $item->empresa_id ?>">Configurar SMS</a></div>

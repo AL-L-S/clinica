@@ -4,19 +4,23 @@
         <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/empresa/gravarconfiguracaosms/" method="post">
             <fieldset>
                 <legend>Dados do Pacote</legend>
-                <div style="width: 100%">
-                    <label>Pacote</label>
-                    <input type="hidden" name="sms_id" value="<?= @$mensagem[0]->empresa_sms_id ?>"/>
-                    <input type="hidden" name="empresa_id" value="<?= $empresa_id ?>"/>
-                    <select name="txtpacote" id="txtpacote" class="size2" required="">
-                        <option value="">Selecione</option>
-                        <? foreach ($pacotes as $item) : ?>
-                            <option value="<?= $item->pacote_sms_id; ?>" <?= (@$item->pacote_sms_id == @$mensagem[0]->pacote_id) ? "selected" : ''; ?>>
+                <? $operador_id = $this->session->userdata('operador_id');
+                if ($operador_id == 1) {
+                    ?>
+                    <div style="width: 100%">
+                        <label>Pacote</label>
+                        <input type="hidden" name="sms_id" value="<?= @$mensagem[0]->empresa_sms_id ?>"/>
+                        <input type="hidden" name="empresa_id" value="<?= $empresa_id ?>"/>
+                        <select name="txtpacote" id="txtpacote" class="size2" required="">
+                            <option value="">Selecione</option>
+                                <? foreach ($pacotes as $item) : ?>
+                                <option value="<?= $item->pacote_sms_id; ?>" <?= (@$item->pacote_sms_id == @$mensagem[0]->pacote_id) ? "selected" : ''; ?>>
                                 <?= $item->descricao_pacote; ?>
-                            </option>
-                        <? endforeach; ?>
-                    </select>
-                </div>
+                                </option>
+                                <? endforeach; ?>
+                        </select>
+                    </div>
+                <? } ?>
                 <div style="width: 100%">
                     <label>Mensagem Confirmaçao</label>
                     <input type="text" id="txtMensagemConfirmacao" class="mensagem_texto" name="txtMensagemConfirmacao" value="<?= @$mensagem[0]->mensagem_confirmacao ?>"/>
@@ -29,7 +33,7 @@
                     <label>Mensagem de Aniversariantes</label>
                     <input type="text" id="txtMensagemAniversariantes" class="mensagem_texto" name="txtMensagemAniversariantes" value="<?= @$mensagem[0]->mensagem_aniversariante ?>"/>
                 </div>
-                
+
                 <div style="width: 100%">
                     <label>Mensagem de Revisão</label>
                     <input type="text" id="txtMensagemAniversariantes" class="mensagem_texto" name="txtMensagemAniversariantes" value="<?= @$mensagem[0]->mensagem_aniversariante ?>"/>

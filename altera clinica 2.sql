@@ -98,3 +98,13 @@ ALTER TABLE ponto.tb_empresa add column centrocirurgico boolean DEFAULT false;
 ALTER TABLE ponto.tb_empresa add column relatoriorm boolean DEFAULT false;
 
 ALTER TABLE ponto.tb_laudoantigo ADD COLUMN laudoantigo_id serial NOT NULL;
+
+
+-- Dia 15/05/2017
+-- PACOTES DE MENSAGENS --
+TRUNCATE ponto.tb_pacote_sms;
+INSERT INTO ponto.tb_pacote_sms(descricao_pacote, quantidade)
+    VALUES ('PACOTE 10000 MENSAGENS', 10000),
+	   ('PACOTE 50000 MENSAGENS', 50000),
+	   ('PACOTE 100000 MENSAGENS', 100000),
+	   ('PACOTE 200000 MENSAGENS', 200000);
