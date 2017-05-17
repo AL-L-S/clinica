@@ -565,13 +565,16 @@ class Exametemp extends BaseController {
                 }
 
                 $_POST['txtNomeid'] = $this->exametemp->crianovopacienteespecialidade();
-
+                $agrupador = $this->exametemp->agrupadorfisioterapia();
+                
                 //marcando sessoes
                 if ($_POST['sessao'] == 1) {
                     $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['agenda_selecionada'][0]->agenda_exames_id);
                 } else {
+                    $contador_sessao = 1;
                     for ($i = 0; $i < $_POST['sessao']; $i++) {
-                        $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id);
+                        $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id,$_POST['sessao'], $contador_sessao,$agrupador);
+                        $contador_sessao++;
                     }
                 }
 

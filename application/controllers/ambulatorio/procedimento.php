@@ -111,7 +111,8 @@ class Procedimento extends BaseController {
         $data['conveniotipo'] = $_POST['convenio'];
         $data['relatorio'] = $this->procedimento->relatorioprocedimentoconvenio();
         $html = $this->load->view('ambulatorio/impressaorelatorioprocedimentoconvenio', $data, true);
-        pdf($html, $filename, $cabecalho, $rodape, $grupo);
+        
+//        pdf($html, $filename, $cabecalho, $rodape, $grupo);
         $this->load->View('ambulatorio/impressaorelatorioprocedimentoconvenio', $data);
     }
 
