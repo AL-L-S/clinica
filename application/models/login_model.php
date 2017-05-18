@@ -281,6 +281,7 @@ class login_model extends Model {
         $this->db->where('e.razao_social IS NOT NULL');
         $this->db->where('e.cnpj IS NOT NULL');
         $this->db->where('enviado', 'f');
+        $this->db->where('ativo', 't');
         $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get()->result_array();
 
@@ -303,6 +304,7 @@ class login_model extends Model {
     function totalutilizado() {
         $periodo = date('m/Y');
         $empresa_id = $this->session->userdata('empresa_id');
+        
         $this->db->select('sum(qtde) as total');
         $this->db->from('tb_empresa_sms_registro');
         $this->db->where('periodo', $periodo);
