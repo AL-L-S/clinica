@@ -63,8 +63,9 @@ class empresa_model extends Model {
     function listarinformacaosms() {
         $empresa_id = $this->session->userdata('empresa_id');
         
-        $this->db->select('pacote_id,
+        $this->db->select(' pacote_id,
                             empresa_sms_id,
+                            enviar_excedentes,
                             mensagem_confirmacao, 
                             mensagem_agradecimento,
                             mensagem_aniversariante');
@@ -109,6 +110,12 @@ class empresa_model extends Model {
             /* inicia o mapeamento no banco */
             $this->db->set('empresa_id', $_POST['empresa_id']);
             $this->db->set('pacote_id', $_POST['txtpacote']);
+            if(isset($_POST['msgensExcedentes'])){
+                $this->db->set('enviar_excedentes', 't');
+            }
+            else{
+                $this->db->set('enviar_excedentes', 'f');
+            }
             $this->db->set('mensagem_confirmacao', $_POST['txtMensagemConfirmacao']);
             $this->db->set('mensagem_agradecimento', $_POST['txtMensagemAgradecimento']);
             $this->db->set('mensagem_aniversariante', $_POST['txtMensagemAniversariantes']);

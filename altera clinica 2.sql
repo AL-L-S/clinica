@@ -85,7 +85,6 @@ ALTER TABLE ponto.tb_estoque_saldo ADD COLUMN ambulatorio_gasto_sala_id integer;
 ALTER TABLE ponto.tb_exame_sala ADD COLUMN armazem_id integer;
 
 --Dia 04/05/2017
-
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN revisao boolean DEFAULT false;
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN revisao_dias integer;
 ALTER TABLE ponto.tb_empresa_sms ADD COLUMN mensagem_revisao character varying(20000);
@@ -104,7 +103,13 @@ ALTER TABLE ponto.tb_laudoantigo ADD COLUMN laudoantigo_id serial NOT NULL;
 -- PACOTES DE MENSAGENS --
 TRUNCATE ponto.tb_pacote_sms;
 INSERT INTO ponto.tb_pacote_sms(descricao_pacote, quantidade)
-    VALUES ('PACOTE 10000 MENSAGENS', 10000),
-	   ('PACOTE 50000 MENSAGENS', 50000),
-	   ('PACOTE 100000 MENSAGENS', 100000),
-	   ('PACOTE 200000 MENSAGENS', 200000);
+    VALUES ('PACOTE 1000 MENSAGENS', 1000),
+           ('PACOTE 2000 MENSAGENS', 2000),
+           ('PACOTE 5000 MENSAGENS', 5000),
+           ('PACOTE 10000 MENSAGENS', 10000),
+	   ('PACOTE 50000 MENSAGENS', 50000);
+
+ALTER TABLE ponto.tb_empresa_sms ADD COLUMN enviar_excedentes boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_integracao_laudo ALTER COLUMN exame_requisicao TYPE character varying(200);
+ALTER TABLE ponto.tb_integracao_laudo ALTER COLUMN exame_descricao TYPE character varying(200);

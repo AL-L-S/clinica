@@ -91,6 +91,14 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltou', $data);
     }
 
+    function reagendamentogeral() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['salas'] = $this->exame->listartodassalas();
+        $this->loadView('ambulatorio/relatorioreagendamentogeral', $data);
+    }
+
     function relatoriorecepcaoagenda() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();

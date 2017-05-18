@@ -330,6 +330,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncao">Multifuncao Exame</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsulta">Multifuncao Consulta</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaofisioterapia">Multifuncao Especialidade</a></span></ul>
+                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->
 
                                         <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendageral">Medico agenda geral</a></span></ul>
@@ -681,6 +682,32 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
+                    <li><span class="folder">Ponto</span>
+                        <ul>
+                            <li><span class="folder">Rotinas</span>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/funcionario">Funcionario</a></span></ul>
+
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/setor">Setor</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/funcao">Fun&ccedil;&atilde;o</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/cargo">Cargo</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/horariostipo">Horarios Tipo</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/horariostipo/virada">Virada</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/competencia">Competencia</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/ocorrenciatipo">Ocorrencia tipo</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/processaponto">processar</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/importarponto">importar ponto</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/importarponto/importarpontobatida">importar batida</a></span></ul>
+
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/processaponto">processar</a></span></ul>
+                            </li>
+                            <li><span class="folder">Relatorios</span>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/funcionario/relatorio">Funcionario lista</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/relatorio/impressaocartaofixo">ponto Fixo</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/relatorio/impressaocartaovariavel">ponto Variavel</a></span></ul>
+                                <ul><span class="file"><a href="<?= base_url() ?>ponto/relatorio/impressaocartaosemiflexivel">ponto Semiflexivel</a></span></ul>
+                            </li>
+                        </ul>
+                    </li>
                     <li><span class="folder">Configura&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Recep&ccedil;&atilde;o</span>

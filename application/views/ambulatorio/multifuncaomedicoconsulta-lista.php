@@ -221,7 +221,7 @@
                                             Chamar
                                         </a></div>
                                 </td>-->
-                                <? if ($item->situacaolaudo != '') { ?>
+                                <? if ($item->situacaolaudo != '' && isset($item->paciente_id) ) { ?>
                                     <? if (($item->medico_parecer1 == $operador_id && $item->situacaolaudo == 'FINALIZADO') || ($item->realizada == 't' && $item->situacaolaudo != 'FINALIZADO') || $operador_id == 1) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaranaminese/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
