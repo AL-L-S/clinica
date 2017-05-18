@@ -22,6 +22,12 @@
                     </div>
                 <? } ?>
                 <div style="width: 100%">
+                    <input type="checkbox" id="msgensExcedentes" name="msgensExcedentes" <? if (@$mensagem[0]->enviar_excedentes == 't') echo "checked" ?>/>
+                    <label for="msgensExcedentes" style="display: inline; font-size: 10pt; color: black;"> 
+                        <span title="Isso implicara em cobranças a cada mensagem excedente.">Permitir envio de mensagens ao fim do pacote?</span>
+                    </label>
+                </div>
+                <div style="width: 100%">
                     <label>Mensagem Confirmaçao</label>
                     <input type="text" id="txtMensagemConfirmacao" class="mensagem_texto" name="txtMensagemConfirmacao" value="<?= @$mensagem[0]->mensagem_confirmacao ?>"/>
                 </div>
