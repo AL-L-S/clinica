@@ -2161,6 +2161,8 @@ class exametemp_model extends Model {
             $this->db->set('observacoes', $_POST['observacoes']);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('qtde_sessao', $sessao_total);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+            $this->db->set('convenio_id', $_POST['convenio']);
             $this->db->set('numero_sessao', $contador_sessao);
             $this->db->set('agrupador_fisioterapia', $agrupador);
             $this->db->set('data_atualizacao', $horario);
