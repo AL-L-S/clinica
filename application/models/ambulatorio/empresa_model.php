@@ -66,6 +66,7 @@ class empresa_model extends Model {
         $this->db->select(' pacote_id,
                             empresa_sms_id,
                             enviar_excedentes,
+                            mensagem_revisao, 
                             mensagem_confirmacao, 
                             mensagem_agradecimento,
                             mensagem_aniversariante');
@@ -119,6 +120,7 @@ class empresa_model extends Model {
             $this->db->set('mensagem_confirmacao', $_POST['txtMensagemConfirmacao']);
             $this->db->set('mensagem_agradecimento', $_POST['txtMensagemAgradecimento']);
             $this->db->set('mensagem_aniversariante', $_POST['txtMensagemAniversariantes']);
+            $this->db->set('mensagem_revisao', $_POST['txtMensagemRevisao']);
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -131,7 +133,9 @@ class empresa_model extends Model {
             else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
+                
                 $sms_id = $_POST['sms_id'];
+                
                 $this->db->where('empresa_sms_id', $sms_id);
                 $this->db->update('tb_empresa_sms');
             }

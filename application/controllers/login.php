@@ -87,8 +87,8 @@ class Login extends Controller {
             /* ENVIANDO PARA O WEBSERVICE */
             // Criando um Cliente 
             $cliente = new SoapClient(null, array(
-                'location' => "http://200.98.64.240/webservice/webservice/servidor.php",
-                'uri' => "http://200.98.64.240/webservice/webservice/",
+                'location' => "http://localhost/webservice/webservice/servidor.php",
+                'uri' => "http://localhost/webservice/webservice/",
                 'trace' => 1
             ));
 
@@ -97,11 +97,10 @@ class Login extends Controller {
                     "dados" => $dados
                 ));
             } catch (SoapFault $fault) {
-//                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
+                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
             }
             //Salvando o numero de controle recebido pelo WEBSERVICE no banco
             $this->login->atualizandonumerocontrole($resultado);
-//        die;
         }
     }
 

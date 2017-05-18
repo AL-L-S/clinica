@@ -1,7 +1,7 @@
 
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div style="width: 100%">
-        <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/empresa/gravarconfiguracaosms/" method="post">
+        <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/empresa/gravarconfiguracaosms" method="post">
             <fieldset>
                 <legend>Dados do Pacote</legend>
                 <? $operador_id = $this->session->userdata('operador_id');
@@ -42,7 +42,7 @@
 
                 <div style="width: 100%">
                     <label>Mensagem de Revisão</label>
-                    <input type="text" id="txtMensagemAniversariantes" class="mensagem_texto" name="txtMensagemAniversariantes" value="<?= @$mensagem[0]->mensagem_aniversariante ?>"/>
+                    <input type="text" id="txtMensagemRevisao" class="mensagem_texto" name="txtMensagemRevisao" value="<?= @$mensagem[0]->mensagem_revisao ?>"/>
                 </div>
 
                 <div style="width: 100%">
