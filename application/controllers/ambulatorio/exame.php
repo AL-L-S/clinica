@@ -352,7 +352,6 @@ class Exame extends BaseController {
     function autorizarsessao($agenda_exames_id, $paciente_id, $guia_id) {
         $home_care = $this->exame->procedimentohomecare($agenda_exames_id);
 //        var_dump($home_care); die;
-        if($home_care == 't') {
             $intervalo = $this->exame->verificadiasessaohomecare($agenda_exames_id);
             if ($intervalo == 0) {
                 $this->exame->autorizarsessao($agenda_exames_id);
@@ -363,27 +362,6 @@ class Exame extends BaseController {
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
             }
-        } else {
-            $intervalo = $this->exame->verificadiasessao($agenda_exames_id);
-            $data_sessao = date("Y-m-d", strtotime(str_replace('/', '-', $intervalo[0]->data)));
-            $data_formatada = date("d/m/Y", strtotime(str_replace('/', '-', $intervalo[0]->data)));
-            $data_atual = date("Y-m-d");
-//            if($data_atual >= $data_sessao){
-//                echo 'grava';
-//            }else{
-//                echo 'nao gravou pro causa da data';
-//            }
-//            var_dump($data_atual); die;
-            if ($data_atual >= $data_sessao) {
-                $this->exame->autorizarsessao($agenda_exames_id);
-                $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
-                redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
-            } else {
-                $data['mensagem'] = "Essa sessao só poderá ser autorizada em $data_formatada.";
-                $this->session->set_flashdata('message', $data['mensagem']);
-                redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
-            }
-        }
     }
 
     function autorizarsessaocadapsicologia($agenda_exames_id, $paciente_id, $guia_id) {
