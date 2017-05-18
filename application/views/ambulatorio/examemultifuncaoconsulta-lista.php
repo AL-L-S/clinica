@@ -254,11 +254,11 @@
 
                                 <? } ?>                                
 
-                                <? if ($item->convenio != '') { ?>
+                               
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . ' - ' .$item->procedimento;  ?></td>
-                                <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' .$item->procedimento; ?></td>
-                                <? } ?>
+                               
+                                    <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' .$item->procedimento; ?></td>-->
+                              
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
                                                                                         width=500,height=230');">=><?= $item->observacoes; ?></td>

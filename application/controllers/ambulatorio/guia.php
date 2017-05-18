@@ -561,7 +561,7 @@ class Guia extends BaseController {
         $grupo = $data['exame'][0]->grupo;
         $data['empresa_id'] = $this->guia->listarempresa($empresa_id);
         $data['exames'] = $this->guia->listarexamesguia($guia_id);
-        $data['empresa'] = $this->guia->listarempresa($guia_id);
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         if ($data['empresa'][0]->impressao_tipo == 2) {// Proimagem

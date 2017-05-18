@@ -122,19 +122,17 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriomedicoordem', $data);
     }
-    
+
     function gerarelatoriorecepcaoagenda() {
-        if($_POST['tipoRelatorio'] == '0'){
+        if ($_POST['tipoRelatorio'] == '0') {
             $this->gerarelatoriomedicoagendaconsultas();
-        }
-        else if($_POST['tipoRelatorio'] == '1'){
+        } else if ($_POST['tipoRelatorio'] == '1') {
             $this->gerarelatoriomedicoagendaexame();
-        }
-        else if($_POST['tipoRelatorio'] == '2'){
+        } else if ($_POST['tipoRelatorio'] == '2') {
             $this->gerarelatoriomedicoagendaexamefaltou();
         }
     }
-    
+
     function gerarelatoriomedicoagendaconsultas() {
         $medicos = $_POST['medicos'];
         $data['medico'] = $this->operador_m->listarCada($medicos);
@@ -352,16 +350,39 @@ class Exame extends BaseController {
     }
 
     function autorizarsessao($agenda_exames_id, $paciente_id, $guia_id) {
-        $intervalo = $this->exame->verificadiasessao($agenda_exames_id);
-
-        if ($intervalo == 0) {
-            $this->exame->autorizarsessao($agenda_exames_id);
-            $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
-            redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
+        $home_care = $this->exame->procedimentohomecare($agenda_exames_id);
+//        var_dump($home_care); die;
+        if($home_care == 't') {
+            $intervalo = $this->exame->verificadiasessaohomecare($agenda_exames_id);
+            if ($intervalo == 0) {
+                $this->exame->autorizarsessao($agenda_exames_id);
+                $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
+                redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
+            } else {
+                $data['mensagem'] = 'Essa sessao só poderá ser autorizada amanhã.';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
+            }
         } else {
-            $data['mensagem'] = 'Essa sessao só poderá ser autorizada amanhã.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
+            $intervalo = $this->exame->verificadiasessao($agenda_exames_id);
+            $data_sessao = date("Y-m-d", strtotime(str_replace('/', '-', $intervalo[0]->data)));
+            $data_formatada = date("d/m/Y", strtotime(str_replace('/', '-', $intervalo[0]->data)));
+            $data_atual = date("Y-m-d");
+//            if($data_atual >= $data_sessao){
+//                echo 'grava';
+//            }else{
+//                echo 'nao gravou pro causa da data';
+//            }
+//            var_dump($data_atual); die;
+            if ($data_atual >= $data_sessao) {
+                $this->exame->autorizarsessao($agenda_exames_id);
+                $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
+                redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
+            } else {
+                $data['mensagem'] = "Essa sessao só poderá ser autorizada em $data_formatada.";
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
+            }
         }
     }
 
@@ -1171,9 +1192,9 @@ class Exame extends BaseController {
         $this->load->helper('directory');
         $contador = directory_map("./upload/$exame_id/");
 //        var_dump(count($contador)); die;
-        if($contador > 0){
+        if ($contador > 0) {
             $i = count($contador);
-        }else{
+        } else {
             $i = 0;
         }
         if ($sala_id == 1) {
@@ -1182,7 +1203,7 @@ class Exame extends BaseController {
             $arquivo_pasta = directory_map("./upload/ultrasom1/");
 
             natcasesort($arquivo_pasta);
-            
+
             $origem = "./upload/ultrasom1";
             foreach ($arquivo_pasta as $value) {
                 $i++;
@@ -1275,12 +1296,12 @@ class Exame extends BaseController {
 
         foreach ($arquivo_pasta as $value) {
 //            var_dump($value); die;
-            $nova = $nova = $b . ".jpg";;
+            $nova = $nova = $b . ".jpg";
+            ;
             $oldname = "./upload/$exame_id/$value";
             $newname = "./upload/$exame_id/$nova";
             rename($oldname, $newname);
             $b++;
-            
         }
 
         redirect(base_url() . "ambulatorio/exame/anexarimagemmedico/$exame_id/$sala_id");
