@@ -1427,7 +1427,7 @@ class Guia extends BaseController {
                 } else {
                     $data['mensagem'] = 'Sucesso ao gravar faturamento.';
                 }
-            }
+            } 
 
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
@@ -2819,14 +2819,14 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['paciente'] = ($_POST['txtNomeid'] != '') ? $_POST['txtNome'] : "TODOS";
-        
+
         $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
 
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 //        $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
         $data['relatorioprocedimentos'] = $this->guia->relatoriocaixapersonalizadoprocedimentos();
         $data['operadores'] = $this->guia->relatoriocaixapersonalizadooperadores();
-        
+
 //        var_dump($data['operador']);die;
 //        $data['caixa'] = $this->caixa->listarsangriacaixa();
 //        $data['contador'] = $this->guia->relatoriocaixacontador();

@@ -49,7 +49,7 @@
                     <th class="tabela_header">Usu&aacute;rio</th>
                     <th class="tabela_header">Perfil</th>
                     <th class="tabela_header">Ativo</th>
-                    <th class="tabela_header" colspan="6" ><center>A&ccedil;&otilde;es</center></th>
+                    <th class="tabela_header" colspan="30" ><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -157,7 +157,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="10">
+                        <th class="tabela_footer" colspan="30">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                             <div style="display: inline">

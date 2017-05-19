@@ -209,7 +209,7 @@ switch ($MES) {
         <?
         if ($arquivo_existe) {
             ?>
-            <img width="300px" height="50px" src="<?= base_url() . "upload/operadorLOGO/" . $medico_parecer1 .' jpg' ?>" />
+            <img width="300px" height="50px" src="<?= base_url() . "upload/operadorLOGO/" . $medico_parecer1 .'.jpg' ?>" />
         <? } ?>
     </center>
     <div >

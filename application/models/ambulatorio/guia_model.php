@@ -5323,7 +5323,7 @@ class guia_model extends Model {
 
     function listarexameguia($guia_id) {
 
-        $this->db->select('sum(valor_total) as total');
+        $this->db->select('sum(valor) as total');
         $this->db->from('tb_agenda_exames ae');
         $this->db->where("guia_id", $guia_id);
         $return = $this->db->get();
@@ -5331,7 +5331,7 @@ class guia_model extends Model {
     }
 
     function listarexameguiaforma($guia_id, $financeiro_grupo_id) {
-        $this->db->select('sum(valor_total) as total');
+        $this->db->select('sum(valor) as total');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("guia_id", $guia_id);
@@ -6101,7 +6101,7 @@ AND data <= '$data_fim'";
             $operador_id = $this->session->userdata('operador_id');
             $guia = $_POST['guia_id'];
 
-            $this->db->select('ae.agenda_exames_id, ae.valor_total, ae.guia_id, ae.paciente_id');
+            $this->db->select('ae.agenda_exames_id, ae.valor, ae.guia_id, ae.paciente_id');
             $this->db->from('tb_agenda_exames ae');
             if ($_POST['financeiro_grupo_id'] != '') {
                 $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -6130,6 +6130,7 @@ AND data <= '$data_fim'";
             $valortotal = 0;
 
             foreach ($returno as $value) {
+                
                 if ($value->valor_total >= $desconto) {
                     $valortotal = $value->valor_total - $desconto;
                     $desconto = 0;

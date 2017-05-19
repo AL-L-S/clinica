@@ -24,7 +24,7 @@ class batepapo_model extends BaseModel {
                                 SELECT COALESCE((SELECT true WHERE (o.horario_login + INTERVAL\'3 minute\') >=  current_timestamp), false) 
                         ) as status                        
                 FROM "ponto"."tb_operador" o 
-                WHERE "o"."ativo" = \'t\' AND "o"."operador_id" != \'1\' 
+                WHERE "o"."ativo" = \'t\' AND "o"."operador_id" != ' . $operador_id . '
                 AND "o"."usuario" != \'\' AND "o"."operador_id" IS NOT NULL
                 ORDER BY status DESC, "o"."usuario"';
         

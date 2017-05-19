@@ -91,6 +91,28 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltou', $data);
     }
 
+    function carregarreagendamento() {
+        
+        @$agenda = $this->exame->listarhorariosreagendamento();
+        if(count(@$agenda) > 0){
+            $verificao = $this->exame->gravareagendamento($agenda);
+            if(count($verificao) == 0) {
+                $data['mensagem'] = 'Sucesso ao reagendar todos Pacientes do dia selecionado.';
+            }
+            else{
+                $data['mensagem'] = 'Não foi possivel reagendar alguns pacientes devido a conflitos de horario.';
+            }
+        } 
+        else{
+            $data['mensagem'] = 'Não há pacientes agendados para o dia escolhido.';
+        }
+            
+//        echo "<pre>";
+//        var_dump($agenda);die;
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exame/reagendamentogeral");
+    }
+
     function reagendamentogeral() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -352,7 +374,7 @@ class Exame extends BaseController {
     function autorizarsessao($agenda_exames_id, $paciente_id, $guia_id) {
         $home_care = $this->exame->procedimentohomecare($agenda_exames_id);
 //        var_dump($home_care); die;
-        if($home_care == 't') {
+        if ($home_care == 't') {
             $intervalo = $this->exame->verificadiasessaohomecare($agenda_exames_id);
             if ($intervalo == 0) {
                 $this->exame->autorizarsessao($agenda_exames_id);
