@@ -280,14 +280,24 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/multifuncaomedicogeral-lista', $args);
     }
 
+    function multifuncaomedicointegracao() {
+        set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
+        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão 
+        
+        $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
+        if (count($data['integracao']) > 0) {
+//            echo count($data['integracao']) . "<hr>";
+            $this->laudo->atualizacaolaudosintegracaotodos();
+        }
+    }
+    
     function listarmultifuncaomedico($args = array()) {
 //        $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
-//        echo "<pre>";
-//        var_dump($data['integracao']);die;
 //        if (count($data['integracao']) > 0) {
+////            echo count($data['integracao']) . "<hr>";
 //            $this->laudo->atualizacaolaudosintegracaotodos();
 //        }
-
+        /* A integraçao agora e feita por AJAX na view abaixo */
         $this->loadView('ambulatorio/multifuncaomedico-lista', $args);
     }
 

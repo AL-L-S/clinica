@@ -189,13 +189,18 @@ class solicitacao_model extends Model {
     }
     function listarsaidaitemrelatorio($estoque_solicitacao_id) {
 
-        $this->db->select(' ep.estoque_saida_id,
+        $this->db->select(" ep.estoque_saida_id,
                             p.descricao,
                             ep.validade,
                             ep.quantidade,
                             si.quantidade as quantidade_solicitada,
                             sum(s.quantidade) as saldo,
-                            u.descricao as unidade');
+                            (
+                                SELECT sum(saldo.quantidade) FROM ponto.tb_estoque_saldo saldo 
+                                WHERE saldo.ativo = 't' AND saldo.produto_id = ep.produto_id
+                                GROUP BY saldo.produto_id
+                            ) as saldo_atual,
+                            u.descricao as unidade");
         $this->db->from('tb_estoque_saida ep');
         $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
         $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id= p.unidade_id');
@@ -203,6 +208,7 @@ class solicitacao_model extends Model {
         $this->db->join('tb_estoque_solicitacao_itens si', 'si.estoque_solicitacao_itens_id = ep.estoque_solicitacao_itens_id', 'left');
         $this->db->where('ep.solicitacao_cliente_id', $estoque_solicitacao_id);
         $this->db->where('ep.data_cadastro >= s.data_cadastro');
+        $this->db->where('s.ativo', 't');
         $this->db->where('ep.ativo', 'true');
         $this->db->groupby('ep.estoque_saida_id,si.quantidade, p.descricao, ep.validade , u.descricao ');
         $this->db->orderby('ep.estoque_saida_id');

@@ -1,4 +1,17 @@
 
+<script>
+        // Fazendo a integracao
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: "<?= base_url(); ?>ambulatorio/exame/multifuncaomedicointegracao",
+                dataType: "json",
+                success: function () {
+                    
+                }
+            });
+        });
+</script>
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
         <h3 class="singular"><a href="#">Multifuncao Medico</a></h3>
@@ -38,17 +51,17 @@
                             </select>
                         </th>
                         <? if ($perfil_id != 4) { ?>
-    <!--                            <th class="tabela_title">
-                                    <select name="especialidade" id="especialidade" class="size1">
-                                        <option value=""></option>
+                <!--                            <th class="tabela_title">
+                                                <select name="especialidade" id="especialidade" class="size1">
+                                                    <option value=""></option>
                             <? foreach ($especialidade as $value) : ?>
-                                                <option value="<?= $value->cbo_ocupacao_id; ?>" <?
+                                                                        <option value="<?= $value->cbo_ocupacao_id; ?>" <?
                                 if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
                                 endif;
                                 ?>><?php echo $value->descricao; ?></option>
                             <? endforeach; ?>
-                                    </select>
-                                </th>-->
+                                                </select>
+                                            </th>-->
                             <th class="tabela_title">
                                 <select name="especialidade" id="especialidade" class="size1">
                                     <option value=""></option>
@@ -169,7 +182,7 @@
                                 $situacao = "agenda";
                                 $verifica = 1;
                             } else {
-                                echo 'bla  ' . $item->situacaoexame;
+                                echo $item->situacaoexame;
                                 $situacao = "espera";
                                 $verifica = 3;
                             }
@@ -215,7 +228,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->situacaolaudo; ?></td>
                             <? } ?>
                             <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
                                 <? if ($item->situacaolaudo != '') { ?>
                                     <?
                                     if (($item->medico_parecer1 == $operador_id && $item->situacaolaudo == 'FINALIZADO') || ($item->situacaolaudo != 'FINALIZADO' && $item->situacaolaudo != '') || $operador_id == 1) {
@@ -272,7 +285,7 @@
                     <tr>
                         <th class="tabela_footer" colspan="12">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            <!-- Total de registros: <?php // echo $total;  ?> -->
+                            <!-- Total de registros: <?php // echo $total;     ?> -->
                         </th>
                     </tr>
                 </tfoot>
@@ -358,8 +371,6 @@
                 }
             });
         });
-
-
 
         $(function () {
             $("#data").datepicker({

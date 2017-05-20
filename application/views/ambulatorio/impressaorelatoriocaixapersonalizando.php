@@ -223,13 +223,12 @@
                                     foreach ($formapagamento as $value5) {
                                         if ($item->desconto != '0.00') {
                                             $desconto[$value5->nome] = $desconto[$value5->nome] + (float) $item->desconto;
+                                            $descontoResumo[$value5->nome] += (float) $item->desconto;
+                                            $caixaDesconto[$value5->nome] += (float) $item->desconto;
                                         } else {
-                                            $d = $item->valor - $item->valor_total;
-                                            $desconto[$value5->nome] = $desconto[$value5->nome] + $d;
+//                                            $d = $item->valor - $item->valor_total;
+//                                            $desconto[$value5->nome] = $desconto[$value5->nome] + $d;
                                         }
-
-                                        $descontoResumo[$value5->nome] += $desconto[$value5->nome];
-                                        $caixaDesconto[$value5->nome] += $desconto[$value5->nome];
 
                                         if ($item->forma_pagamento == $value5->nome) {
                                             $data[$value5->nome] = $data[$value5->nome] + $item->valor1;
@@ -294,7 +293,8 @@
                                 if (isset($relatorioprocedimentos[$t + 1]->guia_id) && @$relatorioprocedimentos[$t + 1]->guia_id == $item->guia_id) {
                                     continue;
                                 }
-                                /* RESUMO GUIA */ else {
+                                /* RESUMO GUIA */ 
+                                else {
                                     if (!$verificador):
 //            }
                                         $TOTALCARTAO = 0;

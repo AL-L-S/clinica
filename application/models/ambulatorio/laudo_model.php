@@ -129,16 +129,16 @@ class laudo_model extends Model {
     }
 
     function listarlaudosintegracaotodos() {
-
-        $this->db->select('exame_id');
-        $this->db->from('tb_integracao_laudo');
-        //$this->db->where('exame_id');
-        $this->db->where('laudo_status', 'PUBLICADO');
-        $this->db->orwhere('laudo_status', 'REPUBLICADO');
-//        $this->db->limit(1);
-        $return = $this->db->count_all_results();
-        var_dump($return);
-        die;
+        $this->db->select('il.exame_id');
+        $this->db->from('tb_integracao_laudo il');
+        $this->db->join('tb_operador o', 'o.conselho = il.laudo_conselho_medico', 'left');
+        $this->db->join('tb_operador op', 'op.conselho = il.laudo_conselho_medico_revisor', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = il.exame_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+//        $this->db->where('il.exame_id', $agenda_exames_id);
+        $this->db->where("((il.laudo_status = 'PUBLICADO') OR (il.laudo_status = 'REPUBLICADO') ) ");
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function atualizacaolaudosintegracaotodos() {
@@ -163,7 +163,7 @@ class laudo_model extends Model {
         $this->db->orderby('il.integracao_laudo_id');
         $query = $this->db->get();
         $return = $query->result();
-
+        
         foreach ($return as $value) {
             $laudo_texto = $value->laudo_texto;
             $laudo_data_hora = $value->laudo_data_hora;

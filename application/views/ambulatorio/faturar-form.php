@@ -10,7 +10,7 @@
                             <label>Valor total a faturar</label>
                         </dt>
                         <dd>
-                            <input type="text" name="valorafaturar" id="valorafaturar" class="texto01" value="<?= $exame[0]->valor_total; ?>" readonly />
+                            <input type="text" name="valorafaturar" id="valorafaturar" class="texto01" value="<?= $exame[0]->valor; ?>" readonly />
                             <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" class="texto01" value="<?= $agenda_exames_id; ?>"/>
                         </dd>
                         <dt>
@@ -105,7 +105,7 @@
                         </dt>
                         <dd>
                             <input type="text" name="valortotal" id="valortotal"  class="texto01" readonly/>
-                            <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->valor_total; ?>"/>
+                            <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->valor; ?>"/>
                             <input type="hidden" name="novovalortotal" id="novovalortotal">
                         </dd>
                     </dl>    
