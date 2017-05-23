@@ -1711,11 +1711,11 @@ class Laudo extends BaseController {
         $arquivos = directory_map("./upload/operadorLOGO/");
         $data['arquivo_existe'] = false;
 //        var_dump($arquivos);die;
-        if(count($arquivos) > 0){
-            foreach ($arquivos as $value) {
-                if ($value == $data['laudo'][0]->medico_parecer1 . ".jpg") {
-                    $data['arquivo_existe'] = true;
-                    $data['medico_parecer1'] = $data['laudo'][0]->medico_parecer1;
+        if(count(@$arquivos) > 0){
+            foreach (@$arquivos as $value) {
+                if (@$value == @$data['laudo'][0]->medico_parecer1 . ".jpg") {
+                    @$data['arquivo_existe'] = true;
+                    @$data['medico_parecer1'] = @$data['laudo'][0]->medico_parecer1;
                     break;
                 }
             }

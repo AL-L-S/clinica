@@ -2518,6 +2518,92 @@ class exame_model extends Model {
         return $this->db;
     }
 
+    function listarhorariosreagendamento() {
+        $data = date("Y-m-d");
+        $this->db->select('ae.paciente_id,
+                           ae.agenda_exames_id,
+                           ae.procedimento_tuss_id,
+                           ae.inicio,
+                           ae.fim,
+                           ae.medico_agenda,
+                           ae.tipo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->where('(numero_sessao is null OR numero_sessao = 1)');
+        if ($_POST['tipoRelatorio'] == "CONSULTA" || $_POST['tipoRelatorio'] == "EXAME") {
+            $this->db->where("ae.tipo", $_POST['tipoRelatorio']);
+        } else {
+            $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
+        }
+        $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.situacao', 'OK');
+        $this->db->where('ae.empresa_id', $_POST['empresa']);
+        $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.medico_agenda', $_POST['medicos']);
+        $this->db->where('ae.paciente_id IS NOT NULL');
+
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gravareagendamento($agenda) {
+        $return = array();
+        
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        foreach ($agenda as $item) {
+
+            $this->db->select('ae.agenda_exames_id');
+            $this->db->from('tb_agenda_exames ae');
+            if ($item->tipo == "CONSULTA" || $item->tipo == "EXAME") {
+                $this->db->where("ae.tipo", $item->tipo);
+            } else {
+                $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
+                $this->db->where('(numero_sessao is null OR numero_sessao = 1)');
+            }
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+            $this->db->where('ae.realizada', 'false');
+            $this->db->where('ae.inicio', $item->inicio);
+            $this->db->where('ae.fim ', $item->fim);
+            $this->db->where('ae.cancelada', 'false');
+            $this->db->where('ae.bloqueado', 'f');
+            $this->db->where('ae.situacao', 'LIVRE');
+            $this->db->where('ae.paciente_id IS NULL');
+            $this->db->where('ae.procedimento_tuss_id IS NULL');
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+            $this->db->where('ae.medico_agenda', $_POST['medicos']);
+            $retorno = $this->db->get()->result();
+//            var_dump($retorno);die;
+            
+            if(count($retorno) > 0) {
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->set('paciente_id', $item->paciente_id);
+                $this->db->set('ativo', 'f');
+                $this->db->set('cancelada', 'f');
+                $this->db->set('confirmado', 'f');
+                $this->db->set('medico_consulta_id', $item->medico_agenda);
+                $this->db->set('medico_agenda', $item->medico_agenda);
+                if ($item->procedimento_tuss_id != '') {
+                    $this->db->set('procedimento_tuss_id', $item->procedimento_tuss_id);
+                }
+                $this->db->set('situacao', 'OK');
+                if ($item->tipo != '') {
+                    $this->db->set('tipo', $item->tipo);
+                }
+                $this->db->where('agenda_exames_id', $retorno[0]->agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
+            }
+            else{
+//                die;
+                $return[] = $item->agenda_exames_id;
+            }
+        }
+        return $return;
+    }
+
     function autorizarsessaofisioterapia($paciente_id) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -3983,8 +4069,9 @@ class exame_model extends Model {
         $query = $this->db->get();
         $retorno = $query->result();
 
-       return $home_care = $retorno[0]->home_care;
+        return $home_care = $retorno[0]->home_care;
     }
+
     function verificadiasessao($agenda_exames_id) {
 
         $this->db->select('agrupador_fisioterapia, ag.nome, ae.data,
@@ -4000,6 +4087,7 @@ class exame_model extends Model {
 
         return $retorno;
     }
+
     function verificadiasessaohomecare($agenda_exames_id) {
 
         $this->db->select('agrupador_fisioterapia, ag.nome,
@@ -5137,7 +5225,7 @@ class exame_model extends Model {
             $data = date("Y-m-d");
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
-            
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('paciente_id', $retorno[0]->paciente_id);
             $this->db->set('procedimento_tuss_id', $retorno[0]->procedimento_tuss_id);
@@ -5172,7 +5260,7 @@ class exame_model extends Model {
             if ($retorno[0]->medico_realizador != "") {
                 $this->db->set('medico_consulta_id', $retorno[0]->medico_realizador);
                 $this->db->set('medico_agenda', $retorno[0]->medico_realizador);
-                
+
 //                $this->db->set('valor_medico', $percentual[0]->perc_medico);
 //                $this->db->set('percentual_medico', $percentual[0]->percentual);
             }

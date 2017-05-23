@@ -24,7 +24,7 @@
     <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     <hr>
     <?
-    if ($contador > 0) {
+    if (count($relatorio) > 0) {
         ?>
         <table border="1">
             <thead>

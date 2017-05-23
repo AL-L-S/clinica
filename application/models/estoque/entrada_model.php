@@ -588,8 +588,8 @@ class entrada_model extends Model {
                 if ($_POST['validade'] != "//") {
                     $this->db->set('validade', $_POST['validade']);
                 }
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('estoque_entrada_id', $estoque_entrada_id);
                 $this->db->where('estoque_saida_id is null');
                 $this->db->update('tb_estoque_saldo');
