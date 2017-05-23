@@ -353,10 +353,10 @@ class exame_model extends Model {
         $this->db->join('tb_estoque_unidade eu', 'eu.estoque_unidade_id = p.unidade_id');
         $this->db->join('tb_estoque_saldo ep', 'p.estoque_produto_id = ep.produto_id');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = p.procedimento_id', 'left');
-        $this->db->join('tb_procedimento_convenio_produto_valor pv', 'pv.procedimento_tuss_id = p.procedimento_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = p.procedimento_id', 'left');
         $this->db->where('ep.armazem_id', $armazem_id);
-        $this->db->where('pv.convenio_id', $convenio_id);
-        $this->db->where('pv.ativo', 'true');
+        $this->db->where('pc.convenio_id', $convenio_id);
+        $this->db->where('pc.ativo', 'true');
         $this->db->orderby('p.descricao');
         $return = $this->db->get();
         return $return->result();
@@ -3945,10 +3945,10 @@ class exame_model extends Model {
     }
 
     function listaprocedimento($procedimento_id, $convenio_id) {
-        $this->db->select('pv.*');
-        $this->db->from('tb_procedimento_convenio_produto_valor pv');
-        $this->db->where('pv.procedimento_tuss_id', $procedimento_id);
-        $this->db->where('pv.convenio_id', $convenio_id);
+        $this->db->select('pc.*');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->where('pc.procedimento_tuss_id', $procedimento_id);
+        $this->db->where('pc.convenio_id', $convenio_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -4200,9 +4200,9 @@ class exame_model extends Model {
         $data = date("Y-m-d");
 
         $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
-        $this->db->set('valor', $dados->valor);
-        $this->db->set('valor1', $dados->valor);
-        $this->db->set('valor_total', $dados->valor);
+        $this->db->set('valor', $dados->valortotal);
+        $this->db->set('valor1', $dados->valortotal);
+        $this->db->set('valor_total', $dados->valortotal);
         $this->db->set('quantidade', $_POST['txtqtde']);
 //            $this->db->set('autorizacao', $_POST['autorizacao1']);
         $this->db->set('empresa_id', $empresa_id);
@@ -4223,6 +4223,7 @@ class exame_model extends Model {
 //            $this->db->set('data', $_POST['txtdata']);
         $this->db->set('data_autorizacao', $horario);
         $this->db->set('data_cadastro', $horario);
+        $this->db->set('data', $data);
         $this->db->set('operador_cadastro', $operador_id);
         $this->db->set('data_realizacao', $horario);
         $this->db->set('operador_realizacao', $operador_id);

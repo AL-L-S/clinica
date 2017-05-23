@@ -90,17 +90,17 @@ class procedimento_model extends Model {
     }
 
     function listarprocedimentoconveniovalor($procedimento_tuss_id) {
-        $this->db->select('pv.procedimento_convenio_produto_valor_id,
-                            pv.valor,
-                            pv.procedimento_tuss_id,
-                            pv.convenio_id,
+        $this->db->select('pc.procedimento_convenio_id,
+                            pc.valortotal as valor,
+                            pc.procedimento_tuss_id,
+                            pc.convenio_id,
                             c.nome as convenio,
                             ');
-        $this->db->from('tb_procedimento_convenio_produto_valor pv');
-        $this->db->join('tb_convenio c', 'c.convenio_id = pv.convenio_id', 'left');
-        $this->db->where("pv.ativo", 't');
-        $this->db->where("pv.procedimento_tuss_id", $procedimento_tuss_id);
-        $this->db->orderby("pv.procedimento_convenio_produto_valor_id");
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pc.procedimento_tuss_id", $procedimento_tuss_id);
+        $this->db->orderby("pc.procedimento_convenio_id");
         $return = $this->db->get();
         return $return->result();
     }
@@ -461,10 +461,19 @@ class procedimento_model extends Model {
             /* inicia o mapeamento no banco */
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('convenio_id', $_POST['convenio']);
-            $this->db->set('valor',str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
+            $this->db->set('qtdech',1);
+            $this->db->set('qtdefilme',0);
+            $this->db->set('valorfilme',0);
+            $this->db->set('qtdeporte',0);
+            $this->db->set('valorporte',0);
+            $this->db->set('qtdeuco',0);
+            $this->db->set('valoruco', 0);
+            $this->db->set('qtdech',1);
+            $this->db->set('valorch',str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
+            $this->db->set('valortotal',str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_procedimento_convenio_produto_valor');
+            $this->db->insert('tb_procedimento_convenio');
 
             return 1;
         } catch (Exception $exc) {
@@ -480,8 +489,8 @@ class procedimento_model extends Model {
             $this->db->set('ativo', 'f');
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where('procedimento_convenio_produto_valor_id', $procedimento_convenio_produto_valor_id);
-            $this->db->update('tb_procedimento_convenio_produto_valor');
+            $this->db->where('procedimento_convenio_id', $procedimento_convenio_produto_valor_id);
+            $this->db->update('tb_procedimento_convenio');
 
             return 1;
         } catch (Exception $exc) {

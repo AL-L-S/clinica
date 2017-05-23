@@ -4449,6 +4449,7 @@ class guia_model extends Model {
                             ag.paciente_id,
                             ag.convenio_id,
                             ags.descricao,
+                            ag.data_criacao as data,
                             ags.quantidade,
                             ep.descricao as produto,
                             u.descricao as unidade,
@@ -4464,7 +4465,7 @@ class guia_model extends Model {
         $this->db->where("ag.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ag.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("ags.ativo", 't');
-        $this->db->where("(ag.convenio_id = pv.convenio_id) ");
+        $this->db->where("(ag.convenio_id = pv.convenio_id)");
 
         if ($_POST['txtNomeid'] != "") {
             $this->db->where('ag.paciente_id', $_POST['txtNomeid']);
