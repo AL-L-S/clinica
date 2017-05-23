@@ -189,7 +189,7 @@
                                     <?if($item->tipo != 'TRANSFERENCIA'){?>   Excluir<?}?></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        Arquivos</div>
+                                        <a href="<?= base_url() ?>cadastros/caixa/anexarimagemsaida/<?= $item->saidas_id ?>">Arquivos</a></div>
                                 </td>   
                                 <?}
                                 

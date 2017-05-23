@@ -4021,7 +4021,7 @@ class exame_model extends Model {
     }
 
     function listaagendaexames($exame_id) {
-        $this->db->select('ae.tipo, , ae.medico_agenda, pc.convenio_id');
+        $this->db->select('ae.tipo, ae.medico_agenda, pc.convenio_id');
         $this->db->from('tb_exames e');
         $this->db->join("tb_agenda_exames ae", "ae.agenda_exames_id = e.agenda_exames_id", "left");
         $this->db->join("tb_procedimento_convenio pc", "pc.procedimento_convenio_id = ae.procedimento_tuss_id", "left");

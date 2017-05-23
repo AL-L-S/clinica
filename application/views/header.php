@@ -566,7 +566,7 @@ function debug($object) {
                             </li> 
                             <li><span class="folder">Relatorios</span>
                                 <?
-                                if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) {
+                                if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 13 || $perfil_id == 10) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaida">Relatorio Saida</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaidagrupo">Relatorio Saida Tipo</a></span></ul>

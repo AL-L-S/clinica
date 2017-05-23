@@ -22,6 +22,7 @@ class Laudo extends BaseController {
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('ambulatorio/exametemp_model', 'exametemp');
         $this->load->model('ambulatorio/exame_model', 'exame');
+        $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->library('mensagem');
@@ -339,6 +340,7 @@ class Laudo extends BaseController {
         $this->laudo->editaranaminesehistorico();
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
+
     function carregaranaminesehistorico($laudoantigo_id) {
 
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigoeditar($laudoantigo_id);
@@ -1565,10 +1567,9 @@ class Laudo extends BaseController {
 
 
         if ($data['empresa'][0]->impressao_tipo == 14) {//MEDLAB
-            if($arquivo_existe){
-                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
-            }
-            else{
+            if ($arquivo_existe) {
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';
+            } else {
                 $src = 'img/medlab.jpg';
             }
             $filename = "laudo.pdf";
@@ -1581,10 +1582,9 @@ class Laudo extends BaseController {
 
 //////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA   
-            if($arquivo_existe){
-                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
-            }
-            else{
+            if ($arquivo_existe) {
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';
+            } else {
                 $src = 'img/humana.jpg';
             }
             $filename = "laudo.pdf";
@@ -1597,10 +1597,9 @@ class Laudo extends BaseController {
 
 //////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 13) {//CAGE      
-            if($arquivo_existe){
-                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
-            }
-            else{
+            if ($arquivo_existe) {
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';
+            } else {
                 $src = 'img/cage.jpg';
             }
             $filename = "laudo.pdf";
@@ -1613,10 +1612,9 @@ class Laudo extends BaseController {
 
 //////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 10) {//CDC
-            if($arquivo_existe){
-                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
-            }
-            else{
+            if ($arquivo_existe) {
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';
+            } else {
                 $src = 'img/logo2.png';
             }
             $filename = "laudo.pdf";
@@ -1629,10 +1627,9 @@ class Laudo extends BaseController {
 
 /////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 6) {//CLINICA DEZ    
-            if($arquivo_existe){
-                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
-            }
-            else{
+            if ($arquivo_existe) {
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';
+            } else {
                 $src = 'img/cabecalho.jpg';
             }
             $filename = "laudo.pdf";
@@ -1675,10 +1672,9 @@ class Laudo extends BaseController {
             $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
             pdf($html, $filename, $cabecalho, $rodape, $grupo);
         } else { //GERAL        //este item fica sempre por útimo
-            if($arquivo_existe){
-                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 .'.jpg';
-            }
-            else{
+            if ($arquivo_existe) {
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';
+            } else {
                 $src = 'img/cabecalho.jpg';
             }
             $filename = "laudo.pdf";
@@ -1711,7 +1707,7 @@ class Laudo extends BaseController {
         $arquivos = directory_map("./upload/operadorLOGO/");
         $data['arquivo_existe'] = false;
 //        var_dump($arquivos);die;
-        if(count(@$arquivos) > 0){
+        if (count(@$arquivos) > 0) {
             foreach (@$arquivos as $value) {
                 if (@$value == @$data['laudo'][0]->medico_parecer1 . ".jpg") {
                     @$data['arquivo_existe'] = true;
@@ -2286,6 +2282,53 @@ class Laudo extends BaseController {
         $data['obj'] = $obj_laudo;
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/laudooit-form', $data);
+    }
+
+    function imagenspacs($agenda_exames_id) {
+//        $verifica = $this->empresa->listarpacs();
+
+        $pacs = $this->empresa->listarpacs();
+        if (count($pacs) > 0) {
+
+//        var_dump($agenda_exames_id);
+//        die;
+// $AN- variavel, com o accession number( numero do exame), obtida do sistema gestor da clinica;
+            $AN = $agenda_exames_id;
+            $ipPACS_LAN = $pacs[0]->ip_local; //Ip atribuido ao PACS, na LAN do cliente;
+            $IPpublico = $pacs[0]->ip_externo; // IP, OU URL( dyndns, no-ip, etc) PARA ACESSO EXTERNO AO PACS;
+//login que depende da clinica;
+            $login = $pacs[0]->login;
+            $password = $pacs[0]->senha;
+
+// url de requisicao(GET),composta pelo IP publico da clinica  ou dns dinamico , considerando, que o seu webserver vai estar fora da clinica, se ele estiver na clinica, aqui deve ser substituido por $ipPACS_LAN ;
+
+            $url = "http://{$IPpublico}/createlink?AccessionNumber={$AN}";
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
+            $resultado = curl_exec($ch);
+            curl_close($ch);
+// A variavel $resultado, comtem o link, com o IP da rede local do pacs, que deve ser substituido pelo 
+// endereco de acesso externo;
+//$linkImagem, variável com o link a ser exportado para o site, para o cliente acessar as imagens;
+
+            $linkImagem = str_replace("$ipPACS_LAN", "$IPpublico", "$resultado");
+
+            echo $url, '<br>';
+            echo $resultado, '<br>';
+            echo $linkImagem, '<br>';
+
+
+//        if ($verifica == 0) {
+//            $ambulatorio_laudooit_id = $this->laudooit->inserirlaudo($ambulatorio_laudo_id);
+//            $obj_laudo = new laudooit_model($ambulatorio_laudooit_id);
+//        } 
+        }else{
+            echo '<script>window.close();</script>';
+        }
     }
 
     function impressaooit($ambulatorio_laudo_id) {

@@ -46,6 +46,13 @@ class Empresa extends BaseController {
         $data['mensagem'] = $this->empresa->listarinformacaosms();
         $this->loadView('ambulatorio/empresasms-form', $data);
     }
+    
+    function configurarpacs($empresa_id) {
+        $data['empresa_id'] = $empresa_id;
+        $data['pacs'] = $this->empresa->listarpacs();
+        $data['mensagem'] = $this->empresa->listarinformacaosms();
+        $this->loadView('ambulatorio/empresapacs-form', $data);
+    }
 
     function excluir($exame_empresa_id) {
         if ($this->procedimento->excluir($exame_empresa_id)) {
@@ -64,6 +71,16 @@ class Empresa extends BaseController {
             $data['mensagem'] =  'Erro ao salvar configurações de SMS.';
         } else {
             $data['mensagem'] = 'Configuração de SMS efetuada com sucesso.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/empresa");
+    }
+    function gravarconfiguracaopacs() {
+        $empresa_id = $this->empresa->gravarconfiguracaopacs();
+        if ($empresa_id == "-1") {
+            $data['mensagem'] =  'Erro ao salvar configurações de PACS.';
+        } else {
+            $data['mensagem'] = 'Configuração de PACS efetuada com sucesso.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/empresa");

@@ -92,21 +92,19 @@ class Exame extends BaseController {
     }
 
     function carregarreagendamento() {
-        
+
         @$agenda = $this->exame->listarhorariosreagendamento();
-        if(count(@$agenda) > 0){
+        if (count(@$agenda) > 0) {
             $verificao = $this->exame->gravareagendamento($agenda);
-            if(count($verificao) == 0) {
+            if (count($verificao) == 0) {
                 $data['mensagem'] = 'Sucesso ao reagendar todos Pacientes do dia selecionado.';
-            }
-            else{
+            } else {
                 $data['mensagem'] = 'Não foi possivel reagendar alguns pacientes devido a conflitos de horario.';
             }
-        } 
-        else{
+        } else {
             $data['mensagem'] = 'Não há pacientes agendados para o dia escolhido.';
         }
-            
+
 //        echo "<pre>";
 //        var_dump($agenda);die;
         $this->session->set_flashdata('message', $data['mensagem']);
@@ -283,14 +281,14 @@ class Exame extends BaseController {
     function multifuncaomedicointegracao() {
         set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
         ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão 
-        
+
         $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
         if (count($data['integracao']) > 0) {
 //            echo count($data['integracao']) . "<hr>";
             $this->laudo->atualizacaolaudosintegracaotodos();
         }
     }
-    
+
     function listarmultifuncaomedico($args = array()) {
 //        $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
 //        if (count($data['integracao']) > 0) {
@@ -384,16 +382,16 @@ class Exame extends BaseController {
     function autorizarsessao($agenda_exames_id, $paciente_id, $guia_id) {
         $home_care = $this->exame->procedimentohomecare($agenda_exames_id);
 //        var_dump($home_care); die;
-            $intervalo = $this->exame->verificadiasessaohomecare($agenda_exames_id);
-            if ($intervalo == 0) {
-                $this->exame->autorizarsessao($agenda_exames_id);
-                $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
-                redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
-            } else {
-                $data['mensagem'] = 'Essa sessao só poderá ser autorizada amanhã.';
-                $this->session->set_flashdata('message', $data['mensagem']);
-                redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
-            }
+        $intervalo = $this->exame->verificadiasessaohomecare($agenda_exames_id);
+        if ($intervalo == 0) {
+            $this->exame->autorizarsessao($agenda_exames_id);
+            $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
+            redirect(base_url() . "ambulatorio/guia/impressaoficha/$paciente_id/$guia_id/$agenda_exames_id");
+        } else {
+            $data['mensagem'] = 'Essa sessao só poderá ser autorizada amanhã.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id/");
+        }
     }
 
     function autorizarsessaocadapsicologia($agenda_exames_id, $paciente_id, $guia_id) {
@@ -895,11 +893,12 @@ class Exame extends BaseController {
     function gravargastodesala() {
         $exame_id = $_POST['exame_id'];
         $sala_id = $_POST['sala_id'];
+//        $convenio_id = $_POST['convenio_id'];
         $this->exame->gravargastodesala();
-
-        $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
-        $convenio_id = $data['agenda_exames'][0]->convenio_id;
         if (isset($_POST['faturar'])) {
+
+            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+            $convenio_id = $data['agenda_exames'][0]->convenio_id;
 
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;

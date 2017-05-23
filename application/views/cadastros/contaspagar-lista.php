@@ -179,7 +179,7 @@
                                        Confirmar</div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        Arquivos</div>
+                                        <a href="<?= base_url() ?>cadastros/contaspagar/anexarimagemcontasapagar/<?= $item->financeiro_contaspagar_id ?>">Arquivos</a></div>
                                 </td>
                                <? }
                                 

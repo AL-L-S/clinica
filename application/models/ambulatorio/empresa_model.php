@@ -47,6 +47,14 @@ class empresa_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function listarpacs() {
+
+        $this->db->select('*');
+        $this->db->from('tb_pacs');
+//        $this->db->where('ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarempresas() {
 
@@ -139,6 +147,46 @@ class empresa_model extends Model {
                 $this->db->where('empresa_sms_id', $sms_id);
                 $this->db->update('tb_empresa_sms');
             }
+            return $empresa_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarconfiguracaopacs() {
+        try {
+            /* inicia o mapeamento no banco */
+            $this->db->set('empresa_id', $_POST['empresa_id']);
+//            $this->db->set('pacote_id', $_POST['txtpacote']);
+//            if(isset($_POST['msgensExcedentes'])){
+//                $this->db->set('enviar_excedentes', 't');
+//            }
+//            else{
+//                $this->db->set('enviar_excedentes', 'f');
+//            }
+            $this->db->set('ip_local', $_POST['ip_local']);
+            $this->db->set('ip_externo', $_POST['ip_externo']);
+            $this->db->set('login', $_POST['login']);
+            $this->db->set('senha', $_POST['senha']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['pacs_id'] == "") {// insert
+//                $this->db->set('data_cadastro', $horario);
+//                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_pacs');
+            }
+            else { // update
+//                $this->db->set('data_atualizacao', $horario);
+//                $this->db->set('operador_atualizacao', $operador_id);
+                
+                $pacs_id = $_POST['pacs_id'];
+                
+                $this->db->where('pacs_id', $pacs_id);
+                $this->db->update('tb_pacs');
+            }
+//            echo 'something';
+//            die;
             return $empresa_id;
         } catch (Exception $exc) {
             return -1;

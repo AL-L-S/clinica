@@ -293,6 +293,10 @@
                                                     <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/oit/<?= $ambulatorio_laudo_id ?>');" >
                                                             <font size="-1">OIT</font></a></div></td>
+<!--                                                <td >
+                                                    <div class="bt_link_new">
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/imagenspacs/<?= $exame_id ?>');" >
+                                                            <font size="-1">Imagens PACS</font></a></div></td>-->
                                             </tr>
                                             <tr>
                                                 <td >

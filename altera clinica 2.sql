@@ -113,3 +113,17 @@ ALTER TABLE ponto.tb_empresa_sms ADD COLUMN enviar_excedentes boolean DEFAULT fa
 
 ALTER TABLE ponto.tb_integracao_laudo ALTER COLUMN exame_requisicao TYPE character varying(200);
 ALTER TABLE ponto.tb_integracao_laudo ALTER COLUMN exame_descricao TYPE character varying(200);
+
+
+--22/05/2017 INTEGRANDO AO PACS
+
+CREATE TABLE ponto.tb_pacs
+(
+  pacs_id SERIAL NOT NULL,
+  ip_local character varying(30),
+  ip_externo character varying(80),
+  login character varying(200),
+  senha character varying(200),
+  empresa_id integer,
+  CONSTRAINT tb_pacs_pkey PRIMARY KEY (pacs_id )
+);

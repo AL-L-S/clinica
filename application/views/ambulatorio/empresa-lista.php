@@ -22,7 +22,7 @@
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">CNPJ</th>
                         <th class="tabela_header">Raz&atilde;o social</th>
-                        <th class="tabela_header" colspan="2"><center>Detalhes</center></th>
+                        <th class="tabela_header" colspan="3"><center>Detalhes</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -50,10 +50,19 @@
                                 </td>
                                 <?
                                 $perfil_id = $this->session->userdata('perfil_id');
+                                $operador_id = $this->session->userdata('operador_id');
                                 if ($perfil_id == 1):
                                     ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="100pt;"><div class="bt_link" style="width: 100pt">
                                             <a style="width: 100pt" href="<?= base_url() ?>ambulatorio/empresa/configurarsms/<?= $item->empresa_id ?>">Configurar SMS</a></div>
+                                    </td>
+                               <? endif; ?>
+                                <?
+//                                $perfil_id = $this->session->userdata('perfil_id');
+                                if ($operador_id == 1):
+                                    ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="100pt;"><div class="bt_link" style="">
+                                            <a style="" href="<?= base_url() ?>ambulatorio/empresa/configurarpacs/<?= $item->empresa_id ?>">PACS</a></div>
                                     </td>
                                <? endif; ?>
                             </tr>
