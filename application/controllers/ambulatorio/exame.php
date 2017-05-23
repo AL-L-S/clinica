@@ -903,6 +903,7 @@ class Exame extends BaseController {
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
             $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id'], $convenio_id);
+//            var_dump($data['procedimento']); die;
             if (count($data['procedimento']) > 0) {
                 $this->exame->faturargastodesala($data['procedimento'][0]);
             }
