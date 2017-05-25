@@ -143,7 +143,7 @@
                                                 <!--<th style="text-align: right" width="70px;"><font size="2">Qtde</font></th>-->
                                                 <th style="text-align: right" width="70px;"><font size="2">Ajuste (%)</font></th>
                                                 <th style="text-align: right" width="70px;"><font size="2">Parcela</font></th>
-                                                <th style="text-align: right" width="70px;"><font size="2">Vlr Proc</font></th>
+                                                <th style="text-align: right" width="70px;"><font size="2">Vlr Parcela</font></th>
                                                 <th style="text-align: right" width="70px;"><font size="2">Vlr Total</font></th>
                                             </tr>
                                         </thead>

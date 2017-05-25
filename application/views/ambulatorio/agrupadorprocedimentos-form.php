@@ -9,13 +9,27 @@
                         <label>Nome</label>
                     </dt>
                     <dd>
-<!--                        <input type="hidden" name="txtcadastrosformapagamentoid" class="texto10" value="<?= @$obj->_forma_pagamento_id; ?>" />-->
-                        <input type="text" name="txtNome" class="texto05"  />
+                        <input type="hidden" name="agrupador_id" class="texto10" value="<?= @$agrupador[0]->agrupador_id; ?>" />
+                        <input type="text" name="txtNome" class="texto05" value="<?= @$agrupador[0]->nome; ?>"/>
+                    </dd>
+                    
+                    <dt>
+                        <label>Convenio</label>
+                    </dt>
+                    <dd>
+                        <select  name="convenio" id="convenio" class="size2" required="" >
+                            <option value="">Selecione</option>
+                            <? foreach ($convenio as $item) : ?>
+                                <option value="<?= $item->convenio_id; ?>" <? if(@$agrupador[0]->convenio_id == $item->convenio_id) echo "selected";?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
                     </dd>
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>
-                <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
+                <!--<button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>-->
             </form>
         </div>
     </div>
@@ -24,9 +38,9 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    $('#btnVoltar').click(function () {
-        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-    });
+//    $('#btnVoltar').click(function () {
+//        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+//    });
 
     $(function () {
         $("#accordion").accordion();

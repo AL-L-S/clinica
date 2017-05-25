@@ -20,7 +20,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header" width="70px;" colspan="2"><center>Detalhes</center></th>
+                        <th class="tabela_header" width="70px;" colspan="6"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
@@ -43,7 +43,10 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
-                                    <a href="<?= base_url() ?>ambulatorio/procedimentoplano/agrupadoradicionar/<?= $item->agrupador_id ?>">Editar</a>
+                                    <a href="<?= base_url() ?>ambulatorio/procedimentoplano/carregaragrupador/<?= $item->agrupador_id ?>">Editar</a>
+                            </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
+                                    <a href="<?= base_url() ?>ambulatorio/procedimentoplano/agrupadoradicionar/<?= $item->agrupador_id ?>">Cadastrar</a>
                             </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Agrupador?');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluiragrupador/<?= $item->agrupador_id ?>">Excluir</a>
@@ -57,7 +60,7 @@
                         ?>
                         <tfoot>
                             <tr>
-                                <th class="tabela_footer" colspan="4">
+                                <th class="tabela_footer" colspan="6">
                                    <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                                 </th>

@@ -347,7 +347,7 @@
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
                                     <th colspan="2" align="center"><center><div class="bt_linkf">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
                                     </a></div></center></th>
                             </tr>

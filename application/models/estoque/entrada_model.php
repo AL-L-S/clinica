@@ -30,6 +30,7 @@ class entrada_model extends Model {
                             f.razao_social as fornecedor,
                             e.armazem_id,
                             a.descricao as armazem,
+                            e.data_cadastro,
                             e.valor_compra,
                             e.quantidade,
                             e.nota_fiscal,

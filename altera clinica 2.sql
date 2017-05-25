@@ -135,13 +135,15 @@ CREATE TABLE ponto.tb_pacs
 
 
 -- AQUI TEM A LINHA DE COMANDO NECESSÁRIA PRA UTILIZAR NO TERMINAL PRA BAIXAR O CURL NO PHP
+# COPIAR A SEGUIR SEM AS ASPAS E EXECUTAR 'sudo apt-get install php5-curl -y && sudo service apache2 restart'
 
 
-
--- COPIAR A SEGUIR SEM AS ASPAS E EXECUTAR 'sudo apt-get install php5-curl -y && sudo service apache2 restart'
-
-
--- 26/05/2017 TORNANDO MAIS FÁCIL A CRIAÇÃO DE AGENDA
+-- 23/05/2017 TORNANDO MAIS FÁCIL A CRIAÇÃO DE AGENDA
 
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horario_id integer;
+
+
+-- Dia 25/05/2017
+ALTER TABLE ponto.tb_agrupador_procedimento_nome ADD COLUMN convenio_id integer;
+
 

@@ -354,7 +354,7 @@
                         <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
 
                         <!-- OBSERVAÇOES -->
-                        <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
+                        <!--<td class="<?php // echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>-->
 
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
                                                                                                                                                     width=500,height=230');">=><?= $item->observacoes; ?></td>

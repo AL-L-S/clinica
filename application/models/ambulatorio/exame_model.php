@@ -373,6 +373,18 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listartodassalasexames() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('exame_sala_id,
+                            nome');
+        $this->db->from('tb_exame_sala');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('excluido', 'f');
+        $this->db->where('tipo', 'EXAME');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
     function listartodassalas() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,

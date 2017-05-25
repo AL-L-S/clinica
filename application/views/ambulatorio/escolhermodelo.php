@@ -6,7 +6,7 @@
 
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Procedimento</a></h3>
+        <h3 class="singular"><a href="#">Modelo Declaração</a></h3>
         <div>
             <form name="form_procedimento" id="form_procedimento" action="<?= base_url() ?>ambulatorio/guia/impressaodeclaracao/<?=$paciente_id?>/<?=$guia_id?>/<?=$exames_id?>" method="post">
                 <dl class="dl_desconto_lista">

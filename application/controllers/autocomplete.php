@@ -50,6 +50,17 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function horariosambulatorioexame() {
+        $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
+
+        if (isset($_GET['exame'])) {
+            $result = $this->exametemp->listarautocompletehorariosexame($_GET['exame'], $_GET['teste']);
+        } else {
+            $result = $this->exametemp->listarautocompletehorariosexame();
+        }
+        echo json_encode($result);
+    }
+
     function unidadeleito() {
 
         if (isset($_GET['unidade'])) {
@@ -446,12 +457,22 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    function procedimentoconveniogrupo() {
+    function procedimentoconveniogrupoexame() {
+//        var_dump($_GET);die;
+        if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupoexame($_GET['convenio1'], $_GET['grupo1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupoexame(@$_GET['convenio1'], @$_GET['grupo1']);
+        }
+        echo json_encode($result);
+    }
 
+    function procedimentoconveniogrupo() {
+//        var_dump($_GET);die;
         if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {
             $result = $this->exametemp->listarautocompleteprocedimentosgrupo($_GET['convenio1'], $_GET['grupo1']);
         } else {
-            $result = $this->exametemp->listarautocompleteprocedimentosgrupo();
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupo(@$_GET['convenio1'], @$_GET['grupo1']);
         }
         echo json_encode($result);
     }

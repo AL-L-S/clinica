@@ -169,6 +169,18 @@ class procedimentoplano_model extends Model {
         return $this->db;
     }
 
+    function instanciaragrupador($agrupador_id = null) {
+        $this->db->select('agrupador_id,
+                           nome,
+                           convenio_id');
+        $this->db->from('tb_agrupador_procedimento_nome');
+        $this->db->where("ativo", 't');
+        $this->db->where('agrupador_id', $agrupador_id);
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     function buscaragrupador($agrupador_id) {
         $this->db->select('agrupador_id,
                            nome                            
@@ -210,12 +222,20 @@ class procedimentoplano_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
 
             $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_agrupador_procedimento_nome');
-
-            $agrupador_id = $this->db->insert_id();
-
+            $this->db->set('convenio_id', $_POST['convenio']);
+            if ($_POST['agrupador_id'] == '' || !isset($_POST['agrupador_id'])) {
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_agrupador_procedimento_nome');
+                $agrupador_id = $this->db->insert_id();
+            } else {
+                $agrupador_id = $_POST['agrupador_id'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('agrupador_id', $agrupador_id);
+                $this->db->update('tb_agrupador_procedimento_nome');
+            }
+            
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return 0;

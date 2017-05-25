@@ -191,6 +191,8 @@ class Exametemp extends BaseController {
         $data['contador'] = $this->exametemp->contadorpaciente($pacientetemp_id);
         $data['exames'] = $this->exametemp->listaragendatotalpaciente($pacientetemp_id);
         $data['examesanteriores'] = $this->exametemp->listarexameanterior($pacientetemp_id);
+        $data['salas'] = $this->exame->listartodassalasexames();
+        $data['grupos'] = $this->procedimento->listargrupos();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/examepacientetemp-form', $data);
     }
@@ -308,7 +310,7 @@ class Exametemp extends BaseController {
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/fisioterapiapaciente-form', $data);
     }
-    
+
     function carregarfisioterapiatempmedico($agenda_exames_id) {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
@@ -364,9 +366,9 @@ class Exametemp extends BaseController {
     }
 
     function excluirfisioterapiatempmultifuncaomedico($agenda_exames_id, $url) {
-        $args = str_replace('!','=', $url);
-        $args = str_replace('@','&', $args);
-        
+        $args = str_replace('!', '=', $url);
+        $args = str_replace('@', '&', $args);
+
         $this->exametemp->excluirexametempmultifuncaomedico($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exame/listarmultifuncaomedicofisioterapia?" . $args);
     }
@@ -566,14 +568,14 @@ class Exametemp extends BaseController {
 
                 $_POST['txtNomeid'] = $this->exametemp->crianovopacienteespecialidade();
                 $agrupador = $this->exametemp->agrupadorfisioterapia();
-                
+
                 //marcando sessoes
                 if ($_POST['sessao'] == 1) {
                     $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['agenda_selecionada'][0]->agenda_exames_id);
                 } else {
                     $contador_sessao = 1;
                     for ($i = 0; $i < $_POST['sessao']; $i++) {
-                        $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id,$_POST['sessao'], $contador_sessao,$agrupador);
+                        $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id, $_POST['sessao'], $contador_sessao, $agrupador);
                         $contador_sessao++;
                     }
                 }
@@ -791,15 +793,16 @@ class Exametemp extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/exametemp/novopacientefisioterapiaencaixe");
         } else {
-            $disponibilidade = $this->exametemp->contadorhorariosdisponiveisfisioterapia($_POST['data_ficha'], $_POST['horarios'], $_POST['medico']);
-            if ($disponibilidade == 0) {
-                $pacientetemp_id = $this->exametemp->gravarfisioterapiaencaixe();
-                redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
-            } else {
-                $data['mensagem'] = 'Erro ao marcar consulta. Este horário já está agendado.';
-                $this->session->set_flashdata('message', $data['mensagem']);
-                redirect(base_url() . "ambulatorio/exametemp/novopacientefisioterapiaencaixe");
-            }
+//            $disponibilidade = $this->exametemp->contadorhorariosdisponiveisfisioterapia($_POST['data_ficha'], $_POST['horarios'], $_POST['medico']);
+//            if ($disponibilidade == 0) {
+            $pacientetemp_id = $this->exametemp->gravarfisioterapiaencaixe();
+
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
+//            } else {
+//                $data['mensagem'] = 'Erro ao marcar consulta. Este horário já está agendado.';
+//                $this->session->set_flashdata('message', $data['mensagem']);
+//                redirect(base_url() . "ambulatorio/exametemp/novopacientefisioterapiaencaixe");
+//            }
         }
     }
 

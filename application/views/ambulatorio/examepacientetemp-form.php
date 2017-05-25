@@ -43,10 +43,13 @@
             <legend>Exames tipo</legend>
 
             <div>
-                <label>Exame</label>
+                <label>Sala</label>
                 <select name="exame" id="exame" class="size1" required>
                     <option value="" >Selecione</option>
-                    <option value="RX" >RX</option>
+                    <? foreach($salas as $item){ ?>
+                        <option value="<?= $item->exame_sala_id ?>"><?= $item->nome ?></option>
+                    <? } ?>
+<!--                    <option value="RX" >RX</option>
                     <option value="TOMOGRAFIA" >TOMOGRAFIA</option>
                     <option value="RM" >RM</option>
                     <option value="ULTRA SOM" >ULTRA SOM</option>
@@ -57,7 +60,7 @@
                     <option value="ERGOMETRIA" >ERGOMETRIA</option>
                     <option value="ESPIROMETRIA" >ESPIROMETRIA</option>
                     <option value="HOLTER" >HOLTER</option>
-                    <option value="MAPA" >MAPA</option>
+                    <option value="MAPA" >MAPA</option>-->
                 </select>
             </div>
 
@@ -73,6 +76,15 @@
                     <option  value="-1">Selecione</option>
                     <? foreach ($convenio as $value) : ?>
                         <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label>Grupo</label>
+                <select  name="grupo" id="grupo" class="size1" >
+                    <option value="">Selecione</option>
+                    <? foreach ($grupos as $item) : ?>
+                        <option value="<?= $item->nome; ?>"><?= $item->nome; ?></option>
                     <? endforeach; ?>
                 </select>
             </div>
@@ -121,9 +133,9 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/vizualizarpreparo/<?= $item->tuss_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                        width=800,height=400');"><?= $item->procedimento; ?></a></td>
+                                                                                                width=800,height=400');"><?= $item->procedimento; ?></a></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                                                                                                width=500,height=230');">=><?= $item->observacoes; ?></a></td>
 
                         <? if (empty($faltou)) { ?>
 
@@ -185,47 +197,68 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script>
-    function mascaraTelefone(campo) {
+    
 
-        function trata(valor, isOnBlur) {
+                                        $(function () {
+                                            $('#grupo').change(function () {
+//                                                if ($(this).val()) {
+                                                    $('.carregando').show();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        for (var c = 0; c < j.length; c++) {
+                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                        }
+                                                        $('#procedimento1').html(options).show();
+                                                        $('.carregando').hide();
+                                                    });
+//                                                } else {
+//                                                    $('#procedimento1').html('<option value="">Selecione</option>');
+//                                                }
+                                            });
+                                        });
+                                        
+                                        
+                                            function mascaraTelefone(campo) {
 
-            valor = valor.replace(/\D/g, "");
-            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                                                function trata(valor, isOnBlur) {
 
-            if (isOnBlur) {
+                                                    valor = valor.replace(/\D/g, "");
+                                                    valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-            } else {
+                                                    if (isOnBlur) {
 
-                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
-            }
-            return valor;
-        }
+                                                        valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                                                    } else {
 
-        campo.onkeypress = function (evt) {
+                                                        valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                                                    }
+                                                    return valor;
+                                                }
 
-            var code = (window.event) ? window.event.keyCode : evt.which;
-            var valor = this.value
+                                                campo.onkeypress = function (evt) {
 
-            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
-                return false;
-            } else {
-                this.value = trata(valor, false);
-            }
-        }
+                                                    var code = (window.event) ? window.event.keyCode : evt.which;
+                                                    var valor = this.value
 
-        campo.onblur = function () {
+                                                    if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                                                        return false;
+                                                    } else {
+                                                        this.value = trata(valor, false);
+                                                    }
+                                                }
 
-            var valor = this.value;
-            if (valor.length < 13) {
-                this.value = ""
-            } else {
-                this.value = trata(this.value, true);
-            }
-        }
+                                                campo.onblur = function () {
 
-        campo.maxLength = 14;
-    }
+                                                    var valor = this.value;
+                                                    if (valor.length < 13) {
+                                                        this.value = ""
+                                                    } else {
+                                                        this.value = trata(this.value, true);
+                                                    }
+                                                }
+
+                                                campo.maxLength = 14;
+                                            }
 
 
 </script>
@@ -234,109 +267,109 @@
     mascaraTelefone(form_exametemp.txtCelular);
 
 
-                                        $(function () {
-                                            $("#data_ficha").datepicker({
-                                                autosize: true,
-                                                changeYear: true,
-                                                changeMonth: true,
-                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                dateFormat: 'dd/mm/yy'
-                                            });
-                                        });
+    $(function () {
+        $("#data_ficha").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
 
-                                        $(function () {
-                                            $('#exame').change(function () {
-                                                if ($(this).val()) {
-                                                    $('#horarios').hide();
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorio', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
-                                                        var options = '<option value=""></option>';
-                                                        for (var i = 0; i < j.length; i++) {
-                                                            options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '-' + j[i].nome + '- Dr. ' + j[i].medico + '</option>';
-                                                        }
-                                                        $('#horarios').html(options).show();
-                                                        $('.carregando').hide();
-                                                    });
-                                                } else {
-                                                    $('#horarios').html('<option value="">-- Escolha um exame --</option>');
-                                                }
-                                            });
-                                        });
-
-
-                                        $(function () {
-                                            $('#convenio1').change(function () {
-                                                if ($(this).val()) {
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                                        options = '<option value=""></option>';
-                                                        for (var c = 0; c < j.length; c++) {
-                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                                        }
-                                                        $('#procedimento1').html(options).show();
-                                                        $('.carregando').hide();
-                                                    });
-                                                } else {
-                                                    $('#procedimento1').html('<option value="">Selecione</option>');
-                                                }
-                                            });
-                                        });
+    $(function () {
+        $('#exame').change(function () {
+            if ($(this).val()) {
+                $('#horarios').hide();
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorio', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
+                    var options = '<option value=""></option>';
+                    for (var i = 0; i < j.length; i++) {
+                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '-' + j[i].nome + '- Dr. ' + j[i].medico + '</option>';
+                    }
+                    $('#horarios').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#horarios').html('<option value="">-- Escolha um exame --</option>');
+            }
+        });
+    });
 
 
-
-                                        //$(function(){     
-                                        //    $('#exame').change(function(){
-                                        //        exame = $(this).val();
-                                        //        if ( exame === '')
-                                        //            return false;
-                                        //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-                                        //            var option = new Array();
-                                        //            $.each(data, function(i, obj){
-                                        //                console.log(obl);
-                                        //                option[i] = document.createElement('option');
-                                        //                $( option[i] ).attr( {value : obj.id} );
-                                        //                $( option[i] ).append( obj.nome );
-                                        //                $("select[name='horarios']").append( option[i] );
-                                        //            });
-                                        //        });
-                                        //    });
-                                        //});
+    $(function () {
+        $('#convenio1').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    }
+                    $('#procedimento1').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#procedimento1').html('<option value="">Selecione</option>');
+            }
+        });
+    });
 
 
 
+    //$(function(){     
+    //    $('#exame').change(function(){
+    //        exame = $(this).val();
+    //        if ( exame === '')
+    //            return false;
+    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
+    //            var option = new Array();
+    //            $.each(data, function(i, obj){
+    //                console.log(obl);
+    //                option[i] = document.createElement('option');
+    //                $( option[i] ).attr( {value : obj.id} );
+    //                $( option[i] ).append( obj.nome );
+    //                $("select[name='horarios']").append( option[i] );
+    //            });
+    //        });
+    //    });
+    //});
 
 
-                                        $(function () {
-                                            $("#accordion").accordion();
-                                        });
 
 
-                                        $(document).ready(function () {
-                                            jQuery('#form_exametemp').validate({
-                                                rules: {
-                                                    txtNome: {
-                                                        required: true,
-                                                        minlength: 3
-                                                    }
-                                                },
-                                                messages: {
-                                                    txtNome: {
-                                                        required: "*",
-                                                        minlength: "!"
-                                                    }
-                                                }
-                                            });
-                                        });
 
-                                        function calculoIdade() {
-                                            var data = document.getElementById("txtNascimento").value;
-                                            var ano = data.substring(6, 12);
-                                            var idade = new Date().getFullYear() - ano;
-                                            document.getElementById("idade2").value = idade;
-                                        }
+    $(function () {
+        $("#accordion").accordion();
+    });
 
-                                        calculoIdade();
+
+    $(document).ready(function () {
+        jQuery('#form_exametemp').validate({
+            rules: {
+                txtNome: {
+                    required: true,
+                    minlength: 3
+                }
+            },
+            messages: {
+                txtNome: {
+                    required: "*",
+                    minlength: "!"
+                }
+            }
+        });
+    });
+
+    function calculoIdade() {
+        var data = document.getElementById("txtNascimento").value;
+        var ano = data.substring(6, 12);
+        var idade = new Date().getFullYear() - ano;
+        document.getElementById("idade2").value = idade;
+    }
+
+    calculoIdade();
 
 </script>
