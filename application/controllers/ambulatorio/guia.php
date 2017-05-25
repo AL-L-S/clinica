@@ -1396,23 +1396,28 @@ class Guia extends BaseController {
 
             $erro = false;
             if ($_POST['valorMinimo1'] != '' && ( ((float) $_POST['valorMinimo1']) > ((float) $_POST['valor1']) / $_POST['parcela1'] )) {
-                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 1 é menor que o valor cadastrado.';
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 1 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
+//                echo "<script>alert('something');</script>";
             }
             if ($_POST['valorMinimo2'] != '' && ( ((float) $_POST['valorMinimo2']) > ((float) $_POST['valor2']) / $_POST['parcela2'] )) {
-                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 2 é menor que o valor cadastrado.';
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 2 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
+//                echo "<script>alert('something');</script>";
             }
             if ($_POST['valorMinimo3'] != '' && ( ((float) $_POST['valorMinimo3']) > ((float) $_POST['valor3']) / $_POST['parcela3'] )) {
-                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 3 é menor que o valor cadastrado.';
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 3 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
+//                echo "<script>alert('something');</script>";
             }
             if ($_POST['valorMinimo4'] != '' && ( ((float) $_POST['valorMinimo4']) > ((float) $_POST['valor4']) / $_POST['parcela4'] )) {
-                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor cadastrado.';
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
+//                echo "<script>alert('something');</script>";
             }
             if ($_POST['valorMinimo4'] != '' && $_POST['valorMinimo3'] != '' && $_POST['valorMinimo2'] != '' && $_POST['valorMinimo1'] != '') {
                 $erro = true;
+//                echo "<script>alert('something');</script>";
             }
 
             $_POST['parcela1'] = ($_POST['parcela1'] == '' || $_POST['parcela1'] == 0) ? 1 : $_POST['parcela1'];
@@ -1427,10 +1432,24 @@ class Guia extends BaseController {
                 } else {
                     $data['mensagem'] = 'Sucesso ao gravar faturamento.';
                 }
-            } 
-
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+            } else {
+                $mensagem = $data['mensagem'];
+                echo "<html>
+                    <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        
+        alert('$mensagem');
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>";
+//                echo "<meta charset='UTF-8'><script>alert('$mensagem');</script>";
+            }
         } else {
             $this->load->View('ambulatorio/erro');
         }

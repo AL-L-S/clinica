@@ -43,7 +43,7 @@
                         <label>Valor Mínimo da Parcela</label>
                     </dt>
                     <dd>
-                        <input type="text" name="parcela_minima" class="texto02" id="parcela_minima" value= "<?= @$obj->_parcela_minima; ?>" />
+                        <input type="text" name="parcela_minima" class="texto02" alt="decimal" id="parcela_minima" value= "<?= @$obj->_parcela_minima; ?>" />
                     </dd>
                     <dt title="Selecione a conta onde o dinheiro irá ingressar">
                         <label>Conta</label>
