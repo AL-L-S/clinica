@@ -1665,7 +1665,7 @@ class Exame extends BaseController {
         $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
 
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame");
+        redirect(base_url() . "ambulatorio/agenda");
     }
 
     function gravarconsulta() {
@@ -1787,7 +1787,7 @@ class Exame extends BaseController {
         $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
 
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame");
+        redirect(base_url() . "ambulatorio/agenda");
     }
 
     function gravarespecialidade() {
@@ -1909,7 +1909,7 @@ class Exame extends BaseController {
         $data['mensagem'] = 'Sucesso ao gravar a Agenda.';
 
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame");
+        redirect(base_url() . "ambulatorio/agenda");
     }
 
     private function carregarView($data = null, $view = null) {
