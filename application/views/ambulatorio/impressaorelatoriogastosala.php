@@ -19,8 +19,8 @@
                 <th>VALOR UNIT (R$)</th>
                 <th>VALOR TOTAL (R$)</th>
                 <th>DESCRIÇÃO</th>
-                <th>teste</th>
-                <th>hora</th>
+<!--                <th>teste</th>
+                <th>hora</th>-->
             </tr>
             
         </thead>
@@ -30,7 +30,7 @@
             ?>
             <?  foreach ($relatorio as $value) :?>
                 <tr>
-                    <td><?=$value->ambulatorio_guia_id;?> - <?=$value->paciente;?></td>
+                    <td><?=$value->paciente;?></td>
                     <td><?=$value->produto;?></td>
                     <td><?=$value->unidade;?></td>
                     <td><?=$value->procedimento;?></td>
@@ -38,8 +38,8 @@
                     <td>R$ <?=number_format($value->valor, 2, ',', ' ');?></td>
                     <td>R$ <?=number_format($value->quantidade * $value->valor, 2, ',', ' ');?></td>
                     <td><?=$value->descricao;?></td>
-                    <td><?=$value->procedimento_convenio_produto_valor_id;?></td>
-                    <td><?=$value->data_cadastro;?></td>
+<!--                    <td>//<?=$value->procedimento_convenio_produto_valor_id;?></td>
+                    <td>//<?=$value->data_cadastro;?></td>-->
                  </tr>
             <?
             $i++;
