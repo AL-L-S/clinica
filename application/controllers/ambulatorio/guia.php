@@ -351,9 +351,9 @@ class Guia extends BaseController {
             }
             if ($data['exame'][0]->tipo == "EXAME") {
                 if ($dinheiro == "t") {
-                    $this->load->View('ambulatorio/impressaofichageralparticular', $data);
+                    $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
                 } else {
-                    $this->load->View('ambulatorio/impressaofichageral', $data);
+                    $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
                 }
             }
         }

@@ -2284,7 +2284,7 @@ class Laudo extends BaseController {
         $this->loadView('ambulatorio/laudooit-form', $data);
     }
 
-    function imagenspacs($agenda_exames_id) {
+    function imagenspacs($accession_number) {
 //        $verifica = $this->empresa->listarpacs();
 
         $pacs = $this->empresa->listarpacs();
@@ -2293,7 +2293,7 @@ class Laudo extends BaseController {
 //        var_dump($agenda_exames_id);
 //        die;
 // $AN- variavel, com o accession number( numero do exame), obtida do sistema gestor da clinica;
-            $AN = $agenda_exames_id;
+            $AN = $accession_number;
             $ipPACS_LAN = $pacs[0]->ip_local; //Ip atribuido ao PACS, na LAN do cliente;
             $IPpublico = $pacs[0]->ip_externo; // IP, OU URL( dyndns, no-ip, etc) PARA ACESSO EXTERNO AO PACS;
 //login que depende da clinica;

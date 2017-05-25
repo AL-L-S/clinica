@@ -50,7 +50,7 @@ class Empresa extends BaseController {
     function configurarpacs($empresa_id) {
         $data['empresa_id'] = $empresa_id;
         $data['pacs'] = $this->empresa->listarpacs();
-        $data['mensagem'] = $this->empresa->listarinformacaosms();
+//        $data['mensagem'] = $this->empresa->listarinformacaosms();
         $this->loadView('ambulatorio/empresapacs-form', $data);
     }
 

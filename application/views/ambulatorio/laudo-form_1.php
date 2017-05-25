@@ -1,3 +1,48 @@
+<?
+$pacs = $this->empresa->listarpacs();
+if (count($pacs) > 0) {
+
+//        var_dump($agenda_exames_id);
+//        die;
+// $AN- variavel, com o accession number( numero do exame), obtida do sistema gestor da clinica;
+    $AN = '522228';
+    $ipPACS_LAN = $pacs[0]->ip_local; //Ip atribuido ao PACS, na LAN do cliente;
+    $IPpublico = $pacs[0]->ip_externo; // IP, OU URL( dyndns, no-ip, etc) PARA ACESSO EXTERNO AO PACS;
+//login que depende da clinica;
+    $login = $pacs[0]->login;
+    $password = $pacs[0]->senha;
+
+// url de requisicao(GET),composta pelo IP publico da clinica  ou dns dinamico , considerando, que o seu webserver vai estar fora da clinica, se ele estiver na clinica, aqui deve ser substituido por $ipPACS_LAN ;
+
+    $url = "http://{$IPpublico}/createlink?AccessionNumber={$AN}";
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
+    $resultado = curl_exec($ch);
+    curl_close($ch);
+// A variavel $resultado, comtem o link, com o IP da rede local do pacs, que deve ser substituido pelo 
+// endereco de acesso externo;
+//$linkImagem, variável com o link a ser exportado para o site, para o cliente acessar as imagens;
+
+    $linkImagem = str_replace("$ipPACS_LAN", "$IPpublico", "$resultado");
+
+//    echo $url, '<br>';
+//    echo $resultado, '<br>';
+    echo $linkImagem, '<br>';
+
+
+//        if ($verifica == 0) {
+//            $ambulatorio_laudooit_id = $this->laudooit->inserirlaudo($ambulatorio_laudo_id);
+//            $obj_laudo = new laudooit_model($ambulatorio_laudooit_id);
+//        } 
+}else{
+    $linkImagem = '';
+}
+//$pacs = $this->empresa->listarpacs();
+?>
 <div >
 
     <?
@@ -10,13 +55,13 @@
     $teste = $diff->format('%Ya %mm %dd');
     ?>
 
-    <div >
+    <div>
         <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarlaudo/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>/<?= @$obj->_sala_id ?>" method="post">
             <div >
                 <fieldset>
                     <legend>Dados</legend>
                     <table> 
-
+                        <?= @$obj->_guia_id ?>
                         <tr>
                             <td width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <td width="400px;">Exame: <?= @$obj->_procedimento ?></td>
@@ -179,9 +224,9 @@
                                         <input type="text" id="linha2" class="texto02" name="linha2"/>
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
-                                        <?php // foreach ($linha as $item) { ?>
+                                        <?php // foreach ($linha as $item) {  ?>
                                                                                                                         <option value="<?php // echo $item->nome;  ?>" ><?php // echo $item->nome;  ?></option>
-                                        <?php // } ?>
+                                        <?php // }  ?>
                                         </select>-->
 
                                         <div class="bt_link">
@@ -197,8 +242,8 @@
                                             <option value=0 >selecione</option>
                                             <? foreach ($operadores as $value) : ?>
                                                 <option value="<?= $value->operador_id; ?>"<?
-                                                if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
-                                                endif;
+                                            if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
+                                            endif;
                                                 ?>><?= $value->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -217,8 +262,8 @@
                                             <option value="">Selecione</option>
                                             <? foreach ($operadores as $valor) : ?>
                                                 <option value="<?= $valor->operador_id; ?>"<?
-                                                if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
-                                                endif;
+                                            if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
+                                            endif;
                                                 ?>><?= $valor->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -250,17 +295,17 @@
                                         <label>situa&ccedil;&atilde;o</label>
                                         <select name="situacao" id="situacao" class="size2" onChange="muda(this)">
                                             <option value='DIGITANDO'<?
-                                            if (@$obj->_status == 'DIGITANDO'):echo 'selected';
-                                            endif;
-                                            ?> >DIGITANDO</option>
+                                        if (@$obj->_status == 'DIGITANDO'):echo 'selected';
+                                        endif;
+                                        ?> >DIGITANDO</option>
                                             <option value='REVISAR' <?
                                             if (@$obj->_status == 'REVISAR'):echo 'selected';
                                             endif;
-                                            ?> >REVISAR</option>
+                                        ?> >REVISAR</option>
                                             <option value='FINALIZADO' <?
                                             if (@$obj->_status == 'FINALIZADO'):echo 'selected';
                                             endif;
-                                            ?> >FINALIZADO</option>
+                                        ?> >FINALIZADO</option>
                                         </select>
                                     </div>
                                     <div>
@@ -293,10 +338,10 @@
                                                     <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/oit/<?= $ambulatorio_laudo_id ?>');" >
                                                             <font size="-1">OIT</font></a></div></td>
-<!--                                                <td >
+                                                <td >
                                                     <div class="bt_link_new">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/imagenspacs/<?= $exame_id ?>');" >
-                                                            <font size="-1">Imagens PACS</font></a></div></td>-->
+                                                        <a href="<?=$linkImagem?>" target="_blank" >
+                                                            <font size="-1">Imagens PACS</font></a></div></td>
                                             </tr>
                                             <tr>
                                                 <td >

@@ -33,11 +33,13 @@
                     <label>Horario *</label>
                     </dt>
                     <dd>
-                        <select name="txthorario" id="txthorario" class="size4">
+<!--                        <select name="txthorario" id="txthorario" class="size4">
                             <? foreach ($agenda as $item) : ?>
                                 <option value="<?= $item->agenda_id; ?>"><?= $item->nome; ?></option>
                                     <? endforeach; ?>
-                        </select>
+                        </select>-->
+                        <input type="hidden"  id="txthorario" name="txthorario" value="<?= $agenda_id ?>"  class="size2" />
+                        <input type="text"  id="txthorariolabel" name="txthorariotitulo" value="<?= $agenda[0]->nome ?>"  class="size4" readonly=""/>
                     </dd>
                     <dt>
                     <label>Medico *</label>

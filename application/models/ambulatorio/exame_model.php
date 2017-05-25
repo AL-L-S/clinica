@@ -2326,6 +2326,7 @@ class exame_model extends Model {
     }
 
     function listarexamemultifuncaofisioterapia($args = array()) {
+        $contador = count($args);
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
@@ -2371,8 +2372,10 @@ class exame_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
 //        $this->db->orderby('ae.data');
 //        $this->db->orderby('ae.inicio');
-//        $this->db->where('ae.data >=', $data);
-        $this->db->where('(numero_sessao is null OR numero_sessao = 1)');
+        if ($contador == 0) {
+            $this->db->where('ae.data >=', $data);
+        }
+        $this->db->where('((numero_sessao is null OR numero_sessao = 1) OR (agrupador_fisioterapia is not null))');
 //        $this->db->where('numero_sessao', null);
         $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
 
@@ -2421,6 +2424,7 @@ class exame_model extends Model {
     }
 
     function listarexamemultifuncaofisioterapia2($args = array()) {
+        $contador = count($args);
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
@@ -2468,8 +2472,10 @@ class exame_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
-//        $this->db->where('ae.data >=', $data);
-        $this->db->where('(numero_sessao is null OR numero_sessao = 1)');
+        if ($contador == 0) {
+            $this->db->where('ae.data >=', $data);
+        }
+        $this->db->where('((numero_sessao is null OR numero_sessao = 1) OR (agrupador_fisioterapia is not null))');
 //        $this->db->where('(numero_sessao is null OR confirmado = true)');
 //        $this->db->where('inicio is not null');
         $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
@@ -5439,13 +5445,14 @@ class exame_model extends Model {
         }
     }
 
-    function gravar($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null) {
+    function gravar($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null) {
         try {
 
             $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
 
             /* inicia o mapeamento no banco */
             $this->db->set('horarioagenda_id', $agenda_id);
+            $this->db->set('horario_id', $horarioagenda_id);
             $this->db->set('inicio', $horaconsulta);
             $this->db->set('fim', $horaverifica);
             $this->db->set('nome', $nome);
@@ -5481,12 +5488,13 @@ class exame_model extends Model {
         }
     }
 
-    function gravarconsulta($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id) {
+    function gravarconsulta($horario_id,$agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id) {
         try {
 
             $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
             /* inicia o mapeamento no banco */
             $this->db->set('horarioagenda_id', $agenda_id);
+            $this->db->set('horario_id', $horario_id);
             $this->db->set('inicio', $horaconsulta);
             $this->db->set('fim', $horaverifica);
             $this->db->set('nome', $nome);
@@ -5519,13 +5527,14 @@ class exame_model extends Model {
         }
     }
 
-    function gravarespecialidade($agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $empresa_id, $obs = null) {
+    function gravarespecialidade($horario_id,$agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $empresa_id, $obs = null) {
         try {
 
             $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
             /* inicia o mapeamento no banco */
             $this->db->set('horarioagenda_id', $agenda_id);
             $this->db->set('inicio', $horaconsulta);
+            $this->db->set('horario_id', $horario_id);
             $this->db->set('fim', $horaverifica);
             $this->db->set('nome', $nome);
             $this->db->set('data_inicio', $datainicial);
