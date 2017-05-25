@@ -73,8 +73,31 @@ class Agenda extends BaseController {
 
 //            $this->carregarView($data);
     }
+    
+    function carregarexclusaohorario($horariovariavel_id, $horariotipo) {
+//        var_dump($horariotipo); die;
+        $data['horariotipo'] = $horariotipo;
+        $data['horariovariavel_id'] = $horariovariavel_id;
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['lista'] = $this->agenda->listarhorarioagendaexclusao($horariovariavel_id);
+        $this->loadView('ambulatorio/agendaexclusaohorario-form',$data );
+//        $this->session->set_flashdata('message', $mensagem);
+//        redirect(base_url() . "ambulatorio/agenda/listarhorarioagenda/$horariotipo");
+    }
+    function carregarexclusaoagenda($agenda_id) {
+//        var_dump($agenda_id); die;
+        $data['agenda_id'] = $agenda_id;
+//        $data['horariovariavel_id'] = $horariovariavel_id;
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['lista'] = $this->agenda->listaragendaexclusao($agenda_id);
+//        var_dump($data['lista']); die;
+        $this->loadView('ambulatorio/agendaexclusao-form',$data );
+//        $this->session->set_flashdata('message', $mensagem);
+//        redirect(base_url() . "ambulatorio/agenda/listarhorarioagenda/$horariotipo");
+    }
 
     function excluirhorarioagenda($horariovariavel_id, $horariotipo) {
+//        var_dump($_POST); die;
         if ($this->agenda->excluirhorariofixo($horariovariavel_id)) {
             $mensagem = 'Sucesso ao excluir o Horario';
         } else {

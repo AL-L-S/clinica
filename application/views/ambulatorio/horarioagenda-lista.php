@@ -13,23 +13,23 @@
                 </div>  
             </td>
             <td>
-                <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaexame/<?= $agenda; ?>" target="_blank">
-                        Nova Agenda Exame
-                    </a>
-                </div> 
-            </td>
-            <td>
-                <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaconsulta/<?= $agenda; ?>" target="_blank">
-                        Nova Agenda Consulta
-                    </a>
-                </div> 
-            </td>
-            <td>
                 <div class="bt_link_new" style="width: 180px">
-                    <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaespecializacao/<?= $agenda; ?>" style="width: 180px" target="_blank">
-                        Nova Agenda Especializacao
+                    <a style="width: 180px" href="<?php echo base_url() ?>ambulatorio/exame/novoagendaexame/<?= $agenda; ?>" target="_blank">
+                        Consolidar Agenda Exame
+                    </a>
+                </div> 
+            </td>
+            <td>
+                <div class="bt_link_new" style="width: 200px">
+                    <a style="width: 200px" href="<?php echo base_url() ?>ambulatorio/exame/novoagendaconsulta/<?= $agenda; ?>" target="_blank">
+                        Consolidar Agenda Consulta
+                    </a>
+                </div> 
+            </td>
+            <td>
+                <div class="bt_link_new" style="width: 220px">
+                    <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaespecializacao/<?= $agenda; ?>" style="width: 220px" target="_blank">
+                        Consolidar Agenda Especializacao
                     </a>
                 </div> 
             </td>
@@ -74,8 +74,8 @@
 
 
                             <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                <a onclick="javascript: return confirm('Deseja realmente excluir o horario');"
-                                   href="<?= base_url() ?>ambulatorio/agenda/excluirhorarioagenda/<?= $item->horarioagenda_id; ?>/<?= $agenda; ?>">
+                                <a 
+                                   href="<?= base_url() ?>ambulatorio/agenda/carregarexclusaohorario/<?= $item->horarioagenda_id; ?>/<?= $agenda; ?>">
                                     <img border="0" title="Excluir" alt="Excluir"
                                          src="<?= base_url() ?>img/form/page_white_delete.png" />
                                 </a>

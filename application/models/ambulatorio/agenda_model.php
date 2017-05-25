@@ -66,6 +66,23 @@ class agenda_model extends Model {
     }
 
     function excluir($agenda_id) {
+//        var_dump($_POST); die;
+        if ($_POST['excluir'] == 'on') {
+            if($_POST['txttipo'] != 'TODOS'){
+                if($_POST['txttipo'] == 'ESPECIALIDADE'){
+                   $this->db->where("(tipo = 'ESPECIALIDADE' OR tipo = 'FISIOTERAPIA')");  
+                }else{
+                    $this->db->where('tipo', $_POST['txttipo']);  
+                }
+               
+            }
+            if($_POST['txtmedico'] != 'TODOS'){
+                $this->db->where('medico_agenda', $_POST['txtmedico']);
+            }
+            $this->db->where('horarioagenda_id', $agenda_id);
+            $this->db->where('paciente_id is null');
+            $this->db->delete('tb_agenda_exames');
+        }
 
         $this->db->set('ativo', 'f');
         $horario = date("Y-m-d H:i:s");
@@ -2382,6 +2399,49 @@ class agenda_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
+    
+    function listarhorarioagendaexclusao($agenda_id = null) {
+        $this->db->select('e.nome as empresa,
+                           h.dia,
+                           h.horaentrada1,
+                           h.horasaida1,
+                           h.intervaloinicio,
+                           h.intervalofim,
+                           h.tempoconsulta,
+                           h.agenda_id,
+                           h.qtdeconsulta,
+                           h.empresa_id,
+                           h.observacoes,
+                           h.horarioagenda_id');
+        $this->db->from('tb_horarioagenda h');
+        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->where('horarioagenda_id', $agenda_id);
+        $this->db->orderby('dia');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
+    function listaragendaexclusao($agenda_id = null) {
+        $this->db->select('e.nome as empresa,
+                           h.dia,
+                           h.horaentrada1,
+                           h.horasaida1,
+                           h.intervaloinicio,
+                           h.intervalofim,
+                           h.tempoconsulta,
+                           h.agenda_id,
+                           h.qtdeconsulta,
+                           h.empresa_id,
+                           h.observacoes,
+                           h.horarioagenda_id');
+        $this->db->from('tb_horarioagenda h');
+        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->where('agenda_id', $agenda_id);
+        $this->db->orderby('dia');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function gravarhorariofixo() {
         try {
@@ -2430,6 +2490,23 @@ class agenda_model extends Model {
     }
 
     function excluirhorariofixo($agenda_id) {
+//        var_dump($agenda_id); die;
+        if ($_POST['excluir'] == 'on') {
+            if($_POST['txttipo'] != 'TODOS'){
+                if($_POST['txttipo'] == 'ESPECIALIDADE'){
+                   $this->db->where("(tipo = 'ESPECIALIDADE' OR tipo = 'FISIOTERAPIA')");  
+                }else{
+                    $this->db->where('tipo', $_POST['txttipo']);  
+                }
+               
+            }
+            if($_POST['txtmedico'] != 'TODOS'){
+                $this->db->where('medico_agenda', $_POST['txtmedico']);
+            }
+            $this->db->where('horario_id', $agenda_id);
+            $this->db->where('paciente_id is null');
+            $this->db->delete('tb_agenda_exames');
+        }
 
         $this->db->where('horarioagenda_id', $agenda_id);
         $this->db->delete('tb_horarioagenda');
