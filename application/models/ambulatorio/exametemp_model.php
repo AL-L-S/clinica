@@ -218,7 +218,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
         $this->db->where("a.confirmado", 'false');
-        $this->db->where("a.guia_id", null);
+//        $this->db->where("a.guia_id", null);
         $this->db->where('a.data', $data);
         $this->db->where('a.ativo', 'false');
         $this->db->where("a.paciente_id", $pacientetemp_id);
