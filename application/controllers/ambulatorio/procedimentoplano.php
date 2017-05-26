@@ -56,9 +56,11 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/agrupadorprocedimentos-lista', $args);
     }
 
-    function carregaragrupador() {
+    function carregaragrupador($agrupador_id = null) {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['agrupador'] = $this->procedimentoplano->instanciaragrupador($agrupador_id);
 //        $data['forma_pagamento'] = $this->formapagamento->listarforma();
-        $this->loadView('ambulatorio/agrupadorprocedimentos-form');
+        $this->loadView('ambulatorio/agrupadorprocedimentos-form', $data);
     }
 
     function gravaragrupadornome() {

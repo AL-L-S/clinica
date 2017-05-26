@@ -19,6 +19,8 @@
                 <th>VALOR UNIT (R$)</th>
                 <th>VALOR TOTAL (R$)</th>
                 <th>DESCRIÇÃO</th>
+<!--                <th>teste</th>
+                <th>hora</th>-->
             </tr>
             
         </thead>
@@ -36,6 +38,8 @@
                     <td>R$ <?=number_format($value->valor, 2, ',', ' ');?></td>
                     <td>R$ <?=number_format($value->quantidade * $value->valor, 2, ',', ' ');?></td>
                     <td><?=$value->descricao;?></td>
+<!--                    <td>//<?=$value->procedimento_convenio_produto_valor_id;?></td>
+                    <td>//<?=$value->data_cadastro;?></td>-->
                  </tr>
             <?
             $i++;

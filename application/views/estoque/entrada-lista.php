@@ -73,16 +73,22 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->armazem; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nota_fiscal; ?></td>
-                                <? if ($perfil_id != 10) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">                                  
-                                            <a href="<?= base_url() ?>estoque/entrada/carregarentrada/<?= $item->estoque_entrada_id ?>">Editar</a></div>
-                                    </td>
+                                <?
+                                if ($perfil_id != 10) {
+                                    if (date("Y-m-d", strtotime($item->data_cadastro)) == date("Y-m-d")) {
+                                        ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">                                  
+                                                <a href="<?= base_url() ?>estoque/entrada/carregarentrada/<?= $item->estoque_entrada_id ?>">Editar</a></div>
+                                        </td>
+                                    <? } else { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"></td>
+                                    <? } ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
                                             <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Entrada?');" href="<?= base_url() ?>estoque/entrada/excluir/<?= $item->estoque_entrada_id ?>">Excluir</a></div>
                                     </td> 
 
 
-                                <? } else { ?>
+        <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">                                  
                                             Editar</div>
                                     </td>
@@ -105,7 +111,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="8">
-                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>

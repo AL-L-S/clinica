@@ -73,7 +73,7 @@
 
                         <td><?= utf8_decode($item->ambulatorio_guia_id); ?></td>
                         <td>
-                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listardadospacienterelatorionota/$item->paciente_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=700');">
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listardadospacienterelatorionota/$item->paciente_id"; ?> ', '_blank', 'width=1200,height=700');">
                                     <?= utf8_decode($item->paciente); ?>
                                 </a>
                             <!--<a href="#"></a></td>-->
@@ -104,12 +104,12 @@
                         <td><?= utf8_decode($item->telefone); ?></td>
                         <? $cor = ((float)$item->valor_guia < (float)$item->total)?'green':'blue';?>
                         <td style="text-align: right">
-                            <a style="cursor: pointer; color: <?=$cor; ?>" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/procedimentoguianotaform/$item->ambulatorio_guia_id/$item->total/$item->valor_guia"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=400,height=300');">
+                            <a style="cursor: pointer; color: <?=$cor; ?>" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/procedimentoguianotaform/$item->ambulatorio_guia_id/$item->total/$item->valor_guia"; ?> ', '_blank', 'width=400,height=300');">
                                     <?= number_format($item->valor_guia, 2, ',', '.'); ?>
                                 </a>
                         </td>
                         <td style="text-align: right">
-                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/procedimentoguianota/$item->ambulatorio_guia_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1300,height=800');">
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/procedimentoguianota/$item->ambulatorio_guia_id"; ?> ', '_blank', 'width=1000,height=700');">
                                     <?= number_format($item->total, 2, ',', '.'); ?>
                                 </a></td>
                         </td>

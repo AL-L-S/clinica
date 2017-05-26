@@ -15,6 +15,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Pre&ccedil;o procedimento</a></h3>
         <div>
+            <? $grupo = $this->procedimento->listargrupos(); ?>
             <table>
                 <thead>
                     <tr>
@@ -22,19 +23,35 @@
                     </tr>
                 <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoplanoconsulta">
                     <tr>
-                        <th class="tabela_title">Procedimento</th>
                         <th class="tabela_title">Plano</th>
-                        <th colspan="2" class="tabela_title">Codigo</th>
+                        <th class="tabela_title">Grupo</th>
+                        <th colspan="" class="tabela_title">Codigo</th>
+                        <th class="tabela_title">Procedimento</th>
                     </tr>
                     <tr>
-                        <th class="tabela_title">
-                            <input type="text" name="procedimento" class="texto04" value="<?php echo @$_GET['procedimento']; ?>" />
-                        </th>
                         <th class="tabela_title">
                             <input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
                         <th class="tabela_title">
+                            <select name="grupo" id="grupo" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($grupo as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"
+                                        <? if (@$_GET['grupo'] == $value->nome) echo 'selected'?>>
+                                    <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
+                            <!--<input type="text" name="" class="texto04" value="<?php echo @$_GET['grupo']; ?>" />-->
+
+                        </th>
+                        <th class="tabela_title">
                             <input type="text" name="codigo" class="texto04" value="<?php echo @$_GET['codigo']; ?>" />
+
+                        </th>
+                        <th class="tabela_title">
+                            <input type="text" name="procedimento" class="texto04" value="<?php echo @$_GET['procedimento']; ?>" />
                         </th>
                         <th class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -49,6 +66,7 @@
                 <thead>
                     <tr>
                         <th class="tabela_header">Plano</th>
+                        <th class="tabela_header">Grupo</th>
                         <th class="tabela_header">codigo</th>
                         <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Valor</th>
@@ -72,6 +90,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->valortotal; ?></td>
@@ -86,7 +105,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="7">
-                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>

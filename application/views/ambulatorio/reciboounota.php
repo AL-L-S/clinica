@@ -1,7 +1,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
 
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Procedimento</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Recibo/Nota</a></h3>
         <div>
             <form name="form" id="form" action="<?= base_url() ?>ambulatorio/guia/reciboounotaindicador" method="post">
 

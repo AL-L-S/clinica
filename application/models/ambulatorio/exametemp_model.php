@@ -1694,7 +1694,6 @@ class exametemp_model extends Model {
 
 
 //            $agrupador = 0;
-            $data_ficha = date("Y-m-d", strtotime("+1 week", strtotime($data_ficha)));
             //criar agrfupador temp
             $this->db->set('qtde_sessoes', $_POST['qtde']);
             $this->db->insert('tb_agrupador_fisioterapia_temp');
@@ -1716,7 +1715,8 @@ class exametemp_model extends Model {
                     }
 
                     $this->db->set('empresa_id', $empresa_id);
-                    $this->db->set('tipo', 'FISIOTERAPIA');
+                    $this->db->set('tipo', 'ESPECIALIDADE');
+                    $this->db->set('medico_agenda', $_POST['medico']);
                     $this->db->set('medico_consulta_id', $_POST['medico']);
                     $this->db->set('nome', $nome);
                     $this->db->set('ativo', 'f');
@@ -1744,6 +1744,8 @@ class exametemp_model extends Model {
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_agenda_exames');
+
+                    $data_ficha = date("Y-m-d", strtotime("+1 week", strtotime($data_ficha)));
                 }
             }
             return $paciente_id;
@@ -3797,7 +3799,7 @@ class exametemp_model extends Model {
         $this->db->orderby('es.nome');
         $this->db->orderby('a.inicio');
         if ($parametro != null) {
-            $this->db->where('es.nome ilike', "%" . $parametro . "%");
+            $this->db->where('es.exame_sala_id', $parametro);
             $this->db->where('a.data', $teste);
         }
         $return = $this->db->get();
@@ -3957,7 +3959,7 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarautocompleteprocedimentosgrupo($parametro, $parametro2) {
+    function listarautocompleteprocedimentosgrupo($parametro = null, $parametro2 = null) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
                             pt.nome as procedimento');
@@ -3969,8 +3971,14 @@ class exametemp_model extends Model {
 //        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
-        $this->db->where('pc.convenio_id', $parametro);
-        $this->db->where('pt.grupo', $parametro2);
+
+        if ($parametro != null) {
+            $this->db->where('pc.convenio_id', $parametro);
+        }
+        if ($parametro2 != null) {
+            $this->db->where('pt.grupo', $parametro2);
+        }
+
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();

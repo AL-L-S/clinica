@@ -2038,7 +2038,7 @@ class guia_model extends Model {
         return $return->result();
     }
 
-    function relatorionotafiscal() {
+    function relatorionotafiscal($guia = null) {
         $inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
 
@@ -2057,7 +2057,11 @@ class guia_model extends Model {
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = g.paciente_id', 'left');
-        $this->db->where('g.nota_fiscal', 't');
+        
+        if($guia == "NAO"){
+            $this->db->where('g.nota_fiscal', 't');
+        }
+        
         $this->db->where('ae.empresa_id', '1');
         $this->db->where('ae.data >=', $inicio);
         $this->db->where('ae.data <=', $fim);
@@ -4450,10 +4454,14 @@ class guia_model extends Model {
                             ag.convenio_id,
                             ags.descricao,
                             ag.data_criacao as data,
+                            ag.ambulatorio_guia_id,
                             ags.quantidade,
+                            ags.agenda_exame_id,
+                            ags.data_cadastro,
                             ep.descricao as produto,
                             u.descricao as unidade,
                             pv.valor,
+                            procedimento_convenio_produto_valor_id,
                             pt.nome as procedimento');
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_ambulatorio_gasto_sala ags', 'ags.guia_id = ag.ambulatorio_guia_id', 'left');
@@ -4465,6 +4473,7 @@ class guia_model extends Model {
         $this->db->where("ag.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ag.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("ags.ativo", 't');
+        $this->db->where("pv.ativo", 't');
         $this->db->where("(ag.convenio_id = pv.convenio_id)");
 
         if ($_POST['txtNomeid'] != "") {
