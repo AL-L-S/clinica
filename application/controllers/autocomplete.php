@@ -210,9 +210,9 @@ class Autocomplete extends Controller {
             $retorno['start'] = $item->data;
             $retorno['end'] = $item->data;
             if ($item->situacao == 'LIVRE') {
-                $retorno['color'] = '#92DBC7';
+                $retorno['color'] = '#62C462';
             } else {
-                $retorno['color'] = '#36C4D0';
+                $retorno['color'] = '#B30802';
             }
             $situacao = $item->situacao;
             if(isset($item->medico)) {
@@ -234,7 +234,7 @@ class Autocomplete extends Controller {
             
 //            $medico = $item->medico;
                 
-              $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoconsulta?empresa=&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
+              $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
 
 
             $var[] = $retorno;

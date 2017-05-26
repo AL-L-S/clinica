@@ -1230,7 +1230,7 @@ class exame_model extends Model {
 
     function listarexamemultifuncaogeral($args = array()) {
         $data = date("Y-m-d");
-//        $contador = count($args);
+        $contador = count($args);
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
@@ -1283,9 +1283,9 @@ class exame_model extends Model {
         $this->db->join('tb_operador desbloc', 'desbloc.operador_id = ae.operador_desbloqueio', 'left');
 //        $this->db->orderby('ae.data');
 //        $this->db->orderby('ae.inicio');
-//        if ($contador == 0) {
-//            $this->db->where('ae.data >=', $data);
-//        }
+        if ($contador == 0) {
+            $this->db->where('ae.data >=', $data);
+        }
         if (empty($args['empresa']) || $args['empresa'] == '') {
             $this->db->where('ae.empresa_id', $empresa_id);
         } else {

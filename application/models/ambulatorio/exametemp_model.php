@@ -88,6 +88,9 @@ class exametemp_model extends Model {
     }
     
     function listarhorarioscalendariovago($medico = null, $especialidade = null) {
+        $data = date('Y-m-d');
+        $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
+        $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
         if ($medico != '') {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
         }elseif($especialidade != ''){
@@ -99,6 +102,9 @@ class exametemp_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
         $this->db->where("ae.tipo IN ('CONSULTA', 'ESPECIALIDADE', 'FISIOTERAPIA', 'EXAME')");
+        $this->db->where("ae.data is not null");
+        $this->db->where("ae.data >", $data_passado);
+        $this->db->where("ae.data <", $data_futuro);
         
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);
@@ -4019,8 +4025,8 @@ class exametemp_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
-//        $this->db->where("ag.tipo !=", 'EXAME');
-//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'EXAME');
+        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
@@ -4036,8 +4042,8 @@ class exametemp_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
-//        $this->db->where("ag.tipo !=", 'EXAME');
-//        $this->db->where("ag.tipo !=", 'CONSULTA');
+        $this->db->where("ag.tipo !=", 'EXAME');
+        $this->db->where("ag.tipo !=", 'CONSULTA');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);

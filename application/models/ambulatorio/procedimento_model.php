@@ -105,6 +105,36 @@ class procedimento_model extends Model {
         return $return->result();
     }
 
+    function listargruposexame() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome,
+                            ');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where("tipo", 'EXAME');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function listargruposconsulta() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome,
+                            ');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where("tipo", 'CONSULTA');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function listargruposespecialidade() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome,
+                            ');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where("tipo", 'ESPECIALIDADE');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
     function listargrupos() {
         $this->db->select('ambulatorio_grupo_id,
                             nome,
