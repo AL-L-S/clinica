@@ -2382,12 +2382,13 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
+        $this->db->join('tb_agrupador_fisioterapia_temp aft', 'aft.agrupador_fisioterapia_temp_id = ae.agrupador_fisioterapia', 'left');
 //        $this->db->orderby('ae.data');
 //        $this->db->orderby('ae.inicio');
         if ($contador == 0) {
             $this->db->where('ae.data >=', $data);
         }
-        $this->db->where('((numero_sessao is null OR numero_sessao = 1) OR (agrupador_fisioterapia is not null))');
+        $this->db->where('((numero_sessao is null OR numero_sessao = 1) OR (aft.agrupador_fisioterapia_temp_id is not null))');
 //        $this->db->where('numero_sessao', null);
         $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
 
@@ -4163,11 +4164,14 @@ class exame_model extends Model {
 
         $horario = date("Y-m-d H:i:s");
         $data = date("Y-m-d");
+        $hora = date("H:i:s");
         $operador_id = $this->session->userdata('operador_id');
 
         $this->db->set('confirmado', 't');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('data', $data);
+        $this->db->set('inicio', $hora);
+        $this->db->set('fim', $hora);
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->set('data_autorizacao', $horario);
         $this->db->set('operador_autorizacao', $operador_id);

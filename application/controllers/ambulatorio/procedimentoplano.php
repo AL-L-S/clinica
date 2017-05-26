@@ -243,7 +243,7 @@ class Procedimentoplano extends BaseController {
     function gravar() {
         $procedimentoplano_tuss_id = $this->procedimentoplano->gravar();
         if ($procedimentoplano_tuss_id == "-1") {
-            $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Opera&ccedil;&atilde;o cancelada.';
+            $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Procedimento já cadastrado.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
         }
