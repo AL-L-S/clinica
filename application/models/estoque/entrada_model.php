@@ -246,7 +246,59 @@ class entrada_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function relatoriosaldoprodutos() {
+        $this->db->select('ea.descricao as armazem,
 
+            sum(es.quantidade) as quantidade,
+            ep.descricao as produto');
+        $this->db->from('tb_estoque_saldo es');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
+//        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
+        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = es.produto_id', 'left');
+        $this->db->where('es.ativo', 'true');
+        if ($_POST['armazem'] != "0") {
+            $this->db->where('es.armazem_id', $_POST['armazem']);
+        }
+        if ($_POST['txtfornecedor'] != "0" && $_POST['txtfornecedor'] != "") {
+            $this->db->where("es.fornecedor_id", $_POST['txtfornecedor']);
+        }
+        if ($_POST['txtproduto'] != "0" && $_POST['txtproduto'] != "") {
+            $this->db->where("es.produto_id", $_POST['txtproduto']);
+        }
+//        if ($_POST['empresa'] != "0") {
+//            $this->db->where('ae.empresa_id', $_POST['empresa']);
+//        }
+        $this->db->groupby('ea.descricao, ep.descricao');
+        $this->db->orderby('ea.descricao, ep.descricao');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriosaldoprodutoscontador() {
+        $this->db->select('ea.descricao as armazem,
+
+            es.quantidade,
+            ep.descricao as produto');
+        $this->db->from('tb_estoque_saldo es');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
+        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
+        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = es.produto_id', 'left');
+        $this->db->where('es.ativo', 'true');
+        if ($_POST['armazem'] != "0") {
+            $this->db->where('es.armazem_id', $_POST['armazem']);
+        }
+        if ($_POST['txtfornecedor'] != "0" && $_POST['txtfornecedor'] != "") {
+            $this->db->where("es.fornecedor_id", $_POST['txtfornecedor']);
+        }
+        if ($_POST['txtproduto'] != "0" && $_POST['txtproduto'] != "") {
+            $this->db->where("es.produto_id", $_POST['txtproduto']);
+        }
+//        if ($_POST['empresa'] != "0") {
+//            $this->db->where('ae.empresa_id', $_POST['empresa']);
+//        }
+        $return = $this->db->count_all_results();
+        return $return;
+    }
     function relatoriosaldocontador() {
         $this->db->select('ea.descricao as armazem,
             ef.fantasia,

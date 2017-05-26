@@ -81,6 +81,12 @@ class Entrada extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('estoque/relatoriosaldo', $data);
     }
+    
+    function relatoriosaldoproduto() {
+        $data['armazem'] = $this->entrada->listararmazem();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('estoque/relatoriosaldoprodutos', $data);
+    }
 
     function gerarelatoriosaldo() {
         $armazem = $_POST['armazem'];
@@ -106,6 +112,32 @@ class Entrada extends BaseController {
         $data['contador'] = $this->entrada->relatoriosaldocontador();
         $data['relatorio'] = $this->entrada->relatoriosaldo();
         $this->load->View('estoque/impressaorelatoriosaldo', $data);
+    }
+    
+    function gerarelatoriosaldoprodutos() {
+        $armazem = $_POST['armazem'];
+        $estoque_fornecedor_id = $_POST['txtfornecedor'];
+        $estoque_produto_id = $_POST['txtproduto'];
+        if ($armazem == 0) {
+            $data['armazem'] = 0;
+        } else {
+            $data['armazem'] = $this->entrada->listararmazemcada($armazem);
+        }
+        if ($estoque_fornecedor_id == '') {
+            $data['fornecedor'] = 0;
+        } else {
+            $data['fornecedor'] = $this->entrada->listarfornecedorcada($estoque_fornecedor_id);
+        }
+        if ($estoque_produto_id == '') {
+            $data['produto'] = 0;
+        } else {
+            $data['produto'] = $this->entrada->listarprodutocada($estoque_produto_id);
+        }
+
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['contador'] = $this->entrada->relatoriosaldoprodutoscontador();
+        $data['relatorio'] = $this->entrada->relatoriosaldoprodutos();
+        $this->load->View('estoque/impressaorelatoriosaldoprodutos', $data);
     }
 
     function relatoriominimo() {

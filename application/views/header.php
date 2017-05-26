@@ -65,7 +65,7 @@ function debug($object) {
                     dataType: "json"
                 });
             });
-            
+
 
 <? if ($chat == 't') { ?>
 
@@ -213,7 +213,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id             ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id              ?>);
                     }
                 }
 
@@ -240,7 +240,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id               ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id                ?>);
                 }
 
 <? } ?>
@@ -326,6 +326,7 @@ function debug($object) {
                                     <? } ?>
 
                                     <? if ($perfil_id != 4) { ?>
+                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario">Multifuncao Calendario</a></span></ul>-->
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">Multifuncao Geral</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncao">Multifuncao Exame</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsulta">Multifuncao Consulta</a></span></ul>
@@ -539,14 +540,21 @@ function debug($object) {
                             </li> 
                             <li><span class="folder">Relatorios</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 8 || $perfil_id == 10) { ?>
+                                    <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldoproduto">Relatorio Saldo Produtos</a></span></ul>
+                                    
+
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatorioentradaarmazem">Relatorio Entrada Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaidaarmazem">Relatorio Saida Produtos</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldoarmazem">Relatorio Saldo Produtos/Entrada</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldo">Relatorio Saldo Produtos</a></span></ul>
+                                    
+
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriominimo">Relatorio Estoque Minimo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatorioprodutos">Relatorio Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriofornecedores">Relatorio Fornecedores</a></span></ul>
-
+                                    
+                                    
+                                    <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldo">Relatorio Saldo Produtos Por Fornecedor</a></span></ul>
+                                    
+                                    <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldoarmazem">Relatorio Saldo Produtos Por Entrada</a></span></ul>
                                 <? } ?>
                             </li> 
                         </ul>

@@ -2,10 +2,10 @@
 $pacs = $this->empresa->listarpacs();
 if (count($pacs) > 0) {
 
-//        var_dump($agenda_exames_id);
+//    var_dump($agenda_exames_id);
 //        die;
 // $AN- variavel, com o accession number( numero do exame), obtida do sistema gestor da clinica;
-    $AN = '522228';
+    $AN = $agenda_exames_id;
     $ipPACS_LAN = $pacs[0]->ip_local; //Ip atribuido ao PACS, na LAN do cliente;
     $IPpublico = $pacs[0]->ip_externo; // IP, OU URL( dyndns, no-ip, etc) PARA ACESSO EXTERNO AO PACS;
 //login que depende da clinica;
@@ -31,14 +31,18 @@ if (count($pacs) > 0) {
 
 //    echo $url, '<br>';
 //    echo $resultado, '<br>';
-    echo $linkImagem, '<br>';
+    if (preg_match('/\ERROR/', $linkImagem)) {
+//        echo 'deu';
+    }
+
+//    echo $linkImagem, '<br>';
 
 
 //        if ($verifica == 0) {
 //            $ambulatorio_laudooit_id = $this->laudooit->inserirlaudo($ambulatorio_laudo_id);
 //            $obj_laudo = new laudooit_model($ambulatorio_laudooit_id);
 //        } 
-}else{
+} else {
     $linkImagem = '';
 }
 //$pacs = $this->empresa->listarpacs();
@@ -61,7 +65,7 @@ if (count($pacs) > 0) {
                 <fieldset>
                     <legend>Dados</legend>
                     <table> 
-                        <?= @$obj->_guia_id ?>
+                        <? //= @$obj->_guia_id ?>
                         <tr>
                             <td width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <td width="400px;">Exame: <?= @$obj->_procedimento ?></td>
@@ -225,7 +229,7 @@ if (count($pacs) > 0) {
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
                                         <?php // foreach ($linha as $item) {  ?>
-                                                                                                                        <option value="<?php // echo $item->nome;  ?>" ><?php // echo $item->nome;  ?></option>
+                                                                                                                        <option value="<?php // echo $item->nome;     ?>" ><?php // echo $item->nome;     ?></option>
                                         <?php // }  ?>
                                         </select>-->
 
@@ -242,8 +246,8 @@ if (count($pacs) > 0) {
                                             <option value=0 >selecione</option>
                                             <? foreach ($operadores as $value) : ?>
                                                 <option value="<?= $value->operador_id; ?>"<?
-                                            if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
-                                            endif;
+                                                if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
+                                                endif;
                                                 ?>><?= $value->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -262,8 +266,8 @@ if (count($pacs) > 0) {
                                             <option value="">Selecione</option>
                                             <? foreach ($operadores as $valor) : ?>
                                                 <option value="<?= $valor->operador_id; ?>"<?
-                                            if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
-                                            endif;
+                                                if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
+                                                endif;
                                                 ?>><?= $valor->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -295,17 +299,17 @@ if (count($pacs) > 0) {
                                         <label>situa&ccedil;&atilde;o</label>
                                         <select name="situacao" id="situacao" class="size2" onChange="muda(this)">
                                             <option value='DIGITANDO'<?
-                                        if (@$obj->_status == 'DIGITANDO'):echo 'selected';
-                                        endif;
-                                        ?> >DIGITANDO</option>
+                                            if (@$obj->_status == 'DIGITANDO'):echo 'selected';
+                                            endif;
+                                            ?> >DIGITANDO</option>
                                             <option value='REVISAR' <?
                                             if (@$obj->_status == 'REVISAR'):echo 'selected';
                                             endif;
-                                        ?> >REVISAR</option>
+                                            ?> >REVISAR</option>
                                             <option value='FINALIZADO' <?
                                             if (@$obj->_status == 'FINALIZADO'):echo 'selected';
                                             endif;
-                                        ?> >FINALIZADO</option>
+                                            ?> >FINALIZADO</option>
                                         </select>
                                     </div>
                                     <div>
@@ -340,7 +344,7 @@ if (count($pacs) > 0) {
                                                             <font size="-1">OIT</font></a></div></td>
                                                 <td >
                                                     <div class="bt_link_new">
-                                                        <a href="<?=$linkImagem?>" target="_blank" >
+                                                        <a href="<?= $linkImagem ?>" target="_blank" >
                                                             <font size="-1">Imagens PACS</font></a></div></td>
                                             </tr>
                                             <tr>
@@ -367,6 +371,15 @@ if (count($pacs) > 0) {
                                             </tr>
                                         </table>
                                     </div>
+                                    <? if (!preg_match('/\ERROR/', $linkImagem)) { ?>
+                                        <div>
+
+                                            <iframe allowfullscreen="" height="250" width="600" src="<?= $linkImagem ?>"></iframe>
+
+                                        </div>
+                                    <? }
+                                    ?>
+
 
                                     <div>
 

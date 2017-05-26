@@ -4292,11 +4292,12 @@ class exame_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $hora = date("H:i:s");
         $data = date("Y-m-d");
+        $valortotal = (int) $_POST['txtqtde'] * (float) $dados->valortotal;
 
         $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
         $this->db->set('valor', $dados->valortotal);
         $this->db->set('valor1', $dados->valortotal);
-        $this->db->set('valor_total', $dados->valortotal);
+        $this->db->set('valor_total', $valortotal);
         $this->db->set('quantidade', $_POST['txtqtde']);
 //            $this->db->set('autorizacao', $_POST['autorizacao1']);
         $this->db->set('empresa_id', $empresa_id);

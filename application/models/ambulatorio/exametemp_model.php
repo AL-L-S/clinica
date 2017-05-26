@@ -86,6 +86,37 @@ class exametemp_model extends Model {
 //        var_dump($return->result());die;
         return $return->result();
     }
+    
+    function listarhorarioscalendariovago($medico = null, $especialidade = null) {
+        if ($medico != '') {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
+        }elseif($especialidade != ''){
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao,o.cbo_ocupacao_id as especialidade');
+        } else {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao');
+        }
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
+        $this->db->where("ae.tipo IN ('CONSULTA', 'ESPECIALIDADE', 'FISIOTERAPIA', 'EXAME')");
+        
+        if ($medico != '') {
+            $this->db->where("ae.medico_agenda", $medico);
+            $this->db->groupby("ae.data, situacao, ae.medico_agenda");
+        }
+        elseif($especialidade != ''){
+            $this->db->where('o.cbo_ocupacao_id', $especialidade);
+            $this->db->groupby("ae.data, situacao, o.cbo_ocupacao_id");
+        }
+         else {
+            $this->db->groupby("ae.data, situacao");
+        }
+
+        $this->db->orderby("ae.data");
+
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listaragendaspacienteconsulta($pacientetemp_id) {
         $data = date("Y-m-d");

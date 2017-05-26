@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar relatorio Saldo Armazem</a></h3>
+        <h3><a href="#">Gerar Relatorio Saldo Por Fornecedor</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>estoque/entrada/gerarelatoriosaldo">
                 <dl>
