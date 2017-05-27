@@ -36,10 +36,13 @@ function debug($object) {
         <link href="<?= base_url() ?>css/batepapo.css" rel="stylesheet" type="text/css" />
 
         <link href="<?= base_url() ?>css/form.css" rel="stylesheet" type="text/css" />
-
+        <!--<link href="<?= base_url() ?>js/fullcalendar/lib/cupertino/jquery-ui.min.css" rel="stylesheet" />-->
         <link href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url() ?>css/jquery-treeview.css" rel="stylesheet" type="text/css" />
+        <!--<script type="text/javascript" src="<?= base_url() ?>js/fullcalendar/lib/jquery.min.js"></script>-->
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+        <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
+        <!--<script type="text/javascript" src="<?= base_url() ?>js/fullcalendar/lib/jquery.min.js"></script>-->
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-cookie.js" ></script>
         <script type="text/javascript" src="<?= base_url() ?>js/jquery-treeview.js" ></script>
@@ -213,7 +216,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id              ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id               ?>);
                     }
                 }
 
@@ -240,7 +243,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id                ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id                 ?>);
                 }
 
 <? } ?>
@@ -275,9 +278,9 @@ function debug($object) {
                     <label style='font-family: serif; font-size: 8pt;'>Empresa: <span style="<?= $css ?>"><?= $this->session->userdata('empresa'); ?></span></label>
                 </div>
                 <div id="login_controles">
-                    <!--
-                    <a href="#" alt="Alterar senha" id="login_pass">Alterar Senha</a>
-                    -->
+
+                    <!--<a href="#" alt="Alterar senha" id="login_pass">Alterar Senha</a>-->
+
                     <a id="login_sair" title="Sair do Sistema" onclick="javascript: return confirm('Deseja realmente sair da aplicação?');"
                        href="<?= base_url() ?>login/sair">Sair</a>
 
@@ -326,7 +329,7 @@ function debug($object) {
                                     <? } ?>
 
                                     <? if ($perfil_id != 4) { ?>
-                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario">Multifuncao Calendario</a></span></ul>-->
+                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario">Multifuncao Calendario</a></span></ul>-->
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">Multifuncao Geral</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncao">Multifuncao Exame</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsulta">Multifuncao Consulta</a></span></ul>
@@ -541,19 +544,19 @@ function debug($object) {
                             <li><span class="folder">Relatorios</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 8 || $perfil_id == 10) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldoproduto">Relatorio Saldo Produtos</a></span></ul>
-                                    
+
 
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatorioentradaarmazem">Relatorio Entrada Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaidaarmazem">Relatorio Saida Produtos</a></span></ul>
-                                    
+
 
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriominimo">Relatorio Estoque Minimo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatorioprodutos">Relatorio Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriofornecedores">Relatorio Fornecedores</a></span></ul>
-                                    
-                                    
+
+
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldo">Relatorio Saldo Produtos Por Fornecedor</a></span></ul>
-                                    
+
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldoarmazem">Relatorio Saldo Produtos Por Entrada</a></span></ul>
                                 <? } ?>
                             </li> 
