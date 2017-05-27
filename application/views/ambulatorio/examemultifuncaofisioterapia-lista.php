@@ -50,8 +50,8 @@
 
                 <li class="tabela_content01">
                     <span> Agenda</span> - <span style="color:#ff004a">Paciente - <span style="color: #5659C9">Procedimento</span> - <span style="color: black"> Tempo de Espera</span>
-                            
-                        </li>
+
+                </li>
                 <?
                 $listaespera = $this->exame->listarexameagendaconfirmada2()->get()->result();
 
@@ -68,7 +68,7 @@
                         ?>
                         <li class="<?= $estilo_linha ?>">
                             <a href="<?= base_url() ?>ambulatorio/exame/examesala/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>" target="_blank">
-                             <span style="color: black"><?= $item->inicio; ?></span> -  <span> <?= $item->paciente ?></span> - <span style="color: #5659C9"><?= $item->procedimento ?></span> - <span style="color: black"><?= $teste ?></span> - 
+                                <span style="color: black"><?= $item->inicio; ?></span> -  <span> <?= $item->paciente ?></span> - <span style="color: #5659C9"><?= $item->procedimento ?></span> - <span style="color: black"><?= $teste ?></span> - 
                             </a>
                         </li>
 
@@ -350,7 +350,7 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="250px;"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -445,6 +445,27 @@
 
     $(document).ready(function () {
 //alert('teste_parada');
+        if ($('#especialidade').val() != '') {
+            $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
+                var options = '<option value=""></option>';
+                var slt = '';
+                for (var c = 0; c < j.length; c++) {
+                    if (j[0].operador_id != undefined) {
+                        if (j[c].operador_id == '<?= @$_GET['medico'] ?>') {
+                            slt = 'selected';
+                        }
+                        options += '<option value="' + j[c].operador_id + '" ' + slt + '>' + j[c].nome + '</option>';
+                        slt = '';
+                    }
+                }
+                $('#medico').html(options).show();
+                $('.carregando').hide();
+
+
+
+            });
+        }
+
         $(function () {
             $('#especialidade').change(function () {
 

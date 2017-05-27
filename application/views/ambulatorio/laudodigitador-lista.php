@@ -37,16 +37,19 @@
                             <select name="medico" id="medico" class="size1">
                                 <option value=""></option>
                                 <? foreach ($medicos as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
+                                    <option value="<?= $value->operador_id; ?>" <?
+                                        if (@$_GET['medico'] == $value->operador_id):echo 'selected';
+                                        endif;
+                                        ?>><?php echo $value->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
                         </th>
                         <th class="tabela_title">
                             <select name="situacao" id="situacao" class="size1" >
                                 <option value='' ></option>
-                                <option value='AGUARDANDO' >AGUARDANDO</option>
-                                <option value='DIGITANDO' >DIGITANDO</option>
-                                <option value='FINALIZADO' >FINALIZADO</option>
+                                <option value='AGUARDANDO' <?if (@$_GET['situacao'] == 'AGUARDANDO') echo 'selected';?>>AGUARDANDO</option>
+                                <option value='DIGITANDO' <?if (@$_GET['situacao'] == 'DIGITANDO') echo 'selected';?>>DIGITANDO</option>
+                                <option value='FINALIZADO' <?if (@$_GET['situacao'] == 'FINALIZADO') echo 'selected';?>>FINALIZADO</option>
                             </select>
                         </th>
                         <th class="tabela_title">

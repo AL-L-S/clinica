@@ -164,7 +164,7 @@
                             dialog = $("#dialog-form").dialog({
                                 autoOpen: false,
                                 height: 400,
-                                width: 350,
+                                width: 500,
                                 modal: true,
                                 buttons: {
                                     "Enviar": addUser,

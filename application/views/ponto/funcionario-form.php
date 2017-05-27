@@ -15,7 +15,7 @@
                     </dt>
                     <dd>
                         <input type="hidden" name="txtFuncionarioID" value="<?= @$obj->_funcionario_id; ?>" />
-                        <input type="text" name="txtMatricula" alt="numeromask" class="texto02" value="<?= @$obj->_matricula; ?>" />
+                        <input type="text" name="txtMatricula" class="texto02" value="<?= @$obj->_matricula; ?>" />
                     </dd>
                     <dt>
                     <label>CPF</label>
