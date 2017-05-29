@@ -150,8 +150,12 @@
                                 <td  >
                                     <select  name="convenio1" id="convenio1" class="size1"  required="">
                                         <option value="-1">Selecione</option>
-                                        <? foreach ($convenio as $item) : ?>
-                                            <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
+                                        <? 
+                                        $lastConv = $exames[count($exames) - 1]->convenio_id;
+                                        foreach ($convenio as $item) : ?>
+                                            <option value="<?= $item->convenio_id; ?>"  <? if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
+                                                <?= $item->nome; ?>
+                                            </option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
@@ -208,6 +212,7 @@
                 <?
                 $total = 0;
                 $guia = 0;
+
                 if ($contador > 0) {
 
                     foreach ($grupo_pagamento as $grupo) { //buscar exames com forma de pagamento pre-definida (inicio)
@@ -229,6 +234,8 @@
                                 <?
                                 $total = 0;
                                 $guia = 0;
+                                $faturado = 0;
+
                                 foreach ($exame as $item) {
                                     ?>
                                     <?
@@ -261,7 +268,11 @@
 
                                                             </a></div>
                                                     </td>
-                                                <? } ?>
+                                                    <?
+                                                } else {
+                                                    $faturado++;
+                                                }
+                                                ?>
                                             <? } ?>
                                         </tr>
                                     </tbody>
@@ -270,15 +281,17 @@
                                 ?>
                                 <tfoot>
                                     <tr>
-                                        <th class="tabela_footer" colspan="6">
+                                        <th class="tabela_footer" colspan="5">
                                             Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                         </th>
 
                                         <? if ($perfil_id != 11) { ?>
-                                            <th colspan="2" align="center"><center><div class="bt_linkf">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
+                                            <? if ($perfil_id == 1 || $faturado == 0) { ?>
+                                                <th colspan="2" align="center"><center><div class="bt_linkf">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
-                                            </a></div></center></th>
+                                                </a></div></center></th>
+                                    <? } ?>
                                 <? } ?>
                                 </tr>
                                 </tfoot>
@@ -304,6 +317,8 @@
                             <?
                             $total = 0;
                             $guia = 0;
+                            $faturado = 0;
+
                             foreach ($exames as $value) {
                                 $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
                                 if (empty($teste)) {
@@ -334,11 +349,15 @@
                                                 </td>
                                                 <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
                                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
+                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                             </a></div>
                                                     </td>
-                                                <? } ?>
+                                                    <?
+                                                } else {
+                                                    $faturado++;
+                                                }
+                                                ?>
                                             </tr>
                                         </tbody>
                                         <?
@@ -351,13 +370,19 @@
                             ?>
                             <tfoot>
                                 <tr>
-                                    <th class="tabela_footer" colspan="6">
+                                    <th class="tabela_footer" colspan="5">
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
-                                    <th colspan="2" align="center"><center><div class="bt_linkf">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
+                                    <? if ($perfil_id != 11) { 
+                                        if ($perfil_id == 1 || $faturado == 0) { ?>
+                                            <th colspan="2" align="center"><center><div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
-                                    </a></div></center></th>
+                                            </a></div></center></th>
+                                    <?
+                                }
+                            }
+                            ?>
                             </tr>
                             </tfoot>
                         </table> 
@@ -378,113 +403,124 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-
-                                        $(function () {
-                                            $("#data").datepicker({
-                                                autosize: true,
-                                                changeYear: true,
-                                                changeMonth: true,
-                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                dateFormat: 'dd/mm/yy'
-                                            });
-                                        });
-
-                                        $(function () {
-                                            $("#accordion").accordion();
-                                        });
-
-
-                                        $(function () {
-                                            $("#medico1").autocomplete({
-                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                minLength: 3,
-                                                focus: function (event, ui) {
-                                                    $("#medico1").val(ui.item.label);
-                                                    return false;
-                                                },
-                                                select: function (event, ui) {
-                                                    $("#medico1").val(ui.item.value);
-                                                    $("#crm1").val(ui.item.id);
-                                                    return false;
-                                                }
-                                            });
-                                        });
-
-                                        $(function () {
-                                            $('#convenio1').change(function () {
-                                                if ($(this).val()) {
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                                        options = '<option value=""></option>';
-                                                        for (var c = 0; c < j.length; c++) {
-                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                                        }
-                                                        $('#procedimento1').html(options).show();
-                                                        $('.carregando').hide();
-                                                    });
-                                                } else {
-                                                    $('#procedimento1').html('<option value="">Selecione</option>');
-                                                }
-                                            });
-                                        });
-
-
-                                        $(function () {
-                                            $('#procedimento1').change(function () {
-                                                if ($(this).val()) {
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                        if (j[0].home_care == 't') {
-                                                            $('#homecare').val("t");
-
-                                                        } else {
-                                                            $('#homecare').val("");
-                                                        }
-
-                                                        options = "";
-                                                        options += j[0].valortotal;
-                                                        qtde = "";
-                                                        qtde += j[0].qtde;
-                                                        document.getElementById("valor1").value = options;
-                                                        document.getElementById("qtde").value = qtde;
-                                                        $('.carregando').hide();
-                                                    });
-                                                } else {
-                                                    $('#valor1').html('value=""');
-                                                }
-                                            });
-                                        });
-
-                                        $(function () {
-                                            $('#procedimento1').change(function () {
-                                                if ($(this).val()) {
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                        var options = '<option value="0">Selecione</option>';
-                                                        for (var c = 0; c < j.length; c++) {
-                                                            if (j[c].forma_pagamento_id != null) {
-                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                            }
-                                                        }
-                                                        $('#formapamento').html(options).show();
-                                                        $('.carregando').hide();
-                                                    });
-                                                } else {
-                                                    $('#formapamento').html('<option value="0">Selecione</option>');
-                                                }
-                                            });
-                                        });
-
-                                        function calculoIdade() {
-                                            var data = document.getElementById("txtNascimento").value;
-                                            var ano = data.substring(6, 12);
-                                            var idade = new Date().getFullYear() - ano;
-                                            document.getElementById("txtIdade").value = idade;
+                                if($("#convenio1").val() != "-1"){
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $("#convenio1").val()}, function (j) {
+                                        options = '<option value=""></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                         }
+                                        $('#procedimento1').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                }
+                                
 
-                                        calculoIdade();
+                                $(function () {
+                                    $("#data").datepicker({
+                                        autosize: true,
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                        dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                        buttonImage: '<?= base_url() ?>img/form/date.png',
+                                        dateFormat: 'dd/mm/yy'
+                                    });
+                                });
+
+                                $(function () {
+                                    $("#accordion").accordion();
+                                });
+
+
+                                $(function () {
+                                    $("#medico1").autocomplete({
+                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                        minLength: 3,
+                                        focus: function (event, ui) {
+                                            $("#medico1").val(ui.item.label);
+                                            return false;
+                                        },
+                                        select: function (event, ui) {
+                                            $("#medico1").val(ui.item.value);
+                                            $("#crm1").val(ui.item.id);
+                                            return false;
+                                        }
+                                    });
+                                });
+
+                                $(function () {
+                                    $('#convenio1').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                                options = '<option value=""></option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                }
+                                                $('#procedimento1').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                        } else {
+                                            $('#procedimento1').html('<option value="">Selecione</option>');
+                                        }
+                                    });
+                                });
+
+
+                                $(function () {
+                                    $('#procedimento1').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                if (j[0].home_care == 't') {
+                                                    $('#homecare').val("t");
+
+                                                } else {
+                                                    $('#homecare').val("");
+                                                }
+
+                                                options = "";
+                                                options += j[0].valortotal;
+                                                qtde = "";
+                                                qtde += j[0].qtde;
+                                                document.getElementById("valor1").value = options;
+                                                document.getElementById("qtde").value = qtde;
+                                                $('.carregando').hide();
+                                            });
+                                        } else {
+                                            $('#valor1').html('value=""');
+                                        }
+                                    });
+                                });
+
+                                $(function () {
+                                    $('#procedimento1').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                var options = '<option value="0">Selecione</option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    if (j[c].forma_pagamento_id != null) {
+                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                    }
+                                                }
+                                                $('#formapamento').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                        } else {
+                                            $('#formapamento').html('<option value="0">Selecione</option>');
+                                        }
+                                    });
+                                });
+
+                                function calculoIdade() {
+                                    var data = document.getElementById("txtNascimento").value;
+                                    var ano = data.substring(6, 12);
+                                    var idade = new Date().getFullYear() - ano;
+                                    document.getElementById("txtIdade").value = idade;
+                                }
+
+                                calculoIdade();
 
 
 

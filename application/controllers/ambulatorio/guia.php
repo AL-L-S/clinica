@@ -952,7 +952,7 @@ class Guia extends BaseController {
                     $this->session->set_flashdata('message', $messagem);
                     redirect(base_url() . "ambulatorio/exame/autorizarsessaofisioterapia/$paciente_id", $data);
                 } else {
-                    redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
+                    redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$i");
                 }
             } else {
                 $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];

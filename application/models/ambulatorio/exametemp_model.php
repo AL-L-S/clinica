@@ -175,9 +175,12 @@ class exametemp_model extends Model {
                             es.nome as sala,
                             a.medico_agenda,
                             o.nome as medico,
-                            a.observacoes');
+                            a.observacoes,
+                            a.procedimento_tuss_id,
+                            pc.convenio_id as convenio_agenda');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
         $this->db->where("a.confirmado", 'false');
         $this->db->where("a.tipo", 'FISIOTERAPIA');
@@ -275,7 +278,8 @@ class exametemp_model extends Model {
                             pt.tuss_id,
                             a.medico_agenda,
                             o.nome as medico,
-                            a.observacoes');
+                            a.observacoes,
+                            pc.convenio_id');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda', 'left');
@@ -315,8 +319,10 @@ class exametemp_model extends Model {
                             a.medico_agenda,
                             o.nome as medico,
                             a.medico_consulta_id,
+                            pc.convenio_id,
                             a.observacoes');
         $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
         $this->db->where("a.tipo", 'CONSULTA');
@@ -3957,8 +3963,8 @@ class exametemp_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
-//        $this->db->where("ag.tipo !=", 'CONSULTA');
-//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'CONSULTA');
+        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);

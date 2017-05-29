@@ -136,7 +136,7 @@
                                     </select>
                                 </td>
 
-                                <td class="<?php echo $estilo_linha; ?>">
+                                <td class="<?php echo $estilo_linha; ?>" >
                                     <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1"  >
                                         <option value="">-- Escolha um procedimento --</option>
                                     </select>
@@ -208,14 +208,15 @@
 <? for ($b = 1; $b <= $i; $b++) { ?>
     
     
-                                 $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio<?= $b ?>', {medico_id<?= $b ?>: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
+                                 $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio<?= $i ?>', {medico_id<?= $b ?>: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
+
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             var selected = '';
                                             
                                             var convenio_agendado = <?= @$exames[$b-1]->convenio_agenda ?>;
                                             var proc_agendado = <?= @$exames[$b-1]->procedimento_tuss_id ?>;
-//                                            alert(proc_agendado);
+                                            
                                             if(convenio_agendado == j[i].convenio_id){
                                                 selected = "selected='true'";
                                                 <?$it = ($b == 1)?'':$b;?>
