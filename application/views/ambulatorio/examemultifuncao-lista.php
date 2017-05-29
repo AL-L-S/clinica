@@ -371,6 +371,27 @@
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
+        
+        if ($('#especialidade').val() != '') {
+            $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
+                var options = '<option value=""></option>';
+                var slt = '';
+                for (var c = 0; c < j.length; c++) {
+                    if (j[0].operador_id != undefined) {
+                        if(j[c].operador_id == '<?= @$_GET['medico'] ?>'){  
+                            slt = 'selected';
+                        }
+                        options += '<option value="' + j[c].operador_id + '" '+ slt +'>' + j[c].nome + '</option>';
+                        slt = '';
+                    }
+                }
+                $('#medico').html(options).show();
+                $('.carregando').hide();
+
+
+
+            });
+        }
 //alert('teste_parada');
         $(function () {
             $('#especialidade').change(function () {

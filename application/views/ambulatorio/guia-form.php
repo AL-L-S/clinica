@@ -135,7 +135,7 @@
                                 </td>
                                 <td  width="50px;">
                                     <select  name="grupo1" id="grupo1" class="size1" >
-                                        <option value="-1">Selecione</option>
+                                        <option value="">Selecione</option>
                                         <? foreach ($grupos as $item) : ?>
                                             <option value="<?= $item->nome; ?>"><?= $item->nome; ?></option>
                                         <? endforeach; ?>
@@ -436,7 +436,7 @@
 
                                         $(function () {
                                             $('#grupo1').change(function () {
-                                                if ($(this).val()) {
+//                                                if ($(this).val()) {
                                                     $('.carregando').show();
                                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
                                                         options = '<option value=""></option>';
@@ -446,9 +446,9 @@
                                                         $('#procedimento1').html(options).show();
                                                         $('.carregando').hide();
                                                     });
-                                                } else {
-                                                    $('#procedimento1').html('<option value="">Selecione</option>');
-                                                }
+//                                                } else {
+//                                                    $('#procedimento1').html('<option value="">Selecione</option>');
+//                                                }
                                             });
                                         });
 

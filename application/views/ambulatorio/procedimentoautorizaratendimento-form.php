@@ -112,7 +112,8 @@
                                     <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1"  >
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $itens) : ?>
-                                            <option value="<?= $itens->exame_sala_id; ?>"><?= $itens->nome; ?></option>
+                                            <option value="<?= $itens->exame_sala_id; ?>" <?if (@$item->agenda_exames_nome_id == @$itens->exame_sala_id) echo "selected"; ?>>
+                                                <?= $itens->nome; ?></option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
@@ -120,7 +121,9 @@
                                     <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size1" >
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $itens) : ?>
-                                            <option value="<?= $itens->operador_id; ?>"><?= $itens->nome; ?></option>
+                                            <option value="<?= $itens->operador_id; ?>" <?if (@$item->medico_consulta_id == @$itens->operador_id) echo "selected"; ?>>
+                                                <?= $itens->nome; ?>
+                                            </option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
@@ -196,9 +199,57 @@
 <script type="text/javascript">
 
 
-                        $(document).ready(function () {
+                        $(document).ready(function () {   
+                            
+                            <? //foreach ($exames as $item) { ?>
+                                
+                            <? // } ?>
 
 <? for ($b = 1; $b <= $i; $b++) { ?>
+    
+    
+                                 $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio<?= $b ?>', {medico_id<?= $b ?>: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
+                                        var options = '<option value=""></option>';
+                                        for (var i = 0; i < j.length; i++) {
+                                            var selected = '';
+                                            
+                                            var convenio_agendado = <?= @$exames[$b-1]->convenio_agenda ?>;
+                                            var proc_agendado = <?= @$exames[$b-1]->procedimento_tuss_id ?>;
+//                                            alert(proc_agendado);
+                                            if(convenio_agendado == j[i].convenio_id){
+                                                selected = "selected='true'";
+                                                <?$it = ($b == 1)?'':$b;?>
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos<?= $it ?>', {convenio<?= $b ?>: j[i].convenio_id, ajax: true}, function (t) {
+                                                    var opt = '<option value=""></option>';
+                                                    var slt = '';
+                                                    for (var c = 0; c < t.length; c++) {
+                                                        if(proc_agendado == t[c].procedimento_convenio_id){
+                                                           slt = "selected='true'";
+                                                           $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
+                                                                var valor = a[0].valortotal;
+                                                                var qtde = a[0].qtde;
+                                                                document.getElementById("valor<?= $b ?>").value = valor;
+                                                                document.getElementById("qtde<?= $b ?>").value = qtde;
+                                                                $('.carregando').hide();
+                                                            });
+                                                        }
+                                                        opt += '<option value="' + t[c].procedimento_convenio_id + '"'+ slt + '>' + t[c].procedimento + '</option>';
+                                                        slt = '';
+                                                    }
+                                                    $('#procedimento<?= $b ?>').html(opt).show();
+                                                    $('.carregando').hide();
+                                                });
+                                            }
+                                            options += '<option value="' + j[i].convenio_id + '"'+ selected + '>' + j[i].nome + '</option>';
+                                            selected = '';
+                                        }
+                                        
+                                        
+                                        $('#convenio<?= $b ?>').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+
+
 
                                 $('#checkbox<?= $b ?>').change(function () {
                                     if ($(this).is(":checked")) {

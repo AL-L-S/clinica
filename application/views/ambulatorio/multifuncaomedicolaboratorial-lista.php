@@ -35,34 +35,41 @@
                             </select>
                         </th>
                         <?if ($perfil_id != 4){?>
-                        <th class="tabela_title">
-                            <select name="especialidade" id="especialidade" class="size1">
-                                <option value=""></option>
-                                <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->descricao; ?>" <?
-                                    if (@$_GET['especialidade'] == $value->descricao):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->descricao; ?></option>
-                                        <? endforeach; ?>
-                            </select>
-                        </th>
+                         <th class="tabela_title">
+                                <select name="especialidade" id="especialidade" class="size1">
+                                    <option value=""></option>
+                                    <? foreach ($especialidade as $value) : ?>
+                                        <option value="<?= $value->cbo_ocupacao_id; ?>" <?
+                                        if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
+                                        endif;
+                                        ?>>
+                                                    <?
+//                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
+//                                                    echo '<script>carregaMedicoEspecialidade();</script>';
+//                                                endif;
+                                                    ?>
+                                                    <?php echo $value->descricao; ?>
+                                        </option>
+                                    <? endforeach; ?>
+                                </select>
+                            </th>
 
 
-                        <th class="tabela_title">
-                            <select name="medico" id="medico" class="size1">
-                                <option value=""> </option>
-                                <? foreach ($medicos as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>"<?
-                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
-                                    endif;
-                                    ?>>
-                                                <?php echo $value->nome; ?>
+                            <th class="tabela_title">
+                                <select name="medico" id="medico" class="size2">
+                                    <option value=""> </option>
+                                    <? foreach ($medicos as $value) : ?>
+                                        <option value="<?= $value->operador_id; ?>"<?
+                                        if (@$_GET['medico'] == $value->operador_id):echo 'selected';
+                                        endif;
+                                        ?>>
+                                                    <?php echo $value->nome; ?>
 
-                                    </option>
-                                <? endforeach; ?>
+                                        </option>
+                                    <? endforeach; ?>
 
-                            </select>
-                        </th>
+                                </select>
+                            </th>
                         <? } ?>
                         <th class="tabela_title">
                             <input type="text"  id="data" alt="date" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
@@ -212,6 +219,26 @@
 <script type="text/javascript">
 $(document).ready(function () {
 //alert('teste_parada');
+ if ($('#especialidade').val() != '') {
+            $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
+                var options = '<option value=""></option>';
+                var slt = '';
+                for (var c = 0; c < j.length; c++) {
+                    if (j[0].operador_id != undefined) {
+                        if (j[c].operador_id == '<?= @$_GET['medico'] ?>') {
+                            slt = 'selected';
+                        }
+                        options += '<option value="' + j[c].operador_id + '" ' + slt + '>' + j[c].nome + '</option>';
+                        slt = '';
+                    }
+                }
+                $('#medico').html(options).show();
+                $('.carregando').hide();
+
+
+
+            });
+        }
                                         $(function () {
                                             $('#especialidade').change(function () {
 

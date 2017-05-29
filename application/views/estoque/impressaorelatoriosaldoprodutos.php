@@ -39,7 +39,7 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ARMAZEM: TODOS</th>
                 </tr>
             <? } ?>
-            
+
 
             <? IF ($produto > 0) { ?>
                 <tr>
@@ -60,9 +60,10 @@
         <table>
             <thead>
                 <tr>
-                    <td class="tabela_teste"><font size="-2">QTDE</th>
-                    <!--<td class="tabela_teste"><font size="-2">Fonnecedor</th>-->
+
+    <!--<td class="tabela_teste"><font size="-2">Fonnecedor</th>-->
                     <td class="tabela_teste"><font size="-2">Produto</th>
+                    <td class="tabela_teste"><font size="-2">QTDE</th>
                 </tr>
             </thead>
             <hr>
@@ -86,9 +87,10 @@
                             </tr>
                         <? } ?>
                         <tr>
-                            <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
+                            
                             <!--<td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>-->
-                            <td><font size="-2"><?=utf8_decode($item->produto); ?></td>
+                            <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
+                            <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                         </tr>
 
 
@@ -148,7 +150,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
