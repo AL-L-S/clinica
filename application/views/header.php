@@ -329,7 +329,7 @@ function debug($object) {
                                     <? } ?>
 
                                     <? if ($perfil_id != 4) { ?>
-                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario">Multifuncao Calendario</a></span></ul>-->
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario">Multifuncao Calendario</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">Multifuncao Geral</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncao">Multifuncao Exame</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsulta">Multifuncao Consulta</a></span></ul>
