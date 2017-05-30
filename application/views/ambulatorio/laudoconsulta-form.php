@@ -36,9 +36,13 @@
 
                         <tr>
                             <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
-                            <td width="40px;"><div class="bt_link_new">
+                            <td width="40px;">
+                                <div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
-                                        chamar</a></div>
+                                        Chamar</a></div>
+                                <div class="bt_link_new">
+                                    <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
+                                        Editar</a></div>
                                 <!--                                        impressaolaudo -->
                             </td>
                             <!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
@@ -174,6 +178,12 @@
                                     <td width="40px;"><div class="bt_link_new">
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaratestado/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                 Atestado</a></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="40px;"><div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/escolherdeclaracao/<?= $paciente_id ?>/<?=@$obj->_guia_id;  ?>/<?= $agenda_exames_id ?>');" >
+                                                Declaração</a></div>
                                     </td>
                                 </tr>
                                 <tr>

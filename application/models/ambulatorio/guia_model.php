@@ -102,6 +102,41 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarfiladeimpressao() {
+
+        $this->db->select('afi.ambulatorio_fila_impressao_id');
+        $this->db->from('tb_ambulatorio_fila_impressao afi');
+        $this->db->join('tb_operador o', 'o.operador_id = afi.operador_solicitante', 'left');
+        $this->db->where('afi.ativo', 't');
+
+//        $this->db->orderby('afi.data_cadastro', 'desc');
+        return $this->db;
+    }
+
+    function listarfiladeimpressao2() {
+
+        $this->db->select('fi.*, op.nome as solicitante');
+        $this->db->from('tb_ambulatorio_fila_impressao fi');
+        $this->db->join('tb_operador op', 'op.operador_id = fi.operador_solicitante', 'left');
+        $this->db->where('fi.ativo', 't');
+//        $this->db->orderby('fi.data_cadastro', 'desc');
+        return $this->db;
+    }
+
+    function gerarimpressaofiladeimpressao($impressao_id) {
+
+        $this->db->select('fi.texto');
+        $this->db->from('tb_ambulatorio_fila_impressao fi');
+        $this->db->where('fi.ambulatorio_fila_impressao_id', $impressao_id);
+        $return = $this->db->get();
+
+        $this->db->set('ativo', 'f');
+        $this->db->where('ambulatorio_fila_impressao_id', $impressao_id);
+        $this->db->update('tb_ambulatorio_fila_impressao');
+
+        return $return->result();
+    }
+
     function listarexames($paciente_id) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -2057,11 +2092,11 @@ class guia_model extends Model {
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = g.paciente_id', 'left');
-        
-        if($guia == "NAO"){
+
+        if ($guia == "NAO") {
             $this->db->where('g.nota_fiscal', 't');
         }
-        
+
         $this->db->where('ae.empresa_id', '1');
         $this->db->where('ae.data >=', $inicio);
         $this->db->where('ae.data <=', $fim);
@@ -5045,6 +5080,29 @@ class guia_model extends Model {
         }
     }
 
+    function gravarfiladeimpressao($html, $tipo) {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('texto', $html);
+            $this->db->set('nome', $tipo);
+
+
+            $this->db->set('operador_solicitante', $operador_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->insert('tb_ambulatorio_fila_impressao');
+
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function tempomedioatendimento() {
 
 
@@ -6400,32 +6458,31 @@ AND data <= '$data_fim'";
             $this->db->where("guia_id", $guia);
             $this->db->where('confirmado', 'true');
             $correcao = $this->db->get()->result();
-            
-            $vlrTotal = (float) $correcao[0]->valor - (float) $_POST['desconto'] ;
-            if ( $vlrTotal > (float)$correcao[0]->valor_total) {
-                $diferenca = $vlrTotal - (float)$correcao[0]->valor_total;
-                
+
+            $vlrTotal = (float) $correcao[0]->valor - (float) $_POST['desconto'];
+            if ($vlrTotal > (float) $correcao[0]->valor_total) {
+                $diferenca = $vlrTotal - (float) $correcao[0]->valor_total;
+
                 $sql = "UPDATE ponto.tb_agenda_exames 
                         SET valor_total = valor_total + {$diferenca}, 
                             valor1 = valor1 + {$diferenca},
                             desconto = desconto - {$diferenca}
                         WHERE agenda_exames_id = {$correcao[0]->agenda_exame_id}";
-                        
-                $this->db->query($sql);  
-            } 
-            else if ($vlrTotal < (float)$correcao[0]->valor_total) {
-                $diferenca = (float)$correcao[0]->valor_total - $vlrTotal;
-                
-                $diferenca = $vlrTotal - (float)$correcao[0]->valor_total;
+
+                $this->db->query($sql);
+            } else if ($vlrTotal < (float) $correcao[0]->valor_total) {
+                $diferenca = (float) $correcao[0]->valor_total - $vlrTotal;
+
+                $diferenca = $vlrTotal - (float) $correcao[0]->valor_total;
                 $sql = "UPDATE ponto.tb_agenda_exames 
                         SET valor_total = valor_total - {$diferenca}, 
                             valor1 = valor1 - {$diferenca},
                             desconto = desconto + {$diferenca}
                         WHERE agenda_exames_id = {$correcao[0]->agenda_exame_id}";
-                        
-                $this->db->query($sql);  
+
+                $this->db->query($sql);
             }
-            
+
             return 0;
         } catch (Exception $exc) {
             return -1;

@@ -3448,6 +3448,8 @@ class exame_model extends Model {
                             an.nome as sala,
                             o.nome as medicoconsulta,
                             p.nome as paciente,
+                            p.telefone,
+                            p.celular,
                             ae.procedimento_tuss_id,
                             ae.confirmado,
                             c.nome as convenio,

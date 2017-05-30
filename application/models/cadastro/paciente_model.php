@@ -323,9 +323,9 @@ class paciente_model extends BaseModel {
             if ($_POST['nascimento'] != '') {
                 $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/", "-", $_POST['nascimento']) ) ) );
             }
-            if ($_POST['data_emissao'] != '') {
-                $this->db->set('data_emissao', $_POST['data_emissao']);
-            }
+//            if ($_POST['data_emissao'] != '') {
+//                $this->db->set('data_emissao', $_POST['data_emissao']);
+//            }
 
             if ($_POST['convenio'] != '') {
                 $this->db->set('convenio_id', $_POST['convenio']);
@@ -338,8 +338,8 @@ class paciente_model extends BaseModel {
                 $this->db->set('escolaridade_id', $_POST['escolaridade']);
             }
             $this->db->set('rg', $_POST['rg']);
-            $this->db->set('uf_rg', $_POST['uf_rg']);
-            $this->db->set('titulo_eleitor', $_POST['titulo_eleitor']);
+//            $this->db->set('uf_rg', $_POST['uf_rg']);
+//            $this->db->set('titulo_eleitor', $_POST['titulo_eleitor']);
             $this->db->set('sexo', $_POST['sexo']);
             if ($_POST['raca_cor'] != '') {
                 $this->db->set('raca_cor', $_POST['raca_cor']);

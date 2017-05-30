@@ -180,7 +180,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
         $this->db->where("a.confirmado", 'false');
-        $this->db->where("a.tipo", 'FISIOTERAPIA');
+        $this->db->where("(a.tipo = 'FISIOTERAPIA' OR a.tipo = 'ESPECIALIDADE')");
         $this->db->where("a.guia_id", null);
         $this->db->where("(a.numero_sessao = 1 OR a.numero_sessao is null)");
         $this->db->where('a.data', $data);

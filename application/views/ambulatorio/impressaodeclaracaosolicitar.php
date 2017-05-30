@@ -1,4 +1,3 @@
-<meta charset="UTF-8">
 <?
 $sexo = $exame[0]->sexo;
 if ($sexo == "M") {
@@ -46,18 +45,10 @@ switch ($MES) {
         break;
 }
 ?>
-<? if ($empresa[0]->impressao_declaracao == 1) { ?>
-    <p style="text-align: center"><img align = 'center'  width='400px' height='200px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></p>   
-<? } else {
-    ?>
-    <p style="text-align: center"><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></p> 
-<? }
-?>
-
-
+<p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
 
 <p>Paciente: <strong><?= utf8_decode($paciente['0']->nome); ?></strong></p>
-<? echo $modelo[0]->texto ?>
+<?echo $modelo[0]->texto?>
 
 <!--<p><center><u><b><?= $empresa[0]->razao_social; ?></b></u></center></p>
 <br>
@@ -88,58 +79,7 @@ switch ($MES) {
 <br>
 <p><center><?= $exame[0]->logradouro; ?><?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?> - <?= $exame[0]->municipio ?></center></p>
 <p><center>Fone: (85) <?= $exame[0]->telefone; ?> - (85) <?= $exame[0]->celular; ?></center></p>-->
-<!--<br>
-<br>
-<br>
-<br>-->
-
-<style>
-    footer {
-        position: absolute; 
-        bottom: 0px; 
-        width: 100%; 
-        /*height: 60px;*/ 
-        /*background-color: green;*/
-    }
-    html {
-        position: relative;
-        min-height: 100%;
-    }
-    body {
-        margin: 0 0 60px; /* altura do seu footer */
-    }
-
-</style>
-
-<footer>
-    <p style="text-align: center"><?= $exame[0]->municipio ?> - <?= $exame[0]->estado ?>
-        , <?= substr($exame[0]->data, 8, 2) . " de " . $MES . " de " . substr($exame[0]->data, 0, 4); ?> /
-
-        <?= date("H:i:s") ?>
-        <? if ($empresa[0]->impressao_declaracao == 1) { ?>
-        <p style="text-align: center"><img align = 'center'  width='1000px' height='100px' src="<?= base_url() . "img/rodape.jpg" ?>"></p>    
-    <? } else {
-        ?>
-        <p style="text-align: center"><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/rodape.jpg" ?>"></p> 
-        <?
-    }
-
-
-    $perfil_id = $this->session->userdata('perfil_id');
-    ?>
-</p>
-<style>
-    @media print {
-        button { 
-            display: none; 
-        }
-    }
-</style>
-
-
-</footer>
-
-
+<p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p>
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
