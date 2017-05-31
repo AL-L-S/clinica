@@ -350,6 +350,7 @@ class laudo_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
         $this->db->where('pt.grupo !=', 'CONSULTA');
+        $this->db->where('pt.grupo !=', 'LABORATORIAL');
         $this->db->where("ag.cancelada", 'false');
         $this->db->orderby('ag.data_cadastro desc');
         $this->db->orderby('ag.situacao');

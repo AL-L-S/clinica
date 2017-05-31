@@ -5149,6 +5149,7 @@ class guia_model extends Model {
                             pc.convenio_id,
                             c.dinheiro,
                             pt.codigo,
+                            pt.grupo,
                             pt.nome as procedimento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
         $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');

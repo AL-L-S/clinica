@@ -18,16 +18,16 @@
         $sala_id = "";
         $medico_id = "";
         $medico = "";
-        $medico_solicitante = "";
-        $medico_solicitante_id = "";
+        $medico_solicitante = @$exames[count($exames) - 1]->medico_solicitante;
+        $medico_solicitante_id = @$exames[count($exames) - 1]->medico_solicitante_id;
         $convenio_paciente = "";
         if ($contador > 0) {
             $sala_id = $exames[0]->agenda_exames_nome_id;
             $sala = $exames[0]->sala;
             $medico_id = $exames[0]->medico_agenda_id;
             $medico = $exames[0]->medico_agenda;
-            $medico_solicitante = $exames[0]->medico_solicitante;
-            $medico_solicitante_id = $exames[0]->medico_solicitante_id;
+//            $medico_solicitante = $exames[0]->medico_solicitante;
+//            $medico_solicitante_id = $exames[0]->medico_solicitante_id;
             $convenio_paciente = $exames[0]->convenio_id;
             $ordenador1 = $exames[0]->ordenador;
         }
@@ -141,9 +141,14 @@
                                 <td  width="50px;">
                                     <select  name="grupo1" id="grupo1" class="size1" >
                                         <option value="">Selecione</option>
-                                        <? foreach ($grupos as $item) : ?>
-                                            <option value="<?= $item->nome; ?>"><?= $item->nome; ?></option>
-                                        <? endforeach; ?>
+                                        <?
+                                        $lastGrupo = $exames[count($exames) - 1]->grupo;
+                                        foreach ($grupos as $item) :
+                                            ?>
+                                            <option value="<?= $item->nome; ?>" <? if ($lastGrupo == $item->nome) echo 'selected'; ?>>
+                                            <?= $item->nome; ?>
+                                            </option>
+<? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="50px;">
@@ -159,7 +164,7 @@
                                         <option value="0">Selecione</option>
                                         <? foreach ($forma_pagamento as $item) : ?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                        <? endforeach; ?>
+<? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="50px;">
@@ -177,7 +182,7 @@
                                 </td>
 
                                 <td  width="70px;"><input type="text" id="data" name="data" class="size1"/></td>
-                                <? // var_dump($ordenador1); die;?>
+<? // var_dump($ordenador1); die; ?>
                                 <td  width="70px;"><input type="text" name="ordenador" id="ordenador" value="<?= $ordenador1; ?>" class="texto01"/></td>
 <!--                                <td  width="70px;"><input type="text" name="observacao" id="observacao" class="texto04"/></td>-->
                             </tr>
@@ -260,7 +265,7 @@
                                                             </a></div>
                                                     </td>
                                                 <? } ?>
-                                            <? } ?>
+                <? } ?>
                                         </tr>
                                     </tbody>
                                     <?
@@ -325,7 +330,7 @@
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
-                                                <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarpreparoconvenio/" . $item->convenio_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=400');"><?= $item->convenio; ?></a></td>
+                                                <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarpreparoconvenio/" . $item->convenio_id; ?> ', '_blank', 'width=900,height=400');"><?= $item->convenio; ?></a></td>
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
@@ -340,9 +345,9 @@
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                                         </a></div>
                                                 </td>
-                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+                    <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
                                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
+                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                             </a></div>
                                                     </td>
@@ -366,12 +371,12 @@
                                     <th class="tabela_footer" colspan="6">
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
-                                    <? if ($perfil_id == 1 || $faturado == 0) { ?>
+        <? if ($perfil_id == 1 || $faturado == 0) { ?>
                                         <th colspan="2" align="center"><center><div class="bt_linkf">
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
                                         </a></div></center></th>
-                            <? } ?>
+        <? } ?>
                             </tr>
                             </tfoot>
                         </table> 
@@ -391,7 +396,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-                                if($("#convenio1").val() != "-1"){
+                                if ($("#convenio1").val() != "-1") {
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $("#convenio1").val()}, function (j) {
                                         options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
@@ -400,8 +405,16 @@
                                         $('#procedimento1').html(options).show();
                                         $('.carregando').hide();
                                     });
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
+                                        options = '<option value=""></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                        }
+                                        $('#procedimento1').html(options).show();
+                                        $('.carregando').hide();
+                                    });
                                 }
-                                
+
                                 $(function () {
                                     $("#data").datepicker({
                                         autosize: true,

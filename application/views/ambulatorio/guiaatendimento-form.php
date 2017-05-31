@@ -18,16 +18,16 @@
         $sala_id = "";
         $medico_id = "";
         $medico = "";
-        $medico_solicitante = "";
-        $medico_solicitante_id = "";
+        $medico_solicitante = @$exames[count($exames) - 1]->medico_solicitante;
+        $medico_solicitante_id = @$exames[count($exames) - 1]->medico_solicitante_id;
         $convenio_paciente = "";
         if ($contador > 0) {
             $sala_id = $exames[0]->agenda_exames_nome_id;
             $sala = $exames[0]->sala;
             $medico_id = $exames[0]->medico_agenda_id;
             $medico = $exames[0]->medico_agenda;
-            $medico_solicitante = $exames[0]->medico_solicitante;
-            $medico_solicitante_id = $exames[0]->medico_solicitante_id;
+//            $medico_solicitante = $exames[0]->medico_solicitante;
+//            $medico_solicitante_id = $exames[0]->medico_solicitante_id;
             $convenio_paciente = $exames[0]->convenio_id;
             $ordenador1 = $exames[0]->ordenador;
         }

@@ -1069,6 +1069,7 @@ class Guia extends BaseController {
     function orcamento($paciente_id, $ambulatorio_orcamento_id = null) {
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
+        $data['grupos'] = $this->procedimento->listargruposexame();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listarorcamentos($paciente_id);
@@ -2718,16 +2719,12 @@ class Guia extends BaseController {
             $this->guia->gravarnotavalor($guia_id);
             redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
         } else {
-            echo '<html>
-        <script type="text/javascript">
-        alert("Valor informado excede o valor da guia!");
-        window.onunload = fechaEstaAtualizaAntiga;
-        function fechaEstaAtualizaAntiga() {
-            window.opener.location.reload();
-            }
-        window.close();
-            </script>
-            </html>';
+            $mensagem = 'Valor informado excede o valor da guia!';
+            $this->session->set_flashdata('message', $mensagem);
+            
+            $valor = (float) $_POST['txtvalorguia'];
+            $valorGuia = (float) $_POST['totguia'];
+            redirect(base_url() . "ambulatorio/guia/procedimentoguianotaform/{$valor}/{$valorGuia}");
         }
     }
 

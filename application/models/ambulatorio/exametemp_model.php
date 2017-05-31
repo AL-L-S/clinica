@@ -676,6 +676,7 @@ class exametemp_model extends Model {
                             c.dinheiro,
                             c.nome as convenio,
                             pt.codigo,
+                            pt.grupo,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
@@ -1006,6 +1007,7 @@ class exametemp_model extends Model {
                             p.nome as paciente,
                             c.nome as convenio,
                             pt.codigo,
+                            pt.grupo,
                             pt.nome as procedimento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
         $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
@@ -3978,6 +3980,31 @@ class exametemp_model extends Model {
                             c.carteira_obrigatoria');
         $this->db->from('tb_convenio c');
         $this->db->where('c.convenio_id', $parametro);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompleteprocedimentosgrupoorcamento($parametro = null, $parametro2 = null) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+//        $this->db->where("ag.tipo !=", 'CONSULTA');
+//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+
+        if ($parametro != null) {
+            $this->db->where('pc.convenio_id', $parametro);
+        }
+        if ($parametro2 != null) {
+            $this->db->where('pt.grupo', $parametro2);
+        }
+
+        $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
     }

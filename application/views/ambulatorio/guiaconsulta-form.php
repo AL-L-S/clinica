@@ -339,7 +339,7 @@
                                                 </td>
                     <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
                                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
+                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                             </a></div>
                                                     </td>
