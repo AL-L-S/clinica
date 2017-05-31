@@ -118,8 +118,8 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $item->observacoes; ?></b></td>
-        <? if ($situacaocaixa[0]->caixa == 't') { ?>
-            <? if ($item->dinheiro == 'f') { ?>
+                                <? if ($situacaocaixa[0]->caixa == 't') { ?>
+                                    <? if ($item->dinheiro == 'f') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examesala/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Enviar
                                                 </a></div>
@@ -129,7 +129,7 @@
 
                                                 </a></div>
                                         </td>
-            <? } elseif ($item->faturado == 't') { ?>
+                                    <? } elseif ($item->faturado == 't') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examesala/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Enviar
 
@@ -140,13 +140,13 @@
 
                                                 </a></div>
                                         </td>
-            <? } else { ?>
+                                    <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                         </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                         </td>
-            <? } ?>
-        <? } else { ?>
+                                    <? } ?>
+                                <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examesala/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Enviar
                                             </a></div>
@@ -156,7 +156,12 @@
 
                                             </a></div>
                                     </td>
-        <? } ?>
+                                <? } ?>
+<!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente2/<?= $item->ambulatorio_laudo_id ?> ">
+                                            Chamar</a></div>
+                                                                            impressaolaudo 
+                                </td>-->
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
 
@@ -176,7 +181,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="12">
-<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>
