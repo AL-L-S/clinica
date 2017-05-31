@@ -276,11 +276,11 @@
                                             <?
                                             if (($perfil_id == 4 && ($item->medico_parecer1 == $operador_id)) || $perfil_id == 1) {
 
-                                                @$url = explode('?', $_SERVER['REQUEST_URI']);
-                                                @$args = str_replace('=', '!', str_replace('&', '@', $url[1]));
+//                                                $url = explode('?', $_SERVER['REQUEST_URI']);
+//                                                $args = str_replace('=', '!', str_replace('&', '@', $url[1]));
                                                 ?>
                                                 <div class="bt_link">
-                                                    <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>/<?= @$args; ?>">
+                                                    <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>">
                                                         Cancelar</a></div>
                                             <? } ?></font>
                                         </td>

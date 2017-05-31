@@ -5210,6 +5210,7 @@ class guia_model extends Model {
                             pc.convenio_id,
                             c.dinheiro,
                             pt.codigo,
+                            pt.grupo,
                             pt.nome as procedimento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
         $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
@@ -6229,12 +6230,26 @@ AND data <= '$data_fim'";
                 $desconto = $value->valor * $percDesconto;
                 $valortotal = $value->valor - $desconto;
 
-//                echo "desconto = {$desconto} | valortotal = {$valortotal} <br>";
+//                echo "desconto = {$desconto} | valortotal = {$valortotal} | agenda_exames_id = {$value->agenda_exames_id}<br>"
 //                . "vl1 = {$valor1} | vl2 = {$valor2} | vl3 = {$valor3} | vl4 = {$valor4} | ";
 
                 $this->db->set('desconto', $desconto);
                 $i = 0;
-                if ($valor1 > 0 && $valor1 >= $valortotal) {
+//                if($value->agenda_exames_id == '709791'){
+//                    echo "<hr><div style='border:1pt dashed black; border-radius: 4pt; color:red;padding:10pt' title='ERRO'><code>" , 
+//                            "<p>", $valor1, "</p>",
+//                            "<p>", $valortotal, "</p>",
+//                            "<p>", $valor1 - $valortotal, "</p>",
+//                            "<p>", number_format($valortotal, 4) - number_format($valor1, 4), "</p>",
+//                            "<p>I - ", ($valor1 > 0)?'true':'false', "</p>",
+//                            "<p>II- ", ($valor1 >=$valortotal)?'true':'false', "</p>",
+//                            "<p>II- ", (number_format($valor1, 4) >= number_format($valortotal, 4))?'true':'false', "</p>",
+//                            "</code></div>";
+//                    die;
+//                }
+                /* O number_format é necessario porque o PHP não consegue fazer comparações precisas com (float) 
+                   quando os numeros tem muitas casas decimais! */
+                if ($valor1 > 0 && number_format($valor1, 4) >= number_format($valortotal, 4)) {
 //                    echo 'if1';
                     $valor1 = $valor1 - $valortotal;
                     $this->db->set('forma_pagamento', $_POST['formapamento1']);
@@ -6246,7 +6261,7 @@ AND data <= '$data_fim'";
                     $this->db->set('faturado', 't');
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
-//                    $i = 1;
+                    $i = 1;
                 } elseif ($i != 1 && $valor2 > 0 && $valor1 < $valortotal && $valor2 >= ($valortotal - $valor1)) {
 //                    echo 'if2';
                     $valor2 = $valor2 - ($valortotal - $valor1);
@@ -6440,9 +6455,9 @@ AND data <= '$data_fim'";
                     $this->db->where('agenda_exames_id', $id_juros);
                     $this->db->update('tb_agenda_exames');
                 }
-
+//                echo " desconto = {$desconto} | valortotal = {$valortotal} | agenda_exames_id = {$value->agenda_exames_id}<br>"
+//                . "vl1 = {$valor1} | vl2 = {$valor2} | vl3 = {$valor3} | vl4 = {$valor4} | ";
 //                echo "<hr>";
-                /* inicia o mapeamento no banco */
             }
 
             /* O codigo abaixo serve para corrigir erros quando o usuario der um desconto de, por exemplo, 40 em 

@@ -535,6 +535,16 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoconveniogrupoorcamento() {
+//        var_dump($_GET);die;
+        if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupoorcamento($_GET['convenio1'], $_GET['grupo1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupoorcamento(@$_GET['convenio1'], @$_GET['grupo1']);
+        }
+        echo json_encode($result);
+    }
+
     function procedimentoconveniogrupo() {
 //        var_dump($_GET);die;
         if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {

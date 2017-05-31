@@ -372,12 +372,12 @@ class Exametemp extends BaseController {
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
     }
 
-    function excluirfisioterapiatempmultifuncaomedico($agenda_exames_id, $url) {
-        $args = str_replace('!', '=', $url);
-        $args = str_replace('@', '&', $args);
+    function excluirfisioterapiatempmultifuncaomedico($agenda_exames_id) {
+//        $args = str_replace('!', '=', $url);
+//        $args = str_replace('@', '&', $args);
 
         $this->exametemp->excluirexametempmultifuncaomedico($agenda_exames_id);
-        redirect(base_url() . "ambulatorio/exame/listarmultifuncaomedicofisioterapia?" . $args);
+        redirect(base_url() . "ambulatorio/exame/listarmultifuncaomedicofisioterapia");
     }
 
     function gravar() {

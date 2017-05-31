@@ -43,7 +43,6 @@
                     </div>
 
                     <div>
-
                         <label>Idade</label>
                         <input type="text" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= $paciente['0']->idade; ?>" readonly />
 
@@ -63,6 +62,7 @@
 
                             <tr>
                                 <th class="tabela_header">Convenio*</th>
+                                <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
@@ -73,10 +73,30 @@
                             <tr>
 
                                 <td  width="50px;">
+                                    <? //echo "<pre>"; var_dump($exames[count($exames) - 1]);die;?>
                                     <select  name="convenio1" id="convenio1" class="size1" >
                                         <option value="-1">Selecione</option>
-                                        <? foreach ($convenio as $item) : ?>
-                                            <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
+                                        <?
+                                        $lastConv = $exames[count($exames) - 1]->convenio_id;
+                                        foreach ($convenio as $item) :
+                                            ?>
+                                            <option value="<?= $item->convenio_id; ?>" <? if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
+                                                <?= $item->nome; ?>
+                                            </option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+
+                                <td width="50px;">
+                                    <select  name="grupo1" id="grupo1" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <?
+                                        $lastGrupo = $exames[count($exames) - 1]->grupo;
+                                        foreach ($grupos as $value) :
+                                            ?>
+                                            <option value="<?= $value->nome; ?>" <? if ($lastGrupo == $value->nome) echo 'selected'; ?>>
+                                                <?= $value->nome; ?>
+                                            </option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
@@ -114,6 +134,7 @@
 
                             <tr>
                                 <th class="tabela_header">Convenio</th>
+                                <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento</th>
                                 <th class="tabela_header">V. Unit</th>
                             </tr>
@@ -128,6 +149,7 @@
                             <tbody>
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                 </tr>
@@ -143,7 +165,7 @@
                                 Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                             </th>
                             <th colspan="2" align="center"><center><div class="bt_linkf">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=600');">Imprimir Or&ccedil;amento
+                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
 
                             </a></div></center></th>
                     </tr>
@@ -159,49 +181,30 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+                                if ($('#convenio1').val() != '-1') {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $('#convenio1').val(), ajax: true}, function (j) {
+                                        options = '<option value=""></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                        }
+                                        $('#procedimento1').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
+                                        options = '<option value=""></option>';
+//                                        alert('ola');
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                        }
+                                        $('#procedimento1').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                }
 
-<?php 
-    if ($this->session->flashdata('message') != ''): ?>
-        alert("<? echo $this->session->flashdata('message') ?>");
-<? endif; ?>
-                            $(function() {
-                                $("#data").datepicker({
-                                    autosize: true,
-                                    changeYear: true,
-                                    changeMonth: true,
-                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                    buttonImage: '<?= base_url() ?>img/form/date.png',
-                                    dateFormat: 'dd/mm/yy'
-                                });
-                            });
-
-                            $(function() {
-                                $("#accordion").accordion();
-                            });
-
-
-                            $(function() {
-                                $("#medico1").autocomplete({
-                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                    minLength: 3,
-                                    focus: function(event, ui) {
-                                        $("#medico1").val(ui.item.label);
-                                        return false;
-                                    },
-                                    select: function(event, ui) {
-                                        $("#medico1").val(ui.item.value);
-                                        $("#crm1").val(ui.item.id);
-                                        return false;
-                                    }
-                                });
-                            });
-
-                            $(function() {
-                                $('#convenio1').change(function() {
-                                    if ($(this).val()) {
+                                $(function () {
+                                    $('#grupo1').change(function () {
                                         $('.carregando').show();
-                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function(j) {
+                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
                                             options = '<option value=""></option>';
                                             for (var c = 0; c < j.length; c++) {
                                                 options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
@@ -209,28 +212,90 @@
                                             $('#procedimento1').html(options).show();
                                             $('.carregando').hide();
                                         });
-                                    } else {
-                                        $('#procedimento1').html('<option value="">Selecione</option>');
-                                    }
+                                    });
                                 });
-                            });
+
+<?php if ($this->session->flashdata('message') != ''): ?>
+                                    alert("<? echo $this->session->flashdata('message') ?>");
+<? endif; ?>
+                                $(function () {
+                                    $("#data").datepicker({
+                                        autosize: true,
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                        dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                        buttonImage: '<?= base_url() ?>img/form/date.png',
+                                        dateFormat: 'dd/mm/yy'
+                                    });
+                                });
+
+                                $(function () {
+                                    $("#accordion").accordion();
+                                });
 
 
-                            $(function() {
-                                $('#procedimento1').change(function() {
-                                    if ($(this).val()) {
-                                        $('.carregando').show();
-                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function(j) {
-                                            options = "";
-                                            options += j[0].valortotal;
-                                            document.getElementById("valor1").value = options
-                                            $('.carregando').hide();
-                                        });
-                                    } else {
-                                        $('#valor1').html('value=""');
-                                    }
+                                $(function () {
+                                    $("#medico1").autocomplete({
+                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                        minLength: 3,
+                                        focus: function (event, ui) {
+                                            $("#medico1").val(ui.item.label);
+                                            return false;
+                                        },
+                                        select: function (event, ui) {
+                                            $("#medico1").val(ui.item.value);
+                                            $("#crm1").val(ui.item.id);
+                                            return false;
+                                        }
+                                    });
                                 });
-                            });
+
+                                $(function () {
+                                    $('#convenio1').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                                options = '<option value=""></option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                }
+                                                $('#procedimento1').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                            if ($('#grupo1').val() != '') {
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                    }
+                                                    $('#procedimento1').html(options).show();
+                                                    $('.carregando').hide();
+                                                });
+                                            }
+
+                                        } else {
+                                            $('#procedimento1').html('<option value="">Selecione</option>');
+                                        }
+                                    });
+                                });
+
+
+                                $(function () {
+                                    $('#procedimento1').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                options = "";
+                                                options += j[0].valortotal;
+                                                document.getElementById("valor1").value = options
+                                                $('.carregando').hide();
+                                            });
+                                        } else {
+                                            $('#valor1').html('value=""');
+                                        }
+                                    });
+                                });
 
 
 

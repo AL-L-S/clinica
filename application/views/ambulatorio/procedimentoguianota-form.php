@@ -21,10 +21,10 @@
                         <?
                         $verificador = true;
                         foreach ($formapagamento as $item2) {
-                            $data[$item2->nome] = 0;
-                            $numero[$item2->nome] = 0;
-                            $desconto[$item2->nome] = 0;
-                            $parcela[$item2->nome] = 0;
+                            @$data[$item2->nome] = 0;
+                            @$numero[$item2->nome] = 0;
+                            @$desconto[$item2->nome] = 0;
+                            @$parcela[$item2->nome] = 0;
                         }
                         $valTotal = $this->guia->relatorionotaprocedimentosvalortotal($ambulatorio_guia_id);
                                     
@@ -102,8 +102,8 @@
                                 }
 
                                 if ($item->forma_pagamento == "") {
-                                    $OUTROS = $OUTROS + $item->valor_total;
-                                    $NUMEROOUTROS++;
+                                    @$OUTROS = $OUTROS + $item->valor_total;
+                                    @$NUMEROOUTROS++;
                                 }
                                 if ($item->faturado == 'f') {
                                     $pendentes ++;
@@ -114,22 +114,22 @@
                         <?
                         }
                         if (!$verificador):
-                            $TOTALCARTAO = 0;
-                            $QTDECARTAO = 0;
-                            $TOTALDINHEIRO = 0;
+                            @$TOTALCARTAO = 0;
+                            @$QTDECARTAO = 0;
+                            @$TOTALDINHEIRO = 0;
                             foreach ($formapagamento as $value) {
                                 if ($value->cartao != 'f') {
-                                    $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
-                                    $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
+                                    @$TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
+                                    @$QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
                                 } else {
-                                    $TOTALDINHEIRO = $TOTALDINHEIRO + $data[$value->nome];
+                                    @$TOTALDINHEIRO = $TOTALDINHEIRO + $data[$value->nome];
                                 }
                             }
 
-                            $valortotal = $TOTALDINHEIRO + $TOTALCARTAO;
-                            $desconto_tot = $valTotal - $valortotal;
+                            @$valortotal = $TOTALDINHEIRO + $TOTALCARTAO;
+                            @$desconto_tot = $valTotal - $valortotal;
                             ?>
-                            <tr><td colspan="8"><span class="totais">Valor Total = R$ <?= number_format($valTotal, 2, ',', '.') ?>  <span class="barra">|</span>  Desconto = R$ <?= number_format($desconto_tot, 2, ',', '.') ?>  <span class="barra">|</span>  Valor Ajustado = R$ <?= number_format(($valTotal - $desconto_tot), 2, ',', '.') ?></span></td></tr>
+                            <tr><td colspan="8"><span class="totais">Valor Total = R$ <?= number_format(@$valTotal, 2, ',', '.') ?>  <span class="barra">|</span>  Desconto = R$ <?= number_format(@$desconto_tot, 2, ',', '.') ?>  <span class="barra">|</span>  Valor Ajustado = R$ <?= number_format(/*($valTotal - $desconto_tot)*/0, 2, ',', '.') ?></span></td></tr>
 
                             <tr><td colspan="8"></td></tr>
 
@@ -143,8 +143,8 @@
                                                 <!--<th style="text-align: right" width="70px;"><font size="2">Qtde</font></th>-->
                                                 <th style="text-align: right" width="70px;"><font size="2">Ajuste (%)</font></th>
                                                 <th style="text-align: right" width="70px;"><font size="2">Parcela</font></th>
-                                                <th style="text-align: right" width="70px;"><font size="2">Vlr Parcela</font></th>
-                                                <th style="text-align: right" width="70px;"><font size="2">Vlr Total</font></th>
+                                                <th style="text-align: right" width="70px;"><font size="2">Valor Parcela</font></th>
+                                                <th style="text-align: right" width="70px;"><font size="2">Valor Total</font></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -167,11 +167,11 @@
     <? } ?>
                                             <tr>
                                                 <td width="140px;" colspan="4"><font size="-1">TOTAL CARTAO</td>
-                                                <td width="200px;" style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
+                                                <td width="200px;" style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format(@$TOTALCARTAO, 2, ',', '.'); ?></td>
                                             </tr>
                                             <tr>
                                                 <td width="140px;" colspan="4"><font size="-1">TOTAL GERAL</td>
-                                                <td width="200px;" style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($valortotal, 2, ',', '.'); ?></td>
+                                                <td width="200px;" style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format(@$valortotal, 2, ',', '.'); ?></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -181,7 +181,7 @@
                                 ?>
                     </table>
                     <hr/>
-                    <button type="submit" name="btnEnviar">OK</button>
+                    <!--<button type="submit" name="btnEnviar">OK</button>-->
             </form>
             </fieldset>
         </div>

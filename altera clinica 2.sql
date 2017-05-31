@@ -146,7 +146,8 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horario_id integer;
 -- Dia 25/05/2017
 ALTER TABLE ponto.tb_agrupador_procedimento_nome ADD COLUMN convenio_id integer;
 
-
+-- Dia 29/05/2017
+ALTER TABLE ponto.tb_ambulatorio_convenio_operador ADD COLUMN ativo boolean DEFAULT true;
 
 -- Dia 30/05/2017
 
