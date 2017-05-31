@@ -26,6 +26,7 @@ class Guia extends BaseController {
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('ambulatorio/exametemp_model', 'exametemp');
         $this->load->model('ambulatorio/exame_model', 'exame');
+        $this->load->model('ambulatorio/indicacao_model', 'indicacao');
         $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico_m');
         $this->load->model('cadastro/grupoconvenio_model', 'grupoconvenio');
         $this->load->model('seguranca/operador_model', 'operador_m');
@@ -45,6 +46,12 @@ class Guia extends BaseController {
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guia-lista', $data);
+    }
+    
+    function pesquisarfiladeimpressao($args = array()) {
+        $this->loadView('ambulatorio/filadeimpressao-lista', $args);
+
+//            $this->carregarView($data);
     }
 
     function acompanhamento($paciente_id) {
@@ -2500,6 +2507,20 @@ class Guia extends BaseController {
         $data['modelos'] = $this->modelodeclaracao->listarmodelo();
         $this->loadView('ambulatorio/escolhermodelo', $data);
     }
+    
+    function imprimirfiladeimpressao($impressao_id) {
+       
+        $data['impressao'] = $this->guia->gerarimpressaofiladeimpressao($impressao_id);
+        echo $data['impressao'][0]->texto;
+//        $this->loadView('ambulatorio/escolhermodelo', $data);
+    }
+    
+//    function excluirfiladeimpressao($impressao_id) {
+//       
+//        $data['impressao'] = $this->guia->excluirfiladeimpressao($impressao_id);
+////        echo $data['impressao'][0]->texto;
+////        $this->loadView('ambulatorio/escolhermodelo', $data);
+//    }
 
     function impressaodeclaracao($paciente_id, $guia_id, $exames_id) {
         $this->load->plugin('mpdf');
@@ -2517,11 +2538,18 @@ class Guia extends BaseController {
 
         $dataFuturo = date("Y-m-d");
         // 1 é a impressão com logo e rodapé pequenos
-        if ($data['empresa'][0]->impressao_declaracao == 1) {
-            $this->load->View('ambulatorio/impressaodeclaracaopequena', $data);
-        } else {
-            $this->load->View('ambulatorio/impressaodeclaracao', $data);
+        // JOGO TODA A PAGINA EM UM HTML PARA PODER SALVAR NO BANCO E JOGAR NA FILA DE IMPRESSÃO
+        $html = $this->load->View('ambulatorio/impressaodeclaracaopequena', $data, true);
+        if ($_POST['solicitacao_impressao'] == 'SIM') {
+            $html = utf8_decode($html);
+            $tipo = 'DECLARAÇÃO';
+            $this->guia->gravarfiladeimpressao($html, $tipo);
         }
+
+//        var_dump($html); 
+//        die;
+        // AQUI A PAGINA DA VIEW É REALMENTE CARREGADA
+        $this->load->View('ambulatorio/impressaodeclaracaopequena', $data);
     }
 
     function impressaodeclaracaoguia($guia_id) {

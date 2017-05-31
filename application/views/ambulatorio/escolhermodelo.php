@@ -22,6 +22,16 @@
                             <? } ?>
                         </select>
                     </dd>
+                    <dt>
+                        <label>Fila de Impressão</label>
+                    </dt>
+                    <dd>
+                        <select name="solicitacao_impressao" id="solicitacao_impressao" class="size2" >
+                            <option value='NAO' >NÃO</option>
+                            <option value='SIM' >SIM</option>
+                            
+                        </select>
+                    </dd>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

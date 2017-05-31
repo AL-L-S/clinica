@@ -371,7 +371,7 @@ if (count($pacs) > 0) {
                                             </tr>
                                         </table>
                                     </div>
-                                    <? if (!preg_match('/\ERROR/', $linkImagem)) { ?>
+                                    <? if (!preg_match('/\ERROR/', $linkImagem) && count($pacs) > 0) { ?>
                                         <div>
 
                                             <iframe allowfullscreen="" height="250" width="600" src="<?= $linkImagem ?>"></iframe>
