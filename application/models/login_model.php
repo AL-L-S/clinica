@@ -141,7 +141,7 @@ class login_model extends Model {
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set( 'numero', preg_replace('/[^\d]+/', '', $item->celular) );
-                $this->db->set('mensagem', $mensagem . " Exame: " . $item->nome);
+                $this->db->set('mensagem', $mensagem . " Consulta: " . $item->nome);
                 $this->db->set('tipo', 'CONFIRMACAO');
                 $this->db->set('data', $horario);
                 $this->db->insert('tb_sms');
