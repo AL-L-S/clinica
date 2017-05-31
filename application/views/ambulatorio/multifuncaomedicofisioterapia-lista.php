@@ -309,10 +309,11 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
 <script type="text/javascript">
                                     $(document).ready(function () {
 //alert('teste_parada');
@@ -436,6 +437,6 @@
 
                                     setInterval(function () {
                                         window.location.reload();
-                                    }, 180000);
+                                    }, 60000);
 
 </script>

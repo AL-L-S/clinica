@@ -59,13 +59,13 @@
                         <table>
                             <tr>
                                 <td><font size = -1>Peso:</font></td>
-                                <td width="50px;"><font size = -1><input type="text" name="Peso" id="Peso" class="texto01"  alt="decimal" onkeyup="validar(this,'num');" value="<?= @$obj->_peso?>"/></font></td>
+                                <td width="50px;"><font size = -1><input type="text" name="Peso" id="Peso" class="texto01"  alt="decimal" onkeyup="validar(this, 'num');" value="<?= @$obj->_peso ?>"/></font></td>
                                 <td width="50px;"><font size = -1>Kg</font></td>
                                 <td ><font size = -1>Altura:</font></td>
                                 <td width="50px;"><font size = -1><input type="text" name="Altura" id="Altura" alt="integer" class="texto01" value="<?= @$obj->_altura; ?>" onblur="calculaImc()"/></font></td> <!--onblur="history.go(0)"-->
                                 <td width="50px;"><font size = -1>Cm</font></td>
-                            <!--</tr>-->
-                            <?
+                                <!--</tr>-->
+                                <?
 //                            $imc = 0;
 //                            $peso =  @$obj->_peso;
 //                            $altura = substr(@$obj->_altura, 0, 1) . "." .  substr(@$obj->_altura, 1, 2);
@@ -73,16 +73,16 @@
 //                            if($altura != 0){
 //                            $imc = $peso / pow($altura, 2);
 //                            }
-                            ?>
-                            <!--<tr>-->
+                                ?>
+                                <!--<tr>-->
                                 <td><font size = -1>IMC</font></td>
                                 <td width="60px;"><font size = -1><input type="text" name="imc" id="imc" class="texto01"  readonly/></font></td>
                                 <td width="30px;"></td>
 <!--                                <td ><font size = -1></font></td>
                                 <td width="60px;"></td>
                                 <td width="60px;"></td>-->
-<!--                            </tr>
-                            <tr>-->
+                                <!--                            </tr>
+                                                            <tr>-->
                                 <td><font size = -1>Diabetes:</font></td>
                                 <td colspan="2"><font size = -1>                            
                                     <select name="diabetes" id="diabetes" class="size1">
@@ -90,11 +90,11 @@
                                         <option value='nao'<?
                                         if (@$obj->_diabetes == 'nao'):echo 'selected';
                                         endif;
-                                        ?> >nao</option>
+                                        ?> >Não</option>
                                         <option value='sim' <?
                                         if (@$obj->_diabetes == 'sim'):echo 'selected';
                                         endif;
-                                        ?> >sim</option>
+                                        ?> >Sim</option>
                                     </select><font></td>
                                 <td width="20px;"></td>
                                 <td><font size = -1>Hipertens&atilde;o:</font></td>
@@ -104,11 +104,11 @@
                                         <option value='nao'<?
                                         if (@$obj->_diabetes == 'nao'):echo 'selected';
                                         endif;
-                                        ?> >nao</option>
+                                        ?> >Não</option>
                                         <option value='sim' <?
                                         if (@$obj->_diabetes == 'sim'):echo 'selected';
                                         endif;
-                                        ?> >sim</option>
+                                        ?> >Sim</option>
                                     </select><font></td>
                             </tr>
                         </table>
@@ -126,24 +126,24 @@
                             <?php } ?>
                         </select>
                         <?
-                            if (@$obj->_cabecalho == "") {
-                                $cabecalho = @$obj->_procedimento;
-                            } else {
-                                $cabecalho = @$obj->_cabecalho;
-                            }
-                            ?>
-                            <label>Queixa Principal</label>
-                            <input type="text" id="cabecalho" class="texto7" name="cabecalho" value="<?= $cabecalho ?>"/>
+                        if (@$obj->_cabecalho == "") {
+                            $cabecalho = @$obj->_procedimento;
+                        } else {
+                            $cabecalho = @$obj->_cabecalho;
+                        }
+                        ?>
+                        <label>Queixa Principal</label>
+                        <input type="text" id="cabecalho" class="texto7" name="cabecalho" value="<?= $cabecalho ?>"/>
 
                         <div>
-                            
-<!--                        </div>    
-                        <div>-->
+
+                            <!--                        </div>    
+                                                    <div>-->
                             <label>CID Primario</label>
                             <input type="hidden" name="agrupadorfisioterapia" id="agrupadorfisioterapia" value="<?= @$obj->_agrupador_fisioterapia; ?>" class="size2" />
                             <input type="hidden" name="txtCICPrimario" id="txtCICPrimario" value="<?= @$obj->_cid; ?>" class="size2" />
                             <input type="text" name="txtCICPrimariolabel" id="txtCICPrimariolabel" value="<?= @$obj->_ciddescricao; ?>" class="size8" />
-                   
+
                             <label>CID Secundario</label>
                             <input type="hidden" name="txtCICSecundario" id="txtCICSecundario" value="<?= @$obj->_cid2; ?>" class="size2" />
                             <input type="text" name="txtCICSecundariolabel" id="txtCICSecundariolabel" value="<?= @$obj->_cid2descricao; ?>" class="size8" />
@@ -182,7 +182,7 @@
                                 </tr>
                                 <tr>
                                     <td width="40px;"><div class="bt_link_new">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/escolherdeclaracao/<?= $paciente_id ?>/<?=@$obj->_guia_id;  ?>/<?= $agenda_exames_id ?>');" >
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/escolherdeclaracao/<?= $paciente_id ?>/<?= @$obj->_guia_id; ?>/<?= $agenda_exames_id ?>');" >
                                                 Declaração</a></div>
                                     </td>
                                 </tr>
@@ -329,7 +329,7 @@
                         </div>
 
                     </fieldset>
-                    
+
                     <fieldset>
                         <legend><b><font size="3" color="red">Historico de exames</font></b></legend>
                         <div>
@@ -476,6 +476,10 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/tinymce2/tinymce/jquery.tinymce.min.js"></script>-->
+<!--<script type="text/javascript" src="<?= base_url() ?>js/tinymce2/tinymce/tinymce.min.js"></script>-->
+
+
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
@@ -507,11 +511,11 @@
                                                     //imc = res;
                                                     resultado = imc.toFixed(2)
                                                     document.getElementById('imc').value = resultado.replace('.', ',');
-                                                    
-                                                    function calculaImc(){
+
+                                                    function calculaImc() {
                                                         pesob1 = document.getElementById('Peso').value;
                                                         peso = parseFloat(pesob1.replace(',', '.'));
-    //                                        peso = pesob1.substring(0, 2)  + "." + pesob1.substring(3, 1);
+                                                        //                                        peso = pesob1.substring(0, 2)  + "." + pesob1.substring(3, 1);
                                                         alturae1 = document.getElementById('Altura').value;
                                                         var res = alturae1.substring(0, 1) + "." + alturae1.substring(1, 3);
                                                         var altura = parseFloat(res);
@@ -616,7 +620,9 @@
                                                         // General options
                                                         mode: "textareas",
                                                         theme: "advanced",
-                                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks,spellchecker",
+                                                        menubar: "tools",
+                                                        toolbar: "spellchecker",
                                                         // Theme options
                                                         theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
                                                         theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",

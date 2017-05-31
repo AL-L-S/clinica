@@ -2990,6 +2990,8 @@ class laudo_model extends Model {
                             ag.medico_parecer1,
                             ag.medico_parecer2,
                             ag.revisor,
+                            ag.diabetes,
+                            ag.hipertensao,
                             p.nome,
                             pt.nome as procedimento,
                             p.idade,
@@ -3107,6 +3109,8 @@ class laudo_model extends Model {
             $this->_convenio = $return[0]->convenio;
             $this->_sexo = $return[0]->sexo;
             $this->_imagens = $return[0]->imagens;
+            $this->_diabetes = $return[0]->diabetes;
+            $this->_hipertensao = $return[0]->hipertensao;
             $this->_cid = $return[0]->cid;
             $this->_ciddescricao = $return[0]->no_cid;
             $this->_cid2 = $return[0]->cid2;

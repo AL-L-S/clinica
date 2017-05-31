@@ -399,6 +399,6 @@
 
                                     setInterval(function () {
                                         window.location.reload();
-                                    }, 180000);
+                                    }, 60000);
 
 </script>

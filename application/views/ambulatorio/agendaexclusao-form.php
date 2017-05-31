@@ -53,7 +53,7 @@
             <br>
             <!--<br>-->
             <!--<br>-->
-            <form name="form_exame" id="form_exame" action="<?= base_url() ?>ambulatorio/agenda/excluir/<?=$agenda_id?>" method="post">
+            <form name="form_exame" id="form_exame" action="<?= base_url() ?>ambulatorio/agenda/excluir/<?= $agenda_id ?>" method="post">
 
                 <dl class="dl_desconto_lista">
 
@@ -76,6 +76,30 @@
                         <input type="checkbox"  id="checkbox" name="excluir"  class="" />
                     </dd>
 
+                    <dt>
+                        <label>Data inicial</label>
+                    </dt>
+                    <dd>
+                        <input type="text"  id="txtdatainicial" name="txtdatainicial" alt="date" class="size2" />
+                    </dd>
+                    <dt>
+                        <label>Data final</label>
+                    </dt>
+                    <dd>
+                        <input type="text"  id="txtdatafinal" name="txtdatafinal" alt="date" class="size2" />
+                    </dd>
+                    <dt>
+                    <label>Hora inicio</label>
+                    </dt>
+                    <dd>
+                        <input type="text" alt="time" id="horainicio" name="horainicio" class="size1"/>
+                    </dd>
+                    <dt>
+                    <label>Hora fim</label>
+                    </dt>
+                    <dd>
+                        <input type="text" alt="time" id="horafim" name="horafim" class="size1"/>
+                    </dd>
                     <dt>
                         <label>Tipo *</label>
                     </dt>
@@ -122,11 +146,19 @@
         if ($(this).is(":checked")) {
             $("#txttipo").prop('required', true);
             $("#txtmedico").prop('required', true);
-            
+            $("#txtdatainicial").prop('required', true);
+            $("#txtdatafinal").prop('required', true);
+            $("#horainicio").prop('required', true);
+            $("#horafim").prop('required', true);
+
         } else {
             $("#txttipo").prop('required', false);
             $("#txtmedico").prop('required', false);
-           
+            $("#txtdatainicial").prop('required', false);
+            $("#txtdatafinal").prop('required', false);
+            $("#horainicio").prop('required', false);
+            $("#horafim").prop('required', false);
+
         }
     });
 

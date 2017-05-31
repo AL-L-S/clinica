@@ -68,17 +68,20 @@ class agenda_model extends Model {
     function excluir($agenda_id) {
 //        var_dump($_POST); die;
         if ($_POST['excluir'] == 'on') {
-            if($_POST['txttipo'] != 'TODOS'){
-                if($_POST['txttipo'] == 'ESPECIALIDADE'){
-                   $this->db->where("(tipo = 'ESPECIALIDADE' OR tipo = 'FISIOTERAPIA')");  
-                }else{
-                    $this->db->where('tipo', $_POST['txttipo']);  
+            if ($_POST['txttipo'] != 'TODOS') {
+                if ($_POST['txttipo'] == 'ESPECIALIDADE') {
+                    $this->db->where("(tipo = 'ESPECIALIDADE' OR tipo = 'FISIOTERAPIA')");
+                } else {
+                    $this->db->where('tipo', $_POST['txttipo']);
                 }
-               
             }
-            if($_POST['txtmedico'] != 'TODOS'){
+            if ($_POST['txtmedico'] != 'TODOS') {
                 $this->db->where('medico_agenda', $_POST['txtmedico']);
             }
+            $this->db->where('data >=', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial']))));
+            $this->db->where('data <=', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal']))));
+            $this->db->where('inicio >=', $_POST['horainicio']);
+            $this->db->where('inicio <=', $_POST['horafim']);
             $this->db->where('horarioagenda_id', $agenda_id);
             $this->db->where('paciente_id is null');
             $this->db->delete('tb_agenda_exames');
@@ -2280,7 +2283,7 @@ class agenda_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listaratribuiragenda($agenda_id) {
         $this->db->select('agenda_id,
                             nome, 
@@ -2292,7 +2295,7 @@ class agenda_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarhorarioagendacriacao($agenda_id = null, $medico_id = null, $datainicial, $datafinal, $tipo) {
 
         $this->db->select('distinct(horario_id)');
@@ -2346,6 +2349,7 @@ class agenda_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
+
     function listarhorarioagendacriacaoespecialidade($agenda_id = null, $medico_id = null, $datainicial, $datafinal, $tipo) {
 
         $this->db->select('distinct(horario_id)');
@@ -2399,7 +2403,7 @@ class agenda_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
-    
+
     function listarhorarioagendaexclusao($agenda_id = null) {
         $this->db->select('e.nome as empresa,
                            h.dia,
@@ -2420,8 +2424,7 @@ class agenda_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    
+
     function listaragendaexclusao($agenda_id = null) {
         $this->db->select('e.nome as empresa,
                            h.dia,
@@ -2492,15 +2495,14 @@ class agenda_model extends Model {
     function excluirhorariofixo($agenda_id) {
 //        var_dump($agenda_id); die;
         if ($_POST['excluir'] == 'on') {
-            if($_POST['txttipo'] != 'TODOS'){
-                if($_POST['txttipo'] == 'ESPECIALIDADE'){
-                   $this->db->where("(tipo = 'ESPECIALIDADE' OR tipo = 'FISIOTERAPIA')");  
-                }else{
-                    $this->db->where('tipo', $_POST['txttipo']);  
+            if ($_POST['txttipo'] != 'TODOS') {
+                if ($_POST['txttipo'] == 'ESPECIALIDADE') {
+                    $this->db->where("(tipo = 'ESPECIALIDADE' OR tipo = 'FISIOTERAPIA')");
+                } else {
+                    $this->db->where('tipo', $_POST['txttipo']);
                 }
-               
             }
-            if($_POST['txtmedico'] != 'TODOS'){
+            if ($_POST['txtmedico'] != 'TODOS') {
                 $this->db->where('medico_agenda', $_POST['txtmedico']);
             }
             $this->db->where('horario_id', $agenda_id);

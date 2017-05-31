@@ -749,6 +749,7 @@ class Laudo extends BaseController {
             pdf($html, $filename, $cabecalho, $rodape, $grupo);
             $this->load->View('ambulatorio/impressaolaudo_8', $data);
         }
+        //////////////////////////////////////////////////////////////////////////////////////////////
         if ($data['empresa'][0]->impressao_laudo == 19) {//OLÁ CLINICA
             $filename = "laudo.pdf";
             $cabecalho = "<table>
@@ -785,6 +786,7 @@ class Laudo extends BaseController {
             <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
                 }
             }
+            $rodape = $rodape . '<br>' . "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='330px' height='100px' src='img/rodape.jpg'></td></tr></table>";
             $grupo = 'laboratorial';
             $html = $this->load->view('ambulatorio/impressaolaudo_8', $data, true);
             pdf($html, $filename, $cabecalho, $rodape, $grupo);
@@ -1749,8 +1751,9 @@ class Laudo extends BaseController {
         $this->load->helper('directory');
         $arquivos = directory_map("./upload/operadorLOGO/");
         $data['arquivo_existe'] = false;
+//        var_dump($arquivos); die;
 //        var_dump($arquivos);die;
-        if (count(@$arquivos) > 0) {
+        if (@$arquivos != false) {
             foreach (@$arquivos as $value) {
                 if (@$value == @$data['laudo'][0]->medico_parecer1 . ".jpg") {
                     @$data['arquivo_existe'] = true;
