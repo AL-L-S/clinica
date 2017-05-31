@@ -108,7 +108,7 @@ class login_model extends Model {
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('numero', $item->celular);
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular) );
                 $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'AGRADECIMENTO');
                 $this->db->set('data', $horario);
@@ -140,7 +140,7 @@ class login_model extends Model {
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('numero', $item->celular);
+                $this->db->set( 'numero', preg_replace('/[^\d]+/', '', $item->celular) );
                 $this->db->set('mensagem', $mensagem . " Exame: " . $item->nome);
                 $this->db->set('tipo', 'CONFIRMACAO');
                 $this->db->set('data', $horario);
@@ -195,7 +195,7 @@ class login_model extends Model {
             if ($i <= $disponivel) {
                 $msg = $mensagem . " Procedimento: " . $item->nome;
                 $this->db->set('paciente_id', $item->paciente_id);
-                $this->db->set('numero', $item->celular);
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular) );
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('mensagem', $msg);
                 $this->db->set('tipo', 'REVISAO');
@@ -225,7 +225,7 @@ class login_model extends Model {
         foreach ($aniversariantes as $item) {
             if ($i <= $disponivel) {
                 $this->db->set('paciente_id', $item->paciente_id);
-                $this->db->set('numero', $item->celular);
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular) );
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'ANIVERSARIANTE');
