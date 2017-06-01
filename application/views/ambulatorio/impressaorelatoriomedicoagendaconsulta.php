@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
     <? if (count($empresa) > 0) { ?>
         <h4><?= $empresa[0]->razao_social; ?></h4>
@@ -6,7 +7,15 @@
     <? } ?>
     <h4>Agenda Consultas</h4>
     <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
-    <h4>Medico: <?= $medico[0]->operador; ?></h4>
+    <h4>Medico: <? 
+    if(count($medico) > 0 && $medico != null){
+       echo $medico[0]->operador; 
+    }else{
+        echo 'TODOS';
+    }
+    
+    
+    ?></h4>
     <hr>
     <table border="1">
         <thead>

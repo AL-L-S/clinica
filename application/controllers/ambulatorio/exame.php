@@ -196,7 +196,27 @@ class Exame extends BaseController {
 
     function gerarelatoriomedicoagendaconsultas() {
         $medicos = $_POST['medicos'];
-        $data['medico'] = $this->operador_m->listarCada($medicos);
+        if($_POST['medicos'] != ''){
+            $data['medico'] = $this->operador_m->listarCada($medicos);
+        }else{
+            $data['medico'] = null;
+        }
+        
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->exame->listaragendaconsulta();
+        $this->load->View('ambulatorio/impressaorelatoriomedicoagendaconsulta', $data);
+    }
+    
+    function gerarelatoriomedicoagendaduplicidade() {
+        $medicos = $_POST['medicos'];
+        if($_POST['medicos'] != ''){
+            $data['medico'] = $this->operador_m->listarCada($medicos);
+        }else{
+            $data['medico'] = null;
+        }
+        
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
