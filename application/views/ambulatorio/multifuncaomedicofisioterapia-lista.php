@@ -262,10 +262,9 @@
 
                                     <? } elseif($item->bloqueado == 't') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"> Bloqueado</td>
-                                        <td class="<?php echo $estilo_linha; ?>" >
-<!--                                            <div class="bt_link">
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
-                                                </a></div>-->
+                                                </a></div>
                                         </td>
                                     <? }else{?>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">

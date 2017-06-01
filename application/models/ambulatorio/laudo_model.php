@@ -531,7 +531,7 @@ class laudo_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->where('ag.paciente_id', $paciente_id);
-        $this->db->where('ag.empresa_id', $empresa_id);
+//        $this->db->where('ag.empresa_id', $empresa_id);
         $this->db->where('ag.tipo', 'CONSULTA');
         $this->db->where("ag.cancelada", 'false');
         $this->db->orderby('ag.data_cadastro desc');
@@ -1048,7 +1048,7 @@ class laudo_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->where('ag.paciente_id', $paciente_id);
-        $this->db->where('ag.empresa_id', $empresa_id);
+//        $this->db->where('ag.empresa_id', $empresa_id);
         $this->db->where('ag.tipo <>', 'CONSULTA');
         $this->db->where("ag.cancelada", 'false');
         $this->db->orderby('ag.data_cadastro desc');
