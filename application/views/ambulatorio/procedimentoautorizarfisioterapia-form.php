@@ -99,7 +99,7 @@
                     <?
                     $estilo_linha = "tabela_content01";
                     $i = 0;
-                    
+
                     foreach ($exames as $item) {
 //                        echo "<pre>";
 //                        var_dump($item);die;
@@ -123,11 +123,16 @@
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
+                                    <?
+//                                    echo "<pre>";
+//                                    var_dump($convenio);
+//                                    die;
+                                    ?>
                                     <select  name="convenio[<?= $i; ?>]" id="convenio<?= $i; ?>" class="size1"  >
                                         <option value="">Selecione</option>
                                         <? foreach ($convenio as $item2) : ?>
                                             <option value="<?= $item2->convenio_id; ?>" <? if ($item2->convenio_id == $item->convenio_agenda) echo'selected'; ?>>
-                                        <?= $item->nome; ?>
+                                                <?= $item2->nome; ?>
                                             </option>
                                         <? endforeach; ?>
                                     </select>
