@@ -162,7 +162,7 @@
                             }
 
                             dialog = $("#dialog-form").dialog({
-                                autoOpen: false,
+                                autoOpen: true,
                                 height: 400,
                                 width: 500,
                                 modal: true,
@@ -181,6 +181,7 @@
                             form = dialog.find("form").on("submit", function (event) {
                                 event.preventDefault();
                                 addUser();
+//                                dialog.dialog("open");
                             });
 
                             $("#create-user").button().on("click", function () {
@@ -199,7 +200,7 @@
                             $('#convenio').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioorcamento', {convenio1: $(this).val(), ajax: true}, function (j) {
                                         options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
                                             procedimento = "'" + j[c].procedimento + "'";
