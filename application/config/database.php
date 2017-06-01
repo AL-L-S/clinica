@@ -46,6 +46,7 @@ $db['default']['password'] = "123456";
 //$db['default']['password'] = "saude";
 //$db['default']['database'] = "sgh";
 $db['default']['database'] = "psicoser";
+$db['default']['database'] = "santaimagem";
 $db['default']['dbdriver'] = "postgre";
 $db['default']['dbprefix'] = "ponto.";
 $db['default']['pconnect'] = TRUE;

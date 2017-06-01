@@ -2391,7 +2391,7 @@ class exame_model extends Model {
         if ($contador == 0) {
             $this->db->where('ae.data >=', $data);
         }
-        $this->db->where('((numero_sessao is null OR numero_sessao = 1) OR (aft.agrupador_fisioterapia_temp_id is not null))');
+        $this->db->where('((numero_sessao is null OR numero_sessao = 1) OR (aft.agrupador_fisioterapia_temp_id is not null) OR (confirmado = true))');
 //        $this->db->where('numero_sessao', null);
         $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
 
@@ -2492,7 +2492,7 @@ class exame_model extends Model {
         if ($contador == 0) {
             $this->db->where('ae.data >=', $data);
         }
-        $this->db->where('((numero_sessao is null OR numero_sessao = 1) OR (aft.agrupador_fisioterapia_temp_id is not null))');
+        $this->db->where('((numero_sessao is null OR numero_sessao = 1) OR (aft.agrupador_fisioterapia_temp_id is not null) OR (confirmado = true))');
 //        $this->db->where('numero_sessao', null);
         $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
 
