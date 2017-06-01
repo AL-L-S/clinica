@@ -206,31 +206,35 @@
 
 <? for ($b = 1; $b <= $i; $b++) { ?>
     <? $it = ($b == 1) ? '' : $b; ?>
-                                var convenio_agendado = <?= @$exames[$b - 1]->convenio_agenda ?>;
-                                var proc_agendado = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
+    <? if (@$exames[$b - 1]->convenio_agenda != '' && $exames[$b - 1]->procedimento_tuss_id != '') { ?>
 
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia<?= $it ?>', {convenio<?= $b ?>: convenio_agendado, ajax: true}, function (t) {
 
-                                            var opt = '<option value=""></option>';
-                                            var slt = '';
-                                            for (var c = 0; c < t.length; c++) {
-                                                if (proc_agendado == t[c].procedimento_convenio_id) {
-                                                    slt = "selected='true'";
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
-                                                                            var valor = a[0].valortotal;
-                                                                            var qtde = a[0].qtde;
-                                                                            document.getElementById("valor<?= $b ?>").value = valor;
-                                                                            document.getElementById("qtde<?= $b ?>").value = qtde;
-                                                                            $('.carregando').hide();
-                                                                        });
+                                    var convenio_agendado = <?= @$exames[$b - 1]->convenio_agenda ?>;
+                                    var proc_agendado = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
+
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia<?= $it ?>', {convenio<?= $b ?>: convenio_agendado, ajax: true}, function (t) {
+
+                                                var opt = '<option value=""></option>';
+                                                var slt = '';
+                                                for (var c = 0; c < t.length; c++) {
+                                                    if (proc_agendado == t[c].procedimento_convenio_id) {
+                                                        slt = "selected='true'";
+                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
+                                                                                var valor = a[0].valortotal;
+                                                                                var qtde = a[0].qtde;
+                                                                                document.getElementById("valor<?= $b ?>").value = valor;
+                                                                                document.getElementById("qtde<?= $b ?>").value = qtde;
+                                                                                $('.carregando').hide();
+                                                                            });
+                                                                        }
+                                                                        opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
+                                                                        slt = '';
                                                                     }
-                                                                    opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
-                                                                    slt = '';
-                                                                }
-                                                                $('#procedimento<?= $b ?>').html(opt).show();
-                                                                $('.carregando').hide();
-                                                            });
-
+                                                                    $('#procedimento<?= $b ?>').html(opt).show();
+                                                                    $('.carregando').hide();
+                                                                });
+    <? }
+    ?>
                                                             $('#checkbox<?= $b ?>').change(function () {
                                                                 if ($(this).is(":checked")) {
                                                                     $("#medico<?= $b; ?>").prop('required', true);
