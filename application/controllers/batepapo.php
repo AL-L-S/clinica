@@ -10,14 +10,15 @@ class batepapo extends BaseController {
         $this->load->library('utilitario');
     }
 
-    public function index() {
+    function index() {
         $this->pesquisar();
     }
 
-    public function pesquisar() {
+    function pesquisar() {
+//        die('morreu');
         $operador_id = $this->session->userdata('operador_id');
         $data['usuarios'] = $this->batepapo->listarusuarios();
-        
+//        
         die(json_encode($data['usuarios']));
     }
     
@@ -100,15 +101,17 @@ class batepapo extends BaseController {
     }
     
     function atualizamensagens() {
-        
-        $timestamp = ($_GET["timestamp"] == 0)? time(): strip_tags(trim($_GET["timestamp"]));
+//        $_GET["timestamp"] = 0;
+//        echo "OLA"; var_dump($_GET["timestamp"]);die;
+        $timestamp = date("Y-m-d H:i:s"); /*($_GET["timestamp"] == 0)? date("Y-m-d H:i:s"): date("Y-m-d H:i:s", strtotime($_GET["timestamp"]));*/
         $ultimo_id = (isset($_GET["ultimoid"]) && !empty($_GET["ultimoid"]))? $_GET["ultimoid"]: 0;
         $operador_id = $this->session->userdata('operador_id');
+        
         
         if(empty($timestamp)){
             die(json_encode(array("status" => "erro")));
         }
-        
+//        sleep(10);
         $mensagens = $this->batepapo->atualizamensagens($timestamp, $ultimo_id);
 //        $mensagens = array_reverse($mensagens);
 

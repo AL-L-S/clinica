@@ -1032,7 +1032,7 @@ function debug($object) {
                         verifica(0, 0,<? echo $operador_id ?>);
                         mensagensnaolidas();
 
-                    }, 5000);
+                    }, 10000);
                 }
 
                 function atualizastatus() {
@@ -1047,7 +1047,7 @@ function debug($object) {
                 setInterval(function () {
                     atualizastatus();
                     verifica(0, 0,<? echo $operador_id ?>);
-                }, 3000);
+                }, 10000);
 
                 buscamensagens();
                 //            mensagensnaolidas();
