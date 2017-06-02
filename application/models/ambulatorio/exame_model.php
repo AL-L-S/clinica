@@ -2117,7 +2117,10 @@ class exame_model extends Model {
         }
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        $this->db->where('ae.medico_consulta_id', $_POST['medicos']);
+        if($_POST['medicos'] != ''){
+           $this->db->where('ae.medico_consulta_id', $_POST['medicos']); 
+        }
+        
         $return = $this->db->get();
         return $return->result();
     }

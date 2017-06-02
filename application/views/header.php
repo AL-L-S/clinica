@@ -355,7 +355,8 @@ function debug($object) {
                             </li>
                             <li><span class="folder">Relatorios</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12) { ?>
-                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriorecepcaoagenda">Relatorio recpção agenda</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriorecepcaoagenda">Relatorio Recepção Agenda</a></span></ul>
+                                    <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriorecepcaoagendaduplicidade">Relatorio Duplicidade Agenda</a></span></ul>-->
     <!--                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendaconsultas">Relatorio agenda Consulta</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendafaltou">Relatorio agenda faltas</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendaexame">Relatorio agenda Exames</a></span></ul>-->
@@ -695,7 +696,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-<!--                    <li><span class="folder">Ponto</span>
+                    <li><span class="folder">Ponto</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
                                 <ul><span class="file"><a href="<?= base_url() ?>ponto/funcionario">Funcionario</a></span></ul>
@@ -720,7 +721,7 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>ponto/relatorio/impressaocartaosemiflexivel">ponto Semiflexivel</a></span></ul>
                             </li>
                         </ul>
-                    </li>-->
+                    </li>
                     <li><span class="folder">Configura&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Recep&ccedil;&atilde;o</span>
