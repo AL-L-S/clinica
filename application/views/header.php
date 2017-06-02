@@ -696,7 +696,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-<!--                    <li><span class="folder">Ponto</span>
+                    <li><span class="folder">Ponto</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
                                 <ul><span class="file"><a href="<?= base_url() ?>ponto/funcionario">Funcionario</a></span></ul>
@@ -721,7 +721,7 @@ function debug($object) {
                                 <ul><span class="file"><a href="<?= base_url() ?>ponto/relatorio/impressaocartaosemiflexivel">ponto Semiflexivel</a></span></ul>
                             </li>
                         </ul>
-                    </li>-->
+                    </li>
                     <li><span class="folder">Configura&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Recep&ccedil;&atilde;o</span>
