@@ -194,8 +194,8 @@
                     <dd>
                         <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1" ><?= @$obj->_descricao_procedimento; ?> </textarea>
                     </dd>
-
-                    <dt>
+                    
+                     <dt>
                         <label>Revisão?</label>
                     </dt>
                     <dd>
@@ -206,7 +206,6 @@
                             <?}?>
                         </div>
                     </dd>
-
 
                 </dl>    
 

@@ -15,6 +15,9 @@ class empresa_model extends Model {
     var $_complemento = null;
     var $_municipio_id = null;
     var $_cep = null;
+    var $_chat = null;
+    var $_servicoemail = null;
+    var $_servicosms = null;
     var $_cnes = null;
 
     function Empresa_model($exame_empresa_id = null) {
@@ -26,13 +29,17 @@ class empresa_model extends Model {
 
     function listar($args = array()) {
 
+        $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
+
         $this->db->select('empresa_id,
                             nome,
                             razao_social,
                             cnpj');
         $this->db->from('tb_empresa');
-        $this->db->where('empresa_id', $empresa_id);
+        if ($operador_id != 1) {
+            $this->db->where('empresa_id', $empresa_id);
+        }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', $args['nome'] . "%");
         }
@@ -47,6 +54,7 @@ class empresa_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function listarpacs() {
 
         $this->db->select('*');
@@ -68,9 +76,21 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function listarinformacaoemail() {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' email_mensagem_confirmacao,
+                            email_mensagem_agradecimento');
+        $this->db->from('tb_empresa');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarinformacaosms() {
         $empresa_id = $this->session->userdata('empresa_id');
-        
+
         $this->db->select(' pacote_id,
                             empresa_sms_id,
                             enviar_excedentes,
@@ -114,15 +134,35 @@ class empresa_model extends Model {
             return true;
     }
 
+    function gravarconfiguracaoemail() {
+        try {
+//            var_dump($_POST['empresa_id']); die;
+                
+            $this->db->set('email_mensagem_confirmacao', $_POST['lembrete']);
+            $this->db->set('email_mensagem_agradecimento', $_POST['agradecimento']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->where('empresa_id', $_POST['empresa_id']);
+            $this->db->update('tb_empresa');
+            $empresa_id = $_POST['empresa_id'];
+            
+            return $empresa_id;
+            
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarconfiguracaosms() {
         try {
             /* inicia o mapeamento no banco */
             $this->db->set('empresa_id', $_POST['empresa_id']);
             $this->db->set('pacote_id', $_POST['txtpacote']);
-            if(isset($_POST['msgensExcedentes'])){
+            if (isset($_POST['msgensExcedentes'])) {
                 $this->db->set('enviar_excedentes', 't');
-            }
-            else{
+            } else {
                 $this->db->set('enviar_excedentes', 'f');
             }
             $this->db->set('mensagem_confirmacao', $_POST['txtMensagemConfirmacao']);
@@ -137,13 +177,12 @@ class empresa_model extends Model {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_sms');
-            }
-            else { // update
+            } else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
-                
+
                 $sms_id = $_POST['sms_id'];
-                
+
                 $this->db->where('empresa_sms_id', $sms_id);
                 $this->db->update('tb_empresa_sms');
             }
@@ -152,6 +191,7 @@ class empresa_model extends Model {
             return -1;
         }
     }
+
     function gravarconfiguracaopacs() {
         try {
             /* inicia o mapeamento no banco */
@@ -175,13 +215,11 @@ class empresa_model extends Model {
 //                $this->db->set('data_cadastro', $horario);
 //                $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_pacs');
-            }
-            else { // update
+            } else { // update
 //                $this->db->set('data_atualizacao', $horario);
 //                $this->db->set('operador_atualizacao', $operador_id);
-                
                 $pacs_id = $_POST['pacs_id'];
-                
+
                 $this->db->where('pacs_id', $pacs_id);
                 $this->db->update('tb_pacs');
             }
@@ -217,7 +255,21 @@ class empresa_model extends Model {
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
 
-
+            if (isset($_POST['sms'])) {
+                $this->db->set('servicosms', 't');
+            } else {
+                $this->db->set('servicosms', 'f');
+            }
+            if (isset($_POST['servicoemail'])) {
+                $this->db->set('servicoemail', 't');
+            } else {
+                $this->db->set('servicoemail', 'f');
+            }
+            if (isset($_POST['chat'])) {
+                $this->db->set('chat', 't');
+            } else {
+                $this->db->set('chat', 'f');
+            }
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -263,7 +315,10 @@ class empresa_model extends Model {
                                f.municipio_id,
                                c.nome as municipio,
                                c.estado,
-                               cep');
+                               cep,
+                               servicosms,
+                               servicoemail,
+                               chat');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->where("empresa_id", $empresa_id);
@@ -285,6 +340,9 @@ class empresa_model extends Model {
             $this->_nome = $return[0]->nome;
             $this->_estado = $return[0]->estado;
             $this->_cep = $return[0]->cep;
+            $this->_chat = $return[0]->chat;
+            $this->_servicoemail = $return[0]->servicoemail;
+            $this->_servicosms = $return[0]->servicosms;
             $this->_cnes = $return[0]->cnes;
         } else {
             $this->_empresa_id = null;

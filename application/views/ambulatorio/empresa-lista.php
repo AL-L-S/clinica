@@ -22,7 +22,7 @@
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">CNPJ</th>
                         <th class="tabela_header">Raz&atilde;o social</th>
-                        <th class="tabela_header" colspan="3"><center>Detalhes</center></th>
+                        <th class="tabela_header" colspan="5"><center>Detalhes</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -45,7 +45,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->cnpj; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->razao_social; ?></td>
 
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/empresa/carregarempresa/<?= $item->empresa_id ?>">Editar</a></div>
                                 </td>
                                 <?
@@ -53,15 +53,18 @@
                                 $operador_id = $this->session->userdata('operador_id');
                                 if ($perfil_id == 1):
                                     ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="100pt;"><div class="bt_link" style="width: 100pt">
-                                            <a style="width: 100pt" href="<?= base_url() ?>ambulatorio/empresa/configurarsms/<?= $item->empresa_id ?>">Configurar SMS</a></div>
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                            <a   href="<?= base_url() ?>ambulatorio/empresa/configurarsms/<?= $item->empresa_id ?>">Serviço SMS</a></div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                            <a   href="<?= base_url() ?>ambulatorio/empresa/configuraremail/<?= $item->empresa_id ?>">Serviço EMAIL</a></div>
                                     </td>
                                <? endif; ?>
                                 <?
 //                                $perfil_id = $this->session->userdata('perfil_id');
                                 if ($operador_id == 1):
                                     ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="100pt;"><div class="bt_link" style="">
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link" style="">
                                             <a style="" href="<?= base_url() ?>ambulatorio/empresa/configurarpacs/<?= $item->empresa_id ?>">PACS</a></div>
                                     </td>
                                <? endif; ?>
@@ -74,7 +77,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="6">
+                        <th class="tabela_footer" colspan="8">
 <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

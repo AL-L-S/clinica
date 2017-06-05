@@ -166,3 +166,20 @@ CREATE TABLE ponto.tb_ambulatorio_fila_impressao
 );
 
 
+-- Dia 05/06/2017
+ALTER TABLE ponto.tb_empresa_sms_registro ADD COLUMN data_verificacao date;
+DROP TABLE ponto.tb_empresa_sms_verificacao;
+
+CREATE TABLE ponto.tb_empresa_email_verificacao
+(
+  email_verificacao_id serial NOT NULL,
+  data_verificacao date,
+  CONSTRAINT tb_empresa_email_verificacao_pkey PRIMARY KEY (email_verificacao_id)
+);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_revisao date;
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN servicosms boolean NOT NULL DEFAULT false;
+ALTER TABLE ponto.tb_empresa ADD COLUMN servicoemail boolean NOT NULL DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN email_mensagem_confirmacao character varying(20000);
+ALTER TABLE ponto.tb_empresa ADD COLUMN email_mensagem_agradecimento character varying(20000);

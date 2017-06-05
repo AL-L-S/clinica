@@ -11,7 +11,7 @@ class batepapo_model extends BaseModel {
 
     function listarusuarios() {
         $operador_id = $this->session->userdata('operador_id');
-        
+
         $sql = 'SELECT "o"."usuario" as usuario, "o"."operador_id", 
                         ( 
                                 SELECT COUNT(*) 
@@ -27,9 +27,9 @@ class batepapo_model extends BaseModel {
                 WHERE "o"."ativo" = \'t\' AND "o"."operador_id" != ' . $operador_id . '
                 AND "o"."usuario" != \'\' AND "o"."operador_id" IS NOT NULL
                 ORDER BY status DESC, "o"."usuario"';
-        
+
         $return = $this->db->query($sql);
-        
+
         return $return->result_array();
     }
 
@@ -47,7 +47,7 @@ class batepapo_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function totalmensagensnaolidas() {
         $operador_id = $this->session->userdata('operador_id');
 
@@ -60,31 +60,29 @@ class batepapo_model extends BaseModel {
         $return = $return->result();
         return $return[0]->total;
     }
-    
-    
+
     function atualizamensagensvisualizadas($destino) {
         $operador_id = $this->session->userdata('operador_id');
 
-        
+
         $this->db->set('visualizada', 't');
         $this->db->where('operador_origem', $destino);
         $this->db->where('operador_destino', $operador_id);
         $this->db->where('ativo', 't');
         $this->db->update('tb_chat_mensagens');
     }
-    
+
     function visualizacontatoaberto($destino) {
         $operador_id = $this->session->userdata('operador_id');
 
-        
+
         $this->db->set('visualizada', 't');
         $this->db->where('operador_origem', $destino);
         $this->db->where('operador_destino', $operador_id);
         $this->db->where('ativo', 't');
         $this->db->update('tb_chat_mensagens');
     }
-    
-    
+
     function atualizastatusoperadores($operador) {
         $horario = date("Y-m-d H:i:s");
         $this->db->set('horario_logout', $horario);
@@ -92,7 +90,7 @@ class batepapo_model extends BaseModel {
         $this->db->where('operador_id', $operador);
         $this->db->update('tb_operador');
     }
-    
+
     function contamensagensporusuarios($operador_origem) {
         $operador_id = $this->session->userdata('operador_id');
 
@@ -117,7 +115,7 @@ class batepapo_model extends BaseModel {
         $return = $this->db->query($sql);
         return $return->result();
     }
-    
+
     function atualizastatus() {
         $operador_id = $this->session->userdata('operador_id');
         $horario = date("Y-m-d H:i:s");
@@ -127,23 +125,24 @@ class batepapo_model extends BaseModel {
         $this->db->update('tb_operador');
     }
 
-    function atualizamensagens($timestamp, $ultimo_id) {
+    function atualizamensagens($timestamp = 0, $ultimo_id) {
         $operador_id = $this->session->userdata('operador_id');
 
-        
-        $sql = "SELECT * FROM ponto.tb_chat_mensagens WHERE (ativo = 't' AND (operador_origem = $operador_id OR operador_destino = $operador_id))"; 
-        if ($_GET["timestamp"] == 0){
+//        do {
+            if (isset($return)) {
+                sleep(10);
+            }
+
+            $sql = "SELECT * FROM ponto.tb_chat_mensagens WHERE (ativo = 't' AND (operador_origem = $operador_id OR operador_destino = $operador_id))";
             $sql .= " AND visualizada = 'f'";
-        } else {
-            $sql .= " AND data_envio <= $timestamp AND visualizada = 'f'";
-        }
-        
-        if(!empty($ultimo_id)){
-            $sql .= " AND chat_mensagens_id > $ultimo_id";
-        }
-        $sql .= " ORDER BY data_envio ";
-        
-        $return = $this->db->query($sql);
+            if (!empty($ultimo_id)) {
+                $sql .= " AND chat_mensagens_id > $ultimo_id";
+            }
+            $sql .= " ORDER BY data_envio ";
+            $return = $this->db->query($sql);
+//        } 
+//        while ( count($return->result()) == 0 );
+
         return $return->result();
     }
 

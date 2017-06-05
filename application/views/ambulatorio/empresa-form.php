@@ -92,6 +92,27 @@
                         <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_municipio_id; ?>" readonly="true" />
                         <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_municipio; ?>" />
                     </dd>
+
+                    <? if ($this->session->userdata('operador_id') == 1) { ?>
+                        <dt>
+                            <label>Serviço de SMS</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="sms" name="sms" <? if (@$obj->_servicosms == 't') echo "checked"; ?>/>
+                        </dd>
+                        <dt>
+                            <label title="Mandar email para os pacientes lembrando das consultas.">Serviço de Email</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="servicoemail" name="servicoemail" <? if (@$obj->_servicoemail == 't') echo "checked"; ?>/>
+                        </dd>
+                        <dt>
+                            <label title="Habilitar o chat.">Serviço de Chat</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="chat" name="chat" <? if (@$obj->_chat == 't') echo "checked"; ?>/> 
+                        </dd>
+                    <? } ?>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

@@ -69,6 +69,15 @@ function debug($object) {
                 });
             });
 
+            // Fazendo Envio de Email automaticamente
+//            jQuery(function () {
+//                jQuery.ajax({
+//                    type: "GET",
+//                    url: "<?= base_url(); ?>ambulatorio/exame/emailautomatico",
+//                    dataType: "json"
+//                });
+//            });
+
 
 <? if ($chat == 't') { ?>
 
@@ -160,7 +169,7 @@ function debug($object) {
                             });
                         }
                     });
-                    verifica(0, 0,<? echo $operador_id ?>);
+//                    verifica(0, 0,<? echo $operador_id ?>);
                 }
 
 
@@ -222,6 +231,7 @@ function debug($object) {
 
                 //retornando historico de conversas
                 function retorna_historico(idJanela) {
+//                    console.log('teste');
                     var operadorOrigem = <? echo $operador_id; ?>;
                     jQuery.ajax({
                         type: "GET",
@@ -978,13 +988,6 @@ function debug($object) {
                             clearInterval(t);
 
                             if (retorno.status == 'resultados' || retorno.status == 'vazio') {
-
-                                //                                //funcao chamando a si mesma a cada 1s
-                                //                                t = setTimeout(function () {
-                                //                                    verifica(retorno.timestamp, retorno.ultimoId, retorno.operadorOrigem);
-                                //                                }, 2000);
-
-
                                 //verifica se ha mensagens novas
                                 if (retorno.status == 'resultados') {
                                     jQuery.each(retorno.dados, function (i, msg) {
@@ -1002,7 +1005,7 @@ function debug($object) {
                                                 }
                                             }
 
-                                            //CASO O CONTATO ESTEJA ABBERTO ELE MARCA A MENSAGEM COMO LIDA
+                                            //CASO O CONTATO ESTEJA ABERTO ELE MARCA A MENSAGEM COMO LIDA
                                             jQuery.ajax({
                                                 url: "<?= base_url(); ?>" + "batepapo/visualizacontatoaberto",
                                                 type: "GET",
@@ -1016,6 +1019,8 @@ function debug($object) {
 
                                     var altura = jQuery(".corpo_janela_chat .mensagens_chat").height();
                                     jQuery(".corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
+                                    
+//                                    buscamensagens();
                                 }
                             }
                         },
@@ -1032,7 +1037,7 @@ function debug($object) {
                     setInterval(function () {
                         verifica(0, 0,<? echo $operador_id ?>);
                         mensagensnaolidas();
-
+                        atualizastatus();
                     }, 10000);
                 }
 
@@ -1045,10 +1050,10 @@ function debug($object) {
                 }
 
                 //atualiza status do operador
-                setInterval(function () {
-                    atualizastatus();
-                    verifica(0, 0,<? echo $operador_id ?>);
-                }, 10000);
+//                setInterval(function () {
+//                    atualizastatus();
+//                    verifica(0, 0,<? // echo $operador_id ?>);
+//                }, 10000);
 
                 buscamensagens();
                 //            mensagensnaolidas();

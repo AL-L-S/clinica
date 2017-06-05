@@ -15,55 +15,66 @@ class Login extends Controller {
     function verificasms() {
         set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
         ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão
-        
-        if (date("H") > '17') {
-            //verifica se ja foi feita uma verificaçao hoje.
-            $smsVerificacao = $this->login->verificasms();
+
+        $servicoemail = $this->session->userdata('servicoemail');
+
+        if ($servicoemail == 't') {
+            $emailVerificacao = $this->login->verificaemail();
+            if (count($emailVerificacao) == 0) {
+                $this->login->emailautomatico();
+            }
+        }
+
+        $servicosms = $this->session->userdata('servicosms');
+        if ($servicosms == 't') {
+            if (date("H") > '0') {
+                //verifica se ja foi feita uma verificaçao hoje.
+                $smsVerificacao = $this->login->verificasms();
 //        
-            if (count($smsVerificacao) == 0) {
-                //atualizando a data da ultima verificacao
-                $this->login->atualizaultimaverificacao();
+                if (count($smsVerificacao) == 0) {
+                    //atualizando a data da ultima verificacao
+                    $this->login->atualizaultimaverificacao();
 
-                //verificando o total de mensagens utilizadas do pacote
-                $totalUtilizado = (int) $this->login->totalutilizado();
-                $totalPacote = (int) $this->login->listarempresapacote();
+                    //verificando o total de mensagens utilizadas do pacote
+                    $totalUtilizado = (int) $this->login->totalutilizado();
+                    $totalPacote = (int) $this->login->listarempresapacote();
 
-                if ($totalUtilizado < $totalPacote) {
-                    //calculando total disponivel
-                    $disponivel = $totalPacote - $totalUtilizado;
+                    if ($totalUtilizado < $totalPacote) {
+                        //calculando total disponivel
+                        $disponivel = $totalPacote - $totalUtilizado;
 
-                    //INSERINDO EXAMES AGENDADOS PARA O DIA SEGUINTE NA TABELA DE CONTROLE
-                    $examesAgendados = $this->login->examesagendados();
-                    $totalInserido = $this->login->atualizandoagendadostabelasms($examesAgendados, $disponivel);
-
-                    //calculando novo total disponivel
-                    $disponivel = $disponivel - $totalInserido;
-                    if ($disponivel > 0) {
-                        //INSERINDO ANIVERSARIANTES NA TABELA DE CONTROLE
-                        $aniversariantes = $this->login->aniversariantes();
-                        $totalInserido = $this->login->atualizandoaniversariantestabelasms($aniversariantes, $disponivel);
+                        //INSERINDO EXAMES AGENDADOS PARA O DIA SEGUINTE NA TABELA DE CONTROLE
+                        $examesAgendados = $this->login->examesagendados();
+                        $totalInserido = $this->login->atualizandoagendadostabelasms($examesAgendados, $disponivel);
 
                         //calculando novo total disponivel
                         $disponivel = $disponivel - $totalInserido;
-                    }
+                        if ($disponivel > 0) {
+                            //INSERINDO ANIVERSARIANTES NA TABELA DE CONTROLE
+                            $aniversariantes = $this->login->aniversariantes();
+                            $totalInserido = $this->login->atualizandoaniversariantestabelasms($aniversariantes, $disponivel);
 
-                    if ($disponivel > 0) {
-                        //INSERINDO PACIENTES ATENDIDOS NO DECORRER DO DIA
-                        $pacientesDia = $this->login->atendimentos();
-                        $totalInserido = $this->login->atualizandoatendidostabelasms($pacientesDia, $disponivel);
-                        $disponivel = $disponivel - $totalInserido;
-                    }
+                            //calculando novo total disponivel
+                            $disponivel = $disponivel - $totalInserido;
+                        }
 
-                    if ($disponivel > 0) {
-                        //INSERINDO REVISÕES NA TABELA DE CONTROLE
-                        $revisoes = $this->login->revisoes();
-                        $totalInserido = $this->login->atualizandorevisoestabelasms($revisoes, $disponivel);
-                        $disponivel = $disponivel - $totalInserido;
-                    }
+                        if ($disponivel > 0) {
+                            //INSERINDO PACIENTES ATENDIDOS NO DECORRER DO DIA
+                            $pacientesDia = $this->login->atendimentos();
+                            $totalInserido = $this->login->atualizandoatendidostabelasms($pacientesDia, $disponivel);
+                            $disponivel = $disponivel - $totalInserido;
+                        }
 
-                    $this->login->atualizandoregistro();
-                } else {
-                    //Mandar email para o administrador alertando que o pacote foi excedido
+                        if ($disponivel > 0) {
+                            //INSERINDO REVISÕES NA TABELA DE CONTROLE
+                            $revisoes = $this->login->revisoes();
+                            $totalInserido = $this->login->atualizandorevisoestabelasms($revisoes, $disponivel);
+                            $disponivel = $disponivel - $totalInserido;
+                        }
+
+                        $this->login->atualizandoregistro();
+                    } else {
+                        //Mandar email para o administrador alertando que o pacote foi excedido
 //                $config['protocol'] = 'smtp';
 //                $config['smtp_host'] = 'ssl://smtp.gmail.com';
 //                $config['smtp_port'] = '465';
@@ -81,30 +92,30 @@ class Login extends Controller {
 //                $this->email->subject($assunto);
 //                $this->email->message($mensagem);
 //                $this->email->send();
-                }
-                // Buscando mensagens  no banco que deverao ser mandadas para o webservice
-                $dados = $this->login->listarsms();
+                    }
+                    // Buscando mensagens  no banco que deverao ser mandadas para o webservice
+                    $dados = $this->login->listarsms();
 
-                /* ENVIANDO PARA O WEBSERVICE */
-                // Criando um Cliente 
-                $cliente = new SoapClient(null, array(
-                    'location' => "http://localhost/webservice/webservice/servidor.php",
-                    'uri' => "http://localhost/webservice/webservice/",
-                    'trace' => 1
-                ));
-
-                try {
-                    $resultado = $cliente->__soapCall("recebemensagens", array(
-                        "dados" => $dados
+                    /* ENVIANDO PARA O WEBSERVICE */
+                    // Criando um Cliente 
+                    $cliente = new SoapClient(null, array(
+                        'location' => "http://localhost/webservice/webservice/servidor.php",
+                        'uri' => "http://localhost/webservice/webservice/",
+                        'trace' => 1
                     ));
-                } catch (SoapFault $fault) {
-                    die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
+
+                    try {
+                        $resultado = $cliente->__soapCall("recebemensagens", array(
+                            "dados" => $dados
+                        ));
+                    } catch (SoapFault $fault) {
+                        die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
+                    }
+                    //Salvando o numero de controle recebido pelo WEBSERVICE no banco
+                    $this->login->atualizandonumerocontrole($resultado);
                 }
-                //Salvando o numero de controle recebido pelo WEBSERVICE no banco
-                $this->login->atualizandonumerocontrole($resultado);
             }
         }
-
     }
 
     function autenticar() {

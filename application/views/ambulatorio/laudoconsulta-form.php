@@ -253,6 +253,12 @@
                                 ?> >FINALIZADO</option>
                             </select>
                             <input type="hidden" name="status" id="status" value="<?= @$obj->_status; ?>" class="size2" />
+                            
+                            <label style="margin-left: 10pt" for="rev">Revisão?</label>
+                            <input type="checkbox" name="rev" id="rev" />
+                            <div class="dias" style="display: inline">
+
+                            </div>
                         </div>
                         <hr>
                         <button type="submit" name="btnEnviar">Salvar</button>
@@ -265,8 +271,8 @@
                     <fieldset>
                         <legend><b><font size="3" color="red">Historico de consultas</font></b></legend>
                         <div>
-                            <? foreach ($historico as $item) {
-                                ?>
+<? foreach ($historico as $item) {
+    ?>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -307,12 +313,12 @@
                                     </tbody>
                                 </table>
                                 <hr>
-                            <? }
-                            ?>
+<? }
+?>
                         </div>
                         <div>
-                            <? foreach ($historicoantigo as $itens) {
-                                ?>
+<? foreach ($historicoantigo as $itens) {
+    ?>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -324,8 +330,8 @@
                                     </tbody>
                                 </table>
                                 <hr>
-                            <? }
-                            ?>
+<? }
+?>
                         </div>
 
                     </fieldset>
@@ -335,8 +341,8 @@
                         <div>
                             <table>
                                 <tbody>
-                                    <? foreach ($historicoexame as $item) {
-                                        ?>
+<? foreach ($historicoexame as $item) {
+    ?>
 
                                         <tr>
                                             <td >Data: <?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
@@ -411,8 +417,8 @@
                                                 none;border-right:none;' colspan="10">&nbsp;</th>
                                         </tr>
 
-                                    <? }
-                                    ?>
+<? }
+?>
                                 </tbody>
                             </table>
                         </div>
@@ -488,7 +494,16 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-
+                                                    jQuery('#rev').change(function () {
+                                                        if (this.checked) {
+                                                            var tag = '<span>Dias</span><input type="text" alt="integer" name="dias" id="dias" required/>';
+//                                                            jQuery("#Altura").mask("999", {placeholder: " "});
+                                                            jQuery(".dias").append(tag);
+                                                        } else {
+                                                            jQuery(".dias span").remove();
+                                                            jQuery(".dias input").remove();
+                                                        }
+                                                    });
                                                     jQuery("#Altura").mask("999", {placeholder: " "});
 //                                                    jQuery("#Peso").mask("999", {placeholder: " "});
 

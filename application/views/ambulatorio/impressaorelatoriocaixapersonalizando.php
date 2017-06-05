@@ -20,7 +20,7 @@
         }
         .fecharCaixa{
             position: absolute;
-            top: 50pt;
+            top: 30pt;
             right: 50pt;
         }
 
@@ -30,6 +30,17 @@
             font-style: italic;
             cursor: help;
         }
+
+        .legenda{
+            position: absolute;
+            top: 70pt;
+            right: 50pt;
+        }
+        .legenda ul{ list-style: none; }
+        #itemLegenda { width: 8pt; height: 8pt; border: 1pt solid black; border-radius: 10pt; display: inline-block }
+        .legendaFaturado{background-color: red}
+        .LegendaEnviado{background-color: #FFA500}
+        .LegendaEditado{background-color: blue}
     </style>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -50,6 +61,16 @@
 </head>
 <body>
     <div class="content"> <!-- Inicio da DIV content -->
+
+        <div class="legenda">
+            <ul>
+                <li><div class="legendaFaturado" id="itemLegenda"></div> <span style="color: red; font-weight: bold">Procedimento Não Faturado</span></li>
+                <li><div class="LegendaEnviado" id="itemLegenda"></div> <span style="color: #FFA500; font-weight: bold">Procedimento Não Enviado</span></li>
+                <li><div class="LegendaEditado" id="itemLegenda"></div> <span style="color: blue; font-weight: bold">Procedimento Editado</span></li>
+                <li><div id="itemLegenda"></div> <span style="color: black">Normal</span></li>
+            </ul>
+        </div>
+
         <? if (count($empresa) > 0) { ?>
             <h4><?= $empresa[0]->razao_social; ?></h4>
         <? } else { ?>
@@ -213,108 +234,107 @@
                                     <td style="text-align: left; color: <?= $cor ?>; font-weight: <?= $weigth ?>;"><?= $item->procedimento; ?></td>
                                     <td style="text-align: left; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= $item->convenio; ?></td>
                                     <td style="text-align: right; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= $item->quantidade; ?></td>
-                                    <?
-                                    if ($valTotal != 0) {
-                                        $perc = ((int) $item->quantidade * (float) $item->valor_total);
-                                    } else {
-                                        $perc = 0;
-                                    }
+                <?
+                if ($valTotal != 0) {
+                    $perc = ((int) $item->quantidade * (float) $item->valor_total);
+                } else {
+                    $perc = 0;
+                }
 
-                                    foreach ($formapagamento as $value5) {
-                                        if ($item->desconto != '0.00') {
-                                            $desconto[$value5->nome] = $desconto[$value5->nome] + (float) $item->desconto;
-                                            $descontoResumo[$value5->nome] += (float) $item->desconto;
-                                            $caixaDesconto[$value5->nome] += (float) $item->desconto;
-                                        } else {
+                foreach ($formapagamento as $value5) {
+                    if ($item->desconto != '0.00') {
+                        $desconto[$value5->nome] = $desconto[$value5->nome] + (float) $item->desconto;
+                        $descontoResumo[$value5->nome] += (float) $item->desconto;
+                        $caixaDesconto[$value5->nome] += (float) $item->desconto;
+                    } else {
 //                                            $d = $item->valor - $item->valor_total;
 //                                            $desconto[$value5->nome] = $desconto[$value5->nome] + $d;
-                                        }
+                    }
 
-                                        if ($item->forma_pagamento == $value5->nome) {
-                                            $data[$value5->nome] = $data[$value5->nome] + $item->valor1;
-                                            if ($item->valor1 != 0 && isset($item->valor1)) {
-                                                $parcela[$value5->nome] = $item->parcelas1;
-                                            }
-                                            //Resumo do operador
-                                            $numeroOperador[$value5->nome] ++;
-                                            $caixaNumero[$value5->nome] ++;
+                    if ($item->forma_pagamento == $value5->nome) {
+                        $data[$value5->nome] = $data[$value5->nome] + $item->valor1;
+                        if ($item->valor1 != 0 && isset($item->valor1)) {
+                            $parcela[$value5->nome] = $item->parcelas1;
+                        }
+                        //Resumo do operador
+                        $numeroOperador[$value5->nome] ++;
+                        $caixaNumero[$value5->nome] ++;
 
-                                            $numero[$value5->nome] ++;
-                                        }
-                                        if ($item->forma_pagamento_2 == $value5->nome) {
-                                            $data[$value5->nome] = $data[$value5->nome] + $item->valor2;
-                                            $numero[$value5->nome] ++;
-                                            if ($item->valor2 != 0 && isset($item->valor2)) {
-                                                $parcela[$value5->nome] = $item->parcelas2;
-                                            }
-                                            //Resumo do operador
-                                            $numeroOperador[$value5->nome] ++;
-                                            $caixaNumero[$value5->nome] ++;
-                                        }
-                                        if ($item->forma_pagamento_3 == $value5->nome) {
-                                            $data[$value5->nome] = $data[$value5->nome] + $item->valor3;
-                                            $numero[$value5->nome] ++;
-                                            if ($item->valor3 != 0 && isset($item->valor3)) {
-                                                $parcela[$value5->nome] = $item->parcelas3;
-                                            }
-                                            //Resumo do operador
-                                            $numeroOperador[$value5->nome] ++;
-                                            $caixaNumero[$value5->nome] ++;
-                                        }
-                                        if ($item->forma_pagamento_4 == $value5->nome) {
-                                            $data[$value5->nome] = $data[$value5->nome] + $item->valor4;
-                                            $numero[$value5->nome] ++;
-                                            if ($item->valor4 != 0 && isset($item->valor4)) {
-                                                $parcela[$value5->nome] = $item->parcelas4;
-                                            }
-                                            //Resumo do operador
-                                            $numeroOperador[$value5->nome] ++;
-                                            $caixaNumero[$value5->nome] ++;
-                                        }
-                                    }
+                        $numero[$value5->nome] ++;
+                    }
+                    if ($item->forma_pagamento_2 == $value5->nome) {
+                        $data[$value5->nome] = $data[$value5->nome] + $item->valor2;
+                        $numero[$value5->nome] ++;
+                        if ($item->valor2 != 0 && isset($item->valor2)) {
+                            $parcela[$value5->nome] = $item->parcelas2;
+                        }
+                        //Resumo do operador
+                        $numeroOperador[$value5->nome] ++;
+                        $caixaNumero[$value5->nome] ++;
+                    }
+                    if ($item->forma_pagamento_3 == $value5->nome) {
+                        $data[$value5->nome] = $data[$value5->nome] + $item->valor3;
+                        $numero[$value5->nome] ++;
+                        if ($item->valor3 != 0 && isset($item->valor3)) {
+                            $parcela[$value5->nome] = $item->parcelas3;
+                        }
+                        //Resumo do operador
+                        $numeroOperador[$value5->nome] ++;
+                        $caixaNumero[$value5->nome] ++;
+                    }
+                    if ($item->forma_pagamento_4 == $value5->nome) {
+                        $data[$value5->nome] = $data[$value5->nome] + $item->valor4;
+                        $numero[$value5->nome] ++;
+                        if ($item->valor4 != 0 && isset($item->valor4)) {
+                            $parcela[$value5->nome] = $item->parcelas4;
+                        }
+                        //Resumo do operador
+                        $numeroOperador[$value5->nome] ++;
+                        $caixaNumero[$value5->nome] ++;
+                    }
+                }
 
-                                    if ($item->forma_pagamento == "") {
-                                        $OUTROS = $OUTROS + $item->valor_total;
-                                        $NUMEROOUTROS++;
-                                    }
-                                    if ($item->faturado == 'f') {
-                                        $pendentes ++;
-                                    }
-                                    $valor = 0;
-                                    $valor = $valor + $item->valor_total;
-                                    $y = 0;
-                                    $y++;
-                                    ?>
+                if ($item->forma_pagamento == "") {
+                    $OUTROS = $OUTROS + $item->valor_total;
+                    $NUMEROOUTROS++;
+                }
+                if ($item->faturado == 'f') {
+                    $pendentes ++;
+                }
+                $valor = 0;
+                $valor = $valor + $item->valor_total;
+                $y = 0;
+                $y++;
+                ?>
                                     <td style="text-align: right; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= number_format($perc, 2, ',', '.'); ?></td>
                                 </tr>
                                 <!-- FIM DO CORPO -->
 
-                                <?
-                                if (isset($relatorioprocedimentos[$t + 1]->guia_id) && @$relatorioprocedimentos[$t + 1]->guia_id == $item->guia_id) {
-                                    continue;
-                                }
-                                /* RESUMO GUIA */ 
-                                else {
-                                    if (!$verificador):
+                <?
+                if (isset($relatorioprocedimentos[$t + 1]->guia_id) && @$relatorioprocedimentos[$t + 1]->guia_id == $item->guia_id) {
+                    continue;
+                }
+                /* RESUMO GUIA */ else {
+                    if (!$verificador):
 //            }
-                                        $TOTALCARTAO = 0;
-                                        $QTDECARTAO = 0;
-                                        $TOTALDINHEIRO = 0;
-                                        foreach ($formapagamento as $value) {
-                                            if ($value->cartao != 'f') {
-                                                $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
-                                                $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
-                                            } else {
-                                                $TOTALDINHEIRO = $TOTALDINHEIRO + $data[$value->nome];
-                                            }
-                                        }
+                        $TOTALCARTAO = 0;
+                        $QTDECARTAO = 0;
+                        $TOTALDINHEIRO = 0;
+                        foreach ($formapagamento as $value) {
+                            if ($value->cartao != 'f') {
+                                $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
+                                $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
+                            } else {
+                                $TOTALDINHEIRO = $TOTALDINHEIRO + $data[$value->nome];
+                            }
+                        }
 
-                                        $valortotal = $TOTALDINHEIRO + $TOTALCARTAO;
-                                        $desconto_tot = $valTotal - $valortotal;
+                        $valortotal = $TOTALDINHEIRO + $TOTALCARTAO;
+                        $desconto_tot = $valTotal - $valortotal;
 
-                                        // Resumo Geral do Operador
-                                        $resumoDesconto += $desconto_tot;
-                                        ?>
+                        // Resumo Geral do Operador
+                        $resumoDesconto += $desconto_tot;
+                        ?>
                                         <tr><td colspan="8"><span class="totais">Valor Total = R$ <?= number_format($valTotal, 2, ',', '.') ?>  <span class="barra">|</span>  Desconto = R$ <?= number_format($desconto_tot, 2, ',', '.') ?>  <span class="barra">|</span>  Valor Ajustado = R$ <?= number_format(($valTotal - $desconto_tot), 2, ',', '.') ?></span></td></tr>
 
                                         <tr><td colspan="8"></td></tr>
@@ -334,18 +354,18 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?
-                                                        foreach ($formapagamento as $value) {
-                                                            if (@$data[$value->nome] == 0 || !isset($data[$value->nome])) {
-                                                                continue;
-                                                            }
+                        <?
+                        foreach ($formapagamento as $value) {
+                            if (@$data[$value->nome] == 0 || !isset($data[$value->nome])) {
+                                continue;
+                            }
 
-                                                            $caixaOperador[$value->nome] += $data[$value->nome];
-                                                            $caixaParcela[$value->nome] += $parcela[$value->nome];
+                            $caixaOperador[$value->nome] += $data[$value->nome];
+                            $caixaParcela[$value->nome] += $parcela[$value->nome];
 
-                                                            $parcelaResumo[$value->nome] += $parcela[$value->nome];
-                                                            $resumoOperador[$value->nome] += $data[$value->nome];
-                                                            ?>
+                            $parcelaResumo[$value->nome] += $parcela[$value->nome];
+                            $resumoOperador[$value->nome] += $data[$value->nome];
+                            ?>
 
 
                                                             <tr>
@@ -356,7 +376,7 @@
                                                                 <td style="text-align: right"><font size="-1"><?= number_format(((float) $data[$value->nome] / (int) $parcela[$value->nome]), 2, ',', '.'); ?></td>
                                                                 <td style="text-align: right"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
                                                             </tr>   
-                                                        <? } ?>
+                        <? } ?>
                                                         <tr>
                                                             <td width="140px;" colspan="4"><font size="-1">TOTAL CARTAO</td>
                                                             <td width="200px;" style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
@@ -373,15 +393,15 @@
                                         <tr><td colspan="8"><br></td></tr>
 
                                         <tr><td colspan="8"><hr style="border: 0px none white; border-top: 2pt dashed #854141;"></td></tr>
-                                        <?
-                                    endif;
+                        <?
+                    endif;
 
-                                    $primeiro = true;
-                                }
-                                /* FIM DO RESUMO GUIA */
-                            }
-                        }
-                        ?>
+                    $primeiro = true;
+                }
+                /* FIM DO RESUMO GUIA */
+            }
+        }
+        ?>
 
                     </tbody>
                 </table>
@@ -398,25 +418,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?
-                                foreach ($formapagamento as $formaPagamentoResumo) {
-                                    if (@$resumoOperador[$formaPagamentoResumo->nome] == 0 || !isset($resumoOperador[$formaPagamentoResumo->nome])) {
-                                        continue;
-                                    }
-                                    if ($formaPagamentoResumo->cartao != 'f') {
-                                        $resumoTotalCartao = $resumoTotalCartao + $resumoOperador[$formaPagamentoResumo->nome];
-                                        $resumoQtdeCartao = $resumoQtdeCartao + $numeroOperador[$formaPagamentoResumo->nome];
-                                    } else {
-                                        $resumoDinheiro = $resumoDinheiro + $resumoOperador[$formaPagamentoResumo->nome];
-                                    }
-                                    ?>
+        <?
+        foreach ($formapagamento as $formaPagamentoResumo) {
+            if (@$resumoOperador[$formaPagamentoResumo->nome] == 0 || !isset($resumoOperador[$formaPagamentoResumo->nome])) {
+                continue;
+            }
+            if ($formaPagamentoResumo->cartao != 'f') {
+                $resumoTotalCartao = $resumoTotalCartao + $resumoOperador[$formaPagamentoResumo->nome];
+                $resumoQtdeCartao = $resumoQtdeCartao + $numeroOperador[$formaPagamentoResumo->nome];
+            } else {
+                $resumoDinheiro = $resumoDinheiro + $resumoOperador[$formaPagamentoResumo->nome];
+            }
+            ?>
                                     <tr>
                                         <td ><font size="-1"><?= $formaPagamentoResumo->nome ?></td>
                                         <td style="text-align: right"><font size="-1"><?= $numeroOperador[$formaPagamentoResumo->nome]; ?></td>
                                         <td style="text-align: right"><font size="-1"><?= number_format($resumoOperador[$formaPagamentoResumo->nome], 2, ',', '.'); ?></td>
                                         <td style="text-align: right"><font size="-1"><?= number_format($descontoResumo[$formaPagamentoResumo->nome], 2, ',', '.'); ?></td>
                                     </tr>   
-                                <? } ?>
+        <? } ?>
                                 <tr>
                                     <td colspan="4" align="center" style="background-color: #ddd"><font size="-1">TOTAL</td></tr>
                                 <tr>
@@ -429,7 +449,7 @@
                                 </tr>
                                 <tr>
                                     <td width="140px;" colspan="3"><font size="-1">TOTAL GERAL</td>
-                                    <? $resumoTotal = $resumoTotalCartao + $resumoDinheiro; ?>
+        <? $resumoTotal = $resumoTotalCartao + $resumoDinheiro; ?>
                                     <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($resumoTotal, 2, ',', '.'); ?></td>
                                 </tr>
                             </tbody>
@@ -437,51 +457,51 @@
                     </center>
                 </div>
 
-                <?
-            }
+        <?
+    }
 //            if ($operador == 'TODOS') {
-                ?>
-                <div class="fecharCaixa">
-                    <span class="button-resumoGeral">Resumo Geral</span>
-                    <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixapersonalizado" method="post">
-                        <?
-                        foreach ($formapagamento as $value) {
-                            /*
-                             * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
-                             * tais como '-', ' ', entre outros ao se fazer isso:
-                             * name="qtde['<? $value->nome; \?\>']
-                             */
-                            $nomeForma = str_replace(array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '), '', $value->nome);
-                            $nomeForma = strtolower($nomeForma);
-                            ?>
+    ?>
+            <div class="fecharCaixa">
+                <span class="button-resumoGeral">Resumo Geral</span>
+                <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixapersonalizado" method="post">
+    <?
+    foreach ($formapagamento as $value) {
+        /*
+         * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
+         * tais como '-', ' ', entre outros ao se fazer isso:
+         * name="qtde['<? $value->nome; \?\>']
+         */
+        $nomeForma = str_replace(array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '), '', $value->nome);
+        $nomeForma = strtolower($nomeForma);
+        ?>
 
-                            <input type="hidden" class="texto3" name="qtde[<?= $nomeForma; ?>]" value="<?= number_format($caixaOperador[$value->nome], 2, ',', '.'); ?>"/>
-                        <? }
-                        ?>
-                        <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
-                        <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
-                        <input type="hidden" class="texto3" name="agenda_exames_id" value="<?= $agenda_exames_id; ?>"/>
-                        <? if ($faturado == 't' && $exame == 't') { ?>
-                            <? if (count($operador) == 0 && $financeiro == 'f') { ?>
-                                <button type="submit" name="btnEnviar">Fechar Caixa</button>
-                            <? } elseif (count($operador) > 0 && $financeiro == 'f') {
-                                ?>
-                                <b>Não é possível fechar caixa por operador</b>
-                                <?
-                            } else {
-                                ?>
-                                <b>Caixa Fechado</b>
-                                <?
-                            }
+                        <input type="hidden" class="texto3" name="qtde[<?= $nomeForma; ?>]" value="<?= number_format($caixaOperador[$value->nome], 2, ',', '.'); ?>"/>
+                    <? }
+                    ?>
+                    <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
+                    <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
+                    <input type="hidden" class="texto3" name="agenda_exames_id" value="<?= $agenda_exames_id; ?>"/>
+    <? if ($faturado == 't' && $exame == 't') { ?>
+        <? if (count($operador) == 0 && $financeiro == 'f') { ?>
+                            <button type="submit" name="btnEnviar">Fechar Caixa</button>
+                        <? } elseif (count($operador) > 0 && $financeiro == 'f') {
+                            ?>
+                            <b>Não é possível fechar caixa por operador</b>
+                            <?
                         } else {
                             ?>
-                            <b>Pendencias de Faturamento / Finalizar exame</b>
-                        <? } ?>
-                    </form>
-                </div>
-                <?
+                            <b>Caixa Fechado</b>
+                            <?
+                        }
+                    } else {
+                        ?>
+                        <b>Pendencias de Faturamento / Finalizar exame</b>
+                    <? } ?>
+                </form>
+            </div>
+                    <?
 //            }
-            ?>
+                    ?>
             <div id="resumoGeral" class="resumo">
                 <center>
                     <h3>RESUMO GERAL</h3>
@@ -493,34 +513,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?
-                            $resumoDesconto = 0;
-                            $resumoDinheiro = 0;
-                            $resumoTotalCaixa = 0;
-                            $resumoQtdeCaixa = 0;
-                            $desconto = 0;
-                            $geral = 0;
+    <?
+    $resumoDesconto = 0;
+    $resumoDinheiro = 0;
+    $resumoTotalCaixa = 0;
+    $resumoQtdeCaixa = 0;
+    $desconto = 0;
+    $geral = 0;
 
-                            foreach ($formapagamento as $fpCaixa) {
-                                if (@$caixaOperador[$fpCaixa->nome] == 0 || !isset($caixaOperador[$fpCaixa->nome])) {
-                                    continue;
-                                }
+    foreach ($formapagamento as $fpCaixa) {
+        if (@$caixaOperador[$fpCaixa->nome] == 0 || !isset($caixaOperador[$fpCaixa->nome])) {
+            continue;
+        }
 
-                                if ($fpCaixa->cartao != 'f') {
-                                    $resumoTotalCaixa = $resumoTotalCaixa + $caixaOperador[$fpCaixa->nome];
-                                    $resumoQtdeCaixa = $resumoQtdeCaixa + $caixaOperador[$fpCaixa->nome];
-                                } else {
-                                    $resumoDinheiro = $resumoDinheiro + $caixaOperador[$fpCaixa->nome];
-                                }
-                                $desconto += (float) $caixaDesconto[$fpCaixa->nome];
-                                ?>
+        if ($fpCaixa->cartao != 'f') {
+            $resumoTotalCaixa = $resumoTotalCaixa + $caixaOperador[$fpCaixa->nome];
+            $resumoQtdeCaixa = $resumoQtdeCaixa + $caixaOperador[$fpCaixa->nome];
+        } else {
+            $resumoDinheiro = $resumoDinheiro + $caixaOperador[$fpCaixa->nome];
+        }
+        $desconto += (float) $caixaDesconto[$fpCaixa->nome];
+        ?>
                                 <tr>
                                     <td ><font size="-1"><?= $fpCaixa->nome ?></td>
                                     <td style="text-align: right"><font size="-1"><?= $caixaNumero[$fpCaixa->nome]; ?></td>
                                     <td style="text-align: right"><font size="-1"><?= number_format($caixaOperador[$fpCaixa->nome], 2, ',', '.'); ?></td>
                                     <td style="text-align: right"><font size="-1"><?= number_format($descontoResumo[$fpCaixa->nome], 2, ',', '.'); ?></td>
                                 </tr>   
-                            <? } ?>
+    <? } ?>
                             <tr>
                                 <td colspan="4" align="center" style="background-color: #ddd"><font size="-1">TOTAL</td></tr>
                             <tr>
@@ -537,16 +557,16 @@
                             </tr>
                             <tr>
                                 <td width="140px;" colspan="3"><font size="-1">TOTAL GERAL</td>
-                                <? $resumoTotal = $resumoTotalCaixa + $resumoDinheiro; ?>
+    <? $resumoTotal = $resumoTotalCaixa + $resumoDinheiro; ?>
                                 <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($resumoTotal, 2, ',', '.'); ?></td>
                             </tr>
                         </tbody>
                     </table>
                 </center>
             </div>   
-            <?
-        } else {
-            ?>
+    <?
+} else {
+    ?>
             <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
         <? }
         ?>

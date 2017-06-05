@@ -31,12 +31,16 @@ class login_model extends Model {
                             internacao,
                             centrocirurgico,
                             relatoriorm,
-                            chat');
+                            chat,
+                               servicosms,
+                               servicoemail');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa);
         $retorno = $this->db->get()->result();
 
         if (count($retorno) > 0) {
+            $servicosms = $retorno[0]->servicosms;
+            $servicoemail = $retorno[0]->servicoemail;
             $empresanome = $retorno[0]->nome;
             $internacao = $retorno[0]->internacao;
             $chat = $retorno[0]->chat;
@@ -73,6 +77,9 @@ class login_model extends Model {
                 'relatoriorm' => $relatoriorm,
                 'internacao' => $internacao,
                 'chat' => $chat,
+                'servicosms' => $servicosms,
+                'servicoemail' => $servicoemail,
+                "verificandoMensagens" => false,
                 'empresa_id' => $empresa,
                 'empresa' => $empresanome
             );
@@ -82,12 +89,6 @@ class login_model extends Model {
             $this->session->sess_destroy();
             return false;
         }
-    }
-
-    function atualizaultimaverificacao() {
-        $horario = date('Y-m-d');
-        $this->db->set('data_verificacao', $horario);
-        $this->db->insert('tb_empresa_sms_verificacao');
     }
 
     function atualizandoatendidostabelasms($exames, $disponivel) {
@@ -108,7 +109,7 @@ class login_model extends Model {
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular) );
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular));
                 $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'AGRADECIMENTO');
                 $this->db->set('data', $horario);
@@ -121,7 +122,7 @@ class login_model extends Model {
         }
         return $i;
     }
-    
+
     function atualizandoagendadostabelasms($exames, $disponivel) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -140,7 +141,7 @@ class login_model extends Model {
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set( 'numero', preg_replace('/[^\d]+/', '', $item->celular) );
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular));
                 $this->db->set('mensagem', $mensagem . " Consulta: " . $item->nome);
                 $this->db->set('tipo', 'CONFIRMACAO');
                 $this->db->set('data', $horario);
@@ -156,7 +157,7 @@ class login_model extends Model {
 
     function revisoes() {
         $horario = date("Y-m-d");
-        
+
         $this->db->select('ae.agenda_exames_id,
                            p.paciente_id,
                            p.nome as paciente,
@@ -178,7 +179,7 @@ class login_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function atualizandorevisoestabelasms($revisoes, $disponivel) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -195,7 +196,7 @@ class login_model extends Model {
             if ($i <= $disponivel) {
                 $msg = $mensagem . " Procedimento: " . $item->nome;
                 $this->db->set('paciente_id', $item->paciente_id);
-                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular) );
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular));
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('mensagem', $msg);
                 $this->db->set('tipo', 'REVISAO');
@@ -209,7 +210,7 @@ class login_model extends Model {
         }
         return $i;
     }
-    
+
     function atualizandoaniversariantestabelasms($aniversariantes, $disponivel) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -225,7 +226,7 @@ class login_model extends Model {
         foreach ($aniversariantes as $item) {
             if ($i <= $disponivel) {
                 $this->db->set('paciente_id', $item->paciente_id);
-                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular) );
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular));
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'ANIVERSARIANTE');
@@ -256,7 +257,8 @@ class login_model extends Model {
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('periodo', $periodo);
         $this->db->set('qtde', $total);
-        $this->db->insert('tb_empresa_sms_registro');
+        $this->db->where('data_verificacao', $horario);
+        $this->db->update('tb_empresa_sms_registro');
 
         $this->db->set('registrado', 't');
         $this->db->where('data', $horario);
@@ -304,7 +306,7 @@ class login_model extends Model {
     function totalutilizado() {
         $periodo = date('m/Y');
         $empresa_id = $this->session->userdata('empresa_id');
-        
+
         $this->db->select('sum(qtde) as total');
         $this->db->from('tb_empresa_sms_registro');
         $this->db->where('periodo', $periodo);
@@ -345,7 +347,8 @@ class login_model extends Model {
     }
 
     function examesagendados() {
-        $diaSeguinte = date('d-m-Y', strtotime("+1 day", strtotime(date('d-m-Y'))));
+        $d = (date('N') == 6) ? 2 : 1;
+        $diaSeguinte = date('d-m-Y', strtotime("+$d day", strtotime(date('d-m-Y'))));
         $this->db->select('ae.agenda_exames_id,
                            p.paciente_id,
                            p.nome as paciente,
@@ -364,11 +367,99 @@ class login_model extends Model {
         return $return->result();
     }
 
+    function emailautomatico() {
+
+
+        $horario = date('Y-m-d');
+        $this->db->set('data_verificacao', $horario);
+        $this->db->insert('tb_empresa_sms_registro');
+
+        $this->db->select('ae.paciente_id,
+                           p.nome as paciente,
+                           ae.data,
+                           p.cns');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->where("ae.data", $horario);
+        $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.realizada', 'f');
+        $this->db->where("(p.cns IS NOT NULL AND p.cns != '')");
+        $return = $this->db->get()->result();
+
+
+
+        $this->db->select('p.nome as paciente,
+                           ae.data_revisao');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->where(" ae.data_revisao", ( date('Y-m-d', strtotime("+15 days", strototime(date('Y-m-d'))))));
+        $this->db->where("(ae.data_revisao IS NOT NULL AND ae.data_revisao != '')");
+        $revisoes = $this->db->get()->result();
+
+
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('email, razao_social, email_mensagem_confirmacao');
+        $this->db->from('tb_empresa');
+        $this->db->where("empresa_id", $empresa_id);
+        $dadosEmpresa = $this->db->get()->result();
+
+        if ($dadosEmpresa[0]->email != '') {
+            $this->load->library('email');
+            $config['protocol'] = 'smtp';
+            $config['smtp_host'] = 'ssl://smtp.gmail.com';
+            $config['smtp_port'] = '465';
+            $config['smtp_user'] = 'stgsaude@gmail.com';
+            $config['smtp_pass'] = 'saude123';
+            $config['validate'] = TRUE;
+            $config['mailtype'] = 'html';
+            $config['charset'] = 'utf-8';
+            $config['newline'] = "\r\n";
+
+            foreach ($return as $value) {
+                $this->email->initialize($config);
+                $this->email->from($dadosEmpresa[0]->email, $dadosEmpresa[0]->razao_social);
+                $this->email->to($value->cns);
+                $this->email->subject("Lembrete de Consulta");
+                $this->email->message($dadosEmpresa[0]->email_mensagem_confirmacao);
+                $this->email->send();
+            }
+
+            $config['protocol'] = 'smtp';
+            $config['smtp_host'] = 'ssl://smtp.gmail.com';
+            $config['smtp_port'] = '465';
+            $config['smtp_user'] = 'stgsaude@gmail.com';
+            $config['smtp_pass'] = 'saude123';
+            $config['validate'] = TRUE;
+            $config['mailtype'] = 'html';
+            $config['charset'] = 'utf-8';
+            $config['newline'] = "\r\n";
+
+            foreach ($revisoes as $item) {
+                $this->email->initialize($config);
+                $this->email->from($dadosEmpresa[0]->email, "SISTEMA STG");
+                $this->email->to($dadosEmpresa[0]->email);
+                $this->email->subject("Revisao");
+                $msg = "O paciente: " . $item->paciente . " tem uma revisão marcada para a data " . $item->data_revisao;
+                $this->email->message($msg);
+                $this->email->send();
+            }
+        }
+    }
+
+    function verificaemail() {
+        $horario = date("Y-m-d");
+        $this->db->select('data_verificacao');
+        $this->db->from('tb_empresa_email_verificacao');
+        $this->db->where('data_verificacao', $horario);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function verificasms() {
         $horario = date("Y-m-d");
-        $this->db->select('sms_verificacao_id,
-                            data_verificacao');
-        $this->db->from('tb_empresa_sms_verificacao');
+        $this->db->select('data_verificacao');
+        $this->db->from('tb_empresa_sms_registro');
         $this->db->where('data_verificacao', $horario);
         $return = $this->db->get();
         return $return->result();

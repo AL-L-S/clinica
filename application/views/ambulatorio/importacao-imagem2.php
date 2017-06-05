@@ -47,7 +47,7 @@
     </div> <!-- Final da DIV content -->
 </body>
 <style>
-    #sortable { list-style-type: none; margin: 0; padding: 0; width: 800px; }
+    #sortable { list-style-type: none; margin: 0; padding: 0; width: 800px; overflow-x: auto; overflow-y: auto;}
     #sortable li { margin: 3px 3px 10px 0; padding: 10px; float: left; width: 100px; height: 90px; font-size: 1em; text-align: center; }
 </style>
 <!--        <link href="<?= base_url() ?>css/estilo.css" rel="stylesheet" type="text/css" />

@@ -40,6 +40,12 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/empresa-form', $data);
     }
 
+    function configuraremail($empresa_id) {
+        $data['empresa_id'] = $empresa_id;
+        $data['mensagem'] = $this->empresa->listarinformacaosms();
+        $this->loadView('ambulatorio/empresaemail-form', $data);
+    }
+
     function configurarsms($empresa_id) {
         $data['empresa_id'] = $empresa_id;
         $data['pacotes'] = $this->empresa->pacotesms();
@@ -62,6 +68,17 @@ class Empresa extends BaseController {
         }
 
         $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa");
+    }
+
+    function gravarconfiguracaoemail() {
+        $empresa_id = $this->empresa->gravarconfiguracaoemail();
+        if ($empresa_id == "-1") {
+            $data['mensagem'] =  'Erro ao salvar configurações do serviço de Email.';
+        } else {
+            $data['mensagem'] = 'Configuração de Email efetuada com sucesso.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/empresa");
     }
 

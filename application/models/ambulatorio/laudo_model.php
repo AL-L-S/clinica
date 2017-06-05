@@ -163,7 +163,7 @@ class laudo_model extends Model {
         $this->db->orderby('il.integracao_laudo_id');
         $query = $this->db->get();
         $return = $query->result();
-        
+
         foreach ($return as $value) {
             $laudo_texto = $value->laudo_texto;
             $laudo_data_hora = $value->laudo_data_hora;
@@ -2432,24 +2432,23 @@ class laudo_model extends Model {
             $this->db->where("exames_id", $exame_id);
             $query = $this->db->get();
             $return = $query->result();
+ini_set('display_errors',1);
+ini_set('display_startup_erros',1);
+error_reporting(E_ALL);
+            if (isset($_POST['rev'])) {
+                $dias = (int) preg_replace('/[^\d]+/', '', $_POST['dias']);
+                if ($dias > 0) {
+                    $diaRevisao = date('Y-m-d', strtotime("+{$dias} days", strtotime(date('Y-m-d'))));
+                    $this->db->set('data_revisao', $diaRevisao);
+                }
+            }
 
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('medico_consulta_id', $_POST['medico']);
             $this->db->where('agenda_exames_id', $return[0]->agenda_exames_id);
             $this->db->update('tb_agenda_exames');
+            var_dump($return[0]->agenda_exames_id, $diaRevisao); die('morreu');
 
-
-//            if ($_POST['agrupadorfisioterapia'] != '') {
-//                if ($_POST['medico'] != '') {
-//                    $this->db->set('medico_agenda', $_POST['medico']);
-//                }
-//                $this->db->set('diabetes', $_POST['diabetes']);
-//                $this->db->set('hipertensao', $_POST['hipertensao']);
-//                $this->db->set('cid', $_POST['txtCICPrimario']);
-//                $this->db->set('texto', $_POST['laudo']);
-//                $this->db->where('agrupador_fisioterapia', $_POST['agrupadorfisioterapia']);
-//                $this->db->update('tb_agenda_exames');
-//            }
             $this->db->set('texto', $_POST['laudo']);
             if ($_POST['txtCICPrimario'] != '') {
                 $this->db->set('cid', $_POST['txtCICPrimario']);
