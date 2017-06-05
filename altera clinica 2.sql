@@ -196,4 +196,3 @@ CREATE TABLE ponto.tb_contato_cliente
   ativo boolean DEFAULT true,
   CONSTRAINT tb_contato_cliente_pkey PRIMARY KEY (contato_cliente_id)
 );
-
