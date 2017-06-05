@@ -275,6 +275,15 @@ class pacientes extends BaseController {
         $data['listaconvenio'] = $this->paciente->listaconvenio();
         $this->loadView('cadastros/paciente-fichasubstituir', $data);
     }
+    
+    function contatosite() {
+        var_dump($_POST); die;
+
+//        $data['idade'] = 0;
+//        $data['listaLogradouro'] = $this->paciente->listaTipoLogradouro();
+//        $data['listaconvenio'] = $this->paciente->listaconvenio();
+//        $this->loadView('cadastros/paciente-fichasubstituir', $data);
+    }
 
     function carregar($paciente_id) {
         $obj_paciente = new paciente_model($paciente_id);

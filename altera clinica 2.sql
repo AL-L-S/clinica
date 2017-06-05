@@ -166,3 +166,19 @@ CREATE TABLE ponto.tb_ambulatorio_fila_impressao
 );
 
 
+
+-- Dia 05/06/2017
+
+CREATE TABLE ponto.tb_contato_cliente
+(
+  contato_cliente_id serial,
+  operador_solicitante integer,
+  nome character varying(200),
+  telefone character varying(200),
+  email character varying(200),
+  mensagem character varying(200),
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_contato_cliente_pkey PRIMARY KEY (contato_cliente_id)
+);
+
+
