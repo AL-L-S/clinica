@@ -183,3 +183,17 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN servicoemail boolean NOT NULL DEFAULT fa
 
 ALTER TABLE ponto.tb_empresa ADD COLUMN email_mensagem_confirmacao character varying(20000);
 ALTER TABLE ponto.tb_empresa ADD COLUMN email_mensagem_agradecimento character varying(20000);
+
+
+CREATE TABLE ponto.tb_contato_cliente
+(
+  contato_cliente_id serial,
+  operador_solicitante integer,
+  nome character varying(200),
+  telefone character varying(200),
+  email character varying(200),
+  mensagem character varying(200),
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_contato_cliente_pkey PRIMARY KEY (contato_cliente_id)
+);
+
