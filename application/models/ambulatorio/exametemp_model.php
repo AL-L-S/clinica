@@ -4090,6 +4090,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("ag.tipo !=", 'EXAME');
         $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'MEDICAMENTO');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
@@ -4107,6 +4108,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("ag.tipo !=", 'EXAME');
         $this->db->where("ag.tipo !=", 'CONSULTA');
+        $this->db->where("ag.tipo !=", 'MEDICAMENTO');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);

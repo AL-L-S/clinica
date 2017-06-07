@@ -210,7 +210,7 @@ class Exame extends BaseController {
         $data['relatorio'] = $this->exame->listaragendaconsulta();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaconsulta', $data);
     }
-    
+
     function gerarelatoriomedicoagendaespecialidade() {
         $medicos = $_POST['medicos'];
         if ($_POST['medicos'] != '') {
@@ -987,14 +987,18 @@ class Exame extends BaseController {
     }
 
     function gravargastodesala() {
+
         $exame_id = $_POST['exame_id'];
+//        var_dump($exame_id);
+//        die;
         $sala_id = $_POST['sala_id'];
 //        $convenio_id = $_POST['convenio_id'];
+        $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+        $convenio_id = $data['agenda_exames'][0]->convenio_id;
         $this->exame->gravargastodesala();
         if (isset($_POST['faturar'])) {
 
-            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
-            $convenio_id = $data['agenda_exames'][0]->convenio_id;
+
 
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;

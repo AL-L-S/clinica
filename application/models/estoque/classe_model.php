@@ -22,7 +22,7 @@ class classe_model extends Model {
         $this->db->join('tb_estoque_tipo t', 't.estoque_tipo_id = c.tipo_id', 'left');
         $this->db->where('c.ativo', 'true');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('descricao ilike', "%" . $args['nome'] . "%");
+            $this->db->where('c.descricao ilike', "%" . $args['nome'] . "%");
         }
         return $this->db;
     }

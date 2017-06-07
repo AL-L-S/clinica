@@ -2816,6 +2816,7 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->orderby('ae.data');
+        $this->db->orderby('pc.procedimento_convenio_id');
         $this->db->orderby('ae.numero_sessao');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.paciente_id', $paciente_id);

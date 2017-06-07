@@ -242,13 +242,19 @@
                                     <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $item->ambulatorio_laudo_id ?> ">
                                     Chamar</a></div>
                             </td>-->
-                            <? if ($operador_id == 1 || $perfil_id == 1) { ?>
+                            <? if (($operador_id == 1 || $perfil_id == 1) && $item->realizada == 't') { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exame_id ?>/<?= $item->agenda_exames_nome_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
                                             Cancelar
                                         </a></div>
                                 </td>
-                            <? } ?>
+                            <? }elseif (($operador_id == 1 || $perfil_id == 1) && $item->realizada == 'f'){?>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
+                                            Cancelar
+                                        </a></div>
+                                </td>
+                            <?} ?>
 
                         <? } else { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="70px;">
