@@ -1023,10 +1023,12 @@ class exametemp_model extends Model {
 
     function listaagendafisioterapia($agendaexame_id) {
         $empresa_id = $this->session->userdata('empresa_id');
+//        $data = data("Y-m-d");
         $this->db->select("ae.*, h.dia");
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_horarioagenda h', 'h.horarioagenda_id = ae.horarioagenda_id', 'left');
         $this->db->where("ae.agenda_exames_id", $agendaexame_id);
+//        $this->db->where("ae.data >=", $data);
         $this->db->where('ae.empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();

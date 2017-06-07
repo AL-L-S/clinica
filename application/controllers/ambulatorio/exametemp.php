@@ -549,7 +549,7 @@ class Exametemp extends BaseController {
 
                 //definindo array que tera os valores filtrados de $horarios_livres
                 $data['horarios_livres'] = array();
-
+                var_dump($contaHorarios); die;
                 do {
                     $horarios_livres = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0], $diaSemana);
                     $diaSemana = date("Y-m-d", strtotime("+1 week", strtotime($diaSemana)));
