@@ -4848,6 +4848,34 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function relatorioagendadoauditoria($agenda_exames_id) {
+
+        $this->db->select('ae.paciente_id,
+                            p.nome as paciente,
+                            c.nome as convenio,
+                            p.nascimento,
+                            ae.data_cadastro as datacadastro,
+                            ae.data_autorizacao,
+                            ae.data_atualizacao,
+                            o.usuario as medico,
+                            op.nome as operadorcadastro,
+                            ope.nome as operadoratualizacao,
+                            opa.nome as operadorautorizacao,
+                            opai.nome as operador_bloqueio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_cadastro', 'left');
+        $this->db->join('tb_operador opa', 'opa.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador ope', 'ope.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador opai', 'opai.operador_id = ae.operador_bloqueio', 'left');
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listaragendamedicocurriculo($medico_agenda) {
 

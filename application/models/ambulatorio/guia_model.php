@@ -1989,11 +1989,11 @@ class guia_model extends Model {
                            ');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
-        
+
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        
+
         $this->db->where("(p.whatsapp IS NOT NULL AND p.whatsapp != '')");
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
@@ -6143,7 +6143,6 @@ AND data <= '$data_fim'";
 
     function gravarfaturamentototal() {
         try {
-            $percDesconto = $_POST['desconto'] / (float) $_POST['valorafaturar'];
 
             if ($_POST['ajuste1'] != "0") {
                 $valor1 = $_POST['valorajuste1'];
@@ -6173,7 +6172,8 @@ AND data <= '$data_fim'";
                     $desconto1 = $_POST['valorajuste1'] - $_POST['valor1'];
                 }
                 if ($_POST['valor2'] > $_POST['valorajuste2']) {
-                    $desconto2 = $_POST['valor1'] - $_POST['valorajuste1'];
+                    $desconto2 = $_POST['valor2'] - $_POST['valorajuste2'];
+//                    echo $_POST['valor1'] ." - ". $_POST['valorajuste2'] . " = ". $desconto2 . " Aqui2<hr>";
                 } else {
                     $desconto2 = $_POST['valorajuste2'] - $_POST['valor2'];
                 }
@@ -6192,6 +6192,9 @@ AND data <= '$data_fim'";
             } else {
                 $desconto = $_POST['desconto'];
             }
+            
+            $percDesconto = number_format(($desconto / (float) $_POST['valorafaturar']), 4, '.','');
+//            echo "Com ajuste = " . $percDesconto . " | Sem ajuste = " . number_format(($_POST['desconto'] / (float) $_POST['valorafaturar']), 4, '.',''); die;
 
 //            $desconto = $_POST['desconto'];
 //            $valor1 = $_POST['valor1'];
@@ -6256,13 +6259,13 @@ AND data <= '$data_fim'";
 //                    $valortotal = 0;
 //                    $desconto = $desconto - $value->valor;
 //                }
-                $desconto = $value->valor * $percDesconto;
-                $valortotal = $value->valor - $desconto;
+                $desc = $value->valor * $percDesconto;
+                $valortotal = $value->valor - $desc;
 
 //                echo "desconto = {$desconto} | valortotal = {$valortotal} | agenda_exames_id = {$value->agenda_exames_id}<br>"
 //                . "vl1 = {$valor1} | vl2 = {$valor2} | vl3 = {$valor3} | vl4 = {$valor4} | ";
 
-                $this->db->set('desconto', $desconto);
+                $this->db->set('desconto', $desc);
                 $i = 0;
 //                if($value->agenda_exames_id == '709791'){
 //                    echo "<hr><div style='border:1pt dashed black; border-radius: 4pt; color:red;padding:10pt' title='ERRO'><code>" , 
@@ -6276,8 +6279,9 @@ AND data <= '$data_fim'";
 //                            "</code></div>";
 //                    die;
 //                }
+
                 /* O number_format é necessario porque o PHP não consegue fazer comparações precisas com (float) 
-                   quando os numeros tem muitas casas decimais! */
+                  quando os numeros tem muitas casas decimais! */
                 if ($valor1 > 0 && number_format($valor1, 4) >= number_format($valortotal, 4)) {
 //                    echo 'if1';
                     $valor1 = $valor1 - $valortotal;
@@ -6506,7 +6510,7 @@ AND data <= '$data_fim'";
             $this->db->where('confirmado', 'true');
             $correcao = $this->db->get()->result();
 
-            $vlrTotal = (float) $correcao[0]->valor - (float) $_POST['desconto'];
+            $vlrTotal = (float) $correcao[0]->valor - (float) $desconto;
             if ($vlrTotal > (float) $correcao[0]->valor_total) {
                 $diferenca = $vlrTotal - (float) $correcao[0]->valor_total;
 
@@ -6529,6 +6533,7 @@ AND data <= '$data_fim'";
 
                 $this->db->query($sql);
             }
+//            die;
 
             return 0;
         } catch (Exception $exc) {
