@@ -191,32 +191,49 @@ class Exame extends BaseController {
             $this->gerarelatoriomedicoagendaexame();
         } else if ($_POST['tipoRelatorio'] == '2') {
             $this->gerarelatoriomedicoagendaexamefaltou();
+        } else if ($_POST['tipoRelatorio'] == '3') {
+            $this->gerarelatoriomedicoagendaespecialidade();
         }
     }
 
     function gerarelatoriomedicoagendaconsultas() {
         $medicos = $_POST['medicos'];
-        if($_POST['medicos'] != ''){
+        if ($_POST['medicos'] != '') {
             $data['medico'] = $this->operador_m->listarCada($medicos);
-        }else{
+        } else {
             $data['medico'] = null;
         }
-        
+
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaconsulta();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaconsulta', $data);
     }
-    
-    function gerarelatoriomedicoagendaduplicidade() {
+
+    function gerarelatoriomedicoagendaespecialidade() {
         $medicos = $_POST['medicos'];
-        if($_POST['medicos'] != ''){
+        if ($_POST['medicos'] != '') {
             $data['medico'] = $this->operador_m->listarCada($medicos);
-        }else{
+        } else {
             $data['medico'] = null;
         }
-        
+
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->exame->listaragendaespecialidade();
+        $this->load->View('ambulatorio/impressaorelatoriomedicoagendaespecialidade', $data);
+    }
+
+    function gerarelatoriomedicoagendaduplicidade() {
+        $medicos = $_POST['medicos'];
+        if ($_POST['medicos'] != '') {
+            $data['medico'] = $this->operador_m->listarCada($medicos);
+        } else {
+            $data['medico'] = null;
+        }
+
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
@@ -970,14 +987,18 @@ class Exame extends BaseController {
     }
 
     function gravargastodesala() {
+
         $exame_id = $_POST['exame_id'];
+//        var_dump($exame_id);
+//        die;
         $sala_id = $_POST['sala_id'];
 //        $convenio_id = $_POST['convenio_id'];
+        $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+        $convenio_id = $data['agenda_exames'][0]->convenio_id;
         $this->exame->gravargastodesala();
         if (isset($_POST['faturar'])) {
 
-            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
-            $convenio_id = $data['agenda_exames'][0]->convenio_id;
+
 
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;

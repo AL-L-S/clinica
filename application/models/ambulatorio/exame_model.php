@@ -2124,6 +2124,62 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listaragendaespecialidade($args = array()) {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.inicio,
+                            ae.fim,
+                            ae.ativo,
+                            ae.situacao,
+                            ae.guia_id,
+                            ae.realizada,
+                            ae.confirmado,
+                            ae.data_atualizacao,
+                            ae.paciente_id,
+                            ae.telefonema,
+                            ae.observacoes,
+                            p.celular,
+                            ae.bloqueado,
+                            p.telefone,
+                            c.nome as convenio,
+                            o.nome as medicoagenda,
+                            an.nome as sala,
+                            tc.descricao as tipoconsulta,
+                            p.nome as paciente,
+                            op.nome as secretaria,
+                            ae.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            al.situacao as situacaolaudo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('ae.inicio');
+        $this->db->where("(ae.tipo ='FISIOTERAPIA' OR 'ESPECIALIDADE')");
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if($_POST['medicos'] != ''){
+           $this->db->where('ae.medico_consulta_id', $_POST['medicos']); 
+        }
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listaragendaordem($args = array()) {
         $data = date("Y-m-d");
@@ -2378,6 +2434,7 @@ class exame_model extends Model {
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio ca', 'ca.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
@@ -2759,11 +2816,13 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->orderby('ae.data');
+        $this->db->orderby('pc.procedimento_convenio_id');
         $this->db->orderby('ae.numero_sessao');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.paciente_id', $paciente_id);
         $this->db->where("( (ae.tipo = 'FISIOTERAPIA') OR (ae.tipo = 'ESPECIALIDADE') )");
         $this->db->where('ae.ativo', 'false');
+        $this->db->where('ae.guia_id is not null');
         $this->db->where('ae.numero_sessao >=', '1');
         $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.confirmado', 'false');
@@ -3718,6 +3777,7 @@ class exame_model extends Model {
                             ae.ativo,
                             ae.telefonema,
                             ae.situacao,
+                            ae.encaixe,
                             ae.guia_id,
                             ae.data_atualizacao,
                             ae.paciente_id,
@@ -4427,10 +4487,12 @@ class exame_model extends Model {
             $this->db->select('ae.data, ag.nome');
             $this->db->from('tb_agenda_exames ae');
             $this->db->join("tb_procedimento_convenio pc", "pc.procedimento_convenio_id = ae.procedimento_tuss_id", "left");
+            $this->db->join("tb_convenio c", "pc.convenio_id = c.convenio_id", "left");
             $this->db->join("tb_procedimento_tuss pt", "pt.procedimento_tuss_id = pc.procedimento_tuss_id", "left");
             $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
             $this->db->where('agrupador_fisioterapia', $agrupador);
             $this->db->where('numero_sessao', $i);
+            $this->db->where('c.dinheiro', 'false');
             $this->db->where('ag.nome', $grupo);
             $this->db->where('data', $data);
             $query2 = $this->db->get();
@@ -4783,6 +4845,34 @@ class exame_model extends Model {
         $this->db->join('tb_operador ope', 'ope.operador_id = ae.operador_atualizacao', 'left');
         $this->db->join('tb_operador opai', 'opai.operador_id = ae.operador_bloqueio', 'left');
         $this->db->where("ae.agenda_exames_id", $agenda_exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatorioagendadoauditoria($agenda_exames_id) {
+
+        $this->db->select('ae.paciente_id,
+                            p.nome as paciente,
+                            c.nome as convenio,
+                            p.nascimento,
+                            ae.data_cadastro as datacadastro,
+                            ae.data_autorizacao,
+                            ae.data_atualizacao,
+                            o.usuario as medico,
+                            op.nome as operadorcadastro,
+                            ope.nome as operadoratualizacao,
+                            opa.nome as operadorautorizacao,
+                            opai.nome as operador_bloqueio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_cadastro', 'left');
+        $this->db->join('tb_operador opa', 'opa.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador ope', 'ope.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador opai', 'opai.operador_id = ae.operador_bloqueio', 'left');
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $return = $this->db->get();
         return $return->result();
     }
