@@ -109,7 +109,7 @@ else
                     mv "$aux/${pasta[$i]}/${bancos[$i]} $horario.backup" "$caminho/${pasta[$i]}/${bancos[$i]} $horario.backup"
 
                     qtdeArquivos=$(ls $caminho/${pasta[$i]}/ | wc -l)
-                    if [ $qtdeArquivos -gt 3 ]
+                    if [ $qtdeArquivos -gt 2 ]
                     then
                         arqAntigo=$(ls -t $caminho/${pasta[$i]}/ | tail -1)
                         rm "$caminho/${pasta[$i]}/$arqAntigo"
@@ -120,6 +120,6 @@ else
             fi
         done
 
-                    sleep 30
+                    sleep 43200
     done
 fi
