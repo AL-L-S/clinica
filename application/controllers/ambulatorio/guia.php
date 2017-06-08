@@ -2011,6 +2011,12 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatorioaniversariante', $data);
     }
 
+    function relatoriopacientewhatsapp() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriopacientewhatsapp', $data);
+    }
+
     function relatorioperfilpaciente() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2450,6 +2456,21 @@ class Guia extends BaseController {
             $data['mensagem'] = 'Insira um periodo válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
+        }
+    }
+
+    function gerarelatoriopacientewhatsapp() {
+        if ($_POST["txtdata_inicio"] != "" && $_POST["txtdata_fim"] != "") {
+            $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+//            var_dump($_POST['txtdata_inicio'], $_POST['txtdata_fim']); die;
+            $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+            $data['txtdata_fim'] = $_POST['txtdata_fim'];
+            $data['relatorio'] = $this->guia->relatoriopacientewhatsapp();
+            $this->load->View('ambulatorio/impressaorelatoriopacientewhatsapp', $data);
+        } else {
+            $data['mensagem'] = 'Insira um periodo válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "/ambulatorio/guia/relatoriopacientewhatsapp");
         }
     }
 

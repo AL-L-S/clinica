@@ -26,6 +26,7 @@ class paciente_model extends BaseModel {
     var $_nomepai = null;
     var $_nomemae = null;
     var $_celular = null;
+    var $_whatsapp = null;
     var $_telefone = null;
     var $_telefoneresp = null;
     var $_tipoLogradouro = null;
@@ -250,6 +251,7 @@ class paciente_model extends BaseModel {
             $this->_nomepai = $return[0]->nome_pai;
             $this->_nomemae = $return[0]->nome_mae;
             $this->_celular = $return[0]->celular;
+            $this->_whatsapp = $return[0]->whatsapp;
             $this->_telefone = $return[0]->telefone;
             $this->_telefoneresp = $return[0]->telefoneresp;
             $this->_nomeresp = $return[0]->nomeresp;
@@ -351,6 +353,7 @@ class paciente_model extends BaseModel {
             $this->db->set('nome_mae', $_POST['nome_mae']);
             $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
             $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
+            $this->db->set('whatsapp', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['txtwhatsapp']))));
             if ($_POST['tipo_logradouro'] != '') {
                 $this->db->set('tipo_logradouro', $_POST['tipo_logradouro']);
             }
@@ -1689,14 +1692,14 @@ class paciente_model extends BaseModel {
 
         $aParam['municipio'] = $municipio;
         $pront = ($Obj->consultapacientes($aParam));
-        var_dump($pront);
-        die;
+//        var_dump($pront);
+//        die;
         if ($pront != null) {
             foreach ($pront as $value) {
-                echo "<pre>";
-                var_dump($pront);
-                echo "</pre>";
-                die;
+//                echo "<pre>";
+//                var_dump($pront);
+//                echo "</pre>";
+//                die;
                 $args['procedimento'] = trim($value['N57PROCAMB']);
                 $args['cpf'] = trim($value['C57CPFMED']);
                 $args['nome'] = trim($nome);

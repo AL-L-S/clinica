@@ -1977,6 +1977,35 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function relatoriopacientewhatsapp() {
+        $this->db->select('
+                           distinct(p.paciente_id), 
+                           p.nome as paciente,
+                           p.sexo, 
+                           p.nascimento,
+                           p.whatsapp,
+                           p.escolaridade_id,
+                           p.estado_civil_id
+                           ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        
+        $this->db->where("(p.whatsapp IS NOT NULL AND p.whatsapp != '')");
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('p.nascimento desc');
+//        $this->db->groupby('p.paciente_id');
+        $this->db->orderby('p.sexo');
+        $this->db->orderby('p.estado_civil_id');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+
     function relatorioperfilpaciente() {
         $this->db->select('
                            distinct(p.paciente_id), 

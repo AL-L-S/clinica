@@ -440,7 +440,7 @@ class login_model extends Model {
                 $this->email->from($dadosEmpresa[0]->email, "SISTEMA STG");
                 $this->email->to($dadosEmpresa[0]->email);
                 $this->email->subject("Revisao");
-                $msg = "O paciente: " . $item->paciente . " tem uma revisão marcada para a data " . $item->data_revisao;
+                $msg = "O paciente: " . $item->paciente . " tem uma revisão marcada para a data " . date("d/m/Y", strtotime($item->data_revisao));
                 $this->email->message($msg);
                 $this->email->send();
             }

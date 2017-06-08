@@ -2517,6 +2517,32 @@ class Laudo extends BaseController {
     function gravaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id) {
 
         $this->laudo->gravaranaminese($ambulatorio_laudo_id, $exame_id);
+        $servicoemail = $this->session->userdata('servicoemail');
+        if ($servicoemail == 't') {
+            $dados = $this->laudo->listardadoservicoemail($ambulatorio_laudo_id, $exame_id);
+//                    die('123');
+
+            $this->load->library('email');
+            $config['protocol'] = 'smtp';
+            $config['smtp_host'] = 'ssl://smtp.gmail.com';
+            $config['smtp_port'] = '465';
+            $config['smtp_user'] = 'stgsaude@gmail.com';
+            $config['smtp_pass'] = 'saude123';
+            $config['validate'] = TRUE;
+            $config['mailtype'] = 'html';
+            $config['charset'] = 'utf-8';
+            $config['newline'] = "\r\n";
+            
+            if ($dados['pacienteEmail'] != '' && $dados['empresaEmail'] != '' && $dados['mensagem'] != '' && $dados['razao_social'] != ''){
+                $this->email->initialize($config);
+                $this->email->from($dados['empresaEmail'], $dados['razao_social']);
+                $this->email->to($dados['pacienteEmail']);
+                $this->email->subject($dados['razao_social'] . " agradece sua presença.");
+                $this->email->message($dados['mensagem']);
+                $this->email->send();
+            }
+        }
+
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['paciente_id'] = $paciente_id;

@@ -200,6 +200,15 @@
                 } else {
                     $celular = '';
                 }
+                if (@$obj->_whatsapp != '' && strlen(@$obj->_whatsapp) > 3) {
+                    if (preg_match('/\(/', @$obj->_whatsapp)) {
+                        $whatsapp = @$obj->_whatsapp;
+                    } else {
+                        $whatsapp = "(" . substr(@$obj->_whatsapp, 0, 2) . ")" . substr(@$obj->_whatsapp, 2, strlen(@$obj->_whatsapp) - 2);
+                    }
+                } else {
+                    $whatsapp = '';
+                }
                 ?>
 
                 <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$telefone; ?>" required="true" />
@@ -207,6 +216,10 @@
             <div>
                 <label>Telefone 2</label>
                 <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$celular; ?>" />
+            </div>
+            <div>
+                <label>WhatsApp</label>
+                <input type="text" id="txtwhatsapp" class="texto02" name="txtwhatsapp" value="<?= @$whatsapp; ?>" />
             </div>
 
         </fieldset>
@@ -459,6 +472,7 @@
 </script>
 <script type="text/javascript">
     mascaraTelefone(form_paciente.txtTelefone);
+    mascaraTelefone(form_paciente.txtwhatsapp);
     mascaraTelefone(form_paciente.txtCelular);
 //(99) 9999-9999
 

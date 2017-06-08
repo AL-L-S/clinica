@@ -2421,6 +2421,34 @@ class laudo_model extends Model {
         }
     }
 
+    function listardadoservicoemail($exame_id) {
+        /* inicia o mapeamento no banco */
+        $horario = date("Y-m-d H:i:s");
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('p.cns');
+        $this->db->from('tb_exames e');
+        $this->db->join('tb_paciente p', 'p.paciente_id = e.paciente_id');
+        $this->db->where("exames_id", $exame_id);
+        $query = $this->db->get();
+        $return1 = $query->result();
+        
+        $this->db->select('email, email_mensagem_agradecimento as msg, razao_social');
+        $this->db->from('tb_empresa e');
+        $this->db->where("empresa_id", $empresa_id);
+        $query = $this->db->get();
+        $return2 = $query->result();
+//        var_dump($return1);die;
+        $retorno = array(
+            "pacienteEmail" => $return1[0]->cns,
+            "empresaEmail" => $return2[0]->email,
+            "mensagem" => $return2[0]->msg,
+            "razaoSocial" => $return2[0]->razao_social
+        );
+        return $retorno;
+//        var_dump($retorno);die;
+    }
+
     function gravaranaminese($ambulatorio_laudo_id, $exame_id) {
         try {
             /* inicia o mapeamento no banco */
@@ -2432,13 +2460,13 @@ class laudo_model extends Model {
             $this->db->where("exames_id", $exame_id);
             $query = $this->db->get();
             $return = $query->result();
-ini_set('display_errors',1);
-ini_set('display_startup_erros',1);
-error_reporting(E_ALL);
+//ini_set('display_errors',1);
+//ini_set('display_startup_erros',1);
+//error_reporting(E_ALL);
             if (isset($_POST['rev'])) {
                 $dias = (int) preg_replace('/[^\d]+/', '', $_POST['dias']);
                 if ($dias > 0) {
-                    $diaRevisao = date('Y-m-d', strtotime("+{$dias} days", strtotime(date('Y-m-d'))));
+                    $diaRevisao = date('Y-m-d', strtotime("+{$dias} days"));
                     $this->db->set('data_revisao', $diaRevisao);
                 }
             }
@@ -2447,7 +2475,7 @@ error_reporting(E_ALL);
             $this->db->set('medico_consulta_id', $_POST['medico']);
             $this->db->where('agenda_exames_id', $return[0]->agenda_exames_id);
             $this->db->update('tb_agenda_exames');
-            var_dump($return[0]->agenda_exames_id, $diaRevisao); die('morreu');
+
 
             $this->db->set('texto', $_POST['laudo']);
             if ($_POST['txtCICPrimario'] != '') {

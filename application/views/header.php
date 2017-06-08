@@ -645,6 +645,7 @@ function debug($object) {
                                     ?>
 
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioperfilpaciente">Relatorio Perfil Paciente</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacientewhatsapp">Relatorio WhatsApp Pacientes</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriounicoretorno">Relatório Paciente Unico/Retorno</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotempoatendimento">Relatório Tempo de atendimento</a></span></ul>
 
