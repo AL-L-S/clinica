@@ -286,6 +286,7 @@ class laudo_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
         $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where("ag.cancelada", 'false');
+        $this->db->where('age.sala_preparo', 'f');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
@@ -352,6 +353,7 @@ class laudo_model extends Model {
         $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where('pt.grupo !=', 'LABORATORIAL');
         $this->db->where("ag.cancelada", 'false');
+        $this->db->where('age.sala_preparo', 'f');
         $this->db->orderby('ag.data_cadastro desc');
         $this->db->orderby('ag.situacao');
         $this->db->orderby('ag.data_cadastro');
@@ -1089,6 +1091,7 @@ class laudo_model extends Model {
         $this->db->where('ag.empresa_id', $empresa_id);
         $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where("ag.cancelada", 'false');
+        $this->db->where('age.sala_preparo', 'f');
 
         if ($perfil_id == 4) {
             $this->db->where('age.medico_consulta_id', $operador_id);
@@ -1169,6 +1172,7 @@ class laudo_model extends Model {
         $this->db->where('ag.empresa_id', $empresa_id);
         $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where("ag.cancelada", 'false');
+        $this->db->where('age.sala_preparo', 'f');
         $this->db->orderby('ag.situacao');
         $this->db->orderby('ag.data_cadastro');
         if ($contador == 0) {

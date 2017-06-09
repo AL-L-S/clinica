@@ -6162,7 +6162,7 @@ AND data <= '$data_fim'";
         }
     }
 
-    function gravarfaturamentototal() {
+        function gravarfaturamentototal() {
         try {
 
             if ($_POST['ajuste1'] != "0") {
@@ -6185,7 +6185,6 @@ AND data <= '$data_fim'";
             } else {
                 $valor4 = $_POST['valor4'];
             }
-
             if ($_POST['ajuste1'] != "0" || $_POST['ajuste2'] != "0" || $_POST['ajuste3'] != "0" || $_POST['ajuste4'] != "0") {
                 if ($_POST['valor1'] > $_POST['valorajuste1']) {
                     $desconto1 = $_POST['valor1'] - $_POST['valorajuste1'];
@@ -6193,7 +6192,7 @@ AND data <= '$data_fim'";
                     $desconto1 = $_POST['valorajuste1'] - $_POST['valor1'];
                 }
                 if ($_POST['valor2'] > $_POST['valorajuste2']) {
-                    $desconto2 = $_POST['valor2'] - $_POST['valorajuste2'];
+                    $desconto2 = $_POST['valor1'] - $_POST['valorajuste1'];
                 } else {
                     $desconto2 = $_POST['valorajuste2'] - $_POST['valor2'];
                 }
@@ -6213,8 +6212,6 @@ AND data <= '$data_fim'";
                 $desconto = $_POST['desconto'];
             }
 
-            $percDesconto = number_format(($desconto / (float) $_POST['valorafaturar']), 2, '.', '');
-//            echo "Com ajuste = " . $percDesconto . " | Sem ajuste = " . number_format(($_POST['desconto'] / (float) $_POST['valorafaturar']), 4, '.',''); die;
 //            $desconto = $_POST['desconto'];
 //            $valor1 = $_POST['valor1'];
 //            $valor2 = $_POST['valor2'];
@@ -6227,7 +6224,7 @@ AND data <= '$data_fim'";
             $operador_id = $this->session->userdata('operador_id');
             $guia = $_POST['guia_id'];
 
-            $this->db->select('ae.agenda_exames_id, ae.valor, ae.valor_total, ae.guia_id, ae.paciente_id');
+            $this->db->select('ae.agenda_exames_id, ae.valor_total, ae.guia_id, ae.paciente_id');
             $this->db->from('tb_agenda_exames ae');
             if ($_POST['financeiro_grupo_id'] != '') {
                 $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -6236,18 +6233,15 @@ AND data <= '$data_fim'";
             }
             $this->db->where("guia_id", $guia);
             $this->db->where('confirmado', 'true');
-            $this->db->orderby('ae.valor');
             $query = $this->db->get();
             $returno = $query->result();
-            
-            foreach ($returno as $item) {
-                $this->db->set('operador_id', $operador_id);
-                $this->db->set('agenda_exames_id', $item->agenda_exames_id);
-                $this->db->set('valor_total', ($item->valor * $percDesconto));
-                $this->db->set('guia_id', $item->guia_id);
-                $this->db->set('paciente_id', $item->paciente_id);
-                $this->db->insert('tb_ambulatorio_desconto');
-            }
+
+            $this->db->set('operador_id', $operador_id);
+            $this->db->set('agenda_exames_id', $returno[0]->agenda_exames_id);
+            $this->db->set('valor_total', $desconto);
+            $this->db->set('guia_id', $returno[0]->guia_id);
+            $this->db->set('paciente_id', $returno[0]->paciente_id);
+            $this->db->insert('tb_ambulatorio_desconto');
 
             $forma1 = $_POST['formapamento1'];
             $forma2 = $_POST['formapamento2'];
@@ -6255,49 +6249,25 @@ AND data <= '$data_fim'";
             $forma4 = $_POST['formapamento4'];
 
             $id_juros = $returno[0]->agenda_exames_id;
-            $valortotal_juros = $returno[0]->valor + $juros;
+            $valortotal_juros = $returno[0]->valor_total + $juros;
             $valortotal = 0;
 
             foreach ($returno as $value) {
-                $this->db->set('desconto', 0);
-                $this->db->set('valor1', 0);
-                $this->db->set('parcelas1', 1);
-                $this->db->set('valor2', 0);
-                $this->db->set('parcelas2', 1);
-                $this->db->set('valor3', 0);
-                $this->db->set('parcelas3', 1);
-                $this->db->set('valor4', 0);
-                $this->db->set('parcelas4', 1);
-                
-                $desc = number_format(($value->valor * $percDesconto), 2, '.', '');
-                $valortotal = number_format(($value->valor - $desc), 2, '.', '');
-
-                $this->db->set('desconto', $desc);
+                if ($value->valor_total >= $desconto) {
+                    $valortotal = $value->valor_total - $desconto;
+                    $desconto = 0;
+                } else {
+                    $valortotal = 0;
+                    $desconto = $desconto - $value->valor_total;
+                }
+//            echo '<pre>';
+//            var_dump($value->valor_total);
+//            var_dump($desconto);
+//            var_dump($valor1);
+//            var_dump($valortotal);
+//            die;
                 $i = 0;
-//                if ($value->agenda_exames_id == '811455') {
-//                    echo "<hr><div style='border:1pt dashed black; border-radius: 4pt; color:red;padding:10pt' title='ERRO'><code>",
-//                    "<p>", "vl1 = {$valor1} | vl2 = {$valor2} | vl3 = {$valor3} | vl4 = {$valor4}", "</p>",
-//                    "<p>", $valortotal, "</p>",
-//                    "<p>", $desc, "</p>",
-////                    "<p>", "$valor2 = $valor2 - ($valortotal - $valor1)", "</p>",
-////                            "<p>", $desconto, "</p>",
-////                    "<p>", $valor1 - $valortotal, "</p>",
-////                            "<p>", number_format($valortotal, 4) - number_format($valor1, 4), "</p>",
-////                            "<p>I - ", ($valor1 > 0)?'true':'false', "</p>",
-////                            "<p>II- ", ($valor1 >=$valortotal)?'true':'false', "</p>",
-////                            "<p>II- ", (number_format($valor1, 4) >= number_format($valortotal, 4))?'true':'false', "</p>",
-//                    "</code></div>";
-////                    echo "$valor2 >= ($valortotal - $valor1) && $valor2 > 0 && $valor1 < $valortotal && $valor2 >= ($valortotal - $valor1)";
-//                    
-//                    if ($i != 1 && $valor2 > 0 && $valor1 < $valortotal && $valor2 >= ($valortotal - $valor1)) {
-//                        echo 'teste';
-//                    }
-//                    die;
-//                }
-
-                /* O number_format é necessario porque o PHP não consegue fazer comparações precisas com (float)
-                  quando os numeros tem muitas casas decimais! */
-                if ($valor1 > 0 && number_format($valor1, 4) >= number_format($valortotal, 4)) {
+                if ($valor1 > 0 && $valor1 >= $valortotal) {
 //                    echo 'if1';
                     $valor1 = $valor1 - $valortotal;
                     $this->db->set('forma_pagamento', $_POST['formapamento1']);
@@ -6311,7 +6281,7 @@ AND data <= '$data_fim'";
                     $this->db->update('tb_agenda_exames');
                     $i = 1;
                 } elseif ($i != 1 && $valor2 > 0 && $valor1 < $valortotal && $valor2 >= ($valortotal - $valor1)) {
-//                    echo 'if2';                    
+//                    echo 'if2';
                     $valor2 = $valor2 - ($valortotal - $valor1);
                     $restovalor2 = $valortotal - $valor1;
                     if ($valor1 > 0) {
@@ -6503,49 +6473,9 @@ AND data <= '$data_fim'";
                     $this->db->where('agenda_exames_id', $id_juros);
                     $this->db->update('tb_agenda_exames');
                 }
+                /* inicia o mapeamento no banco */
             }
-
-            /* O codigo abaixo serve para corrigir erros quando o usuario der um desconto de, por exemplo, 40 em
-             * procedimentos que tem um valor total 140 (Isso e apenas um exemplo). Pela nova logica quando se aplica
-             * o desconto, esse desconto e dado em cima do valor de todos os procedimentos, de forma que a soma de todos
-             * os descontos fique igual ao desconto originalmente dado(atraves de um calculo percentual). O problema e que
-             * isso as vezes gera um erro de alguns centavos devido ao fato de o banco salvar apenas com duas casas decimais.
-             * O codigo abaixo serve pra corrigir isso. */
-            $this->db->select("sum(ae.valor) as valor, sum(ae.valor_total) as valor_total, sum(ae.desconto) as desconto,
-                               (
-                                    SELECT agenda_exames_id FROM ponto.tb_agenda_exames agenda
-                                    WHERE agenda.guia_id = {$guia} AND agenda.confirmado='t'
-                                    LIMIT 1
-                                ) as agenda_exame_id");
-            $this->db->from('tb_agenda_exames ae');
-            $this->db->where("guia_id", $guia);
-            $this->db->where('confirmado', 'true');
-            $correcao = $this->db->get()->result();
-
-            $vlrTotal = (float) $correcao[0]->valor - (float) $desconto;
-            if ($vlrTotal > (float) $correcao[0]->valor_total) {
-                $diferenca = $vlrTotal - (float) $correcao[0]->valor_total;
-
-                $sql = "UPDATE ponto.tb_agenda_exames
-                        SET valor_total = valor_total + {$diferenca},
-                            valor1 = valor1 + {$diferenca},
-                            desconto = desconto - {$diferenca}
-                        WHERE agenda_exames_id = {$correcao[0]->agenda_exame_id}";
-
-                $this->db->query($sql);
-            } else if ($vlrTotal < (float) $correcao[0]->valor_total) {
-                $diferenca = (float) $correcao[0]->valor_total - $vlrTotal;
-
-                $diferenca = $vlrTotal - (float) $correcao[0]->valor_total;
-                $sql = "UPDATE ponto.tb_agenda_exames
-                        SET valor_total = valor_total - {$diferenca},
-                            valor1 = valor1 - {$diferenca},
-                            desconto = desconto + {$diferenca}
-                        WHERE agenda_exames_id = {$correcao[0]->agenda_exame_id}";
-
-                $this->db->query($sql);
-            }
-
+//            die;
             return 0;
         } catch (Exception $exc) {
             return -1;

@@ -3151,6 +3151,7 @@ class exame_model extends Model {
         $this->db->where("( (ag.tipo = 'EXAME') OR (ae.tipo = 'EXAME' AND ae.procedimento_tuss_id IS NULL) )");
 //        $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where('pt.grupo !=', 'LABORATORIAL');
+        $this->db->where('ae.sala_preparo', 'f');
 //        $this->db->orderby('ae.procedimento_tuss_id');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');

@@ -987,10 +987,10 @@ class exametemp_model extends Model {
         $this->db->where('ae.tipo', 'EXAME');
         $this->db->where('ae.paciente_id is not null');
 
-        if (empty($_GET['empresa']) || $_GET['empresa'] == '') {
-            $this->db->where('ae.empresa_id', $empresa_id);
-        } else {
+        if (isset($_GET['empresa']) && strlen($_GET['empresa']) > 0) {
             $this->db->where('ae.empresa_id', $_GET['empresa']);
+        } else {
+            $this->db->where('ae.empresa_id', $empresa_id);
         }
 
 //        $this->db->limit(5);
@@ -1010,10 +1010,12 @@ class exametemp_model extends Model {
             $this->db->where('ae.medico_agenda', $_GET['medico']);
         }
         
-//        if (isset($_GET['data']) && strlen($_GET['data']) > 0) {
+        if (isset($_GET['data']) && strlen($_GET['data']) > 0) {
             $this->db->where('ae.data ', date("Y-m-d", strtotime(str_replace('/', '-', $_GET['data']))));
 //            $this->db->where('ae.data <', date("Y-m-", strtotime("+1 month", str_replace('/', '-', $_GET['data']))) . '01');
-//        }
+        }else{
+            $this->db->where('ae.data ', date("Y-m-d"));
+        }
 //        else{
 //            $this->db->where('ae.data >=', date("Y-m-").'01');
 //            $this->db->where('ae.data <', date("Y-m-",strtotime("+1 month")).'01');
