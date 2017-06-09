@@ -199,3 +199,7 @@ CREATE TABLE ponto.tb_contato_cliente
 
 -- Dia 06/06/2017
 ALTER TABLE ponto.tb_paciente ADD COLUMN whatsapp character varying(15);
+
+-- Dia 08/06/2017
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN sala_preparo boolean DEFAULT false;
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN sala_preparo boolean DEFAULT false;

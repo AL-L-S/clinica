@@ -206,6 +206,13 @@
                             <?}?>
                         </div>
                     </dd>
+                    
+                     <dt>
+                        <label>Sala de Preparo?</label>
+                    </dt>
+                    <dd>
+                        <input type="checkbox" name="salaPreparo" id="salaPreparo" <?if(@$obj->_sala_preparo == 't'){ echo "checked"; }?>/>
+                    </dd>
 
                 </dl>    
 

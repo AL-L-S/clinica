@@ -186,8 +186,8 @@
                     </td>
                     <td style='text-align: center;'><?= date("H:i:s", strtotime($item->inicio)) ?></td>
                     <td style='text-align: center;'><?
-                        $data_inicio = new DateTime($item->data . $item->inicio);
-                        $data_atendimento = new DateTime($item->data_atendimento);
+                        $data_inicio = new DateTime($item->data .' '. $item->inicio);
+                        $data_atendimento = new DateTime($item->data_cadastro);
                         $diff3 = $data_inicio->diff($data_atendimento, true);
                         ?>
                         <span 
@@ -206,9 +206,9 @@
                             >
                             <? echo $diff3->format('%H:%I:%S'); ?></span>
                     </td>
-                    <td style='text-align: center;'><?= date(" H:i:s", strtotime($item->data_atendimento)) ?></td>
+                    <td style='text-align: center;'><?= date(" H:i:s", strtotime($item->data_cadastro)) ?></td>
                     <td style='text-align: center;'><?
-                        $data_finalizado = new DateTime($item->data_finalizado);
+                        $data_finalizado = new DateTime($item->data_atualizacao);
                         $diff4 = $data_finalizado->diff($data_atendimento, true);
                         ?>
                         <span 
@@ -228,7 +228,7 @@
 
                             <? echo $diff4->format('%H:%I:%S'); ?></span>
                     </td>
-                    <td style='text-align: center;'><?= date("H:i:s", strtotime($item->data_finalizado)) ?></td>
+                    <td style='text-align: center;'><?= date("H:i:s", strtotime($item->data_atualizacao)) ?></td>
                 </tr>
             <? endforeach; ?>
 

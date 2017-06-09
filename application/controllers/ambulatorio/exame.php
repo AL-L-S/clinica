@@ -51,6 +51,11 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/gravaraudio-form', $args);
     }
 
+    function listarsalaspreparo($args = array()) {
+
+        $this->loadView('ambulatorio/examepreparo-lista', $args);
+    }
+
     function listarsalasespera($args = array()) {
 
         $this->loadView('ambulatorio/exameespera-lista', $args);
@@ -160,6 +165,14 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/relatorioreagendamentogeral', $data);
     }
 
+    function relatorioteleoperadora() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarteleoperadora();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['salas'] = $this->exame->listartodassalas();
+        $this->loadView('ambulatorio/relatorioteleoperadora', $data);
+    }
+
     function relatoriorecepcaoagenda() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -194,6 +207,21 @@ class Exame extends BaseController {
         } else if ($_POST['tipoRelatorio'] == '3') {
             $this->gerarelatoriomedicoagendaespecialidade();
         }
+    }
+
+    function gerarelatorioteleoperadora() {
+        $medicos = $_POST['medicos'];
+        if ($_POST['medicos'] != '') {
+            $data['medico'] = $this->operador_m->listarCada($medicos);
+        } else {
+            $data['medico'] = null;
+        }
+
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->exame->listaragendamentoteleoperadora();
+        $this->load->View('ambulatorio/impressaorelatorioteleoperadora', $data);
     }
 
     function gerarelatoriomedicoagendaconsultas() {
@@ -604,6 +632,26 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/estoqueguia-form', $data);
     }
 
+    function preparosala($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
+        $data['salas'] = $this->exame->listarsalas();
+        $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
+        $data['agenda_exames_nome_id'] = $this->exame->listarsalaagenda($agenda_exames_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['tecnicos'] = $this->operador_m->listartecnicos();
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_tuss_id'] = $procedimento_tuss_id;
+        $data['guia_id'] = $guia_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $this->loadView('ambulatorio/examepreparo-form', $data);
+    }
+
+    function enviarsalaatendimento($agenda_exames_id) {
+        $this->exame->gravarexamepreparo($agenda_exames_id);
+        $data['mensagem'] = 'Enviado para a sala de atendimento com sucesso.';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exame/listarsalaspreparo");
+    }
+
     function examesala($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
         $data['salas'] = $this->exame->listarsalas();
         $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
@@ -727,21 +775,27 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
-
         if ($total == 0) {
+            $preparo = $this->guia->listarprocedimentopreparo();
             $procedimentopercentual = $_POST['txtprocedimento_tuss_id'];
             $medicopercentual = $_POST['txtmedico'];
             $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
             if (count($percentual) == 0) {
                 $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
             }
-//            var_dump($_POST['txtagenda_exames_id']);
-//            var_dump($percentual); die;
+            //            var_dump($_POST['txtagenda_exames_id']);
+            //            var_dump($percentual); die;
             $laudo_id = $this->exame->gravarexame($percentual);
             if ($laudo_id == "-1") {
                 $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
             } else {
-                $data['mensagem'] = 'Sucesso ao gravar o Exame.';
+
+                if ($preparo[0]->sala_preparo == 't') {
+                    $this->exame->gravarsalapreparo();
+                    $data['mensagem'] = 'Sucesso ao enviar para a sala de preparo.';
+                } else{
+                    $data['mensagem'] = 'Sucesso ao gravar o Exame.';
+                }
 //                $this->gerarcr($agenda_exames_id); //clinica humana
                 $this->gerardicom($laudo_id); //clinica ronaldo
 //               $this->laudo->chamada($laudo_id);

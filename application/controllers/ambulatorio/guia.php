@@ -2535,9 +2535,9 @@ class Guia extends BaseController {
             $data['relatorio'] = $this->guia->gerarelatoriotempoatendimento();
             $this->load->View('ambulatorio/impressaorelatoriotempoatendimento', $data);
         } else {
-            $data['mensagem'] = 'Insira um periodo válido.';
+            $data['mensagem'] = 'Cadastre um valor médio.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "/ambulatorio/guia/relatoriounicoretorno");
+            redirect(base_url() . "/ambulatorio/guia/relatoriotempoatendimento");
         }
     }
 

@@ -726,11 +726,13 @@ class guia_model extends Model {
                             ae.chegada,
                             ae.atendimento,
                             ae.data_atendimento,
+                            ae.data_realizacao,
                             ae.data_autorizacao,
                             al.situacao,
                             al.data_finalizado,
-                            
+                            al.data_atualizacao,
                             ae.data_chegada,
+                            e.data_cadastro,
                             ae.guia_id,
                             ae.realizada,
                             ae.confirmado
@@ -745,7 +747,7 @@ class guia_model extends Model {
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
 
-        $this->db->where("ae.atendimento", 't');
+//        $this->db->where("ae.atendimento", 't');
         $this->db->where("al.situacao", 'FINALIZADO');
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
@@ -3357,6 +3359,17 @@ class guia_model extends Model {
         $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);
         $this->db->where('mc.medico', $medicopercentual);
         $this->db->where('mc.ativo', 'true');
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
+    function listarprocedimentopreparo() {
+        $this->db->select('pt.sala_preparo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->where('pc.procedimento_convenio_id', $_POST['txtprocedimento_tuss_id']);
+        $this->db->where('pc.ativo', 'true');
         $return = $this->db->get();
 
         return $return->result();

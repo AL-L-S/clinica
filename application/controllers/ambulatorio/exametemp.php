@@ -127,6 +127,12 @@ class Exametemp extends BaseController {
         $this->loadView('ambulatorio/pacienteconsultaencaixe-form', $data);
     }
 
+    function mostrargraficosexames() {
+        $data['relatorio'] = $this->exametemp->gerargraficosexames();
+//        var_dump($data);die;
+        $this->load->View('ambulatorio/graficosexames', $data);
+    }
+
     function carregarexametemp($ambulatorio_pacientetemp_id) {
         $obj_exametemp = new exametemp_model($ambulatorio_pacientetemp_id);
         $data['obj'] = $obj_exametemp;

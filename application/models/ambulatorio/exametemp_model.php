@@ -930,6 +930,95 @@ class exametemp_model extends Model {
 
         return $return->result();
     }
+    
+    function gerargraficosexames() {
+        $data = date("Y-m-d");
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            pt.codigo,
+                            ae.data,
+                            al.situacao');
+        $this->db->from('tb_agenda_exames ae');
+//        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+//        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+//        $this->db->join('tb_convenio co', 'co.convenio_id = pc.convenio_id', 'left');
+//        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+//        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+//        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+//        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('ae.inicio');
+        $this->db->where('ae.tipo', 'EXAME');
+        $this->db->where('ae.paciente_id is not null');
+
+        if (empty($_GET['empresa']) || $_GET['empresa'] == '') {
+            $this->db->where('ae.empresa_id', $empresa_id);
+        } else {
+            $this->db->where('ae.empresa_id', $_GET['empresa']);
+        }
+
+//        $this->db->limit(5);
+//        $this->db->where('ae.ativo', 'false');
+//        $this->db->where('ae.realizada', 'false');
+//        $this->db->where('ae.cancelada', 'false');
+        if (isset($_GET['nome']) && strlen($_GET['nome']) > 0) {
+            $this->db->where('p.nome ilike', "%" . $_GET['nome'] . "%");
+        }
+        if (isset($_GET['nascimento']) && strlen($_GET['nascimento']) > 0) {
+            $this->db->where('p.nascimento', date("Y-m-d", strtotime(str_replace('/', '-', $_GET['nascimento']))));
+        }
+        if (isset($_GET['especialidade']) && strlen($_GET['especialidade']) > 0) {
+            $this->db->where('o.cbo_ocupacao_id', $_GET['especialidade']);
+        }
+        if (isset($_GET['medico']) && strlen($_GET['medico']) > 0) {
+            $this->db->where('ae.medico_agenda', $_GET['medico']);
+        }
+        
+//        if (isset($_GET['data']) && strlen($_GET['data']) > 0) {
+            $this->db->where('ae.data ', date("Y-m-d", strtotime(str_replace('/', '-', $_GET['data']))));
+//            $this->db->where('ae.data <', date("Y-m-", strtotime("+1 month", str_replace('/', '-', $_GET['data']))) . '01');
+//        }
+//        else{
+//            $this->db->where('ae.data >=', date("Y-m-").'01');
+//            $this->db->where('ae.data <', date("Y-m-",strtotime("+1 month")).'01');
+//        }
+        
+        if (isset($_GET['sala']) && strlen($_GET['sala']) > 0) {
+            $this->db->where('ae.agenda_exames_nome_id', $_GET['sala']);
+        }
+
+        if (isset($_GET['situacao']) && strlen($_GET['situacao']) > 0) {
+            if ($_GET['situacao'] == "BLOQUEADO") {
+                $this->db->where('ae.bloqueado', 't');
+            }
+            if ($_GET['situacao'] == "LIVRE") {
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.situacao', 'LIVRE');
+            }
+            if ($_GET['situacao'] == "OK") {
+                $this->db->where('ae.situacao', 'OK');
+            }
+            if ($_GET['situacao'] == "FALTOU") {
+                date_default_timezone_set('America/Fortaleza');
+                $data_atual = date('Y-m-d');
+                $this->db->where('ae.data <', $data_atual);
+                $this->db->where('ae.situacao', 'OK');
+                $this->db->where('ae.realizada', 'f');
+                $this->db->where('ae.bloqueado', 'f');
+                $this->db->where('ae.operador_atualizacao is not null');
+            }
+        }
+        $return = $this->db->get();
+
+        return $return->result();
+    }
 
     function listarprocedimentosemformapagamentogeral($ambulatorio_guia_id, $procedimento_convenio_id) {
 

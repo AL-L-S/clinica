@@ -17,6 +17,7 @@ class procedimento_model extends Model {
     var $_entrega = null;
     var $_percentual = null;
     var $_medico = null;
+    var $_sala_preparo = null;
     var $_revisao = null;
     var $_revisao_dias = null;
 
@@ -397,6 +398,12 @@ class procedimento_model extends Model {
                 $this->db->set('revisao', 'f');
             }
             
+            if (isset($_POST['salaPreparo'])) {
+                $this->db->set('sala_preparo', 't');
+            } else{
+                $this->db->set('sala_preparo', 'f');
+            }
+            
             $this->db->set('grupo', $_POST['grupo']);
             if ($_POST['txtperc_medico'] != '') {
                 $this->db->set('perc_medico', str_replace(",", ".", $_POST['txtperc_medico']));
@@ -536,7 +543,7 @@ class procedimento_model extends Model {
                                pt.medico, pt.percentual,  t.descricao, pt.perc_medico, 
                                pt.qtde, pt.dencidade_calorica, pt.proteinas, 
                                pt.carboidratos, pt.lipidios, pt.kcal,
-                               pt.revisao, pt.revisao_dias');
+                               pt.revisao, pt.sala_preparo, pt.revisao_dias');
             $this->db->from('tb_procedimento_tuss pt');
             $this->db->join('tb_tuss t', 't.tuss_id = pt.tuss_id', 'left');
             $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
@@ -561,6 +568,7 @@ class procedimento_model extends Model {
             $this->_entrega = $return[0]->entrega;
             $this->_revisao_dias = $return[0]->revisao_dias;
             $this->_revisao = $return[0]->revisao;
+            $this->_sala_preparo = $return[0]->sala_preparo;
         } else {
             $this->_procedimento_tuss_id = null;
         }
