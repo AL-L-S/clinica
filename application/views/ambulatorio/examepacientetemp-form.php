@@ -37,7 +37,7 @@
         <fieldset>
             <div>
                 <label>Data</label>
-                <input type="text"  id="data_ficha" name="data_ficha" class="size1" required value="<?= date("d/m/Y", strtotime(@$exames[0]->data)) ?>"/>
+                <input type="text"  id="data_ficha" name="data_ficha" class="size1" required value="<?if (count($exames) > 0) { echo date("d/m/Y", strtotime(@$exames[0]->data)); } ?>"/>
                 <input type="hidden" name="txtpaciente_id" value="<?= @$obj->_paciente_id; ?>" />
             </div>
             <legend>Exames tipo</legend>

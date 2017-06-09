@@ -203,21 +203,25 @@
 
 
                         $(document).ready(function () {
+                            var convenio_agendado = new Array();
+                            var proc_agendado = new Array();
 
 <? for ($b = 1; $b <= $i; $b++) { ?>
     <? $it = ($b == 1) ? '' : $b; ?>
     <? if (@$exames[$b - 1]->convenio_agenda != '' && $exames[$b - 1]->procedimento_tuss_id != '') { ?>
+                                
+                                convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
+                                proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
+        
+//                                    var convenio_agendado = <?= @$exames[$b - 1]->convenio_agenda ?>;
+//                                    var proc_agendado = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
 
-
-                                    var convenio_agendado = <?= @$exames[$b - 1]->convenio_agenda ?>;
-                                    var proc_agendado = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
-
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia<?= $it ?>', {convenio<?= $b ?>: convenio_agendado, ajax: true}, function (t) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia<?= $it ?>', {convenio<?= $b ?>: convenio_agendado[<?= $b - 1 ?>], ajax: true}, function (t) {
 
                                                 var opt = '<option value=""></option>';
                                                 var slt = '';
                                                 for (var c = 0; c < t.length; c++) {
-                                                    if (proc_agendado == t[c].procedimento_convenio_id) {
+                                                    if (proc_agendado[<?= $b - 1 ?>] == t[c].procedimento_convenio_id) {
                                                         slt = "selected='true'";
                                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
                                                                                 var valor = a[0].valortotal;
