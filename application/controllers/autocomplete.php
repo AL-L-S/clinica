@@ -36,7 +36,7 @@ class Autocomplete extends Controller {
     }
 
     function index() {
-        
+//        $this->listarhorariosmultiempresa();
     }
 
     function horariosambulatorio() {
@@ -91,7 +91,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function armazemtransferenciaentrada() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
         if (isset($_GET['produto'])) {
@@ -101,7 +101,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function armazemtransferenciaentradaproduto() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
         if (isset($_GET['produto'])) {
@@ -111,7 +111,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function armazemtransferenciaentradaquantidade() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
         if (isset($_GET['produto'])) {
@@ -121,7 +121,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function armazemtransferenciaentradaquantidadegastos() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
         if (isset($_GET['produto'])) {
@@ -155,7 +155,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
+
     function procedimentocirurgia() {
         if (isset($_GET['procedimento_id'])) {
             $result = $this->procedimento->listarprocedimentocirurgia2autocomplete($_GET['procedimento_id'], $_GET['convenio_id']);
@@ -163,7 +163,7 @@ class Autocomplete extends Controller {
             $result = $this->procedimento->listarprocedimentocirurgia2autocomplete();
         }
         foreach ($result as $item) {
-            $retorno['value'] = $item->codigo . " - " .$item->nome ;
+            $retorno['value'] = $item->codigo . " - " . $item->nome;
             $retorno['id'] = $item->procedimento_tuss_id;
             $retorno['valor'] = $item->procedimento_tuss_id;
             $var[] = $retorno;
@@ -185,11 +185,25 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
+
+    function listarhorariosmultiempresa() {
+        var_dump($_POST); 
+//        die;
+        $result = $this->exametemp->listarhorariosmultiempresa();
+        foreach ($result as $item) {
+
+            $retorno['nome'] = $item->agenda_exames_id;
+            $retorno['id'] = $item->inicio;
+            $var[] = $retorno;
+            
+        }
+        echo json_encode($var);
+    }
+
     function listarhorarioscalendario() {
 //            echo $_POST['custom_param1'];
         if (isset($_POST['medico']) || isset($_POST['especialidade'])) {
-            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'],$_POST['especialidade']);
+            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], $_POST['especialidade']);
         } else {
             $result = $this->exametemp->listarhorarioscalendariovago();
         }
@@ -215,26 +229,24 @@ class Autocomplete extends Controller {
                 $retorno['color'] = '#B30802';
             }
             $situacao = $item->situacao;
-            if(isset($item->medico)) {
-              $medico = $item->medico;
-                
-            }else{
+            if (isset($item->medico)) {
+                $medico = $item->medico;
+            } else {
                 $medico = null;
             }
-            if(isset($item->especialidade)) {
-              $especialidade = $item->especialidade;
-                
-            }else{
+            if (isset($item->especialidade)) {
+                $especialidade = $item->especialidade;
+            } else {
                 $especialidade = null;
             }
 
             $dia = date("d", strtotime($item->data));
             $mes = date("m", strtotime($item->data));
             $ano = date("Y", strtotime($item->data));
-            
+
 //            $medico = $item->medico;
-                
-              $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
+
+            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
 
 
             $var[] = $retorno;
@@ -504,6 +516,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+
     function procedimentoconvenioorcamento() {
 
         if (isset($_GET['convenio1'])) {
@@ -513,7 +526,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentoconveniofaturar() {
 
         if (isset($_GET['convenio1'])) {
@@ -523,7 +536,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function conveniocarteira() {
 
         if (isset($_GET['convenio1'])) {
