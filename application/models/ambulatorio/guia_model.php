@@ -2042,31 +2042,43 @@ class guia_model extends Model {
     }
 
     function relatoriounicoretorno() {
-        $this->db->select('
-                           p.paciente_id,
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $this->db->select("
+                           distinct(p.paciente_id), 
                            p.nome as paciente,
-                           p.sexo,
+                           p.sexo, 
                            p.nascimento,
-                           p.estado_civil_id,
-                           p.data_cadastro,
+                           ( 
+                                SELECT COUNT(ae2.paciente_id) 
+                                FROM ponto.tb_agenda_exames ae2 
+                                WHERE ae2.paciente_id = ae.paciente_id
+                            ) as conta,
                            p.escolaridade_id,
-                           count(*) as conta
-                           ');
-        $this->db->from('tb_paciente p');
-        $this->db->join('tb_agenda_exames ae', 'ae.paciente_id = p.paciente_id');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+                           p.estado_civil_id,
+                           c.nome as plano");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id');
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-
-        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
-        $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
-
-        $this->db->groupby('p.paciente_id');
-
+//        if ($_POST['medico'] != "0") {
+//            $medico = $_POST['medico'];
+//            $this->db->where("ae.medico_agenda = {$medico} OR ae.medico_consulta_id = {$medico}");
+//        }
+//        if ($_POST['plano'] != "0") {
+//            $this->db->where("p.convenio_id", $_POST['plano']);
+//        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('p.nome');
+        $this->db->orderby('p.nascimento desc');
+        $this->db->groupby('ae.paciente_id');
+        $this->db->groupby('p.paciente_id, c.nome');
+        $this->db->orderby('p.sexo');
+        $this->db->orderby('p.estado_civil_id');
         $return = $this->db->get();
-//       echo '<pre>';
 //        var_dump($return->result()); die;
         return $return->result();
     }
@@ -6162,7 +6174,7 @@ AND data <= '$data_fim'";
         }
     }
 
-        function gravarfaturamentototal() {
+    function gravarfaturamentototal() {
         try {
 
             if ($_POST['ajuste1'] != "0") {

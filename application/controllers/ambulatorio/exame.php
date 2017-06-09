@@ -72,26 +72,15 @@ class Exame extends BaseController {
     }
 
     function listaragendamentomultiempresa($args = array()) {
-        $dados = http_build_query(array(
-            'firstname' => 'John',
-            'lastname' => 'Doe'
-        ));
-
-        $contexto = stream_context_create(array(
-            'http' => array(
-                'method' => 'POST',
-                'content' => $dados,
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n"
-                . "Content-Length: " . strlen($dados) . "\r\n",
-            )
-        ));
-
-//        echo $context;
-//        die;
-//        $contents = file_get_contents("http://192.168.25.97/clinicas/autocomplete/listarhorariosmultiempresa/$getdata");
-        $resposta = file_get_contents('http://192.168.25.97/clinicas/autocomplete/listarhorariosmultiempresa', null, $contexto);
-        $teste = json_decode($resposta);
-        var_dump($teste);
+        $resposta = file_get_contents("http://localhost/file/teste.php");
+//        $teste = json_decode($resposta);
+        $pieces = explode("|", $resposta);
+        echo '<pre>';
+        foreach($pieces as $item){
+           $json_show = json_decode($item);
+           var_dump($json_show);
+        }
+//        var_dump($pieces);
         die;
 
         $this->loadView('ambulatorio/examemultifuncaomultiempresa-lista', $args);
