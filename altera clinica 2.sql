@@ -203,3 +203,11 @@ ALTER TABLE ponto.tb_paciente ADD COLUMN whatsapp character varying(15);
 -- Dia 08/06/2017
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN sala_preparo boolean DEFAULT false;
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN sala_preparo boolean DEFAULT false;
+
+-- Dia 09/06/2017
+CREATE TABLE ponto.tb_empresas_acesso_servidores
+(
+  empresas_acesso_externo_id serial NOT NULL,
+  ip_externo character varying(500),
+  CONSTRAINT tb_empresas_acesso_servidores_pkey PRIMARY KEY (empresas_acesso_externo_id)
+);

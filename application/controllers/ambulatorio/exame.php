@@ -72,28 +72,28 @@ class Exame extends BaseController {
     }
 
     function listaragendamentomultiempresa($args = array()) {
-        $dados = http_build_query(array(
-            'firstname' => 'John',
-            'lastname' => 'Doe'
-        ));
+        $parametro = array(
+            'especialidade' => (@$_GET['especialidade'] != '') ? @$_GET['especialidade'] : '',
+            'medico' => (@$_GET['medico'] != '') ? @$_GET['medico'] : '',
+            'data' => (@$_GET['data'] != '') ? @$_GET['data'] : '',
+            'nome' => (@$_GET['nome'] != '') ? @$_GET['nome'] : ''
+        );
+        
+        $dados = http_build_query($parametro);
 
         $contexto = stream_context_create(array(
             'http' => array(
-                'method' => 'POST',
+                'method' => 'GET',
                 'content' => $dados,
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n"
                 . "Content-Length: " . strlen($dados) . "\r\n",
             )
         ));
-
-//        echo $context;
-//        die;
-//        $contents = file_get_contents("http://192.168.25.97/clinicas/autocomplete/listarhorariosmultiempresa/$getdata");
-        $resposta = file_get_contents('http://192.168.25.97/clinicas/autocomplete/listarhorariosmultiempresa', null, $contexto);
-        $teste = json_decode($resposta);
-        var_dump($teste);
+        $url = "especialidade={$parametro['especialidade']}&medico={$parametro['medico']}&data={$parametro['data']}&nome={$parametro['nome']}";
+        $resposta = file_get_contents("http://localhost/arquivoAcesso.php?{$url}", null, $contexto);
+//        $teste = json_decode($resposta);
+        var_dump($resposta);
         die;
-
         $this->loadView('ambulatorio/examemultifuncaomultiempresa-lista', $args);
     }
 
@@ -819,7 +819,7 @@ class Exame extends BaseController {
                 if ($preparo[0]->sala_preparo == 't') {
                     $this->exame->gravarsalapreparo();
                     $data['mensagem'] = 'Sucesso ao enviar para a sala de preparo.';
-                } else{
+                } else {
                     $data['mensagem'] = 'Sucesso ao gravar o Exame.';
                 }
 //                $this->gerarcr($agenda_exames_id); //clinica humana
