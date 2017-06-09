@@ -2460,13 +2460,27 @@ class laudo_model extends Model {
             $this->db->where("exames_id", $exame_id);
             $query = $this->db->get();
             $return = $query->result();
-//ini_set('display_errors',1);
-//ini_set('display_startup_erros',1);
-//error_reporting(E_ALL);
+            
             if (isset($_POST['rev'])) {
-                $dias = (int) preg_replace('/[^\d]+/', '', $_POST['dias']);
-                if ($dias > 0) {
-                    $diaRevisao = date('Y-m-d', strtotime("+{$dias} days"));
+                switch ($_POST['tempoRevisao']){ 
+                    case '1a':
+                        $dias = '+1 year';
+                        break;
+                    case '6m':
+                        $dias = '+6 month';
+                        break;
+                    case '3m':
+                        $dias = '+3 month';
+                        break;
+                    case '1m':
+                        $dias = '+1 month';
+                        break;
+                    default:    
+                        $dias = '';
+                }
+                
+                if ($dias != '') {
+                    $diaRevisao = date('Y-m-d', strtotime($dias));
                     $this->db->set('data_revisao', $diaRevisao);
                 }
             }

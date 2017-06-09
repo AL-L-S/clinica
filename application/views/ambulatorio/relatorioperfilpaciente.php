@@ -15,18 +15,31 @@
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
+                        <input type="hidden" name="medicoNome" id="medicoNome" value="TODOS"/>
+                        <input type="hidden" name="planoNome" id="planoNome" value="TODOS"/>
                     </dd>
-<!--                    <dt>
-                        <label>Recomendação</label>
+                    <dt>
+                        <label>Médico</label>
                     </dt>
                     <dd>
-                        <select name="indicacao" id="indicacao" class="size2">
-                            <option value="0">TODOS</option>
-                            <? foreach ($indicacao as $value) : ?>
-                                <option value="<?= $value->paciente_indicacao_id; ?>" ><?php echo $value->nome; ?></option>
+                        <select name="medico" id="medico" class="size2">
+                            <option value="0" selected="" onclick="document.getElementById('medicoNome').value = 'TODOS'">TODOS</option>
+                            <? foreach ($medicos as $item) : ?>
+                            <option value="<?= $item->operador_id; ?>" onclick="document.getElementById('medicoNome').value = '<?= $item->nome; ?>'"><?php echo $item->nome; ?></option>
                             <? endforeach; ?>
                         </select>
-                    </dd>-->
+                    </dd>
+                    <dt>
+                        <label>Plano de Saúde</label>
+                    </dt>
+                    <dd>
+                        <select name="plano" id="plano" class="size2">
+                            <option value="0" selected="" onclick="document.getElementById('planoNome').value = 'TODOS'">TODOS</option>
+                            <? foreach ($convenio as $item) : ?>
+                            <option value="<?= $item->convenio_id; ?>" onclick="document.getElementById('planoNome').value = '<?= $item->nome; ?>'"><?php echo $item->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
                     <dt>
                         <label>Empresa</label>
                     </dt>

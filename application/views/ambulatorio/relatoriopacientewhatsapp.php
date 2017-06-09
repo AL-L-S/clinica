@@ -16,17 +16,15 @@
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
-<!--                    <dt>
-                        <label>Recomendação</label>
+                    <dt>
+                        <label>Gerar Planilha</label>
                     </dt>
                     <dd>
-                        <select name="indicacao" id="indicacao" class="size2">
-                            <option value="0">TODOS</option>
-                            <? // foreach ($indicacao as $value) : ?>
-                                <option value="<? // $value->paciente_indicacao_id; ?>" ><?php // echo $value->nome; ?></option>
-                            <? // endforeach; ?>
+                        <select name="planilha" id="planilha" class="size2">
+                            <option value="nao">NAO</option>
+                            <option value="sim">SIM</option>
                         </select>
-                    </dd>-->
+                    </dd>
                     <dt>
                         <label>Empresa</label>
                     </dt>

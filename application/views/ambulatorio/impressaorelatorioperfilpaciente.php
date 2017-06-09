@@ -30,6 +30,12 @@
         <tr>
             <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">EMPRESA: <?= $tipoempresa ?></th>
         </tr>
+        <tr>
+            <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MÉDICO: <?= $medico ?></th>
+        </tr>
+        <tr>
+            <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PLANO DE SAÚDE: <?= $plano ?></th>
+        </tr>
 
         <? if ($tipoempresa == "0") { ?>
             <tr>
@@ -98,6 +104,8 @@
             $adulto10 = 0;
             $idosos = 0;
             $idades = array();
+            $totPlanoSaude = 0;
+            $planoSaude = array();
             foreach ($relatorio as $item) :
 
                 $i++;
@@ -105,6 +113,17 @@
                 ?>
                 <tr>
                     <?
+                    $totPlanoSaude++;
+                    if($item->plano != ''){
+                        @$planoSaude[$item->plano]++;
+//                        @$planoSaude['teste']++;
+//                        @$planoSaude['ok']++;
+//                        $planoSaude['dsfjso']++;
+                    }
+                    else {
+                        $planoSaude['semPlano']++;
+                    }
+                    
                     $dataFuturo = date("Y-m-d");
                     $dataAtual = $item->nascimento;
                     $date_time = new DateTime($dataAtual);
@@ -244,198 +263,255 @@
         $superior1p = 0;
         $superior2p = 0;
     }
+    
     ?>
     <br>
-    <h3>Gênero</h3>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th class="tabela_teste">Sexo</th>
-                <th class="tabela_teste">Quantidade</th>
-                <th class="tabela_teste">Percentual</th>
-            </tr>
-        </thead>
+    <table cellspacing="10" cellpadding="10">
+        <tr>
+            <td>
+                <h3>Gênero</h3>
 
-        <tbody>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th class="tabela_teste">Sexo</th>
+                            <th class="tabela_teste">Quantidade</th>
+                            <th class="tabela_teste">Percentual</th>
+                        </tr>
+                    </thead>
 
-            <tr>
-                <td style='text-align: center;'>Homens</td>
-                <td><?= $masculino; ?></td>
-                <td><?= $masculinop . "%"; ?></td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Mulheres</td>
-                <td><?= $feminino; ?></td>
-                <td><?= $femininop . "%"; ?></td>
-            </tr>
-            <tr>
-                <td colspan="3" rowspan="3" style='text-align: center;'><div id="sexo" style="height: 250px;"></div></td>
-            </tr>
+                    <tbody>
 
-
-        </tbody>
-
-
-        <tbody>
-
-        </tbody>
-    </table>
-    <h3>Estado Civil</h3>
-    <br>
-    <table border="1">
-        <thead>
-            <tr>
-                <th class="tabela_teste">Estado Civil</th>
-                <th class="tabela_teste">Quantidade</th>
-                <th class="tabela_teste">Percentual</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            <tr>
-                <td style='text-align: center;'>Solteiro(a)</td>
-                <td><?= $solteiro; ?></td>
-                <td><?= $solteirop . "%"; ?></td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Casado(a)</td>
-                <td><?= $casado; ?></td>
-                <td><?= $casadop . "%"; ?></td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Divorciado(a)</td>
-                <td><?= $divorciado; ?></td>
-                <td><?= $divorciadop . "%"; ?></td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Viuvo(a)</td>
-                <td><?= $viuvo; ?></td>
-                <td><?= $viuvop . "%"; ?></td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Outros</td>
-                <td><?= $outros; ?></td>
-                <td><?= $outrosp . "%"; ?></td>
-            </tr>
-            <tr>
-                <td rowspan="3" colspan="3"><div id="estado" style="height: 250px;"></div></td>
-            </tr>
+                        <tr>
+                            <td style='text-align: center;'>Homens</td>
+                            <td style="text-align: right"><?= $masculino; ?></td>
+                            <td style="text-align: right"><?= $masculinop . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Mulheres</td>
+                            <td style="text-align: right"><?= $feminino; ?></td>
+                            <td style="text-align: right"><?= $femininop . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" rowspan="3" style='text-align: center;'><div id="sexo" style="height: 250px;"></div></td>
+                        </tr>
 
 
-        </tbody>
+                    </tbody>
 
 
-    </table>
+                    <tbody>
 
-    <h3>Faixa Etária</h3>
-    <br>
-    <table border="1">
-        <thead>
-            <tr>
-                <th class="tabela_teste">Classificação</th>
-                <th class="tabela_teste">Quantidade</th>
-                <th class="tabela_teste">Percentual</th>
-                <th class="tabela_teste">Faixa Etária</th>
-            </tr>
-        </thead>
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                <h3>Estado Civil</h3>
+                <br>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th class="tabela_teste">Estado Civil</th>
+                            <th class="tabela_teste">Quantidade</th>
+                            <th class="tabela_teste">Percentual</th>
+                        </tr>
+                    </thead>
 
-        <tbody>
+                    <tbody>
 
-            <tr>
-                <td style='text-align: center;'>Criança(s)</td>
-                <td><?= $crianca; ?></td>
-                <td><?= $criancap . "%"; ?></td>
-                <td style='text-align: center;'>0 - 11</td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Adolesteste(s)</td>
-                <td><?= $adoles; ?></td>
-                <td><?= $adolesp . "%"; ?></td>
-                <td style='text-align: center;'>12 - 18</td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Adulto(s)</td>
-                <td><?= $adulto; ?></td>
-                <td><?= $adultop . "%"; ?></td>
-                <td id="teste" class="btn1" style='text-align: center;color: red;cursor: pointer;' title="Mostrar Mais">19 - 59</td>
-
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Idoso(s)</td>
-                <td><?= $idosos; ?></td>
-                <td><?= $idososp . "%"; ?></td>
-                <td style='text-align: center;'>60+</td>
-
-            </tr>
-            <tr>
-                <td rowspan="3" colspan="4">
-                    <div id="grafico" style="height: 250px;"></div>
-
-                </td>
-            </tr>
-        </tbody>
+                        <tr>
+                            <td style='text-align: center;'>Solteiro(a)</td>
+                            <td style="text-align: right"><?= $solteiro; ?></td>
+                            <td style="text-align: right"><?= $solteirop . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Casado(a)</td>
+                            <td style="text-align: right"><?= $casado; ?></td>
+                            <td style="text-align: right"><?= $casadop . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Divorciado(a)</td>
+                            <td style="text-align: right"><?= $divorciado; ?></td>
+                            <td style="text-align: right"><?= $divorciadop . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Viuvo(a)</td>
+                            <td style="text-align: right"><?= $viuvo; ?></td>
+                            <td style="text-align: right"><?= $viuvop . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Outros</td>
+                            <td style="text-align: right"><?= $outros; ?></td>
+                            <td style="text-align: right"><?= $outrosp . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3" colspan="3"><div id="estado" style="height: 250px;"></div></td>
+                        </tr>
 
 
-    </table>
-    <h3 id="adultoslabel" style="display: none">Adultos</h3> <button id="esconder" style="display: none">Esconder</button>
-
-    <div id="adultos" style="height: 300px;display: none;"></div>
+                    </tbody>
 
 
-    <h3>Escolaridade</h3>
-    <br>
-    <table border="1">
-        <thead>
-            <tr>
-                <th class="tabela_teste">Classificação</th>
-                <th class="tabela_teste">Quantidade</th>
-                <th class="tabela_teste">Percentual</th>
-            </tr>
-        </thead>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Faixa Etária</h3>
+                <br>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th class="tabela_teste">Classificação</th>
+                            <th class="tabela_teste">Quantidade</th>
+                            <th class="tabela_teste">Percentual</th>
+                            <th class="tabela_teste">Faixa Etária</th>
+                        </tr>
+                    </thead>
 
-        <tbody>
+                    <tbody>
 
-            <tr>
-                <td style='text-align: center;'>Fundamental-Incompleto</td>
-                <td><?= $fundamental1; ?></td>
-                <td><?= $fundamental1p . "%"; ?></td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Fundamental-Completo</td>
-                <td><?= $fundamental2; ?></td>
-                <td><?= $fundamental2p . "%"; ?></td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Médio-Incompleto</td>
-                <td><?= $medio1; ?></td>
-                <td><?= $medio1p . "%"; ?></td>
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Médio-Completo</td>
-                <td><?= $medio2; ?></td>
-                <td><?= $medio2p . "%"; ?></td>
+                        <tr>
+                            <td style='text-align: center;'>Criança(s)</td>
+                            <td style="text-align: right"><?= $crianca; ?></td>
+                            <td style="text-align: right"><?= $criancap . "%"; ?></td>
+                            <td style='text-align: center;'>0 - 11</td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Adolesteste(s)</td>
+                            <td style="text-align: right"><?= $adoles; ?></td>
+                            <td style="text-align: right"><?= $adolesp . "%"; ?></td>
+                            <td style='text-align: center;'>12 - 18</td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Adulto(s)</td>
+                            <td style="text-align: right"><?= $adulto; ?></td>
+                            <td style="text-align: right"><?= $adultop . "%"; ?></td>
+                            <td id="teste" class="btn1" style='text-align: center;color: red;cursor: pointer;' title="Mostrar Mais">19 - 59</td>
 
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Superior-Incompleto</td>
-                <td><?= $superior1; ?></td>
-                <td><?= $superior1p . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Idoso(s)</td>
+                            <td style="text-align: right"><?= $idosos; ?></td>
+                            <td style="text-align: right"><?= $idososp . "%"; ?></td>
+                            <td style='text-align: center;'>60+</td>
 
-            </tr>
-            <tr>
-                <td style='text-align: center;'>Superior-Completo</td>
-                <td><?= $superior2; ?></td>
-                <td><?= $superior2p . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3" colspan="4">
+                                <div id="grafico" style="height: 250px;"></div>
 
-            </tr>
-            <tr>
-                <td rowspan="3" colspan="4"><div id="escolaridade" style="height: 250px;"></div></td>
-            </tr>
-        </tbody>
+                            </td>
+                        </tr>
+                    </tbody>
 
 
+                </table>
+                <h3 id="adultoslabel" style="display: none">Adultos</h3> <button id="esconder" style="display: none">Esconder</button>
+
+                <div id="adultos" style="height: 300px;display: none;"></div>
+            </td>
+            <td>
+
+                <h3>Escolaridade</h3>
+                <br>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th class="tabela_teste">Classificação</th>
+                            <th class="tabela_teste">Quantidade</th>
+                            <th class="tabela_teste">Percentual</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td style='text-align: center;'>Fundamental-Incompleto</td>
+                            <td style="text-align: right"><?= $fundamental1; ?></td>
+                            <td style="text-align: right"><?= $fundamental1p . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Fundamental-Completo</td>
+                            <td style="text-align: right"><?= $fundamental2; ?></td>
+                            <td style="text-align: right"><?= $fundamental2p . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Médio-Incompleto</td>
+                            <td style="text-align: right"><?= $medio1; ?></td>
+                            <td style="text-align: right"><?= $medio1p . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Médio-Completo</td>
+                            <td style="text-align: right"><?= $medio2; ?></td>
+                            <td style="text-align: right"><?= $medio2p . "%"; ?></td>
+
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Superior-Incompleto</td>
+                            <td style="text-align: right"><?= $superior1; ?></td>
+                            <td style="text-align: right"><?= $superior1p . "%"; ?></td>
+
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Superior-Completo</td>
+                            <td style="text-align: right"><?= $superior2; ?></td>
+                            <td style="text-align: right"><?= $superior2p . "%"; ?></td>
+
+                        </tr>
+                        <tr>
+                            <td rowspan="3" colspan="4"><div id="escolaridade" style="height: 250px;"></div></td>
+                        </tr>
+                    </tbody>
+
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Plano de Saude</h3>
+                <br>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th class="tabela_teste">Plano</th>
+                            <th class="tabela_teste">Quantidade</th>
+                            <th class="tabela_teste">Percentual</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        
+                        <? foreach($planoSaude as $nome => $plano){ 
+                            if($nome == 'semPlano') continue;?>
+                            
+                            <tr>
+                                <td><?= $nome ?></td>
+                                <td style="text-align: right"><?= $plano ?></td>
+                                <td style="text-align: right"><?= round(($plano * 100) / $totPlanoSaude); ?>%</td>
+                            </tr>
+                        <? }
+                        if(isset($planoSaude['semPlano']) && @$planoSaude['semPlano'] > 0) {?>
+                            <tr>
+                                <td>Sem Plano</td>
+                                <td style="text-align: right"><?= $planoSaude['semPlano'] ?></td>
+                                <td style="text-align: right"><?= round(($planoSaude['semPlano'] * 100) / $totPlanoSaude); ?>%</td>
+                            </tr>
+                        <? } ?>
+                        <tr>
+                            <td rowspan="3" colspan="4"><div id="planosaude" style="height: 250px;"></div></td>
+                        </tr>
+                            
+                    </tbody>
+
+
+                </table>
+                <!--<div id="adultos" style="height: 300px;display: none;"></div>-->
+            </td>
+            <td></td>
+        </tr>
     </table>
 <? } else {
     ?>
@@ -454,6 +530,28 @@
 
 
 <script>
+    new Morris.Donut({
+        element: 'planosaude',
+        data: [
+            <? foreach($planoSaude as $nome => $plano) { 
+                $perc = round(($plano * 100) / $totPlanoSaude) ?>
+            {label: "<?= $nome ?>", value: <?= $plano; ?>, formatted: '<?= $perc; ?>%'},
+            <?}?>
+        ],
+        colors: [
+            <? 
+            $i = 1;
+            foreach($planoSaude as $nome => $plano) { 
+                $letras = array('A', 'B', 'C', 'D', 'E', 'F');?>
+            '#<?= str_pad($letras[rand(0, 5)], 6, $i, STR_PAD_LEFT);?>',
+            <? $i = (($i * rand(0, 5)) * ($plano));
+               while ($i >= 1000 || $i == 0) {$i = (int) ($i / 10); }
+                } ?>
+        ],
+        formatter: function (x, data) {
+            return data.formatted;
+        }
+    });
     new Morris.Donut({
         element: 'grafico',
         data: [

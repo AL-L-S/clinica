@@ -47,7 +47,7 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guia-lista', $data);
     }
-    
+
     function pesquisarfiladeimpressao($args = array()) {
         $this->loadView('ambulatorio/filadeimpressao-lista', $args);
 
@@ -2020,6 +2020,7 @@ class Guia extends BaseController {
     function relatorioperfilpaciente() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['medicos'] = $this->operador_m->listarmedicos();
         $this->loadView('ambulatorio/relatorioperfilpaciente', $data);
     }
 
@@ -2466,7 +2467,24 @@ class Guia extends BaseController {
             $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
             $data['txtdata_fim'] = $_POST['txtdata_fim'];
             $data['relatorio'] = $this->guia->relatoriopacientewhatsapp();
-            $this->load->View('ambulatorio/impressaorelatoriopacientewhatsapp', $data);
+            if ($_POST['planilha'] == 'sim') {
+                $html = $this->load->view('ambulatorio/impressaorelatoriopacientewhatsapp', $data, true);
+                $horario = date('d-m-Y');
+                //        $arquivo = "/home/planilha.xls";
+                // Configurações header para forçar o download
+                header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+                header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+                header("Cache-Control: no-cache, must-revalidate");
+                header("Pragma: no-cache");
+                header("Content-type: application/x-msexcel");
+                header("Content-Disposition: attachment; filename=\"WhatsApp Pacientes $horario\"");
+                header("Content-Description: PHP Generated Data");
+                // Envia o conteúdo do arquivo
+                echo $html;
+                exit;
+            } else {
+                $this->load->View('ambulatorio/impressaorelatoriopacientewhatsapp', $data);
+            }
         } else {
             $data['mensagem'] = 'Insira um periodo válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -2479,6 +2497,8 @@ class Guia extends BaseController {
             $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
             $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
             $data['txtdata_fim'] = $_POST['txtdata_fim'];
+            $data['medico'] = $_POST['medicoNome'];
+            $data['plano'] = $_POST['planoNome'];
             $data['relatorio'] = $this->guia->relatorioperfilpaciente();
             $this->load->View('ambulatorio/impressaorelatorioperfilpaciente', $data);
         } else {
@@ -2528,14 +2548,14 @@ class Guia extends BaseController {
         $data['modelos'] = $this->modelodeclaracao->listarmodelo();
         $this->loadView('ambulatorio/escolhermodelo', $data);
     }
-    
+
     function imprimirfiladeimpressao($impressao_id) {
-       
+
         $data['impressao'] = $this->guia->gerarimpressaofiladeimpressao($impressao_id);
         echo $data['impressao'][0]->texto;
 //        $this->loadView('ambulatorio/escolhermodelo', $data);
     }
-    
+
 //    function excluirfiladeimpressao($impressao_id) {
 //       
 //        $data['impressao'] = $this->guia->excluirfiladeimpressao($impressao_id);
@@ -2770,7 +2790,7 @@ class Guia extends BaseController {
         } else {
             $mensagem = 'Valor informado excede o valor da guia!';
             $this->session->set_flashdata('message', $mensagem);
-            
+
             $valor = (float) $_POST['txtvalorguia'];
             $valorGuia = (float) $_POST['totguia'];
             redirect(base_url() . "ambulatorio/guia/procedimentoguianotaform/{$valor}/{$valorGuia}");

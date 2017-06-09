@@ -496,7 +496,10 @@
 <script type="text/javascript">
                                                     jQuery('#rev').change(function () {
                                                         if (this.checked) {
-                                                            var tag = '<span>Dias</span><input type="text" alt="integer" name="dias" id="dias" required/>';
+                                                            var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
+//                                                            var tag += '';
+////                                                           <input type="radio" name="OPCAO1" VALUE="op1"> opção1
+////                                                            var tag += '';
 //                                                            jQuery("#Altura").mask("999", {placeholder: " "});
                                                             jQuery(".dias").append(tag);
                                                         } else {
