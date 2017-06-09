@@ -187,13 +187,25 @@ class Autocomplete extends Controller {
     }
 
     function listarhorariosmultiempresa() {
-        var_dump($_POST); 
+//        var_dump($_POST); 
 //        die;
         $result = $this->exametemp->listarhorariosmultiempresa();
         foreach ($result as $item) {
 
-            $retorno['nome'] = $item->agenda_exames_id;
-            $retorno['id'] = $item->inicio;
+            $retorno['agenda_exames_id'] = $item->agenda_exames_id;
+            $retorno['inicio'] = $item->inicio;
+            $retorno['fim'] = $item->fim;
+            $retorno['situacao'] = $item->situacao;
+            $retorno['data'] = $item->data;
+            $retorno['situacaoexame'] = $item->paciente;
+            $retorno['paciente'] = $item->paciente;
+            $retorno['medicoagenda'] = $item->paciente;
+            $retorno['convenio'] = $item->convenio;
+            $retorno['realizada'] = $item->realizada;
+            $retorno['confirmado'] = $item->confirmado;
+            $retorno['procedimento'] = $item->procedimento;
+            $retorno['celular'] = $item->celular;
+            $retorno['bloqueado'] = $item->bloqueado;
             $var[] = $retorno;
             
         }
