@@ -79,6 +79,8 @@ class Exame extends BaseController {
             'nome' => (@$_GET['nome'] != '') ? @$_GET['nome'] : ''
         );
         
+//        var_dump($_GET);die;
+        
         $dados = http_build_query($parametro);
 
         $contexto = stream_context_create(array(
@@ -90,11 +92,23 @@ class Exame extends BaseController {
             )
         ));
         $url = "especialidade={$parametro['especialidade']}&medico={$parametro['medico']}&data={$parametro['data']}&nome={$parametro['nome']}";
-        $resposta = file_get_contents("http://localhost/arquivoAcesso.php?{$url}", null, $contexto);
-//        $teste = json_decode($resposta);
-        var_dump($resposta);
-        die;
-        $this->loadView('ambulatorio/examemultifuncaomultiempresa-lista', $args);
+        
+        $resposta = file_get_contents("http://localhost/arquivoDados.php?{$url}", null, $contexto);
+        
+//        $medicos = file_get_contents("http://localhost/arquivoMedicos.php", null, $contexto);
+        
+        $array = explode("|", $resposta);
+        
+        foreach($array as $item){
+            if(strlen($item) >= 2) {
+                $a = explode("$", $item);
+                @$args["agenda"][$a[0]] = json_decode($a[1]);
+            }
+        }
+        $data["dados"] = $args;
+//        echo "<pre>";
+//        var_dump($resposta);die;
+        $this->loadView('ambulatorio/agendamentomultiempresa-lista', $data);
     }
 
     function listarmultifuncaogeral($args = array()) {

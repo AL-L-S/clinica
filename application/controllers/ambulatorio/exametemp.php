@@ -111,6 +111,7 @@ class Exametemp extends BaseController {
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $this->loadView('ambulatorio/pacientetempfisioterapiaencaixe-form', $data);
     }
+
     function novopacientefisioterapiaencaixemedico() {
         $data['idade'] = 0;
         $data['empresas'] = $this->exame->listarempresas();
@@ -243,6 +244,44 @@ class Exametemp extends BaseController {
 
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/fisioterapiapacientetemp-form', $data);
+    }
+
+    function carregaragendamultiempresa($agenda_exames_id, $medico_id, $externo_id) {
+        $data['medico'] = $medico_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $externo = $this->exame->listarexterno($externo_id);
+
+        $parametro = array(
+            "acao" => "convenio",
+            "agenda_exames_id" => $agenda_exames_id,
+            "ip" => $externo[0]->ip_externo
+        );
+
+        $dados = http_build_query($parametro);
+
+        $contexto = stream_context_create(array(
+            'http' => array(
+                'method' => 'GET',
+                'content' => $dados,
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n"
+                . "Content-Length: " . strlen($dados) . "\r\n",
+            )
+        ));
+
+        $url = "acao={$parametro['acao']}&ip={$parametro['ip']}&agenda_exames_id={$agenda_exames_id}";
+        $resposta = file_get_contents("http://localhost/arquivoRequisicoes.php?{$url}", null, $contexto);
+
+//        $data['convenio'] = json_decode($resposta);
+
+        $array = explode("|", $resposta);
+        $convenio = json_decode($array[0]);
+        $dadosAgendaExame = json_decode($array[1]);
+
+        $data["convenio"] = $convenio;
+        $data["consultas"] = $dadosAgendaExame;
+        $data["ip"] = $externo[0]->ip_externo;
+
+        $this->loadView('ambulatorio/consultapacientemultiempresa-form', $data);
     }
 
     function carregarexamegeral($agenda_exames_id, $medico_id) {
@@ -493,6 +532,20 @@ class Exametemp extends BaseController {
         }
     }
 
+    function gravarpacienteagendamultiempresa($agenda_exames_id) {
+        $tipo = $this->exametemp->tipomultifuncaogeralmultiempresa($_POST['procedimento']);
+        $paciente_id = $this->exametemp->gravarpacienteconsultasmultiempresa($agenda_exames_id, $tipo[0]->tipo);
+        
+        if ($paciente_id != 0) {
+            $data['mensagem'] = 'Consulta agendada com sucesso.';
+        } else {
+            $data['mensagem'] = 'Erro ao agendar consulta.';
+        }
+        
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function gravarpacienteconsultatemp($agenda_exames_id) {
         if (trim($_POST['txtNome']) == "" && trim($_POST['txtNomeid']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
@@ -555,7 +608,7 @@ class Exametemp extends BaseController {
 
                 //definindo array que tera os valores filtrados de $horarios_livres
                 $data['horarios_livres'] = array();
-                
+
                 do {
                     $horarios_livres = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0], $diaSemana);
                     $diaSemana = date("Y-m-d", strtotime("+1 week", strtotime($diaSemana)));
@@ -565,7 +618,7 @@ class Exametemp extends BaseController {
                     if (count($horarios_livres) != 0) {
                         $data['horarios_livres'][] = $horarios_livres[0];
                     }
-                    if($contador == $_POST['sessao']){
+                    if ($contador == $_POST['sessao']) {
                         break;
                     }
                 } while ($contador < $contaHorarios);
@@ -821,7 +874,7 @@ class Exametemp extends BaseController {
 //            }
         }
     }
-    
+
     function gravarpacientefisioterapiaencaixemedico() {
         if (trim($_POST['txtNomeid']) == "" && trim($_POST['txtNome']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio inserir um Paciente.';

@@ -186,10 +186,41 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
+    function listarconsultaspacientemultiempresa() {
+        $agenda_exames_id = $_POST['agenda_exames_id'];
+//        $agenda_exames_id = 911481;
+
+        $result = $this->exametemp->listarconsultaspacientemultiempresa($agenda_exames_id);
+
+        foreach ($result as $item) {
+            $retorno['agenda_exames_id'] = $item->agenda_exames_id;
+            $retorno['inicio'] = $item->inicio;
+            $retorno['data'] = $item->data;
+            $retorno['nome'] = $item->nome;
+            $retorno['medico'] = $item->medico;
+            $retorno['medico_agenda'] = $item->medico_agenda;
+            $retorno['observacoes'] = $item->observacoes;
+            @$var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function listarconveniomultiempresa() {
+        $result = $this->exametemp->listarconveniomultiempresa();
+        foreach ($result as $item) {
+            $retorno['convenio_id'] = $item->convenio_id;
+            $retorno['nome'] = $item->nome;
+            @$var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function listarhorariosmultiempresa() {
-//        var_dump($_POST); 
+//        var_dump(date("Y-m-d", strtotime(str_replace('/', '-', $_GET['data'])))); 
 //        die;
         $result = $this->exametemp->listarhorariosmultiempresa();
+//        var_dump($result); 
+//        die;
         foreach ($result as $item) {
 
             $retorno['agenda_exames_id'] = $item->agenda_exames_id;
@@ -197,17 +228,25 @@ class Autocomplete extends Controller {
             $retorno['fim'] = $item->fim;
             $retorno['situacao'] = $item->situacao;
             $retorno['data'] = $item->data;
-            $retorno['situacaoexame'] = $item->paciente;
+            $retorno['situacaoexame'] = $item->situacaoexame;
             $retorno['paciente'] = $item->paciente;
-            $retorno['medicoagenda'] = $item->paciente;
+            $retorno['paciente_id'] = $item->paciente_id;
+            $retorno['medicoagenda'] = $item->medicoagenda;
+            $retorno['medico_agenda'] = $item->medico_agenda;
             $retorno['convenio'] = $item->convenio;
+            $retorno['convenio_paciente'] = $item->convenio_paciente;
             $retorno['realizada'] = $item->realizada;
             $retorno['confirmado'] = $item->confirmado;
             $retorno['procedimento'] = $item->procedimento;
             $retorno['celular'] = $item->celular;
+            $retorno['telefone'] = $item->telefone;
+            $retorno['operador_atualizacao'] = $item->operador_atualizacao;
+            $retorno['ocupado'] = $item->ocupado;
             $retorno['bloqueado'] = $item->bloqueado;
-            $var[] = $retorno;
-            
+            $retorno['telefonema'] = $item->telefonema;
+            $retorno['telefonema_operador'] = $item->telefonema_operador;
+//            $retorno['secretaria'] = $item->secretaria;
+            @$var[] = $retorno;
         }
         echo json_encode($var);
     }

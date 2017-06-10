@@ -211,3 +211,4 @@ CREATE TABLE ponto.tb_empresas_acesso_servidores
   ip_externo character varying(500),
   CONSTRAINT tb_empresas_acesso_servidores_pkey PRIMARY KEY (empresas_acesso_externo_id)
 );
+ALTER TABLE ponto.tb_empresas_acesso_servidores ADD COLUMN nome_clinica character varying(500);
