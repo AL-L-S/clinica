@@ -246,6 +246,43 @@ class Exametemp extends BaseController {
         $this->loadView('ambulatorio/fisioterapiapacientetemp-form', $data);
     }
 
+    function carregaragendamultiempresa3($agenda_exames_id, $externo_id) {
+        $data['externo_id'] = $externo_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $externo = $this->exame->listarexterno($externo_id);
+
+        $parametro = array(
+            "acao" => "convenio",
+            "agenda_exames_id" => $agenda_exames_id,
+            "ip" => $externo[0]->ip_externo
+        );
+
+        $dados = http_build_query($parametro);
+
+        $contexto = stream_context_create(array(
+            'http' => array(
+                'method' => 'GET',
+                'content' => $dados,
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n"
+                . "Content-Length: " . strlen($dados) . "\r\n",
+            )
+        ));
+
+        $url = "acao={$parametro['acao']}&ip={$parametro['ip']}&agenda_exames_id={$agenda_exames_id}";
+        $resposta = file_get_contents("http://localhost/arquivoRequisicoes.php?{$url}", null, $contexto);
+
+//        $data['convenio'] = json_decode($resposta);
+
+        $array = explode("|", $resposta);
+        $convenio = json_decode($array[0]);
+        $dadosAgendaExame = json_decode($array[1]);
+
+        $data["convenio"] = $convenio;
+        $data["consultas"] = $dadosAgendaExame;
+        $data["ip"] = $externo[0]->ip_externo;
+
+        $this->loadView('ambulatorio/consultapacientemultiempresa-form', $data);
+    }
     function carregaragendamultiempresa($agenda_exames_id, $medico_id, $externo_id) {
         $data['medico'] = $medico_id;
         $data['externo_id'] = $externo_id;
@@ -534,7 +571,7 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteagendamultiempresa($agenda_exames_id) {
-        die;
+//        die;
         $tipo = $this->exametemp->tipomultifuncaogeralmultiempresa($_POST['procedimento']);
         $paciente_id = $this->exametemp->gravarpacienteconsultasmultiempresa($agenda_exames_id, $tipo[0]->tipo);
         

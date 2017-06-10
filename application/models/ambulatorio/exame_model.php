@@ -151,7 +151,7 @@ class exame_model extends Model {
     }
 
     function listarnomeclinicaexterno($ip = null) {
-        $this->db->select('nome_clinica, empresas_acesso_externo_id');
+        $this->db->select('nome_clinica, empresas_acesso_externo_id, ip_externo');
         $this->db->from('tb_empresas_acesso_servidores');
         if ($ip != null) {
             $this->db->where('ip_externo', $ip);

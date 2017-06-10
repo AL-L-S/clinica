@@ -113,7 +113,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
                     function mascaraTelefone(campo) {
-
+                        
                         function trata(valor, isOnBlur) {
 
                             valor = valor.replace(/\D/g, "");
@@ -177,7 +177,7 @@
             if ($(this).val()) {
                 $('.carregando').show();
 //                console.log('teset');
-                $.getJSON("http://<?= $ip ?>/clinicas/autocomplete/procedimentoconvenioconsulta", {convenio1: $(this).val(), ajax: true}, function (j) {
+                $.getJSON("http://<?= $ip ?>/clinicas/autocomplete/procedimentoconveniomultiempresa", {convenio1: $(this).val(), ajax: true}, function (j) {
                     options = '<option value=""></option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';

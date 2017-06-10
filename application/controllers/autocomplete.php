@@ -186,6 +186,32 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
+    function listarespecialidademultiempresa() {
+        header('Access-Control-Allow-Origin: *');
+
+        $result = $this->exametemp->listarespecialidademultiempresa();
+
+        foreach ($result as $item) {
+            $retorno['cbo_ocupacao_id'] = $item->cbo_ocupacao_id;
+            $retorno['descricao'] = $item->descricao;
+            @$var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function listarmedicosmultiempresa() {
+        header('Access-Control-Allow-Origin: *');
+
+        $result = $this->exametemp->listarmedicosmultiempresa();
+
+        foreach ($result as $item) {
+            $retorno['operador_id'] = $item->operador_id;
+            $retorno['nome'] = $item->nome;
+            $retorno['conselho'] = $item->conselho;
+            @$var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
     function listarconsultaspacientemultiempresa() {
         header('Access-Control-Allow-Origin: *');
         $agenda_exames_id = $_POST['agenda_exames_id'];
@@ -246,7 +272,7 @@ class Autocomplete extends Controller {
             $retorno['bloqueado'] = $item->bloqueado;
             $retorno['telefonema'] = $item->telefonema;
             $retorno['telefonema_operador'] = $item->telefonema_operador;
-//            $retorno['secretaria'] = $item->secretaria;
+            $retorno['tipo'] = $item->tipo;
             @$var[] = $retorno;
         }
         echo json_encode($var);
@@ -873,6 +899,16 @@ class Autocomplete extends Controller {
             $var[] = $retorno;
         }
         echo json_encode($var);
+    }
+
+    function procedimentoconveniomultiempresa() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['convenio1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosmultiempresa($_GET['convenio1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosmultiempresa();
+        }
+        echo json_encode($result);
     }
 
     function procedimentoconvenioconsulta() {
@@ -1569,7 +1605,7 @@ class Autocomplete extends Controller {
     }
 
     function medicoespecialidadetodos() {
-
+        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtcbo'])) {
             $result = $this->operador_m->listarmedicosespecialidade($_GET['txtcbo']);
         } else {
@@ -1581,7 +1617,7 @@ class Autocomplete extends Controller {
     }
 
     function medicoespecialidade() {
-
+        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtcbo'])) {
             $result = $this->exametemp->listarautocompletemedicoespecialidade($_GET['txtcbo']);
         } else {
