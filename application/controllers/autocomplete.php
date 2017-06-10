@@ -187,6 +187,7 @@ class Autocomplete extends Controller {
     }
 
     function listarconsultaspacientemultiempresa() {
+        header('Access-Control-Allow-Origin: *');
         $agenda_exames_id = $_POST['agenda_exames_id'];
 //        $agenda_exames_id = 911481;
 
@@ -875,7 +876,7 @@ class Autocomplete extends Controller {
     }
 
     function procedimentoconvenioconsulta() {
-
+        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['convenio1'])) {
             $result = $this->exametemp->listarautocompleteprocedimentosconsulta($_GET['convenio1']);
         } else {
@@ -1938,6 +1939,7 @@ class Autocomplete extends Controller {
     }
 
     function paciente() {
+        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['term'])) {
             $result = $this->exame->listarautocompletepaciente($_GET['term']);
         } else {

@@ -176,7 +176,8 @@
         $('#convenio').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON("<?= $ip ?>/clinicas/autocomplete/procedimentoconvenioconsulta", {convenio1: $(this).val(), ajax: true}, function (j) {
+//                console.log('teset');
+                $.getJSON("http://<?= $ip ?>/clinicas/autocomplete/procedimentoconvenioconsulta", {convenio1: $(this).val(), ajax: true}, function (j) {
                     options = '<option value=""></option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
