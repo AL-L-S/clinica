@@ -248,6 +248,7 @@ class Exametemp extends BaseController {
 
     function carregaragendamultiempresa($agenda_exames_id, $medico_id, $externo_id) {
         $data['medico'] = $medico_id;
+        $data['externo_id'] = $externo_id;
         $data['agenda_exames_id'] = $agenda_exames_id;
         $externo = $this->exame->listarexterno($externo_id);
 
@@ -533,6 +534,7 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteagendamultiempresa($agenda_exames_id) {
+        die;
         $tipo = $this->exametemp->tipomultifuncaogeralmultiempresa($_POST['procedimento']);
         $paciente_id = $this->exametemp->gravarpacienteconsultasmultiempresa($agenda_exames_id, $tipo[0]->tipo);
         

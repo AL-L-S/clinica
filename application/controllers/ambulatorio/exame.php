@@ -102,12 +102,12 @@ class Exame extends BaseController {
         foreach($array as $item){
             if(strlen($item) >= 2) {
                 $a = explode("$", $item);
-                @$args["agenda"][$a[0]] = json_decode($a[1]);
+                @$args["agenda"][str_replace(" ", '',$a[0])] = json_decode($a[1]);
             }
         }
         $data["dados"] = $args;
 //        echo "<pre>";
-//        var_dump($resposta);die;
+//        var_dump($data["dados"]);die;
         $this->loadView('ambulatorio/agendamentomultiempresa-lista', $data);
     }
 

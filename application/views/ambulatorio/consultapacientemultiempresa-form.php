@@ -1,6 +1,6 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
-    <form name="form_exametemp" id="form_exametemp" action="<?= $ip ?>/clinicas/ambulatorio/exametemp/gravarpacienteagendamultiempresa/<?= $agenda_exames_id ?>" method="post">
+    <form name="form_exametemp" id="form_exametemp" action="http://<?= $ip ?>/clinicas/ambulatorio/exametemp/gravarpacienteagendamultiempresa/<?= $agenda_exames_id ?>" method="post">
         <fieldset>
             <legend>Marcar Consulta</legend>
 
@@ -193,7 +193,7 @@
 
     $(function () {
         $("#txtNome").autocomplete({
-            source: "<?= $ip ?>/clinicas/index.php?c=autocomplete&m=paciente",
+            source: "http://<?= $ip ?>/clinicas/index.php?c=autocomplete&m=paciente",
             minLength: 5,
             focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);

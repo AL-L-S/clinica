@@ -50,7 +50,7 @@ $empresas = $this->exame->listarnomeclinicaexterno();
             jQuery("#botaoCli<?= $emp->empresas_acesso_externo_id ?>").click(function () {
                 jQuery('html, body').animate({
                     scrollTop: jQuery("#clinica<?= $emp->empresas_acesso_externo_id ?>").offset().top
-                }, 2000);
+                }, 1000);
             });
         });
 <? } ?>
@@ -131,24 +131,25 @@ $empresas = $this->exame->listarnomeclinicaexterno();
             </div>
 
             <?php
-            if (count($dados['agenda']) > 0) {
+            if (count(@$dados['agenda']) > 0) {
                 $estilo_linha = "tabela_content01";
+                $i = 0;
                 foreach ($dados['agenda'] as $key => $value) {
                     $nomeClinica = $this->exame->listarnomeclinicaexterno($key);
                     if ($value == "") {
-                        echo '<div id="clinica'. $nomeClinica[0]->empresas_acesso_externo_id . '" class="tabela">';
-                        echo '<table><tr id="tot"><td colspan="10"><span>';
-                        echo $nomeClinica[0]->nome_clinica;
-                        echo '</span></td></tr><tr id="semResultado"><td colspan="10"><span class="telaToda">';
-                        echo 'Sem dados de retorno.', "</span></td></tr><table></div>";
+//                        echo '<div id="clinica'. $nomeClinica[0]->empresas_acesso_externo_id . '" class="tabela">';
+//                        echo '<table><tr id="tot"><td colspan="10"><span>';
+//                        echo $nomeClinica[0]->nome_clinica;
+//                        echo '</span></td></tr><tr id="semResultado"><td colspan="10"><span class="telaToda">';
+//                        echo 'Sem dados de retorno.', "</span></td></tr><table></div>";
                         continue;
                     }
                     ?>
-                    <div id="clinica<?= $nomeClinica[0]->empresas_acesso_externo_id ?>" class="tabela">
+                    <div id="clinica<?= @$nomeClinica[0]->empresas_acesso_externo_id ?>" class="tabela">
                         <table>
                             <tr id="tot">
                                 <td colspan="10">
-                                    <span><?= $nomeClinica[0]->nome_clinica ?></span>
+                                    <span><?= @$nomeClinica[0]->nome_clinica ?></span>
                                 </td>
                             </tr>
                             <tr>
