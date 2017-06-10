@@ -125,6 +125,34 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarmedicosmultiempresa() {
+        $this->db->select('o.operador_id,
+                               o.usuario,
+                               o.nome,
+                               o.conselho,
+                               o.conselho,
+                               o.perfil_id,
+                               p.nome as perfil');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $this->db->where('consulta', 'true');
+        $this->db->where('o.ativo', 'true');
+        $this->db->orderby('o.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarespecialidademultiempresa() {
+        $this->db->select('distinct(co.cbo_ocupacao_id),
+                               co.descricao');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_cbo_ocupacao co', 'co.cbo_ocupacao_id = o.cbo_ocupacao_id');
+        $this->db->where('consulta', 'true');
+        $this->db->where('o.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarhorariosmultiempresa() {
         $data = date('Y-m-d');
         $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
@@ -145,6 +173,7 @@ class exametemp_model extends Model {
                             ae.paciente_id,
                             ae.telefonema,
                             ae.observacoes,
+                            ae.tipo,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,
@@ -187,7 +216,7 @@ class exametemp_model extends Model {
             $this->db->where('p.nascimento', $_POST['nascimento']);
         }
         if (isset($_POST['medico']) && strlen($_POST['medico']) > 0) {
-            $this->db->where('ae.medico_consulta_id', $_POST['medico']);
+            $this->db->where('o.conselho', $_POST['medico']);
         }
         if (isset($_POST['especialidade']) && strlen($_POST['especialidade']) > 0) {
             $this->db->where('o.cbo_ocupacao_id', $_POST['especialidade']);
@@ -2252,8 +2281,7 @@ class exametemp_model extends Model {
                 $this->db->set('nome', $_POST['txtNome']);
                 $this->db->insert('tb_paciente');
                 $paciente_id = $this->db->insert_id();
-            } 
-            else {
+            } else {
                 $paciente_id = $_POST['txtNomeid'];
 
                 $this->db->set('celular', $_POST['txtCelular']);
@@ -2265,7 +2293,7 @@ class exametemp_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
-            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('empresa_id', 1);
             $this->db->set('ativo', 'f');
             $this->db->set('cancelada', 'f');
             $this->db->set('confirmado', 'f');
@@ -4379,6 +4407,7 @@ class exametemp_model extends Model {
     function listarautocompletemedicoespecialidade($parametro) {
         $this->db->select(' o.nome,
                             o.operador_id,
+                            o.conselho,
                             ');
         $this->db->from('tb_cbo_ocupacao co');
         $this->db->join('tb_operador o', 'co.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');

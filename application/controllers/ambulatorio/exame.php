@@ -79,23 +79,9 @@ class Exame extends BaseController {
             'nome' => (@$_GET['nome'] != '') ? @$_GET['nome'] : ''
         );
         
-//        var_dump($_GET);die;
-        
-        $dados = http_build_query($parametro);
-
-        $contexto = stream_context_create(array(
-            'http' => array(
-                'method' => 'GET',
-                'content' => $dados,
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n"
-                . "Content-Length: " . strlen($dados) . "\r\n",
-            )
-        ));
         $url = "especialidade={$parametro['especialidade']}&medico={$parametro['medico']}&data={$parametro['data']}&nome={$parametro['nome']}";
         
-        $resposta = file_get_contents("http://localhost/arquivoDados.php?{$url}", null, $contexto);
-        
-//        $medicos = file_get_contents("http://localhost/arquivoMedicos.php", null, $contexto);
+        $resposta = file_get_contents("http://localhost/arquivoDados.php?{$url}");
         
         $array = explode("|", $resposta);
         
@@ -106,8 +92,30 @@ class Exame extends BaseController {
             }
         }
         $data["dados"] = $args;
-//        echo "<pre>";
-//        var_dump($data["dados"]);die;
+        
+        $medicos = file_get_contents("http://localhost/arquivoRequisicoes.php?acao=medico");
+        
+        $med = explode("|", $medicos);
+        
+        foreach($med as $item){
+            if(strlen($item) >= 2) {
+                $a = explode("$", $item);
+                @$data["medicos"][str_replace(" ", '',$a[0])] = json_decode($a[1]);
+            }
+        }
+        
+        $especialidade = file_get_contents("http://localhost/arquivoRequisicoes.php?acao=especialidade");
+        
+        $esp = explode("|", $especialidade);
+        
+        foreach($esp as $item){
+            if(strlen($item) >= 2) {
+                $a = explode("$", $item);
+                @$data["especialidade"][str_replace(" ", '',$a[0])] = json_decode($a[1]);
+            }
+        }
+//        var_dump(@$data["especialidade"]);die;
+        
         $this->loadView('ambulatorio/agendamentomultiempresa-lista', $data);
     }
 

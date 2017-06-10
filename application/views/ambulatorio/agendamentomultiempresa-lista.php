@@ -1,7 +1,7 @@
 
 <?
-$especialidade = $this->exame->listarespecialidade();
-$medicos = $this->operador_m->listarmedicos();
+//$especialidade = $this->exame->listarespecialidade();
+//$medicos = $this->operador_m->listarmedicos();
 $empresas = $this->exame->listarnomeclinicaexterno();
 ?>
 <style>
@@ -11,7 +11,7 @@ $empresas = $this->exame->listarnomeclinicaexterno();
         height: 22pt;
         background-color: #D2D7D3;
         border: 1pt solid #000;
-        font-size: 12pt;
+        font-size: 8pt;
         font-weight: bold;
         color: black;
         border-radius: 20pt;
@@ -39,9 +39,90 @@ $empresas = $this->exame->listarnomeclinicaexterno();
         font-size: 1em;
         font-weight: bolder;
     }
-/*    .telaToda{
+    .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .nav {
+        /*background: #FFF;*/
+        z-index: 5;
+        position: relative;
+        width: 20%;
+        font-size: 1em;
+        float: left;
+        background: #444;
+        filter:alpha(opacity=50);
+        opacity: 0.5;
+        -moz-opacity:0.5;
+        -webkit-opacity:0.5;
+        font-weight: bold;
+    }
+
+    .nav ul {
+        padding: 1em;
+    }
+
+    li {
+        display: block;
         width: 100%;
-    }*/
+        margin: 1em 2em 1em 0;
+    }
+
+    .nav-toggle {
+        display: none;
+    }
+
+    .wrap {
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .nav {
+        min-width: 100px;
+        position: absolute;
+        top: 0;
+        right: -13pt;
+    }
+
+    .nav ul {
+        padding: .5em;
+        margin: 0;
+        background: #444;
+    }		
+
+    li {
+        margin: 0;
+        padding: 0;
+        display: block;
+    }
+
+    li div {
+        padding: 0.5em 0 0.5em 0;
+        display: block;
+        color: #FFF;
+    }
+
+
+    .nav-toggle {
+        position: absolute;
+        top: 0;
+        right: 56px;
+        color: #FFF;
+        cursor: pointer;
+        width: 20px;
+        height: 24px;
+        z-index: 5;
+        display: block;
+        background: #444;
+        padding: 12px 6px 6px 6px;
+    }
+
+    /*    .foto {
+            width: 100%;
+            position: relative;
+            float: none;
+        }*/
 
 </style>
 <script>
@@ -74,13 +155,23 @@ $empresas = $this->exame->listarnomeclinicaexterno();
                         <td class="tabela_title">
                             <select name="especialidade" id="especialidade" class="size1">
                                 <option value=""></option>
-                                <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->cbo_ocupacao_id; ?>" <?
-                                    if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
-                                    endif;
-                                    ?>>
-                                                <?php echo $value->descricao; ?>
-                                    </option>
+                                <?
+                                foreach ($especialidade as $chave => $it) :
+                                    $clinica = $this->exame->listarnomeclinicaexterno($chave);
+                                    ?>
+
+                                    <optgroup label="<?= @$clinica[0]->nome_clinica ?>">
+
+                                        <? foreach ($it as $value) : ?>
+                                            <option value="<?= $value->cbo_ocupacao_id; ?>" <?
+                                            if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
+                                            endif;
+                                            ?>>
+                                                        <?php echo $value->descricao; ?>
+                                            </option>
+
+                                        <? endforeach; ?>
+                                    </optgroup>
                                 <? endforeach; ?>
                             </select>
                         </td>
@@ -89,16 +180,17 @@ $empresas = $this->exame->listarnomeclinicaexterno();
                         <td class="tabela_title">
                             <select name="medico" id="medico" class="size1">
                                 <option value=""> </option>
-                                <? foreach ($medicos as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>"<?
-                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
-                                    endif;
-                                    ?>>
-
-                                        <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
-
-
-                                    </option>
+                                <?
+                                foreach ($medicos as $chave => $it) :
+                                    $clinica = $this->exame->listarnomeclinicaexterno($chave);
+                                    ?>
+                                    <optgroup label="<?= @$clinica[0]->nome_clinica ?>">
+                                        <? foreach ($it as $value) : ?>
+                                            <option value="<?= $value->conselho; ?>" <? if ($value->conselho == @$_GET['medico'] && @$_GET['medico'] != '') echo 'selected'; ?>>
+                                                <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
+                                            </option>
+                                        <? endforeach; ?>
+                                    </optgroup>
                                 <? endforeach; ?>
 
                             </select>
@@ -119,15 +211,17 @@ $empresas = $this->exame->listarnomeclinicaexterno();
             </table>
             <hr>
             <div class="botoes">
-                <table>
-                    <? foreach ($empresas as $value) { ?>
-                        <tr>
-                            <td>
-                                <div id="botaoCli<?= $value->empresas_acesso_externo_id ?>" class="botaoClinica"><?= (strlen($value->nome_clinica)>14)? substr($value->nome_clinica, 0, 14).'...' : $value->nome_clinica?></div>
-                            </td>
-                        </tr>
-                    <? } ?>
-                </table>
+                <nav class="nav nav-aberta side-fechado">
+                    <div class="wrap">
+                        <ul class="listaNav">
+                            <? foreach ($empresas as $value) { ?>
+                                <li>
+                                    <div id="botaoCli<?= $value->empresas_acesso_externo_id ?>"><?= (strlen($value->nome_clinica) > 14) ? substr($value->nome_clinica, 0, 14) . '...' : $value->nome_clinica ?></div>
+                                </li>
+                            <? } ?>
+                        </ul>
+                    </div>
+                </nav>
             </div>
 
             <?php
@@ -137,11 +231,6 @@ $empresas = $this->exame->listarnomeclinicaexterno();
                 foreach ($dados['agenda'] as $key => $value) {
                     $nomeClinica = $this->exame->listarnomeclinicaexterno($key);
                     if ($value == "") {
-//                        echo '<div id="clinica'. $nomeClinica[0]->empresas_acesso_externo_id . '" class="tabela">';
-//                        echo '<table><tr id="tot"><td colspan="10"><span>';
-//                        echo $nomeClinica[0]->nome_clinica;
-//                        echo '</span></td></tr><tr id="semResultado"><td colspan="10"><span class="telaToda">';
-//                        echo 'Sem dados de retorno.', "</span></td></tr><table></div>";
                         continue;
                     }
                     ?>
@@ -158,6 +247,7 @@ $empresas = $this->exame->listarnomeclinicaexterno();
                                 <td class="tabela_header" width="70px;">Data</td>
                                 <td class="tabela_header" width="50px;">Dia</td>
                                 <td class="tabela_header" width="70px;">Agenda</td>
+                                <td class="tabela_header" width="150px;">Tipo</td>
                                 <td class="tabela_header" width="150px;">Telefone</td>
                                 <td class="tabela_header" width="150px;">Convenio</td>
                                 <td class="tabela_header">Medico</td>
@@ -299,6 +389,9 @@ $empresas = $this->exame->listarnomeclinicaexterno();
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                 <? } ?>
 
+                                <!--TIPO--> 
+                                <td class="<?php echo $estilo_linha; ?>"><?= @$item->tipo; ?></td>
+
                                 <!--TELEFONE--> 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
 
@@ -314,16 +407,7 @@ $empresas = $this->exame->listarnomeclinicaexterno();
 
                                 <?
                                 if ($item->paciente_id == "" && $item->bloqueado == 'f') {
-                                    if ($item->medicoagenda == "") {
-                                        ?>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
-                                                <a target="_blank" href="<?= base_url() ?>ambulatorio/exametemp/carregarexamegeral3/<?= $item->agenda_exames_id ?>');">Agendar2
-                                                </a>
-
-
-                                            </div>
-                                        </td>
-                                    <? } else {
+                                    if ($item->medicoagenda != "") {
                                         ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
                                                 <a target="_blank" href="<?= base_url() ?>ambulatorio/exametemp/carregaragendamultiempresa/<?= $item->agenda_exames_id ?>/<?= $item->medico_agenda ?>/<?= $nomeClinica[0]->empresas_acesso_externo_id ?>">Agendar
@@ -337,10 +421,10 @@ $empresas = $this->exame->listarnomeclinicaexterno();
                                 } elseif ($item->bloqueado == 't') {
                                     ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"> Bloqueado</td>
-                                    <? }
-                                    else{?>
+                                <? } else {
+                                    ?>
                                     <td colspan="3" class="<?php echo $estilo_linha; ?>" ></td>
-                                    <?}
+                                <? }
                                 ?>
 
                                 </tr>
@@ -364,6 +448,36 @@ $empresas = $this->exame->listarnomeclinicaexterno();
 
     $(document).ready(function () {
         $(function () {
+            $('#especialidade').change(function () {
+                $('#medico *').remove();
+                if ($(this).val()) {
+                    var todos = '<option value=""></option>';
+                    $('#medico').append(todos);
+                    
+                    <? foreach ($empresas as $emp) { ?>
+                        var opt = '<optgroup label="<?= @$emp->nome_clinica ?>">';
+                        $.getJSON('http://<?= @$emp->ip_externo ?>/clinicas/autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                            if(j.length > 0){
+                                $('#medico').append(opt);
+                                var options = '';
+                                for (var c = 0; c < j.length; c++) {
+                                    if (j[0].operador_id != undefined) {
+                                        options += '<option value="' + j[c].conselho + '">' + j[c].nome + ' - CRM: ' + j[c].conselho+'</option>';
+
+                                    }
+                                }
+                                console.log('teste');
+                                $('#medico').append(options);
+                            }
+                        });
+                        var optFim = '</optgroup>';
+                        $('#medico').append(optFim);
+//                  <? } ?>
+//
+                }
+            });
+        });
+        $(function () {
             $("#data").datepicker({
                 autosize: true,
                 changeYear: true,
@@ -374,8 +488,5 @@ $empresas = $this->exame->listarnomeclinicaexterno();
                 dateFormat: 'dd/mm/yy'
             });
         });
-//        $(function () {
-//            $("#accordion").accordion();
-//        });
     });
 </script>
