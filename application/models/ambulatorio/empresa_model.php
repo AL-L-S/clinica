@@ -106,6 +106,18 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function listaripservidor() {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('');
+        $this->db->from('tb_empresas_acesso_servidores');
+//        $this->db->where('empresa_id', $empresa_id);
+//        $this->db->where('ativo', 't');
+//        $this->db->limit(1);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarempresa($empresa_id) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -134,10 +146,34 @@ class empresa_model extends Model {
             return true;
     }
 
+    function gravaripservidor($servidor_id) {
+
+        $this->db->set('ip_externo', $_POST['ipservidor']);
+        $this->db->set('nome_clinica', $_POST['nome_clinica']);
+        $this->db->insert('tb_empresas_acesso_servidores');
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
+    function excluiripservidor($servidor_id) {
+
+        $this->db->where('empresas_acesso_externo_id', $servidor_id);
+        $this->db->delete('tb_empresas_acesso_servidores');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
     function gravarconfiguracaoemail() {
         try {
 //            var_dump($_POST['empresa_id']); die;
-                
+
             $this->db->set('email_mensagem_confirmacao', $_POST['lembrete']);
             $this->db->set('email_mensagem_agradecimento', $_POST['agradecimento']);
 
@@ -147,9 +183,8 @@ class empresa_model extends Model {
             $this->db->where('empresa_id', $_POST['empresa_id']);
             $this->db->update('tb_empresa');
             $empresa_id = $_POST['empresa_id'];
-            
+
             return $empresa_id;
-            
         } catch (Exception $exc) {
             return -1;
         }

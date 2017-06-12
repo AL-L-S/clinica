@@ -125,6 +125,132 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarhorarioscalendarioexame($medico = null, $especialidade = null, $empresa_id = null) {
+        $data = date('Y-m-d');
+        $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
+        $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
+        $empresa_atual = $this->session->userdata('empresa_id');
+        if ($medico != '') {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
+        } elseif ($especialidade != '') {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao,o.cbo_ocupacao_id as especialidade');
+        } else {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao');
+        }
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
+        $this->db->where("ae.tipo IN ('EXAME')");
+        $this->db->where("ae.data is not null");
+        $this->db->where("ae.data >", $data_passado);
+        if(isset($empresa_id)){
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }else{
+            
+            $this->db->where("ae.empresa_id", $empresa_atual);
+        }
+        $this->db->where("ae.data <", $data_futuro);
+
+        if ($medico != '') {
+            $this->db->where("ae.medico_agenda", $medico);
+            $this->db->groupby("ae.data, situacao, ae.medico_agenda");
+        } elseif ($especialidade != '') {
+            $this->db->where('o.cbo_ocupacao_id', $especialidade);
+            $this->db->groupby("ae.data, situacao, o.cbo_ocupacao_id");
+        } else {
+            $this->db->groupby("ae.data, situacao");
+        }
+
+        $this->db->orderby("ae.data");
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarhorarioscalendarioconsulta($medico = null, $especialidade = null, $empresa_id = null) {
+        $data = date('Y-m-d');
+        $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
+        $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
+        $empresa_atual = $this->session->userdata('empresa_id');
+        if ($medico != '') {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
+        } elseif ($especialidade != '') {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao,o.cbo_ocupacao_id as especialidade');
+        } else {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao');
+        }
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
+        $this->db->where("ae.tipo IN ('CONSULTA')");
+        $this->db->where("ae.bloqueado", 'f');
+//        $this->db->where("ae.data is not null");
+        $this->db->where("ae.data >", $data_passado);
+        $this->db->where("ae.data <", $data_futuro);
+        if(isset($empresa_id)){
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }else{
+            
+            $this->db->where("ae.empresa_id", $empresa_atual);
+        }
+        if ($medico != '') {
+            $this->db->where("ae.medico_agenda", $medico);
+            $this->db->groupby("ae.data, situacao, ae.medico_agenda");
+        } elseif ($especialidade != '') {
+            $this->db->where('o.cbo_ocupacao_id', $especialidade);
+            $this->db->groupby("ae.data, situacao, o.cbo_ocupacao_id");
+        } else {
+            $this->db->groupby("ae.data, situacao");
+        }
+
+        $this->db->orderby("ae.data");
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarhorarioscalendarioespecialidade($medico = null, $especialidade = null, $empresa_id = null) {
+        $data = date('Y-m-d');
+        $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
+        $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
+        $empresa_atual = $this->session->userdata('empresa_id');
+        if ($medico != '') {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
+        } elseif ($especialidade != '') {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao,o.cbo_ocupacao_id as especialidade');
+        } else {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao');
+        }
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
+        $this->db->where("ae.tipo IN ('ESPECIALIDADE', 'FISIOTERAPIA')");
+        $this->db->where("ae.data is not null");
+        $this->db->where("ae.data >", $data_passado);
+        $this->db->where("ae.data <", $data_futuro);
+        if(isset($empresa_id)){
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }else{
+            
+            $this->db->where("ae.empresa_id", $empresa_atual);
+        }
+
+        if ($medico != '') {
+            $this->db->where("ae.medico_agenda", $medico);
+            $this->db->groupby("ae.data, situacao, ae.medico_agenda");
+        } elseif ($especialidade != '') {
+            $this->db->where('o.cbo_ocupacao_id', $especialidade);
+            $this->db->groupby("ae.data, situacao, o.cbo_ocupacao_id");
+        } else {
+            $this->db->groupby("ae.data, situacao");
+        }
+
+        $this->db->orderby("ae.data");
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarmedicosmultiempresa() {
         $this->db->select('o.operador_id,
                                o.usuario,

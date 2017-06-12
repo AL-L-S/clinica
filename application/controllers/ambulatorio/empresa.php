@@ -52,6 +52,14 @@ class Empresa extends BaseController {
         $data['mensagem'] = $this->empresa->listarinformacaosms();
         $this->loadView('ambulatorio/empresasms-form', $data);
     }
+    function configuraracessoexterno($empresa_id) {
+        $data['empresa_id'] = $empresa_id;
+        $obj_empresa = new empresa_model($empresa_id);
+        $data['obj'] = $obj_empresa;
+        $data['pacotes'] = $this->empresa->pacotesms();
+        $data['servidores'] = $this->empresa->listaripservidor();
+        $this->loadView('ambulatorio/empresaacessoexterno-form', $data);
+    }
     
     function configurarpacs($empresa_id) {
         $data['empresa_id'] = $empresa_id;
@@ -69,6 +77,27 @@ class Empresa extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa");
+    }
+    
+    function gravaripservidor($empresa_id) {
+        if ($this->empresa->gravaripservidor($empresa_id)) {
+            $mensagem = 'Sucesso ao gravar o Endereço';
+        } else {
+            $mensagem = 'Erro ao excluir o Endereço. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/configuraracessoexterno/$empresa_id");
+    }
+    function excluiripservidor($servidor_id, $empresa_id) {
+        if ($this->empresa->excluiripservidor($servidor_id)) {
+            $mensagem = 'Sucesso ao excluir o Endereço';
+        } else {
+            $mensagem = 'Erro ao excluir o Endereço. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/configuraracessoexterno/$empresa_id");
     }
 
     function gravarconfiguracaoemail() {
