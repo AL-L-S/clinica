@@ -448,7 +448,7 @@ $empresas = $this->exame->listarnomeclinicaexterno();
 
                                     }
                                 }
-                                console.log('teste');
+//                                console.log('teste');
                                 $('#medico').append(options);
                             }
                         });
