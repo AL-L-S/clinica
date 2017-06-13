@@ -59,6 +59,9 @@
                                     <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
                                             <a   href="<?= base_url() ?>ambulatorio/empresa/configuraremail/<?= $item->empresa_id ?>">Serviço EMAIL</a></div>
                                     </td>
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/empresa/configuraracessoexterno/<?= $item->empresa_id ?>">Acesso Multiempresa</a></div>
+                                    </td>
                                <? endif; ?>
                                 <?
 //                                $perfil_id = $this->session->userdata('perfil_id');
