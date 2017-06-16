@@ -72,19 +72,19 @@ class caixa_model extends Model {
     function listarsaida($args = array()) {
 
 
-            if (isset($args['nome']) && strlen($args['nome']) > 0 && $args['nome'] != 'TRANSFERENCIA') {
-                $this->db->select('
+        if (isset($args['nome']) && strlen($args['nome']) > 0 && $args['nome'] != 'TRANSFERENCIA') {
+            $this->db->select('
                             tes.descricao
                             ');
-                $this->db->from('tb_tipo_entradas_saida tes');
-                $this->db->where('tes.ativo', 'true');
-                $this->db->where('tes.tipo_entradas_saida_id', $args['nome']);
-                $return = $this->db->get()->result();
-                $tipo = $return[0]->descricao;
-            }else{
-                $tipo = 'TRANSFERENCIA';
-            }
-        
+            $this->db->from('tb_tipo_entradas_saida tes');
+            $this->db->where('tes.ativo', 'true');
+            $this->db->where('tes.tipo_entradas_saida_id', $args['nome']);
+            $return = $this->db->get()->result();
+            $tipo = $return[0]->descricao;
+        } else {
+            $tipo = 'TRANSFERENCIA';
+        }
+
 
         $this->db->select('s.valor,
                             s.saidas_id,
@@ -168,6 +168,16 @@ class caixa_model extends Model {
     }
 
     function relatoriosaida() {
+        if ($_POST['tipo'] > 0) {
+            $this->db->select('
+                            tes.descricao
+                            ');
+            $this->db->from('tb_tipo_entradas_saida tes');
+            $this->db->where('tes.ativo', 'true');
+            $this->db->where('tes.tipo_entradas_saida_id', $_POST['tipo']);
+            $return = $this->db->get()->result();
+        }
+
         $this->db->select('s.valor,
                             s.saidas_id,
                             s.observacao,
@@ -184,8 +194,12 @@ class caixa_model extends Model {
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
-        if ($_POST['tipo'] != 0) {
-            $this->db->where('tipo_id', $_POST['tipo']);
+//        if ($_POST['tipo'] != 0) {
+//            $this->db->where('tipo_id', $_POST['tipo']);
+//        }
+        if ($_POST['tipo'] > 0) {
+//            var_dump($args['nome']); die;
+            $this->db->where('tipo', @$return[0]->descricao);
         }
         if ($_POST['classe'] != '') {
             $this->db->where('s.classe', $_POST['classe']);
@@ -377,6 +391,16 @@ class caixa_model extends Model {
     }
 
     function relatorioentrada() {
+        if ($_POST['tipo'] > 0) {
+            $this->db->select('
+                            tes.descricao
+                            ');
+            $this->db->from('tb_tipo_entradas_saida tes');
+            $this->db->where('tes.ativo', 'true');
+            $this->db->where('tes.tipo_entradas_saida_id', $_POST['tipo']);
+            $return = $this->db->get()->result();
+        }
+
         $this->db->select('s.valor,
                             s.entradas_id,
                             s.observacao,
@@ -393,8 +417,12 @@ class caixa_model extends Model {
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
-        if ($_POST['tipo'] != 0) {
-            $this->db->where('fc.tipo_id', $_POST['tipo']);
+        //        if ($_POST['tipo'] != 0) {
+//            $this->db->where('tipo_id', $_POST['tipo']);
+//        }
+        if ($_POST['tipo'] > 0) {
+//            var_dump($args['nome']); die;
+            $this->db->where('tipo', @$return[0]->descricao);
         }
         if ($_POST['classe'] != '') {
             $this->db->where('s.classe', $_POST['classe']);

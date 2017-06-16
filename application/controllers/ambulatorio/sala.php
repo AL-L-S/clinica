@@ -16,6 +16,7 @@ class Sala extends BaseController {
     function Sala() {
         parent::Controller();
         $this->load->model('ambulatorio/sala_model', 'sala');
+        $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -37,6 +38,7 @@ class Sala extends BaseController {
         $obj_sala = new sala_model($exame_sala_id);
         $data['obj'] = $obj_sala;
         $data['armazem'] = $this->sala->listararmazem();
+        $data['grupos'] = $this->procedimento->listargrupos();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/sala-form', $data);
     }

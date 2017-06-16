@@ -49,7 +49,7 @@
         }
 
         #calendar {
-            max-width: 900px;
+            max-width: 600px;
             margin: 0 auto;
         }
         /*#pop{display:none;position:absolute;top:50%;left:50%;margin-left:-150px;margin-top:-100px;padding:10px;width:300px;height:200px;border:1px solid #d0d0d0}*/
@@ -65,21 +65,60 @@
             <?
             $medicos = $this->operador_m->listarmedicos();
             $salas = $this->exame->listartodassalas();
+            $grupos = $this->procedimento->listargrupos();
             $especialidade = $this->exame->listarespecialidade();
             $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
+
+
+            if (@$_GET['medico'] != '') {
+                $medico_atual = $_GET['medico'];
+            } else {
+                $medico_atual = 0;
+            }
+//            var_dump($medico_atual);
+//            die;
             ?>
             <table>
                 <thead>
                 <form method="get" action="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario">
 
                     <tr>
+                        <th class="tabela_title">Grupo</th>
+                        <th class="tabela_title">Sala</th>
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
 
+
                     </tr>
                     <tr>
+
+
+                        <th class="tabela_title">
+                            <select name="grupo" id="grupo" class="size2" >
+                                <option value='' ></option>
+                                <? foreach ($grupos as $grupo) { ?>                                
+                                    <option value='<?= $grupo->nome ?>' <?
+                                    if (@$_GET['especialidade'] == $grupo->nome):echo 'selected';
+                                    endif;
+                                    ?>><?= $grupo->nome ?></option>
+                                        <? } ?>
+                            </select>
+
+                        </th>
+                        <th class="tabela_title">
+                            <select name="sala" id="sala" class="size1">
+                                <option value=""></option>
+                                <? foreach ($salas as $value) : ?>
+                                    <option value="<?= $value->exame_sala_id; ?>" <?
+                                    if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+
+                        </th>
                         <th class="tabela_title">
                             <select name="empresa" id="empresa" class="size2">
                                 <option value=""></option>
@@ -162,7 +201,7 @@
                             <div class="panel-heading ">
                                 <!--                                Calendário-->
                             </div>
-                            <div class="row" style="width: 600px;">
+                            <div class="row" style="width: 400px;">
                                 <div class="col-lg-12">
 
 
@@ -182,25 +221,25 @@
                     </td>
                     <td>
                         <div style="width: 10px;">
-                            
+
                         </div>
                     </td>
                     <td>
                         <table>
-                <thead>
-                    <tr>
-                        <th class="tabela_header" >Status</th>
-                        <th class="tabela_header" width="250px;">Nome</th>
-                        <th class="tabela_header" width="70px;">Resp.</th>
-                        <th class="tabela_header" width="70px;">Data</th>
-                        <th class="tabela_header" width="50px;">Dia</th>
-                        <th class="tabela_header" width="70px;">Agenda</th>
-                        <th class="tabela_header" width="70px;">   </th>
-                        <th class="tabela_header" width="150px;">Sala</th>
-                        <th class="tabela_header" width="150px;">Convenio</th>
-                        <th class="tabela_header">Telefone</th>
-                        <th class="tabela_header" width="250px;">Observa&ccedil;&otilde;es</th>
-                        <th class="tabela_header" colspan="3"><center>A&ccedil;&otilde;es</center></th>
+                            <thead>
+                                <tr>
+                                    <th class="tabela_header" >Status</th>
+                                    <th class="tabela_header" width="250px;">Nome</th>
+                                    <th class="tabela_header" width="70px;">Resp.</th>
+                                    <th class="tabela_header" width="70px;">Data</th>
+                                    <th class="tabela_header" width="50px;">Dia</th>
+                                    <th class="tabela_header" width="70px;">Agenda</th>
+                                    <th class="tabela_header" width="70px;">   </th>
+                                    <th class="tabela_header" width="150px;">Sala</th>
+                                    <th class="tabela_header" width="150px;">Convenio</th>
+                                    <th class="tabela_header">Telefone</th>
+                                    <th class="tabela_header" width="250px;">Observa&ccedil;&otilde;es</th>
+                                    <th class="tabela_header" colspan="3"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -219,7 +258,7 @@
                         <?php
 //                        var_dump($item->situacaoexame);
 //                        die;
-                        $lista = $this->exame->listarexamemultifuncao2($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->exame->listarexamemultifuncao2calendario($_GET)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             $dataFuturo = date("Y-m-d H:i:s");
@@ -308,48 +347,48 @@
                                 <? }if ($verifica == 4) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=600');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->paciente; ?></b></td>
-        <? } if ($verifica == 5) { ?>
+                                <? } if ($verifica == 5) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=600');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><?= $item->paciente; ?></b></td>
-                                    <? } if ($verifica == 6) { ?>
+                                <? } if ($verifica == 6) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
-                                    <? } ?>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?
-                                if ($item->encaixe == 't') {
-                                    if ($item->paciente == '') {
-                                        echo '<span class="vermelho">Encaixe H.</span>';
-                                    } else {
-                                        echo '<span class="vermelho">Encaixe</span>';
+                                    if ($item->encaixe == 't') {
+                                        if ($item->paciente == '') {
+                                            echo '<span class="vermelho">Encaixe H.</span>';
+                                        } else {
+                                            echo '<span class="vermelho">Encaixe</span>';
+                                        }
                                     }
-                                }
-                                ?></td>
+                                    ?></td>
                                 <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="150px;"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedico/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></b></td>
-                                    <? } else { ?>
+                                <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
 
-        <? } ?>
-                                                                            <? if ($item->convenio != "") { ?>
+                                <? } ?>
+                                <? if ($item->convenio != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . " - " . $item->procedimento . " - " . $item->codigo; ?></td>
-                                    <? } else { ?>
+                                <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?=
-                            $item->convenio_paciente . " - " . $item->procedimento . " - " . $item->codigo;
-                            ?></td>
+                                        $item->convenio_paciente . " - " . $item->procedimento . " - " . $item->codigo;
+                                        ?></td>
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
-                                <? if ($item->paciente_id != "") { ?>
+                                                                                                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                    <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
                                             </a></div>
                                     </td>
-        <? } else { ?>
+                                <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
                                     <?
                                 }
@@ -364,7 +403,7 @@
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarpacientetemp/<?= $item->paciente_id ?>/<?= $faltou; ?>');">Exame
                                             </a></div>
                                     </td>
-        <? } elseif ($item->bloqueado == 't') { ?>
+                                <? } elseif ($item->bloqueado == 't') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"> Bloqueado</td>
                                     <?
                                 }
@@ -380,10 +419,10 @@
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
                                                 </a></div>
                                         </td>
-                <?
-            }
-        } else {
-            ?>
+                                        <?
+                                    }
+                                } else {
+                                    ?>
                                     <? if ($item->telefonema == 't') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><font color="green" title="<?= $item->telefonema_operador; ?>" ><b>Confirmado</b></td>
                                     <? } else { ?>
@@ -391,23 +430,23 @@
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/telefonema/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Confirma
                                                 </a></div>
                                         </td>
-                                <?
-                            }
-                        }
-                        ?>
+                                        <?
+                                    }
+                                }
+                                ?>
 
                             </tr>
 
                         </tbody>
-        <?php
-    }
-}
-?>
+                        <?php
+                    }
+                }
+                ?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="14">
-<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            <!-- Total de registros: <?php // echo $total . " - Vago: " . $l . " - Marcado: " . $p;  ?> -->
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                            <!-- Total de registros: <?php // echo $total . " - Vago: " . $l . " - Marcado: " . $p;      ?> -->
                         </th>
                     </tr>
                 </tfoot>
@@ -444,12 +483,12 @@ if (@$_GET['data'] != '') {
             center: 'title',
             right: 'today'
         },
-        height: 500,
+        height: 400,
         theme: true,
         dayClick: function (date) {
             var data = date.format();
 
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=&especialidade=&medico=&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=' + $('#empresa').val() + '&sala=' + $('#sala').val() + '&especialidade=' + $('#especialidade').val() + '&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');
 
 
 
@@ -467,54 +506,32 @@ if (@$_GET['data'] != '') {
         editable: false,
         eventLimit: true, // allow "more" link when too many events
         schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
-
 //            events: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
 
         eventSources: [
-
             // your event source
 
             {
-
                 url: '<?= base_url() ?>autocomplete/listarhorarioscalendarioexame',
                 type: 'POST',
                 data: {
                     medico: $('#medico').val(),
                     especialidade: $('#especialidade').val(),
+                    sala: $('#sala').val(),
                     empresa: $('#empresa').val()
                 },
                 error: function () {
-//                    alert('Houve !');
+
                 }
 
             }
 
-            // any other sources...
 
         ]
 
     });
 
-//    }
 
-
-//    $(document).ready(function () {
-
-
-
-//            $.getJSON("<?= base_url() ?>autocomplete/listarhorarioscalendario", json);
-//            function json(data) {
-
-
-//            }
-
-//    });
-//    $('#medico').change(function () {
-//        document.getElementById('form').submit();
-//    });
-//    $('#especialidade').change(function () {
-//        document.getElementById('form').submit();
-//    });
 
     $(function () {
         $('#especialidade').change(function () {
@@ -526,7 +543,7 @@ if (@$_GET['data'] != '') {
 //                                                        alert('teste_parada');
                 $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
                     options = '<option value="">TODOS</option>';
-                    console.log(j);
+//                    alert(j);
 
                     for (var c = 0; c < j.length; c++) {
 
@@ -547,8 +564,7 @@ if (@$_GET['data'] != '') {
 //                                                        alert('teste_parada');
                 $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
                     options = '<option value="">TODOS</option>';
-                    console.log(j);
-
+                    
                     for (var c = 0; c < j.length; c++) {
 
 
@@ -567,30 +583,60 @@ if (@$_GET['data'] != '') {
             }
         });
     });
+    $(function () {
+        $('#grupo').change(function () {
+
+            if ($(this).val()) {
+
+                alert($(this).val());
+                $('.carregando').show();
+//                                                        alert('teste_parada');
+                $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value="">TODOS</option>';
+                    alert(j);
+
+//                    for (var c = 0; c < j.length; c++) {
+
+
+//                        if (j[0].operador_id != undefined) {
+//                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+//
+//                        }
+//                    }
+//                    $('#medico').html(options).show();
+//                    $('.carregando').hide();
+
+
+
+                });
+            } 
+        });
+    });
 
 
     if ($('#especialidade').val()) {
-
-//                                                  alert('teste_parada');
         $('.carregando').show();
-//                                                        alert('teste_parada');
         $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
             options = '<option value="">TODOS</option>';
             console.log(j);
 
             for (var c = 0; c < j.length; c++) {
-
-
                 if (j[0].operador_id != undefined) {
-                    options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+                    var operador_atual = <?= $medico_atual ?>;
+
+                    if (j[c].operador_id == operador_atual) {
+
+                        options += '<option value="' + j[c].operador_id + '" selected>' + j[c].nome + '</option>';
+
+                    } else {
+
+                        options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+                    }
 
                 }
             }
             $('#medico').html(options).show();
             $('.carregando').hide();
-
-
-
         });
     } else {
 

@@ -125,7 +125,7 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarhorarioscalendarioexame($medico = null, $especialidade = null, $empresa_id = null) {
+    function listarhorarioscalendarioexame($medico = null, $especialidade = null, $empresa_id = null, $sala_id = null) {
         $data = date('Y-m-d');
         $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
         $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
@@ -143,14 +143,16 @@ class exametemp_model extends Model {
         $this->db->where("ae.tipo IN ('EXAME')");
         $this->db->where("ae.data is not null");
         $this->db->where("ae.data >", $data_passado);
-        if(isset($empresa_id)){
+        if (isset($empresa_id)) {
             $this->db->where("ae.empresa_id", $empresa_id);
-        }else{
-            
+        } else {
+
             $this->db->where("ae.empresa_id", $empresa_atual);
         }
         $this->db->where("ae.data <", $data_futuro);
-
+        if ($sala_id != '') {
+            $this->db->where("ae.agenda_exames_nome_id", $sala_id);
+        }
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);
             $this->db->groupby("ae.data, situacao, ae.medico_agenda");
@@ -187,10 +189,10 @@ class exametemp_model extends Model {
 //        $this->db->where("ae.data is not null");
         $this->db->where("ae.data >", $data_passado);
         $this->db->where("ae.data <", $data_futuro);
-        if(isset($empresa_id)){
+        if (isset($empresa_id)) {
             $this->db->where("ae.empresa_id", $empresa_id);
-        }else{
-            
+        } else {
+
             $this->db->where("ae.empresa_id", $empresa_atual);
         }
         if ($medico != '') {
@@ -228,10 +230,10 @@ class exametemp_model extends Model {
         $this->db->where("ae.data is not null");
         $this->db->where("ae.data >", $data_passado);
         $this->db->where("ae.data <", $data_futuro);
-        if(isset($empresa_id)){
+        if (isset($empresa_id)) {
             $this->db->where("ae.empresa_id", $empresa_id);
-        }else{
-            
+        } else {
+
             $this->db->where("ae.empresa_id", $empresa_atual);
         }
 
@@ -4560,6 +4562,14 @@ class exametemp_model extends Model {
         $this->db->where('o.medico', 't');
         $this->db->where('o.usuario is not null');
         $this->db->orderby("o.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletegrupoempresa($parametro) {
+        $this->db->select('es.*');
+        $this->db->from('tb_exame_sala es');
+        $this->db->where('es.grupo', $parametro);
         $return = $this->db->get();
         return $return->result();
     }

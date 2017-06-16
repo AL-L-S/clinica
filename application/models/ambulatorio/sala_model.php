@@ -107,6 +107,7 @@ class sala_model extends Model {
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('nome_chamada', $_POST['txtnomechamada']);
             $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('grupo', $_POST['grupo']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -153,7 +154,7 @@ class sala_model extends Model {
     private function instanciar($exame_sala_id) {
 
         if ($exame_sala_id != 0) {
-            $this->db->select('exame_sala_id, nome, tipo, nome_chamada, armazem_id');
+            $this->db->select('exame_sala_id, nome, tipo, nome_chamada, armazem_id, grupo');
             $this->db->from('tb_exame_sala');
             $this->db->where("exame_sala_id", $exame_sala_id);
             $query = $this->db->get();
@@ -161,6 +162,7 @@ class sala_model extends Model {
             $this->_exame_sala_id = $exame_sala_id;
             $this->_nome = $return[0]->nome;
             $this->_tipo = $return[0]->tipo;
+            $this->_grupo = $return[0]->grupo;
             $this->_armazem_id = $return[0]->armazem_id;
             $this->_nome_chamada = $return[0]->nome_chamada;
         } else {

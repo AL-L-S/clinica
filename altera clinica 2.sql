@@ -212,3 +212,15 @@ CREATE TABLE ponto.tb_empresas_acesso_servidores
   CONSTRAINT tb_empresas_acesso_servidores_pkey PRIMARY KEY (empresas_acesso_externo_id)
 );
 ALTER TABLE ponto.tb_empresas_acesso_servidores ADD COLUMN nome_clinica character varying(500);
+
+
+
+-- Dia 13/06/2017
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN desconto_ajuste1 numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN desconto_ajuste2 numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN desconto_ajuste3 numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN desconto_ajuste4 numeric(10,2);
+
+-- Dia 16/06/2017
+ALTER TABLE ponto.tb_exame_sala ADD COLUMN grupo character varying(100);

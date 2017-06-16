@@ -114,6 +114,9 @@ switch ($MES) {
                         if ($item->classificacao == 2) {
                             $totalretorno++;
                         }
+//                        $valor_total_formas = $item->valor1 + $item->valor2 + $item->valor3 + $item->valor4;
+//                        $valor_total = $valor_total_formas + $item->desconto_ajuste1 + $item->desconto_ajuste2 + $item->desconto_ajuste3 + $item->desconto_ajuste4;
+                        $valor_total = $item->valor_total;
                         ?>
                         <tr>
                             <td><font size="-2"><?= $item->convenio; ?></td>
@@ -123,9 +126,9 @@ switch ($MES) {
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= $item->procedimento; ?></td>
                             <? if ($clinica == 'SIM') { ?>
-                                <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_total, 2, ",", "."); ?></td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>
-                                <td style='text-align: right;'><font size="-2"><?= number_format(((float) $item->valor_total - ((float) $item->valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
                             <? } ?>
                             <?
                             if ($item->percentual_medico == "t") {
@@ -133,16 +136,16 @@ switch ($MES) {
 
                                 $valorpercentualmedico = $item->valor_medico;
 
-                                $perc = $item->valor_total * ($valorpercentualmedico / 100);
+                                $perc = $valor_total * ($valorpercentualmedico / 100);
                                 $totalperc = $totalperc + $perc;
-                                $totalgeral = $totalgeral + $item->valor_total;
+                                $totalgeral = $totalgeral + $valor_total;
                             } else {
                                 $simbolopercebtual = "";
                                 $valorpercentualmedico = $item->valor_medico;
 
                                 $perc = $valorpercentualmedico;
                                 $totalperc = $totalperc + $perc;
-                                $totalgeral = $totalgeral + $item->valor_total;
+                                $totalgeral = $totalgeral + $valor_total;
                             }
                             ?>
                             <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
@@ -240,9 +243,9 @@ switch ($MES) {
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= $item->procedimento; ?></td>
                             <? if ($clinica == 'SIM') { ?>
-                                <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_total, 2, ",", "."); ?></td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>
-                                <td style='text-align: right;'><font size="-2"><?= number_format(((float) $item->valor_total - ((float) $item->valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
                             <? } ?>
                             <?
                             if ($item->percentual_medico == "t") {
@@ -250,16 +253,16 @@ switch ($MES) {
 
                                 $valorpercentualmedico = $item->valor_medico;
 
-                                $perc = $item->valor_total * ($valorpercentualmedico / 100);
+                                $perc = $valor_total * ($valorpercentualmedico / 100);
                                 $totalperchome = $totalperchome + $perc;
-                                $totalgeralhome = $totalgeralhome + $item->valor_total;
+                                $totalgeralhome = $totalgeralhome + $valor_total;
                             } else {
                                 $simbolopercebtual = "";
                                 $valorpercentualmedico = $item->valor_medico;
 
                                 $perchome = $valorpercentualmedico;
                                 $totalperchome = $totalperchome + $perchome;
-                                $totalgeralhome = $totalgeralhome + $item->valor_total;
+                                $totalgeralhome = $totalgeralhome + $valor_total;
                             }
                             ?>
                             <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>

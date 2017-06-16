@@ -334,6 +334,18 @@ class Guia extends BaseController {
                 }
             }
         }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 20) { // CLINICAS SANTA IMAGEM
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsultasantaimagem', $data);
+            } else {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaofichageralsantaimagem', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaofichageralsantaimagem', $data);
+                }
+            }
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 4) {// CLINICAS FISIOCLINICA
@@ -2667,6 +2679,8 @@ class Guia extends BaseController {
 
         if ($data['empresa'][0]->impressao_recibo == 1) {
             $this->load->View('ambulatorio/impressaorecibomed', $data);
+        }elseif ($data['empresa'][0]->impressao_recibo == 2) {
+            $this->load->View('ambulatorio/impressaorecibosantaimagem', $data);
         } else {
             $this->load->View('ambulatorio/impressaorecibo', $data);
         }
