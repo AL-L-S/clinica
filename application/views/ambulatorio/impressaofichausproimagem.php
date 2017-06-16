@@ -51,27 +51,28 @@
             </tr>
             <tr>
                 <td colspan="2"><font size = -1>C&oacute;d. Paciente: <?= $paciente['0']->paciente_id; ?></td>
-                <td><font size = -1>D.U.M:</td>
+                <td><font size = -1>Finalizado:<?= substr(@$exame[0]->data_finalizado, 10, 9); ?></td>
             </tr>
             <tr>
                 <td colspan="2"><font size = -1>Paciente:<b><?= utf8_decode($paciente['0']->nome); ?></b></td>
-                <td><font size = -1>Sexo: <?= $exame[0]->sexo; ?></td>
+                <td><font size = -1>D.U.M:</td>
             </tr>
             <tr>
                 <td colspan="2"><font size = -1>Nascimento:<?= substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?></td>
+                <td><font size = -1>Sexo: <?= $exame[0]->sexo; ?></td>
+            </tr>
+            <tr>
+                <td colspan="2"><font size = -1>Endere&ccedil;o: <?= utf8_decode($paciente['0']->logradouro) ?></td>
                 <td><font size = -1>Idade: <?= $teste; ?></td>
             </tr>
             <tr>
-                <td><font size = -1>Endere&ccedil;o: <?= utf8_decode($paciente['0']->logradouro) ?></td>
+                <td colspan="1"><font size = -1>Cidade:<?= $paciente['0']->cidade_desc ?></td>
                 <td><font size = -1>Num: <?= $paciente['0']->numero ?></td>
                 <td><font size = -1>Bairro:<?= utf8_decode($paciente['0']->bairro) ?></td>
             </tr>
             <tr>
-                <td colspan="2"><font size = -1>Cidade:<?= $paciente['0']->cidade_desc ?></td>
+                <td colspan="2"><font size = -1>Fone: <?= $paciente['0']->telefone; ?>/<?= $paciente['0']->celular; ?></td>
                 <td><font size = -1>Estado: <?= $paciente['0']->estado ?></td>
-            </tr>
-            <tr>
-                <td><font size = -1>Fone: <?= $paciente['0']->telefone; ?>/<?= $paciente['0']->celular; ?></td>
             </tr>
             <tr>
                 <td colspan="2"><font size = -1>Data da Entrega:</td>

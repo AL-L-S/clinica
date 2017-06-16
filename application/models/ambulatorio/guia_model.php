@@ -5450,6 +5450,7 @@ class guia_model extends Model {
                             pt.perc_medico,
                             m.nome as municipio,
                             m.estado,
+                            l.data_atualizacao as data_finalizado,
                             pt.codigo,
                             pt.nome as procedimento');
         $this->db->from('tb_agenda_exames ae');
@@ -5462,6 +5463,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_exames ex', 'ex.agenda_exames_id =ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = ex.exames_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id =ae.forma_pagamento', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_autorizacao', 'left');
