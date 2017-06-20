@@ -655,6 +655,38 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarfisioterapiaanterior($pacientetemp_id) {
+        $data = date("Y-m-d");
+        $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.data,
+                            a.nome,
+                            a.data,
+                            a.agenda_exames_nome_id,
+                            es.nome as sala,
+                            a.medico_agenda,
+                            o.nome as medico,
+                            c.nome as convenio,
+                            a.medico_consulta_id,
+                            a.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            a.observacoes');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("(a.tipo = 'FISIOTERAPIA' OR a.tipo = 'ESPECIALIDADE')");
+        $this->db->where("a.confirmado", 'true');
+        $this->db->where("a.paciente_id", $pacientetemp_id);
+        $this->db->orderby("a.data desc");
+        $this->db->orderby("a.inicio desc");
+        $this->db->limit(5);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarespecialidadeanterior($pacientetemp_id) {
         $data = date("Y-m-d");
@@ -4566,10 +4598,26 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarautocompletegrupoempresa($parametro) {
+    function listarautocompletegrupoempresa($parametro = null) {
+        $this->db->select('distinct(e.empresa_id), e.nome');
+        $this->db->from('tb_exame_sala es');
+        $this->db->join('tb_empresa e', 'e.empresa_id = es.empresa_id');
+        if($parametro != ''){
+           $this->db->where('es.grupo', $parametro); 
+        }
+        
+        $this->db->groupby("e.empresa_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletegrupoempresasala($parametro = null) {
         $this->db->select('es.*');
         $this->db->from('tb_exame_sala es');
-        $this->db->where('es.grupo', $parametro);
+         if($parametro != ''){
+           $this->db->where('es.grupo', $parametro); 
+        }
+        $this->db->where('es.excluido', 'f'); 
         $return = $this->db->get();
         return $return->result();
     }

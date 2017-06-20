@@ -159,7 +159,14 @@
                                 </td>
 
                                 <td  width="70px;"><input type="text" id="data" name="data" class="size1"/></td>
-                                <td  width="70px;"><input type="text" name="ordenador" id="ordenador" value="<?= $ordenador1; ?>" class="texto01"/></td>
+                                <td width="70px;">
+                                    <select name="ordenador" id="ordenador" class="size1" >
+                                        <option value='1' >Normal</option>
+                                        <option value='2' >Prioridade</option>
+                                        <option value='3' >Urgência</option>
+
+                                    </select>
+                                </td>
 <!--                                <td  width="70px;"><input type="text" name="observacao" id="observacao" class="texto04"/></td>-->
                             </tr>
 

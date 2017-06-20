@@ -64,7 +64,7 @@
         <div>
             <?
             $medicos = $this->operador_m->listarmedicos();
-            $salas = $this->exame->listartodassalas();
+            $salas = $this->exame->listartodassalascalendario();
             $grupos = $this->procedimento->listargrupos();
             $especialidade = $this->exame->listarespecialidade();
             $empresas = $this->exame->listarempresas();
@@ -76,6 +76,16 @@
             } else {
                 $medico_atual = 0;
             }
+            if (@$_GET['empresa'] != '') {
+                $empresa_atual = $_GET['empresa'];
+            } else {
+                $empresa_atual = 0;
+            }
+            if (@$_GET['sala'] != '') {
+                $sala_atual = $_GET['sala'];
+            } else {
+                $sala_atual = 0;
+            }
 //            var_dump($medico_atual);
 //            die;
             ?>
@@ -85,8 +95,8 @@
 
                     <tr>
                         <th class="tabela_title">Grupo</th>
-                        <th class="tabela_title">Sala</th>
                         <th class="tabela_title">Empresa</th>
+                        <th class="tabela_title">Sala</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
 
@@ -97,10 +107,10 @@
 
                         <th class="tabela_title">
                             <select name="grupo" id="grupo" class="size2" >
-                                <option value='' ></option>
+                                <option value='' >TODOS</option>
                                 <? foreach ($grupos as $grupo) { ?>                                
                                     <option value='<?= $grupo->nome ?>' <?
-                                    if (@$_GET['especialidade'] == $grupo->nome):echo 'selected';
+                                    if (@$_GET['grupo'] == $grupo->nome):echo 'selected';
                                     endif;
                                     ?>><?= $grupo->nome ?></option>
                                         <? } ?>
@@ -108,20 +118,8 @@
 
                         </th>
                         <th class="tabela_title">
-                            <select name="sala" id="sala" class="size1">
-                                <option value=""></option>
-                                <? foreach ($salas as $value) : ?>
-                                    <option value="<?= $value->exame_sala_id; ?>" <?
-                                    if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
-                            </select>
-
-                        </th>
-                        <th class="tabela_title">
                             <select name="empresa" id="empresa" class="size2">
-                                <option value=""></option>
+                                <option value="">TODOS</option>
                                 <?
                                 $selected = false;
                                 foreach ($empresas as $value) :
@@ -141,6 +139,19 @@
                             </select>
 
                         </th>
+                        <th class="tabela_title">
+                            <select name="sala" id="sala" class="size1">
+                                <option value="">TODOS</option>
+                                <? foreach ($salas as $value) : ?>
+                                    <option value="<?= $value->exame_sala_id; ?>" <?
+                                    if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+
+                        </th>
+
                         <th class="tabela_title">
                             <select name="especialidade" id="especialidade" class="size2">
                                 <option value=""></option>
@@ -382,7 +393,7 @@
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -446,7 +457,7 @@
                     <tr>
                         <th class="tabela_footer" colspan="14">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            <!-- Total de registros: <?php // echo $total . " - Vago: " . $l . " - Marcado: " . $p;      ?> -->
+                            <!-- Total de registros: <?php // echo $total . " - Vago: " . $l . " - Marcado: " . $p;           ?> -->
                         </th>
                     </tr>
                 </tfoot>
@@ -483,7 +494,7 @@ if (@$_GET['data'] != '') {
             center: 'title',
             right: 'today'
         },
-        height: 400,
+        height: 450,
         theme: true,
         dayClick: function (date) {
             var data = date.format();
@@ -564,7 +575,7 @@ if (@$_GET['data'] != '') {
 //                                                        alert('teste_parada');
                 $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
                     options = '<option value="">TODOS</option>';
-                    
+
                     for (var c = 0; c < j.length; c++) {
 
 
@@ -586,30 +597,50 @@ if (@$_GET['data'] != '') {
     $(function () {
         $('#grupo').change(function () {
 
-            if ($(this).val()) {
+//            if ($(this).val()) {
 
-                alert($(this).val());
-                $('.carregando').show();
+//                alert($(this).val());
+            $('.carregando').show();
 //                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">TODOS</option>';
-                    alert(j);
+            $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                options = '<option value="">TODOS</option>';
+//                    alert(j);
 
-//                    for (var c = 0; c < j.length; c++) {
-
-
-//                        if (j[0].operador_id != undefined) {
-//                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-//
-//                        }
-//                    }
-//                    $('#medico').html(options).show();
-//                    $('.carregando').hide();
+                for (var c = 0; c < j.length; c++) {
+                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                }
+                $('#sala').html(options).show();
+                $('.carregando').hide();
 
 
 
-                });
-            } 
+            });
+//            }
+        });
+    });
+
+    $(function () {
+        $('#grupo').change(function () {
+
+//            if ($(this).val()) {
+
+//                alert($(this).val());
+            $('.carregando').show();
+//                                                        alert('teste_parada');
+            $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                options = '<option value="">TODOS</option>';
+//                    alert(j);
+
+                for (var c = 0; c < j.length; c++) {
+                    options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                }
+                $('#empresa').html(options).show();
+                $('.carregando').hide();
+
+
+
+            });
+//            }
         });
     });
 
@@ -638,10 +669,61 @@ if (@$_GET['data'] != '') {
             $('#medico').html(options).show();
             $('.carregando').hide();
         });
-    } else {
-
-
     }
+
+
+    if ($('#grupo').val()) {
+
+//        alert($('#grupo').val());
+        $('.carregando').show();
+//                                                        alert('teste_parada');
+        $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $('#grupo').val(), ajax: true}, function (j) {
+            options = '<option value="">TODOS</option>';
+//                    alert(j);
+            var empresa_atual = <?= $empresa_atual ?>;
+            for (var c = 0; c < j.length; c++) {
+                if (empresa_atual == j[c].empresa_id) {
+                    options += '<option selected value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                } else {
+                    options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                }
+
+
+            }
+            $('#empresa').html(options).show();
+            $('.carregando').hide();
+
+
+
+        });
+    }
+    if ($('#grupo').val()) {
+
+//        alert($('#grupo').val());
+        $('.carregando').show();
+//                                                        alert('teste_parada');
+        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), ajax: true}, function (j) {
+            options = '<option value="">TODOS</option>';
+//                    alert(j);
+            var sala_atual = <?= $sala_atual ?>;
+            for (var c = 0; c < j.length; c++) {
+                if(sala_atual ==  j[c].exame_sala_id){
+                    options += '<option selected value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                }else{
+                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                }
+                
+            }
+            $('#sala').html(options).show();
+            $('.carregando').hide();
+
+
+
+        });
+    }
+
+
+
 </script>
 
 

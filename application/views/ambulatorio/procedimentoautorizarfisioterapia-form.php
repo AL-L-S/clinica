@@ -170,7 +170,14 @@
                                         ?> 
                                     </select>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" ><input type="text" name="ordenador" class="texto01"/></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                    <select name="ordenador" id="ordenador" class="size1" >
+                                        <option value='1' >Normal</option>
+                                        <option value='2' >Prioridade</option>
+                                        <option value='3' >Urgência</option>
+
+                                    </select>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="checkbox" name="confimado[<?= $i; ?>]" id="checkbox<?= $i; ?>" /><input type="hidden" name="agenda_exames_id[<?= $i; ?>]" value="<?= $agenda_exame_id; ?>" /></td>
 
                             </tr>

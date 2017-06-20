@@ -291,8 +291,9 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', $args['data']);
+            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
+        
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
         }
@@ -1101,7 +1102,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', $args['data']);
+            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
@@ -1187,7 +1188,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', $args['data']);
+            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);

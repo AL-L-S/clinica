@@ -75,7 +75,7 @@
                     </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Consultas anteriores</legend>
+                    <legend>Especialidades anteriores</legend>
                     <?
                     if (count($consultasanteriores) > 0) {
                         foreach ($consultasanteriores as $value) {
@@ -150,9 +150,10 @@
                                 <td  >
                                     <select  name="convenio1" id="convenio1" class="size1"  required="">
                                         <option value="-1">Selecione</option>
-                                        <? 
+                                        <?
                                         $lastConv = $exames[count($exames) - 1]->convenio_id;
-                                        foreach ($convenio as $item) : ?>
+                                        foreach ($convenio as $item) :
+                                            ?>
                                             <option value="<?= $item->convenio_id; ?>"  <? if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
                                                 <?= $item->nome; ?>
                                             </option>
@@ -191,7 +192,14 @@
                                     </select>
                                 </td>
 
-                                <td  ><input type="text" name="ordenador" id="ordenador" value="<?= $ordenador1; ?>" class="texto01"/></td>
+                                <td  width="70px;">
+                                    <select name="ordenador" id="ordenador" class="size1" >
+                                        <option value='1' >Normal</option>
+                                        <option value='2' >Prioridade</option>
+                                        <option value='3' >Urgência</option>
+
+                                    </select>
+                                </td>
 <!--                                <td  width="70px;"><input type="text" name="observacao" id="observacao" class="texto04"/></td>-->
                             </tr>
 
@@ -291,8 +299,15 @@
                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
                                                 </a></div></center></th>
+
                                     <? } ?>
+
                                 <? } ?>
+                                <th colspan="2" align="center"><center><div class="bt_linkf">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+
+                                        </a></div></center>
+                                </th>
                                 </tr>
                                 </tfoot>
                             </table> 
@@ -370,13 +385,19 @@
                             ?>
                             <tfoot>
                                 <tr>
-                                    <th class="tabela_footer" colspan="5">
+                                    <th class="tabela_footer" colspan="4">
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
-                                    <? if ($perfil_id != 11) { 
-                                        if ($perfil_id == 1 || $faturado == 0) { ?>
-                                            <th colspan="2" align="center"><center><div class="bt_linkf">
+                                    <?
+                                    if ($perfil_id != 11) {
+                                        if ($perfil_id == 1 || $faturado == 0) {
+                                            ?>
+                                            <th colspan="4" align="center"><center><div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
+
+                                            </a></div>
+                                                <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 
                                             </a></div></center></th>
                                     <?
@@ -403,7 +424,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-                                if($("#convenio1").val() != "-1"){
+                                if ($("#convenio1").val() != "-1") {
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $("#convenio1").val()}, function (j) {
                                         options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
@@ -413,7 +434,7 @@
                                         $('.carregando').hide();
                                     });
                                 }
-                                
+
 
                                 $(function () {
                                     $("#data").datepicker({

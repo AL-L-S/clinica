@@ -12504,7 +12504,7 @@ Calendar.defaults = {
 		prevYear: "prev year",
 		nextYear: "next year",
 		year: 'year', // TODO: locale files need to specify this
-		today: 'Hoje',
+		today: 'Mês Atual',
 		month: 'Mês',
 		week: 'Semana',
 		day: 'Dia'

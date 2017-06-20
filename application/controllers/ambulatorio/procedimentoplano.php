@@ -128,6 +128,7 @@ class Procedimentoplano extends BaseController {
     function orcamento() {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        $data['grupos'] = $this->procedimento->listargruposexame();
 //        $data['exames'] = $this->exametemp->listarorcamentos();
         $this->loadView('ambulatorio/orcamentogeral-form_1', $data);
     }

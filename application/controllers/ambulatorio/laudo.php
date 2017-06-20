@@ -171,8 +171,8 @@ class Laudo extends BaseController {
 //        $arquivo_pasta = directory_map( base_url() . "dicom/");
         $this->load->helper('directory');
         $agenda_exames_id = $obj_laudo->_agenda_exames_id;
-        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/cr/$agenda_exames_id/");
-        $origem = "/home/sisprod/projetos/clinica/cr/$agenda_exames_id";
+        $arquivo_pasta = directory_map("./cr/$agenda_exames_id/");
+        $origem = "./cr/$agenda_exames_id";
 
 //        if (count($arquivo_pasta) > 0) {
 //
@@ -181,12 +181,12 @@ class Laudo extends BaseController {
 //
 //                  
 //                        $nova = $valor;
-//                        if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-//                            mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-//                            $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+//                        if (!is_dir("./upload/$exame_id")) {
+//                            mkdir("./upload/$exame_id");
+//                            $destino = "./upload/$exame_id/$nova";
 //                            chmod($destino, 0777);
 //                        }
-//                        $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+//                        $destino = "./upload/$exame_id/$nova";
 //                        $local = "$origem/$nome1/$nova";
 //                        $deletar = "$origem/$nome1/$nome2";
 //                        copy($local, $destino);
@@ -205,7 +205,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             natcasesort($data['arquivo_pasta']);
@@ -241,7 +241,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -265,7 +265,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -541,7 +541,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -1832,7 +1832,7 @@ class Laudo extends BaseController {
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $verificador = $data['laudo']['0']->imagens;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
         //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -1936,7 +1936,7 @@ class Laudo extends BaseController {
         }
         if ($verificador == 6 || $verificador == "") {
 
-            $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
+            $html = $this->load->view('ambulatorio/impressaoimagem6gastrosul', $data, true);
         }
         $grupo = $data['laudo']['0']->grupo;
 
@@ -1967,7 +1967,7 @@ class Laudo extends BaseController {
 //        $datafim = str_replace("/", "", $_POST['datafim']);
 //        $paciente = $listarexame[0]->paciente;
 //        $nomearquivo = $convenio . "-" . $paciente . "-" . $datainicio . "-" . $datafim;
-        $origem = "/home/sisprod/projetos/clinica/upload/laudo";
+        $origem = "./upload/laudo";
 
         if (!is_dir($origem)) {
             mkdir($origem);
@@ -2044,13 +2044,13 @@ class Laudo extends BaseController {
                        <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
 
-                    $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . "/" . $sl_cod_doc . ".xml";
+                    $nome = "./upload/laudo/" . $convenio . "/" . $item->paciente_id . "/" . $sl_cod_doc . ".xml";
                     $xml = $cabecalho . $corpo . $fim_numguia . $rodape;
                     $fp = fopen($nome, "w+");
                     fwrite($fp, $xml . "\n");
                     fclose($fp);
 
-                    $nomepdf = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . "/" . $sl_cod_doc . ".pdf";
+                    $nomepdf = "./upload/laudo/" . $convenio . "/" . $item->paciente_id . "/" . $sl_cod_doc . ".pdf";
                     $cabecalhopdf = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $item->paciente . " <br>Emiss&atilde;o: </td></tr></table>";
                     $rodapepdf = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
                     salvapdf($texto, $nomepdf, $cabecalhopdf, $rodapepdf);
@@ -2058,17 +2058,17 @@ class Laudo extends BaseController {
 
                     $zip = new ZipArchive;
                     $this->load->helper('directory');
-                    $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$item->paciente_id/");
+                    $arquivo_pasta = directory_map("./upload/laudo/$convenio/$item->paciente_id/");
                     $pasta = $item->paciente_id;
                     if ($arquivo_pasta != false) {
                         foreach ($arquivo_pasta as $value) {
-                            $zip->open("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$sl_cod_doc.zip", ZipArchive::CREATE);
-                            $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$value", "$sl_cod_doc.xml");
-                            $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$value", "$sl_cod_doc.pdf");
+                            $zip->open("./upload/laudo/$convenio/$pasta/$sl_cod_doc.zip", ZipArchive::CREATE);
+                            $zip->addFile("./upload/laudo/$convenio/$pasta/$value", "$sl_cod_doc.xml");
+                            $zip->addFile("./upload/laudo/$convenio/$pasta/$value", "$sl_cod_doc.pdf");
                             $zip->close();
                         }
-                        $arquivoxml = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$sl_cod_doc.xml";
-                        $arquivopdf = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$pasta/$sl_cod_doc.pdf";
+                        $arquivoxml = "./upload/laudo/$convenio/$pasta/$sl_cod_doc.xml";
+                        $arquivopdf = "./upload/laudo/$convenio/$pasta/$sl_cod_doc.pdf";
                         unlink($arquivoxml);
                         unlink($arquivopdf);
                     }
@@ -2092,7 +2092,7 @@ class Laudo extends BaseController {
                                 <NJ_CodPaciente>" . $item->paciente_id . "</NJ_CodPaciente>
                                 <NJ_NomePaciente>" . $item->paciente . "</NJ_NomePaciente>
                                 <NJ_Laudo>" . $item->ambulatorio_laudo_id . "</NJ_Laudo>
-                                <NJ_LocalLaudo>/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "</NJ_LocalLaudo>
+                                <NJ_LocalLaudo>./upload/laudo/" . $convenio . "</NJ_LocalLaudo>
                                 <NJ_FormatoLaudo>RTF</NJ_FormatoLaudo>
                                 <NJ_NomeMedicoLaudante>" . $item->medicosolicitante . "</NJ_NomeMedicoLaudante>
                                 <NJ_Detalhes>";
@@ -2106,13 +2106,13 @@ class Laudo extends BaseController {
                 $rodape = "</NJ_Detalhes>
                        </NAJA>";
 
-                $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . ".xml";
+                $nome = "./upload/laudo/" . $convenio . "/" . $item->paciente_id . ".xml";
                 $xml = $cabecalho . $corpo . $rodape;
                 $fp = fopen($nome, "w+");
                 fwrite($fp, $xml . "\n");
                 fclose($fp);
 
-                $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $item->paciente_id . ".rtf";
+                $nome = "./upload/laudo/" . $convenio . "/" . $item->paciente_id . ".rtf";
                 $rtf = $texto;
                 $fp = fopen($nome, "w+");
                 fwrite($fp, $rtf . "\n");
@@ -2138,7 +2138,7 @@ class Laudo extends BaseController {
 
             $convenio = $listarexame[0]->convenio;
 
-            $origem = "/home/sisprod/projetos/clinica/upload/laudo";
+            $origem = "./upload/laudo";
 
             if (!is_dir($origem)) {
                 mkdir($origem);
@@ -2211,13 +2211,13 @@ class Laudo extends BaseController {
                        <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
 
-                        $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
+                        $nome = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
                         $xml = $cabecalho . $corpo . $fim_numguia . $rodape;
                         $fp = fopen($nome, "w+");
                         fwrite($fp, $xml . "\n");
                         fclose($fp);
 
-                        $nomepdf = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".pdf";
+                        $nomepdf = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".pdf";
                         $cabecalhopdf = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $item->paciente . " <br>Emiss&atilde;o: </td></tr></table>";
                         $rodapepdf = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
                         salvapdf($texto, $nomepdf, $cabecalhopdf, $rodapepdf);
@@ -2225,17 +2225,17 @@ class Laudo extends BaseController {
 
                         $zip = new ZipArchive;
                         $this->load->helper('directory');
-                        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/laudo/$convenio/");
+                        $arquivo_pasta = directory_map("./upload/laudo/$convenio/");
                         $pasta = $item->paciente_id;
                         if ($arquivo_pasta != false) {
                             foreach ($arquivo_pasta as $value) {
-                                $zip->open("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$sl_cod_doc.zip", ZipArchive::CREATE);
-                                $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$value", "$sl_cod_doc.xml");
-                                $zip->addFile("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$value", "$sl_cod_doc.pdf");
+                                $zip->open("./upload/laudo/$convenio/$sl_cod_doc.zip", ZipArchive::CREATE);
+                                $zip->addFile("./upload/laudo/$convenio/$value", "$sl_cod_doc.xml");
+                                $zip->addFile("./upload/laudo/$convenio/$value", "$sl_cod_doc.pdf");
                                 $zip->close();
                             }
-                            $arquivoxml = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$sl_cod_doc.xml";
-                            $arquivopdf = "/home/sisprod/projetos/clinica/upload/laudo/$convenio/$sl_cod_doc.pdf";
+                            $arquivoxml = "./upload/laudo/$convenio/$sl_cod_doc.xml";
+                            $arquivopdf = "./upload/laudo/$convenio/$sl_cod_doc.pdf";
                             unlink($arquivoxml);
                             unlink($arquivopdf);
                         }
@@ -2255,7 +2255,7 @@ class Laudo extends BaseController {
                                 <NJ_CodPaciente>" . $listarexame[0]->paciente_id . "</NJ_CodPaciente>
                                 <NJ_NomePaciente>" . $listarexame[0]->paciente . "</NJ_NomePaciente>
                                 <NJ_Laudo>" . $listarexame[0]->ambulatorio_laudo_id . "</NJ_Laudo>
-                                <NJ_LocalLaudo>/home/sisprod/projetos/clinica/upload/laudo" . $convenio . "/" . $listarexame[0]->paciente_id . "</NJ_LocalLaudo>
+                                <NJ_LocalLaudo>./upload/laudo" . $convenio . "/" . $listarexame[0]->paciente_id . "</NJ_LocalLaudo>
                                 <NJ_FormatoLaudo>RTF</NJ_FormatoLaudo>
                                 <NJ_NomeMedicoLaudante>" . $listarexame[0]->medicosolicitante . "</NJ_NomeMedicoLaudante>
                                <NJ_Detalhes>";
@@ -2270,13 +2270,13 @@ class Laudo extends BaseController {
                 $rodape = "</NJ_Detalhes>
                        </NAJA>";
 
-                $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $listarexame[0]->paciente_id . "/" . $listarexame[0]->paciente_id . ".xml";
+                $nome = "./upload/laudo/" . $convenio . "/" . $listarexame[0]->paciente_id . "/" . $listarexame[0]->paciente_id . ".xml";
                 $xml = $cabecalho . $corpo . $rodape;
                 $fp = fopen($nome, "w+");
                 fwrite($fp, $xml . "\n");
                 fclose($fp);
 
-                $nome = "/home/sisprod/projetos/clinica/upload/laudo/" . $convenio . "/" . $listarexame[0]->paciente_id . "/" . $listarexame[0]->paciente_id . ".rtf";
+                $nome = "./upload/laudo/" . $convenio . "/" . $listarexame[0]->paciente_id . "/" . $listarexame[0]->paciente_id . ".rtf";
                 $rtf = $texto;
                 $fp = fopen($nome, "w+");
                 fwrite($fp, $rtf . "\n");
@@ -2296,7 +2296,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $this->load->helper('directory');
         $data['mensagem'] = $messagem;
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
         //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);

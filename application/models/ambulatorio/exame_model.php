@@ -417,6 +417,18 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listartodassalascalendario() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('exame_sala_id,
+                            nome');
+        $this->db->from('tb_exame_sala');
+//        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('excluido', 'f');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarcaixaempresa() {
         $empresa_id = $this->session->userdata('empresa_id');
@@ -1333,6 +1345,9 @@ class exame_model extends Model {
         if ($contador == 0) {
             $this->db->where('ae.data >=', $data);
         }
+        if ($contador == 0) {
+            $this->db->where('ae.data >=', $data);
+        }
         $this->db->where('ae.tipo', 'EXAME');
 
         if (empty($args['empresa']) || $args['empresa'] == '') {
@@ -1359,6 +1374,8 @@ class exame_model extends Model {
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+        }else{
+            $this->db->where('ae.data', date("Y-m-d"));
         }
 //        var_dump($args['sala']); die;
         if (isset($args['sala']) && strlen($args['sala']) > 0) {

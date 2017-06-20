@@ -87,7 +87,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->sala; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  alt="numeromask" value="1" class="texto00"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  alt="" value="1" class="texto00"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1"/>
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
@@ -131,7 +131,14 @@
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="text" alt="date" name="data[<?= $i; ?>]" id="data<?= $i; ?>" class="size1" /></td>
-                                <td class="<?php echo $estilo_linha; ?>" ><input type="text" name="ordenador" class="texto01"/></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                    <select name="ordenador" id="ordenador" class="size1" >
+                                        <option value='1' >Normal</option>
+                                        <option value='2' >Prioridade</option>
+                                        <option value='3' >Urgência</option>
+
+                                    </select>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="checkbox" name="confimado[<?= $i; ?>]" id="checkbox<?= $i; ?>" /><input type="hidden" name="agenda_exames_id[<?= $i; ?>]" value="<?= $agenda_exame_id; ?>" /></td>
 
                             </tr>
@@ -168,8 +175,19 @@
 <? for ($b = 1; $b <= $i; $b++) { ?>
 
     <? $it = ($b == 1) ? '' : $b; ?>
-                                convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
-                                proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
+        <? if(@$exames[$b - 1]->convenio_agenda != ''){?>
+            convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
+        <?}else{?>
+             convenio_agendado[<?= $b - 1 ?>] = '';
+       <? }?>
+           
+        <? if(@$exames[$b - 1]->procedimento_tuss_id != ''){?>
+           proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
+        <?}else{?>
+             proc_agendado[<?= $b - 1 ?>] = '';
+       <? }?>
+                                
+                                
 
                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio<?= $it ?>', {convenio<?= $b ?>: convenio_agendado[<?= $b - 1 ?>], ajax: true}, function (t) {
     //                      alert(proc_agendado);

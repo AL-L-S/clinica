@@ -99,9 +99,20 @@
                             $diff = $date_time->diff(new DateTime($dataFuturo));
                             $teste = $diff->format('%H:%I:%S');
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            
+                           
+                            if($item->ordenador == 1){
+                               $ordenador = 'Normal';  
+                            }elseif($item->ordenador == 2){
+                                $ordenador = 'Prioridade';  
+                            }elseif($item->ordenador == 3){
+                                $ordenador = 'Urgência';  
+                            }else{
+                                $ordenador = $item->ordenador;
+                            }
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->ordenador; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $ordenador; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examepacientedetalhes/<?= $item->paciente_id; ?>/<?= $item->procedimento_tuss_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id; ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $item->paciente; ?></a></td>
                                 <?
                                 $idade = date("Y-m-d") - $item->nascimento;

@@ -243,7 +243,7 @@ class pacientes extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['paciente'] = $this->paciente->listardados($data['paciente_id']);
-        $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
+        $data['consultasanteriores'] = $this->exametemp->listarfisioterapiaanterior($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaragendaspacientefisioterapia($paciente_id);
         $this->loadView('ambulatorio/procedimentoautorizarfisioterapia-form', $data);

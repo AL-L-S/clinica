@@ -19,69 +19,69 @@ $idade = $diff->format('%Y');
 <table>
     <tbody>
         <tr style="text-align: center;">
-            <td width="70%;" ><font size = -1><?= $exame[0]->razao_social; ?></td>
-            <!--<td ><font size = -1>Emissao:<?= str_replace("-", "/", $emissao); ?></td>-->
+            <td width="70%;" ><font ><?= $exame[0]->razao_social; ?></td>
+            <!--<td ><font >Emissao:<?= str_replace("-", "/", $emissao); ?></td>-->
         </tr>
         <tr style="text-align: center;">
-            <td ><font size = -1><?= $exame[0]->logradouro; ?><?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?></td>
+            <td ><font ><?= $exame[0]->logradouro; ?><?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?></td>
             <td ></td>
         </tr>
         <tr style="text-align: center;">
-            <td ><font size = -1>Fone: <?= $exame[0]->telefone; ?></td>
+            <td ><font >Fone: <?= $exame[0]->telefone; ?></td>
             <td ></td>
         </tr>
         <tr>
             <td style="text-align: center;" ><font size = +2><u>RECIBO</u></font></td>
         </tr>
         <!--<tr>
-            <td ><font size = -1>N&SmallCircle;: <?= $exame[0]->agenda_exames_id; ?></font></td>
+            <td ><font >N&SmallCircle;: <?= $exame[0]->agenda_exames_id; ?></font></td>
         </tr>-->
 
         <tr>
-            <td ><font size = -1>DATA: <?= substr($exame[0]->data, 8, 2) . "/" . substr($exame[0]->data, 5, 2) . "/" . substr($exame[0]->data, 0, 4); ?> HORA: <?= substr($dataatualizacao, 10, 6); ?></font></td>
+            <td ><font >DATA: <?= substr($exame[0]->data, 8, 2) . "/" . substr($exame[0]->data, 5, 2) . "/" . substr($exame[0]->data, 0, 4); ?> HORA: <?= substr($dataatualizacao, 10, 6); ?></font></td>
         </tr>
         <tr>
-            <td ><font size = -1>Paciente: <?= utf8_decode($paciente['0']->nome); ?></font></td>
+            <td ><font >Paciente: <?= $paciente['0']->nome; ?></font></td>
         </tr>
         <tr>
-            <td ><font size = -1>D/N: <?= date("d/m/Y", strtotime(str_replace("/", "-", $paciente['0']->nascimento))); ?></font></td>
-            <td ><font size = -1>Idade: <?= $idade; ?></font></td>
+            <td ><font >D/N: <?= date("d/m/Y", strtotime(str_replace("/", "-", $paciente['0']->nascimento))); ?></font></td>
+            <td ><font >Idade: <?= $idade; ?></font></td>
         </tr>
         <tr>
-            <td ><font size = -1>CPF: <?= $paciente['0']->cpf; ?></font></td>
-            <td ><font size = -1>RG: <?= $paciente['0']->rg; ?></font></td>
+            <td ><font >CPF: <?= $paciente['0']->cpf; ?></font></td>
+            <td ><font >RG: <?= $paciente['0']->rg; ?></font></td>
         </tr>
         <tr>
-            <td ><font size = -1>Telefone: <?= $paciente['0']->telefone; ?>/<?= $paciente['0']->celular; ?></font></td>
-            <!--<td ><font size = -1>RG: <?= $paciente['0']->rg; ?></font></td>-->
+            <td ><font >Telefone: <?= $paciente['0']->telefone; ?>/<?= $paciente['0']->celular; ?></font></td>
+            <!--<td ><font >RG: <?= $paciente['0']->rg; ?></font></td>-->
         </tr>
         <tr>
-            <td ><font size = -1>Atendente: <?= $exames['0']->atendente; ?></font></td>
-            <!--<td ><font size = -1>RG: <?= $paciente['0']->rg; ?></font></td>-->
+            <td ><font >Atendente: <?= $exames['0']->atendente; ?></font></td>
+            <!--<td ><font >RG: <?= $paciente['0']->rg; ?></font></td>-->
         </tr>
         <tr>
             <td >
                 <?
                 foreach ($exames as $value) :
-                    $convenios[] = utf8_decode($value->convenio);
+                    $convenios[] = $value->convenio;
                 endforeach;
                 $convenios = array_unique($convenios);
 //                var_dump($convenios); die;
                 $convenios = implode(' / ', $convenios);
                 ?>
-                <font size = -1>Convenio: <?= $convenios; ?>
+                <font >Convenio: <?= $convenios; ?>
                 </font>
             </td>
         </tr>
         <tr>
-            <td ><font size = -1>Previsão de Entrega: <?= substr($exame[0]->data_entrega, 8, 2) . "/" . substr($exame[0]->data_entrega, 5, 2) . "/" . substr($exame[0]->data_entrega, 0, 4) ?></font></td>
+            <td ><font >Previsão de Entrega: <?= substr($exame[0]->data_entrega, 8, 2) . "/" . substr($exame[0]->data_entrega, 5, 2) . "/" . substr($exame[0]->data_entrega, 0, 4) ?></font></td>
         </tr>
         <tr>
-            <th ><font size = -1>-----------------------------------------------------------------------------</font></th>
+            <th ><font >-----------------------------------------------------------------------------</font></th>
         </tr>
         <tr>
-            <td ><font size = -1>Procedimento</font></td>
-            <td ><font size = -1>Valor</font></td>
+            <td ><font >Procedimento</font></td>
+            <td ><font >Valor</font></td>
         </tr>
         <?
         foreach ($exames as $item) :
@@ -117,12 +117,12 @@ $idade = $diff->format('%Y');
             }
             ?>
             <tr>
-                <td ><font size = -1>
-                    <? echo utf8_decode($item->procedimento);
+                <td ><font >
+                    <? echo $item->procedimento;
                     ?>
                     </font>
                 </td>
-                <td><font size = -1>
+                <td><font >
                     <?
                     echo
                     number_format($item->valor_total, 2, ',', '.');
@@ -142,16 +142,28 @@ $idade = $diff->format('%Y');
         <?= $item->valor_total ?>
 </td>-->
         <tr>
-            <td ><font size = -1>-------------------------------------------------------------</font></td>
+            <td ><font >-------------------------------------------------------------</font></td>
         </tr>
         <tr>
-            <td ><font size = -1><b>TOTAL R$ <?= number_format($totalpagar, 2, ',', '.') ?> <?= $formas; ?></b></font></td>
+            <td ><font ><b>TOTAL R$ <?= number_format($totalpagar, 2, ',', '.') ?> <?= $formas; ?></b></font></td>
         </tr>
         <tr>
-            <td ><font size = -1>-------------------------------------------------------------</font></td>
+            <td ><font >-------------------------------------------------------------</font></td>
         </tr>
         <tr>
-            <td ><font size = -1><b>TRAZER ESTA VIA PARA RECEBIMENTO DE EXAMES</b></font></td>
+            <td ><font ><b>TRAZER ESTA VIA PARA RECEBIMENTO DE EXAMES</b></font></td>
+        </tr>
+        <tr>
+            <td ><br>&nbsp;</td>
+        </tr>
+        <tr>
+            <td ><br>&nbsp;</td>
+        </tr>
+        <tr>
+            <td ><br>&nbsp;</td>
+        </tr>
+        <tr>
+            <td ><br>&nbsp;</td>
         </tr>
 
 </table>

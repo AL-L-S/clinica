@@ -33,9 +33,22 @@
                     <?
                     foreach ($convenio as $item) :
                         ?>
-                        <option value="<?= $item->convenio_id; ?>" onclick="invisivel('<? echo $item->nome ?>');"><?= $item->nome; ?></option>
+                        <option value="<?= $item->convenio_id; ?>"  onclick="invisivel('<? echo $item->nome ?>');" onkeypress="invisivel('<? echo $item->nome ?>');"><?= $item->nome; ?></option>
                     <? endforeach; ?>
                 </select>
+                <label for="grupo1">Grupo</label>
+                <select  name="grupo1" id="grupo1" class="text ui-widget-content ui-corner-all" >
+                    <option value="">Selecione</option>
+                    <?
+//                    $lastGrupo = $exames[count($exames) - 1]->grupo;
+                    foreach ($grupos as $item) :
+                        ?>
+                        <option value="<?= $item->nome; ?>" <? if ($lastGrupo == $item->nome) echo 'selected'; ?>>
+                            <?= $item->nome; ?>
+                        </option>
+                    <? endforeach; ?>
+                </select>
+
                 <label for="procedimento">Procedimento</label>
                 <select  name="procedimento" id="procedimento" class="text ui-widget-content ui-corner-all" >
                     <option value="selecione">Selecione</option>
@@ -46,7 +59,7 @@
                 <input type="valor" name="valor" id="valor" class="text ui-widget-content ui-corner-all">
                 <label for="descricao">Descrição</label>
                 <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1"> </textarea>
-                        
+
 
                 <!-- Allow form submission with keyboard without duplicating the dialog button -->
                 <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
@@ -75,7 +88,7 @@
                     <tr class="ui-widget-header">
                         <td class="tabela_header" colspan="6"><center>Valor Total: R$ <? echo $valor_total ?></center></td>
                         <!--<td class="tabela_header" colspan="4"></td>-->
-                    </tr>
+                </tr>
                 </tfoot>
             </table>
             <form method="post" action="<?= base_url() ?>ambulatorio/procedimentoplano/imprimirorcamento">
@@ -136,7 +149,7 @@
                                             "<td>" + procedimento.val() + "</td>" +
                                             "<td>" + descricao.val() + "</td>" +
                                             "<td>" + qtde.val() + "</td>" +
-                                            "<td >" + valor.val().replace("," , ".") + "</td>" +
+                                            "<td >" + valor.val().replace(",", ".") + "</td>" +
                                             "</tr>");
                                     $("#form tbody").append("<tr>" +
                                             "<td><input name='convenio[]' type='hidden' value='" + convenio.val() + "' /></td>" +
@@ -148,13 +161,13 @@
 
                                     $("#users tfoot tr").remove();
                                     valor_replace = valor.val();
-                                    valor_replace = valor_replace.replace("," , ".");
-                                    valor_parcial = valor_parcial + (parseFloat(valor_replace) * parseFloat(qtde.val())) ;
+                                    valor_replace = valor_replace.replace(",", ".");
+                                    valor_parcial = valor_parcial + (parseFloat(valor_replace) * parseFloat(qtde.val()));
                                     $("#users tfoot").append("<tr>" +
                                             "<td class='tabela_header' colspan='5' ><center>" + 'Valor Total: R$ ' + valor_parcial + "</center></td>" +
                                             "</tr>");
 
-                                    dialog.dialog("close");
+//                                    dialog.dialog("close");
                                 }
 
 
@@ -215,6 +228,24 @@
                             });
                         });
 
+                        $(function () {
+                            $('#grupo1').change(function () {
+//                                                if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio').val()}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        procedimento = "'" + j[c].procedimento + "'";
+                                        options += '<option onclick="invisivel2(' + procedimento + ')" value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+                                    $('#procedimento').html(options).show();
+                                    $('.carregando').hide();
+                                });
+//                                                } else {
+//                                                    $('#procedimento1').html('<option value="">Selecione</option>');
+//                                                }
+                            });
+                        });
 
                         $(function () {
                             $('#procedimento').change(function () {

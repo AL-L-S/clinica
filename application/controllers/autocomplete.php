@@ -385,6 +385,7 @@ class Autocomplete extends Controller {
                 $especialidade = null;
             }
             $sala = $_POST['sala'];
+            $empresa = $_POST['empresa'];
 
             $dia = date("d", strtotime($item->data));
             $mes = date("m", strtotime($item->data));
@@ -392,7 +393,7 @@ class Autocomplete extends Controller {
 
 //            $medico = $item->medico;
 
-            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=&sala=$sala&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
+            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=$empresa&sala=$sala&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
 
 
             $var[] = $retorno;
@@ -1839,6 +1840,16 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompletegrupoempresa($_GET['txtgrupo']);
         } else {
             $result = $this->exametemp->listarautocompletegrupoempresa();
+        }
+
+        echo json_encode($result);
+    }
+    function grupoempresasala() {
+//        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['txtgrupo'])) {
+            $result = $this->exametemp->listarautocompletegrupoempresasala($_GET['txtgrupo']);
+        } else {
+            $result = $this->exametemp->listarautocompletegrupoempresasala();
         }
 
         echo json_encode($result);

@@ -146,9 +146,9 @@
                                         foreach ($grupos as $item) :
                                             ?>
                                             <option value="<?= $item->nome; ?>" <? if ($lastGrupo == $item->nome) echo 'selected'; ?>>
-                                            <?= $item->nome; ?>
+                                                <?= $item->nome; ?>
                                             </option>
-<? endforeach; ?>
+                                        <? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="50px;">
@@ -164,7 +164,7 @@
                                         <option value="0">Selecione</option>
                                         <? foreach ($forma_pagamento as $item) : ?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-<? endforeach; ?>
+                                        <? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="50px;">
@@ -182,8 +182,15 @@
                                 </td>
 
                                 <td  width="70px;"><input type="text" id="data" name="data" class="size1"/></td>
-<? // var_dump($ordenador1); die; ?>
-                                <td  width="70px;"><input type="text" name="ordenador" id="ordenador" value="<?= $ordenador1; ?>" class="texto01"/></td>
+                                <? // var_dump($ordenador1); die; ?>
+                                <td  width="70px;">
+                                    <select name="ordenador" id="ordenador" class="size1" >
+                                        <option value='1' >Normal</option>
+                                        <option value='2' >Prioridade</option>
+                                        <option value='3' >Urgência</option>
+
+                                    </select>
+                                </td>
 <!--                                <td  width="70px;"><input type="text" name="observacao" id="observacao" class="texto04"/></td>-->
                             </tr>
 
@@ -265,7 +272,7 @@
                                                             </a></div>
                                                     </td>
                                                 <? } ?>
-                <? } ?>
+                                            <? } ?>
                                         </tr>
                                     </tbody>
                                     <?
@@ -345,7 +352,7 @@
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                                         </a></div>
                                                 </td>
-                    <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
                                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
@@ -371,12 +378,18 @@
                                     <th class="tabela_footer" colspan="6">
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
-        <? if ($perfil_id == 1 || $faturado == 0) { ?>
+                                    <? if ($perfil_id == 1 || $faturado == 0) { ?>
                                         <th colspan="2" align="center"><center><div class="bt_linkf">
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
-                                        </a></div></center></th>
-        <? } ?>
+                                        </a></div></center>
+                                        </th>
+                                        <th colspan="2" align="center"><center><div class="bt_linkf">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+
+                                        </a></div></center>
+                                        </th>
+                            <? } ?>
                             </tr>
                             </tfoot>
                         </table> 
