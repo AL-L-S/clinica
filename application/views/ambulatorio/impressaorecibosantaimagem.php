@@ -154,16 +154,16 @@ $idade = $diff->format('%Y');
             <td ><font ><b>TRAZER ESTA VIA PARA RECEBIMENTO DE EXAMES</b></font></td>
         </tr>
         <tr>
-            <td ><br>&nbsp;</td>
+            <td ><br>.&nbsp;</td>
         </tr>
         <tr>
-            <td ><br>&nbsp;</td>
+            <td ><br>.&nbsp;</td>
         </tr>
         <tr>
-            <td ><br>&nbsp;</td>
+            <td ><br>.&nbsp;</td>
         </tr>
         <tr>
-            <td ><br>&nbsp;</td>
+            <td ><br>.&nbsp;</td>
         </tr>
 
 </table>

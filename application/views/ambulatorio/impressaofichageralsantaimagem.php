@@ -174,16 +174,16 @@ $agenda = $exame[0]->agenda;
         <td ><font size = ><b>TOTAL R$ <?= number_format($totalpagar, 2, ',', '.') ?> <?= $formas; ?></b></font></td>
     </tr>
     <tr>
-        <td ><br>&nbsp;</td>
+        <td ><br>.&nbsp;</td>
     </tr>
     <tr>
-        <td ><br>&nbsp;</td>
+        <td ><br>.&nbsp;</td>
     </tr>
     <tr>
-        <td ><br>&nbsp;</td>
+        <td ><br>.&nbsp;</td>
     </tr>
     <tr>
-        <td ><br>&nbsp;</td>
+        <td ><br>.&nbsp;</td>
     </tr>
 <!--        <tr>
         <td ><font ><b>TRAZER ESTA VIA PARA RECEBIMENTO DE EXAMES</b></font></td>
