@@ -181,7 +181,7 @@ class procedimentoplano_model extends Model {
             $this->db->where('pt.nome ilike', "%" . $_POST['procedimento'] . "%");
         }
         if (isset($_POST['promotor']) && strlen($_POST['promotor']) > 0) {
-            $this->db->where('o.nome ilike', "%" . $_POST['promotor'] . "%");
+            $this->db->where('pi.nome ilike', "%" . $_POST['promotor'] . "%");
         }
 
 //        if (isset($_POST['valor']) && strlen($_POST['valor']) > 0) {

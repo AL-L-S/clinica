@@ -18,9 +18,9 @@
                     <tr>
                         <th colspan="5" class="tabela_title">
                     </tr>
-                <form method="post" action="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimento/<?= $dados; ?>">
+                <form method="post" action="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimentopromotor/<?= $dados; ?>">
                     <tr>
-                        <th class="tabela_title">Medico</th>  
+                        <th class="tabela_title">Promotor</th>  
                         <th class="tabela_title" width="10px;" >Valor</th>
                         <th class="tabela_title" >Procedimento</th>                         
                         <th class="tabela_title" width="10px;">Conv&ecirc;nio</th>
@@ -50,7 +50,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="tabela_header">Medico</th>
+                        <th class="tabela_header">Promotor</th>
                         <th class="tabela_header" width="40px;">Valor</th>
                         <td class="tabela_header" width="90px;"></td>
                         <th class="tabela_header">Procedimento</th>
