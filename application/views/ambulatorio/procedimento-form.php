@@ -137,6 +137,7 @@
                             ?>>N&Atilde;O</option>
                         </select>
                     </dd>
+                    
                     <dt>
                         <label>Medico</label>
                     </dt>
@@ -176,6 +177,31 @@
                             ?>>N&Atilde;O</option>
                         </select>
                     </dd>
+<!--                    <dt>
+                        <label>Perc./Valor Promotor</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtperc_promotor" id="txtperc_promotor" class="texto" value="<?= @$obj->_valor_promotor; ?>" />
+                    </dd>
+                    <dt>
+                        <label>Promotor Percentual</label>
+                    </dt>
+                    <dd>
+                        <select name="percentual_promotor" id="percentual_promotor" class="size2">
+                            <option value="" <?
+                            if (@$obj->_percentual_promotor == ""):echo 'selected';
+                            endif;
+                            ?>>Selecione</option>
+                            <option value="1" <?
+                            if (@$obj->_percentual_promotor == "t"):echo 'selected';
+                            endif;
+                            ?>>SIM</option>
+                            <option value="0" <?
+                            if (@$obj->_percentual_promotor == "f"):echo 'selected';
+                            endif;
+                            ?>>N&Atilde;O</option>
+                        </select>
+                    </dd>-->
                     <dt>
                         <label>Qtde de sess&otilde;es</label>
                     </dt>

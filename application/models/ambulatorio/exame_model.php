@@ -417,7 +417,7 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listartodassalascalendario() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,
@@ -1291,7 +1291,7 @@ class exame_model extends Model {
         }
         return $this->db;
     }
-    
+
     function listarexamemultifuncao2calendario($args = array()) {
         $data = date("Y-m-d");
         $contador = count($args);
@@ -1374,7 +1374,7 @@ class exame_model extends Model {
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
-        }else{
+        } else {
             $this->db->where('ae.data', date("Y-m-d"));
         }
 //        var_dump($args['sala']); die;
@@ -3102,8 +3102,8 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
-        $this->db->orderby('ae.data');
         $this->db->orderby('pc.procedimento_convenio_id');
+        $this->db->orderby('ae.data');
         $this->db->orderby('ae.numero_sessao');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.paciente_id', $paciente_id);
@@ -3252,6 +3252,7 @@ class exame_model extends Model {
         $operador_id = $this->session->userdata('operador_id');
         $dataAtual = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
                             ae.data,
@@ -3310,6 +3311,9 @@ class exame_model extends Model {
             $this->db->where('ae.medico_agenda', $operador_id);
             $this->db->where('ae.data', $dataAtual);
         } else {
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_agenda', $operador_id);
+            }
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
@@ -3538,6 +3542,7 @@ class exame_model extends Model {
         $teste = empty($args);
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $dataAtual = date("Y-m-d");
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
@@ -3581,6 +3586,9 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);
         } else {
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            }
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
@@ -3702,6 +3710,7 @@ class exame_model extends Model {
     function listarmultifuncao2geral($args = array()) {
         $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
         $dataAtual = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
@@ -3758,6 +3767,9 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);
         } else {
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            }
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
             }
@@ -6358,7 +6370,7 @@ AND ae.data >= '$data_inicio'
 AND ae.data <= '$data_fim' 
 AND c.convenio_id = $convenio_id 
 ORDER BY ae.agenda_exames_id)";
-            
+
 //            var_dump($data30); die;
             $this->db->query($sql);
 

@@ -41,7 +41,7 @@
                 </tr>
             <? } ?>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
             </tr>
 
         </thead>
@@ -63,8 +63,11 @@
         <table border="1">
             <thead>
                 <tr>
-                    <td class="tabela_teste">Nome</td>
-                    <td class="tabela_teste">Recomendação</td>
+                    <th class="tabela_teste">Nome</th>
+                    <th class="tabela_teste">Recomendação</th>
+                    <th class="tabela_teste">Procedimento</th>
+                    <th class="tabela_teste">Valor do Promotor</th>
+                    <th class="tabela_teste">Valor Recebido R$</th>
                 </tr>
             </thead>
             <hr>
@@ -77,28 +80,69 @@
                 $tecnicos = "";
                 $paciente = "";
                 $indicacao = "";
+                $perc = 0;
+                $totalgeral = 0;
+                $totalperc = 0;
+                foreach ($indicacao_valor as $value) {
+                    $data[$value->nome] = '';
+                    $numero[$value->nome] = 0;
+                    $valor[$value->nome] = 0;
+                }
+//                    var_dump($data); die;
+
                 foreach ($relatorio as $item) :
                     $i++;
                     $qtdetotal++;
+                    $valor_total = $item->valor_total;
+                    ?>
+                    <?
+                    if ($item->percentual_promotor == "t") {
+                        $simbolopercebtual = " %";
+
+                        $valorpercentualmedico = $item->valor_promotor;
+
+                        $perc = $valor_total * ($valorpercentualmedico / 100);
+                        $totalperc = $totalperc + $perc;
+                        $totalgeral = $totalgeral + $valor_total;
+                        $data[$item->indicacao] = $item->indicacao;
+                        $numero[$item->indicacao] ++;
+                        $valor[$item->indicacao] = $valor[$item->indicacao] + $perc;
+                        $valor_promotor = $item->valor_promotor . $simbolopercebtual;
+                    } else {
+                        $simbolopercebtual = "";
+                        $valorpercentualmedico = $item->valor_promotor;
+
+                        $perc = $valorpercentualmedico;
+                        $totalperc = $totalperc + $perc;
+                        $totalgeral = $totalgeral + $valor_total;
+                        $data[$item->indicacao] = $item->indicacao;
+                        $numero[$item->indicacao] ++;
+                        $valor[$item->indicacao] = $valor[$item->indicacao] + $perc;
+                        $valor_promotor = "R$ ".  number_format($item->valor_promotor, 2, ",", ".")  ;
+                    }
                     ?>
                     <tr>
 
                         <td><?= utf8_decode($item->paciente); ?></td>
 
                         <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
+                        <td style='text-align: center;'><font size="-2"><?= $item->procedimento ?></td>
+                        <td style='text-align: center;'><font size="-2"><?= $valor_promotor ?></td>
+                        <td style='text-align: center;'><font size="-1"><?="R$ ". number_format($perc, 2, ",", "."); ?></td>
                     </tr>
                 <? endforeach; ?>
 
                 <tr>
-                    <td width="140px;" align="Right" colspan="2"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
+                    <td width="140px;" align="Right" colspan="4"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
                 </tr>
             </tbody>
         </table>
         <table border="1">
             <thead>
                 <tr>
-                    <td class="tabela_teste">Recomendação</th>
-                    <td class="tabela_teste">Qtde</th>
+                    <th class="tabela_teste">Recomendação</th>
+                    <th class="tabela_teste">Qtde</th>
+                    <th class="tabela_teste">Valor R$</th>
                 </tr>
             </thead>
             <hr>
@@ -107,20 +151,21 @@
                 foreach ($consolidado as $item) :
                     $b++;
                     $qtde++;
-                        ?>
+                    ?>
 
-                        <tr>
-                            <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
-                            <td><?= $item->quantidade; ?></td>
-                        </tr>
+                    <tr>
+                        <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
+                        <td><?= $item->quantidade; ?></td>
+                        <td><?= number_format($valor[$item->indicacao], 2, ",", "."); ?></td>
+                    </tr>
 
-    <? endforeach; ?>
+                <? endforeach; ?>
             </tbody>
         </table>
-   <?if($_POST['grafico'] == '1' && $indicacao == '0' ){?>
-        <div id="grafico" style="height: 300px;"></div>
-    <?}?>
-        
+        <? if ($_POST['grafico'] == '1' && $indicacao == '0') { ?>
+            <div id="grafico" style="height: 300px;"></div>
+        <? } ?>
+
     <? } else {
         ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
@@ -144,7 +189,7 @@
         // the chart.
         data: [
 <? foreach ($consolidado as $item) { ?>
-                {indicacao: '<?= $item->indicacao; ?>', quantidade: <?= $item->quantidade; ?>, label:'<?= substr($item->indicacao, 0,11); ?>'},
+                {indicacao: '<?= $item->indicacao; ?>', quantidade: <?= $item->quantidade; ?>, label: '<?= substr($item->indicacao, 0, 11); ?>'},
 <? } ?>
 
         ],

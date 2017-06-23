@@ -9,7 +9,7 @@
                     <dt>
                     <label>Observacao</label>
                     </dt>
-                        <textarea type="text" name="txtobservacao" cols="55" class="texto12"><?= $observacao[0]->observacoes; ?></textarea>
+                        <textarea type="text" name="txtobservacao" cols="55" class="texto12"><?= @$observacao[0]->observacao_faturamento; ?></textarea>
 
                      
                 </dl>    

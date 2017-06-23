@@ -412,7 +412,7 @@
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $("#convenio1").val()}, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
-                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                                 }
                                                 $('#procedimento1').html(options).show();
                                                 $('.carregando').hide();

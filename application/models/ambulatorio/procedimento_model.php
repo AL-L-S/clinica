@@ -116,6 +116,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function listargruposconsulta() {
         $this->db->select('ambulatorio_grupo_id,
                             nome,
@@ -126,6 +127,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function listargruposespecialidade() {
         $this->db->select('ambulatorio_grupo_id,
                             nome,
@@ -136,6 +138,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function listargrupos() {
         $this->db->select('ambulatorio_grupo_id,
                             nome,
@@ -390,24 +393,30 @@ class procedimento_model extends Model {
             if ($_POST['entrega'] != '') {
                 $this->db->set('entrega', $_POST['entrega']);
             }
-            
+
             if (isset($_POST['rev'])) {
                 $this->db->set('revisao', 't');
                 $this->db->set('revisao_dias', $_POST['dias']);
-            } else{
+            } else {
                 $this->db->set('revisao', 'f');
             }
-            
+
             if (isset($_POST['salaPreparo'])) {
                 $this->db->set('sala_preparo', 't');
-            } else{
+            } else {
                 $this->db->set('sala_preparo', 'f');
             }
-            
+
             $this->db->set('grupo', $_POST['grupo']);
             if ($_POST['txtperc_medico'] != '') {
                 $this->db->set('perc_medico', str_replace(",", ".", $_POST['txtperc_medico']));
             }
+//
+//            if ($_POST['txtperc_promotor'] != '') {
+//                $this->db->set('valor_promotor', str_replace(",", ".", $_POST['txtperc_promotor']));
+//            }
+//
+//            $this->db->set('percentual_promotor', $_POST['percentual_promotor']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -494,20 +503,20 @@ class procedimento_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 //            var_dump((float)str_replace(".", "", str_replace(",", "", $_POST['valor']))); die;
-            
+
             /* inicia o mapeamento no banco */
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('convenio_id', $_POST['convenio']);
-            $this->db->set('qtdech',1);
-            $this->db->set('qtdefilme',0);
-            $this->db->set('valorfilme',0);
-            $this->db->set('qtdeporte',0);
-            $this->db->set('valorporte',0);
-            $this->db->set('qtdeuco',0);
+            $this->db->set('qtdech', 1);
+            $this->db->set('qtdefilme', 0);
+            $this->db->set('valorfilme', 0);
+            $this->db->set('qtdeporte', 0);
+            $this->db->set('valorporte', 0);
+            $this->db->set('qtdeuco', 0);
             $this->db->set('valoruco', 0);
-            $this->db->set('qtdech',1);
-            $this->db->set('valorch',str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
-            $this->db->set('valortotal',str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
+            $this->db->set('qtdech', 1);
+            $this->db->set('valorch', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
+            $this->db->set('valortotal', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_procedimento_convenio');
@@ -540,7 +549,7 @@ class procedimento_model extends Model {
         if ($procedimento_tuss_id != 0) {
             $this->db->select('pt.nome, pt.codigo, pt.grupo, pt.tuss_id, 
                                pt.home_care, pt.descricao_procedimento, pt.entrega, 
-                               pt.medico, pt.percentual,  t.descricao, pt.perc_medico, 
+                               pt.medico, pt.percentual,  t.descricao, pt.perc_medico,  pt.valor_promotor,  pt.percentual_promotor, 
                                pt.qtde, pt.dencidade_calorica, pt.proteinas, 
                                pt.carboidratos, pt.lipidios, pt.kcal,
                                pt.revisao, pt.sala_preparo, pt.revisao_dias');
@@ -569,6 +578,8 @@ class procedimento_model extends Model {
             $this->_revisao_dias = $return[0]->revisao_dias;
             $this->_revisao = $return[0]->revisao;
             $this->_sala_preparo = $return[0]->sala_preparo;
+            $this->_valor_promotor = $return[0]->valor_promotor;
+            $this->_percentual_promotor = $return[0]->percentual_promotor;
         } else {
             $this->_procedimento_tuss_id = null;
         }

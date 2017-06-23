@@ -144,7 +144,7 @@
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>" alt="numeromask" value="1" class="texto00"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1" class="texto00"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>
@@ -232,6 +232,9 @@
                                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
                                                                 var valor = a[0].valortotal;
                                                                 var qtde = a[0].qtde;
+                                                                if(qtde == 0){
+                                                                    qtde = 1;
+                                                                }
                                                                 document.getElementById("valor<?= $b ?>").value = valor;
                                                                 document.getElementById("qtde<?= $b ?>").value = qtde;
                                                                 $('.carregando').hide();
@@ -260,11 +263,13 @@
                                         $("#medico_id<?= $b; ?>").prop('required', true);
                                         $("#sala<?= $b; ?>").prop('required', true);
                                         $("#convenio<?= $b; ?>").prop('required', true);
+                                        $("#qtde<?= $b; ?>").prop('required', true);
                                         $("#procedimento<?= $b; ?>").prop('required', true);
                                     } else {
                                         $("#medico_id<?= $b; ?>").prop('required', false);
                                         $("#sala<?= $b; ?>").prop('required', false);
                                         $("#convenio<?= $b; ?>").prop('required', false);
+                                        $("#qtde<?= $b; ?>").prop('required', false);
                                         $("#procedimento<?= $b; ?>").prop('required', false);
                                     }
                                 });
@@ -478,7 +483,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor1").value = options;
                                         document.getElementById("qtde1").value = qtde;
                                         $('.carregando').hide();
@@ -533,7 +542,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor2").value = options;
                                         document.getElementById("qtde2").value = qtde;
                                         $('.carregando').hide();
@@ -587,7 +600,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor3").value = options;
                                         document.getElementById("qtde3").value = qtde;
                                         $('.carregando').hide();
@@ -642,7 +659,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor4").value = options;
                                         document.getElementById("qtde4").value = qtde;
                                         $('.carregando').hide();
@@ -697,7 +718,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor5").value = options;
                                         document.getElementById("qtde5").value = qtde;
                                         $('.carregando').hide();
@@ -752,7 +777,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor6").value = options;
                                         document.getElementById("qtde6").value = qtde;
                                         $('.carregando').hide();
@@ -807,7 +836,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor7").value = options;
                                         document.getElementById("qtde7").value = qtde;
                                         $('.carregando').hide();
@@ -862,7 +895,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor8").value = options;
                                         document.getElementById("qtde8").value = qtde;
                                         $('.carregando').hide();
@@ -917,7 +954,12 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
+                                        
                                         document.getElementById("valor9").value = options;
                                         document.getElementById("qtde9").value = qtde;
                                         $('.carregando').hide();
@@ -972,7 +1014,11 @@
                                         options = "";
                                         options += j[0].valortotal;
                                         qtde = "";
-                                        qtde += j[0].qtde;
+                                        if(j[0].qtde == ''){
+                                           qtde += j[0].qtde; 
+                                        }else{
+                                           qtde = 1; 
+                                        }
                                         document.getElementById("valor10").value = options;
                                         document.getElementById("qtde10").value = qtde;
                                         $('.carregando').hide();

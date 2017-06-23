@@ -135,7 +135,8 @@ CREATE TABLE ponto.tb_pacs
 
 
 -- AQUI TEM A LINHA DE COMANDO NECESSÁRIA PRA UTILIZAR NO TERMINAL PRA BAIXAR O CURL NO PHP
-# COPIAR A SEGUIR SEM AS ASPAS E EXECUTAR 'sudo apt-get install php5-curl -y && sudo service apache2 restart'
+
+------------ COPIAR A SEGUIR SEM AS ASPAS E EXECUTAR 'sudo apt-get install php5-curl -y && sudo service apache2 restart'------------------------
 
 
 -- 23/05/2017 TORNANDO MAIS FÁCIL A CRIAÇÃO DE AGENDA
@@ -224,3 +225,48 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN desconto_ajuste4 numeric(10,2);
 
 -- Dia 16/06/2017
 ALTER TABLE ponto.tb_exame_sala ADD COLUMN grupo character varying(100);
+
+-- Dia 21/06/2017
+
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_promotor numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_promotor boolean DEFAULT false;
+
+
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN valor_promotor numeric(10,2);
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN percentual_promotor boolean DEFAULT false;
+
+-- Dia 22/06/2017
+
+CREATE TABLE ponto.tb_procedimento_percentual_promotor
+(
+  procedimento_percentual_promotor_id serial,
+  procedimento_tuss_id integer,
+  promotor integer,
+  valor numeric(10,2),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_procedimento_percentual_promotor_pkey PRIMARY KEY (procedimento_percentual_promotor_id )
+);
+
+
+CREATE TABLE ponto.tb_procedimento_percentual_promotor_convenio
+(
+  procedimento_percentual_promotor_convenio_id serial,
+  procedimento_percentual_promotor_id integer,
+  promotor integer,
+  valor numeric(10,2),
+  percentual boolean DEFAULT true,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_procedimento_percentual_promotor_convenio_pkey PRIMARY KEY (procedimento_percentual_promotor_convenio_id )
+);
+
+
+

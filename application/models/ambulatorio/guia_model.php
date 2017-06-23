@@ -1958,11 +1958,18 @@ class guia_model extends Model {
     }
 
     function relatorioindicacaoexames() {
-        $this->db->select('p.nome as paciente, ae.paciente_id,
+        $this->db->select('p.nome as paciente, ae.paciente_id,ae.valor_promotor,ae.percentual_promotor, ae.valor_total,
+            pt.nome as procedimento,
+            ae.data,
+            pt.grupo,
+            c.nome as convenio,
             pi.nome as indicacao');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
         $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
 
         if ($_POST['indicacao'] != "0") {
             $this->db->where("ae.indicacao", $_POST['indicacao']);
@@ -3408,7 +3415,7 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->where('pc.procedimento_convenio_id', $procedimentopercentual);
 //        $this->db->where('pc.ativo', 'true');
-        $this->db->where('pt.ativo', 'true');
+//        $this->db->where('pt.ativo', 'true');
         $return = $this->db->get();
         return $return->result();
     }
@@ -8403,9 +8410,27 @@ ORDER BY ae.agenda_exames_id)";
             $query = $this->db->get();
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
+            if ($_POST['indicacao'] != "") {
+                $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                $this->db->where('m.procedimento_tuss_id', $_POST['procedimento1']);
+                $this->db->where('mc.promotor', $_POST['indicacao']);
+                $this->db->where('mc.ativo', 'true');
+//          $this->db->where('pc.ativo', 'true');
+//          $this->db->where('pt.ativo', 'true');
+                $return2 = $this->db->get()->result();
+            } else {
+                $return2 = array();
+            }
+//            var_dump($return2); die;
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
+            if (count($return2) > 0) {
+                $this->db->set('valor_promotor', $return2[0]->valor_promotor);
+                $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
+            }
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
@@ -8572,6 +8597,32 @@ ORDER BY ae.agenda_exames_id)";
             $data = date("Y-m-d");
             $qtde = $_POST['qtde'];
             for ($index = 1; $index <= $qtde; $index++) {
+                if ($_POST['indicacao'] != "") {
+                    $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                    $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                    $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                    $this->db->where('m.procedimento_tuss_id', $_POST['procedimento1']);
+                    $this->db->where('mc.promotor', $_POST['indicacao']);
+                    $this->db->where('mc.ativo', 'true');
+//          $this->db->where('pc.ativo', 'true');
+//          $this->db->where('pt.ativo', 'true');
+                    $return2 = $this->db->get()->result();
+                } else {
+                    $return2 = array();
+                }
+//            var_dump($return2); die;
+
+                if ($index == 1) {
+                    if (count($return2) > 0) {
+//                        var_dump($index, $_POST['indicacao']);
+                        $this->db->set('valor_promotor', $return2[0]->valor_promotor);
+                        $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
+                        $this->db->set('indicacao', $_POST['indicacao']);
+                    }
+                }
+
+                $hora = date("H:i:s");
+                $data = date("Y-m-d");
 
                 $this->db->set('valor_medico', $percentual[0]->perc_medico);
                 $this->db->set('percentual_medico', $percentual[0]->percentual);
@@ -8608,9 +8659,9 @@ ORDER BY ae.agenda_exames_id)";
                 if ($_POST['ordenador'] != "") {
                     $this->db->set('ordenador', $_POST['ordenador']);
                 }
-                if ($_POST['indicacao'] != "") {
-                    $this->db->set('indicacao', $_POST['indicacao']);
-                }
+//                if ($_POST['indicacao'] != "") {
+//                    $this->db->set('indicacao', $_POST['indicacao']);
+//                }
                 if ($medico_id != "") {
                     $this->db->set('medico_solicitante', $medico_id);
                     $this->db->set('tipo', 'EXAME');
@@ -8632,8 +8683,8 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('quantidade', '1');
                 $this->db->set('ativo', 'f');
                 $this->db->set('situacao', 'OK');
-                $this->db->set('guia_id', $ambulatorio_guia_id);
-                $this->db->set('agrupador_fisioterapia', $ambulatorio_guia_id);
+//                $this->db->set('guia_id', $ambulatorio_guia_id);
+//                $this->db->set('agrupador_fisioterapia', $ambulatorio_guia_id);
                 $this->db->set('numero_sessao', $index);
                 $this->db->set('qtde_sessao', $qtde);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
@@ -8648,12 +8699,13 @@ ORDER BY ae.agenda_exames_id)";
             if (trim($erro) != "") { // erro de banco
                 return -1;
             } else {
-                $agenda_exames_id = $this->db->insert_id();
-                $this->db->set('senha', md5($agenda_exames_id));
-                $this->db->where('agenda_exames_id', $agenda_exames_id);
-                $this->db->update('tb_agenda_exames');
+            $agenda_exames_id = $this->db->insert_id();
+            $this->db->set('senha', md5($agenda_exames_id));
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_agenda_exames');
             }
-//            var_dump($agenda_exames_id);die;
+//            var_dump($agenda_exames_id);
+//            die;
         } catch (Exception $exc) {
             return -1;
         }
@@ -8702,8 +8754,27 @@ ORDER BY ae.agenda_exames_id)";
             $dinheiro = $return[0]->dinheiro;
 
 
+            if ($_POST['indicacao'] != "") {
+                $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                $this->db->where('m.procedimento_tuss_id', $_POST['procedimento1']);
+                $this->db->where('mc.promotor', $_POST['indicacao']);
+                $this->db->where('mc.ativo', 'true');
+//          $this->db->where('pc.ativo', 'true');
+//          $this->db->where('pt.ativo', 'true');
+                $return2 = $this->db->get()->result();
+            } else {
+                $return2 = array();
+            }
+//            var_dump($return2); die;
+
             $hora = date("H:i:s");
             $data = date("Y-m-d");
+            if (count($return2) > 0) {
+                $this->db->set('valor_promotor', $return2[0]->valor_promotor);
+                $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
+            }
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
@@ -8793,6 +8864,25 @@ ORDER BY ae.agenda_exames_id)";
 
             $qtde = $_POST['qtde'];
             for ($index = 1; $index <= $qtde; $index++) {
+                if ($_POST['indicacao'] != "") {
+                    $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                    $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                    $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                    $this->db->where('m.procedimento_tuss_id', $_POST['procedimento1']);
+                    $this->db->where('mc.promotor', $_POST['indicacao']);
+                    $this->db->where('mc.ativo', 'true');
+//          $this->db->where('pc.ativo', 'true');
+//          $this->db->where('pt.ativo', 'true');
+                    $return2 = $this->db->get()->result();
+                } else {
+                    $return2 = array();
+                }
+//            var_dump($return2); die;
+
+                $hora = date("H:i:s");
+                $data = date("Y-m-d");
+
+
                 $this->db->set('valor_medico', $percentual[0]->perc_medico);
                 $this->db->set('percentual_medico', $percentual[0]->percentual);
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
@@ -8802,6 +8892,16 @@ ORDER BY ae.agenda_exames_id)";
                 }
                 $this->db->set('convenio_id', $_POST['convenio1']);
                 $this->db->set('quantidade', '1');
+                if ($index == 1) {
+                    if (count($return2) > 0) {
+//                        var_dump($index, $_POST['indicacao']);
+                        $this->db->set('valor_promotor', $return2[0]->valor_promotor);
+                        $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
+                        $this->db->set('indicacao', $_POST['indicacao']);
+                    }
+                }
+//              var_dump($_POST['indicacao']);
+//               die;
                 if ($dinheiro == "t") {
                     if ($index == 1 && $_POST['homecare'] != 't') {
                         $this->db->set('valor', $_POST['valor1']);
@@ -8848,9 +8948,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('tipo', 'ESPECIALIDADE');
                 $this->db->set('ativo', 'f');
                 $this->db->set('situacao', 'OK');
-                if ($_POST['indicacao'] != "") {
-                    $this->db->set('indicacao', $_POST['indicacao']);
-                }
+
                 $this->db->set('guia_id', $ambulatorio_guia_id);
                 $this->db->set('agrupador_fisioterapia', $ambulatorio_guia_id);
                 $this->db->set('numero_sessao', $index);

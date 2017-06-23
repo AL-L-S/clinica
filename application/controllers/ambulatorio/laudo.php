@@ -847,9 +847,7 @@ class Laudo extends BaseController {
           <td><img align = 'left'  width='330px' height='100px' src='img/cage.jpg'></td>
         </tr>
         <tr><td></td></tr>
-        <tr>
-        <td colspan='2'><b><center>" . $data['laudo']['0']->cabecalho . "</center></b></td>
-        </tr>
+        
         <tr><td>&nbsp;</td></tr>
         <tr>
         <td width='430px'>Nome.:" . $data['laudo']['0']->paciente . "</td><td>Idade:" . substr($teste, 0, 2) . "</td>
@@ -861,8 +859,8 @@ class Laudo extends BaseController {
         <td>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "</td><td></td>
         </tr>
         
-    <tr>
-        <td><b>VIDEOENDOSCOPIO:</b> Olympus Exera CV 145</td><td><b>MONITORIZA&Ccedil;&Atilde;O:</b> Oximetria de pulso</td>
+        <tr>
+        <td colspan='2'><b><center>" . $data['laudo']['0']->cabecalho . "</center></b></td>
         </tr>
         </table>";
             $rodape = "";
@@ -2532,8 +2530,8 @@ class Laudo extends BaseController {
             $config['mailtype'] = 'html';
             $config['charset'] = 'utf-8';
             $config['newline'] = "\r\n";
-            
-            if ($dados['pacienteEmail'] != '' && $dados['empresaEmail'] != '' && $dados['mensagem'] != '' && $dados['razao_social'] != ''){
+
+            if ($dados['pacienteEmail'] != '' && $dados['empresaEmail'] != '' && $dados['mensagem'] != '' && $dados['razao_social'] != '') {
                 $this->email->initialize($config);
                 $this->email->from($dados['empresaEmail'], $dados['razao_social']);
                 $this->email->to($dados['pacienteEmail']);

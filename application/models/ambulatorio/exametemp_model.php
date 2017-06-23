@@ -655,7 +655,7 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarfisioterapiaanterior($pacientetemp_id) {
         $data = date("Y-m-d");
         $this->db->select('a.agenda_exames_id,
@@ -3019,6 +3019,25 @@ class exametemp_model extends Model {
                         $percentual = $this->db->get()->result();
                     }
 
+                    if ($indicacao != "") {
+                        $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                        $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                        $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                        $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+                        $this->db->where('mc.promotor', $indicacao);
+                        $this->db->where('mc.ativo', 'true');
+//          $this->db->where('pc.ativo', 'true');
+//          $this->db->where('pt.ativo', 'true');
+                        $return2 = $this->db->get()->result();
+                    } else {
+                        $return2 = array();
+                    }
+//            var_dump($return2); die;
+
+//                    if ($index == 1) {
+                        
+//                    }
+
 //                var_dump($percentual); die;
 
                     foreach ($_POST['autorizacao'] as $itemautorizacao) {
@@ -3058,6 +3077,17 @@ class exametemp_model extends Model {
                     $empresa_id = $this->session->userdata('empresa_id');
                     $this->db->set('valor_medico', $percentual[0]->perc_medico);
                     $this->db->set('percentual_medico', $percentual[0]->percentual);
+                    if ($indicacao != "") {
+//                        $this->db->set('valor_promotor', $promotor[0]->valor_promotor);
+//                        $this->db->set('percentual_promotor', $promotor[0]->percentual_promotor);
+                        $this->db->set('indicacao', $indicacao);
+                    }
+                    if (count($return2) > 0) {
+//                        var_dump($index, $_POST['indicacao']);
+                            $this->db->set('valor_promotor', $return2[0]->valor_promotor);
+                            $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
+                            $this->db->set('indicacao', $indicacao);
+                    }
                     $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('paciente_id', $paciente_id);
                     $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
@@ -3068,9 +3098,9 @@ class exametemp_model extends Model {
                     if ($_POST['ordenador'] != "") {
                         $this->db->set('ordenador', $_POST['ordenador']);
                     }
-                    if ($indicacao != "") {
-                        $this->db->set('indicacao', $indicacao);
-                    }
+//                    if ($indicacao != "") {
+//                        
+//                    }
                     $this->db->set('medico_solicitante', $medico_id);
                     if ($medicoexecutante != "") {
                         $this->db->set('medico_agenda', $medicoexecutante);
@@ -3294,7 +3324,27 @@ class exametemp_model extends Model {
                         $percentual = $this->db->get()->result();
                     }
 //                var_dump($_POST['agenda_exames_id']); die;
-
+//                    $this->db->select('pt.valor_promotor, pt.percentual_promotor');
+//                    $this->db->from('tb_procedimento_convenio pc');
+//                    $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+//                    $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+//              $this->db->where('pc.ativo', 'true');
+//                $this->db->where('pt.ativo', 'true');
+//                    $promotor = $this->db->get()->result();
+                    
+                    if ($indicacao != "") {
+                        $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                        $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                        $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                        $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+                        $this->db->where('mc.promotor', $indicacao);
+                        $this->db->where('mc.ativo', 'true');
+//          $this->db->where('pc.ativo', 'true');
+//          $this->db->where('pt.ativo', 'true');
+                        $promotor = $this->db->get()->result();
+                    } else {
+                        $promotor = array();
+                    }
 
                     $horario = date("Y-m-d H:i:s");
                     $operador_id = $this->session->userdata('operador_id');
@@ -3318,6 +3368,11 @@ class exametemp_model extends Model {
                         $this->db->set('medico_consulta_id', $medico_id);
                     }
                     $this->db->set('autorizacao', $autorizacao);
+                    if (count($promotor) > 0) {
+                        $this->db->set('valor_promotor', $promotor[0]->valor_promotor);
+                        $this->db->set('percentual_promotor', $promotor[0]->percentual_promotor);
+                        
+                    }
                     if ($indicacao != "") {
                         $this->db->set('indicacao', $indicacao);
                     }
@@ -3748,6 +3803,26 @@ class exametemp_model extends Model {
                     }
 //                var_dump($percentual); die;
 
+                    if ($indicacao != "") {
+                        $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                        $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                        $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                        $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+                        $this->db->where('mc.promotor', $indicacao);
+                        $this->db->where('mc.ativo', 'true');
+//          $this->db->where('pc.ativo', 'true');
+//          $this->db->where('pt.ativo', 'true');
+                        $promotor = $this->db->get()->result();
+                    } else {
+                        $promotor = array();
+                    }
+
+
+
+                    $hora = date("H:i:s");
+                    $data = date("Y-m-d");
+
+
                     $this->db->select('ae.agrupador_fisioterapia');
                     $this->db->from('tb_agenda_exames ae');
                     $this->db->where('ae.agenda_exames_id', $agenda_exames_id);
@@ -3767,6 +3842,10 @@ class exametemp_model extends Model {
                     $this->db->set('paciente_id', $paciente_id);
                     $this->db->set('valor_medico', $percentual[0]->perc_medico);
                     $this->db->set('percentual_medico', $percentual[0]->percentual);
+                    if (count($promotor) > 0) {
+                        $this->db->set('valor_promotor', $promotor[0]->valor_promotor);
+                        $this->db->set('percentual_promotor', $promotor[0]->percentual_promotor);
+                    }
                     $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
 
                     $this->db->set('convenio_id', $convenio);
@@ -4070,6 +4149,26 @@ class exametemp_model extends Model {
                         $percentual = $this->db->get()->result();
                     }
 //                var_dump($percentual); die;
+                    if ($indicacao != "") {
+                        $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                        $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                        $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                        $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+                        $this->db->where('mc.promotor', $indicacao);
+                        $this->db->where('mc.ativo', 'true');
+//          $this->db->where('pc.ativo', 'true');
+//          $this->db->where('pt.ativo', 'true');
+                        $promotor = $this->db->get()->result();
+                    } else {
+                        $promotor = array();
+                    }
+
+
+
+
+                    $hora = date("H:i:s");
+                    $data = date("Y-m-d");
+
 
 
                     foreach ($_POST['crm'] as $crmsolicitante) {
@@ -4103,7 +4202,12 @@ class exametemp_model extends Model {
                         $this->db->set('medico_consulta_id', $medico_id);
                     }
                     if ($indicacao != "") {
-                        $this->db->set('indicacao', $indicacao);
+                       $this->db->set('indicacao', $indicacao);
+                    }
+                    if (count($promotor) > 0) {
+                        
+                        $this->db->set('valor_promotor', $promotor[0]->valor_promotor);
+                        $this->db->set('percentual_promotor', $promotor[0]->percentual_promotor);
                     }
                     if ($crmsolicitante != "") {
                         $this->db->set('medico_solicitante', $crmsolicitante);
@@ -4602,10 +4706,10 @@ class exametemp_model extends Model {
         $this->db->select('distinct(e.empresa_id), e.nome');
         $this->db->from('tb_exame_sala es');
         $this->db->join('tb_empresa e', 'e.empresa_id = es.empresa_id');
-        if($parametro != ''){
-           $this->db->where('es.grupo', $parametro); 
+        if ($parametro != '') {
+            $this->db->where('es.grupo', $parametro);
         }
-        
+
         $this->db->groupby("e.empresa_id");
         $return = $this->db->get();
         return $return->result();
@@ -4614,10 +4718,10 @@ class exametemp_model extends Model {
     function listarautocompletegrupoempresasala($parametro = null) {
         $this->db->select('es.*');
         $this->db->from('tb_exame_sala es');
-         if($parametro != ''){
-           $this->db->where('es.grupo', $parametro); 
+        if ($parametro != '') {
+            $this->db->where('es.grupo', $parametro);
         }
-        $this->db->where('es.excluido', 'f'); 
+        $this->db->where('es.excluido', 'f');
         $return = $this->db->get();
         return $return->result();
     }

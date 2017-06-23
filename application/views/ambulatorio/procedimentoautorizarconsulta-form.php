@@ -213,10 +213,20 @@
                             var proc_agendado = new Array();
 
 <? for ($b = 1; $b <= $i; $b++) { ?>
-    <? $it = ($b == 1) ? '' : $b; ?>                                
-                                convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
-                                proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
-                                
+    <? $it = ($b == 1) ? '' : $b; ?>
+    <? $it = ($b == 1) ? '' : $b; ?>
+    <? if (@$exames[$b - 1]->convenio_agenda != '') { ?>
+                                    convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
+    <? } else { ?>
+                                    convenio_agendado[<?= $b - 1 ?>] = '';
+    <? } ?>
+
+    <? if (@$exames[$b - 1]->procedimento_tuss_id != '') { ?>
+                                    proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
+    <? } else { ?>
+                                    proc_agendado[<?= $b - 1 ?>] = '';
+    <? } ?>
+
                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta<?= $it ?>', {convenio<?= $b ?>: convenio_agendado[<?= $b - 1 ?>], ajax: true}, function (t) {
 
                                             var opt = '<option value=""></option>';
