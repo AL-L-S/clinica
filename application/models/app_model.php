@@ -86,7 +86,7 @@ class app_model extends Model {
 //        $this->db->where('ae.data', $dataAtual);
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.medico_consulta_id', @$retorno[0]->operador_id);
-        if($_GET['filtro'] != 'n'){
+        if(@$_GET['filtro'] != 'n' && @$_GET['filtro'] != ''){
             switch ($_GET['situacao']) {
                 case 'o':
                     $situacao = 'OK';
@@ -107,15 +107,18 @@ class app_model extends Model {
                 $this->db->where('ae.situacao', $situacao);   
             }
         }
-        if($_GET['data'] != ""){
+        if(@$_GET['data'] != ""){
             $this->db->where('ae.data', date("Y-m-d", strtotime($_GET['data'])));
+        }
+        else{
+            $this->db->where('ae.data', date("Y-m-d"));
         }
 //        
         $this->db->orderby('ae.agenda_exames_id');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         $this->db->orderby('al.situacao');
-        $this->db->limit(15, $_GET['pagina']);
+        $this->db->limit(15, ( (@$_GET['pagina'] != '') ? $_GET['pagina'] : 0) );
         
         $return = $this->db->get();
         return $return->result();

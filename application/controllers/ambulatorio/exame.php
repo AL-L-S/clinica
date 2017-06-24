@@ -2233,7 +2233,7 @@ class Exame extends BaseController {
         $j = $b - 53;
         $zero = '0000000000000000';
         $corpo = "";
-        if ($versao == '3.03.01') {
+        if ($versao == '3.03.01' || $versao == '3.03.02') {
             if ($modelo == 'cpf') {
 
                 if ($listarexame[0]->grupo != 'CONSULTA') {

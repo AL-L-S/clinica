@@ -85,6 +85,7 @@
                     </dt>
                     <dd>
                         <select name="xml" id="xml" class="size2">
+                            <option value='3.03.02' >3.03.02</option>
                             <option value='3.03.01' >3.03.01</option>
                             <option value='3.02.00' >3.02.00</option>
                             <option value='3.02.01' >3.02.01</option>

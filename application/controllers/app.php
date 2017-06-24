@@ -53,6 +53,7 @@ class App extends Controller {
 
                     $retorno['agenda_exames_id'] = $item->agenda_exames_id;
                     $retorno['paciente'] = $paciente;
+                    $retorno['nomeCompleto'] = $item->paciente;
                     $retorno['data'] = date("d/m/Y", strtotime($item->data));
                     $retorno['inicio'] = date("H:i", strtotime($item->inicio));
                     $retorno['fim'] = date("H:i", strtotime($item->fim));
@@ -62,6 +63,7 @@ class App extends Controller {
                     $retorno['celular'] = $item->celular;
                     $retorno['observacoes'] = $item->observacoes;
                     $retorno['externoNome'] = '';
+                    $retorno['externoId'] = '';
                     $var[] = $retorno;
                 }
 //        echo "<pre>"; var_dump($var);
