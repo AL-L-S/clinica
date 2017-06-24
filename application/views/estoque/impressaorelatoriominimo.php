@@ -39,6 +39,9 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ARMAZEM: TODOS</th>
                 </tr>
             <? } ?>
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">DATA DE EMISSAO DO RELATORIO: <?= date("d/m/Y"); ?></th>
+            </tr>
         </thead>
     </table>
 

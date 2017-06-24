@@ -58,7 +58,9 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PRODUTO: TODOS</th>
                 </tr>
             <? } ?>
-
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">DATA DE EMISSAO DO RELATORIO: <?= date("d/m/Y"); ?></th>
+            </tr>
         </thead>
     </table>
 
@@ -96,7 +98,7 @@
                         <tr>
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
-                            <td><font size="-2"><?=utf8_decode($item->produto); ?></td>
+                            <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
                         </tr>
 
 
@@ -156,7 +158,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

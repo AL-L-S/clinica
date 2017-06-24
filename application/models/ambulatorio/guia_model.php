@@ -7672,7 +7672,7 @@ AND data <= '$data_fim'";
     }
 
     function fecharcaixa() {
-
+//        die($_POST['empresa']);
 //        try {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
@@ -7932,7 +7932,8 @@ AND data <= '$data_fim'";
                 }
             }
         }
-
+        $empresa = (isset($_POST['empresa']) ? ' AND ae.empresa_id = '.$_POST['empresa'] : '');
+        
         if ($_POST['grupo'] == 0) {
 
             $sql = "UPDATE ponto.tb_agenda_exames
@@ -7947,6 +7948,7 @@ LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id
 WHERE e.cancelada = 'false' 
 AND ae.data >= '$data_inicio' 
 AND ae.data <= '$data_fim' 
+$empresa
 AND c.dinheiro = true 
 ORDER BY ae.agenda_exames_id)";
             $this->db->query($sql);
@@ -7967,6 +7969,7 @@ WHERE e.cancelada = 'false'
 AND ae.data >= '$data_inicio' 
 AND ae.data <= '$data_fim' 
 AND pt.grupo != 'RM'
+$empresa
 AND c.dinheiro = true  
 ORDER BY ae.agenda_exames_id)";
             $this->db->query($sql);
@@ -7987,6 +7990,7 @@ WHERE e.cancelada = 'false'
 AND ae.data >= '$data_inicio' 
 AND ae.data <= '$data_fim' 
 AND pt.grupo = 'RM'
+$empresa
 AND c.dinheiro = true  
 ORDER BY ae.agenda_exames_id)";
             $this->db->query($sql);

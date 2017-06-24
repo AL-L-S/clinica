@@ -50,7 +50,9 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PRODUTO: TODOS</th>
                 </tr>
             <? } ?>
-
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">DATA DE EMISSAO DO RELATORIO: <?= date("d/m/Y"); ?></th>
+            </tr>
         </thead>
     </table>
 
@@ -61,7 +63,7 @@
             <thead>
                 <tr>
 
-    <!--<td class="tabela_teste"><font size="-2">Fonnecedor</th>-->
+        <!--<td class="tabela_teste"><font size="-2">Fonnecedor</th>-->
                     <td class="tabela_teste"><font size="-2">Produto</th>
                     <td class="tabela_teste"><font size="-2">QTDE</th>
                 </tr>
@@ -87,8 +89,8 @@
                             </tr>
                         <? } ?>
                         <tr>
-                            
-                            <!--<td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>-->
+
+            <!--<td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>-->
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                         </tr>
