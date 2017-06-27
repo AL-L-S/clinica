@@ -71,6 +71,8 @@ class App extends Controller {
             
             die(json_encode(@$var));
         }
+        
+        die(json_encode(array("status" => "Nenhuma agenda encontrada!")));
     }
 
     function validaUsuario() {
