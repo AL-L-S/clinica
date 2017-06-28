@@ -1408,7 +1408,7 @@ class exametemp_model extends Model {
 
     function listaagendafisioterapia($agendaexame_id) {
         $empresa_id = $this->session->userdata('empresa_id');
-//        $data = data("Y-m-d");
+        $data_atual = data("Y-m-d");
         $this->db->select("ae.*, h.dia");
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_horarioagenda h', 'h.horarioagenda_id = ae.horarioagenda_id', 'left');
@@ -1417,6 +1417,62 @@ class exametemp_model extends Model {
         $this->db->where('ae.empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function listaagendafisioterapiapersonalizada($agendaexame_id, $semana) {
+        $empresa_id = $this->session->userdata('empresa_id');
+//        $data = data("Y-m-d");
+        $this->db->select("ae.*, h.dia");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_horarioagenda h', 'h.horarioagenda_id = ae.horarioagenda_id', 'left');
+        $this->db->where("ae.agenda_exames_id", $agendaexame_id);
+//        $this->db->where("ae.data >=", $data);
+        $this->db->where('ae.empresa_id', $empresa_id);
+
+        $return = $this->db->get()->result();
+//        var_dump($return);
+//        die;
+        $diaSemana = date("Y-m-d", strtotime("+$semana week", strtotime($return[0]->data)));
+//        echo '<pre>';
+//        var_dump($diaSemana);
+
+        $nulo = null;
+        $this->db->select('ae.*');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->where("ae.paciente_id", $nulo);
+        $this->db->where("ae.situacao", "LIVRE");
+        $this->db->where('ativo', 't');
+        $this->db->where('cancelada', 'f');
+        $this->db->where('confirmado', 'f');
+        $this->db->where("ae.tipo", "FISIOTERAPIA");
+//        $this->db->where("ae.data >=", $data_atual);
+        $this->db->where("ae.data ", $diaSemana);
+        $this->db->where("ae.inicio", $return[0]->inicio);
+//        $this->db->where("ae.fim", $return[0]->fim);
+        $this->db->where("ae.medico_agenda", $return[0]->medico_agenda);
+        $return2 = $this->db->get()->result();
+//        var_dump($return2); die;
+        if (count($return2) > 0) {
+            return $return2;
+        } else {
+            return false;
+        }
+    }
+
+    function listaagendafisioterapiapersonalizadaerro($agendaexame_id, $semana) {
+        $empresa_id = $this->session->userdata('empresa_id');
+//        $data = data("Y-m-d");
+        $this->db->select("ae.inicio,ae.fim,ae.medico_agenda,ae.data, h.dia, o.nome as medico");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_horarioagenda h', 'h.horarioagenda_id = ae.horarioagenda_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->where("ae.agenda_exames_id", $agendaexame_id);
+//        $this->db->where("ae.data >=", $data);
+        $this->db->where('ae.empresa_id', $empresa_id);
+
+        $return = $this->db->get()->result();
+        return $return;
     }
 
     function contadordisponibilidadefisioterapia($agenda) {
@@ -1491,6 +1547,34 @@ class exametemp_model extends Model {
         $this->db->where('confirmado', 'f');
         $this->db->where("ae.tipo", "FISIOTERAPIA");
         $this->db->where("ae.data >=", $horario);
+        $this->db->where("ae.data", $diaSemana);
+        $this->db->where("ae.inicio", $agenda->inicio);
+        $this->db->where("ae.fim", $agenda->fim);
+        $this->db->where("ae.medico_agenda", $agenda->medico_agenda);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listadisponibilidadefisioterapiadia($agenda, $dias_escolhidos) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data_atual = date("Y-m-d");
+        $sessao_numero = $_POST['sessao'];
+        $nulo = null;
+
+//                var_dump($convenios); die;
+
+        $string = array();
+        $nulo = null;
+        $this->db->select('ae.*');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->where("ae.paciente_id", $nulo);
+        $this->db->where("ae.situacao", "LIVRE");
+        $this->db->where('ativo', 't');
+        $this->db->where('cancelada', 'f');
+        $this->db->where('confirmado', 'f');
+        $this->db->where("ae.tipo", "FISIOTERAPIA");
+        $this->db->where("ae.data >=", $data_atual);
         $this->db->where("ae.data", $diaSemana);
         $this->db->where("ae.inicio", $agenda->inicio);
         $this->db->where("ae.fim", $agenda->fim);
@@ -2682,10 +2766,86 @@ class exametemp_model extends Model {
         }
     }
 
+    function gravarpacientefisioterapiapersonalizada($agenda, $sessao_total, $agrupador) {
+        try {
+
+            $paciente_id = $_POST['txtNomeid'];
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+            $agenda = array_filter($agenda);
+            $contador_sessao = 1;
+//            var_dump($agenda); die;
+            foreach ($agenda as $item) {
+
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('tipo', 'FISIOTERAPIA');
+                $this->db->set('ativo', 'f');
+                $this->db->set('cancelada', 'f');
+                $this->db->set('confirmado', 'f');
+                $this->db->set('situacao', 'OK');
+                $this->db->set('observacoes', $_POST['observacoes']);
+                $this->db->set('paciente_id', $paciente_id);
+                $this->db->set('qtde_sessao', $_POST['sessao']);
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+                $this->db->set('convenio_id', $_POST['convenio']);
+                $this->db->set('numero_sessao', $contador_sessao);
+                $this->db->set('agrupador_fisioterapia', $agrupador);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('agenda_exames_id', $item);
+                $this->db->update('tb_agenda_exames');
+                $contador_sessao ++;
+            }
+            return $contador_sessao;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarpacientefisioterapiapersonalizadasessao($agenda_exames_id, $sessao_total, $contador_sessao, $agrupador) {
+        try {
+
+            $paciente_id = $_POST['txtNomeid'];
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+//            $agenda = array_filter($agenda);
+//            var_dump($agenda); die;
+
+
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('tipo', 'FISIOTERAPIA');
+            $this->db->set('ativo', 'f');
+            $this->db->set('cancelada', 'f');
+            $this->db->set('confirmado', 'f');
+            $this->db->set('situacao', 'OK');
+            $this->db->set('observacoes', $_POST['observacoes']);
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('qtde_sessao', $_POST['sessao']);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('numero_sessao', $contador_sessao);
+            $this->db->set('agrupador_fisioterapia', $agrupador);
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_agenda_exames');
+//                $contador_sessao ++;
+
+
+            return $contador_sessao;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
     function agrupadorfisioterapia() {
 
 
-        $this->db->set('qtde_sessoes', $_POST['qtde']);
+        $this->db->set('qtde_sessoes', $_POST['sessao']);
         $this->db->insert('tb_agrupador_fisioterapia_temp');
         $agrupador = $this->db->insert_id();
         return $agrupador;
@@ -3033,11 +3193,8 @@ class exametemp_model extends Model {
                         $return2 = array();
                     }
 //            var_dump($return2); die;
-
 //                    if ($index == 1) {
-                        
 //                    }
-
 //                var_dump($percentual); die;
 
                     foreach ($_POST['autorizacao'] as $itemautorizacao) {
@@ -3084,9 +3241,9 @@ class exametemp_model extends Model {
                     }
                     if (count($return2) > 0) {
 //                        var_dump($index, $_POST['indicacao']);
-                            $this->db->set('valor_promotor', $return2[0]->valor_promotor);
-                            $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
-                            $this->db->set('indicacao', $indicacao);
+                        $this->db->set('valor_promotor', $return2[0]->valor_promotor);
+                        $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
+                        $this->db->set('indicacao', $indicacao);
                     }
                     $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('paciente_id', $paciente_id);
@@ -3331,7 +3488,7 @@ class exametemp_model extends Model {
 //              $this->db->where('pc.ativo', 'true');
 //                $this->db->where('pt.ativo', 'true');
 //                    $promotor = $this->db->get()->result();
-                    
+
                     if ($indicacao != "") {
                         $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
                         $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
@@ -3371,7 +3528,6 @@ class exametemp_model extends Model {
                     if (count($promotor) > 0) {
                         $this->db->set('valor_promotor', $promotor[0]->valor_promotor);
                         $this->db->set('percentual_promotor', $promotor[0]->percentual_promotor);
-                        
                     }
                     if ($indicacao != "") {
                         $this->db->set('indicacao', $indicacao);
@@ -4202,10 +4358,10 @@ class exametemp_model extends Model {
                         $this->db->set('medico_consulta_id', $medico_id);
                     }
                     if ($indicacao != "") {
-                       $this->db->set('indicacao', $indicacao);
+                        $this->db->set('indicacao', $indicacao);
                     }
                     if (count($promotor) > 0) {
-                        
+
                         $this->db->set('valor_promotor', $promotor[0]->valor_promotor);
                         $this->db->set('percentual_promotor', $promotor[0]->percentual_promotor);
                     }
@@ -4409,14 +4565,41 @@ class exametemp_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
 
         $this->db->select('a.agenda_exames_id,
+                            a.medico_agenda,
                             o.nome as medico,
                             a.inicio,
                             a.data');
         $this->db->from('tb_agenda_exames a');
-        $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda');
 
         $this->db->where('a.ativo', 'true');
         $this->db->where('a.bloqueado', 'false');
+        $this->db->where('a.situacao', 'LIVRE');
+        $this->db->where("( (a.tipo = 'FISIOTERAPIA') OR (a.tipo = 'ESPECIALIDADE') )");
+        $this->db->where('a.empresa_id', $empresa_id);
+        if ($parametro != null) {
+            $this->db->where('a.medico_agenda', $parametro);
+            $this->db->where('a.data', $teste);
+        }
+        $this->db->orderby('a.inicio');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarhorariosespecialidadepersonalizado($parametro = null, $teste = null) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('a.agenda_exames_id,
+                            a.medico_agenda,
+                            o.nome as medico,
+                            a.inicio,
+                            a.data');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda');
+
+        $this->db->where('a.ativo', 'true');
+        $this->db->where('a.bloqueado', 'false');
+        $this->db->where('a.situacao', 'LIVRE');
         $this->db->where("( (a.tipo = 'FISIOTERAPIA') OR (a.tipo = 'ESPECIALIDADE') )");
         $this->db->where('a.empresa_id', $empresa_id);
         if ($parametro != null) {
@@ -5009,6 +5192,31 @@ class exametemp_model extends Model {
     }
 
     function excluirexametemp($agenda_exames_id) {
+
+        $this->db->set('paciente_id', null);
+        $this->db->set('procedimento_tuss_id', null);
+        $this->db->set('convenio_id', null);
+//        $this->db->set('medico_consulta_id', null);
+//        $this->db->set('medico_agenda', null);
+        $this->db->set('ativo', 't');
+        $this->db->set('encaixe', 'f');
+        $this->db->set('situacao', 'LIVRE');
+        $this->db->set('observacoes', "");
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ambulatorio_pacientetemp_id', null);
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->update('tb_agenda_exames');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+    
+    function excluirfisioterapiatemp($agenda_exames_id) {
 
         $this->db->set('paciente_id', null);
         $this->db->set('procedimento_tuss_id', null);

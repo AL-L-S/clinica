@@ -507,7 +507,7 @@ class entrada_model extends Model {
         if ($_POST['txtproduto'] != "0" && $_POST['txtproduto'] != "") {
             $this->db->where("es.produto_id", $_POST['txtproduto']);
         }
-        $this->db->orderby('ea.descricao');
+        $this->db->orderby('ea.descricao, es.data_cadastro');
 //        if ($_POST['empresa'] != "0") {
 //            $this->db->where('ae.empresa_id', $_POST['empresa']);
 //        }

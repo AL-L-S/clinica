@@ -283,6 +283,7 @@ class Exametemp extends BaseController {
 
         $this->loadView('ambulatorio/consultapacientemultiempresa-form', $data);
     }
+
     function carregaragendamultiempresa($agenda_exames_id, $medico_id, $externo_id) {
         $data['medico'] = $medico_id;
         $data['externo_id'] = $externo_id;
@@ -574,13 +575,13 @@ class Exametemp extends BaseController {
 //        die;
         $tipo = $this->exametemp->tipomultifuncaogeralmultiempresa($_POST['procedimento']);
         $paciente_id = $this->exametemp->gravarpacienteconsultasmultiempresa($agenda_exames_id, $tipo[0]->tipo);
-        
+
         if ($paciente_id != 0) {
             $data['mensagem'] = 'Consulta agendada com sucesso.';
         } else {
             $data['mensagem'] = 'Erro ao agendar consulta.';
         }
-        
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
@@ -626,73 +627,134 @@ class Exametemp extends BaseController {
             redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
         } else {
 
+            $_POST['horarios'] = array_filter($_POST['horarios']);
+            $_POST['txtNomeid'] = $this->exametemp->crianovopacienteespecialidade();
+            $agrupador = $this->exametemp->agrupadorfisioterapia();
+            $agenda_escolhida = array();
+            $x = 1;
+            foreach ($_POST['horarios'] as $item) {
+                $agenda_escolhida [$x] = $item;
+                $x++;
+            }
+
             $data['medico'] = $this->exametemp->listarmedicoconsulta();
 
-            if (isset($_POST['sessao'])) {
-                $data['agenda_selecionada'] = $this->exametemp->listaagendafisioterapia($agenda_exames_id);
-                $contaHorarios = count($this->exametemp->contadordisponibilidadefisioterapia($data['agenda_selecionada'][0]));
-
-                //tratando o numero que veio nas sessoes
-                if ($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 'null' || $_POST['sessao'] == 0) {
-                    $_POST['sessao'] = 1;
-                }
-                $_POST['sessao'] = (int) $_POST['sessao'];
-
-                //pegando os dias da semana disponiveis
-                $diaSemana = date("Y-m-d", strtotime($data['agenda_selecionada'][0]->data));
-                $contador = 0;
-
-                //definindo array que recebera os selects
-                $horarios_livres = array();
-
-                //definindo array que tera os valores filtrados de $horarios_livres
-                $data['horarios_livres'] = array();
-
-                do {
-                    $horarios_livres = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0], $diaSemana);
-                    $diaSemana = date("Y-m-d", strtotime("+1 week", strtotime($diaSemana)));
-                    $contador++;
-
-                    //verificando se a busca veio vazia, caso nao, adciona essa busca a $data['horarios_livres']
-                    if (count($horarios_livres) != 0) {
-                        $data['horarios_livres'][] = $horarios_livres[0];
-                    }
-                    if ($contador == $_POST['sessao']) {
-                        break;
-                    }
-                } while ($contador < $contaHorarios);
-//                var_dump($data['horarios_livres']); die;
-                //limpando o array
-                $data['horarios_livres'] = array_filter($data['horarios_livres']);
-
-                //testando se ha disponibilidade de horario para todas as sessoes
-                $tothorarios = count($data['horarios_livres']);
-
-                if ($tothorarios < $_POST['sessao']) {
-                    $data['mensagem'] = "Não há horarios suficientes na agenda para o numero de sessoes escolhido";
-                    $this->session->set_flashdata('message', $data['mensagem']);
-                    redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
-                }
-
-                $_POST['txtNomeid'] = $this->exametemp->crianovopacienteespecialidade();
-                $agrupador = $this->exametemp->agrupadorfisioterapia();
-
-                //marcando sessoes
-                if ($_POST['sessao'] == 1) {
-                    $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['agenda_selecionada'][0]->agenda_exames_id);
-                } else {
-                    $contador_sessao = 1;
-                    for ($i = 0; $i < $_POST['sessao']; $i++) {
-                        $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id, $_POST['sessao'], $contador_sessao, $agrupador);
-                        $contador_sessao++;
-                    }
-                }
-
-                redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$paciente_id");
-            } else {
-                $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
-                redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$paciente_id");
+            if (count($_POST['dia']) > 0 && $_POST['sessao'] > 0) {
+                $contador_sessao = $this->exametemp->gravarpacientefisioterapiapersonalizada($_POST['horarios'], $_POST['sessao'], $agrupador);
             }
+
+            $c = 1;
+            $semana = 1;
+
+            for ($i = $contador_sessao; $i <= $_POST['sessao']; $i++) {
+
+                $agenda_selecionada = $this->exametemp->listaagendafisioterapiapersonalizada($agenda_escolhida[$c], $semana);
+
+                if ($agenda_selecionada != false) {
+                    $this->exametemp->gravarpacientefisioterapiapersonalizadasessao($agenda_selecionada[0]->agenda_exames_id, $_POST['sessao'], $contador_sessao, $agrupador);
+                } else {
+                    
+                    $agenda_inexistente = $this->exametemp->listaagendafisioterapiapersonalizadaerro($agenda_escolhida[$c], $semana);
+
+                    $medico = $agenda_inexistente[0]->medico;
+                    $hora = $agenda_inexistente[0]->inicio;
+                    
+                    $data = date("d/m/Y", strtotime($agenda_inexistente[0]->data));
+                    $mensagem = "Horário de $medico em $data as $hora não existe ou está ocupado";
+//                    echo $mensagem; die;
+                    $this->session->set_flashdata('message', $mensagem);
+                    
+                    foreach ($agenda_escolhida as $item) {
+                        $excluir = $this->exametemp->excluirfisioterapiatemp($item);
+                    }
+
+                    redirect(base_url() . "ambulatorio/exametemp/carregarfisioterapiatemp/$agenda_escolhida[1]");
+                }
+
+
+                if ($c == count($_POST['horarios'])) {
+                    $c = 0;
+                    $semana ++;
+                }
+                $c++;
+                $contador_sessao++;
+            }
+
+            $paciente_id = $_POST['txtNomeid'];
+            $data['mensagem'] = 'Sucesso ao realizar agendamento';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$paciente_id");
+//            if (count($_POST['dia']) > 0 && $_POST['sessao'] > 0) {                
+//            }
+            //LOGICA ANTIGA. AQUI ELE BOTA UM POR SEMANA SE NAO MARCAR NADA LÁ NOS CHECKBOXES
+//            else {
+//
+//                if (isset($_POST['sessao'])) {
+//                    $data['agenda_selecionada'] = $this->exametemp->listaagendafisioterapia($agenda_exames_id);
+//                    $contaHorarios = count($this->exametemp->contadordisponibilidadefisioterapia($data['agenda_selecionada'][0]));
+//
+//                    //tratando o numero que veio nas sessoes
+//                    if ($_POST['sessao'] == '' || $_POST['sessao'] == null || $_POST['sessao'] == 'null' || $_POST['sessao'] == 0) {
+//                        $_POST['sessao'] = 1;
+//                    }
+//                    $_POST['sessao'] = (int) $_POST['sessao'];
+//
+//                    //pegando os dias da semana disponiveis
+//                    $diaSemana = date("Y-m-d", strtotime($data['agenda_selecionada'][0]->data));
+//                    $contador = 0;
+//
+//                    //definindo array que recebera os selects
+//                    $horarios_livres = array();
+//
+//                    //definindo array que tera os valores filtrados de $horarios_livres
+//                    $data['horarios_livres'] = array();
+//
+//                    do {
+//                        $horarios_livres = $this->exametemp->listadisponibilidadefisioterapia($data['agenda_selecionada'][0], $diaSemana);
+//                        $diaSemana = date("Y-m-d", strtotime("+1 week", strtotime($diaSemana)));
+//                        $contador++;
+//
+//                        //verificando se a busca veio vazia, caso nao, adciona essa busca a $data['horarios_livres']
+//                        if (count($horarios_livres) != 0) {
+//                            $data['horarios_livres'][] = $horarios_livres[0];
+//                        }
+//                        if ($contador == $_POST['sessao']) {
+//                            break;
+//                        }
+//                    } while ($contador < $contaHorarios);
+////                var_dump($data['horarios_livres']); die;
+//                    //limpando o array
+//                    $data['horarios_livres'] = array_filter($data['horarios_livres']);
+//
+//                    //testando se ha disponibilidade de horario para todas as sessoes
+//                    $tothorarios = count($data['horarios_livres']);
+//
+//                    if ($tothorarios < $_POST['sessao']) {
+//                        $data['mensagem'] = "Não há horarios suficientes na agenda para o numero de sessoes escolhido";
+//                        $this->session->set_flashdata('message', $data['mensagem']);
+//                        redirect(base_url() . "ambulatorio/exametemp/novopacienteconsulta");
+//                    }
+//
+//                    $_POST['txtNomeid'] = $this->exametemp->crianovopacienteespecialidade();
+//                    $agrupador = $this->exametemp->agrupadorfisioterapia();
+//
+//                    //marcando sessoes
+//                    if ($_POST['sessao'] == 1) {
+//                        $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['agenda_selecionada'][0]->agenda_exames_id);
+//                    } else {
+//                        $contador_sessao = 1;
+//                        for ($i = 0; $i < $_POST['sessao']; $i++) {
+//                            $paciente_id = $this->exametemp->gravarpacientefisioterapia($data['horarios_livres'][$i]->agenda_exames_id, $_POST['sessao'], $contador_sessao, $agrupador);
+//                            $contador_sessao++;
+//                        }
+//                    }
+//
+//                    redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$paciente_id");
+//                } else {
+//                    $paciente_id = $this->exametemp->gravarpacientefisioterapia($agenda_exames_id);
+//                    redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$paciente_id");
+//                }
+//            }
         }
     }
 

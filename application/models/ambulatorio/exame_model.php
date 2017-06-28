@@ -2968,7 +2968,7 @@ class exame_model extends Model {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
             $this->db->where('ae.realizada', 'false');
             $this->db->where('ae.inicio', $item->inicio);
-            $this->db->where('ae.fim ', $item->fim);
+//            $this->db->where('ae.fim ', $item->fim);
             $this->db->where('ae.cancelada', 'false');
             $this->db->where('ae.bloqueado', 'f');
             $this->db->where('ae.situacao', 'LIVRE');

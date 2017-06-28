@@ -50,7 +50,7 @@
         }
 
         #calendar {
-            max-width: 900px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
@@ -169,7 +169,7 @@
                             <div class="panel-heading ">
                                 <!--                                Calendário-->
                             </div>
-                            <div class="row" style="width: 600px;">
+                            <div class="row" style="width: 400px;">
                                 <div class="col-lg-12">
 
 
@@ -439,7 +439,7 @@ if (@$_GET['data'] != '') {
             center: 'title',
             right: 'today'
         },
-        height: 500,
+        height: 450,
         theme: true,
         dayClick: function (date) {
             var data = date.format();

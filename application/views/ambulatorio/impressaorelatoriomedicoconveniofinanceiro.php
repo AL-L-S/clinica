@@ -124,7 +124,7 @@ switch ($MES) {
                             <td><font size="-2"><?= $item->medico; ?></td>
                             <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
-                            <td><font size="-2"><?= $item->procedimento; ?></td>
+                            <td><font size="-2"><?= $item->procedimento_tuss_id; ?> <?= $item->procedimento; ?></td>
                             <? if ($clinica == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>

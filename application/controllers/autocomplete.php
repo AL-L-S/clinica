@@ -92,6 +92,17 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function horariosambulatorioespecialidadepersonalizado() {
+//    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
+        $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
+        if (isset($_GET['exame'])) {
+            $result = $this->exametemp->listarhorariosespecialidadepersonalizado($_GET['exame'], $_GET['teste']);
+        } else {
+            $result = $this->exametemp->listarhorariosespecialidadepersonalizado();
+        }
+        echo json_encode($result);
+    }
+
     function armazemtransferenciaentrada() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
         if (isset($_GET['produto'])) {
@@ -347,7 +358,7 @@ class Autocomplete extends Controller {
 
     function listarhorarioscalendarioexame() {
 //            echo $_POST['custom_param1'];
-        if (isset($_POST['medico']) || isset($_POST['especialidade']) || isset($_POST['empresa']) ||  isset($_POST['sala'])) {
+        if (isset($_POST['medico']) || isset($_POST['especialidade']) || isset($_POST['empresa']) || isset($_POST['sala'])) {
             $result = $this->exametemp->listarhorarioscalendarioexame($_POST['medico'], $_POST['especialidade'], $_POST['empresa'], $_POST['sala']);
         } else {
             $result = $this->exametemp->listarhorarioscalendarioexame();
@@ -518,9 +529,9 @@ class Autocomplete extends Controller {
             } else {
                 $especialidade = null;
             }
-            if($_POST['empresa'] != ''){
+            if ($_POST['empresa'] != '') {
                 $empresa_id = $_POST['empresa'];
-            }else{
+            } else {
                 $empresa_id = '';
             }
 
@@ -1833,7 +1844,7 @@ class Autocomplete extends Controller {
 
         echo json_encode($result);
     }
-    
+
     function grupoempresa() {
 //        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtgrupo'])) {
@@ -1844,6 +1855,7 @@ class Autocomplete extends Controller {
 
         echo json_encode($result);
     }
+
     function grupoempresasala() {
 //        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtgrupo'])) {
