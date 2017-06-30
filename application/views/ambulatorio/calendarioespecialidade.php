@@ -65,9 +65,115 @@
 
 
 
+    <style>
+        #sidebar-wrapper{
+            z-index: 100;
+            position: fixed;
+            margin-top: 50px;
+            margin-left: 37%;
+            list-style-type: none; /* retira o marcador de listas*/ 
+            overflow-y: scroll;
+            overflow-x: auto;
+            /*height: 900px;*/
+            /*width: 500px;*/
+            max-height: 900px;
+
+        }
+
+        #sidebar-wrapper ul {
+            padding:0px;
+            margin:0px;
+            background-color: #ebf7f9;
+            list-style:none;
+            margin-bottom: 30px;
+
+        }
+        #sidebar-wrapper ul li a {
+            color: #ff004a;
+            border: 20px;
+            text-decoration: none;
+            /*padding: 3px;*/
+            /*border: 2px solid #00BDFF;*/ 
+            margin-bottom: 20px;
+        }
+
+        #botaosalaesconder {
+            border: 1px solid #8399f6
+        }
+        #botaosala {
+            border: 1px solid #8399f6;
+            width: 80pt;   
+        }
+        .vermelho{
+            color: red;
+        }
+
+    </style>
+    <div id="sala-de-espera" style="display: none;">
+
+        <div id="sidebar-wrapper" class="sidebarteste">
+            <div style="margin-left: 35%;">
+                <button id="botaosalaesconder">Esconder</button>
+            </div>
+            <div>
+                <ul class="sidebar-nav">
+
+                    <li class="tabela_content01">
+                        <span> Agenda</span> - <span style="color:#ff004a">Paciente - <span style="color: #5659C9">Procedimento</span> - <span style="color: black"> Tempo de Espera</span>
+
+                    </li>
+                    <?
+                    $listaespera = $this->exame->listarexameagendaconfirmada2()->get()->result();
+
+                    if (count($listaespera) > 0) {
+                        @$estilo_linha == "tabela_content01";
+                        foreach ($listaespera as $item) {
+                            $dataFuturo = date("Y-m-d H:i:s");
+                            $dataAtual = $item->data_autorizacao;
+                            $date_time = new DateTime($dataAtual);
+                            $diff = $date_time->diff(new DateTime($dataFuturo));
+                            $teste = $diff->format('%H:%I:%S');
+
+                            (@$estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            ?>
+                            <li class="<?= $estilo_linha ?>">
+                                <a href="<?= base_url() ?>ambulatorio/exame/examesala/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>" target="_blank">
+                                    <span style="color: black"><?= $item->inicio; ?></span> -  <span> <?= $item->paciente ?></span> - <span style="color: #5659C9"><?= $item->procedimento ?></span> - <span style="color: black"><?= $teste ?></span> - 
+                                </a>
+                            </li>
+
+
+                            <?
+                        }
+                    }
+                    ?>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <table>
+        <tr>
+            <td style="width: 200px;">
+                <div class="bt_link_new">
+                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novopacientefisioterapiaencaixe');">
+                        Encaixar Especialidade
+                    </a>
+                </div>
+            </td>
+<!--            <td>
+                <div class="bt_link_new">
+                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novopacientefisioterapiaencaixe');">
+                        Encaixar Especialidade
+                    </a>
+                </div>
+            </td>-->
+        </tr>
+    </table>
 
     <div id="accordion">
-        <h3 class="singular">Multifuncao Geral Recep&ccedil;&atilde;o</h3>
+        <h3 class="singular">Multifuncao Especialidade Recep&ccedil;&atilde;o</h3>
         <div >
             <?
             $medicos = $this->operador_m->listarmedicos();
@@ -84,7 +190,7 @@
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
-
+                        <th class="tabela_title">Nome</th>
                     </tr>
                     <tr>
                         <th class="tabela_title">
@@ -148,13 +254,22 @@
                             </select>
                         </th>
 
-
+                        <th colspan="2" class="tabela_title">
+                            <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                        </th>
                         <th colspan="3" class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
                         </th>
 
-                    </tr>
+
                 </form>
+                <th colspan="3" class="tabela_title">
+                    <button id="botaosala">S/ de Espera</button>
+                </th>
+
+                </tr>
+
+
                 </thead>
             </table> 
             <table>
@@ -198,9 +313,9 @@
                                 <tr>
                                     <th class="tabela_header" >Status</th>
                                     <th class="tabela_header" width="250px;">Nome</th>
-                                    <th class="tabela_header" width="70px;">Resp.</th>
+                                    <!--<th class="tabela_header" width="70px;">Resp.</th>-->
                                     <th class="tabela_header" width="70px;">Data</th>
-                                    <th class="tabela_header" width="50px;">Dia</th>
+                                    <!--<th class="tabela_header" width="50px;">Dia</th>-->
                                     <th class="tabela_header" width="70px;">Agenda</th>
                                     <th class="tabela_header" width="70px;">    </th>
                                     <th class="tabela_header" width="150px;">Sala</th>
@@ -319,9 +434,9 @@
                                     <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
                                 <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?
                                     if ($item->encaixe == 't') {
@@ -332,11 +447,11 @@
                                         }
                                     }
                                     ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " ?><a style='color:black;cursor: pointer;' onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;cursor: pointer;'" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendamedicocurriculo/<?= $item->medico_agenda; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"> <?= substr($item->medicoagenda, 0, 15) ?> </a></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><?= substr( $item->sala, 0,5)  . " - " ?><a style='color:black;cursor: pointer;' onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;cursor: pointer;'" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendamedicocurriculo/<?= $item->medico_agenda; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"> <?= substr($item->medicoagenda, 0, 5) ?>(...) </a></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="250px;"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                width=500,height=230');">=><?= $item->observacoes; ?></td>
+                               <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes ; ?>" style="color:red; cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
+                                                                                                                width=500,height=230');">=><?=  substr($item->observacoes, 0,5) ; ?>(...)</td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -425,9 +540,20 @@ if (@$_GET['data'] != '') {
     $(function () {
         $("#accordion").accordion();
     });
-    
+
     $('.double-scroll').doubleScroll();
 
+    $("#botaosala").click(function () {
+        $("#sala-de-espera").toggle("fast", function () {
+            // Animation complete.
+        });
+    });
+
+    $("#botaosalaesconder").click(function () {
+        $("#sala-de-espera").hide("fast", function () {
+            // Animation complete.
+        });
+    });
 
 
 //    function date() {

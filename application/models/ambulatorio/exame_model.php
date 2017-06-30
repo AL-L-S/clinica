@@ -2936,6 +2936,7 @@ class exame_model extends Model {
                            ae.agenda_exames_id,
                            ae.procedimento_tuss_id,
                            ae.inicio,
+                           ae.data,
                            ae.fim,
                            ae.medico_agenda,
                            p.nome as paciente,
@@ -3024,10 +3025,10 @@ class exame_model extends Model {
 //            $this->db->where('ae.empresa_id', $item->empresa_id);
             $this->db->where('ae.realizada', 'false');
             $this->db->where('ae.inicio', $item->inicio);
-            $this->db->where('ae.fim ', $item->fim);
+//            $this->db->where('ae.fim ', $item->fim);
             $this->db->where('ae.cancelada', 'false');
             $this->db->where('ae.bloqueado', 'f');
-            $this->db->where('ae.situacao', 'LIVRE');
+//            $this->db->where('ae.situacao', 'LIVRE');
             $this->db->where('ae.paciente_id IS NULL');
             $this->db->where('ae.procedimento_tuss_id IS NULL');
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_reagendar']))));
@@ -4819,6 +4820,7 @@ class exame_model extends Model {
         $operador_id = $this->session->userdata('operador_id');
 
         $this->db->set('confirmado', 't');
+        $this->db->set('ordenador', '1');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('data', $data);
         $this->db->set('inicio', $hora);
@@ -5710,6 +5712,48 @@ class exame_model extends Model {
             return -1;
         }
     }
+    
+    function cancelaresperamatmed() {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('paciente_id', null);
+            $this->db->set('procedimento_tuss_id', null);
+            $this->db->set('guia_id', null);
+            $this->db->set('situacao', "LIVRE");
+            $this->db->set('observacoes', "");
+            $this->db->set('valor', NULL);
+            $this->db->set('ativo', 't');
+            $this->db->set('convenio_id', null);
+            $this->db->set('autorizacao', null);
+            $this->db->set('operador_atualizacao', null);
+            $this->db->set('confirmado', 'f');
+            $this->db->set('data_cancelamento', $horario);
+            $this->db->set('operador_cancelamento', $operador_id);
+            $this->db->set('cancelada', 't');
+            $this->db->set('situacao', 'CANCELADO');
+            $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
+            $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+            $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
+            $this->db->update('tb_agenda_exames');
+
+
+            $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
+            $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
+            $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_ambulatorio_atendimentos_cancelamento');
+
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     function cancelartodosfisioterapia($agenda_exames_id) {
         try {
@@ -5795,7 +5839,7 @@ class exame_model extends Model {
             $this->db->set('paciente_id', null);
             $this->db->set('procedimento_tuss_id', null);
             $this->db->set('guia_id', null);
-            $this->db->set('situacao', "OK");
+            $this->db->set('situacao', "LIVRE");
             $this->db->set('observacoes', "");
             $this->db->set('valor', NULL);
             $this->db->set('ativo', 't');

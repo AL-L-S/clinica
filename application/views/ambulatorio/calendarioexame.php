@@ -58,9 +58,47 @@
 
 
 
+       <table>
+        <thead>
+            <tr>
+                <th >        
+                    <div class="bt_link_new">
+                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novopacienteexameencaixe');">
+                            Encaixar Paciente
+                        </a>
+                    </div>
+                </th>
+                <th >                
+                    <div class="bt_link_new">
+                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novohorarioexameencaixe');">
+                            Encaixar horario
+                        </a>
+                    </div>
+                </th>
+                <th >                
+                    <div class="bt_link_new">
+                        <form method="get" name="graficos" action="<?= base_url() ?>ambulatorio/exametemp/mostrargraficosexames" target="_blank">
+                            <input type="hidden" name="empresa" value="<?=@$_GET['empresa']?>"/>
+                            <input type="hidden" name="especialidade" value="<?=@$_GET['especialidade']?>"/>
+                            <input type="hidden" name="medico" value="<?=@$_GET['medico']?>"/>
+                            <input type="hidden" name="sala" value="<?=@$_GET['sala']?>"/>
+                            <input type="hidden" name="situacao" value="<?=@$_GET['situacao']?>"/>
+                            <input type="hidden" name="data" value="<?=@$_GET['data']?>"/>
+                            <input type="hidden" name="nome" value="<?=@$_GET['nome']?>"/>
+                            <input type="hidden" name="nascimento" value="<?=@$_GET['nascimento']?>"/>
+                            <a onclick="document.graficos.submit()">
+                                Graficos
+                            </a>
+                        </form>
+                    </div>
+                </th>
+            </tr>
 
+
+    </table>
     <div id="accordion">
-        <h3 class="singular">Multifuncao Geral Recep&ccedil;&atilde;o</h3>
+        <h3 class="singular">Multifuncao Exame Recep&ccedil;&atilde;o</h3>
+ 
         <div>
             <?
             $medicos = $this->operador_m->listarmedicos();
@@ -99,6 +137,7 @@
                         <th class="tabela_title">Sala</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
+                        <th class="tabela_title">Nome</th>
 
 
                     </tr>
@@ -189,6 +228,9 @@
                                 <? endforeach; ?>
 
                             </select>
+                        </th>
+                        <th colspan="2" class="tabela_title">
+                            <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
 
 

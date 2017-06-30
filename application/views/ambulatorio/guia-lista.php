@@ -100,6 +100,10 @@
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenio/" . $guia_id; ?> ', '_blank', 'width=800,height=250');">N. Guia
 
                                         </a></div></th>
+                                <th class="tabela_header"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/faturarguiamatmed/" . $guia_id . '/' . $paciente['0']->paciente_id; ?> ', '_blank');">Mat/Med
+
+                                        </a></div></th>
                                 <th class="tabela_header" style="width: 100px;"></th>
                                 <th class="tabela_header" colspan="7"></th>                         
                             </tr>
@@ -139,7 +143,7 @@
                                                     </td>
                                                 </tr>
                                             </table>
-
+                                        </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->inicio ?></td>
 
                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
@@ -184,49 +188,60 @@
                                             </td>
                                         <? } ?>
 
-                                                                                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                                                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
-                                                                                                                                            </a>
-                                                                                                                                        </td>-->
-                                        <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
-                                            </a>
-                                        </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                            <a href="<?= base_url() ?>ambulatorio/guia/impressaoetiiqueta/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Etiqueta</a></div>
-                                        </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                            <a href="<?= base_url() ?>ambulatorio/guia/impressaoetiquetaunica/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Etiq. unica
-                                            </a>
-                                        </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                            <a href="<?= base_url() ?>ambulatorio/guia/editarexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Editar
-                                            </a>
-                                        </td>
+                                                                                                                                                                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                                                                                                                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
+                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                        </td>-->
+                                        <? if ($item->grupo != 'MEDICAMENTO' && $item->grupo != 'MAT/MED') { ?>
 
-                                        <? if ($perfil_id == 1) { ?>
+
                                             <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                <a href="<?= base_url() ?>ambulatorio/guia/valorexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">valor
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
+                                                </a>
+                                            </td>
+                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                <a href="<?= base_url() ?>ambulatorio/guia/impressaoetiiqueta/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Etiqueta</a></div>
+                                            </td>
+                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                <a href="<?= base_url() ?>ambulatorio/guia/impressaoetiquetaunica/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Etiq. unica
+                                                </a>
+                                            </td>
+                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                <a href="<?= base_url() ?>ambulatorio/guia/editarexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Editar
                                                 </a>
                                             </td>
 
-                                            <?
-                                        }
-                                        ?>
-
-                                        <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
-                                            <? if ($perfil_id != 11) { ?>
+                                            <? if ($perfil_id == 1) { ?>
                                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
-
+                                                    <a href="<?= base_url() ?>ambulatorio/guia/valorexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">valor
                                                     </a>
+                                                </td>
 
+                                                <?
+                                            }
+                                            ?>
+
+                                            <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
+                                                <? if ($perfil_id != 11) { ?>
+                                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+
+                                                        </a>
+
+                                                    </td>
+                                                <? } ?>
+                                            <? } else { ?>
+                                                <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                 </td>
                                             <? } ?>
                                         <? } else { ?>
-                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                            <td colspan="6" class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/matmedcancelamento/" . $item->agenda_exames_id; ?>/<?=$item->paciente_id?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Excluir
+
+                                                </a>
                                             </td>
-                                        <? } ?>
+                                        <? }
+                                        ?>   
                                     </tr>
 
 

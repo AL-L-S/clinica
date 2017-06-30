@@ -34,7 +34,11 @@
 
 
 <div class="content">
-
+    <div class="bt_link_new">
+        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novopacienteconsultaencaixe');">
+            Encaixar Consulta
+        </a>
+    </div>
 
     <style>
 
@@ -52,6 +56,9 @@
             max-width: 900px;
             margin: 0 auto;
         }
+        .vermelho{
+            color: red;
+        }
         /*#pop{display:none;position:absolute;top:50%;left:50%;margin-left:-150px;margin-top:-100px;padding:10px;width:300px;height:200px;border:1px solid #d0d0d0}*/
 
     </style>
@@ -60,7 +67,7 @@
 
 
     <div id="accordion">
-        <h3 class="singular">Multifuncao Geral Recep&ccedil;&atilde;o</h3>
+        <h3 class="singular">Multifuncao Consulta Recep&ccedil;&atilde;o</h3>
         <div>
             <?
             $medicos = $this->operador_m->listarmedicos();
@@ -77,7 +84,7 @@
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
-
+                        <th class="tabela_title">Nome</th>
                     </tr>
                     <tr>
                         <th class="tabela_title">
@@ -140,6 +147,9 @@
 
                             </select>
                         </th>
+                        <th colspan="2" class="tabela_title">
+                            <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                        </th>
 
 
                         <th colspan="3" class="tabela_title">
@@ -162,7 +172,7 @@
                             <div class="panel-heading ">
                                 <!--                                Calendário-->
                             </div>
-                            <div class="row" style="width: 600px;">
+                            <div class="row" style="width: 400px;">
                                 <div class="col-lg-12">
 
 
@@ -182,25 +192,25 @@
                     </td>
                     <td>
                         <div style="width: 10px;">
-                            
+
                         </div>
                     </td>
                     <td>
                         <table>
-                <thead>
-                    <tr>
-                        <th class="tabela_header" >Status</th>
-                        <th class="tabela_header" width="250px;">Nome</th>
-                        <th class="tabela_header" width="70px;">Resp.</th>
-                        <th class="tabela_header" width="70px;">Data</th>
-                        <th class="tabela_header" width="50px;">Dia</th>
-                        <th class="tabela_header" width="70px;">Agenda</th>
-                        <th class="tabela_header" width="70px;">    </th>
-                        <th class="tabela_header" width="150px;">Sala</th>
-                        <th class="tabela_header" width="150px;">Convenio</th>
-                        <th class="tabela_header">Telefone</th>
-                        <th class="tabela_header" width="250px;">Observa&ccedil;&otilde;es</th>
-                        <th class="tabela_header" colspan="3"><center>A&ccedil;&otilde;es</center></th>
+                            <thead>
+                                <tr>
+                                    <th class="tabela_header" >Status</th>
+                                    <th class="tabela_header" width="250px;">Nome</th>
+                                    <!--<th class="tabela_header" width="70px;">Resp.</th>-->
+                                    <th class="tabela_header" width="70px;">Data</th>
+                                    <!--<th class="tabela_header" width="50px;">Dia</th>-->
+                                    <th class="tabela_header" width="70px;">Agenda</th>
+                                    <th class="tabela_header" width="70px;">    </th>
+                                    <th class="tabela_header" width="150px;">Sala</th>
+                                    <th class="tabela_header" width="150px;">Convenio</th>
+                                    <th class="tabela_header">Telefone</th>
+                                    <th class="tabela_header" width="250px;">Observa&ccedil;&otilde;es</th>
+                                    <th class="tabela_header" colspan="3"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -312,55 +322,55 @@
                                 <? } if ($verifica == 5) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><?= $item->paciente; ?></b></td>
-        <? } if ($verifica == 6) { ?>
+                                <? } if ($verifica == 6) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
-                                    <? } if ($verifica == 7) { ?>
+                                <? } if ($verifica == 7) { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"> Bloqueado</td>
                                     <td class="<?php echo $estilo_linha; ?>"></td>
-                                    <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>
+                                <? } ?>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><?
-                            if ($item->encaixe == 't') {
-                                if ($item->paciente == '') {
-                                    echo '<span class="vermelho">Encaixe H.</span>';
-                                } else {
-                                    echo '<span class="vermelho">Encaixe</span>';
-                                }
-                            }
-                            ?>
+                                    if ($item->encaixe == 't') {
+                                        if ($item->paciente == '') {
+                                            echo '<span class="vermelho">Encaixe H.</span>';
+                                        } else {
+                                            echo '<span class="vermelho">Encaixe</span>';
+                                        }
+                                    }
+                                    ?>
                                 </td>
 
-        <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="150px;"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></b></td>
-        <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
+                                <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
+                                <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?=substr( $item->sala, 0,5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</b></td>
+                                <? } else { ?>
+                                    <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><?=substr( $item->sala, 0,5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</td>
 
-                                                                            <? } ?>                                
+                                <? } ?>                                
 
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
 
-                     <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' . $item->procedimento; ?></td>-->
+                             <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' . $item->procedimento; ?></td>-->
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
-                                <? if ($item->paciente_id != "") { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes ; ?>" style="color:red; cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
+                                                                                                                width=500,height=230');">=><?=  substr($item->observacoes, 0,5) ; ?>(...)</td>
+                                    <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
                                             </a></div>
                                     </td>
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
-            <?
-        }
-        if ($item->paciente_id == "" && $item->bloqueado == 'f') {
-            ?>
+                                    <?
+                                }
+                                if ($item->paciente_id == "" && $item->bloqueado == 'f') {
+                                    ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarconsultatemp/<?= $item->agenda_exames_id ?>');">Consultas
                                             </a></div>
@@ -370,20 +380,21 @@
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $item->paciente_id ?>/<?= $faltou; ?>');">Consultas
                                             </a></div>
                                     </td>
-        <? } elseif ($item->bloqueado == 't') {
+                                <?
+                                } elseif ($item->bloqueado == 't') {
 //            die;
-            ?>
+                                    ?>
                                     <!--<td class="<?php echo $estilo_linha; ?>" width="60px;"> Bloqueado</td>-->
-            <?
-        }
-        if ($paciente == "Bloqueado" || $paciente == "vago") {
-            if ($item->bloqueado == 'f') {
-                ?>
+                                    <?
+                                }
+                                if ($paciente == "Bloqueado" || $paciente == "vago") {
+                                    if ($item->bloqueado == 'f') {
+                                        ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
                                                 </a></div>
                                         </td>
-                                    <? } else { ?>
+            <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;" colspan="2"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
                                                 </a></div>
@@ -399,18 +410,18 @@
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/telefonema/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Confirma
                                                 </a></div>
                                         </td>
-                                <?
-                            }
-                        }
-                        ?>
+                                        <?
+                                    }
+                                }
+                                ?>
 
                             </tr>
 
                         </tbody>
-        <?php
-    }
-}
-?>
+                        <?php
+                    }
+                }
+                ?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="14">
@@ -452,7 +463,7 @@ if (@$_GET['data'] != '') {
             center: 'title',
             right: 'today'
         },
-        height: 500,
+        height: 400,
         theme: true,
         dayClick: function (date) {
             var data = date.format();
@@ -475,15 +486,12 @@ if (@$_GET['data'] != '') {
         editable: false,
         eventLimit: true, // allow "more" link when too many events
         schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
-
 //            events: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
 
         eventSources: [
-
             // your event source
 
             {
-
                 url: '<?= base_url() ?>autocomplete/listarhorarioscalendarioconsulta',
                 type: 'POST',
                 data: {
