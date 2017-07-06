@@ -11,7 +11,14 @@ class App extends Controller {
     function buscandoAgenda() {
         header('Access-Control-Allow-Origin: *');
         $result = $this->app->buscandoAgenda();
-
+        $resumo = array(
+            "OK"        => 0,
+            "LIVRE"     => 0,
+            "BLOQUEADO" => 0,
+            "FALTOU"    => 0,
+            "TOTAL"    => 0,
+        );
+//        var_dump($result);die;
         if (count($result) > 0) {
             if (!isset($result["Erro"])) {
                 foreach ($result as $item) {
@@ -48,7 +55,7 @@ class App extends Controller {
                     $paciente = '';
                     if($item->paciente != ''){
                         @$exp = explode(" ", $item->paciente);
-                        $paciente = $exp[0] . " " . $exp[1];
+                        $paciente = $exp[0] . " " . $exp[1] . (strlen($exp[1]) <= 2 ? " " . @$exp[2] : '');
                     }
 
                     $retorno['agenda_exames_id'] = $item->agenda_exames_id;
@@ -57,19 +64,21 @@ class App extends Controller {
                     $retorno['data'] = date("d/m/Y", strtotime($item->data));
                     $retorno['inicio'] = date("H:i", strtotime($item->inicio));
                     $retorno['fim'] = date("H:i", strtotime($item->fim));
-                    $retorno['situacao'] = $situacao;
+                    $retorno['situacao'] = $item->situacao;
+                    $retorno['status'] = $situacao;
                     $retorno['convenio'] = $item->convenio;
                     $retorno['procedimento'] = $item->procedimento;
                     $retorno['celular'] = $item->celular;
                     $retorno['observacoes'] = $item->observacoes;
-                    $retorno['externoNome'] = '';
-                    $retorno['externoId'] = '';
+                    $retorno['externoNome'] = @$_GET['externoNome'];
+                    $retorno['externoId'] = @$_GET['externoId'];
                     $var[] = $retorno;
+                    
+                    @$resumo[$item->situacao]++;
+                    @$resumo['TOTAL']++;
                 }
-//        echo "<pre>"; var_dump($var);
             }
-            
-            die(json_encode(@$var));
+            die(json_encode(array("agenda" => @$var, "resumo" => $resumo )));
         }
         
         die(json_encode(array("status" => "Nenhuma agenda encontrada!")));
