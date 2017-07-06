@@ -306,9 +306,9 @@ class Autocomplete extends Controller {
             $i++;
             $retorno['id'] = $i;
             if ($item->situacao == 'LIVRE') {
-                $retorno['title'] = 'Vago: ' . $item->contagem;
+                $retorno['title'] = 'V: ' . $item->contagem;
             } else {
-                $retorno['title'] = 'Marcado: ' . $item->contagem;
+                $retorno['title'] = 'M: ' . $item->contagem;
             }
 
             $retorno['start'] = $item->data;
@@ -440,9 +440,9 @@ class Autocomplete extends Controller {
             $i++;
             $retorno['id'] = $i;
             if ($item->situacao == 'LIVRE') {
-                $retorno['title'] = 'Vago: ' . $item->contagem;
+                $retorno['title'] = 'V: ' . $item->contagem;
             } else {
-                $retorno['title'] = 'Marcado: ' . $item->contagem;
+                $retorno['title'] = 'M: ' . $item->contagem;
             }
 
             $retorno['start'] = $item->data;
@@ -506,9 +506,9 @@ class Autocomplete extends Controller {
             $i++;
             $retorno['id'] = $i;
             if ($item->situacao == 'LIVRE') {
-                $retorno['title'] = 'Vago: ' . $item->contagem;
+                $retorno['title'] = 'V: ' . $item->contagem;
             } else {
-                $retorno['title'] = 'Marcado: ' . $item->contagem;
+                $retorno['title'] = 'M: ' . $item->contagem;
             }
 
             $retorno['start'] = $item->data;
@@ -828,6 +828,16 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompleteprocedimentosfaturar($_GET['convenio1']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentosfaturar();
+        }
+        echo json_encode($result);
+    }
+    
+    function procedimentoconveniofaturarmatmed() {
+
+        if (isset($_GET['convenio1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosfaturarmatmed($_GET['convenio1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosfaturarmatmed();
         }
         echo json_encode($result);
     }

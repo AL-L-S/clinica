@@ -614,7 +614,7 @@ class exametemp_model extends Model {
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
-        $this->db->where("a.tipo", 'FISIOTERAPIA');
+        $this->db->where("(a.tipo = 'FISIOTERAPIA' OR a.tipo = 'ESPECIALIDADE')");
         $this->db->where("a.confirmado", 'false');
         $this->db->where('a.ativo', 'false');
         $this->db->where("a.paciente_id", $pacientetemp_id);
@@ -1678,7 +1678,7 @@ class exametemp_model extends Model {
     function contadorfisioterapiapaciente($pacientetemp_id) {
         $this->db->select();
         $this->db->from('tb_agenda_exames');
-        $this->db->where("tipo", 'FISIOTERAPIA');
+        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
         $this->db->where('confirmado', 'false');
         $this->db->where('ativo', 'false');
         $this->db->where('paciente_id', $pacientetemp_id);
@@ -4585,7 +4585,7 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarhorariosespecialidadepersonalizado($parametro = null, $teste = null) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -4718,9 +4718,27 @@ class exametemp_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
-        $this->db->where("ag.tipo !=", 'CONSULTA');
-        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+//        $this->db->where("ag.tipo !=", 'CONSULTA');
+//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where('pc.convenio_id', $parametro);
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompleteprocedimentosfaturarmatmed($parametro) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("(ag.tipo = 'MAT/MED' OR ag.tipo = 'MEDICAMENTO')");
+//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+//        $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
         $this->db->orderby("pt.nome");
@@ -5215,7 +5233,7 @@ class exametemp_model extends Model {
         else
             return true;
     }
-    
+
     function excluirfisioterapiatemp($agenda_exames_id) {
 
         $this->db->set('paciente_id', null);

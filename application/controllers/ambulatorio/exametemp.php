@@ -965,6 +965,7 @@ class Exametemp extends BaseController {
         } else {
 //            $disponibilidade = $this->exametemp->contadorhorariosdisponiveisfisioterapia($_POST['data_ficha'], $_POST['horarios'], $_POST['medico']);
 //            if ($disponibilidade == 0) {
+//            var_dump($_POST); die;
             $pacientetemp_id = $this->exametemp->gravarfisioterapiaencaixe();
 
             redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");

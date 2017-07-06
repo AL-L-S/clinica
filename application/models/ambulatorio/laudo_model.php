@@ -1434,6 +1434,7 @@ class laudo_model extends Model {
         $this->db->select('ag.ambulatorio_laudo_id,
                             ag.paciente_id,
                             ag.data_cadastro,
+                            ae.data,
                             ag.exame_id,
                             ag.situacao,
                             ae.agenda_exames_nome_id,

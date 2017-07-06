@@ -593,7 +593,8 @@ class Guia extends BaseController {
     function impressaoetiquetaunica($paciente_id, $guia_id, $exames_id) {
         $data['emissao'] = date("d-m-Y");
         $data['exame'] = $this->guia->listarexame($exames_id);
-        $data['empresa'] = $this->guia->listarempresa($guia_id);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->load->View('ambulatorio/impressaoetiquetaunica', $data);
@@ -1007,6 +1008,14 @@ class Guia extends BaseController {
         $paciente_id = $_POST['txtpaciente_id'];
         $this->guia->gravarexamesfaturamento();
         redirect(base_url() . "ambulatorio/exame/faturarguia/$guia_id/$paciente_id");
+    }
+
+    function gravarprocedimentosfaturamentomatmed() {
+
+        $guia_id = $_POST['txtguia_id'];
+        $paciente_id = $_POST['txtpaciente_id'];
+        $this->guia->gravarexamesfaturamentomatmed();
+         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function editarexames() {
@@ -3131,6 +3140,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixafaturado();
         $data['contador'] = $this->guia->relatoriocaixacontadorfaturado();
+        $data['formapagamento'] = $this->formapagamento->listarforma();
         $this->load->View('ambulatorio/impressaorelatoriocaixafaturado', $data);
     }
 

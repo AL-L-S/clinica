@@ -78,47 +78,47 @@ class Exame extends BaseController {
             'data' => (@$_GET['data'] != '') ? @$_GET['data'] : '',
             'nome' => (@$_GET['nome'] != '') ? @$_GET['nome'] : ''
         );
-        
+
         $url = "especialidade={$parametro['especialidade']}&medico={$parametro['medico']}&data={$parametro['data']}&nome={$parametro['nome']}";
-        
+
         $resposta = file_get_contents("http://localhost/arquivoDados.php?{$url}");
-        
+
         $array = explode("|", $resposta);
-        
-        foreach($array as $item){
-            if(strlen($item) >= 2) {
+
+        foreach ($array as $item) {
+            if (strlen($item) >= 2) {
                 $a = explode("$", $item);
-                @$args["agenda"][str_replace(" ", '',$a[0])] = json_decode($a[1]);
+                @$args["agenda"][str_replace(" ", '', $a[0])] = json_decode($a[1]);
             }
         }
         $data["dados"] = $args;
-        
+
         $medicos = file_get_contents("http://localhost/arquivoRequisicoes.php?acao=medico");
-        
+
         $med = explode("|", $medicos);
-        
-        foreach($med as $item){
-            if(strlen($item) >= 2) {
+
+        foreach ($med as $item) {
+            if (strlen($item) >= 2) {
                 $a = explode("$", $item);
-                @$data["medicos"][str_replace(" ", '',$a[0])] = json_decode($a[1]);
+                @$data["medicos"][str_replace(" ", '', $a[0])] = json_decode($a[1]);
             }
         }
-        
+
         $especialidade = file_get_contents("http://localhost/arquivoRequisicoes.php?acao=especialidade");
-        
+
         $esp = explode("|", $especialidade);
-        
-        foreach($esp as $item){
-            if(strlen($item) >= 2) {
+
+        foreach ($esp as $item) {
+            if (strlen($item) >= 2) {
                 $a = explode("$", $item);
-                @$data["especialidade"][str_replace(" ", '',$a[0])] = json_decode($a[1]);
+                @$data["especialidade"][str_replace(" ", '', $a[0])] = json_decode($a[1]);
             }
         }
         /* CASO ESTEJA DANDO ERRO, ANTES DE IR PROCURAR, 
          * OLHA NOS ARQUIVOS QUE ESTÃO LA EM WWW 
          * PARA VER SE ESTÃO COM O NOME DO BANCO CERTO */
 //        var_dump(@$data["especialidade"]);die;
-        
+
         $this->loadView('ambulatorio/agendamentomultiempresa-lista', $data);
     }
 
@@ -131,14 +131,17 @@ class Exame extends BaseController {
 
         $this->load->View('ambulatorio/calendario', $args);
     }
+
     function listarmultifuncaoexamecalendario($args = array()) {
 
         $this->load->View('ambulatorio/calendarioexame', $args);
     }
+
     function listarmultifuncaoconsultacalendario($args = array()) {
 
         $this->load->View('ambulatorio/calendarioconsulta', $args);
     }
+
     function listarmultifuncaoespecialidadecalendario($args = array()) {
 
         $this->load->View('ambulatorio/calendarioespecialidade', $args);
@@ -188,11 +191,11 @@ class Exame extends BaseController {
     }
 
     function carregarreagendamentoespecialidade() {
-//        var_dump($_POST); die;
+        
         if (count($_POST['reagendar']) > 0) {
 
             @$agenda = $this->exame->listarhorariosreagendamentoespecialidade();
-
+//            var_dump(@$agenda); die;
             $pacientes = '';
             if (count(@$agenda) > 0) {
                 $verificao = $this->exame->gravareagendamentoespecialidade($agenda);
@@ -657,6 +660,17 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/guiafaturamento-form', $data);
     }
 
+    function faturarguiamatmed($guia_id, $paciente_id) {
+        $data['guia_id'] = $guia_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['convenios'] = $this->convenio->listarconvenionaodinheiro();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->login->listar();
+        $data['exames'] = $this->exame->listarexamesguia($guia_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $this->loadView('ambulatorio/guiafaturamentomatmed-form', $data);
+    }
+
     function faturarguiamanual($paciente_id = null) {
         if ($paciente_id == null) {
             $paciente_id = $_POST['txtpacienteid'];
@@ -818,6 +832,14 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/esperacancelamento-form', $data);
     }
 
+    function matmedcancelamento($agenda_exames_id, $paciente_id, $procedimento_tuss_id) {
+        $data['motivos'] = $this->motivocancelamento->listartodos();
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_tuss_id'] = $procedimento_tuss_id;
+        $this->loadView('ambulatorio/matmedcancelamento-form', $data);
+    }
+
     function guiacancelamento($agenda_exames_id, $paciente_id, $procedimento_tuss_id) {
         $data['motivos'] = $this->motivocancelamento->listartodos();
         $data['agenda_exames_id'] = $agenda_exames_id;
@@ -904,6 +926,20 @@ class Exame extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarsalasespera");
+    }
+    function cancelarmatmed() {
+        if ($this->session->userdata('perfil_id') != 12) {
+            $verificar = $this->exame->cancelaresperamatmed();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao cancelar o Exame. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function cancelarguia() {

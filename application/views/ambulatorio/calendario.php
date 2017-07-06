@@ -34,7 +34,24 @@
 
 
 <div class="content">
+    <table>
+        <thead>
+            <tr>
+                <th >        <div class="bt_link_new">
+                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novopacienteencaixegeral');">
+                            Encaixar Paciente
+                        </a>
+                    </div></th>
+                <th >        <div class="bt_link_new">
+                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novohorarioencaixegeral');">
+                            Encaixar Horario
+                        </a>
+                    </div></th>
 
+            </tr>
+
+
+    </table>
 
     <style>
 
@@ -49,8 +66,11 @@
         }
 
         #calendar {
-            max-width: 900px;
+            max-width: 600px;
             margin: 0 auto;
+        }
+        .vermelho{
+            color: red;
         }
         /*#pop{display:none;position:absolute;top:50%;left:50%;margin-left:-150px;margin-top:-100px;padding:10px;width:300px;height:200px;border:1px solid #d0d0d0}*/
 
@@ -77,6 +97,7 @@
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
+                        <th class="tabela_title">Nome</th>
 
                     </tr>
                     <tr>
@@ -140,7 +161,9 @@
 
                             </select>
                         </th>
-
+                        <th colspan="2" class="tabela_title">
+                            <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                        </th>
 
                         <th colspan="3" class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -162,7 +185,7 @@
                             <div class="panel-heading ">
                                 <!--                                Calendário-->
                             </div>
-                            <div class="row" style="width: 600px;">
+                            <div class="row" style="width: 400px;">
                                 <div class="col-lg-12">
 
 
@@ -182,7 +205,7 @@
                     </td>
                     <td>
                         <div style="width: 10px;">
-                            
+
                         </div>
                     </td>
                     <td>
@@ -191,9 +214,9 @@
                                 <tr>
                                     <th class="tabela_header" >Status</th>
                                     <th class="tabela_header" width="250px;">Nome</th>
-                                    <th class="tabela_header" width="70px;">Resp.</th>
+                                    <!--<th class="tabela_header" width="70px;">Resp.</th>-->
                                     <th class="tabela_header" width="70px;">Data</th>
-                                    <th class="tabela_header" width="50px;">Dia</th>
+                                    <!--<th class="tabela_header" width="50px;">Dia</th>-->
                                     <th class="tabela_header" width="70px;">Agenda</th>
                                     <th class="tabela_header" width="70px;">    </th>
                                     <th class="tabela_header" width="150px;">Telefone</th>
@@ -353,16 +376,16 @@
                                 ?>
 
                                 <!-- RESPONSAVEL -->
-                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
 
                                 <!-- DATA, DIA E AGENDA -->
                                 <? if ($item->ocupado == 't') { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>
-                            <td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>
+                            <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>-->
                             <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
                         <? } else { ?>
                             <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>
+                            <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>"><?
@@ -387,13 +410,17 @@
                         <? } ?>
 
                         <!-- SALA -->   
-                        <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
+                        <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= substr($item->sala, 0, 5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</b></td>
+                        <? } else { ?>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><?= substr($item->sala, 0, 5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</td>
 
+                        <? } ?>  
                         <!-- OBSERVAÇOES -->
-                        <!--<td class="<?php // echo $estilo_linha;   ?>"><?= $item->observacoes; ?></td>-->
+                        <!--<td class="<?php // echo $estilo_linha;    ?>"><?= $item->observacoes; ?></td>-->
 
-                        <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes ; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
+                                                                                                                width=500,height=230');">=><?=  substr($item->observacoes, 0,5) ; ?>(...)</td>
                             <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -514,7 +541,7 @@ if (@$_GET['data'] != '') {
             center: 'title',
             right: 'today'
         },
-        height: 500,
+        height: 400,
         theme: true,
         dayClick: function (date) {
             var data = date.format();
@@ -537,15 +564,12 @@ if (@$_GET['data'] != '') {
         editable: false,
         eventLimit: true, // allow "more" link when too many events
         schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
-
 //            events: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
 
         eventSources: [
-
             // your event source
 
             {
-
                 url: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
                 type: 'POST',
                 data: {
