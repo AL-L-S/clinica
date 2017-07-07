@@ -220,8 +220,7 @@ class guia_model extends Model {
                             ags.quantidade,
                             ep.descricao as produto,                            
                             u.descricao as unidade,
-                            pc.valortotal as valor
-                            ');
+                            pc.valortotal as valor');
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_ambulatorio_gasto_sala ags', 'ags.guia_id = ag.ambulatorio_guia_id', 'left');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
