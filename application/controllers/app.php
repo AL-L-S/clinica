@@ -22,18 +22,27 @@ class App extends Controller {
         if (count($result) > 0) {
             if (!isset($result["Erro"])) {
                 foreach ($result as $item) {
-
+                    
+                    $situacao = $item->situacao;
+                    
                     if ($item->paciente == "" && $item->bloqueado == 't') {
-                        $situacao = "bloqueado";
+                        $status = "bloqueado";
+                        $situacao = "BLOQUEADO";
                     } else {
                         if ($item->realizada == 't' && $item->situacaoexame == 'EXECUTANDO') {
-                            $situacao = "aguardando";
+                            $status = "aguardando";
+                            $situacao = "OK";
                         } elseif ($item->realizada == 't' && $item->situacaolaudo == 'FINALIZADO') {
-                            $situacao = "finalizado";
+                            $status = "finalizado";
+                            $situacao = "OK";
                         } elseif ($item->realizada == 't' && $item->situacaoexame == 'FINALIZADO') {
-                            $situacao = "atendendo";
+                            $status = "atendendo";
+                            $situacao = "OK";
                         } elseif ($item->confirmado == 'f' && $item->paciente_id == null) {
-                            $situacao = "vago";
+                            
+                            $status = "vago";
+                            $situacao = "LIVRE";
+                            
                         } elseif ($item->confirmado == 'f' && $item->operador_atualizacao != null) {
 
                             date_default_timezone_set('America/Fortaleza');
@@ -41,14 +50,18 @@ class App extends Controller {
                             $hora_atual = date('H:i:s');
 
                             if ($item->data < $data_atual && $item->paciente_id != null) {
-                                $situacao = "faltou";
+                                $status = "faltou";
+                                $situacao = "FALTOU";
                             } elseif ($item->data < $data_atual && $item->paciente_id == null) {
-                                $situacao = 'vago';
+                                $status = 'vago';
+                                $situacao = "LIVRE";
                             } else {
-                                $situacao = "agendado";
+                                $status = "agendado";
+                                $situacao = "OK";
                             }
                         } else {
-                            $situacao = "aguardando";
+                            $status = "aguardando";
+                            $situacao = "OK";
                         }
                     }
                     
@@ -64,8 +77,8 @@ class App extends Controller {
                     $retorno['data'] = date("d/m/Y", strtotime($item->data));
                     $retorno['inicio'] = date("H:i", strtotime($item->inicio));
                     $retorno['fim'] = date("H:i", strtotime($item->fim));
-                    $retorno['situacao'] = $item->situacao;
-                    $retorno['status'] = $situacao;
+                    $retorno['situacao'] = $situacao;
+                    $retorno['status'] = $status;
                     $retorno['convenio'] = $item->convenio;
                     $retorno['procedimento'] = $item->procedimento;
                     $retorno['celular'] = $item->celular;
@@ -74,7 +87,7 @@ class App extends Controller {
                     $retorno['externoId'] = @$_GET['externoId'];
                     $var[] = $retorno;
                     
-                    @$resumo[$item->situacao]++;
+                    @$resumo[$situacao]++;
                     @$resumo['TOTAL']++;
                 }
             }

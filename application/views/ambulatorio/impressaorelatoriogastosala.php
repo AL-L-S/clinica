@@ -11,6 +11,7 @@
         <thead>
 
            <tr>
+                <th>GUIA</th>
                 <th>PACIENTE</th>
                 <th>PRODUTO</th>
                 <th>UNIDADE</th>
@@ -30,6 +31,10 @@
             ?>
             <?  foreach ($relatorio as $value) :?>
                 <tr>
+                    <td>
+                        <a  style="text-decoration: none; color: black;" title="Guia de Outras Despesas"
+                            href="<?= base_url() ?>ambulatorio/guia/guiaspsadtoutrasdespesas/<?=$value->ambulatorio_guia_id;?>"><?=$value->ambulatorio_guia_id;?></a>
+                    </td>
                     <td><?=$value->paciente;?></td>
                     <td><?=$value->produto;?></td>
                     <td><?=$value->unidade;?></td>

@@ -202,6 +202,43 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function guiaspsadtoutrasdespesas($guia_id) {
+
+        $this->db->select(' ag.guiaconvenio,
+                            ag.data_criacao,
+                            pc.convenio_id,
+                            c.nome as convenio,
+                            c.registroans,
+                            c.codigoidentificador,
+                            ag.ambulatorio_guia_id,
+                            c.dinheiro,
+                            c.tabela,
+                            p.convenionumero,
+                            pt.nome as procedimento,
+                            pt.codigo as codigo_procedimento,
+                            ags.descricao,
+                            ags.quantidade,
+                            ep.descricao as produto,                            
+                            u.descricao as unidade,
+                            pc.valortotal as valor
+                            ');
+        $this->db->from('tb_ambulatorio_guia ag');
+        $this->db->join('tb_ambulatorio_gasto_sala ags', 'ags.guia_id = ag.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = ep.unidade_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = ag.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = ep.procedimento_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'ep.procedimento_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("ags.ativo", 't');
+        $this->db->where("(ag.convenio_id = pc.convenio_id)");
+        $this->db->where("(ep.procedimento_id = pc.procedimento_tuss_id)");
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("ag.ambulatorio_guia_id", $guia_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
     function impressaoguiaconsultaspsadt($guia_id) {
 
         $this->db->select('ae.agenda_exames_id,
@@ -2041,6 +2078,8 @@ class guia_model extends Model {
         if ($_POST['plano'] != "0") {
             $this->db->where("p.convenio_id", $_POST['plano']);
         }
+        
+//        $this->db->where("ae.cancelada", 'f');
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('p.nascimento desc');
@@ -2048,7 +2087,7 @@ class guia_model extends Model {
         $this->db->orderby('p.sexo');
         $this->db->orderby('p.estado_civil_id');
         $return = $this->db->get();
-//        var_dump($return->result()); die;
+        
         return $return->result();
     }
 
@@ -4580,8 +4619,7 @@ class guia_model extends Model {
                             ags.data_cadastro,
                             ep.descricao as produto,
                             u.descricao as unidade,
-                            pv.valor,
-                            procedimento_convenio_produto_valor_id,
+                            pc.valortotal as valor,
                             pt.nome as procedimento');
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_ambulatorio_gasto_sala ags', 'ags.guia_id = ag.ambulatorio_guia_id', 'left');
@@ -4589,12 +4627,13 @@ class guia_model extends Model {
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = ags.produto_id', 'left');
         $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = ep.unidade_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = ep.procedimento_id', 'left');
-        $this->db->join('tb_procedimento_convenio_produto_valor pv', 'pv.procedimento_tuss_id = ep.procedimento_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'ep.procedimento_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("ag.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ag.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("ags.ativo", 't');
-        $this->db->where("pv.ativo", 't');
-        $this->db->where("(ag.convenio_id = pv.convenio_id)");
+        $this->db->where("(ag.convenio_id = pc.convenio_id)");
+        $this->db->where("(ep.procedimento_id = pc.procedimento_tuss_id)");
+        $this->db->where("pc.ativo", 't');
 
         if ($_POST['txtNomeid'] != "") {
             $this->db->where('ag.paciente_id', $_POST['txtNomeid']);

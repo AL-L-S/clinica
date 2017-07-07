@@ -368,8 +368,7 @@ class login_model extends Model {
     }
 
     function emailautomatico() {
-
-
+        
         $horario = date('Y-m-d');
         $this->db->set('data_verificacao', $horario);
         $this->db->insert('tb_empresa_sms_registro');
@@ -392,8 +391,8 @@ class login_model extends Model {
                            ae.data_revisao');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
-        $this->db->where(" ae.data_revisao", ( date('Y-m-d', strtotime("+15 days", strototime(date('Y-m-d'))))));
-        $this->db->where("(ae.data_revisao IS NOT NULL AND ae.data_revisao != '')");
+        $this->db->where("ae.data_revisao =", ( date('Y-m-d', strtotime("+15 days", strtotime(date('Y-m-d'))))));
+        $this->db->where("(ae.data_revisao IS NOT NULL)");
         $revisoes = $this->db->get()->result();
 
 
@@ -403,46 +402,66 @@ class login_model extends Model {
         $this->db->from('tb_empresa');
         $this->db->where("empresa_id", $empresa_id);
         $dadosEmpresa = $this->db->get()->result();
-
+        
         if ($dadosEmpresa[0]->email != '') {
-            $this->load->library('email');
-            $config['protocol'] = 'smtp';
-            $config['smtp_host'] = 'ssl://smtp.gmail.com';
-            $config['smtp_port'] = '465';
-            $config['smtp_user'] = 'stgsaude@gmail.com';
-            $config['smtp_pass'] = 'saude123';
-            $config['validate'] = TRUE;
-            $config['mailtype'] = 'html';
-            $config['charset'] = 'utf-8';
-            $config['newline'] = "\r\n";
+            
+            $this->load->library('My_phpmailer');
+            $mail = new PHPMailer(true);
 
             foreach ($return as $value) {
-                $this->email->initialize($config);
-                $this->email->from($dadosEmpresa[0]->email, $dadosEmpresa[0]->razao_social);
-                $this->email->to($value->cns);
-                $this->email->subject("Lembrete de Consulta");
-                $this->email->message($dadosEmpresa[0]->email_mensagem_confirmacao);
-                $this->email->send();
+                $mail->setLanguage('br');                             // Habilita as saídas de erro em Português
+                $mail->CharSet = 'UTF-8';                             // Habilita o envio do email como 'UTF-8'
+                $mail->SMTPDebug = 3;                               // Habilita a saída do tipo "verbose"
+                $mail->isSMTP();                                      // Configura o disparo como SMTP
+                $mail->Host = 'smtp.gmail.com';                       // Especifica o enderço do servidor SMTP da Locaweb
+                $mail->SMTPAuth = true;                               // Habilita a autenticação SMTP
+                $mail->Username = 'stgsaude@gmail.com';                    // Usuário do SMTP
+                $mail->Password = 'saude123';                   // Senha do SMTP
+                $mail->SMTPSecure = 'ssl';                            // Habilita criptografia TLS | 'ssl' também é possível
+                $mail->Port = 465;                                    // Porta TCP para a conexão
+                $mail->From = $dadosEmpresa[0]->email;             // Endereço previamente verificado no painel do SMTP
+                $mail->FromName = $dadosEmpresa[0]->razao_social;                        // Nome no remetente
+                $mail->addAddress($value->cns);                            // Acrescente um destinatário
+                $mail->isHTML(true);                                  // Configura o formato do email como HTML
+                $mail->Subject = "Lembrete de Consulta";
+                $mail->Body = $dadosEmpresa[0]->email_mensagem_confirmacao;
+
+//                $mail->AddAttachment("./upload/nfe/$solicitacao_cliente_id/validada/" . $notafiscal[0]->chave_nfe . '-danfe.pdf', $notafiscal[0]->chave_nfe . '-danfe.pdf');
+
+                if (!$mail->Send()) {
+                    $mensagem = "Erro: " . $mail->ErrorInfo;
+                } else {
+                    $mensagem = "Email enviado com sucesso!";
+                }
             }
 
-            $config['protocol'] = 'smtp';
-            $config['smtp_host'] = 'ssl://smtp.gmail.com';
-            $config['smtp_port'] = '465';
-            $config['smtp_user'] = 'stgsaude@gmail.com';
-            $config['smtp_pass'] = 'saude123';
-            $config['validate'] = TRUE;
-            $config['mailtype'] = 'html';
-            $config['charset'] = 'utf-8';
-            $config['newline'] = "\r\n";
 
             foreach ($revisoes as $item) {
-                $this->email->initialize($config);
-                $this->email->from($dadosEmpresa[0]->email, "SISTEMA STG");
-                $this->email->to($dadosEmpresa[0]->email);
-                $this->email->subject("Revisao");
                 $msg = "O paciente: " . $item->paciente . " tem uma revisão marcada para a data " . date("d/m/Y", strtotime($item->data_revisao));
-                $this->email->message($msg);
-                $this->email->send();
+                $mail->setLanguage('br');                             // Habilita as saídas de erro em Português
+                $mail->CharSet = 'UTF-8';                             // Habilita o envio do email como 'UTF-8'
+                $mail->SMTPDebug = 3;                               // Habilita a saída do tipo "verbose"
+                $mail->isSMTP();                                      // Configura o disparo como SMTP
+                $mail->Host = 'smtp.gmail.com';                       // Especifica o enderço do servidor SMTP da Locaweb
+                $mail->SMTPAuth = true;                               // Habilita a autenticação SMTP
+                $mail->Username = 'stgsaude@gmail.com';                    // Usuário do SMTP
+                $mail->Password = 'saude123';                   // Senha do SMTP
+                $mail->SMTPSecure = 'ssl';                            // Habilita criptografia TLS | 'ssl' também é possível
+                $mail->Port = 465;                                    // Porta TCP para a conexão
+                $mail->From = $dadosEmpresa[0]->email;             // Endereço previamente verificado no painel do SMTP
+                $mail->FromName = "SISTEMA STG";                        // Nome no remetente
+                $mail->addAddress($value->cns);                            // Acrescente um destinatário
+                $mail->isHTML(true);                                  // Configura o formato do email como HTML
+                $mail->Subject = "Revisao";
+                $mail->Body = $msg;
+
+//                    $mail->AddAttachment("./upload/nfe/$solicitacao_cliente_id/validada/" . $notafiscal[0]->chave_nfe . '-danfe.pdf', $notafiscal[0]->chave_nfe . '-danfe.pdf');
+
+                if (!$mail->Send()) {
+                    $mensagem = "Erro: " . $mail->ErrorInfo;
+                } else {
+                    $mensagem = "Email enviado com sucesso!";
+                }
             }
         }
     }

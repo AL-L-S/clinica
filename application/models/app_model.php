@@ -88,7 +88,7 @@ class app_model extends Model {
 //        $this->db->where('ae.data', $dataAtual);
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.medico_consulta_id', @$retorno[0]->operador_id);
-        if(@$_GET['situacao'] != ''){
+        if (@$_GET['situacao'] != '') {
             switch ($_GET['situacao']) {
                 case 'o':
                     $situacao = 'OK';
@@ -105,12 +105,29 @@ class app_model extends Model {
                 default:
                     break;
             }
-            if(isset($situacao)){
-                $this->db->where('ae.situacao', $situacao);   
+            if (isset($situacao)) {
+                if ($situacao == "BLOQUEADO") {
+                    $this->db->where('ae.bloqueado', 't');
+                }
+                if ($situacao == "LIVRE") {
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.situacao', 'LIVRE');
+                }
+                if ($situacao == "OK") {
+                    $this->db->where('ae.situacao', 'OK');
+                }
+                if ($situacao == "FALTOU") {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $this->db->where('ae.data <', $data_atual);
+                    $this->db->where('ae.situacao', 'OK');
+                    $this->db->where('ae.realizada', 'f');
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.operador_atualizacao is not null');
+                }  
             }
         }
-        
-//        $data = explode("/", $_GET['data']);
+
         if(@$_GET['data'] != ""){
             $this->db->where('ae.data', $_GET['data']);
         }

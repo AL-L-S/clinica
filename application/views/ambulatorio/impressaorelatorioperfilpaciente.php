@@ -540,13 +540,10 @@
         ],
         colors: [
             <? 
-            $i = 1;
             foreach($planoSaude as $nome => $plano) { 
-                $letras = array('A', 'B', 'C', 'D', 'E', 'F');?>
-            '#<?= str_pad($letras[rand(0, 5)], 6, $i, STR_PAD_LEFT);?>',
-            <? $i = (($i * rand(0, 5)) * ($plano));
-               while ($i >= 1000 || $i == 0) {$i = (int) ($i / 10); }
-                } ?>
+                ?>
+            'rgb( <?= rand ( 0, 150) ?> , <?= rand ( 0, 150) ?> , <?= rand ( 0, 150) ?>)',
+            <? } ?>
         ],
         formatter: function (x, data) {
             return data.formatted;
