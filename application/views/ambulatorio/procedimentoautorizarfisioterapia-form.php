@@ -236,7 +236,19 @@
                                                                                 document.getElementById("valor<?= $b ?>").value = valor;
                                                                                 document.getElementById("qtde<?= $b ?>").value = qtde;
                                                                                 $('.carregando').hide();
-                                                                            });
+                                                        });
+                                                        
+                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
+                                                                var options = '<option value="0">Selecione</option>';
+                                                                for (var c = 0; c < j.length; c++) {
+                                                                    if (j[c].forma_pagamento_id != null) {
+                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                    }
+                                                                }
+                                                                $('#formapamento<?= $b ?>').html(options).show();
+                                                                $('.carregando').hide();
+                                                            });
+                                                                            
                                                                         }
                                                                         opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
                                                                         slt = '';
