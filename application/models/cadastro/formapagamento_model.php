@@ -27,6 +27,7 @@ class formapagamento_model extends Model {
                             ');
         $this->db->from('tb_forma_pagamento');
         $this->db->where('ativo', 'true');
+        $this->db->where('forma_pagamento_id !=', 1000); // Essa forma de pagamento é referente a forma de Pagamento "DEBITO"
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', "%" . $args['nome'] . "%");
         }

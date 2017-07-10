@@ -15,8 +15,9 @@
                         <tr>
                             <td style="text-align: left">
                                 <input type="text" name="valorafaturar" id="valorafaturar" size="7" class="texto01" value="<?= $exame[0]->total; ?>" readonly />
-                            <input type="hidden" name="guia_id" id="guia_id" class="texto01" value="<?= $guia_id; ?>"/>
-                            <input type="hidden" name="financeiro_grupo_id" id="financeiro_grupo_id" class="texto01" value="<?= $financeiro_grupo_id; ?>"/>
+                                <input type="hidden" name="guia_id" id="guia_id" class="texto01" value="<?= $guia_id; ?>"/>
+                                <input type="hidden" name="financeiro_grupo_id" id="financeiro_grupo_id" class="texto01" value="<?= $financeiro_grupo_id; ?>"/>
+                                
                             </td>
                         </tr>
                         
@@ -27,9 +28,12 @@
                         </tr>
                         <tr>
                             <td>
-                            <input type="text" name="desconto" id="desconto" size="7" value="<?= $valor; ?>" class="texto01"/>
-                            <input type="hidden" name="dinheiro" id="dinheiro" value="0"class="texto01"/>
-                            <input type="hidden" name="juroscartao" id="juroscartao" value="0"class="texto01"/>
+                                <input type="text" name="desconto" id="desconto" size="7" value="<?= $valor; ?>" class="texto01"/>
+                                <input type="hidden" name="dinheiro" id="dinheiro" value="0"class="texto01"/>
+                                <input type="hidden" name="juroscartao" id="juroscartao" value="0"class="texto01"/>
+                                
+                                <input type="checkbox" name="credito" id="credito"/>
+                                <label for="credito">Usar credito?</label>
                             </td>
                         </tr>
                         </table>
@@ -227,9 +231,9 @@
                         
                         <tr>
                             <td>
-                            <input type="text" name="valortotal" id="valortotal"  onkeyup="multiplica()"  class="texto01" readonly/>
-                            <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->total; ?>"/>
-                            <input type="hidden" name="juros" id="juros" value="0">
+                                <input type="text" name="valortotal" id="valortotal"  onkeyup="multiplica()"  class="texto01" readonly/>
+                                <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->total; ?>"/>
+                                <input type="hidden" name="juros" id="juros" value="0">
                             </td>
                         </tr>
                         

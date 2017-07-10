@@ -122,7 +122,61 @@ class App extends Controller {
 
         die(json_encode($result));
     }
-
+    
+    function thiago(){
+        $retorno = $this->app->listaProcedimentosMedHGF();
+        foreach($retorno as $value){
+            $procCovId = $this->app->verificaProcedimentoJaExiste($value);
+            
+            if($procCovId != -1){ // update
+                echo "UPDATE ponto.tb_procedimento_convenio SET ";
+                foreach ($value as $key => $item) {
+                    if(     $key == 'procedimento_convenio_id' || 
+                            $key == 'convenio_id' || 
+                            $key == 'procedimento_tuss_id' || 
+                            $key == 'operador_cadastro' || 
+                            $key == 'data_cadastro' || 
+                            $key == 'data_atualizacao' ||
+                            $key == 'operador_atualizacao' || 
+                            $key == 'convenio' ||
+                            $key == 'ativo' ||
+                            $key == 'procedimento'  ){
+                        continue;
+                    }
+                    
+                    echo $key . " = " . $item . " , ";
+                }
+                
+                echo "data_atualizacao = '" . date("Y-m-d H:i:s") . "' "
+                        . "WHERE procedimento_convenio_id = ". $procCovId. "; ";
+            }
+            
+            else{ // insert
+                echo "INSERT INTO ponto.tb_procedimento_convenio (";
+                $valor = "";
+                
+                foreach ($value as $key => $item) {
+                    if(     $key == 'procedimento_convenio_id' || 
+                            $key == 'data_atualizacao' ||
+                            $key == 'operador_atualizacao' || 
+                            $key == 'convenio' ||
+                            $key == 'ativo' ||
+                            $key == 'operador_cadastro' ||
+                            $key == 'data_cadastro' ||
+                            $key == 'procedimento'  ){
+                        continue;
+                    }
+                    
+                    echo $key . ", ";
+                    $valor .= $item . ", ";
+                }
+                
+                echo "data_cadastro) VALUES (" . $valor. "'" . date("Y-m-d H:i:s") . "'); ";
+            }
+            
+            echo "<br><br>";
+        }
+    }
 }
 
 /* End of file welcome.php */

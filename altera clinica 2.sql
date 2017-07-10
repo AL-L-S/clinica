@@ -288,6 +288,23 @@ CREATE TABLE ponto.tb_empresa_impressao
   CONSTRAINT tb_empresa_impressao_pkey PRIMARY KEY (empresa_impressao_id)
 );
 
+-- Dia 10/07/2017
+
+CREATE TABLE ponto.tb_paciente_credito
+(
+  paciente_credito_id serial NOT NULL,
+  paciente_id integer,
+  agenda_exames_id integer,
+  procedimento_convenio_id integer,
+  valor numeric(10,2),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_paciente_credito_pkey PRIMARY KEY (paciente_credito_id)
+);
+
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN alergias character varying(40000);
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN cirurgias character varying(40000);
 
@@ -305,3 +322,6 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN marketing boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN laboratorio boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN ponto boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN calendario boolean DEFAULT true;
+
+INSERT INTO ponto.tb_forma_pagamento(forma_pagamento_id, nome)
+    VALUES (1000, 'CREDITO');
