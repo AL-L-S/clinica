@@ -16,6 +16,36 @@ class exametemp_model extends Model {
         }
     }
 
+    function listarcredito($paciente_id) {
+        
+        $this->db->select('pcr.paciente_credito_id,
+                           pcr.paciente_id,
+                           pcr.procedimento_convenio_id,
+                           pcr.valor,
+                           c.nome as convenio,
+                           p.nome as paciente,
+                           pt.nome as procedimento');
+        $this->db->from('tb_paciente_credito pcr');
+        $this->db->join('tb_paciente p', 'p.paciente_id = pcr.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcr.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('pcr.ativo', 'true');
+        
+        if(@$_GET['procedimento'] != ''){
+            $this->db->where('pt.nome ilike', "%" . $_GET['procedimento'] . "%");
+        }
+        
+        if(@$_GET['convenio'] != ''){
+            $this->db->where('c.nome ilike', "%" . $_GET['convenio'] . "%");
+        }
+        
+//        $this->db->orderby('pt.nome');
+//        $this->db->orderby('c.nome');
+        return $this->db;
+        
+    }
+
     function listarmedicoconsulta() {
         $this->db->select('operador_id,
             nome');

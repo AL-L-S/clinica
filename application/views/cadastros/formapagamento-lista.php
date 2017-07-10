@@ -37,8 +37,8 @@
                         $lista = $this->formapagamento->listar($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
-                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                     ?>
+                            
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01"; ?>
                             <tr >
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
 
@@ -55,8 +55,8 @@
 
                         </tbody>
                         <?php
-                                }
-                            }
+                        }
+                    }
                         ?>
                         <tfoot>
                             <tr>

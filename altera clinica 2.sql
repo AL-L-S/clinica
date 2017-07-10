@@ -268,5 +268,24 @@ CREATE TABLE ponto.tb_procedimento_percentual_promotor_convenio
   CONSTRAINT tb_procedimento_percentual_promotor_convenio_pkey PRIMARY KEY (procedimento_percentual_promotor_convenio_id )
 );
 
+-- Dia 10/07/2017
 
+CREATE TABLE ponto.tb_paciente_credito
+(
+  paciente_credito_id serial NOT NULL,
+  paciente_id integer,
+  agenda_exames_id integer,
+  procedimento_convenio_id integer,
+  valor numeric(10,2),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_paciente_credito_pkey PRIMARY KEY (paciente_credito_id)
+);
 
+INSERT INTO ponto.tb_forma_pagamento(forma_pagamento_id, nome)
+    VALUES (1000, 'CREDITO');
+
+SELECT setval('ponto.tb_forma_pagamento_forma_pagamento_id_seq', 1001);

@@ -246,6 +246,20 @@ class Exametemp extends BaseController {
         $this->loadView('ambulatorio/fisioterapiapacientetemp-form', $data);
     }
 
+    function carregarcredito($paciente_id) {
+        
+        $data['paciente_id'] = $paciente_id;
+        
+        $this->loadView('ambulatorio/carregarcredito-lista', $data);
+    }
+
+    function novocredito($paciente_id) {
+        $data['paciente_id'] = $paciente_id;
+        $data['convenio'] = $this->convenio->listardados();
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $this->loadView('ambulatorio/novocredito-form', $data);
+    }
+    
     function carregaragendamultiempresa3($agenda_exames_id, $externo_id) {
         $data['externo_id'] = $externo_id;
         $data['agenda_exames_id'] = $agenda_exames_id;
