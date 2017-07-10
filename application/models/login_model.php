@@ -26,14 +26,7 @@ class login_model extends Model {
         $this->db->where('p.ativo = true');
         $return = $this->db->get()->result();
 
-        $this->db->select('empresa_id,
-                            nome,
-                            internacao,
-                            centrocirurgico,
-                            relatoriorm,
-                            chat,
-                               servicosms,
-                               servicoemail');
+        $this->db->select('*');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa);
         $retorno = $this->db->get()->result();
@@ -46,6 +39,17 @@ class login_model extends Model {
             $chat = $retorno[0]->chat;
             $centrocirurgico = $retorno[0]->centrocirurgico;
             $relatoriorm = $retorno[0]->relatoriorm;
+            $imagem = $retorno[0]->imagem;
+            $consulta = $retorno[0]->consulta;
+            $especialidade = $retorno[0]->especialidade;
+            $geral = $retorno[0]->geral;
+            $faturamento = $retorno[0]->faturamento;
+            $estoque = $retorno[0]->estoque;
+            $financeiro = $retorno[0]->financeiro;
+            $marketing = $retorno[0]->marketing;
+            $laboratorio = $retorno[0]->laboratorio;
+            $ponto = $retorno[0]->ponto;
+            $calendario = $retorno[0]->calendario;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -75,6 +79,17 @@ class login_model extends Model {
                 'modulo' => $modulo,
                 'centrocirurgico' => $centrocirurgico,
                 'relatoriorm' => $relatoriorm,
+                'imagem' => $imagem,
+                'consulta' => $consulta,
+                'especialidade' => $especialidade,
+                'geral' => $geral,
+                'faturamento' => $faturamento,
+                'estoque' => $estoque,
+                'financeiro' => $financeiro,
+                'marketing' => $marketing,
+                'laboratorio' => $laboratorio,
+                'ponto' => $ponto,
+                'calendario' => $calendario,
                 'internacao' => $internacao,
                 'chat' => $chat,
                 'servicosms' => $servicosms,

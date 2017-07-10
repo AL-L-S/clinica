@@ -94,6 +94,7 @@
                     </dd>
 
                     <? if ($this->session->userdata('operador_id') == 1) { ?>
+                        
                         <dt>
                             <label>Serviço de SMS</label>
                         </dt>
@@ -111,6 +112,108 @@
                         </dt>
                         <dd>
                             <input type="checkbox" id="chat" name="chat" <? if (@$obj->_chat == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label>Impressão Tipo (Impressão ficha e imagem)</label>
+                        </dt>
+                        <dd>
+                            <input type="text" id="impressao_tipo" class="texto01" name="impressao_tipo" value="<?= @$obj->_impressao_tipo; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Impressão Laudo</label>
+                        </dt>
+                        <dd>
+                            <input type="text" id="impressao_laudo" class="texto01" name="impressao_laudo" value="<?= @$obj->_impressao_laudo; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Impressão Recibo</label>
+                        </dt>
+                        <dd>
+                            <input type="text" id="impressao_recibo" class="texto01" name="impressao_recibo" value="<?= @$obj->_impressao_recibo; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Impressão Declaração</label>
+                        </dt>
+                        <dd>
+                            <input type="text" id="impressao_declaracao" class="texto01" name="impressao_declaracao" value="<?= @$obj->_impressao_declaracao; ?>" />
+                        </dd>
+                        <dt>
+                            <label title="Habilitar a Imagem.">Imagem</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="imagem" name="imagem" <? if (@$obj->_imagem == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar a Consulta.">Consulta</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="consulta" name="consulta" <? if (@$obj->_consulta == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Especialidade chat.">Especialidade</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="especialidade" name="especialidade" <? if (@$obj->_especialidade == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Labotarorio.">Labotarorio</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="labotarorio" name="laboratorio" <? if (@$obj->_laboratorio == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Geral.">Geral</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="geral" name="geral" <? if (@$obj->_geral == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Faturamento.">Faturamento</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="faturamento" name="faturamento" <? if (@$obj->_faturamento == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Estoque.">Estoque</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="estoque" name="estoque" <? if (@$obj->_estoque == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Financeiro.">Financeiro</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="financeiro" name="financeiro" <? if (@$obj->_financeiro == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Marketing.">Marketing</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="marketing" name="marketing" <? if (@$obj->_marketing == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Internação.">Internação</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="internacao" name="internacao" <? if (@$obj->_internacao == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Centro Cirurgico.">Centro Cirurgico</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="centro_cirurgico" name="centro_cirurgico" <? if (@$obj->_centro_cirurgico == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Ponto.">Ponto</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="ponto" name="ponto" <? if (@$obj->_ponto == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Calendario.">Calendario</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="calendario" name="calendario" <? if (@$obj->_calendario == 't') echo "checked"; ?>/> 
                         </dd>
                     <? } ?>
                 </dl>    
