@@ -9,6 +9,18 @@
     $date_time = new DateTime($dataAtual);
     $diff = $date_time->diff(new DateTime($dataFuturo));
     $teste = $diff->format('%Ya %mm %dd');
+//    var_dump(isset($obj->_peso), isset($obj->_altura)); die;
+    if (isset($obj->_peso)) {
+        $peso = @$obj->_peso;
+    } else {
+        $peso = @$laudo_peso[0]->peso;
+    }
+    if (isset($obj->_altura)) {
+        $altura = @$obj->_altura;
+    } else {
+        $altura = @$laudo_peso[0]->altura;
+    }
+//    var_dump($altura, $peso); die;
     ?>
 
     <div >
@@ -59,10 +71,10 @@
                         <table>
                             <tr>
                                 <td><font size = -1>Peso:</font></td>
-                                <td width="50px;"><font size = -1><input type="text" name="Peso" id="Peso" class="texto01"  alt="decimal" onkeyup="validar(this, 'num');" value="<?= @$obj->_peso ?>"/></font></td>
+                                <td width="50px;"><font size = -1><input type="text" name="Peso" id="Peso" class="texto01"  alt="decimal" onkeyup="validar(this, 'num');" value="<?= $peso ?>"/></font></td>
                                 <td width="50px;"><font size = -1>Kg</font></td>
                                 <td ><font size = -1>Altura:</font></td>
-                                <td width="50px;"><font size = -1><input type="text" name="Altura" id="Altura" alt="integer" class="texto01" value="<?= @$obj->_altura; ?>" onblur="calculaImc()"/></font></td> <!--onblur="history.go(0)"-->
+                                <td width="50px;"><font size = -1><input type="text" name="Altura" id="Altura" alt="integer" class="texto01" value="<?= $altura; ?>" onblur="calculaImc()"/></font></td> <!--onblur="history.go(0)"-->
                                 <td width="50px;"><font size = -1>Cm</font></td>
                                 <!--</tr>-->
                                 <?
@@ -253,7 +265,7 @@
                                 ?> >FINALIZADO</option>
                             </select>
                             <input type="hidden" name="status" id="status" value="<?= @$obj->_status; ?>" class="size2" />
-                            
+
                             <label style="margin-left: 10pt" for="rev">Revisão?</label>
                             <input type="checkbox" name="rev" id="rev" />
                             <div class="dias" style="display: inline">
@@ -271,8 +283,8 @@
                     <fieldset>
                         <legend><b><font size="3" color="red">Historico de consultas</font></b></legend>
                         <div>
-<? foreach ($historico as $item) {
-    ?>
+                            <? foreach ($historico as $item) {
+                                ?>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -313,12 +325,12 @@
                                     </tbody>
                                 </table>
                                 <hr>
-<? }
-?>
+                            <? }
+                            ?>
                         </div>
                         <div>
-<? foreach ($historicoantigo as $itens) {
-    ?>
+                            <? foreach ($historicoantigo as $itens) {
+                                ?>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -330,8 +342,8 @@
                                     </tbody>
                                 </table>
                                 <hr>
-<? }
-?>
+                            <? }
+                            ?>
                         </div>
 
                     </fieldset>
@@ -341,8 +353,8 @@
                         <div>
                             <table>
                                 <tbody>
-<? foreach ($historicoexame as $item) {
-    ?>
+                                    <? foreach ($historicoexame as $item) {
+                                        ?>
 
                                         <tr>
                                             <td >Data: <?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
@@ -417,8 +429,8 @@
                                                 none;border-right:none;' colspan="10">&nbsp;</th>
                                         </tr>
 
-<? }
-?>
+                                    <? }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>

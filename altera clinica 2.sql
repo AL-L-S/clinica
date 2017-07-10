@@ -268,5 +268,26 @@ CREATE TABLE ponto.tb_procedimento_percentual_promotor_convenio
   CONSTRAINT tb_procedimento_percentual_promotor_convenio_pkey PRIMARY KEY (procedimento_percentual_promotor_convenio_id )
 );
 
+-- Dia 05/07/2017
 
+CREATE TABLE ponto.tb_empresa_impressao
+(
+  empresa_impressao_id serial NOT NULL,
+
+  cabecalho text,
+  rodape text,
+  paciente boolean DEFAULT false,
+  procedimento boolean DEFAULT false,
+  convenio boolean DEFAULT false,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_impressao_pkey PRIMARY KEY (empresa_impressao_id)
+);
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN alergias character varying(40000);
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN cirurgias character varying(40000);
 
