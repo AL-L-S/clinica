@@ -293,7 +293,7 @@ class laudo_model extends Model {
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
-        
+
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
         }
@@ -1785,6 +1785,8 @@ class laudo_model extends Model {
                             p.nome as paciente,
                             o.nome as medico,
                             pi.nome as indicacao,
+                            al.peso,
+                            al.altura,
                             al.exame_id,
                             al.ambulatorio_laudo_id');
         $this->db->from('tb_ambulatorio_laudo al');
@@ -1797,6 +1799,35 @@ class laudo_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where('al.paciente_id', $parametro);
         $this->db->where('al.ambulatorio_laudo_id !=', $ambulatorio_laudo_id);
+        $this->db->orderby('al.data_cadastro desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarlaudospesoaltura($parametro) {
+
+        $this->db->select('al.data_cadastro,
+                            pt.nome as procedimento,
+                            p.nome as paciente,
+                            o.nome as medico,
+                            pi.nome as indicacao,
+                            ag.peso,
+                            ag.altura,
+                            al.exame_id,
+                            al.ambulatorio_laudo_id');
+        $this->db->from('tb_ambulatorio_laudo al');
+        $this->db->join('tb_paciente p', 'p.paciente_id = al.paciente_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_exames e', 'e.exames_id = al.exame_id ', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_guia ag', 'ag.ambulatorio_guia_id = ae.guia_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('al.paciente_id', $parametro);
+        $this->db->where('ag.peso > 0');
+        $this->db->where('ag.altura > 0');
+//        $this->db->where('al.ambulatorio_laudo_id !=', $ambulatorio_laudo_id);
         $this->db->orderby('al.data_cadastro desc');
         $return = $this->db->get();
         return $return->result();
@@ -2438,7 +2469,7 @@ class laudo_model extends Model {
         $this->db->where("exames_id", $exame_id);
         $query = $this->db->get();
         $return1 = $query->result();
-        
+
         $this->db->select('email, email_mensagem_agradecimento as msg, razao_social');
         $this->db->from('tb_empresa e');
         $this->db->where("empresa_id", $empresa_id);
@@ -2466,9 +2497,9 @@ class laudo_model extends Model {
             $this->db->where("exames_id", $exame_id);
             $query = $this->db->get();
             $return = $query->result();
-            
+
             if (isset($_POST['rev'])) {
-                switch ($_POST['tempoRevisao']){ 
+                switch ($_POST['tempoRevisao']) {
                     case '1a':
                         $dias = '+1 year';
                         break;
@@ -2481,10 +2512,10 @@ class laudo_model extends Model {
                     case '1m':
                         $dias = '+1 month';
                         break;
-                    default:    
+                    default:
                         $dias = '';
                 }
-                
+
                 if ($dias != '') {
                     $diaRevisao = date('Y-m-d', strtotime($dias));
                     $this->db->set('data_revisao', $diaRevisao);

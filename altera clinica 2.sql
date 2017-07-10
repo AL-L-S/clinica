@@ -268,24 +268,29 @@ CREATE TABLE ponto.tb_procedimento_percentual_promotor_convenio
   CONSTRAINT tb_procedimento_percentual_promotor_convenio_pkey PRIMARY KEY (procedimento_percentual_promotor_convenio_id )
 );
 
--- Dia 10/07/2017
+-- Dia 05/07/2017
 
-CREATE TABLE ponto.tb_paciente_credito
+CREATE TABLE ponto.tb_empresa_impressao
 (
-  paciente_credito_id serial NOT NULL,
-  paciente_id integer,
-  agenda_exames_id integer,
-  procedimento_convenio_id integer,
-  valor numeric(10,2),
+  empresa_impressao_id serial NOT NULL,
+
+  cabecalho text,
+  rodape text,
+  paciente boolean DEFAULT false,
+  procedimento boolean DEFAULT false,
+  convenio boolean DEFAULT false,
   ativo boolean DEFAULT true,
+  empresa_id integer,
   data_cadastro timestamp without time zone,
   operador_cadastro integer,
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
-  CONSTRAINT tb_paciente_credito_pkey PRIMARY KEY (paciente_credito_id)
+  CONSTRAINT tb_empresa_impressao_pkey PRIMARY KEY (empresa_impressao_id)
 );
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN alergias character varying(40000);
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN cirurgias character varying(40000);
 
 INSERT INTO ponto.tb_forma_pagamento(forma_pagamento_id, nome)
     VALUES (1000, 'CREDITO');
 
-SELECT setval('ponto.tb_forma_pagamento_forma_pagamento_id_seq', 1001);

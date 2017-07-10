@@ -1171,6 +1171,7 @@ class Exame extends BaseController {
     }
 
     function anexarimagem($exame_id, $sala_id) {
+//        var_dump($_POST); die;
 
         $this->load->helper('directory');
         $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
@@ -1206,7 +1207,7 @@ class Exame extends BaseController {
     function importarimagem() {
         $exame_id = $_POST['exame_id'];
         $sala_id = $_POST['sala_id'];
-//        $data = $_FILES['userfile'];
+        $data = $_FILES['userfile'];
 //        var_dump($data);
 //        die;
         if (!is_dir("./upload/$exame_id")) {
@@ -1217,7 +1218,7 @@ class Exame extends BaseController {
 
         $config['upload_path'] = "./upload/" . $exame_id . "/";
         $config['allowed_types'] = 'gif|jpg|png|jpeg';
-        $config['max_size'] = '1000';
+        $config['max_size'] = '0';
         $config['overwrite'] = TRUE;
         $config['encrypt_name'] = TRUE;
         $this->load->library('upload', $config);

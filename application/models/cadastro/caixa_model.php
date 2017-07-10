@@ -908,8 +908,10 @@ class caixa_model extends Model {
 
     function excluirentrada($entrada) {
 
+//        var_dump($entrada); die;
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
+//        var_dump($horario); die;
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);

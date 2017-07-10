@@ -207,12 +207,12 @@ class Convenio_model extends Model {
                         if ($_POST['ajustetotal'] == '') {
                             $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = (valorch * qtdech) + (valorfilme * qtdefilme) + (valorporte * qtdeporte) + (valoruco * qtdeuco)
-                      where convenio_id = convenio_id and procedimento_tuss_id = $procedimento_tuss_id;";
+                      where convenio_id = $convenioid and procedimento_tuss_id = $procedimento_tuss_id;";
                             $this->db->query($sqll);
                         } else {
                             $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = (valortotal * $ajustetotal) + valortotal
-                      where convenio_id = convenio_id and procedimento_tuss_id = $procedimento_tuss_id;";
+                      where convenio_id = $convenioid and procedimento_tuss_id = $procedimento_tuss_id;";
                             $this->db->query($sqll);
                         }
                     } else {
@@ -228,12 +228,12 @@ class Convenio_model extends Model {
                         if ($_POST['ajustetotal'] == '') {
                             $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = ROUND((valorch * qtdech) + (valorfilme * qtdefilme) + (valorporte * qtdeporte) + (valoruco * qtdeuco))
-                      where convenio_id = convenio_id and procedimento_tuss_id = $procedimento_tuss_id;";
+                      where convenio_id = $convenioid and procedimento_tuss_id = $procedimento_tuss_id;";
                             $this->db->query($sqll);
                         } else {
                             $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = ROUND((valortotal * $ajustetotal) + valortotal)
-                      where convenio_id = convenio_id and procedimento_tuss_id = $procedimento_tuss_id;";
+                      where convenio_id = $convenioid and procedimento_tuss_id = $procedimento_tuss_id;";
                             $this->db->query($sqll);
                         }
                     }
@@ -254,12 +254,12 @@ class Convenio_model extends Model {
                     if ($_POST['ajustetotal'] == '') {
                         $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = (valorch * qtdech) + (valorfilme * qtdefilme) + (valorporte * qtdeporte) + (valoruco * qtdeuco)
-                      where convenio_id = convenio_id;";
+                      where convenio_id = $convenioid;";
                         $this->db->query($sqll);
                     } else {
                         $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = (valortotal * $ajustetotal) + valortotal
-                      where convenio_id = convenio_id;";
+                      where convenio_id = $convenioid;";
                         $this->db->query($sqll);
                     }
                 } else {
@@ -276,12 +276,12 @@ class Convenio_model extends Model {
                     if ($_POST['ajustetotal'] == '') {
                         $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = ROUND((valorch * qtdech) + (valorfilme * qtdefilme) + (valorporte * qtdeporte) + (valoruco * qtdeuco))
-                      where convenio_id = convenio_id;";
+                      where convenio_id = $convenioid;";
                         $this->db->query($sqll);
                     } else {
                         $sqll = "update ponto.tb_procedimento_convenio
                       set valortotal = ROUND((valortotal * $ajustetotal) + valortotal)
-                      where convenio_id = convenio_id;";
+                      where convenio_id = $convenioid;";
                         $this->db->query($sqll);
                     }
                 }

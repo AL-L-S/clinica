@@ -6325,22 +6325,26 @@ AND data <= '$data_fim'";
                 if ($_POST['valor1'] > $_POST['valorajuste1']) {
                     $desconto1 = $_POST['valor1'] - $_POST['valorajuste1'];
                 } else {
-                    $desconto1 = $_POST['valorajuste1'] - $_POST['valor1'];
+                    $desconto1 = $_POST['valor1'] - $_POST['valorajuste1'];
+//                    $desconto1 = $_POST['valorajuste1'] - $_POST['valor1'];
                 }
                 if ($_POST['valor2'] > $_POST['valorajuste2']) {
-                    $desconto2 = $_POST['valor1'] - $_POST['valorajuste1'];
+                    $desconto2 = $_POST['valor2'] - $_POST['valorajuste2'];
                 } else {
-                    $desconto2 = $_POST['valorajuste2'] - $_POST['valor2'];
+                    $desconto2 = $_POST['valor2'] - $_POST['valorajuste2'];
+//                    $desconto2 = $_POST['valorajuste2'] - $_POST['valor2'];
                 }
                 if ($_POST['valor3'] > $_POST['valorajuste3']) {
                     $desconto3 = $_POST['valor3'] - $_POST['valorajuste3'];
                 } else {
-                    $desconto3 = $_POST['valorajuste3'] - $_POST['valor3'];
+                    $desconto3 = $_POST['valor3'] - $_POST['valorajuste3'];
+//                    $desconto3 = $_POST['valorajuste3'] - $_POST['valor3'];
                 }
                 if ($_POST['valor4'] > $_POST['valorajuste4']) {
                     $desconto4 = $_POST['valor4'] - $_POST['valorajuste4'];
                 } else {
-                    $desconto4 = $_POST['valorajuste4'] - $_POST['valor4'];
+                    $desconto4 = $_POST['valor4'] - $_POST['valorajuste4'];
+//                    $desconto4 = $_POST['valorajuste4'] - $_POST['valor4'];
                 }
 
                 $desconto = $desconto1 + $desconto2 + $desconto3 + $desconto4 + $_POST['desconto'];
@@ -6359,7 +6363,7 @@ AND data <= '$data_fim'";
             $desconto_cartao3 = $_POST['valor3'] - $_POST['valorajuste3'];
             $desconto_cartao4 = $_POST['valor4'] - $_POST['valorajuste4'];
 //            echo '<pre>';
-//            var_dump($desconto_cartao1,$desconto_cartao2,$desconto_cartao3,$desconto_cartao4 );
+//            var_dump($desconto);
 //            die;
             $juros = $_POST['juros'];
 

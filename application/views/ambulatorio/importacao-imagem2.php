@@ -23,6 +23,18 @@
                     </fieldset>
                     <button type="submit" name="btnEnviar">Ordenar</button>
                 </div> <!-- Final da DIV content -->
+<!--                <br>
+                <br>
+                <div >
+                    <?= form_open_multipart(base_url() . 'ambulatorio/exame/importarimagem'); ?>
+                    <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
+                    <input type="file" name="userfile"/>
+                    <button type="submit" name="btnEnviar">Enviar</button>
+                    <input type="hidden" name="exame_id" value="<?= $exame_id; ?>" />
+                    <input type="hidden" name="sala_id" value="<?= $sala_id; ?>" />
+                    <?= form_close(); ?>
+
+                </div>-->
             </form>
 
             <div >
@@ -60,10 +72,10 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    $(document).ready(function(){ 
+    $(document).ready(function () {
         $('#sortable').sortable();
     });
 
-    
+
 
 </script>

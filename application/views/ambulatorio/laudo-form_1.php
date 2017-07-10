@@ -344,8 +344,15 @@ if (count($pacs) > 0) {
                                                             <font size="-1">OIT</font></a></div></td>
                                                 <td >
                                                     <div class="bt_link_new">
+                                                        <?
+                                                        if (!preg_match('/\ERROR/', $linkImagem) && $linkImagem != '') {?>
                                                         <a href="<?= $linkImagem ?>" target="_blank" >
-                                                            <font size="-1">Imagens PACS</font></a></div></td>
+                                                            <font size="-1">Imagens PACS</font></a>    
+                                                        <?}else{?>
+                                                            <font size="-1">Imagens PACS</font>
+                                                        <?}
+                                                        ?>
+                                                        </div></td>
                                             </tr>
                                             <tr>
                                                 <td >

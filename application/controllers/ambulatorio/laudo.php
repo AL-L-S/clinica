@@ -314,6 +314,9 @@ class Laudo extends BaseController {
         $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
         $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
+        $data['laudo_peso'] = $this->laudo->listarlaudospesoaltura($paciente_id, $ambulatorio_laudo_id);
+//        echo '<pre>';
+//        var_dump($data['laudo_peso']); die;
         $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
         $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
@@ -1934,7 +1937,7 @@ class Laudo extends BaseController {
         }
         if ($verificador == 6 || $verificador == "") {
 
-            $html = $this->load->view('ambulatorio/impressaoimagem6gastrosul', $data, true);
+            $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
         }
         $grupo = $data['laudo']['0']->grupo;
 
