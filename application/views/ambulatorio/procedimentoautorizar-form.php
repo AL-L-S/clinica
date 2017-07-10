@@ -87,7 +87,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->sala; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  alt="" value="1" class="texto00"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  alt="" value="1" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1"/>
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
@@ -110,8 +110,8 @@
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>
-                                        <? //foreach ($forma_pagamento as $item) : ?>
-    <!--                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>-->
+                                        <? // foreach ($forma_pagamento as $item) : ?>
+                                                <!--<option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>-->
                                         <? // endforeach;  ?>
                                     </select>
                                 </td>
@@ -190,26 +190,37 @@
                                 
 
                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio<?= $it ?>', {convenio<?= $b ?>: convenio_agendado[<?= $b - 1 ?>], ajax: true}, function (t) {
-    //                      alert(proc_agendado);
-                                            var opt = '<option value=""></option>';
-                                            var slt = '';
-                                            for (var c = 0; c < t.length; c++) {
-                                                if (proc_agendado[<?= $b - 1 ?>] == t[c].procedimento_convenio_id) {
-                                                    slt = "selected='true'";
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
-                                                                            var valor = a[0].valortotal;
-                                                                            var qtde = a[0].qtde;
-                                                                            document.getElementById("valor<?= $b ?>").value = valor;
-                                                                            document.getElementById("qtde<?= $b ?>").value = qtde;
-                                                                            $('.carregando').hide();
-                                                                        });
-                                                                    }
-                                                                    opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
-                                                                    slt = '';
-                                                                }
-                                                                $('#procedimento<?= $b ?>').html(opt).show();
-                                                                $('.carregando').hide();
-                                                            });
+        //                      alert(proc_agendado);
+                                                var opt = '<option value=""></option>';
+                                                var slt = '';
+                                                for (var c = 0; c < t.length; c++) {
+                                                    if (proc_agendado[<?= $b - 1 ?>] == t[c].procedimento_convenio_id) {
+                                                        slt = "selected='true'";
+                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
+                                                                                var valor = a[0].valortotal;
+                                                                                var qtde = a[0].qtde;
+                                                                                document.getElementById("valor<?= $b ?>").value = valor;
+                                                                                document.getElementById("qtde<?= $b ?>").value = qtde;
+                                                                                $('.carregando').hide();
+                                                        });
+                                                                            
+                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
+                                                                        var options = '<option value="0">Selecione</option>';
+                                                                        for (var c = 0; c < j.length; c++) {
+                                                                            if (j[c].forma_pagamento_id != null) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                        }
+                                                                        $('#formapamento<?= $b ?>').html(options).show();
+                                                                        $('.carregando').hide();
+                                                        });
+                                                    }
+                                                    opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
+                                                    slt = '';
+                                                }
+                                                $('#procedimento<?= $b ?>').html(opt).show();
+                                                $('.carregando').hide();
+                                            });
 
 //                                                            if ($('#convenio<?= $b ?>').val() != -1) {
 //                                                                //                                                    $('.carregando').show();

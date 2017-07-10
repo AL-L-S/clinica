@@ -144,7 +144,7 @@
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1" class="texto00"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>
@@ -239,6 +239,17 @@
                                                                 document.getElementById("qtde<?= $b ?>").value = qtde;
                                                                 $('.carregando').hide();
                                                             });
+                                                            $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
+                                                                var options = '<option value="0">Selecione</option>';
+                                                                for (var c = 0; c < j.length; c++) {
+                                                                    if (j[c].forma_pagamento_id != null) {
+                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                    }
+                                                                }
+                                                                $('#formapamento<?= $b ?>').html(options).show();
+                                                                $('.carregando').hide();
+                                                            });
+//                                                            formapagamentoporprocedimento
                                                         }
                                                         opt += '<option value="' + t[c].procedimento_convenio_id + '"'+ slt + '>' + t[c].procedimento + '</option>';
                                                         slt = '';
@@ -1319,6 +1330,18 @@
                                         $('#formapamento1').html(options).show();
                                         $('.carregando').hide();
                                     });
+                                    
+                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
+                                        var options = '<option value="0">Selecione</option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            if (j[c].forma_pagamento_id != null) {
+                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                            }
+                                        }
+                                        $('#formapamento<?= $b ?>').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                    
                                 } else {
                                     $('#formapamento1').html('<option value="0">Selecione</option>');
                                 }

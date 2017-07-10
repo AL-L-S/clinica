@@ -32,6 +32,8 @@ class app_model extends Model {
                                  . "Por favor, certifique de ter configurado corretamente o nome de usuario e senha.");
         }
         
+//        var_dump($retorno);die;
+        
         ini_set('display_errors',1);
         ini_set('display_startup_erros',1);
         error_reporting(E_ALL);
@@ -86,7 +88,7 @@ class app_model extends Model {
 //        $this->db->where('ae.data', $dataAtual);
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.medico_consulta_id', @$retorno[0]->operador_id);
-        if(@$_GET['filtro'] != 'n' && @$_GET['filtro'] != ''){
+        if (@$_GET['situacao'] != '') {
             switch ($_GET['situacao']) {
                 case 'o':
                     $situacao = 'OK';
@@ -103,22 +105,46 @@ class app_model extends Model {
                 default:
                     break;
             }
-            if(isset($situacao)){
-                $this->db->where('ae.situacao', $situacao);   
+            if (isset($situacao)) {
+                if ($situacao == "BLOQUEADO") {
+                    $this->db->where('ae.bloqueado', 't');
+                }
+                if ($situacao == "LIVRE") {
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.situacao', 'LIVRE');
+                }
+                if ($situacao == "OK") {
+                    $this->db->where('ae.situacao', 'OK');
+                }
+                if ($situacao == "FALTOU") {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $this->db->where('ae.data <', $data_atual);
+                    $this->db->where('ae.situacao', 'OK');
+                    $this->db->where('ae.realizada', 'f');
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.operador_atualizacao is not null');
+                }  
             }
         }
+
         if(@$_GET['data'] != ""){
-            $this->db->where('ae.data', date("Y-m-d", strtotime($_GET['data'])));
+            $this->db->where('ae.data', $_GET['data']);
         }
         else{
             $this->db->where('ae.data', date("Y-m-d"));
         }
-//        
+        
+        if(@$_GET['paciente'] != ""){
+            $this->db->where('p.nome ilike', "%" . $_GET['paciente'] . "%");
+        }
+        
         $this->db->orderby('ae.agenda_exames_id');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
-        $this->db->orderby('al.situacao');
-        $this->db->limit(15, ( (@$_GET['pagina'] != '') ? $_GET['pagina'] : 0) );
+        $this->db->orderby('al.situacao LIMIT 15 OFFSET ('. ((@$_GET['pagina'] != '') ? $_GET['pagina'] : 0).') * 15 ');
+//        $_GET['pagina'] = (@$_GET['pagina'] != '') ? $_GET['pagina'] : 0);
+//        $this->db->limit("");
         
         $return = $this->db->get();
         return $return->result();

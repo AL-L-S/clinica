@@ -1666,6 +1666,21 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatoriopacienteconvenioexame', $data);
     }
 
+    function guiaspsadtoutrasdespesas($guia_id) {
+        $data['guia_id'] = $guia_id;
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        
+//        var_dump($empresa_id);die;
+        
+        $data['relatorio'] = $this->guia->guiaspsadtoutrasdespesas($guia_id);
+//        $data['relatorio'] = $this->guia->relatoriogastosala();
+        
+        $this->load->View('ambulatorio/impressaoguiaspsadtoutrasdespesas', $data);
+    }
+
     function gerarelatoriogastosala() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));

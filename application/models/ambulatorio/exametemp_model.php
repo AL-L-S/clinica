@@ -3953,8 +3953,8 @@ class exametemp_model extends Model {
                         $this->db->from('tb_procedimento_convenio pc');
                         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
                         $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
-                        $this->db->where('pc.ativo', 'true');
-                        $this->db->where('pt.ativo', 'true');
+//                        $this->db->where('pc.ativo', 'true');
+//                        $this->db->where('pt.ativo', 'true');
                         $percentual = $this->db->get()->result();
                     }
 //                var_dump($percentual); die;
