@@ -275,6 +275,11 @@ class empresa_model extends Model {
             $this->db->set('cep', $_POST['CEP']);
             $this->db->set('cnes', $_POST['txtCNES']);
             $this->db->set('email', $_POST['email']);
+            
+            $this->db->set('impressao_tipo', $_POST['impressao_tipo']);
+            $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
+            $this->db->set('impressao_recibo', $_POST['impressao_recibo']);
+            $this->db->set('impressao_declaracao', $_POST['impressao_declaracao']);
             if ($_POST['txtCNPJ'] != '') {
                 $this->db->set('cnpj', str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ']))));
             }
@@ -305,7 +310,72 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('chat', 'f');
             }
-
+            if (isset($_POST['imagem'])) {
+                $this->db->set('imagem', 't');
+            } else {
+                $this->db->set('imagem', 'f');
+            }
+            if (isset($_POST['consulta'])) {
+                $this->db->set('consulta', 't');
+            } else {
+                $this->db->set('consulta', 'f');
+            }
+            if (isset($_POST['especialidade'])) {
+                $this->db->set('especialidade', 't');
+            } else {
+                $this->db->set('especialidade', 'f');
+            }
+            if (isset($_POST['laboratorio'])) {
+                $this->db->set('laboratorio', 't');
+            } else {
+                $this->db->set('laboratorio', 'f');
+            }
+            if (isset($_POST['geral'])) {
+                $this->db->set('geral', 't');
+            } else {
+                $this->db->set('geral', 'f');
+            }
+            if (isset($_POST['faturamento'])) {
+                $this->db->set('faturamento', 't');
+            } else {
+                $this->db->set('faturamento', 'f');
+            }
+            if (isset($_POST['estoque'])) {
+                $this->db->set('estoque', 't');
+            } else {
+                $this->db->set('estoque', 'f');
+            }
+            if (isset($_POST['financeiro'])) {
+                $this->db->set('financeiro', 't');
+            } else {
+                $this->db->set('financeiro', 'f');
+            }
+            if (isset($_POST['marketing'])) {
+                $this->db->set('marketing', 't');
+            } else {
+                $this->db->set('marketing', 'f');
+            }
+            if (isset($_POST['internacao'])) {
+                $this->db->set('internacao', 't');
+            } else {
+                $this->db->set('internacao', 'f');
+            }
+            if (isset($_POST['centro_cirurgico'])) {
+                $this->db->set('centrocirurgico', 't');
+            } else {
+                $this->db->set('centrocirurgico', 'f');
+            }
+            if (isset($_POST['ponto'])) {
+                $this->db->set('ponto', 't');
+            } else {
+                $this->db->set('ponto', 'f');
+            }
+            if (isset($_POST['calendario'])) {
+                $this->db->set('calendario', 't');
+            } else {
+                $this->db->set('calendario', 'f');
+            }
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -351,6 +421,23 @@ class empresa_model extends Model {
                                c.nome as municipio,
                                c.estado,
                                cep,
+                               consulta,
+                               internacao,
+                               centrocirurgico,
+                               especialidade,
+                               geral,
+                               faturamento,
+                               estoque,
+                               financeiro,
+                               laboratorio,
+                               ponto,
+                               marketing,
+                               imagem,
+                               impressao_tipo,
+                               impressao_laudo,
+                               impressao_recibo,
+                               impressao_declaracao,
+                               calendario,
                                servicosms,
                                servicoemail,
                                chat');
@@ -379,6 +466,23 @@ class empresa_model extends Model {
             $this->_servicoemail = $return[0]->servicoemail;
             $this->_servicosms = $return[0]->servicosms;
             $this->_cnes = $return[0]->cnes;
+            $this->_internacao = $return[0]->internacao;
+            $this->_centro_cirurgico = $return[0]->centrocirurgico;
+            $this->_consulta = $return[0]->consulta;
+            $this->_especialidade = $return[0]->especialidade;
+            $this->_geral = $return[0]->geral;
+            $this->_faturamento = $return[0]->faturamento;
+            $this->_estoque = $return[0]->estoque;
+            $this->_financeiro = $return[0]->financeiro;
+            $this->_marketing = $return[0]->marketing;
+            $this->_imagem = $return[0]->imagem;
+            $this->_laboratorio = $return[0]->laboratorio;
+            $this->_ponto = $return[0]->ponto;
+            $this->_impressao_tipo = $return[0]->impressao_tipo;
+            $this->_impressao_laudo = $return[0]->impressao_laudo;
+            $this->_impressao_declaracao = $return[0]->impressao_declaracao;
+            $this->_impressao_recibo = $return[0]->impressao_recibo;
+            $this->_calendario = $return[0]->calendario;
         } else {
             $this->_empresa_id = null;
         }

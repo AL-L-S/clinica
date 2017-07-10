@@ -308,6 +308,20 @@ CREATE TABLE ponto.tb_paciente_credito
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN alergias character varying(40000);
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN cirurgias character varying(40000);
 
+
+-- Dia 10/07/2017
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN imagem boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN consulta boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN especialidade boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN geral boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN faturamento boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN estoque boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN financeiro boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN marketing boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN laboratorio boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN ponto boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN calendario boolean DEFAULT true;
+
 INSERT INTO ponto.tb_forma_pagamento(forma_pagamento_id, nome)
     VALUES (1000, 'CREDITO');
-

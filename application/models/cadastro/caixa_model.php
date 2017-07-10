@@ -297,6 +297,65 @@ class caixa_model extends Model {
         return $return->result();
     }
 
+    function relatoriosaidaclasse() {
+        $this->db->select('s.valor,
+                            s.saidas_id,
+                            s.observacao,
+                            s.data,
+                            fcd.razao_social,
+                            fe.descricao as conta,
+                            s.tipo,
+                            s.classe');
+        $this->db->from('tb_saidas s');
+        $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
+        $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+        $this->db->where('s.ativo', 'true');
+        if ($_POST['credordevedor'] != 0) {
+            $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
+        }
+        if ($_POST['tipo'] != 0) {
+            $this->db->where('tipo_id', $_POST['tipo']);
+        }
+        if ($_POST['classe'] != '') {
+            $this->db->where('classe', $_POST['classe']);
+        }
+        if ($_POST['conta'] != 0) {
+            $this->db->where('s.conta', $_POST['conta']);
+        }
+        $this->db->where('s.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('s.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('s.classe');
+        $this->db->orderby('s.data');
+        $this->db->orderby('fcd.razao_social');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriosaidacontadorclasse() {
+        $this->db->select('s.valor');
+        $this->db->from('tb_saidas s');
+        $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
+        $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+        $this->db->where('s.ativo', 'true');
+        if ($_POST['credordevedor'] != 0) {
+            $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
+        }
+        if ($_POST['tipo'] != 0) {
+            $this->db->where('tipo', $_POST['tipo']);
+        }
+        if ($_POST['classe'] != 0) {
+            $this->db->where('classe', $_POST['classe']);
+        }
+        if ($_POST['conta'] != 0) {
+            $this->db->where('s.conta', $_POST['conta']);
+        }
+        $this->db->where('s.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('s.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $return = $this->db->count_all_results();
+        return $return;
+    }
+
     function relatoriosaidacontador() {
         $this->db->select('s.valor');
         $this->db->from('tb_saidas s');
