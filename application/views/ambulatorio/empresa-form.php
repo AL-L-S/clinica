@@ -156,10 +156,10 @@
                             <input type="checkbox" id="especialidade" name="especialidade" <? if (@$obj->_especialidade == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Habilitar Labotarorio.">Labotarorio</label>
+                            <label title="Habilitar Laboratorio.">Laboratorio</label>
                         </dt>
                         <dd>
-                            <input type="checkbox" id="labotarorio" name="laboratorio" <? if (@$obj->_laboratorio == 't') echo "checked"; ?>/> 
+                            <input type="checkbox" id="laboratorio" name="laboratorio" <? if (@$obj->_laboratorio == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
                             <label title="Habilitar Geral.">Geral</label>
