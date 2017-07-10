@@ -1,7 +1,7 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a href="<?php // echo base_url() ?>ambulatorio/exametemp/novocredito/<?= $paciente_id ?>">
+        <a href="<?php echo base_url() ?>ambulatorio/exametemp/carregarcredito/<?= $paciente_id ?>">
             Novo Crédito
         </a>
     </div>
@@ -12,7 +12,7 @@
                 <thead>
                     <tr>
                         <th colspan="5" class="tabela_title">
-                            <form method="get" action="<?= base_url() ?>ambulatorio/exametemp/carregarcredito/<?= $paciente_id?>">
+                            <form method="get" action="<?= base_url() ?>ambulatorio/exametemp/listarcredito/<?= $paciente_id?>">
                                 <tr>
                                     <th class="tabela_title">Procedimento</th>
                                     <th class="tabela_title">Convênio</th>

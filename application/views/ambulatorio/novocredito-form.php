@@ -2,7 +2,7 @@
     <div >
         <h3 class="singular"><a href="#">Novo Crédito</a></h3>
         <div>
-            <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/valorexames" method="post">
+            <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/exametemp/gravarcredito" method="post">
                 <fieldset>
                     <legend>Dados do Paciente</legend>
                     <div>
@@ -12,23 +12,14 @@
                     </div>
                     <div>
                         <label>Sexo</label>
-                        <select name="sexo" id="txtSexo" class="size2">
-                            <option value="M" <?
-if ($paciente['0']->sexo == "M"):echo 'selected';
-endif;
-?>>Masculino</option>
-                            <option value="F" <?
-                                    if ($paciente['0']->sexo == "F"):echo 'selected';
-                                    endif;
-?>>Feminino</option>
-                        </select>
+                        <input type="text" id="txtSexo" name="sexo"  class="texto05" value="<?= ($paciente['0']->sexo == "M")? "MASCULINO": "FEMININO"; ?>" readonly/>
                     </div>
 
                     <div>
                         <label>Nascimento</label>
 
 
-                        <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
+                        <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" readonly/>
                     </div>
 
                     <div>
@@ -37,21 +28,10 @@ endif;
                         <input type="text" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= $paciente['0']->idade; ?>" readonly />
 
                     </div>
-
-                    <div>
-                        <label>Nome da M&atilde;e</label>
-
-
-                        <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
-                    </div>
                 </fieldset>
 
                 <fieldset>
                     <dl>
-                        <dt>Quantidade</dt>
-                        <dd><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></dd>
-                        <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" value="<?= $ambulatorio_guia_id; ?>"/>
-                        <input type="hidden" name="guia_id" id="guia_id" value="<?= $guia_id; ?>"/>
                         <dt>Convenio</dt>
                         <dd><select  name="convenio1" id="convenio1" class="size2" >
                                 <option value="-1">Selecione</option>
@@ -60,20 +40,11 @@ endif;
                                 <? endforeach; ?>
                             </select></dd>
                         <dt>Procedimento</dt>
-                        <dd><select  name="procedimento1" id="procedimento1" class="size10" >
+                        <dd><select  name="procedimento1" id="procedimento1" class="size8" >
                                 <option value="-1">-- Escolha um procedimento --</option>
                             </select></dd>
-                        <dt>autorizacao</dt>
-                        <dd><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></dd>
                         <dt>Valor Unitario</dt>
-                        <dd><input type="text" name="valor1" id="valor1" class="texto01"/></dd>
-                        <dt>Pagamento</dt>
-                        <dd><select  name="formapamento" id="formapamento" class="size2" >
-                                <option value="0">Selecione</option>
-                                <? foreach ($forma_pagamento as $item) : ?>
-                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                <? endforeach; ?>
-                            </select></dd>
+                        <dd><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></dd>
                     </dl>
                     <hr/>
                     <button type="submit" name="btnEnviar">Enviar</button>
@@ -130,33 +101,33 @@ endif;
     });
 
 
-    $(document).ready(function(){
-        jQuery('#form_guia').validate( {
-            rules: {
-                medico1: {
-                    required: true,
-                    minlength: 3
-                },
-                crm: {
-                    required: true
-                },
-                sala1: {
-                    required: true
-                }
-            },
-            messages: {
-                medico1: {
-                    required: "*",
-                    minlength: "!"
-                },
-                crm: {
-                    required: "*"
-                },
-                sala1: {
-                    required: "*"
-                }
-            }
-        });
-    });
+//    $(document).ready(function(){
+//        jQuery('#form_guia').validate( {
+//            rules: {
+//                medico1: {
+//                    required: true,
+//                    minlength: 3
+//                },
+//                crm: {
+//                    required: true
+//                },
+//                sala1: {
+//                    required: true
+//                }
+//            },
+//            messages: {
+//                medico1: {
+//                    required: "*",
+//                    minlength: "!"
+//                },
+//                crm: {
+//                    required: "*"
+//                },
+//                sala1: {
+//                    required: "*"
+//                }
+//            }
+//        });
+//    });
 
 </script>

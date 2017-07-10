@@ -1752,6 +1752,28 @@ class exametemp_model extends Model {
         }
     }
 
+    function gravarcredito() {
+        try {
+            $this->db->set('valor', $_POST['valor1']);
+            $this->db->set('procedimento_convenio_id', $_POST['procedimento1']);
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            
+            $this->db->insert('tb_paciente_credito');
+
+            $paciente_credito_id = $this->db->insert_id();
+
+            return $paciente_credito_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarexames($ambulatorio_pacientetemp_id) {
         try {
             $this->db->set('nome', $_POST['txtNome']);

@@ -21,6 +21,7 @@ class Exametemp extends BaseController {
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('cadastro/paciente_model', 'paciente');
+        $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -246,18 +247,25 @@ class Exametemp extends BaseController {
         $this->loadView('ambulatorio/fisioterapiapacientetemp-form', $data);
     }
 
-    function carregarcredito($paciente_id) {
+    function listarcredito($paciente_id) {
         
         $data['paciente_id'] = $paciente_id;
         
         $this->loadView('ambulatorio/carregarcredito-lista', $data);
     }
 
-    function novocredito($paciente_id) {
+    function carregarcredito($paciente_id) {
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/novocredito-form', $data);
+    }
+
+    function gravarcredito() {
+        $paciente_id = $_POST['paciente_id'];
+        
+        $data['paciente'] = $this->exametemp->gravarcredito();
+        redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
     }
     
     function carregaragendamultiempresa3($agenda_exames_id, $externo_id) {
