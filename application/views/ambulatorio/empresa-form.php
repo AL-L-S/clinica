@@ -1,5 +1,9 @@
 <div class="content"> <!-- Inicio da DIV content -->
-
+    <style>
+        #accordion dl dt{
+            min-width:300pt;
+        }
+    </style>
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Empresa</a></h3>
         <div>
@@ -10,20 +14,20 @@
                         <label>Nome</label>
                     </dt>
                     <dd>
-                        <input type="hidden" name="txtempresaid" class="texto10" value="<?= @$obj->_empresa_id; ?>" />
-                        <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" />
+                        <input type="hidden" name="txtempresaid" class="texto08" value="<?= @$obj->_empresa_id; ?>" />
+                        <input type="text" name="txtNome" class="texto08" value="<?= @$obj->_nome; ?>" />
                     </dd>
                     <dt>
                         <label>Raz&atilde;o social</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtrazaosocial" id="txtrazaosocial" class="texto10" value="<?= @$obj->_razao_social; ?>" />
+                        <input type="text" name="txtrazaosocial" id="txtrazaosocial" class="texto08" value="<?= @$obj->_razao_social; ?>" />
                     </dd>
                     <dt>
                         <label>Raz&atilde;o social (XML)</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtrazaosocialxml" id="txtrazaosocial" class="texto10" value="<?= @$obj->_razao_social; ?>" />
+                        <input type="text" name="txtrazaosocialxml" id="txtrazaosocial" class="texto08" value="<?= @$obj->_razao_social; ?>" />
                     </dd>
                     <dt>
                         <label>CNPJ</label>
@@ -47,7 +51,7 @@
                         <label>Endere&ccedil;o</label>
                     </dt>
                     <dd>
-                        <input type="text" id="txtendereco" class="texto10" name="endereco" value="<?= @$obj->_logradouro; ?>" />
+                        <input type="text" id="txtendereco" class="texto08" name="endereco" value="<?= @$obj->_logradouro; ?>" />
                     </dd>
                     <dt>
                         <label>N&uacute;mero</label>

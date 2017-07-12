@@ -46,6 +46,42 @@ class empresa_model extends Model {
         return $this->db;
     }
 
+    function listarlembretes($args = array()) {
+
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select("el.empresa_lembretes_id,
+                            el.texto,
+                            el.perfil_destino,
+                            el.operador_destino,
+                            o.nome as operador,
+                            (
+                                SELECT COUNT(*) 
+                                FROM ponto.tb_empresa_lembretes_visualizacao 
+                                WHERE ponto.tb_empresa_lembretes_visualizacao.empresa_lembretes_id = el.empresa_lembretes_id 
+                                AND ponto.tb_empresa_lembretes_visualizacao.operador_visualizacao = {$operador_id}
+                            ) as visualizado");
+        $this->db->from('tb_empresa_lembretes el');
+        $this->db->join('tb_operador o', "o.operador_id = el.operador_destino");
+        $this->db->where('el.empresa_id', $empresa_id);
+        $this->db->where('el.ativo', 't');
+
+        if (isset($args['texto']) && strlen(@$args['texto']) > 0) {
+            $this->db->where('el.texto ilike', "%" . $args['texto'] . "%");
+        }
+
+        if (@$args['operador_id'] != '') {
+            $this->db->where('el.operador_destino', $args['operador_id']);
+        }
+
+        if (@$args['perfil_id'] != '') {
+            $this->db->where('el.perfil_destino', $args['perfil_id']);
+        }
+
+        return $this->db;
+    }
+
     function pacotesms() {
 
         $this->db->select('descricao_pacote, pacote_sms_id');
@@ -118,6 +154,42 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function buscandolembreteoperador() {
+
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('empresa_lembretes_id,
+                            texto,
+                            (
+                                SELECT COUNT(*) 
+                                FROM ponto.tb_empresa_lembretes_visualizacao 
+                                WHERE ponto.tb_empresa_lembretes_visualizacao.empresa_lembretes_id = el.empresa_lembretes_id 
+                                AND ponto.tb_empresa_lembretes_visualizacao.operador_visualizacao = ' . $operador_id . '
+                            ) as visualizado');
+        $this->db->from('tb_empresa_lembretes el');
+        $this->db->where('ativo', 't');
+        $this->db->where('operador_destino', $operador_id);
+        $this->db->where('empresa_id', $empresa_id);
+        $return = $this->db->get();
+        $retorno = $return->result();
+
+        return $retorno;
+    }
+
+    function visualizalembrete() {
+
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $horario = date("Y-m-d H:i:s");
+        
+        $this->db->set('empresa_lembretes_id', $_GET['lembretes_id']);
+        $this->db->set('data_visualizacao', $horario);
+        $this->db->set('operador_visualizacao', $operador_id);
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->insert('tb_empresa_lembretes_visualizacao');
+    }
+
     function listarempresa($empresa_id) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -130,6 +202,22 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function excluirlembrete($empresa_lembretes_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('empresa_lembretes_id', $empresa_lembretes_id);
+        $this->db->update('tb_empresa_lembretes');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
     function excluir($exame_empresa_id) {
 
         $horario = date("Y-m-d H:i:s");
@@ -139,6 +227,34 @@ class empresa_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('exame_empresa_id', $exame_empresa_id);
         $this->db->update('tb_exame_empresa');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
+    function gravarlembrete($empresa_lembretes_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->set('texto', $_POST['descricao']);
+        $this->db->set('operador_destino', $_POST['operador_id']);
+        $this->db->set('empresa_id', $empresa_id);
+
+        if ($empresa_lembretes_id == "" || $empresa_lembretes_id == "0") {// insert
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_empresa_lembretes');
+        } else { // update
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('empresa_lembretes_id', $empresa_lembretes_id);
+            $this->db->update('tb_empresa_lembretes');
+        }
+
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;
@@ -275,11 +391,20 @@ class empresa_model extends Model {
             $this->db->set('cep', $_POST['CEP']);
             $this->db->set('cnes', $_POST['txtCNES']);
             $this->db->set('email', $_POST['email']);
-            
-            $this->db->set('impressao_tipo', $_POST['impressao_tipo']);
-            $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
-            $this->db->set('impressao_recibo', $_POST['impressao_recibo']);
-            $this->db->set('impressao_declaracao', $_POST['impressao_declaracao']);
+
+            if ($_POST['impressao_tipo'] != "") {
+                $this->db->set('impressao_tipo', $_POST['impressao_tipo']);
+            }
+            if ($_POST['impressao_laudo'] != "") {
+                $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
+            }
+            if ($_POST['impressao_recibo'] != "") {
+                $this->db->set('impressao_recibo', $_POST['impressao_recibo']);
+            }
+            if ($_POST['impressao_declaracao'] != "") {
+                $this->db->set('impressao_declaracao', $_POST['impressao_declaracao']);
+            }
+
             if ($_POST['txtCNPJ'] != '') {
                 $this->db->set('cnpj', str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ']))));
             }
@@ -375,7 +500,7 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('calendario', 'f');
             }
-            
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 

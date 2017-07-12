@@ -6312,6 +6312,19 @@ AND data <= '$data_fim'";
         }
     }
 
+    function descontacreditopaciente() {
+        $this->db->set('valor', (-1) * (float) $_POST['valorcredito']);
+        $this->db->set('paciente_id', $_POST['paciente_id']);
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+
+        $this->db->insert('tb_paciente_credito');
+    }
+
     function gravarfaturamentototal() {
         try {
 
@@ -7487,7 +7500,7 @@ AND data <= '$data_fim'";
                             parcelas');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
-//        $this->db->orderby("nome");
+        $this->db->where("forma_pagamento_id !=", '1000'); // Forma de pagamento CREDITO não pode ser levada em conta
         $return = $this->db->get();
         $forma_pagamento = $return->result();
 
@@ -7754,6 +7767,7 @@ AND data <= '$data_fim'";
                             parcelas');
         $this->db->from('tb_forma_pagamento');
         $this->db->where("ativo", 't');
+        $this->db->where("forma_pagamento_id !=", '1000'); // Forma de pagamento CREDITO não pode ser levada em conta
 //        $this->db->orderby("nome");
         $return = $this->db->get();
         $forma_pagamento = $return->result();
@@ -7762,6 +7776,7 @@ AND data <= '$data_fim'";
 
         $teste = $_POST['qtde'];
         foreach ($forma_pagamento as $value) {
+            
             $classe = "CAIXA" . " " . $value->nome;
 
             foreach ($teste as $j => $t) {
@@ -7772,8 +7787,6 @@ AND data <= '$data_fim'";
                     $valor_total = (str_replace(",", ".", $valor_total));
                 }
             }
-
-//            var_dump($valor_total, "<hr>");
 
             if ($valor_total != '0.00') {
 

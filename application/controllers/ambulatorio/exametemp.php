@@ -250,7 +250,9 @@ class Exametemp extends BaseController {
     function listarcredito($paciente_id) {
         
         $data['paciente_id'] = $paciente_id;
+        $data['valortotal'] = $this->exametemp->listarsaldocreditopaciente($paciente_id);
         
+//        var_dump($data['valortotal']);die;
         $this->loadView('ambulatorio/carregarcredito-lista', $data);
     }
 
@@ -262,7 +264,7 @@ class Exametemp extends BaseController {
     }
 
     function gravarcredito() {
-        $paciente_id = $_POST['paciente_id'];
+        $paciente_id = $_POST['txtpaciente_id'];
         
         $data['paciente'] = $this->exametemp->gravarcredito();
         redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");

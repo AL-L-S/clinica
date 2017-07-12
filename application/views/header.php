@@ -80,14 +80,23 @@ function debug($object) {
                 });
             });
 
-            // Fazendo Envio de Email automaticamente
-//            jQuery(function () {
-//                jQuery.ajax({
-//                    type: "GET",
-//                    url: "<?= base_url(); ?>ambulatorio/exame/emailautomatico",
-//                    dataType: "json"
-//                });
-//            });
+            // Checando lembretes
+            jQuery(function () {
+                jQuery.ajax({
+                    type: "GET",
+                    url: "<?= base_url(); ?>ambulatorio/empresa/checandolembrete",
+                    dataType: "json",
+                    success: function (retorno) {
+                        for(var i = 0; i < retorno.length; i++){
+                            if(retorno[i].visualizado == 0){
+                                alert(retorno[i].texto);
+                                jQuery.ajax({type: "GET", data: "lembretes_id=" + retorno[i].empresa_lembretes_id, 
+                                    url: "<?= base_url(); ?>ambulatorio/empresa/visualizalembrete"});
+                            }
+                        }
+                    }
+                });
+            });
 
 
 <? if ($chat == 't') { ?>
@@ -236,7 +245,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id                 ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id                  ?>);
                     }
                 }
 
@@ -264,7 +273,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id                   ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id                    ?>);
                 }
 
 <? } ?>
@@ -350,24 +359,21 @@ function debug($object) {
                                     <? } ?>
 
                                     <? if ($perfil_id != 4) { ?>
-
-                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">Multifuncao Geral</a></span></ul>-->
                                         <? if ($calendario == 't') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario" target="_blank">Multifuncao Geral</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario" target="_blank">Multifuncao Exame </a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsultacalendario" target="_blank">Multifuncao Consulta </a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoespecialidadecalendario" target="_blank">Multifuncao Especialidade </a></span></ul> 
                                         <? } else { ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">Multifuncao Geral</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncao">Multifuncao Exame</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsulta">Multifuncao Consulta</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaofisioterapia">Multifuncao Especialidade</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>   
                                         <? }
                                         ?>
 
-
-
+        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
+        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
 
                                         <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendageral">Medico agenda geral</a></span></ul>
@@ -889,6 +895,9 @@ function debug($object) {
                             <? } ?>
                             <li><span class="folder">Administrativas</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/pesquisarlembrete">Manter Lembretes</a></span></ul>
+                                    <? } ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa">Manter Empresa</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/versao">Vers&atilde;o</a></span></ul>
                                 <? } ?>
@@ -907,9 +916,9 @@ function debug($object) {
             </div>
         </div>
         <div class="mensagem"><?
-                                if (isset($mensagem)): echo $mensagem;
-                                endif;
-                                ?></div>
+            if (isset($mensagem)): echo $mensagem;
+            endif;
+            ?></div>
 
         <script type="text/javascript">
             $("#menu").treeview({
@@ -1121,7 +1130,7 @@ function debug($object) {
                 //atualiza status do operador
                 //                setInterval(function () {
                 //                    atualizastatus();
-                //                    verifica(0, 0,<? // echo $operador_id   ?>);
+                //                    verifica(0, 0,<? // echo $operador_id    ?>);
                 //                }, 10000);
 
                 buscamensagens();

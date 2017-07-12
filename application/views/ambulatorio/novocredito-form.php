@@ -33,20 +33,26 @@
                 <fieldset>
                     <dl>
                         <dt>Convenio</dt>
-                        <dd><select  name="convenio1" id="convenio1" class="size2" >
-                                <option value="-1">Selecione</option>
+                        <dd>
+                            <select name="convenio1" id="convenio1" class="size2" required>
+                                <option value="">Selecione</option>
                                 <? foreach ($convenio as $item) : ?>
                                     <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
-                            </select></dd>
+                            </select>
+                        </dd>
                         <dt>Procedimento</dt>
-                        <dd><select  name="procedimento1" id="procedimento1" class="size8" >
-                                <option value="-1">-- Escolha um procedimento --</option>
-                            </select></dd>
+                        <dd>
+                            <select  name="procedimento1" id="procedimento1" class="size8" required>
+                                <option value="">-- Escolha um procedimento --</option>
+                            </select>
+                        </dd>
                         <dt>Valor Unitario</dt>
-                        <dd><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></dd>
+                        <dd><input type="text" name="valor1" id="valor1" class="texto01" readonly="" required/></dd>
                     </dl>
+                    
                     <hr/>
+                    
                     <button type="submit" name="btnEnviar">Enviar</button>
                 </fieldset>
             </form>

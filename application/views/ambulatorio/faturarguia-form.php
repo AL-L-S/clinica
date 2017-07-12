@@ -32,8 +32,8 @@
                                 <input type="hidden" name="dinheiro" id="dinheiro" value="0"class="texto01"/>
                                 <input type="hidden" name="juroscartao" id="juroscartao" value="0"class="texto01"/>
                                 
-                                <input type="checkbox" name="credito" id="credito"/>
-                                <label for="credito">Usar credito?</label>
+<!--                                <input type="checkbox" name="credito" id="credito"/>
+                                <label for="credito">Usar credito?</label>-->
                             </td>
                         </tr>
                         </table>
@@ -234,15 +234,14 @@
                                 <input type="text" name="valortotal" id="valortotal"  onkeyup="multiplica()"  class="texto01" readonly/>
                                 <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->total; ?>"/>
                                 <input type="hidden" name="juros" id="juros" value="0">
+                                <input type="hidden" name="valorcredito" id="valorcredito" value="0">
+                                <input type="hidden" name="paciente_id" id="paciente_id">
                             </td>
                         </tr>
                         
                     </table>
-                    <dl class="dl_desconto_lista">
- 
-                        
-                        
-                        
+                    
+                    <dl class="dl_desconto_lista">                        
                         <dd>
                             
                         </dd>
@@ -255,11 +254,11 @@
         </div>
     </div> <!-- Final da DIV content -->
 </body>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
                                 function mudaValor(id, valor){
@@ -267,7 +266,49 @@
                                 }
 
                                 $(document).ready(function () {
-
+                                     <? for ($i = 1; $i < 5; $i++) { // Caso selecione credito especial?>
+                                            $('#formapamento<?= $i ?>').change(function() {
+                                                var selecionado = false;
+                                                
+                                                for (var i = 1; i < 5; i++) {
+                                                    if (i == <?= $i ?>) {
+                                                        continue;
+                                                    }
+                                                    if($('#formapamento'+i).val() == 1000){
+                                                        selecionado = true;
+                                                    }
+                                                }
+                                                
+                                                if(this.value == 1000){
+                                                    var valorDiferenca = $('#valortotal').val();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/buscarsaldopaciente', {guia_id: <?= $guia_id; ?>, ajax: true}, function (j) {
+                                                        if(!selecionado){
+                                                            if(parseFloat(j.saldo) >=  parseFloat(valorDiferenca)){
+                                                                $('#valor<?= $i ?>').val(valorDiferenca);
+                                                            }
+                                                            else{
+                                                                $('#valor<?= $i ?>').val(j.saldo);
+                                                            }
+                                                        }
+                                                        
+                                                        $('#paciente_id').val(j.paciente_id);
+                                                        $('#valorcredito').val($('#valor<?= $i ?>').val());
+                                                            
+                                                        $('#valor<?= $i ?>').attr("readonly", 'true');
+                                                        
+                                                        multiplica();
+                                                    });
+                                                }
+                                                else{
+                                                    $('#valor<?= $i ?>').val(0);
+                                                    $('#valor<?= $i ?>').removeAttr("readonly");
+                                                    multiplica();
+                                                }
+                                                
+                                            });
+                                                  
+                                     <?}?>
+                                    
                                     function multiplica()
                                     {
                                         total = 0;

@@ -1479,7 +1479,14 @@ class Guia extends BaseController {
             $_POST['parcela4'] = ($_POST['parcela4'] == '' || $_POST['parcela4'] == 0) ? 1 : $_POST['parcela4'];
 
             if (!$erro) {
-                $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();
+                $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();           
+                
+//                var_dump($_POST['guia_id']);die;
+                
+                if($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0'){
+                    $this->guia->descontacreditopaciente();
+                }
+                
                 if ($ambulatorio_guia_id == "-1") {
                     $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
                 } else {

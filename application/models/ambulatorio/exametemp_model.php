@@ -16,6 +16,30 @@ class exametemp_model extends Model {
         }
     }
 
+    function listarsaldocreditopaciente($paciente_id) {
+        
+        $this->db->select('SUM(pcr.valor) as saldo');
+        $this->db->from('tb_paciente_credito pcr');
+        
+        $this->db->where('pcr.ativo', 'true');
+        $this->db->where('pcr.paciente_id', $paciente_id);
+        
+        $return = $this->db->get();
+        return $return->result();
+        
+    }
+    
+    function listarpacienteporguia($guia_id) {
+        $this->db->select('paciente_id');
+        $this->db->from('tb_ambulatorio_guia');
+        $this->db->where('ambulatorio_guia_id', $guia_id);
+        
+        $return = $this->db->get();
+        $return = $return->result();
+        
+        return $return[0]->paciente_id;
+    }
+    
     function listarcredito($paciente_id) {
         
         $this->db->select('pcr.paciente_credito_id,
@@ -31,6 +55,8 @@ class exametemp_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('pcr.ativo', 'true');
+        $this->db->where('pcr.paciente_id', $paciente_id);
+        $this->db->where('pcr.procedimento_convenio_id IS NOT NULL');
         
         if(@$_GET['procedimento'] != ''){
             $this->db->where('pt.nome ilike', "%" . $_GET['procedimento'] . "%");
@@ -40,8 +66,6 @@ class exametemp_model extends Model {
             $this->db->where('c.nome ilike', "%" . $_GET['convenio'] . "%");
         }
         
-//        $this->db->orderby('pt.nome');
-//        $this->db->orderby('c.nome');
         return $this->db;
         
     }
