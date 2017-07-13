@@ -4090,10 +4090,10 @@ class exametemp_model extends Model {
                             if ($_POST['ordenador'] != "") {
                                 $this->db->set('ordenador', $_POST['ordenador']);
                             }
-                            if ($medico_id != "") {
-                                $this->db->set('medico_agenda', $medico_id);
-                                $this->db->set('medico_consulta_id', $medico_id);
-                            }
+//                            if ($medico_id != "") {
+//                                $this->db->set('medico_agenda', $medico_id);
+//                                $this->db->set('medico_consulta_id', $medico_id);
+//                            }
                             $this->db->set('autorizacao', $autorizacao);
                             $this->db->set('guia_id', $ambulatorio_guia_id);
                             $this->db->set('quantidade', '1');
