@@ -72,6 +72,17 @@
                             <option value='NAO' >NAO</option>
                         </select>
                     </dd>
+                    
+                    <dt>
+                        <label>Taxa de administração</label>
+                    </dt>
+                    <dd>
+                        <select name="mostrar_taxa" id="mostrar_taxa" class="size1" >
+                            <option value='NAO' >NÃO</option>
+                            <option value='SIM' >SIM</option>
+                        </select>
+                    </dd>
+                    
                     <dt>
                         <label>Empresa</label>
                     </dt>

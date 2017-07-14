@@ -83,7 +83,7 @@ class Empresa extends BaseController {
 
     function configuraremail($empresa_id) {
         $data['empresa_id'] = $empresa_id;
-        $data['mensagem'] = $this->empresa->listarinformacaoemail();
+        $data['mensagem'] = $this->empresa->listarinformacaoemail($empresa_id);
         $this->loadView('ambulatorio/empresaemail-form', $data);
     }
 

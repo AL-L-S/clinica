@@ -487,6 +487,7 @@ class guia_model extends Model {
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
                             ae.data,
+                            ae.data_antiga,
                             ae.inicio,
                             ae.fim,
                             ae.ativo,
@@ -527,8 +528,8 @@ class guia_model extends Model {
         $this->db->join('tb_empresa emp', 'emp.empresa_id = ae.empresa_id', 'left');
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("al.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("al.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         if ($_POST['grupoconvenio'] != "0") {
             $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
         }
@@ -3474,6 +3475,7 @@ class guia_model extends Model {
             ae.desconto_ajuste3,
             ae.desconto_ajuste4,
             ae.data,
+            ae.data_antiga,
             e.situacao,
             op.operador_id,
             ae.valor,
@@ -3488,6 +3490,7 @@ class guia_model extends Model {
             al.situacao as situacaolaudo,
             tu.classificacao,
             o.nome as revisor,
+            op.taxa_administracao,
             pt.percentual,
             op.nome as medico,
             ops.nome as medicosolicitante,
@@ -3541,8 +3544,8 @@ class guia_model extends Model {
 
 
 
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("al.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("al.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
 
         $this->db->orderby('al.medico_parecer1');
@@ -3940,6 +3943,7 @@ class guia_model extends Model {
             o.nome as revisor,
             pt.percentual,
             op.nome as medico,
+            op.taxa_administracao,
             ops.nome as medicosolicitante,
             c.nome as convenio');
         $this->db->from('tb_agenda_exames ae');

@@ -1,5 +1,5 @@
 <div class="content"> <!-- Inicio da DIV content -->
-
+    <meta charset="utf-8"/>
 
     <? if (count($empresa) > 0) { ?>
         <h4><?= $empresa[0]->razao_social; ?></h4>
@@ -33,6 +33,9 @@
                         <!--<th class="tabela_header" width="80px;"><font size="-1">Valor Total</th>-->
                     <? // } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
+                    <? if ($mostrar_taxa == 'SIM') { ?>
+                    <th class="tabela_header" width="80px;"><font size="-1">Taxa Administração</th>
+                    <? } ?>
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
                     <? } ?>
@@ -55,6 +58,7 @@
                 $totalgeral = 0;
                 $totalconsulta = 0;
                 $totalretorno = 0;
+                $taxaAdministracao = 0;
                 foreach ($relatorio as $item) :
                     $i++;
                     $procedimentopercentual = $item->procedimento_convenio_id;
@@ -86,7 +90,8 @@
                             } else {
                                 $valorpercentualmedico = $item->perc_medico;
                             }
-                            $perc = $item->valor_total * ($valorpercentualmedico / 100);
+//                             - ((float) $item->valor_total * ((float) $item->taxa_administracao / 100))
+                            $perc = ($item->valor_total) * ($valorpercentualmedico / 100);
                             $totalperc = $totalperc + $perc;
                             $totalgeral = $totalgeral + $item->valor_total;
                         } else {
@@ -108,7 +113,13 @@
                             <!--<td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>-->
                         <? // } ?>
 
-                        <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
+                        <td style='text-align: right;'><font size="-2"><?=  number_format($valorpercentualmedico, 2, ",", ".") . $simbolopercebtual ?></td>
+                        
+                        <? if ($mostrar_taxa == 'SIM') { 
+                            $taxaAdministracao += ((float) $perc * ((float) $item->taxa_administracao / 100)); ?>
+                            <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->taxa_administracao, 2, ",", "."); ?> (%)</td>
+                        <? } ?>
+                        
                         <? if ($solicitante == 'SIM') { ?>
                             <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
                         <? } ?>
@@ -127,6 +138,10 @@
                         <td colspan="3" style='text-align: right;'><font size="-1">VALOR TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
                     <? } else { ?>
                         <td colspan="3" style='text-align: right;'><font size="-1">&nbsp;</td>
+                    <? }
+                    if ($mostrar_taxa == 'SIM') { 
+                        $totalperc = $totalperc - $taxaAdministracao?>
+                        <td colspan="2" style='text-align: right;'><font size="-1">TOTAL TAXA ADMISTRACAO: <?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
                     <? } ?>
                     <td colspan="3" style='text-align: right;'><font size="-1">VALOR TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
                 </tr>

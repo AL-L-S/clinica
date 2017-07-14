@@ -112,11 +112,12 @@ class empresa_model extends Model {
         return $return->result();
     }
 
-    function listarinformacaoemail() {
-        $empresa_id = $this->session->userdata('empresa_id');
+    function listarinformacaoemail($empresa_id) {
+//        $empresa_id = $this->session->userdata('empresa_id');
 
         $this->db->select(' email_mensagem_confirmacao,
-                            email_mensagem_agradecimento');
+                            email_mensagem_agradecimento,
+                            email_mensagem_falta');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->where('ativo', 't');
@@ -290,8 +291,9 @@ class empresa_model extends Model {
         try {
 //            var_dump($_POST['empresa_id']); die;
 
-            $this->db->set('email_mensagem_confirmacao', $_POST['lembrete']);
-            $this->db->set('email_mensagem_agradecimento', $_POST['agradecimento']);
+            $this->db->set('email_mensagem_confirmacao', $_POST['lembr']);
+            $this->db->set('email_mensagem_agradecimento', $_POST['agrade']);
+            $this->db->set('email_mensagem_falta', $_POST['falta']);
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');

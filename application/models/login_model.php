@@ -383,9 +383,10 @@ class login_model extends Model {
     }
 
     function emailautomatico() {
-        
+        $empresa_id = $this->session->userdata('empresa_id');
         $horario = date('Y-m-d');
         $this->db->set('data_verificacao', $horario);
+        $this->db->set('empresa_id', $empresa_id);
         $this->db->insert('tb_empresa_sms_registro');
 
         $this->db->select('ae.paciente_id,
@@ -400,7 +401,26 @@ class login_model extends Model {
         $this->db->where("(p.cns IS NOT NULL AND p.cns != '')");
         $return = $this->db->get()->result();
 
-
+        $this->db->select('ae.paciente_id,
+                           p.nome as paciente,
+                           ae.data,
+                           p.cns');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        date_default_timezone_set('America/Fortaleza');
+        
+        $totime = strtotime("-1 days");
+        $data_atual = date('Y-m-d', $totime);
+        
+        $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.realizada', 'f');
+        $this->db->where("(p.cns IS NOT NULL AND p.cns != '')");
+        $this->db->where('ae.data', $data_atual);
+        $this->db->where('ae.situacao', 'OK');
+        $this->db->where('ae.realizada', 'f');
+        $this->db->where('ae.bloqueado', 'f');
+        $this->db->where('ae.operador_atualizacao is not null');
+        $faltas = $this->db->get()->result();
 
         $this->db->select('p.nome as paciente,
                            ae.data_revisao');
@@ -413,13 +433,13 @@ class login_model extends Model {
 
 
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('email, razao_social, email_mensagem_confirmacao');
+        $this->db->select('email, razao_social, email_mensagem_confirmacao, email_mensagem_falta');
         $this->db->from('tb_empresa');
         $this->db->where("empresa_id", $empresa_id);
         $dadosEmpresa = $this->db->get()->result();
-        
+
         if ($dadosEmpresa[0]->email != '') {
-            
+
             $this->load->library('My_phpmailer');
             $mail = new PHPMailer(true);
 
@@ -449,8 +469,32 @@ class login_model extends Model {
                     $mensagem = "Email enviado com sucesso!";
                 }
             }
+            
+            foreach ($faltas as $value) {
+                $mail->setLanguage('br');                             // Habilita as saídas de erro em Português
+                $mail->CharSet = 'UTF-8';                             // Habilita o envio do email como 'UTF-8'
+                $mail->SMTPDebug = 3;                               // Habilita a saída do tipo "verbose"
+                $mail->isSMTP();                                      // Configura o disparo como SMTP
+                $mail->Host = 'smtp.gmail.com';                       // Especifica o enderço do servidor SMTP da Locaweb
+                $mail->SMTPAuth = true;                               // Habilita a autenticação SMTP
+                $mail->Username = 'stgsaude@gmail.com';                    // Usuário do SMTP
+                $mail->Password = 'saude123';                   // Senha do SMTP
+                $mail->SMTPSecure = 'ssl';                            // Habilita criptografia TLS | 'ssl' também é possível
+                $mail->Port = 465;                                    // Porta TCP para a conexão
+                $mail->From = $dadosEmpresa[0]->email;             // Endereço previamente verificado no painel do SMTP
+                $mail->FromName = $dadosEmpresa[0]->razao_social;                        // Nome no remetente
+                $mail->addAddress($value->cns);                            // Acrescente um destinatário
+                $mail->isHTML(true);                                  // Configura o formato do email como HTML
+                $mail->Subject = "";
+                $mail->Body = $dadosEmpresa[0]->email_mensagem_falta;
 
-
+                if (!$mail->Send()) {
+                    $mensagem = "Erro: " . $mail->ErrorInfo;
+                } else {
+                    $mensagem = "Email enviado com sucesso!";
+                }
+            }
+            
             foreach ($revisoes as $item) {
                 $msg = "O paciente: " . $item->paciente . " tem uma revisão marcada para a data " . date("d/m/Y", strtotime($item->data_revisao));
                 $mail->setLanguage('br');                             // Habilita as saídas de erro em Português
@@ -483,9 +527,11 @@ class login_model extends Model {
 
     function verificaemail() {
         $horario = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('data_verificacao');
         $this->db->from('tb_empresa_email_verificacao');
         $this->db->where('data_verificacao', $horario);
+        $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
     }

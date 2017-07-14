@@ -6373,9 +6373,13 @@ class exame_model extends Model {
         $this->db->from('tb_convenio');
         $this->db->where("convenio_id", $convenio_id);
         $query = $this->db->get();
+        
         $returno = $query->result();
         $pagamento = $returno[0]->pagamento;
         $pagamentodata = substr($data, 0, 7) . "-" . $returno[0]->entrega;
+        
+        var_dump($pagamentodata);
+        
         $data30 = date('Y-m-d', strtotime("+$pagamento days", strtotime($pagamentodata)));
         $ir = $returno[0]->ir / 100;
         $pis = $returno[0]->pis / 100;
@@ -6387,7 +6391,6 @@ class exame_model extends Model {
         $dineirodescontado = $dineiro;
 
         if ($conta_id == "" || $credor_devedor_id == "" || $pagamento == "" || $pagamentodata == "") {
-
             $financeiro = -1;
         } else {
 
@@ -6428,6 +6431,9 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_financeiro_contasreceber');
         }
+        
+        
+        die;
     }
 
     private

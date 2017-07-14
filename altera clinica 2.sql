@@ -353,3 +353,12 @@ CREATE TABLE ponto.tb_empresa_lembretes_visualizacao
   data_visualizacao timestamp without time zone,
   CONSTRAINT tb_empresa_lembretes_visualizacao_pkey PRIMARY KEY (empresa_lembretes_visualizacao_id)
 );
+
+-- Dia 13/07/2017
+
+ALTER TABLE ponto.tb_operador ADD COLUMN taxa_administracao numeric DEFAULT 0.00;
+ALTER TABLE ponto.tb_empresa_email_verificacao ADD COLUMN empresa_id integer;
+
+ALTER TABLE ponto.tb_empresa ALTER COLUMN email_mensagem_confirmacao TYPE text;
+ALTER TABLE ponto.tb_empresa ALTER COLUMN email_mensagem_agradecimento TYPE text;
+ALTER TABLE ponto.tb_empresa ADD COLUMN email_mensagem_falta text;

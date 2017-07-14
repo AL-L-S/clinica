@@ -71,7 +71,7 @@ switch ($MES) {
                     <th class="tabela_header"><font size="-1">Convenio</th>
                     <th class="tabela_header"><font size="-1">Nome</th>
                     <th class="tabela_header"><font size="-1">Medico</th>
-                    <th class="tabela_header"><font size="-1">Data</th>
+                    <th class="tabela_header" width="100px;"><font size="-1">Data</th>
                     <th class="tabela_header"><font size="-1">Qtde</th>
                     <th class="tabela_header" width="220px;"><font size="-1">Procedimento</th>
                     <? if ($clinica == 'SIM') { ?>
@@ -81,6 +81,9 @@ switch ($MES) {
                     <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
+                    <? if ($mostrar_taxa == 'SIM') { ?>
+                        <th class="tabela_header" ><font size="-1">Taxa Administração</th>
+                    <? } ?>
 
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
@@ -103,6 +106,7 @@ switch ($MES) {
                     $totalgeral = 0;
                     $totalconsulta = 0;
                     $totalretorno = 0;
+                    $taxaAdministracao = 0;
                     foreach ($relatorio as $item) :
                         $i++;
                         $procedimentopercentual = $item->procedimento_convenio_id;
@@ -122,35 +126,50 @@ switch ($MES) {
                             <td><font size="-2"><?= $item->convenio; ?></td>
                             <td><font size="-2"><?= $item->paciente; ?></td>
                             <td><font size="-2"><?= $item->medico; ?></td>
-                            <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                            <td><font size="-2">
+                                <? if($item->data_antiga != ""){ echo " ** ";} ?>
+                                <?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
+                                <? if($item->data_antiga != ""){ echo " ** ";} ?>
+                            </td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= $item->procedimento_tuss_id; ?> <?= $item->procedimento; ?></td>
                             <? if ($clinica == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>
+                                <?
+//                                $valorLiqMed = ((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100)) - ((float) $valor_total * ((float) $item->taxa_administracao / 100))); 
+                                ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
                             <? } ?>
                             <?
                             if ($item->percentual_medico == "t") {
                                 $simbolopercebtual = " %";
 
-                                $valorpercentualmedico = $item->valor_medico;
+                                $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100))*/;
 
                                 $perc = $valor_total * ($valorpercentualmedico / 100);
                                 $totalperc = $totalperc + $perc;
                                 $totalgeral = $totalgeral + $valor_total;
                             } else {
                                 $simbolopercebtual = "";
-                                $valorpercentualmedico = $item->valor_medico;
+                                $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100))*/;
 
                                 $perc = $valorpercentualmedico;
                                 $totalperc = $totalperc + $perc;
                                 $totalgeral = $totalgeral + $valor_total;
                             }
-                            ?>
-                            <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
-                            <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
 
+                            ?>
+
+                            <td style='text-align: right;'><font size="-2"><?= number_format($valorpercentualmedico, 2, ",", "") . $simbolopercebtual ?></td>
+                            
+                            <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
+                            
+                            <? if ($mostrar_taxa == 'SIM') { ?>
+                                <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->taxa_administracao, 2, ",", "."); ?> (%)</td>
+                                <? $taxaAdministracao += ((float) $perc * ((float) $item->taxa_administracao / 100)); ?>
+                            <? } ?>
+                                
                             <? if ($solicitante == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
                             <? } ?>
@@ -175,9 +194,9 @@ switch ($MES) {
                 </tbody>
             </table>
         <? endif; ?>
-        
+
         <? if (count($relatoriohomecare) > 0): ?>
-    <hr>
+            <hr>
             <table border="1">
                 <thead>
                     <tr>
@@ -384,10 +403,10 @@ switch ($MES) {
                     <? endif; ?>
                 </table>
                 <?
-                if(@$totalperchome != 0){
+                if (@$totalperchome != 0) {
                     $totalperc = $totalperc + $totalperchome;
                 }
-                
+
                 $irpf = 0;
                 if ($totalperc >= $medico[0]->valor_base) {
                     $irpf = $totalperc * ($medico[0]->ir / 100);
@@ -399,15 +418,20 @@ switch ($MES) {
                         </tr>
                         <tr>
                             <td>TOTAL</td>
-                            <td style='text-align: right;'><?= number_format($totalperc, 2, ",", "."); ?></td>
+                            <td style='text-align: right;'><?= number_format($totalperc + $taxaAdministracao, 2, ",", "."); ?></td>
                         </tr>
 
                         <tr>
                             <td>IRPF</td>
                             <td style='text-align: right;'><?= number_format($irpf, 2, ",", "."); ?></td>
                         </tr>
-                        <?
-                        $resultado = $totalperc - $irpf;
+                        <? if ($mostrar_taxa == 'SIM') { ?>
+                        <tr>
+                            <td>TAXA ADMINISTRAÇÃO</td>
+                            <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
+                        </tr>
+                        <? }
+                        $resultado = $totalperc - $irpf - $taxaAdministracao;
                     } else {
                         ?>
                         <hr>
@@ -423,6 +447,11 @@ switch ($MES) {
                             $cofins = $totalperc * ($medico[0]->cofins / 100);
                             $resultado = $resultado - $pis - $csll - $cofins;
                             ?>
+
+<!--                            <tr>
+                                <td>TAXA ADMINISTRAÇÃO</td>
+                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
+                            </tr>-->
                             <tr>
                                 <td>PIS</td>
                                 <td style='text-align: right;'><?= number_format($pis, 2, ",", "."); ?></td>

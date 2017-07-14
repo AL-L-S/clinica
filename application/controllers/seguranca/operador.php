@@ -36,6 +36,8 @@ class Operador extends BaseController {
         $data['classe'] = $this->classe->listarclasse();
         $data['listarPerfil'] = $this->operador_m->listarPerfil();
 //        $data['listarempresas'] = $this->operador_m->listarempresas();
+        
+//        echo "<pre>"; var_dump($data);die;
         $this->loadView('seguranca/operador-form', $data);
     }
 
@@ -68,6 +70,7 @@ class Operador extends BaseController {
     }
 
     function alterar($operador_id) {
+//        die;
         $obj_operador_id = new operador_model($operador_id);
         $data['obj'] = $obj_operador_id;
         $data['classe'] = $this->classe->listarclasse();

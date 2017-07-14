@@ -2839,6 +2839,7 @@ class Guia extends BaseController {
         $data['clinica'] = $_POST['clinica'];
         $data['solicitante'] = $_POST['solicitante'];
         $data['situacao'] = $_POST['situacao'];
+        $data['mostrar_taxa'] = $_POST['mostrar_taxa'];
 
         if ($medicos != 0) {
             $data['medico'] = $this->operador_m->listarCada($medicos);
@@ -2856,8 +2857,6 @@ class Guia extends BaseController {
         $data['relatoriohomecaregeral'] = $this->guia->relatoriomedicoconveniofinanceirohomecaretodos();
         $data['relatoriocirurgico'] = $this->guia->relatoriocirurgicomedicoconveniofinanceiro();
         $data['relatoriocirurgicogeral'] = $this->guia->relatoriocirurgicomedicoconveniofinanceirotodos();
-//        echo "<pre>";
-//        var_dump($data['relatoriocirurgicogeral']);die;
         $this->load->View('ambulatorio/impressaorelatoriomedicoconveniofinanceiro', $data);
     }
 
@@ -2865,6 +2864,7 @@ class Guia extends BaseController {
         $medicos = $_POST['medicos'];
         $data['clinica'] = $_POST['clinica'];
         $data['solicitante'] = $_POST['solicitante'];
+        $data['mostrar_taxa'] = $_POST['mostrar_taxa'];
         if ($medicos != 0) {
             $data['medico'] = $this->operador_m->listarCada($medicos);
         } else {

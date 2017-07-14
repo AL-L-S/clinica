@@ -25,6 +25,7 @@ class Operador_model extends BaseModel {
     var $_cofins = null;
     var $_csll = null;
     var $_iss = null;
+    var $_taxa_administracao = null;
     var $_credor_devedor_id = null;
     var $_valor_base = null;
     var $_conta_id = null;
@@ -550,6 +551,9 @@ class Operador_model extends BaseModel {
             $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
             $this->db->set('email', $_POST['email']);
 
+            if ($_POST['taxaadm'] != "") {
+                $this->db->set('taxa_administracao', str_replace(",", ".", $_POST['taxaadm']));
+            }
             if ($_POST['ir'] != "") {
                 $this->db->set('ir', str_replace(",", ".", $_POST['ir']));
             }
@@ -915,6 +919,7 @@ class Operador_model extends BaseModel {
                                 o.conta_id,
                                 o.curriculo,
                                 o.tipo_id,
+                                o.taxa_administracao,
                                 o.ir,
                                 o.pis,
                                 o.cofins,
@@ -967,6 +972,7 @@ class Operador_model extends BaseModel {
             $this->_cofins = $return[0]->cofins;
             $this->_csll = $return[0]->csll;
             $this->_iss = $return[0]->iss;
+            $this->_taxa_administracao = $return[0]->taxa_administracao;
             $this->_valor_base = $return[0]->valor_base;
             $this->_carimbo = $return[0]->carimbo;
             $this->_curriculo = $return[0]->curriculo;
