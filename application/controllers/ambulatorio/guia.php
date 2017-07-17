@@ -1479,7 +1479,14 @@ class Guia extends BaseController {
             $_POST['parcela4'] = ($_POST['parcela4'] == '' || $_POST['parcela4'] == 0) ? 1 : $_POST['parcela4'];
 
             if (!$erro) {
-                $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();
+                $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();           
+                
+//                var_dump($_POST['guia_id']);die;
+                
+                if($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0'){
+                    $this->guia->descontacreditopaciente();
+                }
+                
                 if ($ambulatorio_guia_id == "-1") {
                     $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
                 } else {
@@ -2832,6 +2839,7 @@ class Guia extends BaseController {
         $data['clinica'] = $_POST['clinica'];
         $data['solicitante'] = $_POST['solicitante'];
         $data['situacao'] = $_POST['situacao'];
+        $data['mostrar_taxa'] = $_POST['mostrar_taxa'];
 
         if ($medicos != 0) {
             $data['medico'] = $this->operador_m->listarCada($medicos);
@@ -2849,8 +2857,6 @@ class Guia extends BaseController {
         $data['relatoriohomecaregeral'] = $this->guia->relatoriomedicoconveniofinanceirohomecaretodos();
         $data['relatoriocirurgico'] = $this->guia->relatoriocirurgicomedicoconveniofinanceiro();
         $data['relatoriocirurgicogeral'] = $this->guia->relatoriocirurgicomedicoconveniofinanceirotodos();
-//        echo "<pre>";
-//        var_dump($data['relatoriocirurgicogeral']);die;
         $this->load->View('ambulatorio/impressaorelatoriomedicoconveniofinanceiro', $data);
     }
 
@@ -2858,6 +2864,7 @@ class Guia extends BaseController {
         $medicos = $_POST['medicos'];
         $data['clinica'] = $_POST['clinica'];
         $data['solicitante'] = $_POST['solicitante'];
+        $data['mostrar_taxa'] = $_POST['mostrar_taxa'];
         if ($medicos != 0) {
             $data['medico'] = $this->operador_m->listarCada($medicos);
         } else {

@@ -1059,12 +1059,13 @@
             <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
                 <?
                 foreach ($formapagamento as $value) {
-
+                    
+                    //Caso seja forma de pagamento CREDITO não será processado no fechar caixa
+                    if($value->forma_pagamento_id == 1000) continue;
+                    
+                    
                     $w++;
-//                    echo "<pre>";
-//                    var_dump($data);
-//                    die;
-//                    
+                    
                     /*
                      * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
                      * tais como '-', ' ', entre outros ao se fazer isso:

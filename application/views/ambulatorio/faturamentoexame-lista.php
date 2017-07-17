@@ -226,11 +226,9 @@
                     <th colspan="3" >
                         Valor Total: <?php echo number_format($valortotal, 2, ',', '.'); ?>
                     </th>
-                    <? if ($financeiro == 't') { ?>
+            <? if ($financeiro == 't') { ?>
                     <td width="40px;" style="color:green;"><div class="bt_link">Financeiro</div></td>
-                    <? 
-                    ?>
-                    <? } elseif ($faturado == 0 && $convenios != 0) { ?>
+            <? } elseif ($faturado == 0 && $convenios != 0) { ?>
                 <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/exame/fecharfinanceiro" method="post">
                     <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($valortotal, 2, ',', '.'); ?>" readonly/>
                     <input type="hidden" class="texto3" name="relacao" value="<?= $convenios[0]->credor_devedor_id; ?>"/>

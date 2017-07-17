@@ -2519,32 +2519,54 @@ class Laudo extends BaseController {
     function gravaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id) {
 
         $this->laudo->gravaranaminese($ambulatorio_laudo_id, $exame_id);
+        
         $servicoemail = $this->session->userdata('servicoemail');
         if ($servicoemail == 't') {
+            
             $dados = $this->laudo->listardadoservicoemail($ambulatorio_laudo_id, $exame_id);
-//                    die('123');
+            if($dados['enviado'] != 't'){
+                $this->load->library('My_phpmailer');
+                $mail = new PHPMailer(true);
 
-            $this->load->library('email');
-            $config['protocol'] = 'smtp';
-            $config['smtp_host'] = 'ssl://smtp.gmail.com';
-            $config['smtp_port'] = '465';
-            $config['smtp_user'] = 'stgsaude@gmail.com';
-            $config['smtp_pass'] = 'saude123';
-            $config['validate'] = TRUE;
-            $config['mailtype'] = 'html';
-            $config['charset'] = 'utf-8';
-            $config['newline'] = "\r\n";
+                $config['protocol'] = 'smtp';
+                $config['smtp_host'] = 'ssl://smtp.gmail.com';
+                $config['smtp_port'] = '465';
+                $config['smtp_user'] = 'stgsaude@gmail.com';
+                $config['smtp_pass'] = 'saude123';
+                $config['validate'] = TRUE;
+                $config['mailtype'] = 'html';
+                $config['charset'] = 'utf-8';
+                $config['newline'] = "\r\n";
 
-            if ($dados['pacienteEmail'] != '' && $dados['empresaEmail'] != '' && $dados['mensagem'] != '' && $dados['razao_social'] != '') {
-                $this->email->initialize($config);
-                $this->email->from($dados['empresaEmail'], $dados['razao_social']);
-                $this->email->to($dados['pacienteEmail']);
-                $this->email->subject($dados['razao_social'] . " agradece sua presença.");
-                $this->email->message($dados['mensagem']);
-                $this->email->send();
+                $mail->setLanguage('br');                             // Habilita as saídas de erro em Português
+                $mail->CharSet = 'UTF-8';                             // Habilita o envio do email como 'UTF-8'
+                $mail->SMTPDebug = 3;                               // Habilita a saída do tipo "verbose"
+                $mail->isSMTP();                                      // Configura o disparo como SMTP
+                $mail->Host = 'smtp.gmail.com';                       // Especifica o enderço do servidor SMTP da Locaweb
+                $mail->SMTPAuth = true;                               // Habilita a autenticação SMTP
+                $mail->Username = 'stgsaude@gmail.com';                    // Usuário do SMTP
+                $mail->Password = 'saude123';                   // Senha do SMTP
+                $mail->SMTPSecure = 'ssl';                            // Habilita criptografia TLS | 'ssl' também é possível
+                $mail->Port = 465;                                    // Porta TCP para a conexão
+                $mail->From = $dados['empresaEmail'];             // Endereço previamente verificado no painel do SMTP
+                $mail->FromName = $dados['razaoSocial'];                        // Nome no remetente
+                $mail->addAddress($dados['pacienteEmail']);                            // Acrescente um destinatário
+                $mail->isHTML(true);                                  // Configura o formato do email como HTML
+                $mail->Subject = $dados['razaoSocial'] . " agradece sua presença.";
+                $mail->Body = $dados['mensagem'];
+
+    //                $mail->AddAttachment("./upload/nfe/$solicitacao_cliente_id/validada/" . $notafiscal[0]->chave_nfe . '-danfe.pdf', $notafiscal[0]->chave_nfe . '-danfe.pdf');
+
+                if (!$mail->Send()) {
+                    $mensagem = "Erro: " . $mail->ErrorInfo;
+                } else {
+                    $mensagem = "Email enviado com sucesso!";
+                }
+                
+                $this->laudo->setaemailparaenviado($ambulatorio_laudo_id);
             }
         }
-
+        
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['paciente_id'] = $paciente_id;

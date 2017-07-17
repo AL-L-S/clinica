@@ -314,7 +314,8 @@
                 if (isset($relatorioprocedimentos[$t + 1]->guia_id) && @$relatorioprocedimentos[$t + 1]->guia_id == $item->guia_id) {
                     continue;
                 }
-                /* RESUMO GUIA */ else {
+                /* RESUMO GUIA */ 
+                else {
                     if (!$verificador):
 //            }
                         $TOTALCARTAO = 0;
@@ -466,6 +467,12 @@
                 <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixapersonalizado" method="post">
     <?
     foreach ($formapagamento as $value) {
+                    
+        
+        if ($value->forma_pagamento_id == 1000){
+            continue; //Caso seja forma de pagamento CREDITO não será processado no fechar caixa
+        }
+        
         /*
          * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
          * tais como '-', ' ', entre outros ao se fazer isso:

@@ -16,6 +16,7 @@ class Empresa extends BaseController {
     function Empresa() {
         parent::Controller();
         $this->load->model('ambulatorio/empresa_model', 'empresa');
+        $this->load->model('seguranca/operador_model', 'operador');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -27,12 +28,52 @@ class Empresa extends BaseController {
     }
 
     function pesquisar($args = array()) {
-
         $this->loadView('ambulatorio/empresa-lista', $args);
-
-//            $this->carregarView($data);
     }
 
+    function pesquisarlembrete($args = array()) {
+        $this->loadView('ambulatorio/lembrete-lista', $args);
+    }
+
+    function carregarlembrete($empresa_lembretes_id) {
+        $data['empresa_lembretes_id'] = $empresa_lembretes_id;
+        $data['operadores'] = $this->operador->listaroperadoreslembrete();
+        $this->loadView('ambulatorio/lembrete-form', $data);
+    }
+    
+    function excluirlembrete($empresa_lembretes_id) {
+        if ($this->empresa->excluirlembrete($empresa_lembretes_id)) {
+            $mensagem = 'Sucesso ao excluir o Lembrete';
+        } else {
+            $mensagem = 'Erro ao excluir o Lembrete. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
+    }
+    
+    function checandolembrete() {
+        $data = $this->empresa->buscandolembreteoperador();
+        die(json_encode($data));
+    }
+    
+    function visualizalembrete() {
+        $this->empresa->visualizalembrete();
+    }
+    
+        
+    function gravarlembrete($empresa_lembretes_id) {
+        if ($this->empresa->gravarlembrete($empresa_lembretes_id)) {
+            $mensagem = 'Sucesso ao gravar o Lembrete';
+        } else {
+            $mensagem = 'Erro ao gravar o Lembrete. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
+    }
+    
+    
     function carregarempresa($exame_empresa_id) {
         $obj_empresa = new empresa_model($exame_empresa_id);
         $data['obj'] = $obj_empresa;
@@ -42,7 +83,7 @@ class Empresa extends BaseController {
 
     function configuraremail($empresa_id) {
         $data['empresa_id'] = $empresa_id;
-        $data['mensagem'] = $this->empresa->listarinformacaosms();
+        $data['mensagem'] = $this->empresa->listarinformacaoemail($empresa_id);
         $this->loadView('ambulatorio/empresaemail-form', $data);
     }
 
@@ -78,7 +119,7 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa");
     }
-    
+
     function gravaripservidor($empresa_id) {
         if ($this->empresa->gravaripservidor($empresa_id)) {
             $mensagem = 'Sucesso ao gravar o Endereço';

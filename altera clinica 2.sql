@@ -308,9 +308,6 @@ CREATE TABLE ponto.tb_paciente_credito
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN alergias character varying(40000);
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN cirurgias character varying(40000);
 
-
--- Dia 10/07/2017
-
 ALTER TABLE ponto.tb_empresa ADD COLUMN imagem boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN consulta boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN especialidade boolean DEFAULT true;
@@ -320,8 +317,48 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN estoque boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN financeiro boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN marketing boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN laboratorio boolean DEFAULT true;
-ALTER TABLE ponto.tb_empresa ADD COLUMN ponto boolean DEFAULT true;
-ALTER TABLE ponto.tb_empresa ADD COLUMN calendario boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN ponto boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa ADD COLUMN calendario boolean DEFAULT false;
 
-INSERT INTO ponto.tb_forma_pagamento(forma_pagamento_id, nome)
-    VALUES (1000, 'CREDITO');
+
+INSERT INTO ponto.tb_forma_pagamento(forma_pagamento_id, nome, cartao)
+    VALUES (1000, 'CREDITO', 'f');
+
+SELECT setval('ponto.tb_forma_pagamento_forma_pagamento_id_seq', 1001);
+ 
+-- Dia 11/07/2017
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN email_enviado boolean DEFAULT false;
+
+CREATE TABLE ponto.tb_empresa_lembretes
+(
+  empresa_lembretes_id serial NOT NULL,
+  texto character varying(10000),
+  perfil_destino integer,
+  operador_destino integer,
+  empresa_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_lembretes_pkey PRIMARY KEY (empresa_lembretes_id)
+);
+
+CREATE TABLE ponto.tb_empresa_lembretes_visualizacao
+(
+  empresa_lembretes_visualizacao_id serial NOT NULL,
+  empresa_id integer,
+  empresa_lembretes_id integer,
+  operador_visualizacao integer,
+  data_visualizacao timestamp without time zone,
+  CONSTRAINT tb_empresa_lembretes_visualizacao_pkey PRIMARY KEY (empresa_lembretes_visualizacao_id)
+);
+
+-- Dia 13/07/2017
+
+ALTER TABLE ponto.tb_operador ADD COLUMN taxa_administracao numeric DEFAULT 0.00;
+ALTER TABLE ponto.tb_empresa_email_verificacao ADD COLUMN empresa_id integer;
+
+ALTER TABLE ponto.tb_empresa ALTER COLUMN email_mensagem_confirmacao TYPE text;
+ALTER TABLE ponto.tb_empresa ALTER COLUMN email_mensagem_agradecimento TYPE text;
+ALTER TABLE ponto.tb_empresa ADD COLUMN email_mensagem_falta text;

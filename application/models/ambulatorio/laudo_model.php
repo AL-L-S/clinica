@@ -2458,7 +2458,7 @@ class laudo_model extends Model {
         }
     }
 
-    function listardadoservicoemail($exame_id) {
+    function listardadoservicoemail($ambulatorio_laudo_id, $exame_id) {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -2475,17 +2475,32 @@ class laudo_model extends Model {
         $this->db->where("empresa_id", $empresa_id);
         $query = $this->db->get();
         $return2 = $query->result();
-//        var_dump($return1);die;
+
+        $this->db->select('email_enviado');
+        $this->db->from('tb_ambulatorio_laudo al');
+        $this->db->where("ambulatorio_laudo_id", $ambulatorio_laudo_id);
+        $query = $this->db->get();
+        $return3 = $query->result();
+        
         $retorno = array(
             "pacienteEmail" => $return1[0]->cns,
             "empresaEmail" => $return2[0]->email,
             "mensagem" => $return2[0]->msg,
+            "enviado" => $return3[0]->email_enviado,
             "razaoSocial" => $return2[0]->razao_social
         );
         return $retorno;
-//        var_dump($retorno);die;
+        
     }
+    
+    
 
+    function setaemailparaenviado($ambulatorio_laudo_id) {
+        $this->db->set('email_enviado', 't');
+        $this->db->where("ambulatorio_laudo_id", $ambulatorio_laudo_id);
+        $this->db->update('tb_ambulatorio_laudo');
+    }
+    
     function gravaranaminese($ambulatorio_laudo_id, $exame_id) {
         try {
             /* inicia o mapeamento no banco */
