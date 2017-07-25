@@ -35,7 +35,7 @@
             </td>
         </tr>
     </table>
-    
+
 
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Horario Fixo</a></h3>
@@ -75,7 +75,7 @@
 
                             <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                 <a 
-                                   href="<?= base_url() ?>ambulatorio/agenda/carregarexclusaohorario/<?= $item->horarioagenda_id; ?>/<?= $agenda; ?>">
+                                    href="<?= base_url() ?>ambulatorio/agenda/carregarexclusaohorario/<?= $item->horarioagenda_id; ?>/<?= $agenda; ?>">
                                     <img border="0" title="Excluir" alt="Excluir"
                                          src="<?= base_url() ?>img/form/page_white_delete.png" />
                                 </a>
@@ -90,12 +90,67 @@
             </table>
         </div>
     </div>
+    <!--<br>-->
+    <br>
+<!--    <div id="accordion2">
+        <h3 class="singular"><a href="#">Agendas Criadas A Partir Desse(s) Horário(s)</a></h3>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="tabela_header" colspan="2">Agenda</th>
+                        <th class="tabela_header"></th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <?php
+                    $estilo_linha = "tabela_content01";
+                    foreach ($lista_agenda as $item) {
+                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        ?>
+                        <tr>
+                            <td class="<?php echo $estilo_linha; ?>"><?= $item->horarioagenda_id; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+
+
+
+                            <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                                <div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/agenda/carregar/<?= $item->horarioagenda_id ?>" target="_blank">
+                                        Excluir
+                                    </a>
+                                </div>
+
+                            </td>
+                            <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                                <div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/agenda/carregar/<?= $item->horarioagenda_id ?>" target="_blank">
+                                        Editar
+                                    </a>
+                                </div>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <?php
+                }
+                ?>
+
+            </table>
+        </div>
+    </div>-->
 
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
     $(function () {
         $("#accordion").accordion();
+    });
+    $(function () {
+        $("#accordion2").accordion();
     });
 
 </script>
