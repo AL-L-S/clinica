@@ -1,0 +1,937 @@
+.texto00 {
+    width: 20px;
+}
+.texto01 {
+    width: 50px;
+}
+
+.texto02 {
+    width: 100px;
+}
+
+.texto03 {
+    width: 150px;
+}
+
+.texto04 {
+    width: 200px;
+}
+
+.texto05 {
+    width: 250px;
+}
+
+.texto06 {
+    width: 300px;
+}
+
+.texto07 {
+    width: 350px;
+}
+
+.texto08 {
+    width: 400px;
+}
+
+.texto09 {
+    width: 450px;
+}
+
+.texto10 {
+    width: 500px;
+}
+
+.texto12 {
+    width: 700px;
+}
+
+.texto_area {
+    width: 900px;
+    height: 100px;
+}
+
+.texto_id {
+    width: 50px;
+}
+
+.content table {
+    width: 98%;
+    text-align: left;
+    border-spacing: 0;
+}
+
+.content fieldset {
+    width: 98%;
+    text-align: left;
+}
+
+.tabela_title {
+    /*background-color: #8B0D00;*/
+    color: #900;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px;
+}
+.tabela_title form{
+    float: right;
+}
+.tabela_header {
+    background-color: #1b15c7;
+    color: #fff;
+    font-weight: bold;
+    padding-left: 3px;
+}
+.tabela_teste {
+    font-weight: bold;
+}
+
+.tabela_content01 {
+    background-color: #E0EEEE;
+    color: #000000;
+    padding-left: 3px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+.tabela_content02 {
+    background-color: #BCD2EE;
+    color: #000000;
+    padding-left: 3px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+.tabela_content_agenda01 {
+    background-color: #E0EEEE;
+    color: #000000;
+    padding-left: 3px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+.tabela_content_agenda02 {
+    background-color: #BCD2EE;
+    color: #000000;
+    padding-left: 3px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+.tabela_footer {
+    background-color: #1b15c7;
+    color: #fff;
+    font-weight: bold;
+    padding-left: 3px;
+    text-align: center;
+}
+
+.tabela_footer a {
+    color: #ff9!important;
+}
+
+.tabela_footer a:hover {
+    color: #fff;
+}
+
+.tabela_footer a:visited {
+    color: #fff;
+}
+
+.title_relatorio {
+    font-size:15px;
+    font-weight:bold;
+    color:#900;
+    margin:0 0 10px 20px;
+}
+
+fieldset#login {
+    width: 300px;
+    height: 180px;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url('../img/bg_cadeado.jpg');
+    background-repeat: no-repeat;
+    font: 75%/2 Verdana, Arial, Helvetica, sans-serif;
+}
+
+fieldset#login legend {
+    font-weight: bold;
+}
+
+label {
+    font-weight: bold;
+}
+
+label2 {
+    font-weight: bold;
+    font-size: 14px;
+}
+.bt_link_new{
+    background: url(images/bg_buttons.png);
+    width: 150px;
+    height: 28px;
+    border: 1px solid;
+    border-top-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    border-left-color: #eee;
+    -moz-border-radius:4px;
+    margin-bottom: 4px;
+}
+
+.bt_link_new a {
+    display:block;
+    width:150px;
+    height:5px;
+    padding:5px 5px 5px 5px;
+    color: #900;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.bt_link_new a:hover {
+    color: #f00;
+}
+.bt_link_newgrande{
+    background: url(img/bg_buttons.png);
+    width: 300px;
+    height: 100px;
+    border: 4px solid;
+    border-top-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    border-left-color: #eee;
+    -moz-border-radius:4px;
+    margin-bottom: 4px;
+}
+
+.bt_link_newgrande a {
+    display:block;
+    width:300px;
+    height:100px;
+    padding:5px 5px 5px 5px;
+    color: #900;
+    font-weight: bold;
+    text-align:center;
+    line-height:100px;
+    text-decoration: none;
+}
+
+.bt_link_newgrande a:hover {
+    color: #f00;
+}
+.bt_link{
+    background: url(images/bg_buttons.png);
+    text-align: center;
+    min-width: 70px;
+    height: 25px;
+    border: 1px solid;
+    border-top-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    border-left-color: #eee;
+    -moz-border-radius:1px;
+    margin-bottom: 1px;
+}
+.bt_link a {
+    display:block;
+    min-width:60px;
+    height:25px;
+    padding:5px 0px 5px 5px;
+    text-align: center;
+    color: #900;
+    font-weight: bold;
+    text-decoration: none;
+}
+.bt_link a:hover {
+    color: #f00;
+}
+.bt_linkm{
+    background: url(images/bg_buttons.png);
+    text-align: center;
+    width: 70px;
+    height: 25px;
+    border: 1px solid;
+    border-top-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    border-left-color: #eee;
+    -moz-border-radius:1px;
+    margin-bottom: 4px;
+}
+.bt_linkm a {
+    display:block;
+    width:60px;
+    height:25px;
+    padding:5px 0px 5px 5px;
+    text-align: center;
+    color: #900;
+    font-weight: bold;
+    text-decoration: none;
+}
+.bt_linkm a:hover {
+    color: #f00;
+}
+.bt_linkp{
+    background: url(images/bg_buttons.png);
+    text-align: center;
+    width: 40px;
+    height: 25px;
+    border: 1px solid;
+    border-top-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    border-left-color: #eee;
+    -moz-border-radius:1px;
+    margin-bottom: 1px;
+}
+.bt_linkp a {
+    display:block;
+    width:40px;
+    height:25px;
+    padding:0px 0px 0px 0px;
+    text-align: center;
+    color: #900;
+    font-weight: bold;
+    text-decoration: none;
+}
+.bt_linkp a:hover {
+    color: #f00;
+}
+.bt_linkf{
+    background: url(images/bg_buttons.png);
+    text-align: center;
+    width: 250px;
+    height: 25px;
+    border: 1px solid;
+    border-top-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    border-left-color: #eee;
+    -moz-border-radius:1px;
+    margin-bottom: 1px;
+}
+.bt_linkf a {
+    display:block;
+    width:250px;
+    height:25px;
+    padding:0px 0px 0px 0px;
+    text-align: center;
+    color: #900;
+    font-weight: bold;
+    text-decoration: none;
+}
+.bt_linkf a:hover {
+    color: #f00;
+}
+/* Botões para voltar */
+
+.bt_link_voltar{
+    background: url(images/bg_buttons.png);
+    width: 75px;
+    height: 24px;
+    border: 1px solid;
+    border-top-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    border-left-color: #eee;
+    -moz-border-radius:4px;
+    margin-bottom: 10px;
+}
+.bt_link_voltar a {
+    display:block;
+    width:75px;
+    height:24px;
+    padding:0px 0px 0px 25px;
+    background: transparent url(../img/form/arrow_left.png) 5px 5px no-repeat;
+    color: #900;
+    font-weight: bold;
+    text-decoration: none;
+}
+.bt_link_voltar a:hover {
+    color: #f00;
+}
+/* botão gerar proventos*/
+
+.gerar_provento{
+    width: 150px
+}
+.gerar_provento a{
+    width: 150px;
+    background: transparent url(../img/form/page_white_gear.png) 8px 9px no-repeat;
+}
+
+/*************************************************************************/
+
+
+.content button {
+    background:url(images/bg_buttons.png);
+    border:1px solid #ccc;
+    height:22px;
+    -moz-border-radius:4px;
+    -webkit--border-radius:4px;
+    color:#666;
+    font-size:11px;
+}
+.content button:hover {
+    color:#000;
+    border-color: #eee;
+}
+.content input {
+    -moz-border-radius:4px;
+    -webkit--border-radius:4px;
+    color:#333;
+    font-size:11px;
+}
+.content dl dt {
+    float:left;
+    min-width:160px;
+    line-height:30px;
+}
+.content dl dd {
+    height:30px;
+}
+#chk_desc_inss{
+    margin: 10px
+}
+.content dl.add_pensionista dt{
+    width: 120px!important;
+}
+.content dl.dl_cadastro_teto dt{
+    width: 140px
+}
+.content dl dd.dd_texto{
+    height: 70px;
+}
+.content dl.dl_desconto_lista dt{
+    width: 250px;
+}
+.ficha_ceatox fieldset{
+    border: solid 1px #ccc;
+    padding: 10px;
+    margin: 15px 0;
+    background: #eee;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.ficha_ceatox fieldset legend{
+    color: #900;
+    font-weight: bold;
+}
+
+.ficha_ceatox dl dt{
+    width: 200px;
+}
+.ficha_ceatox form input, .ficha_ceatox form select{
+
+}
+.ficha_ceatox div{
+    float: left;
+    margin-right: 30px;
+    min-width: 100px;
+}
+.ficha_ceatox input{
+    font-size: 14px;
+}
+.ficha_ceatox label{
+    font-weight: normal;
+    min-width: 100px;
+    display: block;
+    line-height: 12px;
+    margin-top: 10px;
+    font-size: 11px;
+    color: #933
+}
+.ficha_oit fieldset{
+    border: solid 1px #ccc;
+    padding: 10px;
+    margin: 1px 0;
+    background: #eee;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.ficha_oit fieldset legend{
+    color: #900;
+    font-weight: bold;
+}
+
+.ficha_oit dl dt{
+    width: 200px;
+}
+.ficha_oit form input, .ficha_ceatox form select{
+
+}
+.ficha_oit div{
+    float: left;
+    margin-right: 0px;
+    min-width: 100px;
+}
+.ficha_oit div2{
+    float: left;
+    margin-right: -30px;
+    min-width: 100px;
+}
+.ficha_oit input{
+    font-size: 14px;
+}
+.ficha_oit label{
+    font-weight: normal;
+    min-width: 100px;
+    display: block;
+    line-height: 12px;
+    margin-top:7px;
+    font-size: 12px;
+    color: #933
+}
+.size1{
+    width: 90px;
+}
+.size2{
+    width: 180px;
+}
+.size3{
+    width: 400px;
+}
+.size4{
+    width: 400px;
+}
+.size13{
+    width: 900px;
+}
+.size10{
+    width: 600px;
+}
+.size8{
+    width: 300px;
+}
+.ficha_ceatox table input, .ficha_ceatox table select{
+    margin: 0;
+}
+tr.linha1{
+    background: transparent;
+    height: 36px;
+}
+tr.linha2{
+    background: transparent;
+    height: 36px;
+}
+#table_agente_toxico td{
+    padding: 5px;
+}
+#table_agente_toxico tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_agente_toxico thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+.content{
+    margin-bottom: 100px;
+}
+#table_agente_toxico a.delete{
+
+}
+#table_observacao_geral td{
+    padding: 5px;
+}
+#table_observacao_geral tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_observacao_geral thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_observacao_geral a.delete{
+
+}
+#table_ventriculo_esquerdo_dimensoes_hipertrofia td{
+    padding: 5px;
+}
+#table_ventriculo_esquerdo_dimensoes_hipertrofia tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_ventriculo_esquerdo_dimensoes_hipertrofia thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_ventriculo_esquerdo_dimensoes_hipertrofia a.delete{
+
+}
+#table_ventriculo_esquerdo_analise_segmentar td{
+    padding: 5px;
+}
+#table_ventriculo_esquerdo_analise_segmentar tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_ventriculo_esquerdo_analise_segmentar thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_ventriculo_esquerdo_analise_segmentar a.delete{
+
+}
+#table_ventriculo_esquerdo_funcoes td{
+    padding: 5px;
+}
+#table_ventriculo_esquerdo_funcoes tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_ventriculo_esquerdo_funcoes thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_ventriculo_esquerdo_funcoes a.delete{
+
+}
+#table_aorta td{
+    padding: 5px;
+}
+#table_aorta tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_aorta thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_aorta a.delete{
+
+}
+#table_valvula_aortica td{
+    padding: 5px;
+}
+#table_valvula_aortica tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_valvula_aortica thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_valvula_aortica a.delete{
+
+}
+#table_atrio_esquerdo td{
+    padding: 5px;
+}
+#table_atrio_esquerdo tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_atrio_esquerdo thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_atrio_esquerdo a.delete{
+
+}
+#table_valvula_mitral td{
+    padding: 5px;
+}
+#table_valvula_mitral tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_valvula_mitral thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_valvula_mitral a.delete{
+
+}
+#table_ventriculo_direito td{
+    padding: 5px;
+}
+#table_ventriculo_direito tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_ventriculo_direito thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_ventriculo_direito a.delete{
+
+}
+#table_atrio_direito td{
+    padding: 5px;
+}
+#table_atrio_direito tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_atrio_direito thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_atrio_direito a.delete{
+
+}
+#table_valvula_tricuspide td{
+    padding: 5px;
+}
+#table_valvula_tricuspide tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_valvula_tricuspide thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_valvula_tricuspide a.delete{
+
+}
+#table_valvula_pulmonar td{
+    padding: 5px;
+}
+#table_valvula_pulmonar tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_valvula_pulmonar thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_valvula_pulmonar a.delete{
+
+}
+#table_pericardio td{
+    padding: 5px;
+}
+#table_pericardio tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_pericardio thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_pericardio a.delete{
+
+}
+#table_estudo_proteses td{
+    padding: 5px;
+}
+#table_estudo_proteses tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_estudo_proteses thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_estudo_proteses a.delete{
+
+}
+#table_analise_fluxo_doppler td{
+    padding: 5px;
+}
+#table_analise_fluxo_doppler tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_analise_fluxo_doppler thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_analise_fluxo_doppler a.delete{
+
+}
+#table_justa {
+    border-collapse: collapse;
+}
+#table_analise_mapeamento_fluxo_cores td{
+    padding: 5px;
+}
+#table_analise_mapeamento_fluxo_cores tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_analise_mapeamento_fluxo_cores thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_analise_mapeamento_fluxo_cores a.delete{
+
+}
+#table_itens td{
+    padding: 5px;
+}
+#table_itens tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_itens thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_itens a.delete{
+
+}
+#table_conclusao td{
+    padding: 5px;
+}
+#table_conclusao tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+#table_conclusao thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+}
+#table_conclusao a.delete{
+
+}
+#plusAgente{
+
+}
+.mini_bt{
+    width: 122px;
+    height: 24px;
+}
+.mini_bt a{
+    background-position:3px 3px;
+    font-size:11px;
+    height:15px;
+    line-height:12px;
+    margin-bottom:0 !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    margin-top:0 !important;
+    text-indent:-8px;
+    width:98px;
+}
+.delete{
+    background: url(../img/form-ic-error.png) no-repeat;
+    display: block;
+    width: 16px;
+    height: 16px;
+    text-indent: 99999px;
+    overflow: hidden;
+    margin: auto;
+}
+.espec{
+
+}
+.ficha_ceatox ol{
+    margin:  0 30px;
+}
+.ficha_ceatox ol li{
+    float: left;
+    width: 30%;
+    margin: 3px 0;
+
+}
+.aux_legenda{
+    background: #fec;
+    width: 100%;
+    color: #900;
+    font-weight: bold;
+    border: 1px dashed #900;
+    margin-bottom: 10px;
+}
+table.ceatox_ficha_table{
+    width: auto;
+}
+.ceatox_ficha_table thead td{
+    background: #900;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 10px!important;
+    font-size: 11px;
+    padding: 0;
+    text-align: center;
+}
+.ceatox_ficha_table tbody td{
+    padding: 5px 10px 2px 10px;
+    text-align: left;
+    height: 36px;
+    vertical-align: middle;
+}
+.radio_colums input, .radio_colums label {
+    float: left;
+    font-size: inherit;
+    vertical-align: middle;
+    line-height: 0px;
+}
+.radio_colums div {
+    width: 45%;
+    overflow: hidden;
+}
+.ceatox_ficha_table tbody{
+    background: url(../img/table_zebra_ceatox.png)
+}
+.ceatox_ficha_table_tratamento{
+    float: left;
+    min-width:50%!important;
+    font-size: 11px;
+    line-height: 11px;
+}
+.ceatox_ficha_table_tratamento thead td{
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+}
+.tdList{
+    width: 10px;
+}
+.tdListNum{
+    width: 10px;
+}
+.tratamento_descrição{
+    min-width:200px
+}
+form#ficha_form label.error{
+    float: right;
+    font-size: 13px !important;
+    line-height: 5px!important;
+    min-width: 10px;
+}
