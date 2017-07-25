@@ -300,7 +300,7 @@
                                                     });
                                                 }
                                                 else{
-                                                    $('#valor<?= $i ?>').val(0);
+//                                                    $('#valor<?= $i ?>').val(0);
                                                     $('#valor<?= $i ?>').removeAttr("readonly");
                                                     multiplica();
                                                 }
@@ -350,6 +350,7 @@
                                         //        document.form_faturar.valortotal.value = 10;
                                     }
                                     multiplica();
+                                    
                                     $(function () {
                                         $('#formapamento1').change(function () {
                                             if ($(this).val()) {

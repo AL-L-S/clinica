@@ -116,6 +116,19 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+
+
+    function listargruposatendimento() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome,
+                            ');
+        $this->db->from('tb_ambulatorio_grupo');
+//        $this->db->where("tipo", 'CONSULTA');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listargruposconsulta() {
         $this->db->select('ambulatorio_grupo_id,

@@ -65,7 +65,7 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listardadoscbhpm() {
         $this->db->select('convenio_id,
                             nome,
@@ -238,8 +238,7 @@ class Convenio_model extends Model {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 if (empty($_POST['arrendondamento'])) { // verifica se é pra arredondar para o interiro mais próximo
                     $sql = "update ponto.tb_procedimento_convenio
                     set valorch = (valorch * $ajustech) + valorch, 
@@ -486,11 +485,6 @@ class Convenio_model extends Model {
             } else {
                 $this->db->set('dinheiro', 'f');
             }
-//            if (isset($_POST['cbhpm'])) {
-//                $this->db->set('cbhpm', $_POST['cbhpm']);
-//            } else {
-//                $this->db->set('cbhpm', 'f');
-//            }
             if (isset($_POST['txtcarteira'])) {
                 $this->db->set('carteira_obrigatoria', $_POST['txtcarteira']);
             } else {
@@ -525,19 +519,43 @@ class Convenio_model extends Model {
 
     function gravarcopia() {
         try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
             $convenio = $_POST['txtconvenio'];
+            $grupo = $_POST['grupo'];
+//            var_dump($convenio); die;
             $convenioidnovo = $_POST['txtconvenio_id'];
-            $sql = "INSERT INTO ponto.tb_procedimento_convenio(
+            if ($grupo != '') {
+//                var_dump($grupo);
+//                die;
+                $sql = "INSERT INTO ponto.tb_procedimento_convenio(
+            convenio_id, procedimento_tuss_id, 
+            qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+            qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
+            data_atualizacao, operador_atualizacao)
+            SELECT $convenioidnovo, pc.procedimento_tuss_id, 
+            qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+            qtdeuco, valoruco, valortotal, pc.ativo, '$horario', $operador_id, 
+            pc.data_atualizacao, pc.operador_atualizacao
+            FROM ponto.tb_procedimento_convenio pc
+                LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                where pt.grupo = '$grupo'
+                and convenio_id = $convenio";
+            } else {
+                $sql = "INSERT INTO ponto.tb_procedimento_convenio(
             convenio_id, procedimento_tuss_id, 
             qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
             qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
             data_atualizacao, operador_atualizacao)
             SELECT $convenioidnovo, procedimento_tuss_id, 
             qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
-            qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
+            qtdeuco, valoruco, valortotal, ativo, '$horario', $operador_id, 
             data_atualizacao, operador_atualizacao
             FROM ponto.tb_procedimento_convenio
+
                 where convenio_id = $convenio";
+            }
+
             $this->db->query($sql);
 
             return $convenioidnovo;

@@ -50,6 +50,8 @@ class contasreceber_model extends Model {
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = fc.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor cd', 'cd.financeiro_credor_devedor_id = fc.devedor', 'left');
 //        $this->db->join('tb_financeiro_classe f', 'f.descricao = fc.classe', 'left');
+        $empresa_id = $this->session->userdata('empresa_id');
+//        $this->db->where("empresa_id", $empresa_id);
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('fc.devedor', $args['empresa']);
         }
@@ -223,7 +225,7 @@ class contasreceber_model extends Model {
 
     function gravar($dia, $parcela) {
         try {
-
+            $empresa_id = $this->session->userdata('empresa_id');
             //busca tipo
             $this->db->select('t.descricao');
             $this->db->from('tb_tipo_entradas_saida t');
@@ -244,6 +246,7 @@ class contasreceber_model extends Model {
             $this->db->set('data', $dia);
             $this->db->set('parcela', $parcela);
             $this->db->set('tipo', $tipo);
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('tipo_numero', $_POST['tiponumero']);

@@ -15,7 +15,7 @@
 }
 
 body .fc { /* extra precedence to overcome jqui */
-	font-size: 1em;
+	font-size: 0.90em;
 }
 
 
@@ -50,7 +50,7 @@ body .fc { /* extra precedence to overcome jqui */
 }
 
 .fc-unthemed td.fc-today {
-	background: #edeff8;
+	background: #F0BB2380;
 }
 
 .fc-highlight { /* when user is selecting cells */

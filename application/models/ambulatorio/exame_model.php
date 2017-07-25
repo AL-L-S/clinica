@@ -988,8 +988,7 @@ class exame_model extends Model {
         return $return->result();
     }
 
-    function gravarexamesfaturamentomanual($ambulatorio_guia) {
-//        var_dump($ambulatorio_guia); die;
+    function gravarexamesfaturamentomanual($ambulatorio_guia, $percentual) {
         try {
 
             $this->db->select('ag.tipo');
@@ -1011,6 +1010,10 @@ class exame_model extends Model {
             }
 
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
+            
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
+            
             $this->db->set('valor1', $valortotal);
             $this->db->set('valor_total', $valortotal);
             $this->db->set('quantidade', $_POST['qtde1']);
@@ -1022,6 +1025,7 @@ class exame_model extends Model {
             $this->db->set('realizada', 't');
             if ($_POST['medicoagenda'] != "") {
                 $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+                $this->db->set('medico_agenda', $_POST['medicoagenda']);
             }
             if ($_POST['crm1'] != "") {
                 $this->db->set('medico_solicitante', $_POST['crm1']);
@@ -1365,6 +1369,9 @@ class exame_model extends Model {
         }
         if (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
             $this->db->where('p.nascimento', date("Y-m-d", strtotime(str_replace('/', '-', $args['nascimento']))));
+        }
+        if (isset($args['grupo']) && strlen($args['grupo']) > 0) {
+            $this->db->where('an.grupo', $args['grupo']);
         }
         if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
             $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
@@ -5859,6 +5866,7 @@ class exame_model extends Model {
 
     function cancelarexame() {
         try {
+            
             $this->db->set('ativo', 't');
             $this->db->where('exame_sala_id', $_POST['txtsala_id']);
             $this->db->update('tb_exame_sala');

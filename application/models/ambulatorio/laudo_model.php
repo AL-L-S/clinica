@@ -1443,6 +1443,7 @@ class laudo_model extends Model {
                             ag.situacao_revisor,
                             o.nome as medico,
                             o.conselho,
+                            o.carimbo,
                             op.conselho as conselho2,
                             ag.assinatura,
                             ag.rodape,

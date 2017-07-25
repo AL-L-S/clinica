@@ -17,6 +17,18 @@
                         </select>
                         <input type="hidden" name="txtconvenio_id"value="<?= $convenioid; ?>" />
                     </dd>
+                    <dt>
+                    <label>Grupo</label>
+                    </dt>
+                    <dd>
+                        <select name="grupo" id="grupo" class="size4">
+                            <option value="">TODOS</option>
+                            <? foreach ($grupos as $value) : ?>
+                                <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                        <input type="hidden" name="txtconvenio_id"value="<?= $convenioid; ?>" />
+                    </dd>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

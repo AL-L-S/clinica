@@ -62,7 +62,7 @@
 
                         $intervalo = $data1->diff($data2);
                         ?>
-                        <h6>ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->days ?> dia(s)</h6>
+                        <h6><?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->days ?> dia(s)</h6>
 
                         <?
                     }
@@ -86,6 +86,7 @@
                             <th class="tabela_header">Medico</th>
                             <th class="tabela_header">Solicitante</th>
                             <th class="tabela_header">Convenio</th>
+                            <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">autorizacao</th>
                             <th class="tabela_header">V. Unit</th>
@@ -135,7 +136,16 @@
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
-
+                                
+                                <td class="<?php echo $estilo_linha; ?>" >
+                                    <select  name="grupo1" id="grupo<?= $i; ?>" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <?foreach ($grupos as $item2) :?>
+                                            <option value="<?= $item2->nome; ?>"><?= $item2->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                
                                 <td class="<?php echo $estilo_linha; ?>" >
                                     <select  name="procedimento[<?= $i; ?>]" id="procedimento<?= $i; ?>" class="size1"  >
                                         <option value="">-- Escolha um procedimento --</option>
@@ -170,7 +180,7 @@
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="text" name="ordenador" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="checkbox" name="confimado[<?= $i; ?>]" id="checkbox<?= $i; ?>"/> <input type="hidden" name="agenda_exames_id[<?= $i; ?>]" value="<?= $agenda_exame_id; ?>" /></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= substr($item->medico, 0, 12); ?> <br><?= substr($item->procedimento, 0, 12); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= substr(@$item->medico, 0, 12); ?> <br><?= substr(@$item->procedimento, 0, 12); ?></td>
                             </tr>
 
                         </tbody>
@@ -199,7 +209,8 @@
 <script type="text/javascript">
 
 
-                        $(document).ready(function () {   
+                        $(document).ready(function () { 
+                            
                             var convenio_agendado = new Array();
                             var proc_agendado = new Array();
                             
@@ -268,7 +279,21 @@
                                     });
 
 
-
+                                    
+                                    $('#grupo<?= $b ?>').change(function () {
+                                        if ($('#convenio<?= $b ?>').val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                options = '<option value=""></option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                }
+                                                $('#procedimento<?= $b ?>').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                        }
+                                    });
+                                
                                 $('#checkbox<?= $b ?>').change(function () {
                                     if ($(this).is(":checked")) {
                                         $("#medico_id<?= $b; ?>").prop('required', true);

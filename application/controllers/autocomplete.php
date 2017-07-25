@@ -324,8 +324,8 @@ class Autocomplete extends Controller {
             } else {
                 $medico = null;
             }
-            if (isset($item->especialidade)) {
-                $especialidade = $item->especialidade;
+            if ($_POST['especialidade']) {
+                $especialidade = $_POST['especialidade'];
             } else {
                 $especialidade = null;
             }
@@ -359,7 +359,7 @@ class Autocomplete extends Controller {
     function listarhorarioscalendarioexame() {
 //            echo $_POST['custom_param1'];
         if (isset($_POST['medico']) || isset($_POST['especialidade']) || isset($_POST['empresa']) || isset($_POST['sala'])) {
-            $result = $this->exametemp->listarhorarioscalendarioexame($_POST['medico'], $_POST['especialidade'], $_POST['empresa'], $_POST['sala']);
+            $result = $this->exametemp->listarhorarioscalendarioexame($_POST['medico'], $_POST['especialidade'], $_POST['empresa'], $_POST['sala'], $_POST['grupo']);
         } else {
             $result = $this->exametemp->listarhorarioscalendarioexame();
         }
@@ -390,12 +390,13 @@ class Autocomplete extends Controller {
             } else {
                 $medico = null;
             }
-            if (isset($item->especialidade)) {
-                $especialidade = $item->especialidade;
+            if ($_POST['especialidade']) {
+                $especialidade = $_POST['especialidade'];
             } else {
                 $especialidade = null;
             }
             $sala = $_POST['sala'];
+            $grupo = $_POST['grupo'];
             $empresa = $_POST['empresa'];
 
             $dia = date("d", strtotime($item->data));
@@ -404,7 +405,7 @@ class Autocomplete extends Controller {
 
 //            $medico = $item->medico;
 
-            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=$empresa&sala=$sala&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
+            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=$empresa&grupo=$grupo&sala=$sala&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
 
 
             $var[] = $retorno;
@@ -458,8 +459,8 @@ class Autocomplete extends Controller {
             } else {
                 $medico = null;
             }
-            if (isset($item->especialidade)) {
-                $especialidade = $item->especialidade;
+            if ($_POST['especialidade']) {
+                $especialidade = $_POST['especialidade'];
             } else {
                 $especialidade = null;
             }
@@ -524,8 +525,8 @@ class Autocomplete extends Controller {
             } else {
                 $medico = null;
             }
-            if (isset($item->especialidade)) {
-                $especialidade = $item->especialidade;
+            if ($_POST['especialidade']) {
+                $especialidade = $_POST['especialidade'];
             } else {
                 $especialidade = null;
             }

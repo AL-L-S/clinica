@@ -826,13 +826,16 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentosgeral() {
-
+//        ini_set('display_errors',1);
+//        ini_set('display_startup_erros',1);
+//        error_reporting(E_ALL);
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             if (isset($_POST['guia_id'])) {
                 $guia_id = $_POST['guia_id'];
+//                die;
                 redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$guia_id");
             } else {
                 redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id");
@@ -863,8 +866,7 @@ class Guia extends BaseController {
                     $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual);
                 }
             }
-//            die;
-//        $this->novo($paciente_id, $ambulatorio_guia);
+//            die('morreu');
             redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
         }
     }
@@ -1144,6 +1146,7 @@ class Guia extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+        $data['grupos'] = $this->procedimento->listargruposconsulta();
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
@@ -1197,7 +1200,12 @@ class Guia extends BaseController {
         $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
-        $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+        if($ambulatorio_guia_id != null && $ambulatorio_guia_id != ''){
+            $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+        }else{
+            $data['exames'] = array();
+        }
+        $data['grupos'] = $this->procedimento->listargruposatendimento();
 
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
@@ -1211,11 +1219,14 @@ class Guia extends BaseController {
             }
         }
 //        echo "<hr>";
-//        var_dump($data['x']);
+//        var_dump($data['exames']);
 //        die;
 
-
-        $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
+        if($ambulatorio_guia_id != null && $ambulatorio_guia_id != ''){
+            $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
+        } else {
+            $data['contador'] = 0;
+        }
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $this->loadView('ambulatorio/guiaatendimento-form', $data);
     }
@@ -2857,6 +2868,7 @@ class Guia extends BaseController {
         $data['relatoriohomecaregeral'] = $this->guia->relatoriomedicoconveniofinanceirohomecaretodos();
         $data['relatoriocirurgico'] = $this->guia->relatoriocirurgicomedicoconveniofinanceiro();
         $data['relatoriocirurgicogeral'] = $this->guia->relatoriocirurgicomedicoconveniofinanceirotodos();
+//        echo "<pre>"; var_dump($data['relatorio']);die;
         $this->load->View('ambulatorio/impressaorelatoriomedicoconveniofinanceiro', $data);
     }
 
@@ -3047,8 +3059,8 @@ class Guia extends BaseController {
 //        $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
         $data['relatorioprocedimentos'] = $this->guia->relatoriocaixapersonalizadoprocedimentos();
         $data['operadores'] = $this->guia->relatoriocaixapersonalizadooperadores();
-
-//        var_dump($data['operador']);die;
+//        echo "<pre>";
+//        var_dump($data['operadores']);die;
 //        $data['caixa'] = $this->caixa->listarsangriacaixa();
 //        $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarforma();

@@ -1,4 +1,5 @@
 <div class="content"> <!-- Inicio da DIV content -->
+    <? $perfil_id = $this->session->userdata('perfil_id'); ?>
     <div class="bt_link_new">
         <a onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
             Novo Medico
@@ -21,7 +22,7 @@
                     <tr>
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">CRM</th>
-                        <th class="tabela_header">&nbsp;</th>
+                        <th class="tabela_header" colspan="2">&nbsp;</th>
                     </tr>
                 </thead>
                 <?php
@@ -44,9 +45,19 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conselho; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="140px;">
-
-                                    <a href="<?= base_url() ?>seguranca/operador/alterarrecepcao/<?= $item->operador_id ?>">Editar                                    </a>
-                            </td>
+                                    <a href="<?= base_url() ?>seguranca/operador/alterarrecepcao/<?= $item->operador_id ?>">Editar</a>
+                                </td>
+                                
+                                <? if ($perfil_id == 1) { 
+                                    if($item->operador_id != 1 ){?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="140px;">
+                                        <a  style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente excluir o solicitante: <?= $item->nome; ?>');"
+                                            href="<?= base_url() ?>seguranca/operador/excluirmedicosolicitante/<?= $item->operador_id ?>">Excluir</a>
+                                    </td>
+                                    <?} else{ ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="140px;"></td>
+                                <? } 
+                                }?>
                         </tr>
 
                         </tbody>

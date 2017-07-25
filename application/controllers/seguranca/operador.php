@@ -63,6 +63,11 @@ class Operador extends BaseController {
         $this->loadView('seguranca/operador-formrecepcao');
     }
 
+    function excluirmedicosolicitante($operador_id) {
+        
+        redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
+    }
+
     function alterarrecepcao($operador_id) {
         $obj_operador_id = new operador_model($operador_id);
         $data['obj'] = $obj_operador_id;
