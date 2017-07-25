@@ -265,6 +265,7 @@ class pacientes extends BaseController {
         $data['consultasanteriores'] = $this->exametemp->listarconsultaanterior($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaragendaspacienteatendimento($paciente_id);
+        $data['grupos'] = $this->procedimento->listargruposatendimento();
         $this->loadView('ambulatorio/procedimentoautorizaratendimento-form', $data);
     }
 

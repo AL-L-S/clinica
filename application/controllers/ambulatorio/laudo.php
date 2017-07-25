@@ -656,9 +656,16 @@ class Laudo extends BaseController {
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////       
         elseif ($data['empresa'][0]->impressao_laudo == 11) {//CLINICA MAIS
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td><img align = 'left'  width='300px' height='90px' src='img/logomais.png'></td></tr><tr><td>&nbsp;</td></tr><tr><td><b>NOME:" . $data['laudo']['0']->paciente . "</b><br><b>EXAME: " . $data['laudo']['0']->procedimento . "</b><br><b>DATA: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</b></td></tr><tr><td>&nbsp;</td></tr></table><br><table style='width:100%;'><tr><td align=center style='witdh=100%;'><b>LAUDO</b></td></tr></table> ";
-            
-            $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'center'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table><img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+//            var_dump( $data['laudo']['0']->carimbo); die;
+            $cabecalho = "<table><tr><td><img align = 'left'  width='300px' height='90px' src='img/logomais.png'></td></tr><tr><td>&nbsp;</td></tr><tr><td><b>NOME:" . $data['laudo']['0']->paciente . "<b><br>EXAME: " . $data['laudo']['0']->cabecalho . "<br><b>DATA: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</b></td></tr><tr><td>&nbsp;</td></tr></table> <table  width='100%' style='width:100%; text-align:center;'><tr><td><b>LAUDO</b></td></tr></table>";
+            if ($data['laudo']['0']->situacao == "DIGITANDO") {
+                $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt; text-align:center;'><tr><td>" . $data['laudo']['0']->carimbo . "</td></tr>
+            <tr><td><center></td></tr></table><img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+
+            } elseif($data['laudo']['0']->situacao == "FINALIZADO") {
+//                echo $data['laudo']['0']->carimbo;
+            $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table><img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+            }
             $html = $this->load->view('ambulatorio/impressaolaudo_1pacajus', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
             $this->load->View('ambulatorio/impressaolaudo_1pacajus', $data);
@@ -2519,12 +2526,12 @@ class Laudo extends BaseController {
     function gravaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id) {
 
         $this->laudo->gravaranaminese($ambulatorio_laudo_id, $exame_id);
-        
+
         $servicoemail = $this->session->userdata('servicoemail');
         if ($servicoemail == 't') {
-            
+
             $dados = $this->laudo->listardadoservicoemail($ambulatorio_laudo_id, $exame_id);
-            if($dados['enviado'] != 't'){
+            if ($dados['enviado'] != 't') {
                 $this->load->library('My_phpmailer');
                 $mail = new PHPMailer(true);
 
@@ -2555,18 +2562,18 @@ class Laudo extends BaseController {
                 $mail->Subject = $dados['razaoSocial'] . " agradece sua presença.";
                 $mail->Body = $dados['mensagem'];
 
-    //                $mail->AddAttachment("./upload/nfe/$solicitacao_cliente_id/validada/" . $notafiscal[0]->chave_nfe . '-danfe.pdf', $notafiscal[0]->chave_nfe . '-danfe.pdf');
+                //                $mail->AddAttachment("./upload/nfe/$solicitacao_cliente_id/validada/" . $notafiscal[0]->chave_nfe . '-danfe.pdf', $notafiscal[0]->chave_nfe . '-danfe.pdf');
 
                 if (!$mail->Send()) {
                     $mensagem = "Erro: " . $mail->ErrorInfo;
                 } else {
                     $mensagem = "Email enviado com sucesso!";
                 }
-                
+
                 $this->laudo->setaemailparaenviado($ambulatorio_laudo_id);
             }
         }
-        
+
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['paciente_id'] = $paciente_id;

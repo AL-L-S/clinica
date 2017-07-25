@@ -72,6 +72,7 @@
                             <thead>
 
                                 <tr>
+                                    <th class="tabela_header">Sala</th>
                                     <th class="tabela_header">Qtde</th>
                                     <th class="tabela_header">Convenio</th>
                                     <th class="tabela_header">Procedimento</th>
@@ -87,6 +88,17 @@
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td  width="50px;"> 
+                                        <select  name="sala1" id="sala1" class="size1" required="">
+                                            <option value="">Selecione</option>
+                                            <? foreach ($salas as $item) : ?>
+                                                <option value="<?= $item->exame_sala_id; ?>"<?
+                                                if ($sala == $item->nome):echo 'selected';
+                                                endif;
+                                                ?>><?= $item->nome; ?></option>
+                                                    <? endforeach; ?>
+                                        </select>
+                                    </td>
                                     <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" onchange="alteraQuantidade()" class="texto00" required/></td>
                                     <td  width="50px;">
                                         <select  name="convenio1" id="convenio1" class="size1" required>
@@ -102,7 +114,7 @@
                                         </select>
                                     </td>
                                     <td > 
-                                        <select  name="medicoagenda" id="medicoagenda" class="size2" required>
+                                        <select  name="medicoagenda" id="medicoagenda" class="size1" required>
                                             <option value="">Selecione</option>
                                             <? foreach ($medicos as $item) : ?>
                                                 <option value="<?= $item->operador_id; ?>"<?
@@ -111,7 +123,7 @@
                                                 ?>><?= $item->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select></td>
-                                    <td><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size2"  required=""/></td>
+                                    <td><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="texto02"  required=""/></td>
                                     <td><input type="text" name="data" id="data" value="" class="size1"  required=""/></td>
                             <input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/>
 
@@ -121,7 +133,7 @@
                                 <input type="hidden" name="valortot" id="valortot" class="texto01" readonly=""/>
                             </td>
                             <td>
-                                <select  name="txtempresa" id="empresa" class="size06" required>
+                                <select  name="txtempresa" id="empresa" class="size1" required>
                                     <? foreach ($empresa as $item) : ?>
                                         <option value="<?= $item->empresa_id; ?>" <?
                                         if ($empresa_id == $item->empresa_id):echo 'selected';

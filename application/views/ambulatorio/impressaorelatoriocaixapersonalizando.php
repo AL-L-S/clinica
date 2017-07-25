@@ -94,7 +94,11 @@
             $caixaDesconto[$item_resumo->nome] = 0;
             $caixaParcela[$item_resumo->nome] = 0;
         }
-
+        
+//        foreach ($relatorioprocedimentos as $item) {
+//            
+//        }
+        
         if (count($relatorioprocedimentos) > 0) {
             foreach ($operadores as $opItem) {
 
@@ -141,6 +145,7 @@
 
                         foreach ($relatorioprocedimentos as $item) {
                             $t++;
+                            
                             if ($opItem->operador_id == $item->operador_faturamento) {
                                 /* CABECALHO */
                                 if ($primeiro) {
@@ -234,78 +239,78 @@
                                     <td style="text-align: left; color: <?= $cor ?>; font-weight: <?= $weigth ?>;"><?= $item->procedimento; ?></td>
                                     <td style="text-align: left; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= $item->convenio; ?></td>
                                     <td style="text-align: right; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= $item->quantidade; ?></td>
-                <?
-                if ($valTotal != 0) {
-                    $perc = ((int) $item->quantidade * (float) $item->valor_total);
-                } else {
-                    $perc = 0;
-                }
+                                    <?
+                                    if ($valTotal != 0) {
+                                        $perc = ((int) $item->quantidade * (float) $item->valor_total);
+                                    } else {
+                                        $perc = 0;
+                                    }
 
-                foreach ($formapagamento as $value5) {
-                    if ($item->desconto != '0.00') {
-                        $desconto[$value5->nome] = $desconto[$value5->nome] + (float) $item->desconto;
-                        $descontoResumo[$value5->nome] += (float) $item->desconto;
-                        $caixaDesconto[$value5->nome] += (float) $item->desconto;
-                    } else {
-//                                            $d = $item->valor - $item->valor_total;
-//                                            $desconto[$value5->nome] = $desconto[$value5->nome] + $d;
-                    }
+                                    foreach ($formapagamento as $value5) {
+                                        if ($item->desconto != '0.00') {
+                                            $desconto[$value5->nome] = $desconto[$value5->nome] + (float) $item->desconto;
+                                            $descontoResumo[$value5->nome] += (float) $item->desconto;
+                                            $caixaDesconto[$value5->nome] += (float) $item->desconto;
+                                        } else {
+                    //                                            $d = $item->valor - $item->valor_total;
+                    //                                            $desconto[$value5->nome] = $desconto[$value5->nome] + $d;
+                                        }
 
-                    if ($item->forma_pagamento == $value5->nome) {
-                        $data[$value5->nome] = $data[$value5->nome] + $item->valor1;
-                        if ($item->valor1 != 0 && isset($item->valor1)) {
-                            $parcela[$value5->nome] = $item->parcelas1;
-                        }
-                        //Resumo do operador
-                        $numeroOperador[$value5->nome] ++;
-                        $caixaNumero[$value5->nome] ++;
+                                        if ($item->forma_pagamento == $value5->nome) {
+                                            $data[$value5->nome] = $data[$value5->nome] + $item->valor1;
+                                            if ($item->valor1 != 0 && isset($item->valor1)) {
+                                                $parcela[$value5->nome] = $item->parcelas1;
+                                            }
+                                            //Resumo do operador
+                                            $numeroOperador[$value5->nome] ++;
+                                            $caixaNumero[$value5->nome] ++;
 
-                        $numero[$value5->nome] ++;
-                    }
-                    if ($item->forma_pagamento_2 == $value5->nome) {
-                        $data[$value5->nome] = $data[$value5->nome] + $item->valor2;
-                        $numero[$value5->nome] ++;
-                        if ($item->valor2 != 0 && isset($item->valor2)) {
-                            $parcela[$value5->nome] = $item->parcelas2;
-                        }
-                        //Resumo do operador
-                        $numeroOperador[$value5->nome] ++;
-                        $caixaNumero[$value5->nome] ++;
-                    }
-                    if ($item->forma_pagamento_3 == $value5->nome) {
-                        $data[$value5->nome] = $data[$value5->nome] + $item->valor3;
-                        $numero[$value5->nome] ++;
-                        if ($item->valor3 != 0 && isset($item->valor3)) {
-                            $parcela[$value5->nome] = $item->parcelas3;
-                        }
-                        //Resumo do operador
-                        $numeroOperador[$value5->nome] ++;
-                        $caixaNumero[$value5->nome] ++;
-                    }
-                    if ($item->forma_pagamento_4 == $value5->nome) {
-                        $data[$value5->nome] = $data[$value5->nome] + $item->valor4;
-                        $numero[$value5->nome] ++;
-                        if ($item->valor4 != 0 && isset($item->valor4)) {
-                            $parcela[$value5->nome] = $item->parcelas4;
-                        }
-                        //Resumo do operador
-                        $numeroOperador[$value5->nome] ++;
-                        $caixaNumero[$value5->nome] ++;
-                    }
-                }
+                                            $numero[$value5->nome] ++;
+                                        }
+                                        if ($item->forma_pagamento_2 == $value5->nome) {
+                                            $data[$value5->nome] = $data[$value5->nome] + $item->valor2;
+                                            $numero[$value5->nome] ++;
+                                            if ($item->valor2 != 0 && isset($item->valor2)) {
+                                                $parcela[$value5->nome] = $item->parcelas2;
+                                            }
+                                            //Resumo do operador
+                                            $numeroOperador[$value5->nome] ++;
+                                            $caixaNumero[$value5->nome] ++;
+                                        }
+                                        if ($item->forma_pagamento_3 == $value5->nome) {
+                                            $data[$value5->nome] = $data[$value5->nome] + $item->valor3;
+                                            $numero[$value5->nome] ++;
+                                            if ($item->valor3 != 0 && isset($item->valor3)) {
+                                                $parcela[$value5->nome] = $item->parcelas3;
+                                            }
+                                            //Resumo do operador
+                                            $numeroOperador[$value5->nome] ++;
+                                            $caixaNumero[$value5->nome] ++;
+                                        }
+                                        if ($item->forma_pagamento_4 == $value5->nome) {
+                                            $data[$value5->nome] = $data[$value5->nome] + $item->valor4;
+                                            $numero[$value5->nome] ++;
+                                            if ($item->valor4 != 0 && isset($item->valor4)) {
+                                                $parcela[$value5->nome] = $item->parcelas4;
+                                            }
+                                            //Resumo do operador
+                                            $numeroOperador[$value5->nome] ++;
+                                            $caixaNumero[$value5->nome] ++;
+                                        }
+                                    }
 
-                if ($item->forma_pagamento == "") {
-                    $OUTROS = $OUTROS + $item->valor_total;
-                    $NUMEROOUTROS++;
-                }
-                if ($item->faturado == 'f') {
-                    $pendentes ++;
-                }
-                $valor = 0;
-                $valor = $valor + $item->valor_total;
-                $y = 0;
-                $y++;
-                ?>
+                                    if ($item->forma_pagamento == "") {
+                                        $OUTROS = $OUTROS + $item->valor_total;
+                                        $NUMEROOUTROS++;
+                                    }
+                                    if ($item->faturado == 'f') {
+                                        $pendentes ++;
+                                    }
+                                    $valor = 0;
+                                    $valor = $valor + $item->valor_total;
+                                    $y = 0;
+                                    $y++;
+                                    ?>
                                     <td style="text-align: right; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= number_format($perc, 2, ',', '.'); ?></td>
                                 </tr>
                                 <!-- FIM DO CORPO -->

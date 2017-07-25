@@ -362,3 +362,29 @@ ALTER TABLE ponto.tb_empresa_email_verificacao ADD COLUMN empresa_id integer;
 ALTER TABLE ponto.tb_empresa ALTER COLUMN email_mensagem_confirmacao TYPE text;
 ALTER TABLE ponto.tb_empresa ALTER COLUMN email_mensagem_agradecimento TYPE text;
 ALTER TABLE ponto.tb_empresa ADD COLUMN email_mensagem_falta text;
+
+-- Dia 18/07/2017
+ 
+ALTER TABLE ponto.tb_entradas ADD COLUMN empresa_id integer;
+ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN empresa_id integer;
+ALTER TABLE ponto.tb_financeiro_contasreceber ADD COLUMN empresa_id integer;
+ALTER TABLE ponto.tb_saidas ADD COLUMN empresa_id integer;
+ALTER TABLE ponto.tb_saldo ADD COLUMN empresa_id integer;
+
+ALTER TABLE ponto.tb_exame_sala ADD COLUMN painel_id integer;
+
+
+-- 25/07/2017
+
+CREATE TABLE ponto.tb_exame_sala_grupo
+(
+  exame_sala_grupo_id serial NOT NULL,
+  exame_sala_id integer,
+  grupo character varying(100),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_exame_sala_grupo_pkey PRIMARY KEY (exame_sala_grupo_id)
+);

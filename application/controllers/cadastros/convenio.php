@@ -17,6 +17,7 @@ class Convenio extends BaseController {
         parent::Controller();
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('cadastro/paciente_model', 'paciente');
+        $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('cadastro/grupoconvenio_model', 'grupoconvenio');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->library('mensagem');
@@ -44,6 +45,7 @@ class Convenio extends BaseController {
 
     function copiar($convenio_id) {
         $data['convenio'] = $this->convenio->listardados();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $data['convenioid'] = $convenio_id;
         $this->loadView('cadastros/copiarconvenio-form', $data);
     }

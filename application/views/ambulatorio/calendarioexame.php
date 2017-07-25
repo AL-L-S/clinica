@@ -58,7 +58,7 @@
 
 
 
-       <table>
+    <table>
         <thead>
             <tr>
                 <th >        
@@ -78,14 +78,14 @@
                 <th >                
                     <div class="bt_link_new">
                         <form method="get" name="graficos" action="<?= base_url() ?>ambulatorio/exametemp/mostrargraficosexames" target="_blank">
-                            <input type="hidden" name="empresa" value="<?=@$_GET['empresa']?>"/>
-                            <input type="hidden" name="especialidade" value="<?=@$_GET['especialidade']?>"/>
-                            <input type="hidden" name="medico" value="<?=@$_GET['medico']?>"/>
-                            <input type="hidden" name="sala" value="<?=@$_GET['sala']?>"/>
-                            <input type="hidden" name="situacao" value="<?=@$_GET['situacao']?>"/>
-                            <input type="hidden" name="data" value="<?=@$_GET['data']?>"/>
-                            <input type="hidden" name="nome" value="<?=@$_GET['nome']?>"/>
-                            <input type="hidden" name="nascimento" value="<?=@$_GET['nascimento']?>"/>
+                            <input type="hidden" name="empresa" value="<?= @$_GET['empresa'] ?>"/>
+                            <input type="hidden" name="especialidade" value="<?= @$_GET['especialidade'] ?>"/>
+                            <input type="hidden" name="medico" value="<?= @$_GET['medico'] ?>"/>
+                            <input type="hidden" name="sala" value="<?= @$_GET['sala'] ?>"/>
+                            <input type="hidden" name="situacao" value="<?= @$_GET['situacao'] ?>"/>
+                            <input type="hidden" name="data" value="<?= @$_GET['data'] ?>"/>
+                            <input type="hidden" name="nome" value="<?= @$_GET['nome'] ?>"/>
+                            <input type="hidden" name="nascimento" value="<?= @$_GET['nascimento'] ?>"/>
                             <a onclick="document.graficos.submit()">
                                 Graficos
                             </a>
@@ -98,7 +98,7 @@
     </table>
     <div id="accordion">
         <h3 class="singular">Multifuncao Exame Recep&ccedil;&atilde;o</h3>
- 
+
         <div>
             <?
             $medicos = $this->operador_m->listarmedicos();
@@ -231,6 +231,7 @@
                         </th>
                         <th colspan="2" class="tabela_title">
                             <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                            <input type="hidden" name="data" id="data" class="texto04 bestupper" value="<?php echo date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))); ?>" />
                         </th>
 
 
@@ -435,7 +436,7 @@
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -499,7 +500,7 @@
                     <tr>
                         <th class="tabela_footer" colspan="14">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            <!-- Total de registros: <?php // echo $total . " - Vago: " . $l . " - Marcado: " . $p;           ?> -->
+                            <!-- Total de registros: <?php // echo $total . " - Vago: " . $l . " - Marcado: " . $p;              ?> -->
                         </th>
                     </tr>
                 </tfoot>
@@ -517,7 +518,9 @@ if (@$_GET['data'] != '') {
     $data = date("Y-m-d", strtotime(str_replace('/', '-', $_GET['data'])));
 } else {
     $data = date('Y-m-d');
+    
 }
+//var_dump($data); die;
 ?>
 <script>
 //alert($('#medico').val());
@@ -530,18 +533,29 @@ if (@$_GET['data'] != '') {
 //    function date() {
 
 
-    $('#calendar').fullCalendar({
+  var $calendar =  $('#calendar').fullCalendar({
         header: {
             left: 'prev,next',
             center: 'title',
             right: 'today'
         },
-        height: 450,
-        theme: true,
+        aspectRatio:1.10,
+        height: 300,
+//        theme: true,
+        dayRender: function (date, cell) {
+            var data_escolhida = $('#data').val();
+            var today = moment(new Date()).format('YYYY-MM-DD');
+            var check = moment(date).format('YYYY-MM-DD');
+//            alert(data_escolhida);
+//            var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
+            if (data_escolhida == check && data_escolhida != today) {
+                cell.css("background-color", "#BCD2EE");
+            }
+        },
         dayClick: function (date) {
             var data = date.format();
 
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=' + $('#empresa').val() + '&sala=' + $('#sala').val() + '&especialidade=' + $('#especialidade').val() + '&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=' + $('#empresa').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=' + $('#especialidade').val() + '&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');
 
 
 
@@ -571,6 +585,7 @@ if (@$_GET['data'] != '') {
                     medico: $('#medico').val(),
                     especialidade: $('#especialidade').val(),
                     sala: $('#sala').val(),
+                    grupo: $('#grupo').val(),
                     empresa: $('#empresa').val()
                 },
                 error: function () {
@@ -585,7 +600,7 @@ if (@$_GET['data'] != '') {
     });
 
 
-
+//$('#calendar').fullCalendar('option', 'aspectRatio', 1.8);
     $(function () {
         $('#especialidade').change(function () {
 
@@ -595,7 +610,7 @@ if (@$_GET['data'] != '') {
                 $('.carregando').show();
 //                                                        alert('teste_parada');
                 $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">TODOS</option>';
+                    options = '<option value=""></option>';
 //                    alert(j);
 
                     for (var c = 0; c < j.length; c++) {
@@ -616,7 +631,7 @@ if (@$_GET['data'] != '') {
                 $('.carregando').show();
 //                                                        alert('teste_parada');
                 $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">TODOS</option>';
+                    options = '<option value=""></option>';
 
                     for (var c = 0; c < j.length; c++) {
 
@@ -645,7 +660,7 @@ if (@$_GET['data'] != '') {
             $('.carregando').show();
 //                                                        alert('teste_parada');
             $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $(this).val(), ajax: true}, function (j) {
-                options = '<option value="">TODOS</option>';
+                options = '<option value=""></option>';
 //                    alert(j);
 
                 for (var c = 0; c < j.length; c++) {
@@ -670,7 +685,7 @@ if (@$_GET['data'] != '') {
             $('.carregando').show();
 //                                                        alert('teste_parada');
             $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $(this).val(), ajax: true}, function (j) {
-                options = '<option value="">TODOS</option>';
+                options = '<option value=""></option>';
 //                    alert(j);
 
                 for (var c = 0; c < j.length; c++) {
@@ -690,7 +705,7 @@ if (@$_GET['data'] != '') {
     if ($('#especialidade').val()) {
         $('.carregando').show();
         $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
-            options = '<option value="">TODOS</option>';
+            options = '<option value=""></option>';
             console.log(j);
 
             for (var c = 0; c < j.length; c++) {
@@ -720,7 +735,7 @@ if (@$_GET['data'] != '') {
         $('.carregando').show();
 //                                                        alert('teste_parada');
         $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $('#grupo').val(), ajax: true}, function (j) {
-            options = '<option value="">TODOS</option>';
+            options = '<option value=""></option>';
 //                    alert(j);
             var empresa_atual = <?= $empresa_atual ?>;
             for (var c = 0; c < j.length; c++) {
@@ -745,16 +760,16 @@ if (@$_GET['data'] != '') {
         $('.carregando').show();
 //                                                        alert('teste_parada');
         $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), ajax: true}, function (j) {
-            options = '<option value="">TODOS</option>';
+            options = '<option value=""></option>';
 //                    alert(j);
             var sala_atual = <?= $sala_atual ?>;
             for (var c = 0; c < j.length; c++) {
-                if(sala_atual ==  j[c].exame_sala_id){
+                if (sala_atual == j[c].exame_sala_id) {
                     options += '<option selected value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                }else{
+                } else {
                     options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
                 }
-                
+
             }
             $('#sala').html(options).show();
             $('.carregando').hide();

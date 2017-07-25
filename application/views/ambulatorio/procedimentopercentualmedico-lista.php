@@ -1,10 +1,23 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
-    <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualmedico">
-            Novo Procedimento
-        </a>
-    </div>
+    <table>
+        <tr>
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualmedico">
+                        Novo Procedimento
+                    </a>
+                </div>
+            </td>
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/replicarpercentualmedico">
+                        Replicar Percentual
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento Honor&aacute;rios M&eacute;dicos</a></h3>
         <div>

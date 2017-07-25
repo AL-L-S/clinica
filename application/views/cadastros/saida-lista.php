@@ -44,7 +44,7 @@
                         <th class="tabela_title">Data Fim</th>
                         <th class="tabela_title">Tipo</th>
                         <th class="tabela_title">Classe</th>
-                        <th class="tabela_title">Empresa</th>
+                        <th class="tabela_title">Credor/Devedor</th>
                         <th class="tabela_title">Observacao</th>
                     </tr>
 

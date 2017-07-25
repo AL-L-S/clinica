@@ -256,6 +256,7 @@
 
                         <th colspan="2" class="tabela_title">
                             <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                            <input type="hidden" name="data" id="data" class="texto04 bestupper" value="<?php echo date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))); ?>" />
                         </th>
                         <th colspan="3" class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -434,7 +435,7 @@
                                     <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
                                     <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
                                 <? } ?>
-                                <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
+                            <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
@@ -447,11 +448,11 @@
                                         }
                                     }
                                     ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><?= substr( $item->sala, 0,5)  . " - " ?><a style='color:black;cursor: pointer;' onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;cursor: pointer;'" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendamedicocurriculo/<?= $item->medico_agenda; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"> <?= substr($item->medicoagenda, 0, 5) ?>(...) </a></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><?= substr($item->sala, 0, 5) . " - " ?><a style='color:black;cursor: pointer;' onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;cursor: pointer;'" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendamedicocurriculo/<?= $item->medico_agenda; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"> <?= substr($item->medicoagenda, 0, 5) ?>(...) </a></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="250px;"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
-                               <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes ; ?>" style="color:red; cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                width=500,height=230');">=><?=  substr($item->observacoes, 0,5) ; ?>(...)</td>
+                                <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style="color:red; cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
+                                                                                                                        width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -565,8 +566,18 @@ if (@$_GET['data'] != '') {
             center: 'title',
             right: 'today'
         },
-        height: 450,
-        theme: true,
+        height: 300,
+//        theme: true,
+        dayRender: function (date, cell) {
+            var data_escolhida = $('#data').val();
+            var today = moment(new Date()).format('YYYY-MM-DD');
+            var check = moment(date).format('YYYY-MM-DD');
+//            alert(data_escolhida);
+//            var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
+            if (data_escolhida == check && data_escolhida != today) {
+                cell.css("background-color", "#BCD2EE");
+            }
+        },
         dayClick: function (date) {
             var data = date.format();
             window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoespecialidadecalendario?empresa=' + $('#empresa').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');

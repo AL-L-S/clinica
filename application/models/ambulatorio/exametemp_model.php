@@ -179,7 +179,7 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarhorarioscalendarioexame($medico = null, $especialidade = null, $empresa_id = null, $sala_id = null) {
+    function listarhorarioscalendarioexame($medico = null, $especialidade = null, $empresa_id = null, $sala_id = null, $grupo = null) {
         $data = date('Y-m-d');
         $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
         $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
@@ -193,6 +193,7 @@ class exametemp_model extends Model {
         }
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
         $this->db->where("ae.tipo IN ('EXAME')");
         $this->db->where("ae.data is not null");
@@ -206,6 +207,9 @@ class exametemp_model extends Model {
         $this->db->where("ae.data <", $data_futuro);
         if ($sala_id != '') {
             $this->db->where("ae.agenda_exames_nome_id", $sala_id);
+        }
+        if ($grupo != '') {
+            $this->db->where("es.grupo", $grupo);
         }
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);

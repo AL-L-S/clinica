@@ -149,6 +149,7 @@
                         </th>
                         <th colspan="2" class="tabela_title">
                             <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                            <input type="hidden" name="data" id="data" class="texto04 bestupper" value="<?php echo date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))); ?>" />
                         </th>
 
 
@@ -329,7 +330,7 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"> Bloqueado</td>
                                     <td class="<?php echo $estilo_linha; ?>"></td>
                                 <? } ?>
-                                <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
+                            <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
@@ -346,20 +347,20 @@
                                 </td>
 
                                 <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
-                                <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?=substr( $item->sala, 0,5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</b></td>
+                                    <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= substr($item->sala, 0, 5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</b></td>
                                 <? } else { ?>
-                                    <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><?=substr( $item->sala, 0,5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</td>
+                                    <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><?= substr($item->sala, 0, 5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</td>
 
                                 <? } ?>                                
 
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
 
-                             <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' . $item->procedimento; ?></td>-->
+                                     <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' . $item->procedimento; ?></td>-->
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes ; ?>" style="color:red; cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                width=500,height=230');">=><?=  substr($item->observacoes, 0,5) ; ?>(...)</td>
+                                <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style="color:red; cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
+                                                                                                                        width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -380,7 +381,7 @@
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $item->paciente_id ?>/<?= $faltou; ?>');">Consultas
                                             </a></div>
                                     </td>
-                                <?
+                                    <?
                                 } elseif ($item->bloqueado == 't') {
 //            die;
                                     ?>
@@ -394,7 +395,7 @@
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
                                                 </a></div>
                                         </td>
-            <? } else { ?>
+                                    <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;" colspan="2"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
                                                 </a></div>
@@ -405,7 +406,7 @@
                                     ?>
                                     <? if ($item->telefonema == 't') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><font color="green"title="<?= $item->telefonema_operador; ?>" ><b>Confirmado</b></td>
-            <? } else { ?>
+                                    <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/telefonema/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Confirma
                                                 </a></div>
@@ -425,7 +426,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="14">
-<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total . " - Vago: " . $l . " - Marcado: " . $p; ?>
                         </th>
                     </tr>
@@ -463,8 +464,18 @@ if (@$_GET['data'] != '') {
             center: 'title',
             right: 'today'
         },
-        height: 400,
-        theme: true,
+        height: 300,
+//        theme: true,
+        dayRender: function (date, cell) {
+            var data_escolhida = $('#data').val();
+            var today = moment(new Date()).format('YYYY-MM-DD');
+            var check = moment(date).format('YYYY-MM-DD');
+//            alert(data_escolhida);
+//            var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
+            if (data_escolhida == check && data_escolhida != today) {
+                cell.css("background-color", "#BCD2EE");
+            }
+        },
         dayClick: function (date) {
             var data = date.format();
 

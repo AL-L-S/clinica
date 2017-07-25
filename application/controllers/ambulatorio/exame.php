@@ -678,6 +678,7 @@ class Exame extends BaseController {
 //        var_dump($_POST); die;
 
         $data['paciente_id'] = $paciente_id;
+        $data['salas'] = $this->guia->listarsalas();
         $data['convenios'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->login->listar();
@@ -695,10 +696,18 @@ class Exame extends BaseController {
         } else {
             $ambulatorio_guia = $resultadoguia[0]->ambulatorio_guia_id;
         }
-//            var_dump($ambulatorio_guia); die;
+        
+        $procedimentopercentual = $_POST['procedimento1'];
+        $medicopercentual = $_POST['medicoagenda'];
+        $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+        if (count($percentual) == 0) {
+            $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+        }
+        
+//        var_dump($percentual); die;
 
-        $this->exame->gravarexamesfaturamentomanual($ambulatorio_guia);
-//        var_dump($ambulatorio_guia); die;
+        $this->exame->gravarexamesfaturamentomanual($ambulatorio_guia, $percentual);
+        
         redirect(base_url() . "ambulatorio/exame/faturarguiamanual/$paciente_id");
     }
 

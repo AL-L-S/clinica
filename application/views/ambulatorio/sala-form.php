@@ -49,25 +49,45 @@
 
                         </select>
                     </dd>
-                    <dt>
+<!--                    <dt>
                         <label>Grupo</label>
                     </dt>
                     <dd>
                         <select name="grupo" id="grupo" class="size2" >
                             <option value='' >Selecione</option>
-                            <? foreach ($grupos as $grupo) { ?>                                
+                            <? // foreach ($grupos as $grupo) { ?>                                
                                 <option value='<?= $grupo->nome ?>' <?
-                                if (@$obj->_grupo == $grupo->nome):echo 'selected';
-                                endif;
+//                                if (@$obj->_grupo == $grupo->nome):echo 'selected';
+//                                endif;
                                 ?>><?= $grupo->nome ?></option>
-                                    <? } ?>
+                                    <? // } ?>
+                        </select>
+                    </dd>-->
+                    <dt>
+                        <label>Painel</label>
+                    </dt>
+                    <dd>
+                        <select name="painel_id" id="painel_id" class="size2" required>
+                            <option value='' >Selecione</option>
+                            <? for ($i = 1; $i <= 10; $i++){?>
+                            <option <?
+                            if($obj->_painel_id == $i){
+                                echo 'selected';
+                            }
+                            ?> value='<?=$i?>' ><?=$i?></option>
+                                
+                            <?}
+                            
+                            
+                            ?>
+                            
                         </select>
                     </dd>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>
-                <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
+                <!--<button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>-->
             </form>
         </div>
     </div>
@@ -75,9 +95,9 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $('#btnVoltar').click(function () {
-        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-    });
+//    $('#btnVoltar').click(function () {
+//        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+//    });
 
     $(function () {
         $("#accordion").accordion();

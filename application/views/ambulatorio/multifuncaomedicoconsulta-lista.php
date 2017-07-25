@@ -155,7 +155,7 @@
                         $lista = $this->exame->listarmultifuncao2consulta($_GET)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         $operador_id = $this->session->userdata('operador_id');
-                        echo '<pre>';
+//                        echo '<pre>';
 
 
                         foreach ($lista as $item) {

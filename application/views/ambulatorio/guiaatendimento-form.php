@@ -85,6 +85,7 @@
                                 <th class="tabela_header">Qtde*</th>
                                 <th colspan="2" class="tabela_header">Solicitante</th>
                                 <th class="tabela_header">Convenio*</th>
+                                <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
@@ -113,7 +114,8 @@
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
                                             <option value="<?= $item->operador_id; ?>"<?
-                                            if ($medico == $item->nome):echo 'selected';
+                                            $lastMed = (count($exames) > 0) ? $exames[count($exames) - 1]->medico_agenda_id : '';
+                                            if ($lastMed == $item->operador_id):echo 'selected';
                                             endif;
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
@@ -121,12 +123,27 @@
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
                                 <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
+                                
                                 <td  width="50px;">
                                     <select name="convenio1" id="convenio1" class="size1" required="">
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
-
+                                
+                                <td  width="50px;">
+                                    <select  name="grupo1" id="grupo1" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <?
+                                        $lastGrupo = @$exames[count(@$exames) - 1]->grupo;
+                                        foreach ($grupos as $item) :
+                                            ?>
+                                            <option value="<?= $item->nome; ?>" <? if ($lastGrupo == $item->nome) echo 'selected'; ?>>
+                                                <?= $item->nome; ?>
+                                            </option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                
                                 <td  width="50px;">
                                     <select  name="procedimento1" id="procedimento1" class="size1" required="" >
                                         <option value="">Selecione</option>
@@ -331,9 +348,11 @@
 
                                                             </a></div>
                                                     </td>
-                                                <? } else{
+                                                <?
+                                                } else {
                                                     $faturado++;
-                                                } ?>
+                                                }
+                                                ?>
                                             </tr>
                                         </tbody>
                                         <?
@@ -352,13 +371,14 @@
 
                                     <? if ($perfil_id != 11) { ?>
 
-                                        <? if ($perfil_id == 1 || $faturado == 0) { ?>
+            <? if ($perfil_id == 1 || $faturado == 0) { ?>
                                             <th colspan="2" align="center"><center><div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
                                             </a></div></center></th>
-                                <? }
-                            } ?>
+            <? }
+        }
+        ?>
                             </tr>
                             </tfoot>
                         </table> 
@@ -380,9 +400,9 @@
 <script type="text/javascript">
 
 
-<?php // if ($this->session->flashdata('message') != ''): ?>
-//                                    alert("<? // echo $this->session->flashdata('message') ?>");
-<? // endif; ?>
+<?php // if ($this->session->flashdata('message') != ''):  ?>
+//                                    alert("<? // echo $this->session->flashdata('message')  ?>");
+<? // endif;  ?>
 
                                 $(function () {
                                     $("#data").datepicker({
@@ -400,7 +420,45 @@
                                     $("#accordion").accordion();
                                 });
 
+                                if($("#exame").val()){
+                                    var convenio = <?= @$exames[count(@$exames) - 1]->convenio_id ?>;
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $("#exame").val(), ajax: true}, function (j) {
+                                        var options = '<option value=""></option>';
+                                        for (var i = 0; i < j.length; i++) {
+                                            var select = (convenio == j[i].convenio_id) ? " selected " : "";
+                                            options += '<option value="' + j[i].convenio_id + '" '+ select + '>' + j[i].nome + '</option>';
+                                        }
+                                        $('#convenio1').html(options).show();
+                                        $('.carregando').hide();
+                                        
+                                        if( $('#grupo1').val() && select != ""){
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $('#grupo1').val(), convenio1: convenio}, function (j) {
+                                                options = '<option value=""></option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                }
+                                                $('#procedimento1').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                        }
+                                    });
+                                }
 
+                                $(function () {
+                                    $('#grupo1').change(function () {
+                                        if ($('#convenio1').val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                options = '<option value=""></option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                }
+                                                $('#procedimento1').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                        }
+                                    });
+                                });
 
                                 $(function () {
                                     $("#medico1").autocomplete({
@@ -449,6 +507,19 @@
                                                 $('#procedimento1').html(options).show();
                                                 $('.carregando').hide();
                                             });
+                                            
+                                            if($("#grupo1").val()){
+                                                
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                    }
+                                                    $('#procedimento1').html(options).show();
+                                                    $('.carregando').hide();
+                                                });
+                                            }
+                                            
                                         } else {
                                             $('#procedimento1').html('<option value="">Selecione</option>');
                                         }
