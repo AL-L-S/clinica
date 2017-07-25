@@ -66,7 +66,7 @@ $agenda = $exame[0]->agenda;
             <td ><font >DATA: <?= substr($exame[0]->data, 8, 2) . "/" . substr($exame[0]->data, 5, 2) . "/" . substr($exame[0]->data, 0, 4); ?> HORA: <?= substr($dataatualizacao, 10, 6); ?></font></td>
         </tr>-->
         <tr>
-            <!--<td ><font >Paciente: <?= $paciente['0']->nome; ?></font></td>-->
+            <td ><font >Paciente: <?= $paciente['0']->nome; ?></font></td>
         </tr>
         <tr>
             <td >D/N: <?= date("d/m/Y", strtotime(str_replace("/", "-", $paciente['0']->nascimento))); ?></td>

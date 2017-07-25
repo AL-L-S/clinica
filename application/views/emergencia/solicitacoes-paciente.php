@@ -45,7 +45,7 @@
 
                         <td width="80px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/novoatendimento/<?= $paciente_id ?>">Novo Atendimento</a></div></td>
                     <? } ?>
-                        <td ><div style="width:80px; text-align: center;" class="bt_linkm botao_pequeno"><a class="botao_pequeno" href="<?= base_url() ?>ambulatorio/guia/pesquisar/<?= $args['paciente'] ?>">Guias</a></div></td>
+                    <td ><div style="width:80px; text-align: center;" class="bt_linkm botao_pequeno"><a class="botao_pequeno" href="<?= base_url() ?>ambulatorio/guia/pesquisar/<?= $args['paciente'] ?>">Guias</a></div></td>
                 </tr>
                 <tr>
                     <? if ($imagem == 't') { ?>
@@ -82,8 +82,6 @@
                 </tr>
                 <tr>
                     <? if ($imagem == 't') { ?>
-
-
                         <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/acompanhamento/<?= $paciente_id ?>">Acompanhamento</a></div></td>
                     <? } ?>
                     <? if ($consulta == 't') { ?>
@@ -96,10 +94,10 @@
                         <td width="250px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exame/autorizarsessaofisioterapia/<?= $paciente_id ?>">Sessao Especialidade</a></div></td>
                     <? } ?>
                     <td width="250px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/orcamento/<?= $paciente_id ?>">Or&ccedil;amento</a></div></td>
-                    <? if ($imagem == 't') { ?>
 
-
-                        <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacientetemp/<?= $paciente_id ?>">Exames</a></div></td>
+                    <? if ($perfil_id == 1) {
+                        ?>
+                        <td width="100px;"><div class="bt_link_new botao_pequeno"><a style="width:80px; text-align: center;" href="<?= base_url() ?>ambulatorio/exametemp/excluirpaciente/<?= $paciente_id ?>">Excluir</a></div></td>
                     <? } ?>
 
 <!--                    <td width="250px;"><div class="bt_link"><a href="<?= base_url() ?>emergencia/filaacolhimento/gravarsolicitacao/<?= $paciente_id ?>">Acolhimento</a></div></td>
@@ -110,20 +108,23 @@
                 </tr>
 
                 <tr>
-                    <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>cadastros/pacientes/anexarimagem/<?= $paciente_id ?>">Arquivos</a></div></td>
+                    <? if ($imagem == 't') { ?>
+
+
+                        <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacientetemp/<?= $paciente_id ?>">Exames</a></div></td>
+                    <? } ?>
+
                     <? if ($consulta == 't') { ?>
 
 
                         <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $paciente_id ?>">Consultas</a></div></td>
                     <? } ?>
+                    <td width="100px;"><div class="bt_link_new"><a  href="<?= base_url() ?>ambulatorio/exametemp/listarcredito/<?= $paciente_id ?>">Credito</a></div></td>
                     <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>cadastros/pacientes/cancelamento/<?= $paciente_id ?>" target="_blank">Cancelamentos</a></div></td>
-                    
 
-                    <? if ($perfil_id == 1) {
-                        ?>
-                        <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exametemp/excluirpaciente/<?= $paciente_id ?>">Excluir</a></div></td>
-                    <? } ?>
-                    <td width="100px;"><div class="bt_linkm"><a href="<?= base_url() ?>ambulatorio/exametemp/listarcredito/<?= $paciente_id ?>">Credito</a></div></td>
+
+                    <td width="100px;"><div class="bt_link_new"  style="width:80px; text-align: center;"><a  style="width:80px; text-align: center;" href="<?= base_url() ?>cadastros/pacientes/anexarimagem/<?= $paciente_id ?>">Arquivos</a></div></td>
+
 
                 </tr>
 

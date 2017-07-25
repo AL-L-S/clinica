@@ -1801,7 +1801,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -1822,7 +1822,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -1843,7 +1843,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -1864,7 +1864,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -1885,7 +1885,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -1906,7 +1906,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -1927,7 +1927,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('agenda_exames_nome_id', $_POST['sala']);
@@ -1973,7 +1973,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -1994,7 +1994,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -2015,7 +2015,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -2036,7 +2036,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -2057,7 +2057,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -2078,7 +2078,7 @@ class agenda_model extends Model {
                         }
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -2098,7 +2098,7 @@ class agenda_model extends Model {
                         $this->db->set('bloqueado', 't');
                         $this->db->set('operador_medico_agenda', $operador_id);
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('paciente_id is null');
@@ -2141,7 +2141,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('medico_consulta_id', $_POST['medico']);
@@ -2157,7 +2157,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('medico_consulta_id', $_POST['medico']);
@@ -2173,7 +2173,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('medico_consulta_id', $_POST['medico']);
@@ -2189,7 +2189,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('medico_consulta_id', $_POST['medico']);
@@ -2205,7 +2205,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('medico_consulta_id', $_POST['medico']);
@@ -2221,7 +2221,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('medico_consulta_id', $_POST['medico']);
@@ -2237,7 +2237,7 @@ class agenda_model extends Model {
 
                         $this->db->where('paciente_id is null');
                         $this->db->where('data', $index);
-                        $this->db->where('tipo', 'FISIOTERAPIA');
+                        $this->db->where("(tipo = 'FISIOTERAPIA' OR tipo = 'ESPECIALIDADE')");
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
                         $this->db->where('medico_consulta_id', $_POST['medico']);
