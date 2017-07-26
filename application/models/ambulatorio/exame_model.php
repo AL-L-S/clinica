@@ -31,6 +31,20 @@ class exame_model extends Model {
         }
         return $this->db;
     }
+    
+    function listaragendacriada($horario_id) {
+        $this->db->select('distinct(horarioagenda_id),
+                            nome');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where('horarioagenda_id', $horario_id);
+//        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+//            $this->db->where('nome ilike', $args['nome'] . "%");
+//        }
+        $this->db->groupby('horarioagenda_id, nome');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
 
     function listarautocompletepaciente($parametro = null) {
         $this->db->select('paciente_id,

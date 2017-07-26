@@ -39,6 +39,7 @@ class Agenda extends BaseController {
     function listarhorarioagenda($agenda) {
         $data['agenda'] = $agenda;
         $data['lista'] = $this->agenda->listarhorarioagenda($agenda);
+        $data['lista_agenda'] = $this->exame->listaragendacriada($agenda);
         
         $this->loadView('ambulatorio/horarioagenda-lista', $data);
     }
