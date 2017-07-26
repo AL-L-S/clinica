@@ -25,7 +25,8 @@
     <?
     $classe = $this->classe->listarclasse();
     $saldo = $this->caixa->saldo();
-    $empresa = $this->caixa->empresa();
+    $credores = $this->caixa->empresa();
+    $empresas = $this->exame->listarempresas();
     $conta = $this->forma->listarforma();
     $tipo = $this->tipo->listartipo();
     
@@ -104,11 +105,22 @@
                         <th class="tabela_title">
                             <select name="empresa" id="empresa" class="size1">
                                 <option value="">TODOS</option>
-                                <? foreach ($empresa as $value) : ?>
+                                <? foreach ($credores as $value) : ?>
                                     <option value="<?= $value->financeiro_credor_devedor_id; ?>" <?
                                     if (@$_GET['empresa'] == $value->financeiro_credor_devedor_id):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->razao_social; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+                        </th>
+                        <th class="tabela_title">
+                            <select name="txtempresa" id="txtempresa" class="size1">
+                                <option value="">TODOS</option>
+                                <? foreach ($empresas as $value) : ?>
+                                    <option value="<?= $value->empresa_id; ?>" <?
+                                    if (@$_GET['txtempresa'] == $value->empresa_id):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
                                         <? endforeach; ?>
                             </select>
                         </th>

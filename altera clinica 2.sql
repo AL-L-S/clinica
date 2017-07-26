@@ -388,3 +388,11 @@ CREATE TABLE ponto.tb_exame_sala_grupo
   operador_atualizacao integer,
   CONSTRAINT tb_exame_sala_grupo_pkey PRIMARY KEY (exame_sala_grupo_id)
 );
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN botao_faturar_guia boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN botao_faturar_procedimento boolean DEFAULT true;
+ALTER TABLE ponto.tb_operador ADD COLUMN solicitante boolean DEFAULT false;
+
+UPDATE ponto.tb_operador
+   SET solicitante='t'
+ WHERE email IS NULL and ativo = 't';

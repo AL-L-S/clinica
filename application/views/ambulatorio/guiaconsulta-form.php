@@ -12,6 +12,10 @@
     <div >
         <?
         $perfil_id = $this->session->userdata('perfil_id');
+        
+        $botao_faturar_guia = $this->session->userdata('botao_faturar_guia');
+        $botao_faturar_proc = $this->session->userdata('botao_faturar_proc');
+        
         $sala = "";
         $ordenador1 = "";
         $sala_id = "";
@@ -227,6 +231,7 @@
                                         <th class="tabela_header">Sala</th>
                                         <th class="tabela_header">Valor</th>
                                         <th class="tabela_header">Exame</th>
+                                        <th class="tabela_header" colspan="2">Descricao</th>
                                         <th colspan="3" class="tabela_header">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -250,27 +255,30 @@
                                             <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                             <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                             <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
                                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
 
                                                     </a></div>
-                                            </td>
-                                            <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                            <!--</td>-->
+                                            <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                                     </a></div>
                                             </td>
+                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                             <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
                                                 <? if ($perfil_id != 11) { ?>
-                                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                                    <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
 
                                                             </a></div>
-                                                    </td>
                                                     <?
                                                 } else {
                                                     $faturado++;
                                                 }
                                                 ?>
+                                            </td>
                                             <? } ?>
                                         </tr>
                                     </tbody>
@@ -284,13 +292,15 @@
                                         </th>
                                         <? if ($perfil_id != 11) { ?>
 
-                                            <? if ($perfil_id == 1 || $faturado == 0) { ?>
+                                            <? if ($perfil_id == 1 || $faturado == 0) { 
+                                                 if ($botao_faturar_guia == 't') { ?>
                                                 <th colspan="2" align="center"><center><div class="bt_linkf">
                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
 
                                                 </a></div></center></th>
-                                    <? } ?>
-                                <? } ?>
+                                        <? } 
+                                     } 
+                                 } ?>
                                 </tr>
                                 </tfoot>
                             </table> 
@@ -309,6 +319,7 @@
                                     <th class="tabela_header">Sala</th>
                                     <th class="tabela_header">Valor</th>
                                     <th class="tabela_header">Exame</th>
+                                        <th class="tabela_header" colspan="2">Descricao</th>
                                     <th colspan="4" class="tabela_header">&nbsp;</th>
                                 </tr>
                             </thead>
@@ -335,26 +346,27 @@
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                                <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
 
                                                         </a></div>
-                                                </td>
-                                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                                    <div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                                         </a></div>
                                                 </td>
-                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-                                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+                                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                                    <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+                                                        <div class="bt_link">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
-                                                            </a></div>
-                                                    </td>
-                                                    <?
-                                                } else {
-                                                    $faturado++;
-                                                }
-                                                ?>
+                                                                </a></div>
+                                                        <?
+                                                    } else {
+                                                        $faturado++;
+                                                    }
+                                                    ?>
+                                                </td>
                                             </tr>
                                         </tbody>
                                         <?
@@ -367,20 +379,25 @@
                             ?>
                             <tfoot>
                                 <tr>
-                                    <th class="tabela_footer" colspan="4">
+                                    <th class="tabela_footer" colspan="6">
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
                                     <? if ($perfil_id == 1 || $faturado == 0) { ?>
                                         <th colspan="4">
-                                            <div class="bt_linkf">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
+                                            <? if ($botao_faturar_guia == 't') { ?>
+                                                <div class="bt_linkf">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
 
-                                                </a></div>
-                                            <div class="bt_linkf">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+                                                    </a>
+                                                </div>
+                                            <? }
+                                            if ($botao_faturar_proc == 't') { ?>
+                                                <div class="bt_linkf">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 
-                                                </a>
-                                            </div>
+                                                    </a>
+                                                </div>
+                                            <? } ?>
                                         </th>
 
                                     </tr>

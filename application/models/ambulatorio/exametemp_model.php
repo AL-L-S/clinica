@@ -1151,6 +1151,7 @@ class exametemp_model extends Model {
                             ae.ordenador,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
+                            pt.descricao_procedimento,
                             pp.grupo_pagamento_id');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -1256,6 +1257,7 @@ class exametemp_model extends Model {
                             c.dinheiro,
                             c.nome as convenio,
                             pt.codigo,
+                            pt.descricao_procedimento,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento');

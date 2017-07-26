@@ -65,6 +65,8 @@
                         <?php
                     }
                     ?>
+                    
+                    <input type="checkbox" name="txtsolicitante" <?if (@$obj->_solicitante == "t") echo 'checked'?> />Médico Solicitante
                 </div>
             </fieldset>
             <fieldset>

@@ -39,6 +39,7 @@ class Operador_model extends BaseModel {
     var $_cbo_ocupacao_id = null;
     var $_logradouro = null;
     var $_carimbo = null;
+    var $_solicitante = null;
 
     function Operador_model($operador_id = null) {
         parent::Model();
@@ -84,12 +85,11 @@ class Operador_model extends BaseModel {
         $this->db->select('operador_id, nome, conselho');
         $this->db->from('tb_operador');
         $this->db->where('medico', 'true');
+        $this->db->where('solicitante', 'true');
 
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
-                // $this->db->like('tb_operador.nome', $args['nome'], 'left');
-                $this->db->where('tb_operador.nome ilike', "%" . $args['nome'] . "%");
-                $this->db->orwhere('tb_operador.usuario ilike', "%" . $args['nome'] . "%");
+                $this->db->where("(tb_operador.nome ilike '%" . $args['nome'] . "%' OR tb_operador.usuario ilike '%" . $args['nome'] . "%')");
             }
         }
         return $this->db;
@@ -590,6 +590,13 @@ class Operador_model extends BaseModel {
                 $this->db->set('consulta', 'f');
                 $this->db->set('medico', 'f');
             }
+            
+            if ( isset($_POST['txtsolicitante']) ) {
+                $this->db->set('solicitante', 't');
+            } else{
+                $this->db->set('solicitante', 'f');
+            }
+            
             if ($_POST['txtcboID'] != "") {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
             }
@@ -665,6 +672,7 @@ class Operador_model extends BaseModel {
     function gravarrecepcao() {
         try {
             if ($_POST['criarcredor'] == "on") {
+                
                 $this->db->set('razao_social', $_POST['nome']);
                 $this->db->set('cep', $_POST['cep']);
                 if ($_POST['cpf'] != '') {
@@ -690,6 +698,7 @@ class Operador_model extends BaseModel {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $financeiro_credor_devedor_id = $this->db->insert_id();
+                
             }
 
             /* inicia o mapeamento no banco */
@@ -706,6 +715,7 @@ class Operador_model extends BaseModel {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
             }
             $this->db->set('medico', 't');
+            $this->db->set('solicitante', 't');
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -928,6 +938,7 @@ class Operador_model extends BaseModel {
                                 o.valor_base,
                                 o.cep,
                                 o.cbo_ocupacao_id,
+                                o.solicitante,
                                 m.nome as cidade_nome,
                                 c.descricao as cbo_nome,
                                 o.carimbo');
@@ -976,6 +987,7 @@ class Operador_model extends BaseModel {
             $this->_valor_base = $return[0]->valor_base;
             $this->_carimbo = $return[0]->carimbo;
             $this->_curriculo = $return[0]->curriculo;
+            $this->_solicitante = $return[0]->solicitante;
         }
     }
 

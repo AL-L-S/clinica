@@ -219,6 +219,20 @@
                         <dd>
                             <input type="checkbox" id="calendario" name="calendario" <? if (@$obj->_calendario == 't') echo "checked"; ?>/> 
                         </dd>
+                        
+                        <dt>
+                            <label title="Aparecer o botão de faturar procedimento no cadastro.">Botão Faturar Procedimentos</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="calendario" name="botao_faturar_proc" <? if (@$obj->_botao_faturar_proc == 't') echo "checked"; ?>/> 
+                        </dd>
+                        
+                        <dt>
+                            <label title="Aparecer  o botão de faturar guia no cadastro.">Botão Faturar Guia</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="calendario" name="botao_faturar_guia" <? if (@$obj->_botao_faturar_guia == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

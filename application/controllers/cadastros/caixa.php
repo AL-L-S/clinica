@@ -22,6 +22,7 @@ class Caixa extends BaseController {
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('seguranca/operador_model', 'operador');
         $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');

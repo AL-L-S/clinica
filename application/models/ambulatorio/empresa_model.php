@@ -19,6 +19,8 @@ class empresa_model extends Model {
     var $_servicoemail = null;
     var $_servicosms = null;
     var $_cnes = null;
+    var $_botao_faturar_guia = null;
+    var $_botao_faturar_proc = null;
 
     function Empresa_model($exame_empresa_id = null) {
         parent::Model();
@@ -502,6 +504,16 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('calendario', 'f');
             }
+            if (isset($_POST['botao_faturar_guia'])) {
+                $this->db->set('botao_faturar_guia', 't');
+            } else {
+                $this->db->set('botao_faturar_guia', 'f');
+            }
+            if (isset($_POST['botao_faturar_proc'])) {
+                $this->db->set('botao_faturar_procedimento', 't');
+            } else {
+                $this->db->set('botao_faturar_procedimento', 'f');
+            }
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -567,7 +579,9 @@ class empresa_model extends Model {
                                calendario,
                                servicosms,
                                servicoemail,
-                               chat');
+                               chat,
+                               botao_faturar_guia,
+                               botao_faturar_procedimento');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->where("empresa_id", $empresa_id);
@@ -610,6 +624,8 @@ class empresa_model extends Model {
             $this->_impressao_declaracao = $return[0]->impressao_declaracao;
             $this->_impressao_recibo = $return[0]->impressao_recibo;
             $this->_calendario = $return[0]->calendario;
+            $this->_botao_faturar_guia = $return[0]->botao_faturar_guia;
+            $this->_botao_faturar_proc = $return[0]->botao_faturar_procedimento;
         } else {
             $this->_empresa_id = null;
         }

@@ -50,6 +50,8 @@ class login_model extends Model {
             $laboratorio = $retorno[0]->laboratorio;
             $ponto = $retorno[0]->ponto;
             $calendario = $retorno[0]->calendario;
+            $botao_faturar_guia = $retorno[0]->botao_faturar_guia;
+            $botao_faturar_proc = $retorno[0]->botao_faturar_procedimento;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -95,6 +97,8 @@ class login_model extends Model {
                 'servicosms' => $servicosms,
                 'servicoemail' => $servicoemail,
                 "verificandoMensagens" => false,
+                'botao_faturar_guia' => $botao_faturar_guia,
+                'botao_faturar_proc' => $botao_faturar_proc,
                 'empresa_id' => $empresa,
                 'empresa' => $empresanome
             );
