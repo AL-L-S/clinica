@@ -44,7 +44,7 @@ class caixa_model extends Model {
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = e.classe', 'left');
         $this->db->where('e.ativo', 'true');
         $empresa_id = $this->session->userdata('empresa_id');
-//        $this->db->where("empresa_id", $empresa_id);
+        $this->db->where('empresa_id', $empresa_id);
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('e.nome', $args['empresa']);
         }
@@ -102,7 +102,7 @@ class caixa_model extends Model {
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
                 $empresa_id = $this->session->userdata('empresa_id');
-//        $this->db->where("empresa_id", $empresa_id);
+        $this->db->where('empresa_id', $empresa_id);
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('s.nome', $args['empresa']);
         }
@@ -602,10 +602,12 @@ class caixa_model extends Model {
     }
 
     function listarsomaconta($forma_entradas_saida_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('sum(valor) as total');
         $this->db->from('tb_saldo');
         $this->db->where('ativo', 'true');
         $this->db->where('conta', $forma_entradas_saida_id);
+        $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -670,7 +672,7 @@ class caixa_model extends Model {
             $datainicio = $ano . '-' . $mes . '-' . $dia;
             $this->db->set('data', $_POST['inicio']);
             $this->db->set('tipo', $tipo);
-            $this->db->set("empresa_id", $empresa_id);
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('nome', $_POST['devedor']);
             $this->db->set('conta', $_POST['conta']);
@@ -690,7 +692,7 @@ class caixa_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio']))));
             $this->db->set('operador_cadastro', $operador_id);
-            $this->db->set("empresa_id", $empresa_id);
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->insert('tb_saldo');
 
             return $entradas_id;
@@ -746,7 +748,7 @@ class caixa_model extends Model {
                 $this->db->set('saida_id', $saida_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('data', $_POST['inicio']);
-                $this->db->set("empresa_id", $empresa_id);
+                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_saldo');
             }else {
@@ -957,10 +959,11 @@ class caixa_model extends Model {
     }
 
     function saldo() {
-
+        $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('sum(valor)');
         $this->db->from('tb_saldo');
         $this->db->where('ativo', 'true');
+        $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
     }

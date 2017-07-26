@@ -51,7 +51,7 @@ class contaspagar_model extends Model {
         $this->db->join('tb_financeiro_credor_devedor cd', 'cd.financeiro_credor_devedor_id = fc.credor', 'left');
 //        $this->db->join('tb_financeiro_classe f', 'f.descricao = fc.classe', 'left');
         $empresa_id = $this->session->userdata('empresa_id');
-//        $this->db->where("empresa_id", $empresa_id);
+        $this->db->where('empresa_id', $empresa_id);
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('fc.credor', $args['empresa']);
         }

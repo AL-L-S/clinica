@@ -22,6 +22,18 @@ class tipoconsulta_model extends Model {
         }
         return $this->db;
     }
+    
+    function listarcalendario($args = array()) {
+        $this->db->select('ambulatorio_tipo_consulta_id,
+                            descricao');
+        $this->db->from('tb_ambulatorio_tipo_consulta');
+        $this->db->where('ativo', 'true');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('descricao ilike', "%" . $args['nome'] . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listartodos() {
         $this->db->select('ambulatorio_tipo_consulta_id,

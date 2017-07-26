@@ -388,3 +388,54 @@ CREATE TABLE ponto.tb_exame_sala_grupo
   operador_atualizacao integer,
   CONSTRAINT tb_exame_sala_grupo_pkey PRIMARY KEY (exame_sala_grupo_id)
 );
+
+
+-- 26/07/2017
+
+
+
+UPDATE ponto.tb_entradas
+   SET  empresa_id=empresa.empresa_id
+   FROM (SELECT empresa_id
+  FROM ponto.tb_empresa
+  ORDER BY empresa_id ASC
+  LIMIT 1
+) as empresa;
+
+
+
+UPDATE ponto.tb_financeiro_contaspagar
+   SET  empresa_id=empresa.empresa_id
+   FROM (SELECT empresa_id
+  FROM ponto.tb_empresa
+  ORDER BY empresa_id ASC
+  LIMIT 1
+) as empresa;
+
+
+UPDATE ponto.tb_financeiro_contasreceber
+   SET  empresa_id=empresa.empresa_id
+   FROM (SELECT empresa_id
+  FROM ponto.tb_empresa
+  ORDER BY empresa_id ASC
+  LIMIT 1
+) as empresa;
+
+
+UPDATE ponto.tb_saidas
+   SET  empresa_id=empresa.empresa_id
+   FROM (SELECT empresa_id
+  FROM ponto.tb_empresa
+  ORDER BY empresa_id ASC
+  LIMIT 1
+) as empresa;
+
+
+UPDATE ponto.tb_saldo
+   SET  empresa_id=empresa.empresa_id
+   FROM (SELECT empresa_id
+  FROM ponto.tb_empresa
+  ORDER BY empresa_id ASC
+  LIMIT 1
+) as empresa;
+   
