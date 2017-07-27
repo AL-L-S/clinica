@@ -5298,6 +5298,8 @@ class exametemp_model extends Model {
         $this->db->set('agrupador_fisioterapia', null);
         $this->db->set('numero_sessao', null);
         $this->db->set('qtde_sessao', null);
+        $this->db->set('realizada', 'f');
+        $this->db->set('confirmado', 'f');
 //        $this->db->set('medico_consulta_id', null);
 //        $this->db->set('medico_agenda', null);
         $this->db->set('ativo', 't');

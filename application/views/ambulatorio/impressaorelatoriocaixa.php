@@ -118,7 +118,7 @@
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= $item->guia_id . " " . $item->agenda_exames_id; ?></td>
+                                    <td><font size="-2"><?= $item->guia_id?></td>
                                     <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
                                         <? if ($item->verificado == 't') {
                                             ?>&Sqrt;<? }
