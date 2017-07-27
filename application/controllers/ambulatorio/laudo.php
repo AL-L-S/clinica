@@ -2450,7 +2450,7 @@ class Laudo extends BaseController {
             //$validar = $this->laudo->validar();
 
             if ($validar == '1') {
-                $gravar = $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id);
+                $gravar = $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id, $procedimento_tuss_id);
                 if ($gravar == 0) {
                     $this->gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id);
                 }
@@ -2461,11 +2461,11 @@ class Laudo extends BaseController {
                     $this->email($_POST['laudo'], $email_paciente);
                 }
             } else {
-                $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id);
+                $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
                 $messagem = 1;
             }
         } else {
-            $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id);
+            $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
         }
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
@@ -2525,7 +2525,7 @@ class Laudo extends BaseController {
 
     function gravaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id) {
 
-        $this->laudo->gravaranaminese($ambulatorio_laudo_id, $exame_id);
+        $this->laudo->gravaranaminese($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
 
         $servicoemail = $this->session->userdata('servicoemail');
         if ($servicoemail == 't') {
@@ -2726,14 +2726,14 @@ class Laudo extends BaseController {
         if ($_POST['situacao'] == 'FINALIZADO') {
             $validar = $this->laudo->validar();
             if ($validar == '1') {
-                $this->laudo->gravarlaudo($ambulatorio_laudo_id);
+                $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id);
                 $messagem = 2;
             } else {
-                $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id);
+                $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
                 $messagem = 1;
             }
         } else {
-            $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id);
+            $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
         }
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;

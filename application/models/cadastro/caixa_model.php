@@ -44,7 +44,7 @@ class caixa_model extends Model {
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = e.classe', 'left');
         $this->db->where('e.ativo', 'true');
         $empresa_id = $this->session->userdata('empresa_id');
-//        $this->db->where("empresa_id", $empresa_id);
+        $this->db->where("empresa_id", $empresa_id);
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
             $this->db->where('e.empresa_id', $args['txtempresa']);
         }
@@ -104,8 +104,8 @@ class caixa_model extends Model {
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
-//        $this->db->where("empresa_id", $empresa_id);
         $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->where("empresa_id", $empresa_id);
         $this->db->where('empresa_id', $empresa_id);
         
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {

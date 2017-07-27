@@ -75,6 +75,7 @@
             $especialidade = $this->exame->listarespecialidade();
             $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
+            $tipo_consulta = $this->tipoconsulta->listarcalendario();
             ?>
             <table>
                 <thead>
@@ -82,7 +83,7 @@
 
                     <tr>
                         <th class="tabela_title">Empresa</th>
-                        <th class="tabela_title">Especialidade</th>
+                        <th class="tabela_title">Tipo Agenda</th>
                         <th class="tabela_title">Medico</th>
                         <th class="tabela_title">Nome</th>
                     </tr>
@@ -110,12 +111,12 @@
 
                         </th>
                         <th class="tabela_title">
-                            <select name="especialidade" id="especialidade" class="size2">
+                            <select name="tipoagenda" id="tipoagenda" class="size2">
                                 <option value=""></option>
                                 <option value="">TODOS</option>
-                                <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->cbo_ocupacao_id; ?>" <?
-                                    if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
+                                <? foreach ($tipo_consulta as $value) : ?>
+                                    <option value="<?= $value->ambulatorio_tipo_consulta_id; ?>" <?
+                                    if (@$_GET['tipoagenda'] == $value->ambulatorio_tipo_consulta_id):echo 'selected';
                                     endif;
                                     ?>>
                                                 <?
@@ -330,7 +331,7 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"> Bloqueado</td>
                                     <td class="<?php echo $estilo_linha; ?>"></td>
                                 <? } ?>
-                            <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
+                    <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
@@ -356,11 +357,11 @@
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
 
-                                     <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' . $item->procedimento; ?></td>-->
+                                                     <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . ' - ' . $item->procedimento; ?></td>-->
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style="color:red; cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                        width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
+                                                                                                                                        width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -446,9 +447,13 @@ if (@$_GET['data'] != '') {
 } else {
     $data = date('Y-m-d');
 }
+if (@$_GET['nome'] != '') {
+    $nome = $_GET['nome'];
+} else {
+    $nome = "";
+}
 ?>
 <script>
-//alert($('#medico').val());
     $(function () {
         $("#accordion").accordion();
     });
@@ -457,7 +462,11 @@ if (@$_GET['data'] != '') {
 
 //    function date() {
 
-
+    if ($('#nome').val() != '') {
+        var paciente = '<?=$nome?>';
+    } else {
+        var paciente = '';
+    }
     $('#calendar').fullCalendar({
         header: {
             left: 'prev,next',
@@ -479,7 +488,7 @@ if (@$_GET['data'] != '') {
         dayClick: function (date) {
             var data = date.format();
 
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsultacalendario?empresa=&especialidade=&medico=&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsultacalendario?empresa=&especialidade=&medico=&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente +  '', '_self');
 
 
 
@@ -507,8 +516,9 @@ if (@$_GET['data'] != '') {
                 type: 'POST',
                 data: {
                     medico: $('#medico').val(),
-                    especialidade: $('#especialidade').val(),
-                    empresa: $('#empresa').val()
+                    tipoagenda: $('#tipoagenda').val(),
+                    empresa: $('#empresa').val(),
+                    paciente: paciente
                 },
                 error: function () {
 //                    alert('Houve !');
@@ -522,107 +532,6 @@ if (@$_GET['data'] != '') {
 
     });
 
-//    }
-
-
-//    $(document).ready(function () {
-
-
-
-//            $.getJSON("<?= base_url() ?>autocomplete/listarhorarioscalendario", json);
-//            function json(data) {
-
-
-//            }
-
-//    });
-//    $('#medico').change(function () {
-//        document.getElementById('form').submit();
-//    });
-//    $('#especialidade').change(function () {
-//        document.getElementById('form').submit();
-//    });
-
-    $(function () {
-        $('#especialidade').change(function () {
-
-            if ($(this).val()) {
-
-//                                                  alert('teste_parada');
-                $('.carregando').show();
-//                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">TODOS</option>';
-                    console.log(j);
-
-                    for (var c = 0; c < j.length; c++) {
-
-
-                        if (j[0].operador_id != undefined) {
-                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                        }
-                    }
-                    $('#medico').html(options).show();
-                    $('.carregando').hide();
-
-
-
-                });
-            } else {
-                $('.carregando').show();
-//                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">TODOS</option>';
-                    console.log(j);
-
-                    for (var c = 0; c < j.length; c++) {
-
-
-                        if (j[0].operador_id != undefined) {
-                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                        }
-                    }
-                    $('#medico').html(options).show();
-                    $('.carregando').hide();
-
-
-
-                });
-
-            }
-        });
-    });
-
-
-    if ($('#especialidade').val()) {
-
-//                                                  alert('teste_parada');
-        $('.carregando').show();
-//                                                        alert('teste_parada');
-        $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
-            options = '<option value="">TODOS</option>';
-            console.log(j);
-
-            for (var c = 0; c < j.length; c++) {
-
-
-                if (j[0].operador_id != undefined) {
-                    options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                }
-            }
-            $('#medico').html(options).show();
-            $('.carregando').hide();
-
-
-
-        });
-    } else {
-
-
-    }
 </script>
 
 

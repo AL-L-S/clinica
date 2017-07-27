@@ -427,8 +427,8 @@ class Autocomplete extends Controller {
 
     function listarhorarioscalendarioconsulta() {
 //            echo $_POST['custom_param1'];
-        if (isset($_POST['medico']) || isset($_POST['especialidade']) || isset($_POST['empresa'])) {
-            $result = $this->exametemp->listarhorarioscalendarioconsulta($_POST['medico'], $_POST['especialidade'], $_POST['empresa']);
+        if (isset($_POST['medico']) || isset($_POST['tipoagenda']) || isset($_POST['empresa'])) {
+            $result = $this->exametemp->listarhorarioscalendarioconsulta($_POST['medico'], $_POST['tipoagenda'], $_POST['empresa']);
         } else {
             $result = $this->exametemp->listarhorarioscalendarioconsulta();
         }
@@ -459,11 +459,16 @@ class Autocomplete extends Controller {
             } else {
                 $medico = null;
             }
-            if ($_POST['especialidade']) {
-                $especialidade = $_POST['especialidade'];
+            if ($_POST['tipoagenda']) {
+                $tipoagenda = $_POST['tipoagenda'];
             } else {
-                $especialidade = null;
+                $tipoagenda = null;
             }
+//            if ($_POST['paciente'] != '') {
+//                $nome = $_POST['paciente'];
+//            } else {
+//                $nome = null;
+//            }
 
             $dia = date("d", strtotime($item->data));
             $mes = date("m", strtotime($item->data));
@@ -471,7 +476,7 @@ class Autocomplete extends Controller {
 
 //            $medico = $item->medico;
 
-            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoconsultacalendario?empresa=&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
+            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoconsultacalendario?empresa=&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
 
 
             $var[] = $retorno;
