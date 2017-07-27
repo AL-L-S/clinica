@@ -2650,7 +2650,7 @@ class Guia extends BaseController {
         } else {
             $data['mensagem'] = 'Insira um periodo válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
+            redirect(base_url() . "/ambulatorio/guia/relatorioperfilpaciente");
         }
     }
 
