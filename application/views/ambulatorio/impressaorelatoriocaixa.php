@@ -118,7 +118,7 @@
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= $item->guia_id; ?></td>
+                                    <td><font size="-2"><?= $item->guia_id?></td>
                                     <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
                                         <? if ($item->verificado == 't') {
                                             ?>&Sqrt;<? }
@@ -1090,6 +1090,7 @@
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
                 <input type="hidden" class="texto3" name="grupo" value="<?= $grupo; ?>"/>
+                <!--<input type="hidden" class="texto3" name="empresa" value="<?= $grupo; ?>"/>-->
                 <? if (count($empresa) > 0) { ?>
                     <input type="hidden" class="texto3" name="empresa" value="<?= $empresa[0]->empresa_id; ?>"/>
                 <? } ?>

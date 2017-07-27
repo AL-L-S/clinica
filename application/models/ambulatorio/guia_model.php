@@ -238,6 +238,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function impressaoguiaconsultaspsadt($guia_id) {
 
         $this->db->select('ae.agenda_exames_id,
@@ -2078,7 +2079,7 @@ class guia_model extends Model {
         if ($_POST['plano'] != "0") {
             $this->db->where("p.convenio_id", $_POST['plano']);
         }
-        
+
 //        $this->db->where("ae.cancelada", 'f');
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
@@ -2087,7 +2088,7 @@ class guia_model extends Model {
         $this->db->orderby('p.sexo');
         $this->db->orderby('p.estado_civil_id');
         $return = $this->db->get();
-        
+
         return $return->result();
     }
 
@@ -5623,6 +5624,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function listargrupoficha($guia_id) {
 
         $this->db->select('distinct(pt.grupo), c.nome as convenio');
@@ -7845,6 +7847,8 @@ AND data <= '$data_fim'";
 //        try {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
+        $empresa_id = $_POST['empresa'];
+//        var_dump($empresa_id); die;
         $operador_id = $this->session->userdata('operador_id');
         $data_cauculo = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
         $data_inicio = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data1'])));
@@ -7873,7 +7877,7 @@ AND data <= '$data_fim'";
 
         $teste = $_POST['qtde'];
         foreach ($forma_pagamento as $value) {
-            
+
             $classe = "CAIXA" . " " . $value->nome;
 
             foreach ($teste as $j => $t) {
@@ -7900,6 +7904,7 @@ AND data <= '$data_fim'";
                     $this->db->set('conta', $value->conta_id);
                     $this->db->set('observacao', $observacao);
                     $this->db->set('data_cadastro', $horario);
+                    $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_entradas');
                     $entradas_id = $this->db->insert_id();
@@ -7910,6 +7915,7 @@ AND data <= '$data_fim'";
                     $this->db->set('entrada_id', $entradas_id);
                     $this->db->set('conta', $value->conta_id);
                     $this->db->set('nome', $value->credor_devedor);
+                    $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_saldo');
@@ -8008,6 +8014,8 @@ AND data <= '$data_fim'";
                             $this->db->set('observacao', $receber_temp2[0]->observacao);
                             $this->db->set('data_cadastro', $receber_temp2[0]->data_cadastro);
                             $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
+                            $this->db->set('empresa_id', $empresa_id);
+//                            var_dump($empresa_id); die;
                             $this->db->insert('tb_financeiro_contasreceber');
                         }
                         $this->db->set('ativo', 'f');
@@ -8091,6 +8099,8 @@ AND data <= '$data_fim'";
                                 $this->db->set('conta', $receber_temp2[0]->conta);
                                 $this->db->set('observacao', $receber_temp2[0]->observacao);
                                 $this->db->set('data_cadastro', $receber_temp2[0]->data_cadastro);
+                                $this->db->set('empresa_id', $empresa_id);
+//                                                            var_dump($empresa_id); die;
                                 $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                                 $this->db->insert('tb_financeiro_contasreceber');
                             }
