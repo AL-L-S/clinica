@@ -7,7 +7,8 @@
     </div>
     <?
     $classe = $this->classe->listarclasse();
-    $empresa = $this->caixa->empresa();
+    $credores = $this->caixa->empresa();
+    $empresas = $this->exame->listarempresas();
     $saldo = $this->caixa->saldo();
     $conta = $this->forma->listarforma();
     $tipo = $this->tipo->listartipo();
@@ -26,6 +27,7 @@
                         <th class="tabela_title">Data Fim</th>
                         <th class="tabela_title">Tipo</th>
                         <th class="tabela_title">Classe</th>
+                        <th class="tabela_title">Credor/Devedor</th>
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Observacao</th>
                     </tr>
@@ -85,11 +87,23 @@
                         <th class="tabela_title">
                             <select name="empresa" id="empresa" class="size2">
                                 <option value="">TODOS</option>
-                                <? foreach ($empresa as $value) : ?>
+                                <? foreach ($credores as $value) : ?>
                                     <option value="<?= $value->financeiro_credor_devedor_id; ?>" <?
                                     if (@$_GET['empresa'] == $value->financeiro_credor_devedor_id):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->razao_social; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+                        </th>
+                        
+                        <th class="tabela_title">
+                            <select name="txtempresa" id="txtempresa" class="size1">
+                                <option value="">TODOS</option>
+                                <? foreach ($empresas as $value) : ?>
+                                    <option value="<?= $value->empresa_id; ?>" <?
+                                    if (@$_GET['txtempresa'] == $value->empresa_id):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
                                         <? endforeach; ?>
                             </select>
                         </th>

@@ -104,7 +104,7 @@ class caixa_model extends Model {
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
-                $empresa_id = $this->session->userdata('empresa_id');
+        $empresa_id = $this->session->userdata('empresa_id');
 //        $this->db->where("empresa_id", $empresa_id);
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('s.nome', $args['empresa']);
@@ -207,6 +207,10 @@ class caixa_model extends Model {
 //        if ($_POST['tipo'] != 0) {
 //            $this->db->where('tipo_id', $_POST['tipo']);
 //        }
+        if ($_POST['empresa'] != "") {
+            $this->db->where('s.empresa_id', $_POST['empresa']);
+        }
+        
         if ($_POST['tipo'] > 0) {
 //            var_dump($args['nome']); die;
             $this->db->where('tipo', @$return[0]->descricao);
@@ -289,6 +293,9 @@ class caixa_model extends Model {
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
+        if ($_POST['empresa'] != "") {
+            $this->db->where('s.empresa_id', $_POST['empresa']);
+        }
         if ($_POST['tipo'] != 0) {
             $this->db->where('tipo_id', $_POST['tipo']);
         }
@@ -323,6 +330,9 @@ class caixa_model extends Model {
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
+        }
+        if ($_POST['empresa'] != "") {
+            $this->db->where('s.empresa_id', $_POST['empresa']);
         }
         if ($_POST['tipo'] != 0) {
             $this->db->where('tipo_id', $_POST['tipo']);
@@ -420,6 +430,9 @@ class caixa_model extends Model {
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
+        if ($_POST['empresa'] != "") {
+            $this->db->where('s.empresa_id', $_POST['empresa']);
+        }
         if ($_POST['tipo'] != 0) {
             $this->db->where('tipo_id', $_POST['tipo']);
         }
@@ -489,6 +502,9 @@ class caixa_model extends Model {
         //        if ($_POST['tipo'] != 0) {
 //            $this->db->where('tipo_id', $_POST['tipo']);
 //        }
+        if ($_POST['empresa'] != "") {
+            $this->db->where('s.empresa_id', $_POST['empresa']);
+        }
         if ($_POST['tipo'] > 0) {
 //            var_dump($args['nome']); die;
             $this->db->where('tipo', @$return[0]->descricao);

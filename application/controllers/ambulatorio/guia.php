@@ -1102,7 +1102,7 @@ class Guia extends BaseController {
     function orcamento($paciente_id, $ambulatorio_orcamento_id = null) {
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
-        $data['grupos'] = $this->procedimento->listargruposexame();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listarorcamentos($paciente_id);

@@ -55,6 +55,9 @@ class contaspagar_model extends Model {
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('fc.credor', $args['empresa']);
         }
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('fc.empresa_id', $args['txtempresa']);
+        }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('tipo', $return[0]->descricao);
         }
@@ -93,6 +96,9 @@ class contaspagar_model extends Model {
         $this->db->where('fc.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
+        }
+        if ($_POST['empresa'] != "") {
+            $this->db->where('fc.empresa_id', $_POST['empresa']);
         }
         if ($_POST['tipo'] != 0) {
             $this->db->where('tipo_id', $_POST['tipo']);

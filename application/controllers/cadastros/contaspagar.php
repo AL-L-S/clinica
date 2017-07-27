@@ -20,6 +20,7 @@ class Contaspagar extends BaseController {
         $this->load->model('cadastro/forma_model', 'forma');
         $this->load->model('cadastro/tipo_model', 'tipo');
         $this->load->model('cadastro/classe_model', 'classe');
+        $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
