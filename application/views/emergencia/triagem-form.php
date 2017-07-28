@@ -3,7 +3,7 @@
     <div>
     <form name="form_triagem" id="form_triagem" action="<?= base_url() ?>emergencia/triagem/gravar/<?= $paciente_id; ?>" method="post">
         <fieldset>
-            <legend>Dados do Pacienete</legend>
+            <legend>Dados do paciente</legend>
             <div>
                 <label>Nome</label>                      
                 <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>

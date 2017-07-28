@@ -139,23 +139,62 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/procedimentoformapagamento-form', $data);
     }
 
-    function orcamento() {
+    function gravarorcamentorecepcao() {
+        if ($_POST['procedimento1'] == '' || $_POST['convenio1'] == '-1' || $_POST['qtde1'] == '') {
+            $data['mensagem'] = 'Informe o convenio, o procedimento e a quantidade.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id");
+        } else {
+            $retorno = $this->guia->listarorcamentorecepcao();
+            
+            $resultadoorcamento = $retorno['orcamento'];
+            $paciente_id = $retorno['paciente_id'];
+            
+            if ($resultadoorcamento == null) {
+                $ambulatorio_orcamento = $this->guia->gravarorcamentorecepcao($paciente_id);
+            } else {
+                $ambulatorio_orcamento = $resultadoorcamento['ambulatorio_orcamento_id'];
+            }
+            
+            $this->guia->gravarorcamentoitemrecepcao($ambulatorio_orcamento);
+            
+            redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$ambulatorio_orcamento");
+        }
+    }
+    
+    function orcamento($paciente_id = 0, $ambulatorio_orcamento = 0) {
+        
+        $obj_paciente = new paciente_model($paciente_id);
+        $data['obj'] = $obj_paciente;
+        
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['grupos'] = $this->procedimento->listargruposexame();
-//        $data['exames'] = $this->exametemp->listarorcamentos();
+        $data['exames'] = $this->procedimento->listarorcamentosrecepcao($ambulatorio_orcamento);
+//        var_dump($data['obj']); die;
+        
         $this->loadView('ambulatorio/orcamentogeral-form_1', $data);
     }
-
-    function imprimirorcamento() {
-        $data = $_POST;
-//        echo "<pre>";
-//        var_dump($data);
-//        die;
+    
+    function orcamentorecepcaofila($orcamento) {
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
-        $this->load->View('ambulatorio/impressaoorcamentogeral', $data);
+        $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
+        $html = $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data, true);
+        
+        $html = utf8_decode($html);
+        $tipo = 'ORÇAMENTO';
+        $this->guia->gravarfiladeimpressao($html, $tipo);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+    function impressaoorcamentorecepcao($orcamento) {
+        $data['emissao'] = date("d-m-Y");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
+        $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data);
     }
 
     function replicarpercentualmedico() {

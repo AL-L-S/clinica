@@ -892,7 +892,7 @@ class Guia extends BaseController {
             redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id/$ambulatorio_orcamento");
         }
     }
-
+    
     function gravarprocedimentosconsulta() {
         $procedimentopercentual = $_POST['procedimento1'];
         $medicopercentual = $_POST['medicoagenda'];
@@ -1173,6 +1173,7 @@ class Guia extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['consultasanteriores'] = $this->exametemp->listarfisioterapiaanterior($paciente_id);
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+        $data['grupos'] = $this->procedimento->listargruposespecialidade();
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
@@ -2922,6 +2923,15 @@ class Guia extends BaseController {
         $data['formapagamento'] = $this->formapagamento->listarforma();
         $this->load->View('ambulatorio/procedimentoguianota-form', $data);
     }
+    
+    function listarprocedimentosorcamento($ambulatorio_orcamento_id, $empresa_id) {
+        $data['emissao'] = date("d-m-Y");
+//        $empresa_id = $this->session->userdata('empresa_id');
+        $data['exames'] = $this->guia->listarexamesrelatorioorcamento($ambulatorio_orcamento_id);
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $this->load->View('ambulatorio/impressaorelatorioorcamentoprocedimento', $data);
+    }
+
 
     function procedimentoguianotaform($ambulatorio_guia_id, $valorguia, $valor = 0.00) {
         $data['valorguia'] = $valorguia;
@@ -3059,10 +3069,6 @@ class Guia extends BaseController {
 //        $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
         $data['relatorioprocedimentos'] = $this->guia->relatoriocaixapersonalizadoprocedimentos();
         $data['operadores'] = $this->guia->relatoriocaixapersonalizadooperadores();
-//        echo "<pre>";
-//        var_dump($data['operadores']);die;
-//        $data['caixa'] = $this->caixa->listarsangriacaixa();
-//        $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarforma();
         $this->load->View('ambulatorio/impressaorelatoriocaixapersonalizando', $data);
     }

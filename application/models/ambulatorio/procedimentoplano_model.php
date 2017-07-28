@@ -51,7 +51,7 @@ class procedimentoplano_model extends Model {
         }
         return $this->db;
     }
-
+    
     function listarautocompleteformapagamento($args = array()) {
         $this->db->select('forma_pagamento_id,
                            nome');

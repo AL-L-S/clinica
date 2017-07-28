@@ -15,7 +15,7 @@
         <div>
             <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarorcamento" method="post">
                 <fieldset>
-                    <legend>Dados do Pacienete</legend>
+                    <legend>Dados do paciente</legend>
                     <div>
                         <label>Nome</label>                      
                         <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
@@ -136,6 +136,7 @@
                                 <th class="tabela_header">Convenio</th>
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento</th>
+                                <th class="tabela_header">Descriçao</th>
                                 <th class="tabela_header">V. Unit</th>
                             </tr>
                         </thead>
@@ -151,6 +152,7 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                 </tr>
 
@@ -161,7 +163,7 @@
                     ?>
                     <tfoot>
                         <tr>
-                            <th class="tabela_footer" colspan="6">
+                            <th class="tabela_footer" colspan="3">
                                 Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                             </th>
                             <th colspan="2" align="center"><center><div class="bt_linkf">
@@ -214,10 +216,7 @@
                                         });
                                     });
                                 });
-
-<?php if ($this->session->flashdata('message') != ''): ?>
-                                    alert("<? echo $this->session->flashdata('message') ?>");
-<? endif; ?>
+                                
                                 $(function () {
                                     $("#data").datepicker({
                                         autosize: true,

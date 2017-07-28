@@ -231,6 +231,11 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/relatorioreagendamentogeral', $data);
     }
 
+    function relatorioorcamentos() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatorioorcamentos', $data);
+    }
+
     function relatorioteleoperadora() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarteleoperadora();
@@ -273,6 +278,15 @@ class Exame extends BaseController {
         } else if ($_POST['tipoRelatorio'] == '3') {
             $this->gerarelatoriomedicoagendaespecialidade();
         }
+    }
+
+    function gerarelatorioorcamentos() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['empresa_id'] = $_POST['empresa'];
+        $data['relatorio'] = $this->exame->gerarelatorioorcamentos();
+        $this->load->View('ambulatorio/impressaorelatorioorcamentos', $data);
     }
 
     function gerarelatorioteleoperadora() {

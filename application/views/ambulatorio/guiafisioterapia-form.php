@@ -111,6 +111,7 @@
                                 <th class="tabela_header">Medico*</th>
                                 <th class="tabela_header">Solicitante*</th>
                                 <th class="tabela_header">Convenio*</th>
+                                <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
@@ -164,7 +165,19 @@
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-
+                                <td  width="50px;">
+                                    <select  name="grupo1" id="grupo1" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <?
+                                        $lastGrupo = $exames[count($exames) - 1]->grupo;
+                                        foreach ($grupos as $item) :
+                                            ?>
+                                            <option value="<?= $item->nome; ?>" <? if ($lastGrupo == $item->nome) echo 'selected'; ?>>
+                                                <?= $item->nome; ?>
+                                            </option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
                                 <td  >
                                     <select  name="procedimento1" id="procedimento1" class="size1" required="" >
                                         <option value="">Selecione</option>
@@ -441,7 +454,24 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-
+                                $(function () {
+                                    $('#grupo1').change(function () {
+//                                                if ($(this).val()) {
+                                        $('.carregando').show();
+                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
+                                            options = '<option value=""></option>';
+                                            for (var c = 0; c < j.length; c++) {
+                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                            }
+                                            $('#procedimento1').html(options).show();
+                                            $('.carregando').hide();
+                                        });
+//                                                } else {
+//                                                    $('#procedimento1').html('<option value="">Selecione</option>');
+//                                                }
+                                    });
+                                });
+                                
                                 if ($("#convenio1").val() != "-1") {
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $("#convenio1").val()}, function (j) {
                                         options = '<option value=""></option>';
