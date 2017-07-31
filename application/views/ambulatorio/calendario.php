@@ -541,8 +541,8 @@ if (@$_GET['data'] != '') {
             center: 'title',
             right: 'today'
         },
-        height: 400,
-        theme: true,
+        height: 300,
+//        theme: true,
         dayClick: function (date) {
             var data = date.format();
 

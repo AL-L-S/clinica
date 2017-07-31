@@ -132,7 +132,7 @@ switch ($MES) {
                                 <? if($item->data_antiga != ""){ echo " ** ";} ?>
                             </td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
-                            <td><font size="-2"><?= $item->procedimento_tuss_id; ?> <?= $item->procedimento; ?></td>
+                            <td><font size="-2"><?= $item->procedimento; ?></td>
                             <? if ($clinica == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>

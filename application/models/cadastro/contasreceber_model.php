@@ -199,6 +199,8 @@ class contasreceber_model extends Model {
             $this->db->set('observacao', $_POST['Observacao']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->insert('tb_entradas');
             $entrada_id = $this->db->insert_id();
             $erro = $this->db->_error_message();

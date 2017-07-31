@@ -227,15 +227,15 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarhorarioscalendarioconsulta($medico = null, $especialidade = null, $empresa_id = null) {
+    function listarhorarioscalendarioconsulta($medico = null, $tipoagenda = null, $empresa_id = null) {
         $data = date('Y-m-d');
         $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
         $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
         $empresa_atual = $this->session->userdata('empresa_id');
         if ($medico != '') {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
-        } elseif ($especialidade != '') {
-            $this->db->select('ae.data, count(ae.data) as contagem, situacao,o.cbo_ocupacao_id as especialidade');
+        } elseif ($tipoagenda != '') {
+            $this->db->select('ae.data, count(ae.data) as contagem, situacao,ae.tipo_consulta_id');
         } else {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao');
         }
@@ -256,9 +256,9 @@ class exametemp_model extends Model {
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);
             $this->db->groupby("ae.data, situacao, ae.medico_agenda");
-        } elseif ($especialidade != '') {
-            $this->db->where('o.cbo_ocupacao_id', $especialidade);
-            $this->db->groupby("ae.data, situacao, o.cbo_ocupacao_id");
+        } elseif ($tipoagenda != '') {
+            $this->db->where('ae.tipo_consulta_id', $tipoagenda);
+            $this->db->groupby("ae.data, situacao, ae.tipo_consulta_id");
         } else {
             $this->db->groupby("ae.data, situacao");
         }
@@ -3256,8 +3256,8 @@ class exametemp_model extends Model {
                         $this->db->from('tb_procedimento_convenio pc');
                         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
                         $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
-                        $this->db->where('pc.ativo', 'true');
-                        $this->db->where('pt.ativo', 'true');
+//                        $this->db->where('pc.ativo', 'true');
+//                        $this->db->where('pt.ativo', 'true');
                         $percentual = $this->db->get()->result();
                     }
 

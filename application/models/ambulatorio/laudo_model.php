@@ -1912,7 +1912,7 @@ class laudo_model extends Model {
         return $return;
     }
 
-    function gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id) {
+    function gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id, $procedimento_tuss_id) {
         try {
             /* inicia o mapeamento no banco */
 
@@ -1935,6 +1935,28 @@ class laudo_model extends Model {
             $query = $this->db->get();
             $return = $query->result();
 
+
+            $this->db->select('mc.valor as perc_medico, mc.percentual');
+            $this->db->from('tb_procedimento_percentual_medico_convenio mc');
+            $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
+            $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+            $this->db->where('mc.medico', $_POST['medico']);
+            $this->db->where('mc.ativo', 'true');
+            $percentual = $this->db->get()->result();
+
+            if (count($percentual) == 0) {
+                $this->db->select('pt.perc_medico, pt.percentual');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+//                        $this->db->where('pc.ativo', 'true');
+//                        $this->db->where('pt.ativo', 'true');
+                $percentual = $this->db->get()->result();
+            }
+
+
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('medico_consulta_id', $_POST['medico']);
             $this->db->where('agenda_exames_id', $return[0]->agenda_exames_id);
@@ -2214,7 +2236,7 @@ class laudo_model extends Model {
         }
     }
 
-    function gravarlaudodigitando($ambulatorio_laudo_id, $exame_id) {
+    function gravarlaudodigitando($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id) {
         try {
             /* inicia o mapeamento no banco */
 
@@ -2231,7 +2253,29 @@ class laudo_model extends Model {
             $this->db->where("exames_id", $exame_id);
             $query = $this->db->get();
             $return = $query->result();
+            
+            
+            $this->db->select('mc.valor as perc_medico, mc.percentual');
+            $this->db->from('tb_procedimento_percentual_medico_convenio mc');
+            $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
+            $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+            $this->db->where('mc.medico', $_POST['medico']);
+            $this->db->where('mc.ativo', 'true');
+            $percentual = $this->db->get()->result();
 
+            if (count($percentual) == 0) {
+                $this->db->select('pt.perc_medico, pt.percentual');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+//                        $this->db->where('pc.ativo', 'true');
+//                        $this->db->where('pt.ativo', 'true');
+                $percentual = $this->db->get()->result();
+            }
+
+//            var_dump($percentual); die;
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->where('agenda_exames_id', $return[0]->agenda_exames_id);
             $this->db->update('tb_agenda_exames');
@@ -2482,7 +2526,7 @@ class laudo_model extends Model {
         $this->db->where("ambulatorio_laudo_id", $ambulatorio_laudo_id);
         $query = $this->db->get();
         $return3 = $query->result();
-        
+
         $retorno = array(
             "pacienteEmail" => $return1[0]->cns,
             "empresaEmail" => $return2[0]->email,
@@ -2491,18 +2535,15 @@ class laudo_model extends Model {
             "razaoSocial" => $return2[0]->razao_social
         );
         return $retorno;
-        
     }
-    
-    
 
     function setaemailparaenviado($ambulatorio_laudo_id) {
         $this->db->set('email_enviado', 't');
         $this->db->where("ambulatorio_laudo_id", $ambulatorio_laudo_id);
         $this->db->update('tb_ambulatorio_laudo');
     }
-    
-    function gravaranaminese($ambulatorio_laudo_id, $exame_id) {
+
+    function gravaranaminese($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id) {
         try {
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
@@ -2538,6 +2579,27 @@ class laudo_model extends Model {
                 }
             }
 
+            $this->db->select('mc.valor as perc_medico, mc.percentual');
+            $this->db->from('tb_procedimento_percentual_medico_convenio mc');
+            $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
+            $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+            $this->db->where('mc.medico', $_POST['medico']);
+            $this->db->where('mc.ativo', 'true');
+            $percentual = $this->db->get()->result();
+
+            if (count($percentual) == 0) {
+                $this->db->select('pt.perc_medico, pt.percentual');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+//                        $this->db->where('pc.ativo', 'true');
+//                        $this->db->where('pt.ativo', 'true');
+                $percentual = $this->db->get()->result();
+            }
+
+
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('medico_consulta_id', $_POST['medico']);
             $this->db->where('agenda_exames_id', $return[0]->agenda_exames_id);
