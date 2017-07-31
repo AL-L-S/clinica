@@ -2,7 +2,7 @@
     <h3 class="h3_title">Acolhimento</h3>
     <form name="form_fechamento" id="form_fechamento" action="<?= base_url() ?>emergencia/filaacolhimento/gravarfechamentorae/<?= $paciente_id; ?>" method="post">
         <fieldset>
-            <legend>Dados do Pacienete</legend>
+            <legend>Dados do paciente</legend>
             <div>
                 <label>Nome</label>                      
                 <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>

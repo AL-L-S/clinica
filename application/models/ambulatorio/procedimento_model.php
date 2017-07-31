@@ -46,6 +46,36 @@ class procedimento_model extends Model {
 
         return $this->db;
     }
+    
+    
+    function listarorcamentosrecepcao($orcamento_id) {
+//        var_dump($paciente_id);die;
+        $horario = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('oi.ambulatorio_orcamento_item_id,
+                            oi.data,
+                            oi.orcamento_id,
+                            oi.valor_total,
+                            oi.orcamento_id,
+                            oi.paciente_id,
+                            pc.convenio_id,
+                            p.nome as paciente,
+                            c.nome as convenio,
+                            pt.codigo,
+                            pt.descricao_procedimento,
+                            pt.grupo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_ambulatorio_orcamento_item oi');
+        $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+//        $this->db->where('oi.empresa_id', $empresa_id);
+        $this->db->where("oi.orcamento_id", $orcamento_id);
+//        $this->db->where("oi.data", $horario);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listartuss($args = array()) {
         $this->db->select('tuss_id,

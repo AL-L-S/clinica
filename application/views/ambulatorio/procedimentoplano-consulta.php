@@ -4,7 +4,7 @@
         <thead>
             <tr>
                 <th >        <div class="bt_link_new" style="cursor: pointer;">
-                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/orcamento');">
+                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/orcamento/0');">
                             Or&ccedil;amento
                         </a>
                     </div></th>

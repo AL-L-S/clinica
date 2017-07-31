@@ -2322,6 +2322,35 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function gerarelatorioorcamentos($args = array()) {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select(' ao.ambulatorio_orcamento_id,
+                            p.nome as paciente,
+                            p.celular,
+                            p.telefone,
+                            ao.data_criacao,
+                            e.nome as empresa_nome,
+                            (
+                                SELECT SUM(valor_total)
+                                FROM ponto.tb_ambulatorio_orcamento_item
+                                WHERE ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id
+                            ) as valor');
+        $this->db->from('tb_ambulatorio_orcamento ao');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ao.paciente_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ao.empresa_id', 'left');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ao.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        
+        $this->db->orderby('ao.data_criacao');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listaragendamentoteleoperadora($args = array()) {
         $data = date("Y-m-d");

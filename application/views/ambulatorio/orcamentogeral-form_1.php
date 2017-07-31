@@ -1,270 +1,314 @@
+<? // var_dump($obj->_paciente_id); die; ?>
 <div class="content ficha_ceatox"  >
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>jQuery UI Dialog - Modal form</title>
-        <link href="<?= base_url() ?>css/jquery-ui.css" rel="stylesheet" type="text/css" />
-        <!--<link rel="stylesheet" href="<?= base_url() ?>css/style.css"  type="text/css"/>-->
-        <style>
-            label, input { display:block; }
-            input.text { margin-bottom:12px; width:95%; padding: .4em; }
-            select.text { width:95%; }
-            #qtde{ width:50px; }
-            #valor{ width:50px; }
-            fieldset { padding:0; border:0; margin-top:25px; }
-            h1 { font-size: 1.2em; margin: .6em 0; }
-            div#users-contain { width: 800px; margin: 20px 0; }
-            div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-            div#users-contain table td, div#users-contain table th {}
-            .ui-dialog .ui-state-error { padding: .3em; }
-            .validateTips { border: 1px solid transparent; padding: 0.3em; }
-        </style>
-    </head>
 
-
-    <div id="dialog-form" title="Adicionar Procedimento">
-        <form>
+    <div>
+        <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarorcamentorecepcao" method="post">  
             <fieldset>
-                <input type="hidden" name="convenio_nome" id="convenio_nome">
-                <input type="hidden" name="procedimento_nome" id="procedimento_nome">
-                <label for="convenio">Convenio</label>
-                <select  name="convenio" id="convenio" class="text ui-widget-content ui-corner-all" >
-                    <option value="selecione">Selecione</option>
-                    <?
-                    foreach ($convenio as $item) :
-                        ?>
-                        <option value="<?= $item->convenio_id; ?>"  onclick="invisivel('<? echo $item->nome ?>');" onkeypress="invisivel('<? echo $item->nome ?>');"><?= $item->nome; ?></option>
-                    <? endforeach; ?>
-                </select>
-                <label for="grupo1">Grupo</label>
-                <select  name="grupo1" id="grupo1" class="text ui-widget-content ui-corner-all" >
-                    <option value="">Selecione</option>
-                    <?
-//                    $lastGrupo = $exames[count($exames) - 1]->grupo;
-                    foreach ($grupos as $item) :
-                        ?>
-                        <option value="<?= $item->nome; ?>" <? if ($lastGrupo == $item->nome) echo 'selected'; ?>>
-                            <?= $item->nome; ?>
-                        </option>
-                    <? endforeach; ?>
-                </select>
+                <legend>Dados do Paciente</legend>
 
-                <label for="procedimento">Procedimento</label>
-                <select  name="procedimento" id="procedimento" class="text ui-widget-content ui-corner-all" >
-                    <option value="selecione">Selecione</option>
-                </select>
-                <label for="qtde">Qtde</label>
-                <input type="qtde" name="qtde" id="qtde"  class="text ui-widget-content ui-corner-all">
-                <label for="valor">Valor UND</label>
-                <input type="valor" name="valor" id="valor" class="text ui-widget-content ui-corner-all">
-                <label for="descricao">Descrição</label>
-                <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1"> </textarea>
+                <div>
+                    <label>Nome</label>
+                    <input type="hidden" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" value="<?= @$obj->_paciente_id ;?>"/>
+                    <input type="text" id="txtNome" required name="txtNome" class="texto10" value="<?= @$obj->_nome ;?>" required/>
+                </div>
+                <div>
+                    <label>Dt de nascimento</label>
+
+                    <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date"  maxlength="10" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>"/>
+                </div>
+                <div>
+                    <label>Telefone</label>
 
 
-                <!-- Allow form submission with keyboard without duplicating the dialog button -->
-                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                    <input type="text" id="txtTelefone" class="texto02" name="txtTelefone" value="<?= @$obj->_telefone; ?>"/>
+                </div>
+                <div>
+                    <label>Celular</label>
+
+
+                    <input type="text" id="txtCelular" class="texto02" name="txtCelular" value="<?= @$obj->_celular; ?>"/>
+                </div>
             </fieldset>
-        </form>
-    </div>
-    <? $valor_total = 0; ?>
-    <fieldset>
-        <div id="users-contain" class="ui-widget">
-            <legend>Orçamento</legend>
-            <table id="users" class="ui-widget ui-widget-content">
-                <thead>
-                    <tr class="ui-widget-header">
-                        <th  class="tabela_header">Convênio</th>
-                        <th  class="tabela_header">Procedimento</th>
-                        <th  class="tabela_header">Descrição</th>
-                        <th  class="tabela_header">Qtde</th>
-                        <th  class="tabela_header">Valor UND(R$)</th>
-<!--                        <th  class="tabela_header">Valor Total(R$)</th>-->
-                    </tr>
-                </thead>
-                <tbody>
 
-                </tbody>
-                <tfoot>
-                    <tr class="ui-widget-header">
-                        <td class="tabela_header" colspan="6"><center>Valor Total: R$ <? echo $valor_total ?></center></td>
-                        <!--<td class="tabela_header" colspan="4"></td>-->
-                </tr>
-                </tfoot>
-            </table>
-            <form method="post" action="<?= base_url() ?>ambulatorio/procedimentoplano/imprimirorcamento">
-                <!--<input type="hidden" name="contador" id="contador" value="0">-->
-                <table id="form" class="ui-widget ui-widget-content">
+            <fieldset>
+                <table id="table_justa">
                     <thead>
-                        <tr class="ui-widget-header">
-                            <th  class="tabela_header"></th>
-                            <th  class="tabela_header"></th>
-                            <th  class="tabela_header"></th>
-                            <th  class="tabela_header"></th>
-                            <th  class="tabela_header"></th>
+
+                        <tr>
+                            <th class="tabela_header">Convenio*</th>
+                            <th class="tabela_header">Grupo</th>
+                            <th class="tabela_header">Procedimento*</th>
+                            <th class="tabela_header">Qtde*</th>
+                            <th class="tabela_header">V. Unit</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+
+                            <td  width="50px;">
+                                <select  name="convenio1" id="convenio1" class="size1" required="">
+                                    <option value="-1">Selecione</option>
+                                    <?
+                                    $lastConv = $exames[count($exames) - 1]->convenio_id;
+                                    foreach ($convenio as $item) :
+                                        ?>
+                                        <option value="<?= $item->convenio_id; ?>" <? if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
+                                            <?= $item->nome; ?>
+                                        </option>
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
+
+                            <td width="50px;">
+                                <select  name="grupo1" id="grupo1" class="size1">
+                                    <option value="">Selecione</option>
+                                    <?
+                                    $lastGrupo = $exames[count($exames) - 1]->grupo;
+                                    foreach ($grupos as $value) :
+                                        ?>
+                                        <option value="<?= $value->nome; ?>" <? if ($lastGrupo == $value->nome) echo 'selected'; ?>>
+                                            <?= $value->nome; ?>
+                                        </option>
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
+
+                            <td  width="50px;">
+                                <select  name="procedimento1" id="procedimento1" class="size1" required="">
+                                    <option value="">Selecione</option>
+                                </select>
+                            </td>
+                            <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
+                            <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                        </tr>
 
                     </tbody>
-                </table>
+                </table> 
+                <hr/>
+                <button type="submit" name="btnEnviar">Adicionar</button>
+            </fieldset>
 
-
-        </div>
-    </fieldset>
-    <button  type="submit">Imprimir</button>
-</form>
-<button id="create-user"  >Adicionar</button>
-<!--        <button type="submit" >imprimir</button>-->
+                        <fieldset>
+            <?
+            $total = 0;
+            $orcamento = 0;
+            if (count($exames) > 0) {
+                ?>
+                                    <table id="table_agente_toxico" border="0">
+                                        <thead>
+                
+                                            <tr>
+                                                <th class="tabela_header">Convenio</th>
+                                                <th class="tabela_header">Grupo</th>
+                                                <th class="tabela_header">Procedimento</th>
+                                                <th class="tabela_header">Descrição</th>
+                                                <th class="tabela_header">V. Unit</th>
+                                            </tr>
+                                        </thead>
+                <?
+                $estilo_linha = "tabela_content01";
+                foreach ($exames as $item) {
+                    ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                    $total = $total + $item->valor_total;
+                    $orcamento = $item->orcamento_id;
+                    ?>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
+                                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
+                                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
+                                                    </tr>
+                    
+                                                </tbody>
+                    <?
+                }
+            }
+            ?>
+                                <tfoot>
+                                    <tr>
+                                        <th class="tabela_footer" colspan="3">
+                                            Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
+                                        </th>
+                                        <th colspan="" align="center">
+                                            <center>
+                                            <div class="bt_linkf">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/impressaoorcamentorecepcao/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
+                                            </a></div>
+                                            </center>
+                                        </th>
+                                        <th colspan="2" align="center">
+                                            <center>
+                                            <div class="bt_linkf">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/orcamentorecepcaofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
+                                            </a></div>
+                                            </center>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table> 
+            
+                        </fieldset>
+        </form>
+    </div>
 
 </div>
 
 
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
-<script src="<?= base_url() ?>js/jquery-1.12.4.js"></script>
-<script src="<?= base_url() ?>js/jquery-ui.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+
 <script>
-                        $(function () {
-                            var dialog, form,
-                                    // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
-                                    convenio = $("#convenio_nome"),
-                                    procedimento = $("#procedimento_nome"),
-                                    descricao = $("#descricao"),
-                                    qtde = $("#qtde"),
-                                    valor = $("#valor"),
-                                    valor_parcial = 0,
-                                    valor_replace = 0;
 
-//                allFields = $([]).add(convenio).add(procedimento).add(qtde).add(valor),
-//                tips = $(".validateTips")
-                            ;
-                            function addUser() {
-                                var valid = true;
-//            allFields.removeClass("ui-state-error");
+                            function mascaraTelefone(campo) {
 
-                                if (valid) {
+                                function trata(valor, isOnBlur) {
 
-                                    $("#users tbody").append("<tr>" +
-                                            "<td>" + convenio.val() + "</td>" +
-                                            "<td>" + procedimento.val() + "</td>" +
-                                            "<td>" + descricao.val() + "</td>" +
-                                            "<td>" + qtde.val() + "</td>" +
-                                            "<td >" + valor.val().replace(",", ".") + "</td>" +
-                                            "</tr>");
-                                    $("#form tbody").append("<tr>" +
-                                            "<td><input name='convenio[]' type='hidden' value='" + convenio.val() + "' /></td>" +
-                                            "<td><input name='procedimento[]' type='hidden' value='" + procedimento.val() + "' /></td>" +
-                                            "<td><input name='qtde[]' type='hidden' value='" + qtde.val() + "' /></td>" +
-                                            "<td ><input name='valor[]' type='hidden' value='" + valor.val() + "' /></td>" +
-                                            "<td ><input name='descricao[]' type='hidden' value='" + descricao.val() + "' /></td>" +
-                                            "</tr>");
+                                    valor = valor.replace(/\D/g, "");
+                                    valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-                                    $("#users tfoot tr").remove();
-                                    valor_replace = valor.val();
-                                    valor_replace = valor_replace.replace(",", ".");
-                                    valor_parcial = valor_parcial + (parseFloat(valor_replace) * parseFloat(qtde.val()));
-                                    $("#users tfoot").append("<tr>" +
-                                            "<td class='tabela_header' colspan='5' ><center>" + 'Valor Total: R$ ' + valor_parcial + "</center></td>" +
-                                            "</tr>");
+                                    if (isOnBlur) {
 
-//                                    dialog.dialog("close");
-                                }
+                                        valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                                    } else {
 
-
-                                return valid;
-                            }
-
-                            dialog = $("#dialog-form").dialog({
-                                autoOpen: true,
-                                height: 400,
-                                width: 500,
-                                modal: true,
-                                buttons: {
-                                    "Enviar": addUser,
-                                    Cancel: function () {
-                                        dialog.dialog("close");
+                                        valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
                                     }
-                                },
-                                close: function () {
-                                    form[ 0 ].reset();
-//                allFields.removeClass("ui-state-error");
+                                    return valor;
                                 }
-                            });
 
-                            form = dialog.find("form").on("submit", function (event) {
-                                event.preventDefault();
-                                addUser();
-//                                dialog.dialog("open");
-                            });
+                                campo.onkeypress = function (evt) {
 
-                            $("#create-user").button().on("click", function () {
-                                dialog.dialog("open");
-                            });
-                        });
+                                    var code = (window.event) ? window.event.keyCode : evt.which;
+                                    var valor = this.value
 
-                        function invisivel(nome) {
-                            $("#convenio_nome").val(nome);
-                        }
-                        function invisivel2(nome) {
-                            $("#procedimento_nome").val(nome);
-                        }
-
-                        $(function () {
-                            $('#convenio').change(function () {
-                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioorcamento', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                        options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            procedimento = "'" + j[c].procedimento + "'";
-                                            options += '<option onclick="invisivel2(' + procedimento + ')" value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                        }
-                                        $('#procedimento').html(options).show();
-                                        $('.carregando').hide();
-                                    });
-                                } else {
-                                    $('#procedimento').html('<option value="">Selecione</option>');
+                                    if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                                        return false;
+                                    } else {
+                                        this.value = trata(valor, false);
+                                    }
                                 }
+
+                                campo.onblur = function () {
+
+                                    var valor = this.value;
+                                    if (valor.length < 13) {
+                                        this.value = ""
+                                    } else {
+                                        this.value = trata(this.value, true);
+                                    }
+                                }
+
+                                campo.maxLength = 14;
+                            }
+                            
+                            
+                        mascaraTelefone(form_exametemp.txtTelefone);
+                        mascaraTelefone(form_exametemp.txtCelular);
+                        
+                        <? if( @$obj->_paciente_id ==  NULL ) { ?>
+                            $(function () {
+                                $("#txtNome").autocomplete({
+                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+                                    minLength: 5,
+                                    focus: function (event, ui) {
+                                        $("#txtNome").val(ui.item.label);
+                                        return false;
+                                    },
+                                    select: function (event, ui) {
+                                        $("#txtNome").val(ui.item.value);
+                                        $("#txtNomeid").val(ui.item.id);
+                                        $("#txtTelefone").val(ui.item.itens);
+                                        $("#txtCelular").val(ui.item.celular);
+                                        $("#nascimento").val(ui.item.valor);
+                                        return false;
+                                    }
+                                });
                             });
-                        });
+                        <? } ?>
+
+
 
                         $(function () {
                             $('#grupo1').change(function () {
-//                                                if ($(this).val()) {
                                 $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio').val()}, function (j) {
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
                                     options = '<option value=""></option>';
                                     for (var c = 0; c < j.length; c++) {
-                                        procedimento = "'" + j[c].procedimento + "'";
-                                        options += '<option onclick="invisivel2(' + procedimento + ')" value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                     }
-                                    $('#procedimento').html(options).show();
+                                    $('#procedimento1').html(options).show();
                                     $('.carregando').hide();
                                 });
-//                                                } else {
-//                                                    $('#procedimento1').html('<option value="">Selecione</option>');
-//                                                }
                             });
                         });
 
                         $(function () {
-                            $('#procedimento').change(function () {
+                            $("#medico1").autocomplete({
+                                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                minLength: 3,
+                                focus: function (event, ui) {
+                                    $("#medico1").val(ui.item.label);
+                                    return false;
+                                },
+                                select: function (event, ui) {
+                                    $("#medico1").val(ui.item.value);
+                                    $("#crm1").val(ui.item.id);
+                                    return false;
+                                }
+                            });
+                        });
+
+                        $(function () {
+                            $('#convenio1').change(function () {
+                                if ($(this).val()) {
+                                    $('.carregando').show();
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                        options = '<option value=""></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                        }
+                                        $('#procedimento1').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                    if ($('#grupo1').val() != '') {
+                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
+                                            options = '<option value=""></option>';
+                                            for (var c = 0; c < j.length; c++) {
+                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                            }
+                                            $('#procedimento1').html(options).show();
+                                            $('.carregando').hide();
+                                        });
+                                    }
+
+                                } else {
+                                    $('#procedimento1').html('<option value="">Selecione</option>');
+                                }
+                            });
+                        });
+
+
+                        $(function () {
+                            $('#procedimento1').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                         options = "";
                                         options += j[0].valortotal;
-                                        options = options.replace(".", ",")
-                                        document.getElementById("valor").value = options;
-                                        document.getElementById("qtde").value = "1";
-                                        $("#descricao").val(j[0].descricao_procedimento);
+                                        document.getElementById("valor1").value = options
                                         $('.carregando').hide();
                                     });
                                 } else {
-                                    $('#valor').html('value=""');
+                                    $('#valor1').html('value=""');
                                 }
                             });
                         });
+
 
 
 </script>

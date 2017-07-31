@@ -392,29 +392,30 @@
                                     <th class="tabela_footer" colspan="6">
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
-                                    <th colspan="2" align="center">
                                     <? if ($perfil_id == 1 || $faturado == 0) { 
                                         if ($botao_faturar_guia == 't') { ?>
+                                            
+                                    <th colspan="" align="center">
                                             <center>
                                                 <div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">
                                                 Faturar Guia
                                             </a></div>
-                                            <!--</center>-->
-                                            <!--</th>-->
+                                            </center>
+                                            </th>
                                         <? }
                                         if ($botao_faturar_proc == 't') { ?>
-                                            <!--<th colspan="2" align="center">-->
-                                            <!--<center>-->
+                                            <th colspan="2" align="center">
+                                            <center>
                                                 <div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 
                                             </a></div>
-                        <!--</center>-->
+                                        </center>
+                                            </th>
                                         <?}
                                     } ?>
                                             
-                                            </th>
                             </tr>
                             </tfoot>
                         </table> 

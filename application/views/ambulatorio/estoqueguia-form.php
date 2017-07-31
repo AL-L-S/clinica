@@ -24,7 +24,7 @@
         <div>
             <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos" method="post">
                 <fieldset>
-                    <legend>Dados do Pacienete</legend>
+                    <legend>Dados do paciente</legend>
                     <div>
                         <input type="hidden" id="guia_id" name="guia_id"  value="<?= $ambulatorio_guia_id; ?>"/>
                     </div>

@@ -4490,7 +4490,7 @@ class guia_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
-        $this->db->where('ae.faturado', 'true');
+//        $this->db->where('ae.faturado', 'true');
         $this->db->where('ae.operador_autorizacao >', 0);
 
         if ($_POST['txtNomeid'] != '') {
@@ -5420,6 +5420,35 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarexamesrelatorioorcamento($orcamento) {
+
+        $this->db->select('oi.ambulatorio_orcamento_item_id,
+                            oi.data,
+                            o.nome as operador,
+                            oi.valor_total,
+                            oi.quantidade,
+                            oi.valor,
+                            p.nome as paciente,
+                            p.sexo,
+                            oi.orcamento_id,
+                            c.nome as convenio,
+                            pc.convenio_id,
+                            c.dinheiro,
+                            pt.codigo,
+                            pt.grupo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_ambulatorio_orcamento_item oi');
+        $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = oi.operador_cadastro', 'left');
+        $this->db->where("oi.orcamento_id", $orcamento);
+        $this->db->orderby('oi.ambulatorio_orcamento_item_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarexamesorcamento($orcamento) {
 
         $this->db->select('oi.ambulatorio_orcamento_item_id,
@@ -5434,6 +5463,7 @@ class guia_model extends Model {
                             c.nome as convenio,
                             pc.convenio_id,
                             c.dinheiro,
+                            pt.descricao_procedimento,
                             pt.codigo,
                             pt.grupo,
                             pt.nome as procedimento');
@@ -5852,6 +5882,47 @@ class guia_model extends Model {
         $this->db->where('data_criacao', $data);
         $return = $this->db->get();
         return $return->row_array();
+    }
+
+    function listarorcamentorecepcao() {
+        if ($_POST['txtNomeid'] == '') {
+            if ($_POST['nascimento'] != '') {
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+            }
+            if ($_POST['idade'] != 0) {
+                $this->db->set('idade', $_POST['idade']);
+            }
+            $this->db->set('celular', $_POST['txtCelular']);
+            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('telefone', $_POST['txtTelefone']);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->insert('tb_paciente');
+            $paciente_id = $this->db->insert_id();
+        } else {
+            $paciente_id = $_POST['txtNomeid'];
+
+            $this->db->set('celular', $_POST['txtCelular']);
+            $this->db->set('telefone', $_POST['txtTelefone']);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->where('paciente_id', $paciente_id);
+            $this->db->update('tb_paciente');
+        }
+        
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ambulatorio_orcamento_id');
+        $this->db->from('tb_ambulatorio_orcamento');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('paciente_id', $paciente_id);
+        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        
+        $retorno = array(
+            "orcamento" => $return->row_array(),
+            "paciente_id" => $paciente_id
+        );
+        
+        return $retorno;
     }
 
     function listarorcamento($paciente_id) {
@@ -8554,6 +8625,21 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
+    function gravarorcamentorecepcao($paciente_id) {
+        $horario = date("Y-m-d H:i:s");
+        $data = date("Y-m-d");
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('data_criacao', $data);
+        $this->db->set('paciente_id', $paciente_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_ambulatorio_orcamento');
+        $ambulatorio_guia_id = $this->db->insert_id();
+        return $ambulatorio_guia_id;
+    }
+
     function gravarorcamento($paciente_id) {
         $horario = date("Y-m-d H:i:s");
         $data = date("Y-m-d");
@@ -8893,6 +8979,37 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
+    function gravarorcamentoitemrecepcao($ambulatorio_orcamento_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $data = date("Y-m-d");
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+
+            $this->db->set('valor', $_POST['valor1']);
+            $valortotal = $_POST['valor1'] * $_POST['qtde1'];
+            $this->db->set('valor_total', $valortotal);
+            $this->db->set('quantidade', $_POST['qtde1']);
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('orcamento_id', $ambulatorio_orcamento_id);
+
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->set('data', $data);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_ambulatorio_orcamento_item');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return -1;
+            }
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function gravarorcamentoitem($ambulatorio_orcamento_id) {
         try {
             $horario = date("Y-m-d H:i:s");

@@ -18,7 +18,7 @@
 <table border="1">
 
     <tbody>
-        <tr  bgcolor ="gray" class="linha1"><td width="50%">&ensp;</td><td align="center" width="20%">Pacienete</td><td align="center">Par&acirc;metros normais</td></tr>
+        <tr  bgcolor ="gray" class="linha1"><td width="50%">&ensp;</td><td align="center" width="20%">paciente</td><td align="center">Par&acirc;metros normais</td></tr>
 
         <tr class="linha1"><td width="50%">Di&acirc;m. Diast&oacute;lico do VE</td><td align="center" width="20%"><?= $laudo['0']->diam_diastolico_ve; ?>mm</td><td align="center">36-56 mm</td></tr>
         <tr class="linha1"><td width="50%">Di&acirc;m. Sist&oacute;lico Final do VE</td><td align="center" width="20%"><?= $laudo['0']->diam_sisto_final_ve; ?>mm</td><td align="center">25-40 mm</td></tr>

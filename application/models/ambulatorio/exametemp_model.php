@@ -1451,6 +1451,7 @@ class exametemp_model extends Model {
                             pc.convenio_id,
                             p.nome as paciente,
                             c.nome as convenio,
+                            pt.descricao_procedimento,
                             pt.codigo,
                             pt.grupo,
                             pt.nome as procedimento');
@@ -4989,8 +4990,9 @@ class exametemp_model extends Model {
         $this->db->select('distinct(e.empresa_id), e.nome');
         $this->db->from('tb_exame_sala es');
         $this->db->join('tb_empresa e', 'e.empresa_id = es.empresa_id');
+        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id');
         if ($parametro != '') {
-            $this->db->where('es.grupo', $parametro);
+            $this->db->where('esg.grupo', $parametro);
         }
 
         $this->db->groupby("e.empresa_id");
@@ -4999,10 +5001,11 @@ class exametemp_model extends Model {
     }
 
     function listarautocompletegrupoempresasala($parametro = null) {
-        $this->db->select('es.*');
+        $this->db->select('DISTINCT(es.exame_sala_id), es.nome');
         $this->db->from('tb_exame_sala es');
+        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id');
         if ($parametro != '') {
-            $this->db->where('es.grupo', $parametro);
+            $this->db->where('esg.grupo', $parametro);
         }
         $this->db->where('es.excluido', 'f');
         $return = $this->db->get();

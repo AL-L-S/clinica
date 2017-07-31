@@ -246,6 +246,7 @@ class pacientes extends BaseController {
         $data['consultasanteriores'] = $this->exametemp->listarfisioterapiaanterior($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaragendaspacientefisioterapia($paciente_id);
+        $data['grupos'] = $this->procedimento->listargruposespecialidade();
         $this->loadView('ambulatorio/procedimentoautorizarfisioterapia-form', $data);
 //        } else {
 //            $data['mensagem'] = 'Paciente com sessões pendentes.';

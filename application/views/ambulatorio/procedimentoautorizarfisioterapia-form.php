@@ -86,6 +86,7 @@
                             <th class="tabela_header">Solicitante</th>
                             <th class="tabela_header">Medico</th>
                             <th class="tabela_header">Convenio</th>
+                            <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">autorizacao</th>
                             <th class="tabela_header">V. Unit</th>
@@ -134,6 +135,15 @@
                                             <option value="<?= $item2->convenio_id; ?>" <? if ($item2->convenio_id == $item->convenio_agenda) echo'selected'; ?>>
                                                 <?= $item2->nome; ?>
                                             </option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                
+                                <td class="<?php echo $estilo_linha; ?>" >
+                                    <select  name="grupo1" id="grupo<?= $i; ?>" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <?foreach ($grupos as $item2) :?>
+                                            <option value="<?= $item2->nome; ?>"><?= $item2->nome; ?></option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
@@ -219,43 +229,43 @@
                                 
                                 convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
                                 proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
-        
+//        alert(proc_agendado[<?= $b - 1 ?>]);
 //                                    var convenio_agendado = <?= @$exames[$b - 1]->convenio_agenda ?>;
 //                                    var proc_agendado = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
 
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia<?= $it ?>', {convenio<?= $b ?>: convenio_agendado[<?= $b - 1 ?>], ajax: true}, function (t) {
-
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: convenio_agendado[<?= $b - 1 ?>], ajax: true}, function (t) {
+                                            console.log(t);
                                                 var opt = '<option value=""></option>';
                                                 var slt = '';
                                                 for (var c = 0; c < t.length; c++) {
                                                     if (proc_agendado[<?= $b - 1 ?>] == t[c].procedimento_convenio_id) {
                                                         slt = "selected='true'";
                                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
-                                                                                var valor = a[0].valortotal;
-                                                                                var qtde = a[0].qtde;
-                                                                                document.getElementById("valor<?= $b ?>").value = valor;
-                                                                                document.getElementById("qtde<?= $b ?>").value = qtde;
-                                                                                $('.carregando').hide();
+                                                            var valor = a[0].valortotal;
+                                                            var qtde = a[0].qtde;
+                                                            document.getElementById("valor<?= $b ?>").value = valor;
+                                                            document.getElementById("qtde<?= $b ?>").value = qtde;
+                                                            $('.carregando').hide();
                                                         });
                                                         
                                                         $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
-                                                                var options = '<option value="0">Selecione</option>';
-                                                                for (var c = 0; c < j.length; c++) {
-                                                                    if (j[c].forma_pagamento_id != null) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                    }
+                                                            var options = '<option value="0">Selecione</option>';
+                                                            for (var c = 0; c < j.length; c++) {
+                                                                if (j[c].forma_pagamento_id != null) {
+                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
                                                                 }
-                                                                $('#formapamento<?= $b ?>').html(options).show();
-                                                                $('.carregando').hide();
-                                                            });
+                                                            }
+                                                            $('#formapamento<?= $b ?>').html(options).show();
+                                                            $('.carregando').hide();
+                                                        });
                                                                             
-                                                                        }
-                                                                        opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
-                                                                        slt = '';
-                                                                    }
-                                                                    $('#procedimento<?= $b ?>').html(opt).show();
-                                                                    $('.carregando').hide();
-                                                                });
+                                                    }
+                                                    opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
+                                                    slt = '';
+                                                }
+                                                $('#procedimento<?= $b ?>').html(opt).show();
+                                                $('.carregando').hide();
+                                    });
     <? }
     ?>
                                                             $('#checkbox<?= $b ?>').change(function () {
@@ -277,6 +287,19 @@
 
                                                     });
 <? for ($b = 1; $b <= $i; $b++) { ?>
+                                    $('#grupo<?= $b ?>').change(function () {
+                                        if ($('#convenio<?= $b ?>').val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio<?= $b ?>').val()}, function (j) {
+                                                options = '<option value=""></option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                }
+                                                $('#procedimento<?= $b ?>').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                        }
+                                    });
 
                                                         $(function () {
                                                             $('#convenio<?= $b ?>').change(function () {
