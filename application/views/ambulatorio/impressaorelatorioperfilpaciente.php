@@ -490,14 +490,14 @@
                             <tr>
                                 <td><?= $nome ?></td>
                                 <td style="text-align: right"><?= $plano ?></td>
-                                <td style="text-align: right"><?= round(($plano * 100) / $totPlanoSaude); ?>%</td>
+                                <td style="text-align: right"><?= number_format((($plano * 100) / $totPlanoSaude), 2, ",", ""); ?>%</td>
                             </tr>
                         <? }
                         if(isset($planoSaude['semPlano']) && @$planoSaude['semPlano'] > 0) {?>
                             <tr>
                                 <td>Sem Plano</td>
                                 <td style="text-align: right"><?= $planoSaude['semPlano'] ?></td>
-                                <td style="text-align: right"><?= round(($planoSaude['semPlano'] * 100) / $totPlanoSaude); ?>%</td>
+                                <td style="text-align: right"><?= number_format((($planoSaude['semPlano'] * 100) / $totPlanoSaude), 2, ",", ""); ?>%</td>
                             </tr>
                         <? } ?>
                         <tr>
