@@ -30,7 +30,11 @@
     <script src="<?= base_url() ?>js/fullcalendar/scheduler.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <!--<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="pt-BR" >-->
-
+<?
+if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-31'){
+   $_GET['data'] = date("Y-m-d");    
+}
+?>
 
 
 <div class="content">
@@ -476,7 +480,12 @@ if (@$_GET['nome'] != '') {
         height: 300,
 //        theme: true,
         dayRender: function (date, cell) {
-            var data_escolhida = $('#data').val();
+            if($('#data').val() == ''){
+            var data_escolhida = moment(new Date()).format('YYYY-MM-DD');
+            }else{
+            var data_escolhida = $('#data').val();    
+            }
+            
             var today = moment(new Date()).format('YYYY-MM-DD');
             var check = moment(date).format('YYYY-MM-DD');
 //            alert(data_escolhida);

@@ -71,7 +71,7 @@
                             <option value='' >Selecione</option>
                             <? for ($i = 1; $i <= 10; $i++){?>
                             <option <?
-                            if($obj->_painel_id == $i){
+                            if(@$obj->_painel_id == $i){
                                 echo 'selected';
                             }
                             ?> value='<?=$i?>' ><?=$i?></option>

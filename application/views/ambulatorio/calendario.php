@@ -30,7 +30,11 @@
     <script src="<?= base_url() ?>js/fullcalendar/scheduler.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <!--<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="pt-BR" >-->
-
+<?
+if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-31'){
+   $_GET['data'] = date("Y-m-d");    
+}
+?>
 
 
 <div class="content">
