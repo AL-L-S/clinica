@@ -9,13 +9,13 @@
                     </a>
                 </div>
             </td>
-            <td>
+<!--            <td>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoexcluirgrupo">
                         Excluir Proc. Grupo
                     </a>
                 </div>
-            </td>
+            </td>-->
         </tr>
     </table>
 

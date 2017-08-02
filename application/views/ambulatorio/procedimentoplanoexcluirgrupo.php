@@ -9,23 +9,15 @@
         <h3 class="singular"><a href="#">Excluir Procedimentos Por Grupo</a></h3>
         <div>
             <form name="form_procedimentoplano" id="form_procedimentoplano" action="<?= base_url() ?>ambulatorio/procedimentoplano/excluirporgrupo" method="post">
+                
 
+                
                 <dl class="dl_desconto_lista">
-                    <dt>
-                        <label>Convenio *</label>
-                    </dt>
-                    <dd>
-                        <select name="convenio" id="convenio" class="size4" required>
-                            <option value="">Selecione</option>
-                            <? foreach ($convenio as $value) : ?>
-                                <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
-                                    <? endforeach; ?>
-                        </select>
-                    </dd>
                     <dt>
                         <label>Grupo*</label>
                     </dt>
                     <dd>
+                        <input type="hidden" name="convenio" id="convenio" value="<?= $convenio_id ?>"/>
                         <select name="grupo" id="grupo" class="size4" required>
                             <option value="">Selecione</option>
                             <? foreach ($grupos as $value) : ?>
