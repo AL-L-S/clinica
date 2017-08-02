@@ -16,12 +16,12 @@
                         <label>Procedimento *</label>
                     </dt>
                     <dd>
-                        <select name="procedimento" id="procedimento" class="size4">
+                        <select name="procedimento" id="procedimento" class="size4 chosen-select" tabindex="1">
                             <? foreach ($procedimento as $value) : ?>
                                 <option value="<?= $value->procedimento_tuss_id; ?>"<?
                                 if (@$obj->_procedimento_tuss_id == $value->procedimento_tuss_id):echo'selected';
                                 endif;
-                                ?>><?php echo $value->nome; ?></option>
+                                ?>><?php echo $value->codigo .  " - " . $value->nome; ?></option>
                                     <? endforeach; ?>
                         </select>
                     </dd>
@@ -103,9 +103,16 @@
         </div>
     </div>
 </div> <!-- Final da DIV content -->
+
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript">
                             $('#btnVoltar').click(function () {
                                 $(location).attr('href', '<?= base_url(); ?>ponto/cargo');

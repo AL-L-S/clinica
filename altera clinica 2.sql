@@ -407,7 +407,8 @@ UPDATE ponto.tb_entradas
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
-) as empresa;
+) as empresa
+WHERE empresa_id is null;
 
 
 
@@ -417,7 +418,8 @@ UPDATE ponto.tb_financeiro_contaspagar
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
-) as empresa;
+) as empresa
+WHERE empresa_id is null;
 
 
 UPDATE ponto.tb_financeiro_contasreceber
@@ -426,7 +428,8 @@ UPDATE ponto.tb_financeiro_contasreceber
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
-) as empresa;
+) as empresa
+WHERE empresa_id is null;
 
 
 UPDATE ponto.tb_saidas
@@ -435,7 +438,9 @@ UPDATE ponto.tb_saidas
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
-) as empresa;
+) as empresa
+WHERE empresa_id is null;
+
 
 
 UPDATE ponto.tb_saldo
@@ -444,5 +449,7 @@ UPDATE ponto.tb_saldo
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
-) as empresa;
+) as empresa
+WHERE empresa_id is null;
+
    

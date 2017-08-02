@@ -87,10 +87,10 @@ function debug($object) {
                     url: "<?= base_url(); ?>ambulatorio/empresa/checandolembrete",
                     dataType: "json",
                     success: function (retorno) {
-                        for(var i = 0; i < retorno.length; i++){
-                            if(retorno[i].visualizado == 0){
+                        for (var i = 0; i < retorno.length; i++) {
+                            if (retorno[i].visualizado == 0) {
                                 alert(retorno[i].texto);
-                                jQuery.ajax({type: "GET", data: "lembretes_id=" + retorno[i].empresa_lembretes_id, 
+                                jQuery.ajax({type: "GET", data: "lembretes_id=" + retorno[i].empresa_lembretes_id,
                                     url: "<?= base_url(); ?>ambulatorio/empresa/visualizalembrete"});
                             }
                         }
@@ -245,7 +245,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id                  ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id                   ?>);
                     }
                 }
 
@@ -273,7 +273,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id                    ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id                     ?>);
                 }
 
 <? } ?>
@@ -349,6 +349,8 @@ function debug($object) {
         <div class="barraMenus" style="float: left;">
             <div>
                 <ul id="menu" class="filetree">
+                    <?if($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 /* || $perfil_id == 7 */){?>
+
                     <li><span class="folder">Recep&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
@@ -360,26 +362,60 @@ function debug($object) {
 
                                     <? if ($perfil_id != 4) { ?>
                                         <? if ($calendario == 't') { ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario" target="_blank">Multifuncao Geral</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario" target="_blank">Multifuncao Exame </a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsultacalendario" target="_blank">Multifuncao Consulta </a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoespecialidadecalendario" target="_blank">Multifuncao Especialidade </a></span></ul> 
+                                        <? if ($geral == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario" target="_blank">Multifuncao Geral</a></span></ul>
+                                            <? } ?>
+                                            <? if ($imagem == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario" target="_blank">Multifuncao Exame </a></span></ul>
+                                            <? } ?>
+                                            <? if ($consulta == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsultacalendario" target="_blank">Multifuncao Consulta </a></span></ul>
+                                            <? } ?>
+                                            <? if ($especialidade == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoespecialidadecalendario" target="_blank">Multifuncao Especialidade </a></span></ul> 
+                                            <? } ?>
+                                            
+                                            
+                                            
+                                            
                                         <? } else { ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">Multifuncao Geral</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncao">Multifuncao Exame</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsulta">Multifuncao Consulta</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaofisioterapia">Multifuncao Especialidade</a></span></ul>
+
+
+                                            <? if ($geral == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaogeral">Multifuncao Geral</a></span></ul>
+                                            <? } ?>
+                                            <? if ($imagem == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncao">Multifuncao Exame</a></span></ul>
+                                            <? } ?>
+                                            <? if ($consulta == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoconsulta">Multifuncao Consulta</a></span></ul>
+                                            <? } ?>
+                                            <? if ($especialidade == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaofisioterapia">Multifuncao Especialidade</a></span></ul>
+                                            <? } ?>
                                         <? }
                                         ?>
 
-        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
-        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
+                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
+                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
 
                                         <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendageral">Medico agenda geral</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagenda">Medico agenda exame</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendaconsulta">Medico agenda consulta</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendaespecialidade">Medico agenda especialidade</a></span></ul>
+                                            <? if ($geral == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendageral">Medico agenda geral</a></span></ul>
+                                            <? } ?>
+                                            <? if ($imagem == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagenda">Medico agenda exame</a></span></ul>
+                                            <? } ?>
+                                            <? if ($consulta == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendaconsulta">Medico agenda consulta</a></span></ul>
+                                            <? } ?>
+                                            <? if ($especialidade == 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendaespecialidade">Medico agenda especialidade</a></span></ul>
+                                            <? } ?>    
+                                            
+                                            
+                                            
+                                            
                                         <? } ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoplanoconsulta">Pre&ccedil;o procedimento</a></span></ul>
                                         <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
@@ -426,7 +462,7 @@ function debug($object) {
                             </li>
                         </ul>
                     </li>
-
+                    <?}?>
                     <li><span class="folder">Atendimento</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
@@ -440,7 +476,7 @@ function debug($object) {
                             </li>
                         </ul>
                     </li>
-                    <? if ($imagem == 't') { ?>
+                    <? if ($imagem == 't'  && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10)) { ?>
                         <li><span class="folder">Imagem</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
@@ -462,7 +498,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($consulta == 't') { ?>
+                    <? if ($consulta == 't' && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10)) { ?>
 
 
                         <li><span class="folder">Consultas</span>
@@ -488,7 +524,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($especialidade == 't') { ?>
+                    <? if ($especialidade == 't'  && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10)) { ?>
 
 
                         <li><span class="folder">Especialidade</span>
@@ -509,7 +545,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($laboratorio == 't') { ?>
+                    <? if ($laboratorio == 't'  && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10)) { ?>
                         <li><span class="folder">Laboratorial</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
@@ -527,7 +563,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($geral == 't') { ?>
+                    <? if ($geral == 't'  && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10)) { ?>
 
 
                         <li><span class="folder">Geral</span>
@@ -547,7 +583,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($faturamento == 't') { ?>
+                    <? if ($faturamento == 't' && ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10)) { ?>
 
 
                         <li><span class="folder">Faturamento</span>
@@ -595,7 +631,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($estoque == 't') { ?>
+                    <? if ($estoque == 't' && ($perfil_id == 1 || $perfil_id == 8 || $perfil_id == 10)) { ?>
 
 
                         <li><span class="folder">Estoque</span>
@@ -631,7 +667,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($financeiro == 't') { ?>
+                    <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10)) { ?>
 
 
                         <li><span class="folder">Financeiro</span>
@@ -685,7 +721,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($marketing == 't') { ?>
+                    <? if ($marketing == 't' && ($perfil_id == 1 || $perfil_id == 14)) { ?>
 
 
                         <li><span class="folder">Marketing</span>
@@ -734,7 +770,7 @@ function debug($object) {
 
                         <?
                     }
-                    if ($centrocirurgico == 't') {
+                    if ($centrocirurgico == 't' && ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7)) {
                         ?>
                         <li><span class="folder">Centro Cirurgico</span>
                             <ul>
@@ -754,7 +790,7 @@ function debug($object) {
                         </li>
                         <?
                     }
-                    if ($relatoriorm == 't') {
+                    if ($relatoriorm == 't' && ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 3)) {
                         ?>
                         <li><span class="folder">Relatorios (RM)</span>
                             <ul>
@@ -799,6 +835,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
+                    <?if($perfil_id != 4){?>
                     <li><span class="folder">Configura&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Recep&ccedil;&atilde;o</span>
@@ -905,6 +942,7 @@ function debug($object) {
                             </li> 
                         </ul>
                     </li>
+                    <?}?>
                     <li>
                         <span class="file">
                             <a onclick="javascript: return confirm('Deseja realmente sair da aplicação?');"
@@ -1131,7 +1169,7 @@ function debug($object) {
                 //atualiza status do operador
                 //                setInterval(function () {
                 //                    atualizastatus();
-                //                    verifica(0, 0,<? // echo $operador_id    ?>);
+                //                    verifica(0, 0,<? // echo $operador_id     ?>);
                 //                }, 10000);
 
                 buscamensagens();

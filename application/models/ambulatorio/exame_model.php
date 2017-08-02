@@ -217,6 +217,18 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function listarsalasativas() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('exame_sala_id,
+                            nome');
+        $this->db->from('tb_exame_sala');
+        $this->db->where('empresa_id', $empresa_id);
+//        $this->db->where('ativo', 'true');
+        $this->db->where('excluido', 'f');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarsalastotal() {
         $empresa_id = $this->session->userdata('empresa_id');

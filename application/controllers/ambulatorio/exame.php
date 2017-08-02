@@ -1201,6 +1201,10 @@ class Exame extends BaseController {
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
         }
+        $data['arquivo_pasta_pdf'] = directory_map("./upload/arquivospdf/$exame_id/");
+        if ($data['arquivo_pasta_pdf'] != false) {
+            sort($data['arquivo_pasta_pdf']);
+        }
         $data['arquivos_deletados'] = directory_map("./uploadopm/$exame_id/");
         $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
         $convenio_id = $data['agenda_exames'][0]->convenio_id;
@@ -1254,6 +1258,41 @@ class Exame extends BaseController {
         }
         $data['exame_id'] = $exame_id;
         $this->anexarimagem($exame_id, $sala_id);
+    }
+    
+    function importararquivopdf() {
+        $exame_id = $_POST['exame_id'];
+        $sala_id = $_POST['sala_id'];
+        $data = $_FILES['userfile'];
+//        var_dump($data);
+//        die;
+        if (!is_dir("./upload/arquivospdf")) {
+            mkdir("./upload/arquivospdf");
+            $destino = "./upload/arquivospdf";
+            chmod($destino, 0777);
+        }
+        if (!is_dir("./upload/arquivospdf/$exame_id")) {
+            mkdir("./upload/arquivospdf/$exame_id");
+            $destino = "./upload/arquivospdf/$exame_id";
+            chmod($destino, 0777);
+        }
+
+        $config['upload_path'] = "./upload/arquivospdf/" . $exame_id . "/";
+        $config['allowed_types'] = 'pdf';
+        $config['max_size'] = '0';
+        $config['overwrite'] = TRUE;
+        $config['encrypt_name'] = TRUE;
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload()) {
+            $error = array('error' => $this->upload->display_errors());
+        } else {
+            $error = null;
+            $data = array('upload_data' => $this->upload->data());
+        }
+        $data['exame_id'] = $exame_id;
+//        $this->anexarimagem($exame_id, $sala_id);
+        redirect(base_url() . "ambulatorio/exame/anexarimagem/$exame_id/$sala_id");
     }
 
     function excluirimagemmedico($exame_id, $nome, $sala_id) {

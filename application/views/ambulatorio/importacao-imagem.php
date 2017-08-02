@@ -52,8 +52,33 @@
                 <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id"?>', '_blank', 'toolbar=no,Location=no,menubar=no,scrollbars=yes,width=1000,height=600');">
                     Inserir
                 </a>
-            </div
-        </div> <!-- Final da DIV content -->
+            </div>
+        </div>
+        <h3><a href="#">Anexar Arquivos PDF</a></h3>
+        <div >
+            <?= form_open_multipart(base_url() . 'ambulatorio/exame/importararquivopdf'); ?>
+            <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
+            <input type="file" name="userfile"/>
+            <button type="submit" name="btnEnviar">Enviar</button>
+            <input type="hidden" name="exame_id" value="<?= $exame_id; ?>" />
+            <input type="hidden" name="sala_id" value="<?= $sala_id; ?>" />
+            <?= form_close(); ?>
+        </div>
+        <h3><a href="#">Arquivos PDF</a></h3>
+        <div >
+            <table>
+                <?
+                if ($arquivo_pasta_pdf != false):
+                    foreach ($arquivo_pasta_pdf as $value) :
+                        ?>
+                        <td><img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/arquivospdf/" . $exame_id . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "img/pdf.png" ?>"><br><a href="<?= base_url() ?>ambulatorio/exame/excluirimagem/<?= $exame_id ?>/<?= $value ?>/<?= $sala_id ?>">Excluir</a></td>
+                        <?
+                    endforeach;
+                endif
+                ?>
+            </table>
+        </div>
+        <!-- Final da DIV content -->
     </div> <!-- Final da DIV content -->
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">

@@ -679,7 +679,7 @@ class Exametemp extends BaseController {
                 } else {
                     
                     $agenda_inexistente = $this->exametemp->listaagendafisioterapiapersonalizadaerro($agenda_escolhida[$c], $semana);
-
+//                    var_dump($agenda_inexistente); die;
                     $medico = $agenda_inexistente[0]->medico;
                     $hora = $agenda_inexistente[0]->inicio;
                     
