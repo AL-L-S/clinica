@@ -401,55 +401,55 @@ UPDATE ponto.tb_operador
 
 
 
-UPDATE ponto.tb_entradas
+UPDATE ponto.tb_entradas e
    SET  empresa_id=empresa.empresa_id
    FROM (SELECT empresa_id
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
 ) as empresa
-WHERE empresa_id is null;
+WHERE e.empresa_id is null;
 
 
 
-UPDATE ponto.tb_financeiro_contaspagar
+UPDATE ponto.tb_financeiro_contaspagar e 
    SET  empresa_id=empresa.empresa_id
    FROM (SELECT empresa_id
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
 ) as empresa
-WHERE empresa_id is null;
+WHERE e.empresa_id is null;
 
 
-UPDATE ponto.tb_financeiro_contasreceber
+UPDATE ponto.tb_financeiro_contasreceber e
    SET  empresa_id=empresa.empresa_id
    FROM (SELECT empresa_id
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
 ) as empresa
-WHERE empresa_id is null;
+WHERE e.empresa_id is null;
 
 
-UPDATE ponto.tb_saidas
+UPDATE ponto.tb_saidas e 
    SET  empresa_id=empresa.empresa_id
    FROM (SELECT empresa_id
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
 ) as empresa
-WHERE empresa_id is null;
+WHERE e.empresa_id is null;
 
 
 
-UPDATE ponto.tb_saldo
+UPDATE ponto.tb_saldo e
    SET  empresa_id=empresa.empresa_id
    FROM (SELECT empresa_id
   FROM ponto.tb_empresa
   ORDER BY empresa_id ASC
   LIMIT 1
 ) as empresa
-WHERE empresa_id is null;
+WHERE e.empresa_id is null;
 
    
