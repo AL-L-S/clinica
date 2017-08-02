@@ -13,7 +13,7 @@
             </div>
             <div>
                 <label>Sala</label>
-                <select name="sala" id="sala" class="size4">
+                <select name="sala" id="sala" class="size4" required>
                     <option value="" >Selecione</option>
                     <? foreach ($salas as $item) : ?>
                         <option value="<?= $item->exame_sala_id; ?>"><?= $item->nome; ?></option>

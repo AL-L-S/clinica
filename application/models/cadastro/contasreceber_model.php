@@ -214,6 +214,7 @@ class contasreceber_model extends Model {
             $this->db->set('conta', $_POST['conta_id']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('data', $_POST['inicio']);
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saldo');
 

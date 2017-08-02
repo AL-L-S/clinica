@@ -42,7 +42,7 @@
                         
                         <tr>
                             <td style="text-align: left">
-                                Valor da Nota
+                                Valor
                                    
                             </td>
                           

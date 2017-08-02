@@ -92,6 +92,7 @@ class guia_model extends Model {
         $this->db->select('ag.ambulatorio_guia_id,
                             ag.paciente_id,
                             ag.empresa_id,
+                            ag.valor_guia,
                             ag.data_cadastro,
                             p.nome as paciente');
         $this->db->from('tb_ambulatorio_guia ag');
@@ -8264,6 +8265,7 @@ ORDER BY ae.agenda_exames_id)";
         $horario = date("Y-m-d H:i:s");
         $data = date("Y-m-d");
         $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
 
 
         $this->db->set('data', $data);
@@ -8274,6 +8276,7 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->set('classe', $_POST['classe']);
         $this->db->set('observacao', $_POST['observacao']);
         $this->db->set('data_cadastro', $horario);
+        $this->db->set('empresa_id', $empresa_id);
         $this->db->set('operador_cadastro', $operador_id);
         $this->db->insert('tb_financeiro_contaspagar');
 //        $saida_id = $this->db->insert_id();
