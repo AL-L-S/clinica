@@ -1,16 +1,35 @@
 <script>
-    function consultasAnteriores(){
+    function consultasAnteriores() {
         if( $("#txtNomeid").val() != "" && $("#convenio1").val() != "" && $("#procedimento1").val() != "" ){
             jQuery.ajax({
                 url: "<?= base_url(); ?>autocomplete/buscaconsultasanteriores",
                 type: "GET",
                 data: 'paciente_id=' + $("#txtNomeid").val() + '&convenio_id=' + $("#convenio1").val() + '&procedimento_id=' + $("#procedimento1").val(),
                 dataType: 'json',
+                async: false,
                 success: function (retorno) {
-                    clearInterval(t);
+                    if(retorno.length > 0){
+//                        console.log(retorno);
+                        var mensagem = "Este paciente ja fez ";
+                        
+                        if (retorno[0].tipo = "EXAME") { mensagem += "esse exame"; }
+                        else { mensagem += "essa consulta"; }
+                        
+                        mensagem += " nos ultimos 30 dias. Deseja prosseguir?";
+                        var escolha = confirm(mensagem);
+                        
+                        if(escolha) document.form_exametemp.submit(); 
+                    }
+                    else{
+                        document.form_exametemp.submit(); 
+                    }
+                },
+                error: function(erro){
+                    return true;
                 }
             });
-//            document.form_exametemp.submit();
+            
+            return false;
         }
         else{
             return true;

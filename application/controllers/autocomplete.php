@@ -50,6 +50,26 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function buscaexamesanteriores() {
+        $result = array();
+        
+        if (isset($_GET['paciente_id']) && isset($_GET['procedimento_id'])) {
+            $result = $this->exametemp->buscaexamesanteriores($_GET['paciente_id'], $_GET['procedimento_id']);
+        } 
+        
+        echo json_encode($result);
+    }
+
+    function buscaconsultasanteriores() {
+        $result = array();
+        
+        if (isset($_GET['paciente_id']) && isset($_GET['procedimento_id'])) {
+            $result = $this->exametemp->buscaconsultasanteriores($_GET['paciente_id'], $_GET['procedimento_id']);
+        } 
+        
+        echo json_encode($result);
+    }
+
     function horariosambulatorioexame() {
         $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
 

@@ -349,18 +349,18 @@ function debug($object) {
         <div class="barraMenus" style="float: left;">
             <div>
                 <ul id="menu" class="filetree">
-                    <?if($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 /* || $perfil_id == 7 */){?>
+                    <?if($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 15 ){?>
 
                     <li><span class="folder">Recep&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 /* || $perfil_id == 7 */) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10  || $perfil_id == 15 ) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>cadastros/pacientes">Cadastro</a></span></ul>
-                                    <? if ($perfil_id != 11 && $perfil_id != 4 && $perfil_id != 7) { ?>
+                                    <? if ($perfil_id != 11 && $perfil_id != 4 && $perfil_id != 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperacaixa">Fila Caixa</a></span></ul>
                                     <? } ?>
 
-                                    <? if ($perfil_id != 4) { ?>
+                                    <? if ($perfil_id != 4 ) { ?>
                                         <? if ($calendario == 't') { ?>
                                         <? if ($geral == 't') { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario" target="_blank">Multifuncao Geral</a></span></ul>
@@ -453,7 +453,7 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriorecepcaomedicoconvenio">Relatorio Medico Convenio</a></span></ul>
                                     <?
                                 }
-                                if ($perfil_id != 9 && $perfil_id != 4 && $perfil_id != 7) {
+                                if ($perfil_id != 9 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioatendenteconvenio">Relatorio Atendente Convenio</a></span></ul>
                                 <? } ?>    
@@ -466,7 +466,7 @@ function debug($object) {
                     <li><span class="folder">Atendimento</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 7) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 7 || $perfil_id == 15) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalasespera">Salas de Espera</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalaspreparo">Salas de Preparo</a></span></ul>
@@ -476,11 +476,11 @@ function debug($object) {
                             </li>
                         </ul>
                     </li>
-                    <? if ($imagem == 't'  && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10)) { ?>
+                    <? if ($imagem == 't'  && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10  || $perfil_id == 15)) { ?>
                         <li><span class="folder">Imagem</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedico">Multifuncao Medico</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo">Manter Laudo</a></span></ul>
                                         <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 10) { ?>
@@ -491,7 +491,7 @@ function debug($object) {
                                     <? } ?>     
                                 </li>
                                 <li><span class="folder">Relatorios</span>
-                                    <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 7) { ?>
+                                    <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 7 && $perfil_id != 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                     <? } ?>    
                                 </li>    
@@ -517,7 +517,7 @@ function debug($object) {
 
                                 </li> 
                                 <li><span class="folder">Relatorios</span>
-                                    <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
+                                    <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                     <? } ?>
                                 </li>   
@@ -538,7 +538,7 @@ function debug($object) {
                                     ?>
                                 </li>
                                 <li><span class="folder">Relatorios</span>
-                                    <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
+                                    <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                     <? } ?>
                                 </li>  
@@ -549,7 +549,7 @@ function debug($object) {
                         <li><span class="folder">Laboratorial</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicolaboratorial">Multifuncao Laboratorial</a></span></ul>
                                         <?
                                     }
@@ -576,7 +576,7 @@ function debug($object) {
                                     ?>
                                 </li> 
                                 <li><span class="folder">Relatorios</span>
-                                    <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
+                                    <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15 ) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                     <? } ?>    
                                 </li>   
@@ -770,12 +770,12 @@ function debug($object) {
 
                         <?
                     }
-                    if ($centrocirurgico == 't' && ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7)) {
+                    if ($centrocirurgico == 't' && ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7 && $perfil_id != 15)) {
                         ?>
                         <li><span class="folder">Centro Cirurgico</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                    <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7) { ?>
+                                    <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7 && $perfil_id != 15) { ?>
                                         <ul>
                                             <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico">Listar Solicitacoes</a></span></li>
                                             <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarcirurgia">Fila de Cirurgia</a></span></li>
@@ -847,10 +847,10 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
                                     <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
                                 <? } ?>
-                                <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 4 && $perfil_id != 7) { ?>
+                                <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/sala">Manter Salas</a></span></ul>
                                 <? } ?>
-                                <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 4 && $perfil_id != 7) { ?>
+                                <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelodeclaracao">Modelo Declara&ccedil;&atilde;o</a></span></ul>
                                 <? } ?>
                             </li>

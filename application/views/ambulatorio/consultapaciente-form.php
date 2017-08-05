@@ -1,3 +1,41 @@
+<script>
+    function consultasAnteriores() {
+        if( $("#txtNomeid").val() != "" && $("#convenio").val() != "" && $("#procedimento").val() != ""){
+            jQuery.ajax({
+                url: "<?= base_url(); ?>autocomplete/buscaconsultasanteriores",
+                type: "GET",
+                data: 'paciente_id=' + $("#txtNomeid").val() + '&convenio_id=' + $("#convenio").val() + '&procedimento_id=' + $("#procedimento").val(),
+                dataType: 'json',
+                async: false,
+                success: function (retorno) {
+                    if(retorno.length > 0){
+                        var mensagem = "Este paciente ja fez ";
+                        
+                        if (retorno[0].tipo = "EXAME") { mensagem += "esse exame"; }
+                        else { mensagem += "essa consulta"; }
+                        
+                        mensagem += " nos ultimos 30 dias. Deseja prosseguir?";
+                        var escolha = confirm(mensagem);
+                        
+                        if(escolha) document.form_exametemp.submit(); 
+                    }
+                    else{
+                        document.form_exametemp.submit(); 
+                    }
+                },
+                error: function(erro){
+                    return true;
+                }
+            });
+            
+            return false;
+        }
+        else{
+            return true;
+        }
+        
+    }
+</script>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteconsultatemp/<?= $agenda_exames_id ?>" method="post">
@@ -59,7 +97,9 @@
 
             <div>
                 <label>&nbsp;</label>
-                <button type="submit" name="btnEnviar">Enviar</button>
+                <button type="submit" name="btnEnviar" onclick="javascript: return consultasAnteriores()">
+                    Enviar
+                </button>
             </div>
     </form>
 </fieldset>

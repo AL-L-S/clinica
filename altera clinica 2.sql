@@ -452,4 +452,10 @@ UPDATE ponto.tb_saldo e
 ) as empresa
 WHERE e.empresa_id is null;
 
+-- Dia 03/08/2017
+
+INSERT INTO ponto.tb_perfil(
+            perfil_id, nome, ativo)
+    VALUES (15, 'TECNICO RECEPCAO', true);
+
    

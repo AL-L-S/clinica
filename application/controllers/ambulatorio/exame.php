@@ -871,6 +871,16 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/guiacancelamento-form', $data);
     }
 
+    function examecancelamentoencaixe($exames_id, $sala_id, $agenda_exames_id, $paciente_id, $procedimento_tuss_id) {
+        $data['motivos'] = $this->motivocancelamento->listartodos();
+        $data['exames_id'] = $exames_id;
+        $data['sala_id'] = $sala_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_tuss_id'] = $procedimento_tuss_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $this->loadView('ambulatorio/examecancelamentoencaixe-form', $data);
+    }
+
     function examecancelamento($exames_id, $sala_id, $agenda_exames_id, $paciente_id, $procedimento_tuss_id) {
         $data['motivos'] = $this->motivocancelamento->listartodos();
         $data['exames_id'] = $exames_id;
@@ -891,8 +901,7 @@ class Exame extends BaseController {
             if (count($percentual) == 0) {
                 $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
             }
-            //            var_dump($_POST['txtagenda_exames_id']);
-            //            var_dump($percentual); die;
+            
             $laudo_id = $this->exame->gravarexame($percentual);
             if ($laudo_id == "-1") {
                 $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
@@ -1062,6 +1071,22 @@ class Exame extends BaseController {
     function bloqueargravar($agenda_exame_id) {
         $this->exame->bloquear($agenda_exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function cancelarexameencaixe() {
+        if ($this->session->userdata('perfil_id') != 12) {
+            $verificar = $this->exame->cancelarexameencaixe();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao cancelar o Exame. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
+        }
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
     }
 
     function cancelarexame() {

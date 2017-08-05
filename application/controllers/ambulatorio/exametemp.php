@@ -470,6 +470,11 @@ class Exametemp extends BaseController {
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
     }
 
+    function examecancelamentoencaixe($agenda_exames_id) {
+        $this->exametemp->excluirexametempencaixe($agenda_exames_id);
+        redirect(base_url() . "ambulatorio/exame/listarmultifuncaomedicofisioterapia");
+    }
+    
     function excluirfisioterapiatempencaixe($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
@@ -576,6 +581,7 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexametempgeral($agenda_exames_id) {
+//        die;
 //        $agenda = $_POST['agendaid'];
         $medico = $_POST['medico'];
         if (trim($_POST['txtNome']) == "") {

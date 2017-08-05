@@ -46,7 +46,7 @@
             <div >
 
                 <label>Data/Hora Autorização*</label>
-                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="39/29/9999 29:69"class="texto03" required=""/>
+                <input type="text" name="data_autorizacao" id="data_autorizacao" alt="39/29/9999 29:69" class="texto03" required=""/>
 
             </div>
 
@@ -159,7 +159,7 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>-->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>-->
 <script type="text/javascript">
 
