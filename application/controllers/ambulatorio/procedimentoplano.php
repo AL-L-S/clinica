@@ -125,10 +125,11 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/procedimentoplano-form', $data);
     }
 
-    function carregarprocedimentoplanoexcluirgrupo() {
+    function carregarprocedimentoplanoexcluirgrupo($convenio_id) {
 
+        $data['convenio_id'] = $convenio_id;
         $data['grupos'] = $this->procedimento->listargrupos();
-        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+//        $data['convenio'] = $this->procedimentoplano->listarconvenio();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimentoplanoexcluirgrupo', $data);
     }
@@ -169,7 +170,7 @@ class Procedimentoplano extends BaseController {
         
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
-        $data['grupos'] = $this->procedimento->listargruposexame();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $data['exames'] = $this->procedimento->listarorcamentosrecepcao($ambulatorio_orcamento);
 //        var_dump($data['obj']); die;
         
@@ -316,7 +317,7 @@ class Procedimentoplano extends BaseController {
         }
 
         $this->session->set_flashdata('message', $mensagem);
-        redirect(base_url() . "ambulatorio/procedimentoplano");
+        redirect(base_url() . "cadastros/convenio");
     }
 
     function excluirpercentual($procedimento_percentual_medico_id) {

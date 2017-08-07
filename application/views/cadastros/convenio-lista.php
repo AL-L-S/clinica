@@ -1,10 +1,23 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
-    <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>cadastros/convenio/carregar/0">
-            Novo Convenio
-        </a>
-    </div>
+    <table>
+        <tr>
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>cadastros/convenio/carregar/0">
+                        Novo Convenio
+                    </a>
+                </div>
+            </td>
+<!--            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoexcluirgrupo">
+                        Excluir Proc. Grupo
+                    </a>
+                </div>
+            </td>-->
+        </tr>
+    </table>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Convenio</a></h3>
         <div>
@@ -20,7 +33,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th colspan="4" class="tabela_header">Detalhes</th>
+                        <th colspan="6" class="tabela_header">Detalhes</th>
                     </tr>
                 </thead>
                 <?php
@@ -55,6 +68,12 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
                                         <a href="<?= base_url() ?>cadastros/convenio/desconto/<?= $item->convenio_id ?>">
                                             Ajuste (%)
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
+                                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoexcluirgrupo/<?= $item->convenio_id ?>">
+                                            Excluir Proc.
                                         </a>
                                     </div>
                                 </td>

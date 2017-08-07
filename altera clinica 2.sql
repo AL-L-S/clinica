@@ -460,3 +460,10 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_faturar date;
 UPDATE ponto.tb_agenda_exames
 SET data_faturar = data
 WHERE data_faturar is null;
+-- Dia 03/08/2017
+
+INSERT INTO ponto.tb_perfil(
+            perfil_id, nome, ativo)
+    VALUES (15, 'TECNICO RECEPCAO', true);
+
+   

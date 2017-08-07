@@ -142,6 +142,75 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function buscaexamesanteriores($paciente_id, $procedimento_id) {
+        $data = date('Y-m-d', strtotime("-30 day", strtotime(date('Y-m-d'))));
+        $empresa_id = $this->session->userdata('empresa_id');
+        
+        $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.data,
+                            a.nome,
+                            a.data,
+                            a.agenda_exames_nome_id,
+                            a.tipo,
+                            es.nome as sala,
+                            a.medico_agenda,
+                            o.nome as medico,
+                            a.observacoes,
+                            a.procedimento_tuss_id,
+                            pc.convenio_id as convenio_agenda,
+                            p.convenio_id');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
+        $this->db->where("a.cancelada", 'false');
+        $this->db->where('a.ativo', 'false');
+        $this->db->where("a.realizada", 't');
+        $this->db->where('a.data <=', date('Y-m-d'));
+        $this->db->where('a.data >=', $data);
+        $this->db->where("a.empresa_id", $empresa_id);
+        $this->db->where("a.paciente_id", $paciente_id);
+        $this->db->where("a.procedimento_tuss_id", $procedimento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function buscaconsultasanteriores($paciente_id, $procedimento_id) {
+        $data = date('Y-m-d', strtotime("-30 day", strtotime(date('Y-m-d'))));
+        $empresa_id = $this->session->userdata('empresa_id');
+        
+        $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.data,
+                            a.nome,
+                            a.data,
+                            a.agenda_exames_nome_id,
+                            a.tipo,
+                            es.nome as sala,
+                            a.medico_agenda,
+                            o.nome as medico,
+                            a.observacoes,
+                            a.procedimento_tuss_id,
+                            pc.convenio_id as convenio_agenda,
+                            p.convenio_id');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
+        $this->db->where("a.cancelada", 'false');
+        $this->db->where('a.ativo', 'false');
+        $this->db->where("a.realizada", 't');
+        $this->db->where('a.data <=', date('Y-m-d'));
+        $this->db->where('a.data >=', $data);
+        $this->db->where("a.empresa_id", $empresa_id);
+        $this->db->where("a.paciente_id", $paciente_id);
+        $this->db->where("a.procedimento_tuss_id", $procedimento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarhorarioscalendariovago($medico = null, $especialidade = null) {
         $data = date('Y-m-d');
         $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
@@ -1501,8 +1570,8 @@ class exametemp_model extends Model {
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where("ae.paciente_id", $nulo);
         $this->db->where('ae.situacao', "LIVRE");
-        $this->db->where('ativo', 't');
-        $this->db->where('cancelada', 'f');
+//        $this->db->where('ativo', 't');
+//        $this->db->where('cancelada', 'f');
         $this->db->where('confirmado', 'f');
         $this->db->where("(ae.tipo = 'FISIOTERAPIA' OR ae.tipo = 'ESPECIALIDADE')");
 //        $this->db->where("ae.data >=", $data_atual);

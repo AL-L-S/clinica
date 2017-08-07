@@ -1,3 +1,43 @@
+<script>
+    function consultasAnteriores() {
+        if( $("#txtNomeid").val() != "" && $("#convenio1").val() != "" && $("#procedimento1").val() != "" ){
+            jQuery.ajax({
+                url: "<?= base_url(); ?>autocomplete/buscaconsultasanteriores",
+                type: "GET",
+                data: 'paciente_id=' + $("#txtNomeid").val() + '&convenio_id=' + $("#convenio1").val() + '&procedimento_id=' + $("#procedimento1").val(),
+                dataType: 'json',
+                async: false,
+                success: function (retorno) {
+                    if(retorno.length > 0){
+//                        console.log(retorno);
+                        var mensagem = "Este paciente ja fez ";
+                        
+                        if (retorno[0].tipo = "EXAME") { mensagem += "esse exame"; }
+                        else { mensagem += "essa consulta"; }
+                        
+                        mensagem += " nos ultimos 30 dias. Deseja prosseguir?";
+                        var escolha = confirm(mensagem);
+                        
+                        if(escolha) document.form_exametemp.submit(); 
+                    }
+                    else{
+                        document.form_exametemp.submit(); 
+                    }
+                },
+                error: function(erro){
+                    return true;
+                }
+            });
+            
+            return false;
+        }
+        else{
+            return true;
+        }
+        
+    }
+</script>
+
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteexametempgeral/<?= $agenda_exames_id ?>" method="post">
@@ -8,10 +48,12 @@
                 <label>Nome</label>
                 <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
                 <input type="text" id="txtNome" required name="txtNome" class="texto10" onblur="calculoIdade(document.getElementById('nascimento').value)"/>
+                
                 <div style="display: none">
                     <input type="text" id="medicoid" name="medicoid" class="texto_id" value="<?= $medico; ?>"/>
                     <input type="text" id="agendaid" name="agendaid" class="texto_id" value="<?= $agenda_exames_id; ?>"/>
                 </div>
+                
             </div>
             <div>
                 <label>Dt de nascimento</label>
@@ -32,8 +74,6 @@
             </div>
             <div>
                 <label>Telefone</label>
-
-
                 <input type="text" id="telefone" class="texto02" name="telefone"/>
             </div>
             <div>
@@ -66,7 +106,9 @@
 
             <div>
                 <label>&nbsp;</label>
-                <button type="submit" name="btnEnviar">Enviar</button>
+                <button type="submit" name="btnEnviar" onclick="javascript: return consultasAnteriores()">
+                    Enviar
+                </button>
             </div>
     </form>
 </fieldset>

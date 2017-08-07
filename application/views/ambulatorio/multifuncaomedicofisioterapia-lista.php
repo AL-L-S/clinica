@@ -243,16 +243,29 @@
                                     Chamar</a></div>
                             </td>-->
                             <? if (($operador_id == 1 || $perfil_id == 1) && $item->realizada == 't') { ?>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exame_id ?>/<?= $item->agenda_exames_nome_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                    <? if($item->encaixe == 't') { ?>
+                                        <div class="bt_link">
+                                        <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
+                                            Cancelar</a></div>
+                                    <? } else { ?>
+                                        <div class="bt_link"><a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exame_id ?>/<?= $item->agenda_exames_nome_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
                                             Cancelar
                                         </a></div>
+                                    <? } ?>
                                 </td>
                             <? }elseif (($operador_id == 1 || $perfil_id == 1) && $item->realizada == 'f'){?>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                    <? if($item->encaixe == 't') { ?>
+                                        <div class="bt_link">
+                                        <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
+                                            Cancelar</a></div>
+                                    <? } else { ?>
+                                    <div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
                                             Cancelar
                                         </a></div>
+                                    <? } ?>
                                 </td>
                             <?} ?>
 
@@ -293,14 +306,17 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
 
                                     <?
-                                    if (($perfil_id == 4) || $perfil_id == 1) {
-
-//                                                $url = explode('?', $_SERVER['REQUEST_URI']);
-//                                                $args = str_replace('=', '!', str_replace('&', '@', $url[1]));
-                                        ?>
-                                        <div class="bt_link">
+                                    if (($perfil_id == 4) || $perfil_id == 1) { 
+                                        if($item->encaixe == 't') { ?>
+                                            <div class="bt_link">
+                                            <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
+                                                Cancelar</a></div>
+                                        <? } else { ?>
+                                            <div class="bt_link">
                                             <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>">
                                                 Cancelar</a></div>
+                                        <? } ?>
+                                        
                                     <? } ?></font>
                                 </td>
 

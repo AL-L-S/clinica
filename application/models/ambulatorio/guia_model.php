@@ -2128,6 +2128,8 @@ class guia_model extends Model {
         }
 
 //        $this->db->where("ae.cancelada", 'f');
+//        var_dump(date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))), 
+//                 date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));die;
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('p.nascimento desc');
