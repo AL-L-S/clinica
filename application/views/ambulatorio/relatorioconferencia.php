@@ -41,6 +41,16 @@
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
+                    <label>Data De Pesquisa</label>
+                    </dt>
+                    <dd>
+                        <select name="data_atendimento" id="data_atendimento" class="size2" >
+                            <option value='1' >DATA DE ATENDIMENTO</option>
+                            <option value='0' >DATA DE FATURAMENTO</option>
+     
+                        </select>
+                    </dd>
+                    <dt>
                     <label>Especialidade</label>
                     </dt>
                     <dd>

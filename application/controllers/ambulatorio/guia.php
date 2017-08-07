@@ -892,7 +892,7 @@ class Guia extends BaseController {
             redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id/$ambulatorio_orcamento");
         }
     }
-    
+
     function gravarprocedimentosconsulta() {
         $procedimentopercentual = $_POST['procedimento1'];
         $medicopercentual = $_POST['medicoagenda'];
@@ -1020,7 +1020,7 @@ class Guia extends BaseController {
         $guia_id = $_POST['txtguia_id'];
         $paciente_id = $_POST['txtpaciente_id'];
         $this->guia->gravarexamesfaturamentomatmed();
-         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function editarexames() {
@@ -1201,9 +1201,9 @@ class Guia extends BaseController {
         $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
-        if($ambulatorio_guia_id != null && $ambulatorio_guia_id != ''){
+        if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
-        }else{
+        } else {
             $data['exames'] = array();
         }
         $data['grupos'] = $this->procedimento->listargruposatendimento();
@@ -1223,7 +1223,7 @@ class Guia extends BaseController {
 //        var_dump($data['exames']);
 //        die;
 
-        if($ambulatorio_guia_id != null && $ambulatorio_guia_id != ''){
+        if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
         } else {
             $data['contador'] = 0;
@@ -1257,6 +1257,11 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/alterardata-form', $data);
     }
 
+    function alterardatafaturamento($agenda_exames_id) {
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $this->load->View('ambulatorio/alterardatafaturamento-form', $data);
+    }
+
     function alterarautorizacao($agenda_exames_id) {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $this->load->View('ambulatorio/alterarautorizacao-form', $data);
@@ -1278,6 +1283,19 @@ class Guia extends BaseController {
 //            $this->session->set_flashdata('message', $data['mensagem']);
 //        } else {
         $this->guia->gravaralterardata($agenda_exames_id);
+//        }
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function gravaralterardatafaturamento($agenda_exames_id) {
+        $data_escolhida = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data'])));
+        $hoje = date("Y-m-d");
+
+//        if ($hoje <= $data_escolhida) {
+//            $data['mensagem'] = 'A data não pode ser maior que a de hoje.';
+//            $this->session->set_flashdata('message', $data['mensagem']);
+//        } else {
+        $this->guia->gravaralterardatafaturamento($agenda_exames_id);
 //        }
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
@@ -1491,14 +1509,14 @@ class Guia extends BaseController {
             $_POST['parcela4'] = ($_POST['parcela4'] == '' || $_POST['parcela4'] == 0) ? 1 : $_POST['parcela4'];
 
             if (!$erro) {
-                $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();           
-                
+                $ambulatorio_guia_id = $this->guia->gravarfaturamentototal();
+
 //                var_dump($_POST['guia_id']);die;
-                
-                if($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0'){
+
+                if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
                     $this->guia->descontacreditopaciente();
                 }
-                
+
                 if ($ambulatorio_guia_id == "-1") {
                     $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
                 } else {
@@ -1690,16 +1708,16 @@ class Guia extends BaseController {
 
     function guiaspsadtoutrasdespesas($guia_id) {
         $data['guia_id'] = $guia_id;
-        
+
         $empresa_id = $this->session->userdata('empresa_id');
-        
+
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
-        
+
 //        var_dump($empresa_id);die;
-        
+
         $data['relatorio'] = $this->guia->guiaspsadtoutrasdespesas($guia_id);
 //        $data['relatorio'] = $this->guia->relatoriogastosala();
-        
+
         $this->load->View('ambulatorio/impressaoguiaspsadtoutrasdespesas', $data);
     }
 
@@ -2923,7 +2941,7 @@ class Guia extends BaseController {
         $data['formapagamento'] = $this->formapagamento->listarforma();
         $this->load->View('ambulatorio/procedimentoguianota-form', $data);
     }
-    
+
     function listarprocedimentosorcamento($ambulatorio_orcamento_id, $empresa_id) {
         $data['emissao'] = date("d-m-Y");
 //        $empresa_id = $this->session->userdata('empresa_id');
@@ -2931,7 +2949,6 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $this->load->View('ambulatorio/impressaorelatorioorcamentoprocedimento', $data);
     }
-
 
     function procedimentoguianotaform($ambulatorio_guia_id, $valorguia, $valor = 0.00) {
         $data['valorguia'] = $valorguia;

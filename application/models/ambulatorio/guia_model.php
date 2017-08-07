@@ -530,8 +530,14 @@ class guia_model extends Model {
         $this->db->join('tb_empresa emp', 'emp.empresa_id = ae.empresa_id', 'left');
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where("al.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("al.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         if ($_POST['grupoconvenio'] != "0") {
             $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
         }
@@ -544,7 +550,7 @@ class guia_model extends Model {
         if ($_POST['convenio'] == "-1") {
             $this->db->where("c.dinheiro", "t");
         }
-        if ($_POST['situacao_faturamento'] != "") {
+        if (@$_POST['situacao_faturamento'] != "") {
             $this->db->where("ae.situacao_faturamento", $_POST['situacao_faturamento']);
         }
         if ($_POST['faturamento'] != "0") {
@@ -625,8 +631,13 @@ class guia_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         if ($_POST['salas'] != "0") {
             $this->db->where("ae.agenda_exames_nome_id", $_POST['salas']);
         }
@@ -1415,8 +1426,13 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         $this->db->groupby('c.nome');
         $this->db->orderby('c.nome');
         $return = $this->db->get();
@@ -1513,8 +1529,13 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->get();
@@ -1547,8 +1568,13 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->count_all_results();
@@ -1585,8 +1611,13 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
@@ -1616,8 +1647,13 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->count_all_results();
@@ -1654,8 +1690,13 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
@@ -1685,8 +1726,13 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        }
         $this->db->groupby('o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->count_all_results();
@@ -1728,8 +1774,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("al.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("al.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();
@@ -5908,7 +5954,7 @@ class guia_model extends Model {
             $this->db->where('paciente_id', $paciente_id);
             $this->db->update('tb_paciente');
         }
-        
+
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ambulatorio_orcamento_id');
@@ -5917,12 +5963,12 @@ class guia_model extends Model {
         $this->db->where('paciente_id', $paciente_id);
         $this->db->where('data_criacao', $data);
         $return = $this->db->get();
-        
+
         $retorno = array(
             "orcamento" => $return->row_array(),
             "paciente_id" => $paciente_id
         );
-        
+
         return $retorno;
     }
 
@@ -6370,6 +6416,36 @@ AND data <= '$data_fim'";
             $this->db->set('data_autorizacao', $dataautorizacao);
             $this->db->set('operador_aterardatafaturamento', $operador_id);
             $this->db->set('data', $_POST['data']);
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_agenda_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravaralterardatafaturamento($agenda_exames_id) {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $hora = date("H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $dataautorizacao = $_POST['data'] . " " . $hora;
+//            var_dump($dataautorizacao);
+//            die;
+            $sql = "UPDATE ponto.tb_agenda_exames
+                    SET data_antiga = data_faturar
+                    WHERE agenda_exames_id = $agenda_exames_id;";
+
+            $this->db->query($sql);
+
+//            $this->db->set('data_antiga', 'data');
+            $this->db->set('data_aterardatafaturamento', $horario);
+            $this->db->set('data_autorizacao', $dataautorizacao);
+            $this->db->set('operador_aterardatafaturamento', $operador_id);
+            $this->db->set('data_faturar', $_POST['data']);
             $this->db->where('agenda_exames_id', $agenda_exames_id);
             $this->db->update('tb_agenda_exames');
             $erro = $this->db->_error_message();
@@ -8748,7 +8824,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
 
             $this->db->set('medico_solicitante', $medico_id);
-
+            $this->db->set('data_faturar', $data);
             $this->db->set('data', $data);
             $this->db->set('data_autorizacao', $horario);
             $this->db->set('data_cadastro', $horario);
@@ -8962,6 +9038,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('qtde_sessao', $qtde);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('data', $data);
+                $this->db->set('data_faturar', $data);
                 $this->db->set('data_autorizacao', $horario);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -9012,7 +9089,7 @@ ORDER BY ae.agenda_exames_id)";
             return -1;
         }
     }
-    
+
     function gravarorcamentoitem($ambulatorio_orcamento_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -9117,6 +9194,7 @@ ORDER BY ae.agenda_exames_id)";
 
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
 
+            $this->db->set('data_faturar', $data);
             $this->db->set('data', $data);
             $this->db->set('data_autorizacao', $horario);
             $this->db->set('data_cadastro', $horario);
@@ -9258,7 +9336,7 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
 
                 $this->db->set('medico_solicitante', $medico_id);
-
+                $this->db->set('data_faturar', $data);
                 $this->db->set('data', $data);
                 $this->db->set('data_autorizacao', $horario);
                 $this->db->set('data_cadastro', $horario);
@@ -9414,6 +9492,7 @@ ORDER BY ae.agenda_exames_id)";
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             $this->db->set('data', $_POST['txtdata']);
+            $this->db->set('data_faturar', $_POST['txtdata']);
             $this->db->set('data_autorizacao', $horario);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
@@ -9498,6 +9577,7 @@ ORDER BY ae.agenda_exames_id)";
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             $this->db->set('data', $_POST['txtdata']);
+            $this->db->set('data_faturar', $_POST['txtdata']);
             $this->db->set('data_autorizacao', $horario);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);

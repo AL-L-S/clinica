@@ -452,4 +452,11 @@ UPDATE ponto.tb_saldo e
 ) as empresa
 WHERE e.empresa_id is null;
 
-   
+
+-- Dia 03/08/17
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_faturar date;
+
+UPDATE ponto.tb_agenda_exames
+SET data_faturar = data
+WHERE data_faturar is null;

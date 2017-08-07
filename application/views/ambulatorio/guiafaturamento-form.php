@@ -150,7 +150,8 @@
                     <thead>
 
                         <tr>
-                            <th class="tabela_header">Data</th>
+                            <th width="130px;" class="tabela_header">Data de Atendimento</th>
+                            <th width="130px;" class="tabela_header">Data de Faturamento</th>
                             <th class="tabela_header">Hora</th>
                             <th class="tabela_header">Valor</th>
                             <th class="tabela_header">convenio</th>
@@ -170,6 +171,7 @@
                         <tbody>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data_faturar, 8, 2) . '/' . substr($item->data_faturar, 5, 2) . '/' . substr($item->data_faturar, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data_autorizacao, 11, 8); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor_total, 2, ',', '.'); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
@@ -198,10 +200,17 @@
                         <? } else { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;">&nbsp;</td>                          
                         <? } ?>
-                        <td class="<?php echo $estilo_linha; ?>"><div class="bt_link_new">
-                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterardata/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=450');">Alterar Data
+                        <td class="<?php echo $estilo_linha; ?>">
+                            <div class="bt_link_new" width="140">
+                                <a  onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterardata/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=450');">Alterar Data Atendi.
                                 </a>
-                            </div></td>
+                            </div>
+                            <div class="bt_link_new"  width="140">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterardatafaturamento/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=450');">Alterar Data Fatura.
+                                </a>
+                            </div>
+                        </td>
+
                         </tr>
 
                         </tbody>

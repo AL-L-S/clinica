@@ -5,19 +5,29 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioexamesala">
                 <dl>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Sala</label>
+                    <label>Data De Pesquisa</label>
+                    </dt>
+                    <dd>
+                        <select name="data_atendimento" id="grupo" class="size2" >
+                            <option value='1' >DATA DE ATENDIMENTO</option>
+                            <option value='0' >DATA DE FATURAMENTO</option>
+     
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Sala</label>
                     </dt>
                     <dd>
                         <select name="salas" id="salas" class="size2">
@@ -26,7 +36,7 @@
                                 <option value="<?= $value->exame_sala_id; ?>" ><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
 
-                            
+
                         </select>
                     </dd>
                 </dl>
@@ -39,10 +49,10 @@
 </div>
 
 
-</div> <!-- Final da DIV content -->
+<!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -54,7 +64,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -67,7 +77,7 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

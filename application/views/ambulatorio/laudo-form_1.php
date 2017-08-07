@@ -36,8 +36,6 @@ if (count($pacs) > 0) {
     }
 
 //    echo $linkImagem, '<br>';
-
-
 //        if ($verifica == 0) {
 //            $ambulatorio_laudooit_id = $this->laudooit->inserirlaudo($ambulatorio_laudo_id);
 //            $obj_laudo = new laudooit_model($ambulatorio_laudooit_id);
@@ -65,7 +63,7 @@ if (count($pacs) > 0) {
                 <fieldset>
                     <legend>Dados</legend>
                     <table> 
-                        <? //= @$obj->_guia_id ?>
+                        <? //= @$obj->_guia_id  ?>
                         <tr>
                             <td width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <td width="400px;">Exame: <?= @$obj->_procedimento ?></td>
@@ -228,8 +226,8 @@ if (count($pacs) > 0) {
                                         <input type="text" id="linha2" class="texto02" name="linha2"/>
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
-                                        <?php // foreach ($linha as $item) {  ?>
-                                                                                                                        <option value="<?php // echo $item->nome;     ?>" ><?php // echo $item->nome;     ?></option>
+                                        <?php // foreach ($linha as $item) {   ?>
+                                                                                                                        <option value="<?php // echo $item->nome;       ?>" ><?php // echo $item->nome;       ?></option>
                                         <?php // }  ?>
                                         </select>-->
 
@@ -316,6 +314,11 @@ if (count($pacs) > 0) {
                                         <label id="titulosenha">Senha</label>
                                         <input type="password" name="senha" id="senha" class="size1" />
                                     </div>
+                                    <label style="margin-left: 10pt" for="rev">Revisão?</label>
+                                    <input type="checkbox" name="rev" id="rev" />
+                                    <div class="dias" style="display: inline">
+
+                                    </div>
                                 </fieldset>
                                 <fieldset>
                                     <? $operador_id = $this->session->userdata('operador_id'); ?>
@@ -344,15 +347,14 @@ if (count($pacs) > 0) {
                                                             <font size="-1">OIT</font></a></div></td>
                                                 <td >
                                                     <div class="bt_link_new">
-                                                        <?
-                                                        if (!preg_match('/\ERROR/', $linkImagem) && $linkImagem != '') {?>
-                                                        <a href="<?= $linkImagem ?>" target="_blank" >
-                                                            <font size="-1">Imagens PACS</font></a>    
-                                                        <?}else{?>
+                                                        <? if (!preg_match('/\ERROR/', $linkImagem) && $linkImagem != '') { ?>
+                                                            <a href="<?= $linkImagem ?>" target="_blank" >
+                                                                <font size="-1">Imagens PACS</font></a>    
+                                                        <? } else { ?>
                                                             <font size="-1">Imagens PACS</font>
-                                                        <?}
+                                                        <? }
                                                         ?>
-                                                        </div></td>
+                                                    </div></td>
                                             </tr>
                                             <tr>
                                                 <td >
@@ -438,7 +440,19 @@ if (count($pacs) > 0) {
                             <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
                             <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
                             <script type="text/javascript">
-
+                                                            jQuery('#rev').change(function () {
+                                                                if (this.checked) {
+                                                                    var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
+//                                                            var tag += '';
+////                                                           <input type="radio" name="OPCAO1" VALUE="op1"> opção1
+////                                                            var tag += '';
+//                                                            jQuery("#Altura").mask("999", {placeholder: " "});
+                                                                    jQuery(".dias").append(tag);
+                                                                } else {
+                                                                    jQuery(".dias span").remove();
+                                                                    jQuery(".dias input").remove();
+                                                                }
+                                                            });
                                                             document.getElementById('titulosenha').style.display = "none";
                                                             document.getElementById('senha').style.display = "none";
 
