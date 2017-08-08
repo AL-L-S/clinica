@@ -251,12 +251,13 @@ class Guia extends BaseController {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['exame'] = $this->guia->listarexame($exames_id);
-        $data['grupos'] = $this->guia->listargrupoficha($guia_id);
+        $grupo = $data['exame'][0]->grupo;
+        $data['grupos'] = $this->guia->listargrupoficha($guia_id, $grupo);
 //        echo '<pre>';
 //        var_dump($data['grupos']); die;
-        $grupo = $data['exame'][0]->grupo;
+//        $grupo = $data['exame'][0]->grupo;
         $dinheiro = $data['exame'][0]->dinheiro;
-
+        
         $data['exames'] = $this->guia->listarexamesguia($guia_id);
         $exames = $data['exames'];
         $valor_total = 0;
