@@ -93,8 +93,8 @@
                 ?>
             <tr>
                 <td ><?= $item->quantidade ?></td>
-                <td width="40%;"><?= $item->procedimento  . "-" . $item->sala?></td>
-                <td ><?= $item->convenio ?></td>
+                <td width="50%;"><?= $item->procedimento  . "-" . $item->sala?></td>
+                <td width="30%;"><?= $item->convenio ?></td>
 <!--                <td ><?= $item->autorizacao ?></td>-->
                 <td ><?= $item->medicoagenda ?></td>
             </tr>
@@ -108,18 +108,18 @@
     <br>
     <table>
             <?
-            foreach ($exames as $item) :
-                if ($item->grupo != $exame[0]->grupo) {
+//            foreach ($exames as $item) :
+//                if ($item->grupo != $exame[0]->grupo) {
                 ?>
-            <tr>
+<!--            <tr>
                 <td width="40%;"><?= $item->procedimento  . "-" . $item->sala  ?></td>
                 <td ><?= $item->convenio ?></td>
                 <td ><?= $item->autorizacao ?></td>
                 <td width="25%;"><?= $item->medicosolicitante ?></td>
-            </tr>
+            </tr>-->
         <? 
-                }
-        endforeach; ?>
+//                }
+//        endforeach; ?>
         </tbody>
     </table>
 

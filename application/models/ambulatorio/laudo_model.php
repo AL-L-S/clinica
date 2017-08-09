@@ -1916,6 +1916,7 @@ class laudo_model extends Model {
         try {
             /* inicia o mapeamento no banco */
 
+
             $this->db->set('ativo', 't');
             $this->db->where('exame_sala_id', $sala_id);
             $this->db->update('tb_exame_sala');
@@ -1953,7 +1954,29 @@ class laudo_model extends Model {
 //                        $this->db->where('pt.ativo', 'true');
                 $percentual = $this->db->get()->result();
             }
-
+            
+            if (isset($_POST['rev'])) {
+                switch ($_POST['tempoRevisao']) {
+                    case '1a':
+                        $dias = '+1 year';
+                        break;
+                    case '6m':
+                        $dias = '+6 month';
+                        break;
+                    case '3m':
+                        $dias = '+3 month';
+                        break;
+                    case '1m':
+                        $dias = '+1 month';
+                        break;
+                    default:
+                        $dias = '';
+                }
+                if ($dias != '') {
+                    $diaRevisao = date('Y-m-d', strtotime($dias));
+                    $this->db->set('data_revisao', $diaRevisao);
+                }
+            }
 
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
@@ -1990,6 +2013,7 @@ class laudo_model extends Model {
             if (isset($_POST['imagem'])) {
                 $this->db->set('imagens', $_POST['imagem']);
             }
+
             $this->db->set('situacao', 'FINALIZADO');
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
@@ -2253,8 +2277,8 @@ class laudo_model extends Model {
             $this->db->where("exames_id", $exame_id);
             $query = $this->db->get();
             $return = $query->result();
-            
-            
+
+
             $this->db->select('mc.valor as perc_medico, mc.percentual');
             $this->db->from('tb_procedimento_percentual_medico_convenio mc');
             $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
@@ -2555,6 +2579,25 @@ class laudo_model extends Model {
             $query = $this->db->get();
             $return = $query->result();
 
+
+
+            $this->db->select('mc.valor as perc_medico, mc.percentual');
+            $this->db->from('tb_procedimento_percentual_medico_convenio mc');
+            $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
+            $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+            $this->db->where('mc.medico', $_POST['medico']);
+            $this->db->where('mc.ativo', 'true');
+            $percentual = $this->db->get()->result();
+
+            if (count($percentual) == 0) {
+                $this->db->select('pt.perc_medico, pt.percentual');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+//                        $this->db->where('pc.ativo', 'true');
+//                        $this->db->where('pt.ativo', 'true');
+                $percentual = $this->db->get()->result();
+            }
             if (isset($_POST['rev'])) {
                 switch ($_POST['tempoRevisao']) {
                     case '1a':
@@ -2578,25 +2621,6 @@ class laudo_model extends Model {
                     $this->db->set('data_revisao', $diaRevisao);
                 }
             }
-
-            $this->db->select('mc.valor as perc_medico, mc.percentual');
-            $this->db->from('tb_procedimento_percentual_medico_convenio mc');
-            $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
-            $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
-            $this->db->where('mc.medico', $_POST['medico']);
-            $this->db->where('mc.ativo', 'true');
-            $percentual = $this->db->get()->result();
-
-            if (count($percentual) == 0) {
-                $this->db->select('pt.perc_medico, pt.percentual');
-                $this->db->from('tb_procedimento_convenio pc');
-                $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
-                $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
-//                        $this->db->where('pc.ativo', 'true');
-//                        $this->db->where('pt.ativo', 'true');
-                $percentual = $this->db->get()->result();
-            }
-
 
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);

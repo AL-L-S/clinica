@@ -5,18 +5,28 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriogastosala">
                 <dl>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
-                    
+                    <dt>
+                        <label>Data De Pesquisa</label>
+                    </dt>
+                    <dd>
+                        <select name="grupo" id="grupo" class="size1" >
+                            <option value='data_atendimento' >DATA DE ATENDIMENTO</option>
+                            <option value='data_faturamento' >DATA DE FATURAMENTO</option>
+
+                        </select>
+                    </dd>
+
                     <dt>
                         <label>Paciente</label>
                     </dt>
@@ -24,7 +34,7 @@
                         <input type="hidden" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
                         <input type="text" id="txtNome" name="txtNome" class="texto10"/>
                     </dd>
-                    
+
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>
@@ -36,7 +46,7 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -48,7 +58,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -59,8 +69,8 @@
             dateFormat: 'dd/mm/yy'
         });
     });
-    
-     $(function () {
+
+    $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
             minLength: 3,
@@ -81,7 +91,7 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

@@ -5,7 +5,7 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioconveniovalor">
                 <dl>
                     <dt>
-                    <label>Medico</label>
+                        <label>Medico</label>
                     </dt>
                     <dd>
                         <select name="medicos" id="medicos" class="size2">
@@ -16,7 +16,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Convenio</label>
+                        <label>Convenio</label>
                     </dt>
                     <dd>
                         <select name="convenio" id="convenio" class="size2">
@@ -28,19 +28,29 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Especialidade</label>
+                    <label>Data De Pesquisa</label>
+                    </dt>
+                    <dd>
+                        <select name="data_atendimento" id="grupo" class="size2" >
+                            <option value='1' >DATA DE ATENDIMENTO</option>
+                            <option value='0' >DATA DE FATURAMENTO</option>
+     
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Especialidade</label>
                     </dt>
                     <dd>
                         <select name="grupo" id="grupo" class="size1" >
@@ -55,7 +65,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Empresa</label>
+                        <label>Empresa</label>
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
@@ -77,7 +87,7 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -89,7 +99,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -102,7 +112,7 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

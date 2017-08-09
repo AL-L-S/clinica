@@ -71,7 +71,8 @@
                     <th width="90px;"><div style="margin-left:8pt;">Convenio</div></th>
                     <th width="60px;">Codigo</th>
                     <th width="90px;">Medico</th>
-                    <th width="60px;">Data</th>
+                    <th width="130px;">Data Atendi</th>
+                    <th width="130px;">Data Fatura</th>
                     <th width="110px;">Nome</th>
                     <th width="180px;">Obs.</th>
                     <th width="60px;">Valor Fatur.</th>
@@ -121,7 +122,8 @@
                                 }
                                 ?>
                             </td>
-                            <td ><?= substr($item->data_criacao, 8, 2) . "/" . substr($item->data_criacao, 5, 2) . "/" . substr($item->data_criacao, 0, 4); ?></td>
+                            <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                            <td ><?= substr($item->data_faturar, 8, 2) . "/" . substr($item->data_faturar, 5, 2) . "/" . substr($item->data_faturar, 0, 4); ?></td>
                             <? if ($item->faturado == "t") { ?>
                                 <td>
                                     <font color="green"><? echo $item->paciente; ?>

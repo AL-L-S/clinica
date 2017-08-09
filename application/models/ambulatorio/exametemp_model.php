@@ -17,31 +17,30 @@ class exametemp_model extends Model {
     }
 
     function listarsaldocreditopaciente($paciente_id) {
-        
+
         $this->db->select('SUM(pcr.valor) as saldo');
         $this->db->from('tb_paciente_credito pcr');
-        
+
         $this->db->where('pcr.ativo', 'true');
         $this->db->where('pcr.paciente_id', $paciente_id);
-        
+
         $return = $this->db->get();
         return $return->result();
-        
     }
-    
+
     function listarpacienteporguia($guia_id) {
         $this->db->select('paciente_id');
         $this->db->from('tb_ambulatorio_guia');
         $this->db->where('ambulatorio_guia_id', $guia_id);
-        
+
         $return = $this->db->get();
         $return = $return->result();
-        
+
         return $return[0]->paciente_id;
     }
-    
+
     function listarcredito($paciente_id) {
-        
+
         $this->db->select('pcr.paciente_credito_id,
                            pcr.paciente_id,
                            pcr.procedimento_convenio_id,
@@ -57,17 +56,16 @@ class exametemp_model extends Model {
         $this->db->where('pcr.ativo', 'true');
         $this->db->where('pcr.paciente_id', $paciente_id);
         $this->db->where('pcr.procedimento_convenio_id IS NOT NULL');
-        
-        if(@$_GET['procedimento'] != ''){
+
+        if (@$_GET['procedimento'] != '') {
             $this->db->where('pt.nome ilike', "%" . $_GET['procedimento'] . "%");
         }
-        
-        if(@$_GET['convenio'] != ''){
+
+        if (@$_GET['convenio'] != '') {
             $this->db->where('c.nome ilike', "%" . $_GET['convenio'] . "%");
         }
-        
+
         return $this->db;
-        
     }
 
     function listarmedicoconsulta() {
@@ -1591,7 +1589,7 @@ class exametemp_model extends Model {
     }
 
     function listaagendafisioterapiapersonalizadaerro($agendaexame_id, $semana) {
-                $empresa_id = $this->session->userdata('empresa_id');
+        $empresa_id = $this->session->userdata('empresa_id');
 //        $data = data("Y-m-d");
         $this->db->select("ae.*, h.dia");
         $this->db->from('tb_agenda_exames ae');
@@ -1874,10 +1872,10 @@ class exametemp_model extends Model {
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            
+
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
-            
+
             $this->db->insert('tb_paciente_credito');
 
             $paciente_credito_id = $this->db->insert_id();
@@ -3246,6 +3244,7 @@ class exametemp_model extends Model {
             $i = 0;
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
+            $data = date("Y-m-d");
             $operador_id = $this->session->userdata('operador_id');
 
             foreach ($_POST['procedimento'] as $procedimento_tuss_id) {
@@ -3448,6 +3447,8 @@ class exametemp_model extends Model {
 
                     $this->db->set('ambulatorio_pacientetemp_id', null);
                     $this->db->set('data_autorizacao', $horario);
+                    $data = date("Y-m-d");
+                    $this->db->set('data_faturar', $data);
                     $this->db->set('senha', md5($agenda_exames_id));
                     $this->db->set('operador_autorizacao', $operador_id);
                     $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -3712,7 +3713,8 @@ class exametemp_model extends Model {
                     }
 
                     $this->db->set('confirmado', 't');
-
+                    $data = date("Y-m-d");
+                    $this->db->set('data_faturar', $data);
                     $this->db->set('ambulatorio_pacientetemp_id', null);
                     $this->db->set('data_autorizacao', $horario);
                     $this->db->set('operador_autorizacao', $operador_id);
@@ -3926,6 +3928,8 @@ class exametemp_model extends Model {
                     $this->db->set('data_autorizacao', $horario);
                     $this->db->set('operador_autorizacao', $operador_id);
                     $this->db->set('senha', md5($agenda_exames_id));
+                    $data = date("Y-m-d");
+                    $this->db->set('data_faturar', $data);
                     $this->db->where('agenda_exames_id', $agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
                     $confimado = "";
@@ -3972,6 +3976,8 @@ class exametemp_model extends Model {
                         $this->db->set('ambulatorio_pacientetemp_id', null);
                         $this->db->set('data_autorizacao', $horario);
                         $this->db->set('data', $datahoje);
+                        $data = date("Y-m-d");
+                        $this->db->set('data_faturar', $datahoje);
                         $this->db->set('operador_autorizacao', $operador_id);
                         $this->db->insert('tb_agenda_exames');
                         $confimado = "";
@@ -4209,7 +4215,8 @@ class exametemp_model extends Model {
                         $this->db->set('data_faturamento', $horario);
                     }
                     $this->db->set('ativo', 'f');
-
+//                    $data = date("Y-m-d");
+                    $this->db->set('data_faturar', $data);
                     $this->db->set('ambulatorio_pacientetemp_id', null);
                     $this->db->set('data_autorizacao', $horario);
                     $this->db->set('operador_autorizacao', $operador_id);
@@ -4265,6 +4272,8 @@ class exametemp_model extends Model {
                             $this->db->set('operador_autorizacao', $operador_id);
                             $this->db->where('numero_sessao', $index);
                             $this->db->where('qtde_sessao', $qtde);
+                            $data = date("Y-m-d");
+                            $this->db->set('data_faturar', $data);
                             $this->db->where('agrupador_fisioterapia', $agrupador_fisioterapia);
                             $this->db->update('tb_agenda_exames');
                             $confimado = "";
@@ -4311,6 +4320,8 @@ class exametemp_model extends Model {
                             $this->db->set('ambulatorio_pacientetemp_id', null);
                             $this->db->set('data_autorizacao', $horario);
                             $this->db->set('data', $datahoje);
+                            $data = date("Y-m-d");
+                            $this->db->set('data_faturar', $datahoje);
                             $this->db->set('operador_autorizacao', $operador_id);
                             $this->db->insert('tb_agenda_exames');
                             $confimado = "";
@@ -4563,6 +4574,8 @@ class exametemp_model extends Model {
                     $this->db->set('data_autorizacao', $horario);
                     $this->db->set('operador_autorizacao', $operador_id);
                     $this->db->set('senha', md5($agenda_exames_id));
+//                    $data = date("Y-m-d");
+                    $this->db->set('data_faturar', $data);
                     $this->db->where('agenda_exames_id', $agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
                     $confimado = "";
@@ -4609,6 +4622,8 @@ class exametemp_model extends Model {
                         $this->db->set('ambulatorio_pacientetemp_id', null);
                         $this->db->set('data_autorizacao', $horario);
                         $this->db->set('data', $datahoje);
+//                        $data = date("Y-m-d");
+                        $this->db->set('data_faturar', $datahoje);
                         $this->db->set('operador_autorizacao', $operador_id);
                         $this->db->insert('tb_agenda_exames');
                         $confimado = "";

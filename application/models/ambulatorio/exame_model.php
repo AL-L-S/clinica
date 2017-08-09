@@ -938,6 +938,7 @@ class exame_model extends Model {
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
                             ae.data,
+                            ae.data_faturar,
                             ae.inicio,
                             ae.data_autorizacao,
                             ae.fim,
@@ -1063,6 +1064,7 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
+            $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
             $this->db->set('data_autorizacao', $horario);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
@@ -4403,6 +4405,8 @@ class exame_model extends Model {
                             o.nome as medico,
                             ae.paciente_id,
                             ae.tipo,
+                            ae.data_faturar,
+                            ae.data,
                             observacao_faturamento');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
@@ -4414,8 +4418,8 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id= al.medico_parecer1', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("c.dinheiro", 'f');
         $this->db->where("ae.confirmado", 't');
 //        $this->db->where("( (ae.tipo != 'CIRURGICO') OR (pt.grupo != 'CIRURGICO') )");
@@ -5103,6 +5107,7 @@ class exame_model extends Model {
         $this->db->set('data_autorizacao', $horario);
         $this->db->set('data_cadastro', $horario);
         $this->db->set('data', $data);
+        $this->db->set('data_faturar', $data);
         $this->db->set('operador_cadastro', $operador_id);
         $this->db->set('data_realizacao', $horario);
         $this->db->set('operador_realizacao', $operador_id);
