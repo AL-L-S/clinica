@@ -1,3 +1,12 @@
+<script>
+    function mostrarPopUpIndentificao(){
+        var mens = "Numeros de Indentificação:\n";
+        <? foreach ($numeros_indentificacao as $value) {?>
+                mens += "<?= $value->nome_empresa; ?> = <?= $value->numero_indentificacao; ?>\n";
+        <?}?>
+        alert(mens);
+    }
+</script>
 
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div style="width: 100%">
@@ -19,6 +28,10 @@
                                 </option>
                                 <? endforeach; ?>
                         </select>
+                    </div>
+                    <div style="width: 100%">
+                        <label onclick="mostrarPopUpIndentificao()">Identificação da Empresa</label>
+                        <input type="text" name="numero_identificacao_sms" value="<?= @$mensagem[0]->numero_indentificacao_sms ?>"/>
                     </div>
                 <? } ?>
                 <div style="width: 100%">

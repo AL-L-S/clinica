@@ -62,7 +62,6 @@ class empresa_model extends Model {
                                 SELECT COUNT(*) 
                                 FROM ponto.tb_empresa_lembretes_visualizacao 
                                 WHERE ponto.tb_empresa_lembretes_visualizacao.empresa_lembretes_id = el.empresa_lembretes_id 
-                                AND ponto.tb_empresa_lembretes_visualizacao.operador_visualizacao = {$operador_id}
                             ) as visualizado");
         $this->db->from('tb_empresa_lembretes el');
         $this->db->join('tb_operador o', "o.operador_id = el.operador_destino");
@@ -82,6 +81,14 @@ class empresa_model extends Model {
         }
 
         return $this->db;
+    }
+
+    function listarnumeroindentificacaosms() {
+
+        $this->db->select('nome_empresa, numero_indentificacao');
+        $this->db->from('tb_empresas_indentificacao_sms');
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function pacotesms() {
@@ -127,11 +134,12 @@ class empresa_model extends Model {
         return $return->result();
     }
 
-    function listarinformacaosms() {
-        $empresa_id = $this->session->userdata('empresa_id');
+    function listarinformacaosms($empresa_id) {
+//        $empresa_id = $this->session->userdata('empresa_id');
 
         $this->db->select(' pacote_id,
                             empresa_sms_id,
+                            numero_indentificacao_sms,
                             enviar_excedentes,
                             mensagem_revisao, 
                             mensagem_confirmacao, 
@@ -315,11 +323,14 @@ class empresa_model extends Model {
             /* inicia o mapeamento no banco */
             $this->db->set('empresa_id', $_POST['empresa_id']);
             $this->db->set('pacote_id', $_POST['txtpacote']);
+            $this->db->set('numero_indentificacao_sms', $_POST['numero_identificacao_sms']);
+            
             if (isset($_POST['msgensExcedentes'])) {
                 $this->db->set('enviar_excedentes', 't');
             } else {
                 $this->db->set('enviar_excedentes', 'f');
             }
+            
             $this->db->set('mensagem_confirmacao', $_POST['txtMensagemConfirmacao']);
             $this->db->set('mensagem_agradecimento', $_POST['txtMensagemAgradecimento']);
             $this->db->set('mensagem_aniversariante', $_POST['txtMensagemAniversariantes']);

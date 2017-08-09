@@ -464,7 +464,15 @@ class centrocirurgico_model extends BaseModel {
     }
 
     function gravargrauparticipacao() {
-
+        $this->db->select('grau_participacao_id');
+        $this->db->from('tb_grau_participacao');
+        $this->db->where('codigo', $_POST['txtcodigo']);
+        $this->db->where('ativo', 't');
+        $return = $this->db->get();
+        if( count($return->result()) > 0 ){
+            return -1;
+        }
+        
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('codigo', $_POST['txtcodigo']);

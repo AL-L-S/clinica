@@ -225,7 +225,7 @@ class centrocirurgico extends BaseController {
     function gravargrauparticipacao() {
             $solicitacao = $this->centrocirurgico_m->gravargrauparticipacao();
             if ($solicitacao == -1) {
-                $data['mensagem'] = 'Erro ao efetuar Gravar';
+                $data['mensagem'] = 'Erro ao Gravar. Esse Código ja foi cadastrado.';
             } else {
                 $data['mensagem'] = 'Grau de partipação salvo com Sucesso';
             }

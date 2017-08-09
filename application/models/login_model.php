@@ -124,7 +124,10 @@ class login_model extends Model {
         $i = 1;
         foreach ($exames as $item) {
             if ($i <= $disponivel) {
-
+                $this->db->set('sms_enviado', 't');
+                $this->db->where('agenda_exames_id', $item->agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
+                
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
@@ -156,7 +159,11 @@ class login_model extends Model {
         $i = 1;
         foreach ($exames as $item) {
             if ($i <= $disponivel) {
-
+//
+//                $this->db->set('sms_enviado', 't');
+//                $this->db->where('agenda_exames_id', $item->agenda_exames_id);
+//                $this->db->update('tb_agenda_exames');
+                
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
@@ -276,8 +283,8 @@ class login_model extends Model {
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('periodo', $periodo);
         $this->db->set('qtde', $total);
-        $this->db->where('data_verificacao', $horario);
-        $this->db->update('tb_empresa_sms_registro');
+        $this->db->set('data_verificacao', $horario);
+        $this->db->insert('tb_empresa_sms_registro');
 
         $this->db->set('registrado', 't');
         $this->db->where('data', $horario);
@@ -296,11 +303,12 @@ class login_model extends Model {
 
     function listarsms() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('s.sms_id, s.numero, s.mensagem, controle_id, e.razao_social, e.cnpj, s.agenda_exames_id, s.paciente_id');
+        $this->db->select('s.sms_id, s.numero, s.mensagem, controle_id, numero_indentificacao_sms as numero_indentificacao');
         $this->db->from('tb_sms s');
         $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id');
-        $this->db->where('e.razao_social IS NOT NULL');
-        $this->db->where('e.cnpj IS NOT NULL');
+        $this->db->join('tb_empresa_sms es', 'es.empresa_id = s.empresa_id');
+//        $this->db->where('e.razao_social IS NOT NULL');
+//        $this->db->where('e.cnpj IS NOT NULL');
         $this->db->where('s.enviado', 'f');
         $this->db->where('s.ativo', 't');
         $this->db->where('s.empresa_id', $empresa_id);
@@ -316,9 +324,8 @@ class login_model extends Model {
 
     function atualizandonumerocontrole($resultado) {
         foreach ($resultado as $item) {
-            $this->db->set('controle_id', $item["controle_id"]);
-            $this->db->where('sms_id', $item["sms_id"]);
-            $this->db->update('tb_sms');
+            $sql = "UPDATE ponto.tb_sms SET controle_id={$item["controle_id"]} WHERE sms_id={$item["sms_id"]}";
+            $this->db->query($sql);
         }
     }
 
@@ -358,6 +365,7 @@ class login_model extends Model {
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.sms_enviado', 'f');
         $this->db->where('ae.realizada', 't');
         $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
         $this->db->where('ae.data', $horario);
@@ -374,10 +382,11 @@ class login_model extends Model {
                            p.celular,
                            pt.nome');
         $this->db->from('tb_agenda_exames ae');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.sms_enviado', 'f');
         $this->db->where('ae.realizada', 'f');
         $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
         $this->db->where('ae.data', $diaSeguinte);
