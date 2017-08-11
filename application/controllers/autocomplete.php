@@ -312,8 +312,8 @@ class Autocomplete extends Controller {
 
     function listarhorarioscalendario() {
 //            echo $_POST['custom_param1'];
-        if (isset($_POST['medico']) || isset($_POST['especialidade'])) {
-            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], $_POST['especialidade']);
+        if (isset($_POST['medico']) || isset($_POST['tipoagenda']) || isset($_POST['empresa'])) {
+            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], null, $_POST['empresa'], $_POST['sala'], $_POST['grupo'],$_POST['tipoagenda'] );
         } else {
             $result = $this->exametemp->listarhorarioscalendariovago();
         }
@@ -344,11 +344,19 @@ class Autocomplete extends Controller {
             } else {
                 $medico = null;
             }
-            if ($_POST['especialidade']) {
-                $especialidade = $_POST['especialidade'];
+            if ($_POST['tipoagenda']) {
+                $tipoagenda = $_POST['tipoagenda'];
             } else {
-                $especialidade = null;
+                $tipoagenda = null;
             }
+            if ($_POST['paciente'] != '') {
+                $nome = $_POST['paciente'];
+            } else {
+                $nome = null;
+            }
+            $sala = $_POST['sala'];
+            $grupo = $_POST['grupo'];
+            $empresa = $_POST['empresa'];
 
             $dia = date("d", strtotime($item->data));
             $mes = date("m", strtotime($item->data));
@@ -356,7 +364,7 @@ class Autocomplete extends Controller {
 
 //            $medico = $item->medico;
 
-            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=&especialidade=$especialidade&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=";
+            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome";
 
 
             $var[] = $retorno;
@@ -1910,6 +1918,16 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompletegrupoempresasala($_GET['txtgrupo']);
         } else {
             $result = $this->exametemp->listarautocompletegrupoempresasala();
+        }
+
+        echo json_encode($result);
+    }
+    function grupoempresasalatodos() {
+//        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['txtgrupo'])) {
+            $result = $this->exametemp->listarautocompletegrupoempresasalatodos($_GET['txtgrupo']);
+        } else {
+            $result = $this->exametemp->listarautocompletegrupoempresasalatodos();
         }
 
         echo json_encode($result);

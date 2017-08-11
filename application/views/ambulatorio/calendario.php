@@ -31,8 +31,8 @@
 </head>
 <!--<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="pt-BR" >-->
 <?
-if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-31'){
-   $_GET['data'] = date("Y-m-d");    
+if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-31') {
+    $_GET['data'] = date("Y-m-d");
 }
 ?>
 
@@ -69,10 +69,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
             margin-left: 0px;
         }
 
-        #calendar {
-            max-width: 600px;
-            margin: 0 auto;
-        }
+
         .vermelho{
             color: red;
         }
@@ -90,24 +87,61 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
             $medicos = $this->operador_m->listarmedicos();
             $salas = $this->exame->listartodassalas();
             $especialidade = $this->exame->listarespecialidade();
+            $grupos = $this->procedimento->listargrupos();
             $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
+            $tipo_consulta = $this->tipoconsulta->listarcalendario();
+
+            if (@$_GET['medico'] != '') {
+                $medico_atual = $_GET['medico'];
+            } else {
+                $medico_atual = 0;
+            }
+            if (@$_GET['empresa'] != '') {
+                $empresa_atual = $_GET['empresa'];
+            } else {
+                $empresa_atual = $empresa_logada;
+            }
+            if (@$_GET['sala'] != '') {
+                $sala_atual = $_GET['sala'];
+            } else {
+                $sala_atual = 0;
+            }
+            if (@$_GET['tipoagenda'] != '') {
+                $tipoagenda = $_GET['tipoagenda'];
+            } else {
+                $tipoagenda = 0;
+            }
             ?>
             <table>
                 <thead>
                 <form method="get" action="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario">
 
                     <tr>
+                        <th class="tabela_title">Grupo</th>
                         <th class="tabela_title">Empresa</th>
-                        <th class="tabela_title">Especialidade</th>
+                        <th class="tabela_title">Sala</th>
+                        <th class="tabela_title">Tipo Agenda</th>
                         <th class="tabela_title">Medico</th>
                         <th class="tabela_title">Nome</th>
 
                     </tr>
                     <tr>
                         <th class="tabela_title">
+                            <select name="grupo" id="grupo" class="size2" >
+                                <option value='' >TODOS</option>
+                                <? foreach ($grupos as $grupo) { ?>                                
+                                    <option value='<?= $grupo->nome ?>' <?
+                                    if (@$_GET['grupo'] == $grupo->nome):echo 'selected';
+                                    endif;
+                                    ?>><?= $grupo->nome ?></option>
+                                        <? } ?>
+                            </select>
+
+                        </th>
+                        <th class="tabela_title">
                             <select name="empresa" id="empresa" class="size2">
-                                <option value=""></option>
+                                <option value="">TODOS</option>
                                 <?
                                 $selected = false;
                                 foreach ($empresas as $value) :
@@ -128,12 +162,24 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
 
                         </th>
                         <th class="tabela_title">
-                            <select name="especialidade" id="especialidade" class="size2">
+                            <select name="sala" id="sala" class="size1">
+                                <option value="">TODOS</option>
+                                <? foreach ($salas as $value) : ?>
+                                    <option value="<?= $value->exame_sala_id; ?>" <?
+                                    if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+
+                        </th>
+                        <th class="tabela_title">
+                            <select name="tipoagenda" id="tipoagenda" class="size2">
                                 <option value=""></option>
                                 <option value="">TODOS</option>
-                                <? foreach ($especialidade as $value) : ?>
-                                    <option value="<?= $value->cbo_ocupacao_id; ?>" <?
-                                    if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
+                                <? foreach ($tipo_consulta as $value) : ?>
+                                    <option value="<?= $value->ambulatorio_tipo_consulta_id; ?>" <?
+                                    if (@$_GET['tipoagenda'] == $value->ambulatorio_tipo_consulta_id):echo 'selected';
                                     endif;
                                     ?>>
                                                 <?
@@ -167,6 +213,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
                         </th>
                         <th colspan="2" class="tabela_title">
                             <input type="text" name="nome" class="texto04 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                            <input type="hidden" name="data" id="data" class="texto04 bestupper" value="<?php echo date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))); ?>" />
                         </th>
 
                         <th colspan="3" class="tabela_title">
@@ -421,10 +468,10 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
 
                         <? } ?>  
                         <!-- OBSERVAÇOES -->
-                        <!--<td class="<?php // echo $estilo_linha;    ?>"><?= $item->observacoes; ?></td>-->
+                        <!--<td class="<?php // echo $estilo_linha;            ?>"><?= $item->observacoes; ?></td>-->
 
-                        <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes ; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                width=500,height=230');">=><?=  substr($item->observacoes, 0,5) ; ?>(...)</td>
+                        <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
+                                                                                                                                                                                width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
                             <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -527,6 +574,11 @@ if (@$_GET['data'] != '') {
 } else {
     $data = date('Y-m-d');
 }
+if (@$_GET['nome'] != '') {
+    $nome = $_GET['nome'];
+} else {
+    $nome = "";
+}
 ?>
 <script>
 //alert($('#medico').val());
@@ -537,7 +589,11 @@ if (@$_GET['data'] != '') {
 
 
 //    function date() {
-
+    if ($('#nome').val() != '') {
+        var paciente = '<?= $nome ?>';
+    } else {
+        var paciente = '';
+    }
 
     $('#calendar').fullCalendar({
         header: {
@@ -547,10 +603,20 @@ if (@$_GET['data'] != '') {
         },
         height: 300,
 //        theme: true,
-        dayClick: function (date) {
+        dayRender: function (date, cell) {
+            var data_escolhida = $('#data').val();
+            var today = moment(new Date()).format('YYYY-MM-DD');
+            var check = moment(date).format('YYYY-MM-DD');
+//            alert(data_escolhida);
+//            var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
+            if (data_escolhida == check && data_escolhida != today) {
+                cell.css("background-color", "#BCD2EE");
+            }
+        },
+        dayClick: function (date, cell) {
             var data = date.format();
-
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario?empresa=&especialidade=&medico=&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');
+//            cell.css("background-color", "#BCD2EE");
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() +  '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome= ' + paciente + '', '_self');
 
 
 
@@ -578,8 +644,11 @@ if (@$_GET['data'] != '') {
                 type: 'POST',
                 data: {
                     medico: $('#medico').val(),
-                    especialidade: $('#especialidade').val(),
-                    empresa: $('#empresa').val()
+                    tipoagenda: $('#tipoagenda').val(),
+                    empresa: $('#empresa').val(),
+                    sala: $('#sala').val(),
+                    grupo: $('#grupo').val(),
+                    paciente: paciente
                 },
                 error: function () {
 //                    alert('Houve !');
@@ -592,6 +661,115 @@ if (@$_GET['data'] != '') {
         ]
 
     });
+    $(function () {
+        $('#grupo').change(function () {
+
+            if ($(this).val()) {
+//                alert($(this).val());
+                $('.carregando').show();
+//                                                        alert('teste_parada');
+                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+//                    alert(j);
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                    }
+                    $('#sala').html(options).show();
+                    $('.carregando').hide();
+                });
+
+            } else {
+                $('.carregando').show();
+//                                                        alert('teste_parada');
+                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+//                    alert(j);
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                    }
+                    $('#sala').html(options).show();
+                    $('.carregando').hide();
+                });
+            }
+
+        });
+    });
+
+    $(function () {
+        $('#grupo').change(function () {
+
+//            if ($(this).val()) {
+
+//                alert($(this).val());
+            $('.carregando').show();
+//                                                        alert('teste_parada');
+            $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                options = '<option value=""></option>';
+//                    alert(j);
+
+                for (var c = 0; c < j.length; c++) {
+                    options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                }
+                $('#empresa').html(options).show();
+                $('.carregando').hide();
+
+
+
+            });
+//            }
+        });
+    });
+
+
+    if ($('#grupo').val()) {
+
+//        alert($('#grupo').val());
+        $('.carregando').show();
+//                                                        alert('teste_parada');
+        $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $('#grupo').val(), ajax: true}, function (j) {
+            options = '<option value=""></option>';
+//                    alert(j);
+            var empresa_atual = <?= $empresa_atual ?>;
+            for (var c = 0; c < j.length; c++) {
+                if (empresa_atual == j[c].empresa_id) {
+                    options += '<option selected value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                } else {
+                    options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                }
+
+
+            }
+            $('#empresa').html(options).show();
+            $('.carregando').hide();
+
+
+
+        });
+    }
+    if ($('#grupo').val()) {
+
+//        alert($('#grupo').val());
+        $('.carregando').show();
+//                                                        alert('teste_parada');
+        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), ajax: true}, function (j) {
+            options = '<option value=""></option>';
+//                    alert(j);
+            var sala_atual = <?= $sala_atual ?>;
+            for (var c = 0; c < j.length; c++) {
+                if (sala_atual == j[c].exame_sala_id) {
+                    options += '<option selected value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                } else {
+                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                }
+
+            }
+            $('#sala').html(options).show();
+            $('.carregando').hide();
+
+
+
+        });
+    }
 
 //    }
 
@@ -614,86 +792,10 @@ if (@$_GET['data'] != '') {
 //        document.getElementById('form').submit();
 //    });
 
-    $(function () {
-        $('#especialidade').change(function () {
-
-            if ($(this).val()) {
-
-//                                                  alert('teste_parada');
-                $('.carregando').show();
-//                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">TODOS</option>';
-                    console.log(j);
-
-                    for (var c = 0; c < j.length; c++) {
-
-
-                        if (j[0].operador_id != undefined) {
-                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                        }
-                    }
-                    $('#medico').html(options).show();
-                    $('.carregando').hide();
 
 
 
-                });
-            } else {
-                $('.carregando').show();
-//                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value="">TODOS</option>';
-                    console.log(j);
 
-                    for (var c = 0; c < j.length; c++) {
-
-
-                        if (j[0].operador_id != undefined) {
-                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                        }
-                    }
-                    $('#medico').html(options).show();
-                    $('.carregando').hide();
-
-
-
-                });
-
-            }
-        });
-    });
-
-
-    if ($('#especialidade').val()) {
-
-//                                                  alert('teste_parada');
-        $('.carregando').show();
-//                                                        alert('teste_parada');
-        $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
-            options = '<option value="">TODOS</option>';
-            console.log(j);
-
-            for (var c = 0; c < j.length; c++) {
-
-
-                if (j[0].operador_id != undefined) {
-                    options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                }
-            }
-            $('#medico').html(options).show();
-            $('.carregando').hide();
-
-
-
-        });
-    } else {
-
-
-    }
 </script>
 
 

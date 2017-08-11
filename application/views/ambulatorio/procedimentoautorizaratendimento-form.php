@@ -154,7 +154,7 @@
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1" class="texto01"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1"  min="1" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>

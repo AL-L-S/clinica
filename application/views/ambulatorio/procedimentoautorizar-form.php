@@ -87,7 +87,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->inicio, 0, 5); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->sala; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  alt="" value="1" class="texto01"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  alt="" min="1" value="1" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1"/>
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">

@@ -127,10 +127,12 @@ class exametemp_model extends Model {
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
         $this->db->where("a.confirmado", 'false');
-        $this->db->where("a.tipo", 'EXAME');
+        $this->db->where("ag.tipo", 'EXAME');
         $this->db->where('a.data', $data);
         $this->db->where('a.ativo', 'false');
         $this->db->where("a.paciente_id", $pacientetemp_id);
@@ -145,41 +147,7 @@ class exametemp_model extends Model {
     function buscaexamesanteriores($paciente_id, $procedimento_id) {
         $data = date('Y-m-d', strtotime("-30 day", strtotime(date('Y-m-d'))));
         $empresa_id = $this->session->userdata('empresa_id');
-        
-        $this->db->select('a.agenda_exames_id,
-                            a.inicio,
-                            a.data,
-                            a.nome,
-                            a.data,
-                            a.agenda_exames_nome_id,
-                            a.tipo,
-                            es.nome as sala,
-                            a.medico_agenda,
-                            o.nome as medico,
-                            a.observacoes,
-                            a.procedimento_tuss_id,
-                            pc.convenio_id as convenio_agenda,
-                            p.convenio_id');
-        $this->db->from('tb_agenda_exames a');
-        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda', 'left');
-        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
-        $this->db->where("a.cancelada", 'false');
-        $this->db->where('a.ativo', 'false');
-        $this->db->where("a.realizada", 't');
-        $this->db->where('a.data <=', date('Y-m-d'));
-        $this->db->where('a.data >=', $data);
-        $this->db->where("a.empresa_id", $empresa_id);
-        $this->db->where("a.paciente_id", $paciente_id);
-        $this->db->where("a.procedimento_tuss_id", $procedimento_id);
-        $return = $this->db->get();
-        return $return->result();
-    }
-    function buscaconsultasanteriores($paciente_id, $procedimento_id) {
-        $data = date('Y-m-d', strtotime("-30 day", strtotime(date('Y-m-d'))));
-        $empresa_id = $this->session->userdata('empresa_id');
-        
+
         $this->db->select('a.agenda_exames_id,
                             a.inicio,
                             a.data,
@@ -211,10 +179,46 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarhorarioscalendariovago($medico = null, $especialidade = null) {
+    function buscaconsultasanteriores($paciente_id, $procedimento_id) {
+        $data = date('Y-m-d', strtotime("-30 day", strtotime(date('Y-m-d'))));
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.data,
+                            a.nome,
+                            a.data,
+                            a.agenda_exames_nome_id,
+                            a.tipo,
+                            es.nome as sala,
+                            a.medico_agenda,
+                            o.nome as medico,
+                            a.observacoes,
+                            a.procedimento_tuss_id,
+                            pc.convenio_id as convenio_agenda,
+                            p.convenio_id');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
+        $this->db->where("a.cancelada", 'false');
+        $this->db->where('a.ativo', 'false');
+        $this->db->where("a.realizada", 't');
+        $this->db->where('a.data <=', date('Y-m-d'));
+        $this->db->where('a.data >=', $data);
+        $this->db->where("a.empresa_id", $empresa_id);
+        $this->db->where("a.paciente_id", $paciente_id);
+        $this->db->where("a.procedimento_tuss_id", $procedimento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarhorarioscalendariovago($medico = null, $especialidade = null, $empresa_id = null, $sala_id = null, $grupo = null, $tipoagenda = null) {
         $data = date('Y-m-d');
         $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
         $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
+        $empresa_atual = $this->session->userdata('empresa_id');
         if ($medico != '') {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
         } elseif ($especialidade != '') {
@@ -224,18 +228,30 @@ class exametemp_model extends Model {
         }
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id');
         $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
         $this->db->where("ae.tipo IN ('CONSULTA', 'ESPECIALIDADE', 'FISIOTERAPIA', 'EXAME')");
         $this->db->where("ae.data is not null");
         $this->db->where("ae.data >", $data_passado);
         $this->db->where("ae.data <", $data_futuro);
-
+        if (isset($empresa_id)) {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_atual);
+        }
+        if ($sala_id != '') {
+            $this->db->where("ae.agenda_exames_nome_id", $sala_id);
+        } 
+        if ($grupo != '') {
+            $this->db->where("esg.grupo", $grupo);
+        }
+        if ($tipoagenda != '') {
+            $this->db->where('ae.tipo_consulta_id', $tipoagenda);
+        }
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);
             $this->db->groupby("ae.data, situacao, ae.medico_agenda");
-        } elseif ($especialidade != '') {
-            $this->db->where('o.cbo_ocupacao_id', $especialidade);
-            $this->db->groupby("ae.data, situacao, o.cbo_ocupacao_id");
         } else {
             $this->db->groupby("ae.data, situacao");
         }
@@ -323,7 +339,8 @@ class exametemp_model extends Model {
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);
             $this->db->groupby("ae.data, situacao, ae.medico_agenda");
-        } elseif ($tipoagenda != '') {
+        }
+        if ($tipoagenda != '') {
             $this->db->where('ae.tipo_consulta_id', $tipoagenda);
             $this->db->groupby("ae.data, situacao, ae.tipo_consulta_id");
         } else {
@@ -510,10 +527,12 @@ class exametemp_model extends Model {
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
         $this->db->where("a.confirmado", 'false');
-        $this->db->where("a.tipo", 'CONSULTA');
+        $this->db->where("ag.tipo", 'CONSULTA');
         $this->db->where('a.data', $data);
         $this->db->where('a.ativo', 'false');
         $this->db->where("a.paciente_id", $pacientetemp_id);
@@ -543,9 +562,11 @@ class exametemp_model extends Model {
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
         $this->db->where("a.confirmado", 'false');
-        $this->db->where("(a.tipo = 'FISIOTERAPIA' OR a.tipo = 'ESPECIALIDADE')");
+        $this->db->where("(ag.tipo = 'FISIOTERAPIA' OR ag.tipo = 'ESPECIALIDADE')");
         $this->db->where("a.guia_id", null);
         $this->db->where("(a.numero_sessao = 1 OR a.numero_sessao is null)");
         $this->db->where('a.data', $data);
@@ -5106,6 +5127,19 @@ class exametemp_model extends Model {
             $this->db->where('esg.grupo', $parametro);
         }
         $this->db->where('es.excluido', 'f');
+        $this->db->where('esg.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function listarautocompletegrupoempresasalatodos($parametro = null) {
+        $this->db->select('DISTINCT(es.exame_sala_id), es.nome');
+        $this->db->from('tb_exame_sala es');
+        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id');
+        if ($parametro != '') {
+            $this->db->where('esg.grupo', $parametro);
+        }
+        $this->db->where('es.excluido', 'f');
+        $this->db->where('esg.ativo', 't');
         $return = $this->db->get();
         return $return->result();
     }

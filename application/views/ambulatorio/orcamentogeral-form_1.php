@@ -308,6 +308,26 @@
                                 }
                             });
                         });
+                        
+                        
+                        if ($("#convenio1").val() != "-1") {
+//                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $("#convenio1").val()}, function (j) {
+//                                        options = '<option value=""></option>';
+//                                        for (var c = 0; c < j.length; c++) {
+//                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+//                                        }
+//                                        $('#procedimento1').html(options).show();
+//                                        $('.carregando').hide();
+//                                    });
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
+                                        options = '<option value=""></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                        }
+                                        $('#procedimento1').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                }
 
 
 

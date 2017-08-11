@@ -176,7 +176,7 @@
                                 $situacao = "agenda";
                                 $verifica = 1;
                             } else {
-                                echo $item->situacaoexame;
+//                                echo $item->situacaoexame;
                                 $situacao = "espera";
                                 $verifica = 3;
                             }

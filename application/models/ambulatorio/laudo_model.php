@@ -688,7 +688,8 @@ class laudo_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ag.ambulatorio_laudo_id,
                             o.nome as medico,
-                            an.nome as sala,
+                            an.nome_chamada as sala,
+                            an.painel_id,
                             cbo.descricao,
                             p.nome as paciente');
         $this->db->from('tb_ambulatorio_laudo ag');
@@ -721,13 +722,14 @@ class laudo_model extends Model {
         $salas = $return[0]->sala;
         $data = date("Y-m-d H:i:s");
         $medico = $return[0]->descricao;
+        $painel_id = $return[0]->painel_id;
 
         $paciente = $return[0]->paciente;
         $superior = 'Paciente: ' . $paciente;
         $inferior = $salas . ' ' . $medico;
         $sql = "INSERT INTO chamado(
             data, linha_inferior, linha_superior, setor_id)
-    VALUES ('$data', '$inferior', '$superior', 1);";
+    VALUES ('$data', '$inferior', '$superior', $painel_id);";
         $DB1->query($sql);
     }
 

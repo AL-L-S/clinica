@@ -466,4 +466,10 @@ INSERT INTO ponto.tb_perfil(
             perfil_id, nome, ativo)
     VALUES (15, 'TECNICO RECEPCAO', true);
 
+-- Dia 10/08/17
+
+UPDATE ponto.tb_procedimento_tuss
+   SET qtde=1 
+ WHERE qtde=0;
+
    
