@@ -4448,6 +4448,59 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarguiafaturamentomanualcirurgico() {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('g.ambulatorio_guia_id,
+                            aee.valor,
+                            p.nome as paciente,
+                            ae.agenda_exames_id,
+                            ae.faturado,
+                            ae.numero_sessao,
+                            g.data_criacao,
+                            g.equipe,
+                            ae.autorizacao,
+                            c.nome,
+                            ae.financeiro,
+                            pt.nome as procedimento,
+                            pt.codigo,
+                            o.nome as medico,
+                            ae.paciente_id,
+                            g.observacoes');
+        $this->db->from('tb_agenda_exame_equipe aee');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = aee.agenda_exames_id');
+        $this->db->join('tb_ambulatorio_guia g', 'g.ambulatorio_guia_id = ae.guia_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id= al.medico_parecer1', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        
+        $this->db->where("g.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("g.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $this->db->where('ae.cancelada', 'false');
+        
+        if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
+            $this->db->where('p.nome ilike', "%" . $_POST['nome'] . "%");
+        }
+        if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
+            $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        
+        $this->db->orderby('g.ambulatorio_guia_id');
+        $this->db->orderby('g.data_criacao');
+        $this->db->orderby('p.nome');
+        $this->db->orderby('ae.numero_sessao');
+        $this->db->orderby('ae.paciente_id');
+        $this->db->orderby('c.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarguiafaturamentomanual() {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -4482,13 +4535,13 @@ class exame_model extends Model {
         $this->db->where("g.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 //        $this->db->where("c.dinheiro", 'f');
 //        $this->db->where("ae.confirmado", 't');
-        if ($_POST['tipo'] != '') {
-            if ($_POST['tipo'] == 'CIRURGICO') {
-                $this->db->where('ae.tipo', 'CIRURGICO');
-            } else {
+//        if ($_POST['tipo'] != '') {
+//            if ($_POST['tipo'] == 'CIRURGICO') {
+//                $this->db->where('ae.tipo', 'CIRURGICO');
+//            } else {
                 $this->db->where('ae.tipo !=', 'CIRURGICO');
-            }
-        }
+//            }
+//        }
 
         $this->db->where('ae.cancelada', 'false');
         if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {

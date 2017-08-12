@@ -78,8 +78,8 @@
                         <label>Tipo</label>
                     </dt>
                     <dd>
-                        <select name="tipo" id="tipo" class="size2">
-                            <option value="">TODOS</option>
+                        <select name="tipo" id="tipo" class="size2" required="">
+                            <option value="">SELECIONE</option>
                             <option value="AMBULATORIAL">AMBULATORIAL</option>
                             <option value="CIRURGICO">CIRURGICO</option>
 

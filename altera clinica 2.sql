@@ -466,10 +466,25 @@ INSERT INTO ponto.tb_perfil(
             perfil_id, nome, ativo)
     VALUES (15, 'TECNICO RECEPCAO', true);
 
+-- Dia 09/08/2017
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN sms_enviado boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa_sms ADD COLUMN numero_indentificacao_sms integer;
+   
+
 -- Dia 10/08/17
 
 UPDATE ponto.tb_procedimento_tuss
    SET qtde=1 
  WHERE qtde=0;
 
-   
+CREATE TABLE ponto.tb_empresas_indentificacao_sms
+(
+  empresas_indentificacao_sms_id serial NOT NULL,
+  nome_empresa character varying(100),
+  numero_indentificacao integer,
+  CONSTRAINT tb_empresas_indentificacao_sms_pkey PRIMARY KEY (empresas_indentificacao_sms_id)
+);
+
+INSERT INTO ponto.tb_empresas_indentificacao_sms(nome_empresa, numero_indentificacao)
+    VALUES ('TOPSAUDE', 1), ('CITYCOR', 2);
+

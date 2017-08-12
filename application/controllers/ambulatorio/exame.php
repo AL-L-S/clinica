@@ -606,6 +606,8 @@ class Exame extends BaseController {
 
     function faturamentomanuallista() {
         $data['convenio'] = $_POST['convenio'];
+        $data['tipo'] = $_POST['tipo'];
+        
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
@@ -614,9 +616,18 @@ class Exame extends BaseController {
         } else {
             $data['convenios'] = 0;
         }
-        $data['listar'] = $this->exame->listarguiafaturamentomanual();
+        
+        if ($_POST['tipo'] == 'AMBULATORIAL') {
+            $data['listar'] = $this->exame->listarguiafaturamentomanual();
+        }
+        else{
+            $data['listar'] = $this->exame->listarguiafaturamentomanualcirurgico();
+        }
+        
 //        echo "<pre>";
-//        var_dump($data['listar']);die;
+//        var_dump($data['listar']);
+//        die;
+        
         $this->loadView('ambulatorio/faturamentomanual-lista', $data);
     }
 

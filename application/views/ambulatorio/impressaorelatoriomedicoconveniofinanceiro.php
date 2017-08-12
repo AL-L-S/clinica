@@ -323,7 +323,7 @@ switch ($MES) {
                         <td colspan="50"><center>PRODUÇÃO CIRURGICA</center></td>
                 </tr>
                 <tr>
-                    <th class="tabela_header"><font size="-1"><center>Convenio</center></th>
+                <th class="tabela_header"><font size="-1"><center>Convenio</center></th>
                 <th class="tabela_header"><font size="-1"><center>Nome</center></th>
                 <th class="tabela_header"><font size="-1"><center>Medico</center></th>
                 <th class="tabela_header"><font size="-1"><center>Data</center></th>
