@@ -51,7 +51,7 @@ class procedimentoplano_model extends Model {
         }
         return $this->db;
     }
-    
+
     function listarautocompleteformapagamento($args = array()) {
         $this->db->select('forma_pagamento_id,
                            nome');
@@ -720,7 +720,7 @@ class procedimentoplano_model extends Model {
     }
 
     function excluirporgrupo() {
-        
+
         $grupo = $_POST['grupo'];
         $convenio_id = $_POST['convenio'];
         $horario = date("Y-m-d H:i:s");
@@ -842,17 +842,8 @@ class procedimentoplano_model extends Model {
 
             /* inicia o mapeamento no banco */
             $procedimento_convenio_id = $_POST['txtprocedimentoplanoid'];
-            $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
-            $this->db->set('convenio_id', $_POST['convenio']);
-            $this->db->set('qtdech', $_POST['qtdech']);
-            $this->db->set('valorch', $_POST['valorch']);
-            $this->db->set('qtdefilme', $_POST['qtdefilme']);
-            $this->db->set('valorfilme', $_POST['valorfilme']);
-            $this->db->set('qtdeporte', $_POST['qtdeporte']);
-            $this->db->set('valorporte', $_POST['valorporte']);
-            $this->db->set('qtdeuco', $_POST['qtdeuco']);
-            $this->db->set('valoruco', $_POST['valoruco']);
-            $this->db->set('valortotal', $_POST['valortotal']);
+            $convenio_id = $_POST['convenio'];
+
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -869,6 +860,17 @@ class procedimentoplano_model extends Model {
                 $qtde = count($return);
 
                 if ($qtde == 0) {
+                    $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+                    $this->db->set('convenio_id', $_POST['convenio']);
+                    $this->db->set('qtdech', $_POST['qtdech']);
+                    $this->db->set('valorch', $_POST['valorch']);
+                    $this->db->set('qtdefilme', $_POST['qtdefilme']);
+                    $this->db->set('valorfilme', $_POST['valorfilme']);
+                    $this->db->set('qtdeporte', $_POST['qtdeporte']);
+                    $this->db->set('valorporte', $_POST['valorporte']);
+                    $this->db->set('qtdeuco', $_POST['qtdeuco']);
+                    $this->db->set('valoruco', $_POST['valoruco']);
+                    $this->db->set('valortotal', $_POST['valortotal']);
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_procedimento_convenio');
@@ -881,6 +883,31 @@ class procedimentoplano_model extends Model {
                     return -1;
                 }
             } else { // update
+                $sql = "INSERT INTO ponto.tb_procedimento_convenio_antigo(procedimento_convenio_id, convenio_id, 
+                        procedimento_tuss_id, qtdech, valorch, qtdefilme, valorfilme, 
+                        qtdeporte, valorporte, qtdeuco, valoruco, valortotal,
+                        ativo, data_cadastro, operador_cadastro, data_atualizacao, operador_atualizacao)
+                        SELECT procedimento_convenio_id, convenio_id, procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, ativo, '$horario', $operador_id, 
+                        data_atualizacao, operador_atualizacao
+                        FROM ponto.tb_procedimento_convenio
+                        WHERE procedimento_convenio_id = $procedimento_convenio_id";
+                $this->db->query($sql);
+
+
+
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+                $this->db->set('convenio_id', $_POST['convenio']);
+                $this->db->set('qtdech', $_POST['qtdech']);
+                $this->db->set('valorch', $_POST['valorch']);
+                $this->db->set('qtdefilme', $_POST['qtdefilme']);
+                $this->db->set('valorfilme', $_POST['valorfilme']);
+                $this->db->set('qtdeporte', $_POST['qtdeporte']);
+                $this->db->set('valorporte', $_POST['valorporte']);
+                $this->db->set('qtdeuco', $_POST['qtdeuco']);
+                $this->db->set('valoruco', $_POST['valoruco']);
+                $this->db->set('valortotal', $_POST['valortotal']);
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
@@ -921,24 +948,24 @@ class procedimentoplano_model extends Model {
 
             $return = $this->db->get();
             $result = $return->result();
-            
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            
+
             foreach ($result as $item) {
-                
+
                 //CASO ESTE PROCEDIMENTO PLANO JA TENHA SIDO CADASTRADO PRA ESSE MEDICO ELE APAGA O ANTIGO E INSERE UM NOVO
                 $parametro = "ppmc.medico = {$medicoDestino} ";
-                
+
                 if ($grupo != "") {
                     $parametro .= " AND pt.grupo = '{$grupo}' ";
                 }
-                
+
                 $parametro .= " AND pc.convenio_id = {$item->convenio_id} ";
                 $parametro .= " AND pc.procedimento_tuss_id = {$item->procedimento_tuss_id} ";
-            
+
                 $sql = "UPDATE ponto.tb_procedimento_percentual_medico_convenio 
-                        SET ativo = 'f', data_atualizacao = '". $horario ."', operador_atualizacao = {$operador_id} 
+                        SET ativo = 'f', data_atualizacao = '" . $horario . "', operador_atualizacao = {$operador_id} 
                         WHERE procedimento_percentual_medico_convenio_id IN (
                             SELECT ppmc.procedimento_percentual_medico_convenio_id
                             FROM ponto.tb_procedimento_percentual_medico_convenio ppmc 
@@ -947,17 +974,17 @@ class procedimentoplano_model extends Model {
                             INNER JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
                             WHERE " . $parametro . " ) ";
                 $this->db->query($sql);
-                
-                
+
+
                 //INSERE NOVO VALOR 
                 $this->db->set('procedimento_percentual_medico_id', $item->procedimento_percentual_medico_id);
                 $this->db->set('medico', $medicoDestino);
                 $this->db->set('valor', $item->valor);
                 $this->db->set('percentual', $item->percentual);
-                
+
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
-                
+
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_procedimento_percentual_medico_convenio');
@@ -1045,8 +1072,7 @@ class procedimentoplano_model extends Model {
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_procedimento_percentual_medico_convenio');
                 } // fim grupo=selecione
-            } 
-            elseif ($grupo == "TODOS") {  // inicio grupo=todos 
+            } elseif ($grupo == "TODOS") {  // inicio grupo=todos 
                 if ($procediemento == "") {
                     $this->db->select('procedimento_convenio_id,
                                     procedimento_tuss_id ');
@@ -1124,8 +1150,7 @@ class procedimentoplano_model extends Model {
                             $this->db->insert('tb_procedimento_percentual_medico_convenio');
                         }
                     }
-                } 
-                elseif ($procediemento !== "") {
+                } elseif ($procediemento !== "") {
                     if ($medico == "TODOS") { // inicio grupo=selecione  medico=todos
                         $this->db->select('operador_id,
                                        nome');
@@ -1161,8 +1186,7 @@ class procedimentoplano_model extends Model {
                             $this->db->set('operador_cadastro', $operador_id);
                             $this->db->insert('tb_procedimento_percentual_medico_convenio');
                         }  // fim grupo=selecione  medico=todos
-                    } 
-                    else {
+                    } else {
                         /* inicia o mapeamento no banco */
                         $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
 //                    $this->db->set('medico', $_POST['medico']);
@@ -1194,11 +1218,11 @@ class procedimentoplano_model extends Model {
                 $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
                 $this->db->where('pc.convenio_id', $convenio);
                 $this->db->where('pt.grupo', $grupo);
-                
-                if($procediemento != ""){
-                   $this->db->where('pc.procedimento_convenio_id', $procediemento); 
+
+                if ($procediemento != "") {
+                    $this->db->where('pc.procedimento_convenio_id', $procediemento);
                 }
-                
+
                 $this->db->where('pc.ativo', 't');
                 $this->db->where('pt.ativo', 't');
                 $this->db->orderby("pt.nome");

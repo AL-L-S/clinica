@@ -21,7 +21,7 @@
                                 <option value="<?= $value->procedimento_tuss_id; ?>"<?
                                 if (@$obj->_procedimento_tuss_id == $value->procedimento_tuss_id):echo'selected';
                                 endif;
-                                ?>><?php echo $value->codigo .  " - " . $value->nome; ?></option>
+                                ?>><?php echo $value->codigo . " - " . $value->nome; ?></option>
                                     <? endforeach; ?>
                         </select>
                     </dd>
@@ -84,13 +84,13 @@
                         <label>Valor UCO</label>
                     </dt>
                     <dd>
-                        <input type="text" name="valoruco" onblur="history.go(0)"id="valoruco" class="texto01" value="<?= @$obj->_valoruco; ?>" />
+                        <input type="text" name="valoruco"id="valoruco" class="texto01" value="<?= @$obj->_valoruco; ?>" />
                     </dd>
                     <dt>
                         <label>Valor TOTAL</label>
                     </dt>
                     <dd>
-                        <input type="text" name="valortotal" onkeyup="multiplica()" id="valortotal" class="texto01" value="<?= @$obj->valortotal; ?>" />
+                        <input type="text" name="valortotal"  id="valortotal" class="texto01" value="<?= @$obj->_valortotal; ?>" />
                     </dd>
 
                 </dl>    
@@ -114,39 +114,123 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript">
-                            $('#btnVoltar').click(function () {
-                                $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-                            });
+
 
                             $(function () {
                                 $("#accordion").accordion();
                             });
 
-                            $(document).ready(function () {
+//                            $(document).ready(function () {
 
-                                function multiplica()
-                                {
-                                    total = 0;
-                                    numer1 = parseFloat(document.form_procedimentoplano.qtdech.value);
-                                    numer2 = parseFloat(document.form_procedimentoplano.valorch.value);
-                                    soma = numer1 * numer2;
-                                    numer3 = parseFloat(document.form_procedimentoplano.qtdefilme.value);
-                                    numer4 = parseFloat(document.form_procedimentoplano.valorfilme.value);
-                                    soma2 = numer3 * numer4;
-                                    numer5 = parseFloat(document.form_procedimentoplano.qtdeuco.value);
-                                    numer6 = parseFloat(document.form_procedimentoplano.valoruco.value);
-                                    soma3 = numer5 * numer6;
-                                    numer7 = parseFloat(document.form_procedimentoplano.qtdeporte.value);
-                                    numer8 = parseFloat(document.form_procedimentoplano.valorporte.value);
-                                    soma4 = numer7 * numer8;
-                                    total += soma + soma2 + soma3 + soma4;
-                                    y = total.toFixed(2);
-                                    $('#valortotal').val(y);
-                                    //document.form_procedimentoplano.valortotal.value = total;
-                                }
-                                multiplica();
+//                            function multiplica()
+//                            {
+//                                total = 0;
+//                                numer1 = parseFloat(document.form_procedimentoplano.qtdech.value);
+//                                numer2 = parseFloat(document.form_procedimentoplano.valorch.value);
+//                                soma = numer1 * numer2;
+//                                numer3 = parseFloat(document.form_procedimentoplano.qtdefilme.value);
+//                                numer4 = parseFloat(document.form_procedimentoplano.valorfilme.value);
+//                                soma2 = numer3 * numer4;
+//                                numer5 = parseFloat(document.form_procedimentoplano.qtdeuco.value);
+//                                numer6 = parseFloat(document.form_procedimentoplano.valoruco.value);
+//                                soma3 = numer5 * numer6;
+//                                numer7 = parseFloat(document.form_procedimentoplano.qtdeporte.value);
+//                                numer8 = parseFloat(document.form_procedimentoplano.valorporte.value);
+//                                soma4 = numer7 * numer8;
+//                                total += soma + soma2 + soma3 + soma4;
+//                                y = total.toFixed(2);
+//                                $('#valortotal').val(y);
+//                                //document.form_procedimentoplano.valortotal.value = total;
+//                            }
+//                            multiplica();
 
 
+//                            });
+
+
+                            $(function () {
+                                $('#qtdech').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                $('#qtdefilme').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                $('#qtdeuco').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                $('#qtdeporte').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                $('#valorch').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                $('#valorfilme').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                $('#valoruco').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                $('#valorporte').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                $('#qtdech').change(function () {
+                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+//                                    alert(valortotal);
+                                    $('#valortotal').val(valortotal);
+                                });
+                                
                             });
 
 </script>
