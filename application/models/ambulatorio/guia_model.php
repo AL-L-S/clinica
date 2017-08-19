@@ -2121,7 +2121,7 @@ class guia_model extends Model {
         }
         if ($_POST['medico'] != "0") {
             $medico = $_POST['medico'];
-            $this->db->where("ae.medico_agenda = {$medico} OR ae.medico_consulta_id = {$medico}");
+            $this->db->where("(ae.medico_agenda = {$medico} OR ae.medico_consulta_id = {$medico})");
         }
         if ($_POST['plano'] != "0") {
             $this->db->where("p.convenio_id", $_POST['plano']);
