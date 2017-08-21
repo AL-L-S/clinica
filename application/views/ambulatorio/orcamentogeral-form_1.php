@@ -96,13 +96,16 @@
                 ?>
                                     <table id="table_agente_toxico" border="0">
                                         <thead>
-                
+                                            <tr>
+                                                <th colspan="10"><span style="font-size: 12pt; font-weight: bold;">Operador Responsavel: <?=@$responsavel[0]->nome?></span></th>
+                                            </tr>
                                             <tr>
                                                 <th class="tabela_header">Convenio</th>
                                                 <th class="tabela_header">Grupo</th>
                                                 <th class="tabela_header">Procedimento</th>
                                                 <th class="tabela_header">Descrição</th>
                                                 <th class="tabela_header">V. Unit</th>
+                                                <th class="tabela_header"></th>
                                             </tr>
                                         </thead>
                 <?
@@ -119,6 +122,10 @@
                                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
+                                                        <td class="<?php echo $estilo_linha; ?>">
+                                                            <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
+                                                            </a>
+                                                        </td>
                                                     </tr>
                     
                                                 </tbody>

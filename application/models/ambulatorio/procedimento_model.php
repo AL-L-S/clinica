@@ -48,6 +48,19 @@ class procedimento_model extends Model {
     }
     
     
+    function listaresponsavelorcamento($orcamento_id) {
+//        var_dump($paciente_id);die;
+        $horario = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('o.nome');
+        $this->db->from('tb_ambulatorio_orcamento ao');
+        $this->db->join('tb_operador o', 'o.operador_id = ao.operador_cadastro', 'left');
+        $this->db->where("ao.ambulatorio_orcamento_id", $orcamento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
     function listarorcamentosrecepcao($orcamento_id) {
 //        var_dump($paciente_id);die;
         $horario = date("Y-m-d");
@@ -56,23 +69,21 @@ class procedimento_model extends Model {
                             oi.data,
                             oi.orcamento_id,
                             oi.valor_total,
-                            oi.orcamento_id,
-                            oi.paciente_id,
+                            ao.paciente_id,
                             pc.convenio_id,
-                            p.nome as paciente,
                             c.nome as convenio,
                             pt.codigo,
                             pt.descricao_procedimento,
                             pt.grupo,
                             pt.nome as procedimento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
-        $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = oi.orcamento_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
 //        $this->db->where('oi.empresa_id', $empresa_id);
         $this->db->where("oi.orcamento_id", $orcamento_id);
-//        $this->db->where("oi.data", $horario);
+        $this->db->where("oi.ativo", 't');
         $return = $this->db->get();
         return $return->result();
     }
@@ -349,6 +360,23 @@ class procedimento_model extends Model {
         $this->db->from('tb_tuss_classificacao');
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function excluirorcamentorecepcao($ambulatorio_orcamento_item_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('ambulatorio_orcamento_item_id', $ambulatorio_orcamento_item_id);
+        $this->db->update('tb_ambulatorio_orcamento_item');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
     }
 
     function excluir($procedimento_tuss_id) {

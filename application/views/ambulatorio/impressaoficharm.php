@@ -280,7 +280,17 @@
             <td colspan="-1"><font size = -1><? echo $obs ?></font></td>
         </tr>
         <tr>
-            <td colspan="-1"><font size = -1><b>Declaro que as informações por mim fornecidas neste formulário são verdadeiras e que estou ciente dos riscos inerentes ao exame.</br> Autorizo a realização do(s) exame(s) solicitado(s) e de injeção de produto de contraste, necessário ao(s) mesmo(s).</b></font></td>
+            <td colspan="-1">
+                <font size = -1>
+                <b> 
+                    Declaro que as informações por mim fornecidas neste formulário são verdadeiras e que estou ciente dos riscos inerentes ao exame.<br/> 
+                    Autorizo a realização do(s) exame(s) solicitado(s) e de injeção de produto de contraste, necessário ao(s) mesmo(s).
+                    <? if($r21 == "SIM") { ?>
+                        <br/>Declaro tambem que estou ciente que devo trazer o canhoto para o recebimento dos exames.
+                    <? } ?>
+                </b>
+                </font>
+            </td>
         </tr>
         <tr>
             <td ><font size = -1><b>Fortaleza,<?= str_replace("-", "/", $emissao); ?></b></font></td>

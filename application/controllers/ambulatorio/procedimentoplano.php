@@ -161,6 +161,17 @@ class Procedimentoplano extends BaseController {
             
             redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$ambulatorio_orcamento");
         }
+    }    
+    
+    function excluirorcamentorecepcao($ambulatorio_orcamento_item_id, $paciente_id, $orcamento_id) {
+        if ($this->procedimento->excluirorcamentorecepcao($ambulatorio_orcamento_item_id)) {
+            $mensagem = 'Sucesso ao excluir o Procedimento';
+        } else {
+            $mensagem = 'Erro ao excluir o Procedimento. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$orcamento_id");
     }
     
     function orcamento($paciente_id = 0, $ambulatorio_orcamento = 0) {
@@ -172,7 +183,9 @@ class Procedimentoplano extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['exames'] = $this->procedimento->listarorcamentosrecepcao($ambulatorio_orcamento);
-//        var_dump($data['obj']); die;
+        $data['responsavel'] = $this->procedimento->listaresponsavelorcamento($ambulatorio_orcamento);
+//        echo "<pre>";
+//        var_dump($data['exames']); die;
         
         $this->loadView('ambulatorio/orcamentogeral-form_1', $data);
     }

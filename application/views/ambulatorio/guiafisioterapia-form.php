@@ -521,14 +521,26 @@
                                     $('#convenio1').change(function () {
                                         if ($(this).val()) {
                                             $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                                options = '<option value=""></option>';
-                                                for (var c = 0; c < j.length; c++) {
-                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                                }
-                                                $('#procedimento1').html(options).show();
-                                                $('.carregando').hide();
-                                            });
+                                            if($("#grupo1").val() == ""){
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                    }
+                                                    $('#procedimento1').html(options).show();
+                                                    $('.carregando').hide();
+                                                });
+                                            }
+                                            else{ // Caso esteja selecionado algum grupo, ele ja faz o filtro por grupo
+                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $(this).val()}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                    }
+                                                    $('#procedimento1').html(options).show();
+                                                    $('.carregando').hide();
+                                                });
+                                            }
                                         } else {
                                             $('#procedimento1').html('<option value="">Selecione</option>');
                                         }

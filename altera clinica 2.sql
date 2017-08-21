@@ -488,3 +488,9 @@ CREATE TABLE ponto.tb_empresas_indentificacao_sms
 INSERT INTO ponto.tb_empresas_indentificacao_sms(nome_empresa, numero_indentificacao)
     VALUES ('TOPSAUDE', 1), ('CITYCOR', 2);
 
+-- Dia 21/08/2017
+
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN operador_atualizacao integer;
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN data_atualizacao date;
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN ativo boolean DEFAULT true;
+

@@ -64,6 +64,7 @@
                             <th class="tabela_header">Qtde</th>
                             <th class="tabela_header">Solicitante</th>
                             <th class="tabela_header">Convenio</th>
+                            <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">autorizacao</th>
                             <th class="tabela_header">V. Unit</th>
@@ -95,6 +96,18 @@
                                         <option value="">Selecione</option>
                                         <? foreach ($convenio as $value) : ?>
                                             <option value="<?= $value->convenio_id; ?>" <? if ($value->convenio_id == $item->convenio_agenda) echo'selected'; ?>><?= $value->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select  name="grupo[<?= $i; ?>]" id="grupo<?= $i; ?>" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <?
+                                        foreach ($grupos as $gp) :
+                                            ?>
+                                            <option value="<?= $gp->nome; ?>" <? if ($item->grupo == $gp->nome) echo 'selected'; ?>>
+                                                <?= $gp->nome; ?>
+                                            </option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
@@ -237,20 +250,19 @@
 //                                                                $('#procedimento<?= $b ?>').html('<option value="">Escolha um Convênio</option>');
 //                                                            }
 
-                                                            $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: convenio_agendado[<?= $b - 1 ?>]}, function (j) {
-                                                                //                                                                options = '<option value=""></option>';
-                                                                if (j[0].carteira_obrigatoria == 't') {
-                                                                    $("#autorizacao<?= $b; ?>").prop('required', true);
-                                                                } else {
-                                                                    $("#autorizacao<?= $b; ?>").prop('required', false);
-                                                                }
-
-                                                            });
+                                                            
 
 
                                                             //                                alert(convenio_agendado, proc_agendado);
                                                             $('#checkbox<?= $b ?>').change(function () {
                                                                 if ($(this).is(":checked")) {
+                                                                    $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: convenio_agendado[<?= $b - 1 ?>]}, function (j) {
+                                                                        if (j[0].carteira_obrigatoria == 't') {
+                                                                            $("#autorizacao<?= $b; ?>").prop('required', true);
+                                                                        } else {
+                                                                            $("#autorizacao<?= $b; ?>").prop('required', false);
+                                                                        }
+                                                                    });
                                                                     $("#medico_id<?= $b; ?>").prop('required', true);
                                                                     $("#medico<?= $b; ?>").prop('required', true);
                                                                     $("#sala<?= $b; ?>").prop('required', true);
@@ -263,11 +275,10 @@
                                                                     $("#sala<?= $b; ?>").prop('required', false);
                                                                     $("#convenio<?= $b; ?>").prop('required', false);
                                                                     $("#procedimento<?= $b; ?>").prop('required', false);
+                                                                    $("#autorizacao<?= $b; ?>").prop('required', false);
                                                                     //                                        $("#autorizacao<?= $b; ?>").prop('required', false);
                                                                 }
                                                             });
-
-
 
 
 <? }
@@ -291,6 +302,26 @@
                                                                 }
                                                             });
                                                         });
+                                                        
+                                                            
+                                                    $(function () {
+                                                        $('#grupo<?= $b ?>').change(function () {
+                    //                                                if ($(this).val()) {
+                                                            $('.carregando').show();
+                                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio<?= $b ?>').val()}, function (j) {
+                                                                options = '<option value=""></option>';
+                                                                for (var c = 0; c < j.length; c++) {
+                                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                                }
+                                                                $('#procedimento<?= $b ?>').html(options).show();
+                                                                $('.carregando').hide();
+                                                            });
+                    //                                                } else {
+                    //                                                    $('#procedimento1').html('<option value="">Selecione</option>');
+                    //                                                }
+                                                        });
+                                                    });
+
 
 <? }
 ?>

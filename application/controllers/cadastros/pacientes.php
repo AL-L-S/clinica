@@ -219,6 +219,8 @@ class pacientes extends BaseController {
         $data['paciente'] = $this->paciente->listardados($data['paciente_id']);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaragendaspaciente($paciente_id);
+        $data['grupos'] = $this->procedimento->listargruposexame();
+//        var_dump($data['grupos']);die;
         $this->loadView('ambulatorio/procedimentoautorizar-form', $data);
     }
 
@@ -247,6 +249,7 @@ class pacientes extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaragendaspacientefisioterapia($paciente_id);
         $data['grupos'] = $this->procedimento->listargruposespecialidade();
+//        var_dump($data['grupos']);die;
         $this->loadView('ambulatorio/procedimentoautorizarfisioterapia-form', $data);
 //        } else {
 //            $data['mensagem'] = 'Paciente com sessões pendentes.';

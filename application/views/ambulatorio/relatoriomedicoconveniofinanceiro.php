@@ -16,6 +16,17 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Revisor</label>
+                    </dt>
+                    <dd>
+                        <select name="revisor" id="revisor" class="size2">
+                            <option value="0">TODOS</option>
+                            <? foreach ($medicos as $value) : ?>
+                                <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Convenio</label>
                     </dt>
                     <dd>
