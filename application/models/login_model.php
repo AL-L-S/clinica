@@ -50,6 +50,7 @@ class login_model extends Model {
             $laboratorio = $retorno[0]->laboratorio;
             $ponto = $retorno[0]->ponto;
             $calendario = $retorno[0]->calendario;
+            $procedimento_multiempresa = $retorno[0]->procedimento_multiempresa;
             $botao_faturar_guia = $retorno[0]->botao_faturar_guia;
             $botao_faturar_proc = $retorno[0]->botao_faturar_procedimento;
         } else {
@@ -100,6 +101,7 @@ class login_model extends Model {
                 'botao_faturar_guia' => $botao_faturar_guia,
                 'botao_faturar_proc' => $botao_faturar_proc,
                 'empresa_id' => $empresa,
+                'procedimento_multiempresa' => $procedimento_multiempresa,
                 'empresa' => $empresanome
             );
             $this->session->set_userdata($p);

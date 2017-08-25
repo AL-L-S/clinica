@@ -42,6 +42,7 @@ class contaspagar_model extends Model {
                             fe.descricao as conta,
                             fc.tipo,
                             fc.classe,
+                            fc.empresa_id,
                             fc.data,
                             cd.razao_social,
                             fc.tipo_numero');
@@ -57,6 +58,7 @@ class contaspagar_model extends Model {
             $this->db->where('fc.empresa_id', $args['txtempresa']);
         }
         else{
+            echo 'something';
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->where('empresa_id', $empresa_id);
         }

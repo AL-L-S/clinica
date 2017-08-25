@@ -87,8 +87,8 @@ class Laudo extends BaseController {
 //        $arquivo_pasta = directory_map( base_url() . "dicom/");
         $this->load->helper('directory');
         $agenda_exames_id = $obj_laudo->_agenda_exames_id;
-        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/cr/$agenda_exames_id/");
-        $origem = "/home/sisprod/projetos/clinica/cr/$agenda_exames_id";
+        $arquivo_pasta = directory_map("./cr/$agenda_exames_id/");
+        $origem = "./cr/$agenda_exames_id";
 
 //        if (count($arquivo_pasta) > 0) {
 //
@@ -97,12 +97,12 @@ class Laudo extends BaseController {
 //
 //                  
 //                        $nova = $valor;
-//                        if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-//                            mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-//                            $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+//                        if (!is_dir("./upload/$exame_id")) {
+//                            mkdir("./upload/$exame_id");
+//                            $destino = "./upload/$exame_id/$nova";
 //                            chmod($destino, 0777);
 //                        }
-//                        $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+//                        $destino = "./upload/$exame_id/$nova";
 //                        $local = "$origem/$nome1/$nova";
 //                        $deletar = "$origem/$nome1/$nome2";
 //                        copy($local, $destino);
@@ -117,7 +117,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -142,7 +142,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -166,7 +166,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -325,7 +325,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -1188,7 +1188,7 @@ class Laudo extends BaseController {
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $verificador = $data['laudo']['0']->imagens;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -1276,7 +1276,7 @@ class Laudo extends BaseController {
         $data['operadores'] = $this->operador_m->listarmedicos();
         $this->load->helper('directory');
         $data['mensagem'] = $messagem;
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);

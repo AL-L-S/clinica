@@ -21,7 +21,7 @@
                         <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
                         <input type="hidden" id="txtpaciente_id" name="txtpaciente_id"  value="<?= $paciente_id; ?>"/>
                         <input type="hidden" id="txtguia_id" name="txtguia_id"  value="<?= $guia_id; ?>"/>
-                        <input type="hidden" id="txtdata" name="txtdata"  value="<?= $exames['0']->data; ?>"/>
+                        <input type="hidden" id="txtdata" name="txtdata"  value="<?= @$exames[0]->data; ?>"/>
                     </div>
                     <div>
                         <label>Sexo</label>

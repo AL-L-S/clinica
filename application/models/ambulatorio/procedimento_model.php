@@ -157,8 +157,6 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-
 
     function listargruposatendimento() {
         $this->db->select('ambulatorio_grupo_id,
@@ -198,6 +196,18 @@ class procedimento_model extends Model {
                             nome,
                             ');
         $this->db->from('tb_ambulatorio_grupo');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listargruposmatmed() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome,
+                            tipo
+                            ');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where("(tipo = 'MEDICAMENTO' OR tipo ='MATERIAL')");
         $this->db->orderby("nome");
         $return = $this->db->get();
         return $return->result();
@@ -278,7 +288,9 @@ class procedimento_model extends Model {
         $this->db->select('tuss_id,
                             descricao,
                             codigo,
+                            valor_bri,
                             texto,
+                            grupo_matmed,
                             classificacao,
                             valor');
         $this->db->from('tb_tuss');
@@ -537,13 +549,33 @@ class procedimento_model extends Model {
         try {
 
             /* inicia o mapeamento no banco */
+            if ($_POST['txtvalorbri'] != "") {
+                if ($_POST['tuss_id'] != "") {
+                    $tuss_id = $_POST['tuss_id'];
+                    $valor_bri =  str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri']));
+                    
+                    $sql = "UPDATE ponto.tb_procedimento_convenio pc
+                            SET 
+                            valorch= $valor_bri, valortotal= $valor_bri
+                            FROM ponto.tb_procedimento_tuss pt, ponto.tb_tuss t
+                            WHERE pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                            AND t.tuss_id = pt.tuss_id
+                            AND t.tuss_id = $tuss_id";
+                    $this->db->query($sql);
+                }
+                $this->db->set('valor_bri', str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri'])));
+            }
             $this->db->set('descricao', $_POST['txtNome']);
             $this->db->set('codigo', $_POST['procedimento']);
             if ($_POST['classificaco'] != '') {
                 $this->db->set('classificacao', $_POST['classificaco']);
             }
             if ($_POST['txtvalor'] != "") {
-                $this->db->set('valor', str_replace(",", ".", $_POST['txtvalor']));
+                $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['txtvalor'])));
+            }
+
+            if ($_POST['grupo'] != "") {
+                $this->db->set('grupo_matmed', $_POST['grupo']);
             }
             $this->db->set('texto', $_POST['laudo']);
 

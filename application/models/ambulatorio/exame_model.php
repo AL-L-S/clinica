@@ -972,6 +972,46 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarexamesguiamatmed($guia_id) {
+
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.data_faturar,
+                            ae.inicio,
+                            ae.data_autorizacao,
+                            ae.fim,
+                            ae.ativo,
+                            al.ambulatorio_laudo_id as laudo,
+                            ae.situacao,
+                            c.nome as convenio,
+                            ae.guia_id,
+                            pc.valortotal,
+                            ae.quantidade,
+                            ae.valor_total,
+                            ae.autorizacao,
+                            ae.paciente_id,
+                            ae.faturado,
+                            p.nome as paciente,
+                            ae.procedimento_tuss_id,
+                            pt.nome as exame,
+                            c.nome as convenio,
+                            pt.descricao as procedimento,
+                            pt.codigo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+//        $this->db->where('e.cancelada', 'false');
+        $this->db->where('ae.guia_id', $guia_id);
+        $this->db->orderby('ae.valor_total desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarexamesguiamanual($paciente_id) {
 
@@ -5365,7 +5405,7 @@ class exame_model extends Model {
 //            var_dump($_POST['txttipo']);
 //            die;
 
-            if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO') {
+            if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO' || $_POST['txttipo'] == 'MATERIAL') {
 
 //                $this->db->set('ativo', 'f');
 //                $this->db->where('exame_sala_id', $_POST['txtsalas']);

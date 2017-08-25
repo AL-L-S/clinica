@@ -5753,7 +5753,7 @@ class guia_model extends Model {
                             pi.nome as indicacao,
                             es.nome as agenda,
                             ae.fim,
-                            ae.valor,
+                            (ae.valor * ae.quantidade) as valor,
                             ae.valor_total,
                             ae.ativo,
                             ae.situacao,
@@ -5877,7 +5877,7 @@ class guia_model extends Model {
 
     function listarexameguia($guia_id) {
 
-        $this->db->select('sum(valor) as total');
+        $this->db->select('sum((valor * quantidade)) as total');
         $this->db->from('tb_agenda_exames ae');
         $this->db->where("guia_id", $guia_id);
         $return = $this->db->get();
@@ -5886,7 +5886,7 @@ class guia_model extends Model {
 
     function listarexameguiaprocedimentos($guia_id) {
 
-        $this->db->select('sum(valor) as total');
+        $this->db->select('sum((valor * quantidade)) as total');
         $this->db->from('tb_agenda_exames ae');
         $this->db->where("faturado", 'f');
         $this->db->where("guia_id", $guia_id);
@@ -5895,7 +5895,7 @@ class guia_model extends Model {
     }
 
     function listarexameguiaforma($guia_id, $financeiro_grupo_id) {
-        $this->db->select('sum(valor) as total');
+        $this->db->select('sum((valor * quantidade)) as total');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("guia_id", $guia_id);
@@ -5907,7 +5907,7 @@ class guia_model extends Model {
     }
 
     function listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id) {
-        $this->db->select('sum(valor) as total');
+        $this->db->select('sum((valor * quantidade)) as total');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("guia_id", $guia_id);
@@ -8594,6 +8594,7 @@ ORDER BY ae.agenda_exames_id)";
                             producaomedicadinheiro,
                             impressao_declaracao,
                             impressao_laudo,
+                            chamar_consulta,
                             impressao_recibo,
                             celular,
                             bairro,

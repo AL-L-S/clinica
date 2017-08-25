@@ -21,7 +21,13 @@
                     <label>Valor</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtvalor" class="texto02"/>
+                        <input type="text" alt="decimal" name="txtvalor" class="texto02"/>
+                    </dd>
+                    <dt>
+                    <label>Valor Brasíndice</label>
+                    </dt>
+                    <dd>
+                        <input type="text" alt="decimal" name="txtvalorbri" class="texto02" value=""/>
                     </dd>
                     <dt>
                     <label>Classificaco</label>
@@ -29,10 +35,22 @@
                     <dd>
 
                         <select name="classificaco" id="classificaco" class="size2" >
-                            <option value='' >selecione</option>
+                            <option value='' >Selecione</option>
                             <?php foreach ($classificacao as $item) { ?>
                                 <option value="<?php echo $item->tuss_classificacao_id; ?>" ><?php echo $item->nome; ?></option>
                             <?php } ?>
+                        </select>
+                    </dd>
+                    <dt>
+                    <label>Grupo (Apenas pra Mat/Med)</label>
+                    </dt>
+                    <dd>
+
+                        <select name="grupo" id="grupo" class="size2" >
+                            <option value="" >Selecione</option>
+                            <option value="MATERIAL">MATERIAL</option>
+                            <option value="MEDICAMENTO">MEDICAMENTO</option>
+                            
                         </select>
                     </dd>
                     <dt>
@@ -51,7 +69,10 @@
     </div>
 </div> <!-- Final da DIV content -->
 
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
     $('#btnVoltar').click(function() {
         $(location).attr('href', '<?= base_url(); ?>ponto/cargo');

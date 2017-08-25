@@ -90,7 +90,7 @@
                 $contadorpaciente = "";
                 $contadorpacientetotal = "";
                 foreach ($relatorio as $item) :
-                    if ($item->grupo == 'MEDICAMENTO') {
+                    if ($item->grupo == 'MEDICAMENTO' || $item->grupo == 'MATERIAL') {
                         $medicamento++;
                     }
                     $i++;

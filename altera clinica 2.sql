@@ -488,7 +488,78 @@ CREATE TABLE ponto.tb_empresas_indentificacao_sms
 INSERT INTO ponto.tb_empresas_indentificacao_sms(nome_empresa, numero_indentificacao)
     VALUES ('TOPSAUDE', 1), ('CITYCOR', 2);
 
--- Dia 21/08/2017
+
+-- Dia 14/08/17
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN chamar_consulta boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa ADD COLUMN procedimento_multiempresa boolean DEFAULT false;
+ALTER TABLE ponto.tb_procedimento_convenio ADD COLUMN empresa_id integer;
+ALTER TABLE ponto.tb_procedimento_convenio_antigo ADD COLUMN empresa_id integer;
+
+-- Dia 21/08/17
+
+CREATE TABLE ponto.tb_empresa_impressao
+(
+  empresa_impressao_id serial NOT NULL,
+
+  cabecalho text,
+  rodape text,
+  paciente boolean DEFAULT false,
+  procedimento boolean DEFAULT false,
+  convenio boolean DEFAULT false,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_impressao_pkey PRIMARY KEY (empresa_impressao_id)
+);
+
+
+-- INSERE AQUI O GRUPO MATERIAL. NO CASO ELE NAO EXISTE NA PROIMAGEM
+DELETE FROM ponto.tb_ambulatorio_grupo
+WHERE tipo ='MATERIAL';
+
+  INSERT INTO ponto.tb_ambulatorio_grupo (nome, tipo)
+  VALUES ('MATERIAL', 'MATERIAL');
+    
+-- ATUALIZA O TUSS E O GRUPO ONDE FOR MAT/MED PRA MATERIAL
+  UPDATE ponto.tb_procedimento_tuss
+  SET grupo='MATERIAL'
+  WHERE grupo = 'MAT/MED';
+
+  UPDATE ponto.tb_ambulatorio_grupo
+  SET nome= 'MATERIAL', tipo= 'MATERIAL'
+  WHERE nome = 'MAT/MED';
+
+-- INSERE AQUI O MEDICAMENTO. PRIMEIRO APAGO O MEDICAMENTO E INSIRO NOVAMENTE
+DELETE FROM ponto.tb_ambulatorio_grupo
+WHERE tipo ='MEDICAMENTO';
+
+INSERT INTO ponto.tb_ambulatorio_grupo (nome, tipo)
+VALUES ('MEDICAMENTO', 'MEDICAMENTO');
+
+
+
+ALTER TABLE ponto.tb_tuss ADD COLUMN valor_bri numeric(10,2);
+ALTER TABLE ponto.tb_tuss ADD COLUMN grupo_matmed character varying(100);
+
+-- 23/08/2017
+
+ALTER TABLE ponto.tb_procedimento_tuss ALTER COLUMN nome TYPE character varying(500);
+
+--24/08/2017
+
+UPDATE ponto.tb_procedimento_convenio pc
+   SET  empresa_id=empresa.empresa_id
+   FROM (SELECT empresa_id
+  FROM ponto.tb_empresa
+  ORDER BY empresa_id ASC
+  LIMIT 1
+) as empresa
+WHERE pc.empresa_id is null;
+
 
 ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN operador_atualizacao integer;
 ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN data_atualizacao date;

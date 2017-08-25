@@ -127,7 +127,7 @@
                                     $this->load->helper('directory');
                                     foreach ($convenios as $value) :
 
-                                        $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/cr/$value->nome/");
+                                        $arquivo_pasta = directory_map("./upload/cr/$value->nome/");
                                         if ($arquivo_pasta != false) {
                                             ?>
                                             <td width="10px" class="tabela_header"><? echo $value->nome; ?></td></tr>

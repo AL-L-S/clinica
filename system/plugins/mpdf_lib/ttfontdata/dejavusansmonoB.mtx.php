@@ -13,7 +13,7 @@ $desc=array (
 );
 $up=-63;
 $ut=44;
-$ttffile='/home/sisprod/projetos/clinica/system/plugins/mpdf_lib/ttfonts/DejaVuSansMono-Bold.ttf';
+$ttffile='./system/plugins/mpdf_lib/ttfonts/DejaVuSansMono-Bold.ttf';
 $TTCfontID='0';
 $originalsize=302868;
 $sip=false;

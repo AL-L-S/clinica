@@ -10,7 +10,7 @@
                 $pacientes = $this->guia->listarpacientes();
 
                 foreach ($pacientes as $paciente) {
-                    $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/laudo/$convenio/$paciente_id/");
+                    $arquivo_pasta = directory_map("./upload/laudo/$convenio/$paciente_id/");
                     if ($paciente->paciente_id == $paciente_id) {
                         if ($arquivo_pasta != false) {
                             ?>

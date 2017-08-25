@@ -22,7 +22,13 @@
                     <label>Valor</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtvalor" class="texto02" value="<?= $procedimento[0]->valor; ?>"/>
+                        <input type="text" name="txtvalor" alt="decimal" class="texto02" value="<?= $procedimento[0]->valor; ?>"/>
+                    </dd>
+                    <dt>
+                    <label>Valor Brasíndice</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtvalorbri" alt="decimal" class="texto02" value="<?= $procedimento[0]->valor_bri; ?>"/>
                     </dd>
                     <dt>
                     <label>Classificaco</label>
@@ -30,10 +36,22 @@
                     <dd>
 
                         <select name="classificaco" id="classificaco" class="size2" >
-                            <option value='' >selecione</option>
+                            <option value='' >Selecione</option>
                             <?php foreach ($classificacao as $item) { ?>
                                 <option value="<?php echo $item->tuss_classificacao_id; ?>" <?if ($item->tuss_classificacao_id ==  $procedimento[0]->classificacao):echo 'selected'; endif;?>><?php echo $item->nome; ?></option>
                             <?php } ?>
+                        </select>
+                    </dd>
+                    <dt>
+                    <label>Grupo (Apenas pra Mat/Med)</label>
+                    </dt>
+                    <dd>
+
+                        <select name="grupo" id="grupo" class="size2" >
+                            <option value="" >Selecione</option>
+                            <option value="MATERIAL" <?if($procedimento[0]->grupo_matmed == 'MATERIAL'){ echo 'selected';}?>>MATERIAL</option>
+                            <option value="MEDICAMENTO" <?if($procedimento[0]->grupo_matmed == 'MEDICAMENTO'){ echo 'selected';}?>>MEDICAMENTO</option>
+                            
                         </select>
                     </dd>
                     <dt>
@@ -52,7 +70,10 @@
     </div>
 </div> <!-- Final da DIV content -->
 
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
     $('#btnVoltar').click(function() {
         $(location).attr('href', '<?= base_url(); ?>ponto/cargo');

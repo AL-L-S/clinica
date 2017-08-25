@@ -91,6 +91,18 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function listarconfiguracaoimpressao() {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('*');
+        $this->db->from('tb_empresa_impressao');
+        $this->db->where('empresa_id', $empresa_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function pacotesms() {
 
         $this->db->select('descricao_pacote, pacote_sms_id');
@@ -117,6 +129,18 @@ class empresa_model extends Model {
         $this->db->from('tb_exame_empresa');
         $this->db->orderby('nome');
         $this->db->where('empresa_id', $empresa_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarempresasprocedimento() {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('empresa_id,
+                            nome');
+        $this->db->from('tb_empresa');
+        $this->db->orderby('nome');
+//        $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -193,7 +217,7 @@ class empresa_model extends Model {
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
         $horario = date("Y-m-d H:i:s");
-        
+
         $this->db->set('empresa_lembretes_id', $_GET['lembretes_id']);
         $this->db->set('data_visualizacao', $horario);
         $this->db->set('operador_visualizacao', $operador_id);
@@ -324,13 +348,13 @@ class empresa_model extends Model {
             $this->db->set('empresa_id', $_POST['empresa_id']);
             $this->db->set('pacote_id', $_POST['txtpacote']);
             $this->db->set('numero_indentificacao_sms', $_POST['numero_identificacao_sms']);
-            
+
             if (isset($_POST['msgensExcedentes'])) {
                 $this->db->set('enviar_excedentes', 't');
             } else {
                 $this->db->set('enviar_excedentes', 'f');
             }
-            
+
             $this->db->set('mensagem_confirmacao', $_POST['txtMensagemConfirmacao']);
             $this->db->set('mensagem_agradecimento', $_POST['txtMensagemAgradecimento']);
             $this->db->set('mensagem_aniversariante', $_POST['txtMensagemAniversariantes']);
@@ -455,6 +479,16 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('imagem', 'f');
             }
+            if (isset($_POST['chamar_consulta'])) {
+                $this->db->set('chamar_consulta', 't');
+            } else {
+                $this->db->set('chamar_consulta', 'f');
+            }
+            if (isset($_POST['procedimentos_multiempresa'])) {
+                $this->db->set('procedimento_multiempresa', 't');
+            } else {
+                $this->db->set('procedimento_multiempresa', 'f');
+            }
             if (isset($_POST['consulta'])) {
                 $this->db->set('consulta', 't');
             } else {
@@ -578,6 +612,8 @@ class empresa_model extends Model {
                                geral,
                                faturamento,
                                estoque,
+                               chamar_consulta,
+                               procedimento_multiempresa,
                                financeiro,
                                laboratorio,
                                ponto,
@@ -637,6 +673,8 @@ class empresa_model extends Model {
             $this->_calendario = $return[0]->calendario;
             $this->_botao_faturar_guia = $return[0]->botao_faturar_guia;
             $this->_botao_faturar_proc = $return[0]->botao_faturar_procedimento;
+            $this->_chamar_consulta = $return[0]->chamar_consulta;
+            $this->_procedimento_multiempresa = $return[0]->procedimento_multiempresa;
         } else {
             $this->_empresa_id = null;
         }

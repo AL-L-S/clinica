@@ -18,6 +18,7 @@ class Procedimentoplano extends BaseController {
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('cadastro/paciente_model', 'paciente');
@@ -132,6 +133,10 @@ class Procedimentoplano extends BaseController {
         $data['obj'] = $obj_procedimentoplano;
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['grupos'] = $this->procedimento->listargruposmatmed();
+//        var_dump($data['grupos']); die;
+        $data['empresa'] = $this->empresa->listarempresasprocedimento();
+        
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimentoplano-form', $data);
     }
@@ -452,7 +457,7 @@ class Procedimentoplano extends BaseController {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/procedimentoplano");
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravarpercentualmedico() {

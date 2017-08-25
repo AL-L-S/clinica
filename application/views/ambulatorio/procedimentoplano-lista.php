@@ -4,7 +4,7 @@
         <tr>
             <td>
                 <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/0">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/0" target="_blank">
                         Novo Procedimento
                     </a>
                 </div>
