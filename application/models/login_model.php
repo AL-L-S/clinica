@@ -160,9 +160,9 @@ class login_model extends Model {
         foreach ($exames as $item) {
             if ($i <= $disponivel) {
 //
-//                $this->db->set('sms_enviado', 't');
-//                $this->db->where('agenda_exames_id', $item->agenda_exames_id);
-//                $this->db->update('tb_agenda_exames');
+                $this->db->set('sms_enviado', 't');
+                $this->db->where('agenda_exames_id', $item->agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
                 
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
@@ -267,7 +267,33 @@ class login_model extends Model {
         return $i;
     }
 
-    function atualizandoregistro() {
+    function verificacaosmsdia() {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $horario = date('Y-m-d');
+        
+        $this->db->select('COUNT(*) as total');
+        $this->db->from('tb_empresa_sms_registro');
+        $this->db->where('data_verificacao', $horario);
+        $this->db->where('empresa_id', $empresa_id);
+        $retorno = $this->db->get()->result();
+        return $retorno;
+    }
+
+    function criandoregistrosms() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $horario = date('Y-m-d');        
+        $periodo = date('m/Y');
+        
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('periodo', $periodo);
+        $this->db->set('data_verificacao', $horario);
+        $this->db->insert('tb_empresa_sms_registro');
+        $registro_sms = $this->db->insert_id();
+        return $registro_sms;
+    }
+
+    function atualizandoregistro($registro_sms_id) {
         $empresa_id = $this->session->userdata('empresa_id');
 
         $horario = date('Y-m-d');
@@ -284,7 +310,8 @@ class login_model extends Model {
         $this->db->set('periodo', $periodo);
         $this->db->set('qtde', $total);
         $this->db->set('data_verificacao', $horario);
-        $this->db->insert('tb_empresa_sms_registro');
+        $this->db->where('empresa_sms_registro_id', $registro_sms_id);
+        $this->db->update('tb_empresa_sms_registro');
 
         $this->db->set('registrado', 't');
         $this->db->where('data', $horario);

@@ -10,12 +10,10 @@
                         <label>Covênio</label>
                     </dt>
                     <dd>
-                        <select name="covenio" id="covenio" class="size4" required disabled="">
+                        <select name="covenio" id="covenio" class="size4" required>
                             <option value="">SELECIONE</option>
                             <? foreach ($convenio as $value) : ?>
-                                <option  value="<?= $value->convenio_id; ?>" <?if($value->convenio_id == $convenio_id) echo 'selected'?>>
-                                    <?php echo $value->nome; ?>
-                                </option>                            
+                                <option  value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>                            
                             <? endforeach; ?>                                                                                             
                         </select>               
 

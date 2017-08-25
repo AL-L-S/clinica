@@ -66,6 +66,26 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimentopercentualmedico($args = array()) {
+        $this->db->select('pm.procedimento_percentual_medico_id,
+                            pm.procedimento_tuss_id,
+                            pm.medico,
+                            o.nome as medico,
+                            pt.nome,
+                            pm.valor');
+        $this->db->from('tb_procedimento_percentual_medico pm');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pm.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = pm.medico', 'left');
+        $this->db->where("pm.ativo", 't');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('o.nome ilike', "%" . $args['nome'] . "%");
+        }
+        if (isset($args['procedimento']) && strlen($args['procedimento']) > 0) {
+            $this->db->where('pt.nome ilike', "%" . $args['procedimento'] . "%");
+        }
+        return $this->db;
+    }
+
     function listarprocedimentopercentual($args = array()) {
         $this->db->select('pm.procedimento_percentual_medico_id,
                             pm.procedimento_tuss_id,
@@ -84,6 +104,55 @@ class procedimentoplano_model extends Model {
             $this->db->where('pt.nome ilike', "%" . $args['procedimento'] . "%");
         }
         return $this->db;
+    }
+
+    function listarpercentualconvenio($args = array()) {        
+        $this->db->select(' c.nome as convenio,
+                            c.convenio_id');
+        $this->db->from('tb_convenio c');
+        $this->db->where("c.convenio_id IN (
+                            SELECT pc.convenio_id
+                            FROM ponto.tb_procedimento_percentual_medico pm
+                            INNER JOIN ponto.tb_procedimento_convenio pc
+                            ON pc.procedimento_convenio_id = pm.procedimento_tuss_id
+                            WHERE pm.ativo = 't'
+                            GROUP BY pc.convenio_id)");
+
+
+        if (isset($args['convenio']) && strlen($args['convenio']) > 0) {
+            $this->db->where('c.nome ilike', "%" . $args['convenio'] . "%");
+        }
+        
+        return $this->db;
+    }
+
+    function listarprocedimentoconveniopercentual($convenio_id) {
+        
+        $this->db->select('pm.procedimento_percentual_medico_id,
+                            pt.nome as procedimento,
+                            c.nome as convenio,
+                            pt.grupo as grupo,
+                            ');
+        $this->db->from('tb_procedimento_percentual_medico pm');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pm.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("pm.ativo", 't');
+        $this->db->where("c.convenio_id", $convenio_id);
+
+        if (isset($_GET['procedimento']) && strlen($_GET['procedimento']) > 0) {
+            $this->db->where('pt.nome ilike', "%" . $_GET['procedimento'] . "%");
+        }
+        if (isset($_GET['grupo']) && strlen($_GET['grupo']) > 0) {
+            $this->db->where('pt.grupo ilike', "%" . $_GET['grupo'] . "%");
+        }
+        
+        $limit = 10;
+        isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+        $this->db->limit($limit, $pagina);
+        
+        $query = $this->db->get();
+        return $query->result();
     }
 
     function listarprocedimentogrupo($args = array()) {
@@ -733,6 +802,43 @@ class procedimentoplano_model extends Model {
           AND pc.convenio_id = $convenio_id
           AND pt.grupo = '$grupo';";
         $this->db->query($sql);
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
+    function excluirpercentualconvenio($convenio_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where("procedimento_tuss_id IN (
+                            SELECT procedimento_convenio_id 
+                            FROM ponto.tb_procedimento_convenio
+                            WHERE convenio_id = $convenio_id )");
+        $this->db->update('tb_procedimento_percentual_medico');
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where("procedimento_percentual_medico_id IN (
+                            SELECT procedimento_percentual_medico_id 
+                            FROM ponto.tb_procedimento_percentual_medico ppm
+                            INNER JOIN ponto.tb_procedimento_convenio pc
+                            ON ppm.procedimento_tuss_id = pc.procedimento_convenio_id
+                            WHERE ppm.ativo = 'f'
+                            AND pc.convenio_id = $convenio_id )");
+                            
+        $this->db->update('tb_procedimento_percentual_medico_convenio');
 
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
