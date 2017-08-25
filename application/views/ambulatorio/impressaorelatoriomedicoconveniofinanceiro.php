@@ -47,11 +47,17 @@ switch ($MES) {
     <? $sit = ($situacao == '') ? "TODOS" : (($situacao == '0') ? 'ABERTO' : 'FINALIZADO' ); ?>
     <h4>SITUAÇÃO: <?= $sit ?></h4>
     <h4>PERIODO: <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> ate <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?></h4>
-    <? if ($medico == 0) { ?>
+    <? if ($revisor == 0) { ?>
+        <h4>Revisor: TODOS</h4>
+    <? } else { ?>
+        <h4>Revisor: <?= $revisor[0]->operador; ?></h4>
+    <? } 
+    if ($medico == 0) { ?>
         <h4>Medico: TODOS</h4>
     <? } else { ?>
         <h4>Medico: <?= $medico[0]->operador; ?></h4>
     <? } ?>
+        
 
     <hr>
     <?
@@ -85,6 +91,7 @@ switch ($MES) {
                         <th class="tabela_header" ><font size="-1">Taxa Administração</th>
                     <? } ?>
 
+                    <th class="tabela_header"><font size="-1">Revisor</th>
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
                     <? } ?>
@@ -170,7 +177,9 @@ switch ($MES) {
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->taxa_administracao, 2, ",", "."); ?> (%)</td>
                                 <? $taxaAdministracao += ((float) $perc * ((float) $item->taxa_administracao / 100)); ?>
                             <? } ?>
-                                
+                            
+                            <td><font size="-2"><?= $item->revisor; ?></td>
+                            
                             <? if ($solicitante == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
                             <? } ?>
@@ -483,7 +492,7 @@ switch ($MES) {
                     </table>
                 <? } ?>
                 <? ?>
-                <? if ($medico != 0) {
+                <? if ($medico != 0 & $revisor == 0) {
                     ?>
 
                     <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharmedico" method="post">

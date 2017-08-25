@@ -199,6 +199,7 @@ class Guia extends BaseController {
         $data['r18'] = substr($string, 511, 3);
         $data['r19'] = substr($string, 537, 3);
         $data['r20'] = substr($string, 563, 3);
+        $data['r21'] = substr($string, 589, 3);
 
         $data['peso'] = $texto[0]->peso;
         $data['txtp9'] = $texto[0]->txtp9;
@@ -285,7 +286,7 @@ class Guia extends BaseController {
                 $data['extenso'] = GExtenso::moeda($valoreditado);
             }
         }
-//        var_dump($dinheiro);
+//        var_dump($grupo);
 //        die;
 
         if ($data['empresa'][0]->impressao_tipo == 1) { //HUMANA 
@@ -1106,10 +1107,25 @@ class Guia extends BaseController {
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        $data['responsavel'] = $this->exametemp->listaresponsavelorcamento($paciente_id);
+//        var_dump($data['responsavel']);die;
         $data['exames'] = $this->exametemp->listarorcamentos($paciente_id);
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
         $this->loadView('ambulatorio/orcamento-form', $data);
     }
+    
+      
+    function excluirorcamento($ambulatorio_orcamento_item_id, $paciente_id, $orcamento_id) {
+        if ($this->exametemp->excluirorcamento($ambulatorio_orcamento_item_id)) {
+            $mensagem = 'Sucesso ao excluir o Procedimento';
+        } else {
+            $mensagem = 'Erro ao excluir o Procedimento. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id/$orcamento_id");
+    }
+    
 
     function novo($paciente_id, $ambulatorio_guia_id = null) {
         $data['paciente_id'] = $paciente_id;
@@ -2839,6 +2855,15 @@ class Guia extends BaseController {
         }
     }
 
+    function relatoriomedicoatendimentomensal() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $this->loadView('ambulatorio/relatoriomedicoatendimentomensal', $data);
+    }
+
     function relatoriomedicoconveniofinanceiro() {
         $data['convenio'] = $this->convenio->listardados();
         $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
@@ -2864,8 +2889,38 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatorioatendenteconvenio', $data);
     }
 
+    function gerarelatoriomedicoatendimentomensal() {
+        $medicos = $_POST['medicos'];
+        $revisor = $_POST['revisor'];
+
+        if ($medicos != 0) {
+            $data['medico'] = $this->operador_m->listarCada($medicos);
+        } else {
+            $data['medico'] = 0;
+        }
+        
+        if ($revisor != 0) {
+            $data['revisor'] = $this->operador_m->listarCada($revisor);
+        } else {
+            $data['revisor'] = 0;
+        }
+        
+        $data['periodo'] = $_POST['periodo'];
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['empresamunicipio'] = $this->guia->listarempresamunicipio($_POST['empresa']);
+        $data['medicos'] = $this->guia->relatoriomedicoatendimentomensal();
+        $data['procedimentos'] = $this->guia->relatorioprocedimentoatendimentomensal();
+        $data['medico_procedimento'] = $this->guia->relatoriomedicoprocedimentoatendimentomensal();
+        
+//        echo "<pre>";
+//        var_dump($data['procedimentos']);die;
+        
+        $this->load->View('ambulatorio/impressaorelatoriomedicoatendimentomensal', $data);
+    }
+
     function gerarelatoriomedicoconveniofinanceiro() {
         $medicos = $_POST['medicos'];
+        $revisor = $_POST['revisor'];
         $data['recibo'] = $_POST['recibo'];
         $data['clinica'] = $_POST['clinica'];
         $data['solicitante'] = $_POST['solicitante'];
@@ -2877,6 +2932,13 @@ class Guia extends BaseController {
         } else {
             $data['medico'] = 0;
         }
+        
+        if ($revisor != 0) {
+            $data['revisor'] = $this->operador_m->listarCada($revisor);
+        } else {
+            $data['revisor'] = 0;
+        }
+        
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);

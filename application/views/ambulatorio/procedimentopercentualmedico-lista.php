@@ -4,18 +4,18 @@
         <tr>
             <td>
                 <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualmedico">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualmedico/<?=$convenio_id?>">
                         Novo Procedimento
                     </a>
                 </div>
             </td>
-            <td>
+<!--            <td>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/replicarpercentualmedico">
                         Replicar Percentual
                     </a>
                 </div>
-            </td>
+            </td>-->
         </tr>
     </table>
     <div id="accordion">
@@ -26,11 +26,11 @@
                     <tr>
                         <th colspan="5" class="tabela_title">
                     </tr>
-                <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">
+                <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentual/<?=$convenio_id?>">
                     <tr>
                         <th class="tabela_title">Procedimento</th>
                         <th class="tabela_title" >Grupo</th>                  
-                        <th class="tabela_title" >Convenio</th>                        
+                        <!--<th class="tabela_title" >Convenio</th>-->                        
                     </tr>
                     <tr>
                         <th class="tabela_title">
@@ -38,9 +38,6 @@
                         </th>
                         <th class="tabela_title">
                             <input type="text" name="grupo" class="texto03" value="<?php echo @$_GET['grupo']; ?>" />
-                        <th class="tabela_title">
-                            <input type="text" name="convenio" class="texto03" value="<?php echo @$_GET['convenio']; ?>" />
-                        </th>
                         </th>
                         <th class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -64,8 +61,7 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->procedimentoplano->listarprocedimentogrupo($_GET);
-                $total = $consulta->count_all_results();
+                $total = count($procedimentos);
                 $limit = 10;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
@@ -73,12 +69,8 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->procedimentoplano->listarprocedimentogrupo($_GET)->orderby('pt.grupo')->orderby('pt.nome')->limit($limit, $pagina)->get()->result();
-//                        echo '<pre>';
-//                        var_dump($lista);
-//                        die;
                         $estilo_linha = "tabela_content01";
-                        foreach ($lista as $item) {
+                        foreach ($procedimentos as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
@@ -89,7 +81,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                     <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento');"
-                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentual/<?= $item->procedimento_percentual_medico_id; ?>">Excluir&nbsp;
+                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentual/<?= $item->procedimento_percentual_medico_id; ?>/<?=$convenio_id?>">Excluir&nbsp;
                                     </a>
                                     <a 
                                         href="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimento/<?= $item->procedimento_percentual_medico_id; ?>">Editar

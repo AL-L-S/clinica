@@ -141,7 +141,7 @@
                                     <select  name="grupo1" id="grupo<?= $i; ?>" class="size1" >
                                         <option value="">Selecione</option>
                                         <?foreach ($grupos as $item2) :?>
-                                            <option value="<?= $item2->nome; ?>"><?= $item2->nome; ?></option>
+                                            <option value="<?= $item2->nome; ?>" <? if ($item2->nome == $item->grupo) echo "selected"; ?>><?= $item2->nome; ?></option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>

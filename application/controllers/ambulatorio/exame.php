@@ -904,6 +904,7 @@ class Exame extends BaseController {
 
     function gravarexame() {
         $total = $this->exame->contadorexames();
+//        var_dump($total);die('morreu');
         if ($total == 0) {
             $preparo = $this->guia->listarprocedimentopreparo();
             $procedimentopercentual = $_POST['txtprocedimento_tuss_id'];

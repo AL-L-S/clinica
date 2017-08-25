@@ -559,3 +559,9 @@ UPDATE ponto.tb_procedimento_convenio pc
   LIMIT 1
 ) as empresa
 WHERE pc.empresa_id is null;
+
+
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN operador_atualizacao integer;
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN data_atualizacao date;
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN ativo boolean DEFAULT true;
+

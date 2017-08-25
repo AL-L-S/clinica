@@ -1274,7 +1274,9 @@ class agenda_model extends Model {
                         $this->db->where('tipo', 'CONSULTA');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
-                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        if($_POST['sala'] != ""){
+                            $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        }
                         $this->db->update('tb_agenda_exames');
                         $erro = $this->db->_error_message();
                         if (trim($erro) != "") // erro de banco
@@ -1295,7 +1297,9 @@ class agenda_model extends Model {
                         $this->db->where('tipo', 'CONSULTA');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
-                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        if($_POST['sala'] != ""){
+                            $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        }
                         $this->db->update('tb_agenda_exames');
                         $erro = $this->db->_error_message();
                         if (trim($erro) != "") // erro de banco
@@ -1316,7 +1320,9 @@ class agenda_model extends Model {
                         $this->db->where('tipo', 'CONSULTA');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
-                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        if($_POST['sala'] != ""){
+                            $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        }
                         $this->db->update('tb_agenda_exames');
                         $erro = $this->db->_error_message();
                         if (trim($erro) != "") // erro de banco
@@ -1337,7 +1343,9 @@ class agenda_model extends Model {
                         $this->db->where('tipo', 'CONSULTA');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
-                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        if($_POST['sala'] != ""){
+                            $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        }
                         $this->db->update('tb_agenda_exames');
                         $erro = $this->db->_error_message();
                         if (trim($erro) != "") // erro de banco
@@ -1358,7 +1366,9 @@ class agenda_model extends Model {
                         $this->db->where('tipo', 'CONSULTA');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
-                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        if($_POST['sala'] != ""){
+                            $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        }
                         $this->db->update('tb_agenda_exames');
                         $erro = $this->db->_error_message();
                         if (trim($erro) != "") // erro de banco
@@ -1379,7 +1389,9 @@ class agenda_model extends Model {
                         $this->db->where('tipo', 'CONSULTA');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
-                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        if($_POST['sala'] != ""){
+                            $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        }
                         $this->db->update('tb_agenda_exames');
                         $erro = $this->db->_error_message();
                         if (trim($erro) != "") // erro de banco
@@ -1400,7 +1412,9 @@ class agenda_model extends Model {
                         $this->db->where('tipo', 'CONSULTA');
                         $this->db->where('inicio >=', $_POST['horainicio']);
                         $this->db->where('inicio <=', $_POST['horafim']);
-                        $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        if($_POST['sala'] != ""){
+                            $this->db->where('agenda_exames_nome_id', $_POST['sala']);
+                        }
                         $this->db->update('tb_agenda_exames');
                         $erro = $this->db->_error_message();
                         if (trim($erro) != "") // erro de banco

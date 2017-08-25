@@ -123,6 +123,7 @@ class exametemp_model extends Model {
                             a.observacoes,
                             a.procedimento_tuss_id,
                             pc.convenio_id as convenio_agenda,
+                            pt.grupo,
                             p.convenio_id');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
@@ -554,6 +555,7 @@ class exametemp_model extends Model {
                             o.nome as medico,
                             a.observacoes,
                             a.procedimento_tuss_id,
+                            pt.grupo,
                             pc.convenio_id as convenio_agenda');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
@@ -588,6 +590,7 @@ class exametemp_model extends Model {
                             es.nome as sala,
                             a.medico_agenda,
                             pt.nome as procedimento,
+                            pt.grupo,
                             a.procedimento_tuss_id,
                             pc.convenio_id as convenio_agenda,
                             o.nome as medico,
@@ -1524,10 +1527,24 @@ class exametemp_model extends Model {
         return $retorno;
     }
 
+    function listaresponsavelorcamento($paciente_id) {
+        $horario = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('o.nome');
+        $this->db->from('tb_ambulatorio_orcamento ao');
+        $this->db->join('tb_operador o', 'o.operador_id = ao.operador_cadastro', 'left');
+        
+        $this->db->where('ao.empresa_id', $empresa_id);
+        $this->db->where("ao.paciente_id", $paciente_id);
+        $this->db->where("ao.data_criacao", $horario);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarorcamentos($paciente_id) {
         $horario = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('oi.ambulatorio_orcamento_item_id,
+        $this->db->select(' oi.ambulatorio_orcamento_item_id,
                             oi.data,
                             oi.orcamento_id,
                             oi.valor_total,
@@ -1548,9 +1565,29 @@ class exametemp_model extends Model {
         $this->db->where('oi.empresa_id', $empresa_id);
         $this->db->where("oi.paciente_id", $paciente_id);
         $this->db->where("oi.data", $horario);
+        $this->db->where("oi.ativo", "t");
         $return = $this->db->get();
         return $return->result();
     }
+    
+    
+    function excluirorcamento($ambulatorio_orcamento_item_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('ambulatorio_orcamento_item_id', $ambulatorio_orcamento_item_id);
+        $this->db->update('tb_ambulatorio_orcamento_item');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
 
     function listaagendafisioterapia($agendaexame_id) {
         $empresa_id = $this->session->userdata('empresa_id');

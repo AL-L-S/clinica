@@ -237,6 +237,17 @@
                     <label> Quais?</label>
                     <input type="text"  name="txtp20" id="txtp20" class="texto04">
                 </dd>
+                
+                <dt>
+                    <label>Trazer canhoto para recebimento do Exame?</label>
+                </dt>
+                <dd>
+                    <select name="p21"  id="p21" class="size1">  
+                        <option value="" disabled selected>SELECIONE</option>
+                        <option value="SIM">SIM</option> 
+                        <option value="NAO">NÃO</option>                                   
+                    </select>
+                </dd>
                 <br/>
                 <dt><label>OBS</label></dt>
                 <dd>

@@ -2121,7 +2121,7 @@ class guia_model extends Model {
         }
         if ($_POST['medico'] != "0") {
             $medico = $_POST['medico'];
-            $this->db->where("ae.medico_agenda = {$medico} OR ae.medico_consulta_id = {$medico}");
+            $this->db->where("(ae.medico_agenda = {$medico} OR ae.medico_consulta_id = {$medico})");
         }
         if ($_POST['plano'] != "0") {
             $this->db->where("p.convenio_id", $_POST['plano']);
@@ -3511,41 +3511,190 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function relatorioprocedimentoatendimentomensal() {
+
+        $this->db->select(' SUM(ae.quantidade) as qtde,
+                            pt.nome as procedimento,
+                            pt.procedimento_tuss_id');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('ae.paciente_id is not null');
+        $this->db->where('pt.home_care', 'f');
+
+        if ($_POST['medicos'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        }
+        if ($_POST['revisor'] != "0") {
+            $this->db->where('al.medico_parecer2', $_POST['revisor']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        
+        $periodo = explode("/", $_POST['periodo']);
+        $mes = $periodo[0];
+        $ano = $periodo[1];
+        
+        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+        
+        $this->db->groupby('pt.nome, pt.procedimento_tuss_id');
+        
+        $this->db->orderby('pt.nome');
+//        $this->db->orderby('al.medico_parecer1');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatoriomedicoprocedimentoatendimentomensal() {
+
+        $this->db->select(' SUM(ae.quantidade) as total,
+                            pt.nome as procedimento,
+                            pt.procedimento_tuss_id,
+                            al.medico_parecer1,
+                            op.nome as medico');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('ae.paciente_id is not null');
+        $this->db->where('pt.home_care', 'f');
+
+        if ($_POST['medicos'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        }
+        if ($_POST['revisor'] != "0") {
+            $this->db->where('al.medico_parecer2', $_POST['revisor']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        
+        $periodo = explode("/", $_POST['periodo']);
+        $mes = $periodo[0];
+        $ano = $periodo[1];
+        
+        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+        
+        $this->db->groupby('al.medico_parecer1, op.nome, pt.nome, pt.procedimento_tuss_id');
+        
+        $this->db->orderby('pt.nome');
+        $this->db->orderby('al.medico_parecer1');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatoriomedicoatendimentomensal() {
+
+        $this->db->select('op.nome as medico, al.medico_parecer1');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('ae.paciente_id is not null');
+        $this->db->where('pt.home_care', 'f');
+
+        if ($_POST['medicos'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        }
+        if ($_POST['revisor'] != "0") {
+            $this->db->where('al.medico_parecer2', $_POST['revisor']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        
+        $periodo = explode("/", $_POST['periodo']);
+        $mes = $periodo[0];
+        $ano = $periodo[1];
+        
+        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+
+        $this->db->groupby('op.nome, al.medico_parecer1');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function relatoriomedicoconveniofinanceiro() {
 
         $this->db->select('ae.quantidade,
-            p.nome as paciente,
-            pt.nome as procedimento,
-            pc.procedimento_convenio_id,
-            ae.autorizacao,
-            ae.percentual_medico,
-            ae.valor_medico,
-            ae.desconto_ajuste1,
-            ae.desconto_ajuste2,
-            ae.desconto_ajuste3,
-            ae.desconto_ajuste4,
-            ae.data,
-            ae.data_antiga,
-            e.situacao,
-            op.operador_id,
-            ae.valor,
-            ae.valor1,
-            ae.valor2,
-            ae.valor3,
-            ae.valor4,
-            ae.valor_total,
-            pc.procedimento_tuss_id,
-            al.medico_parecer1,
-            pt.perc_medico,
-            al.situacao as situacaolaudo,
-            tu.classificacao,
-            o.nome as revisor,
-            op.taxa_administracao,
-            pt.percentual,
-            op.nome as medico,
-            ops.nome as medicosolicitante,
-            c.nome as convenio,
-            c.iss');
+                            p.nome as paciente,
+                            pt.nome as procedimento,
+                            pc.procedimento_convenio_id,
+                            ae.autorizacao,
+                            ae.percentual_medico,
+                            ae.valor_medico,
+                            ae.desconto_ajuste1,
+                            ae.desconto_ajuste2,
+                            ae.desconto_ajuste3,
+                            ae.desconto_ajuste4,
+                            ae.data,
+                            ae.data_antiga,
+                            e.situacao,
+                            op.operador_id,
+                            ae.valor,
+                            ae.valor1,
+                            ae.valor2,
+                            ae.valor3,
+                            ae.valor4,
+                            ae.valor_total,
+                            pc.procedimento_tuss_id,
+                            al.medico_parecer1,
+                            pt.perc_medico,
+                            al.situacao as situacaolaudo,
+                            tu.classificacao,
+                            o.nome as revisor,
+                            op.taxa_administracao,
+                            pt.percentual,
+                            op.nome as medico,
+                            ops.nome as medicosolicitante,
+                            c.nome as convenio,
+                            c.iss');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -3571,6 +3720,9 @@ class guia_model extends Model {
 
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        }
+        if ($_POST['revisor'] != "0") {
+            $this->db->where('al.medico_parecer2', $_POST['revisor']);
         }
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
@@ -4185,6 +4337,9 @@ class guia_model extends Model {
 //        $this->db->where('al.situacao', 'FINALIZADO');
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        }
+        if ($_POST['revisor'] != "0") {
+            $this->db->where('al.medico_parecer2', $_POST['revisor']);
         }
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
@@ -9983,6 +10138,7 @@ ORDER BY ae.agenda_exames_id)";
                 $p18 = $_POST['p18'];
                 $p19 = $_POST['p19'];
                 $p20 = $_POST['p20'];
+                $p21 = $_POST['p21'];
                 $peso = $_POST['txtpeso'];
                 $txtp9 = $_POST['txtp9'];
                 $txtp19 = $_POST['txtp19'];
@@ -10011,7 +10167,8 @@ ORDER BY ae.agenda_exames_id)";
                      xmlelement ( name  p17 , '$p17') ,
                      xmlelement ( name  p18 , '$p18'),
                      xmlelement ( name  p19 , '$p19')  ,
-                     xmlelement ( name  p20 , '$p20')
+                     xmlelement ( name  p20 , '$p20'),
+                     xmlelement ( name  p21 , '$p21')
                      )));";
 
                 $this->db->query($sql);
