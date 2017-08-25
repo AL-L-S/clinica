@@ -108,7 +108,7 @@
 
                 foreach ($relatorio as $item) :
                     $p = $i + 1;
-                if($item->grupo == 'MEDICAMENTO'){
+                if($item->grupo == 'MEDICAMENTO' || $item->grupo == 'MATERIAL'){
                 $medicamento = $medicamento + $item->quantidade;
                 }
                     $i++;
@@ -200,7 +200,7 @@
                                 <td>&nbsp;</td>
                             <? } else { ?>
                                 <td><?= $item->guia_id; ?></td>
-                                <td><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                                <td><?if($item->data_antiga != ""){ echo " ** ";}?><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?><?if($item->data_antiga != ""){ echo " ** ";}?></td>
                                 <td><?= utf8_decode($item->paciente); ?></td>
                                 <?
                                 $contadorpaciente++;

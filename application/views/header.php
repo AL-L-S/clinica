@@ -932,8 +932,8 @@ function debug($object) {
                                 </li> 
                             <? } ?>
                             <li><span class="folder">Administrativas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
-                                    <? if ($perfil_id == 1 || $perfil_id == 3) { ?>
+                                <? if ($perfil_id == 1) { ?>
+                                    <? if ($perfil_id == 1) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/pesquisarlembrete">Manter Lembretes</a></span></ul>
                                     <? } ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa">Manter Empresa</a></span></ul>

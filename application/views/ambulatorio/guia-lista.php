@@ -201,7 +201,7 @@
                                                                                                                                                                                                                                                                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
                                                                                                                                                                                                                                                                                             </a>
                                                                                                                                                                                                                                                                                         </td>-->
-                                        <? if ($item->grupo != 'MEDICAMENTO' && $item->grupo != 'MAT/MED') { ?>
+                                        <? if ($item->grupo != 'MEDICAMENTO' && $item->grupo != 'MATERIAL') { ?>
 
 
                                             <td class="<?php echo $estilo_linha; ?>" width="30px;">

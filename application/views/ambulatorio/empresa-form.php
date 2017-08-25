@@ -219,6 +219,12 @@
                         <dd>
                             <input type="checkbox" id="calendario" name="calendario" <? if (@$obj->_calendario == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Habilitar Calendario.">Chamar Consulta na sala de espera</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="chamar_consulta" name="chamar_consulta" <? if (@$obj->_chamar_consulta == 't') echo "checked"; ?>/> 
+                        </dd>
                         
                         <dt>
                             <label title="Aparecer o botão de faturar procedimento no cadastro.">Botão Faturar Procedimentos</label>
@@ -232,6 +238,12 @@
                         </dt>
                         <dd>
                             <input type="checkbox" id="calendario" name="botao_faturar_guia" <? if (@$obj->_botao_faturar_guia == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Procedimentos separados por empresa.">Proc. Multiempresa</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="procedimentos_multiempresa" name="procedimentos_multiempresa" <? if (@$obj->_procedimentos_multiempresa == 't') echo "checked"; ?>/> 
                         </dd>
                     <? } ?>
                 </dl>    

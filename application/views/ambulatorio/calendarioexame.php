@@ -139,7 +139,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
                         <th class="tabela_title">Grupo</th>
                         <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Sala</th>
-                        <th class="tabela_title">Especialidade</th>
+                        <th class="tabela_title" style="display: none">Especialidade</th>
                         <th class="tabela_title">Medico</th>
                         <th class="tabela_title">Nome</th>
 
@@ -195,8 +195,8 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
 
                         </th>
 
-                        <th class="tabela_title">
-                            <select name="especialidade" id="especialidade" class="size2">
+                        <th class="tabela_title" style="display: none">
+                            <select name="especialidade"  id="especialidade" class="size2">
                                 <option value=""></option>
                                 <option value="">TODOS</option>
                                 <? foreach ($especialidade as $value) : ?>
@@ -214,7 +214,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
                                 <? endforeach; ?>
                             </select>
                         </th>
-
+   
 
                         <th class="tabela_title">
                             <select name="medico" id="medico" class="size2">
@@ -522,7 +522,11 @@ if (@$_GET['data'] != '') {
     $data = date("Y-m-d", strtotime(str_replace('/', '-', $_GET['data'])));
 } else {
     $data = date('Y-m-d');
-    
+}
+if (@$_GET['nome'] != '') {
+    $nome = $_GET['nome'];
+} else {
+    $nome = "";
 }
 //var_dump($data); die;
 ?>
@@ -535,7 +539,11 @@ if (@$_GET['data'] != '') {
 
 
 //    function date() {
-
+    if ($('#nome').val() != '') {
+        var paciente = '<?=$nome?>';
+    } else {
+        var paciente = '';
+    }
 
   var $calendar =  $('#calendar').fullCalendar({
         header: {
@@ -559,7 +567,7 @@ if (@$_GET['data'] != '') {
         dayClick: function (date) {
             var data = date.format();
 
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=' + $('#empresa').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=' + $('#especialidade').val() + '&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario?empresa=' + $('#empresa').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=' + $('#especialidade').val() + '&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente +  '', '_self');
 
 
 
@@ -590,7 +598,8 @@ if (@$_GET['data'] != '') {
                     especialidade: $('#especialidade').val(),
                     sala: $('#sala').val(),
                     grupo: $('#grupo').val(),
-                    empresa: $('#empresa').val()
+                    empresa: $('#empresa').val(),
+                    paciente: paciente
                 },
                 error: function () {
 

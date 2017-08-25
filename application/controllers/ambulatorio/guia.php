@@ -620,8 +620,8 @@ class Guia extends BaseController {
             $destino = "./upload/guia/$guia_id";
             chmod($destino, 0777);
         }
-//        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$paciente_id/");
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/guia/$guia_id/");
+//        $data['arquivo_pasta'] = directory_map("./upload/$paciente_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/guia/$guia_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
         }
@@ -637,7 +637,7 @@ class Guia extends BaseController {
             chmod($destino, 0777);
         }
 
-        $config['upload_path'] = "/home/sisprod/projetos/clinica/upload/guia/" . $guia_id . "/";
+        $config['upload_path'] = "./upload/guia/" . $guia_id . "/";
         $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt';
         $config['max_size'] = '0';
         $config['overwrite'] = FALSE;
@@ -860,7 +860,7 @@ class Guia extends BaseController {
                 }
 //            $this->gerardicom($ambulatorio_guia);
                 $tipo = $this->guia->verificaexamemedicamento($_POST['procedimento1']);
-                if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO') && $medico_id == '') {
+                if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO' || $tipo == 'MATERIAL') && $medico_id == '') {
                     $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
                     $this->session->set_flashdata('message', $data['mensagem']);
                 } else {

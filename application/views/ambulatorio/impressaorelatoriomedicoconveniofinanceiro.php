@@ -155,6 +155,7 @@ switch ($MES) {
                                 $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100))*/;
 
                                 $perc = $valorpercentualmedico;
+                                $perc = $perc * $item->quantidade;
                                 $totalperc = $totalperc + $perc;
                                 $totalgeral = $totalgeral + $valor_total;
                             }

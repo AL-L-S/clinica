@@ -40,7 +40,14 @@ class Empresa extends BaseController {
         $data['operadores'] = $this->operador->listaroperadoreslembrete();
         $this->loadView('ambulatorio/lembrete-form', $data);
     }
-    
+
+    function configurarimpressao() {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->load->View('ambulatorio/configurarimpressao-form', $data);
+    }
+
     function excluirlembrete($empresa_lembretes_id) {
         if ($this->empresa->excluirlembrete($empresa_lembretes_id)) {
             $mensagem = 'Sucesso ao excluir o Lembrete';
@@ -51,17 +58,16 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
     }
-    
+
     function checandolembrete() {
         $data = $this->empresa->buscandolembreteoperador();
         die(json_encode($data));
     }
-    
+
     function visualizalembrete() {
         $this->empresa->visualizalembrete();
     }
-    
-        
+
     function gravarlembrete($empresa_lembretes_id) {
         if ($this->empresa->gravarlembrete($empresa_lembretes_id)) {
             $mensagem = 'Sucesso ao gravar o Lembrete';
@@ -72,8 +78,7 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
     }
-    
-    
+
     function carregarempresa($exame_empresa_id) {
         $obj_empresa = new empresa_model($exame_empresa_id);
         $data['obj'] = $obj_empresa;
@@ -94,6 +99,7 @@ class Empresa extends BaseController {
         $data['numeros_indentificacao'] = $this->empresa->listarnumeroindentificacaosms();
         $this->loadView('ambulatorio/empresasms-form', $data);
     }
+
     function configuraracessoexterno($empresa_id) {
         $data['empresa_id'] = $empresa_id;
         $obj_empresa = new empresa_model($empresa_id);
@@ -102,7 +108,7 @@ class Empresa extends BaseController {
         $data['servidores'] = $this->empresa->listaripservidor();
         $this->loadView('ambulatorio/empresaacessoexterno-form', $data);
     }
-    
+
     function configurarpacs($empresa_id) {
         $data['empresa_id'] = $empresa_id;
         $data['pacs'] = $this->empresa->listarpacs();
@@ -131,6 +137,7 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/configuraracessoexterno/$empresa_id");
     }
+
     function excluiripservidor($servidor_id, $empresa_id) {
         if ($this->empresa->excluiripservidor($servidor_id)) {
             $mensagem = 'Sucesso ao excluir o Endereço';
@@ -145,7 +152,7 @@ class Empresa extends BaseController {
     function gravarconfiguracaoemail() {
         $empresa_id = $this->empresa->gravarconfiguracaoemail();
         if ($empresa_id == "-1") {
-            $data['mensagem'] =  'Erro ao salvar configurações do serviço de Email.';
+            $data['mensagem'] = 'Erro ao salvar configurações do serviço de Email.';
         } else {
             $data['mensagem'] = 'Configuração de Email efetuada com sucesso.';
         }
@@ -156,17 +163,18 @@ class Empresa extends BaseController {
     function gravarconfiguracaosms() {
         $empresa_id = $this->empresa->gravarconfiguracaosms();
         if ($empresa_id == "-1") {
-            $data['mensagem'] =  'Erro ao salvar configurações de SMS.';
+            $data['mensagem'] = 'Erro ao salvar configurações de SMS.';
         } else {
             $data['mensagem'] = 'Configuração de SMS efetuada com sucesso.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/empresa");
     }
+
     function gravarconfiguracaopacs() {
         $empresa_id = $this->empresa->gravarconfiguracaopacs();
         if ($empresa_id == "-1") {
-            $data['mensagem'] =  'Erro ao salvar configurações de PACS.';
+            $data['mensagem'] = 'Erro ao salvar configurações de PACS.';
         } else {
             $data['mensagem'] = 'Configuração de PACS efetuada com sucesso.';
         }
@@ -187,7 +195,7 @@ class Empresa extends BaseController {
 
     function ativar($exame_empresa_id) {
         $this->empresa->ativar($exame_empresa_id);
-            $data['mensagem'] = 'Sucesso ao ativar a Empresa.';
+        $data['mensagem'] = 'Sucesso ao ativar a Empresa.';
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/empresa");
     }

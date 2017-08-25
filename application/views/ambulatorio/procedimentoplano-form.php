@@ -13,18 +13,26 @@
                 <dl class="dl_desconto_lista">
                     <input type="hidden" name="txtprocedimentoplanoid" value="<?= @$obj->_procedimento_convenio_id; ?>" />
                     <dt>
-                        <label>Procedimento *</label>
+                        <label>Brasíndice?</label>
                     </dt>
                     <dd>
-                        <select name="procedimento" id="procedimento" class="size4 chosen-select" tabindex="1">
-                            <? foreach ($procedimento as $value) : ?>
-                                <option value="<?= $value->procedimento_tuss_id; ?>"<?
-                                if (@$obj->_procedimento_tuss_id == $value->procedimento_tuss_id):echo'selected';
-                                endif;
-                                ?>><?php echo $value->codigo . " - " . $value->nome; ?></option>
-                                    <? endforeach; ?>
-                        </select>
+                        <input type="checkbox" name="brasindice" id="brasindice" class="texto01" /> 
                     </dd>
+                    <div id="procedimentodiv">
+                        <dt>
+                            <label>Procedimento *</label>
+                        </dt>
+                        <dd>
+                            <select name="procedimento" id="procedimento" class="size4 chosen-select" tabindex="1">
+                                <? foreach ($procedimento as $value) : ?>
+                                    <option value="<?= $value->procedimento_tuss_id; ?>"<?
+                                    if (@$obj->_procedimento_tuss_id == $value->procedimento_tuss_id):echo'selected';
+                                    endif;
+                                    ?>><?php echo $value->codigo . " - " . $value->nome; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+                        </dd>
+                    </div>
                     <dt>
                         <label>Convenio *</label>
                     </dt>
@@ -39,59 +47,88 @@
                         </select>
                     </dd>
                     <dt>
-                        <label>Qtde CH</label>
+                        <label>Empresa *</label>
                     </dt>
                     <dd>
-                        <input type="text" name="qtdech" id="qtdech" class="texto01" value="<?= @$obj->_qtdech; ?>"/>
+                        <select name="empresa" id="empresa" class="size4">
+                            <? foreach ($empresa as $value) : ?>
+                                <option value="<?= $value->empresa_id; ?>"<?
+                                if (@$obj->_empresa_id == $value->empresa_id):echo'selected';
+                                endif;
+                                ?>><?php echo $value->nome; ?></option>
+                                    <? endforeach; ?>
+                        </select>
                     </dd>
+                    
+                    <div id="grupodiv">
                     <dt>
-                        <label>Valor CH</label>
+                        <label>Grupo</label>
                     </dt>
                     <dd>
-                        <input type="text" name="valorch" id="valorch" class="texto01" value="<?= @$obj->_valorch; ?>"/>
+                        <select name="grupo" id="grupo" class="size4" required="false">
+                            <option value="">Selecione</option>
+                            <? foreach ($grupos as $value) : ?>
+                                <option value="<?= $value->tipo; ?>"><?php echo $value->tipo; ?></option>
+                                    <? endforeach; ?>
+                        </select>
                     </dd>
-                    <dt>
-                        <label>Qtde Filme</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="qtdefilme" id="qtdefilme" class="texto01" value="<?= @$obj->_qtdefilme; ?>" />
-                    </dd>
-                    <dt>
-                        <label>Valor Filme</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="valorfilme" id="valorfilme" class="texto01" value="<?= @$obj->_valorfilme; ?>" />
-                    </dd>
-                    <dt>
-                        <label>Qtde Porte</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="qtdeporte" id="qtdeporte" class="texto01" value="<?= @$obj->_qtdeporte; ?>" />
-                    </dd>
-                    <dt>
-                        <label>Valor Porte</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="valorporte" id="valorporte" class="texto01" value="<?= @$obj->_valorporte; ?>" />
-                    </dd>
-                    <dt>
-                        <label>Qtde UCO</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="qtdeuco" id="qtdeuco" class="texto01" value="<?= @$obj->_qtdeuco; ?>" />
-                    </dd>
-                    <dt>
-                        <label>Valor UCO</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="valoruco"id="valoruco" class="texto01" value="<?= @$obj->_valoruco; ?>" />
-                    </dd>
-                    <dt>
-                        <label>Valor TOTAL</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="valortotal"  id="valortotal" class="texto01" value="<?= @$obj->_valortotal; ?>" />
-                    </dd>
+                    </div>
+                    <div id="valoresdiv">
+                        <dt>
+                            <label>Qtde CH</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="qtdech" id="qtdech" class="texto01" value="<?= @$obj->_qtdech; ?>"/>
+                        </dd>
+                        <dt>
+                            <label>Valor CH</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="valorch" id="valorch" class="texto01" value="<?= @$obj->_valorch; ?>"/>
+                        </dd>
+                        <dt>
+                            <label>Qtde Filme</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="qtdefilme" id="qtdefilme" class="texto01" value="<?= @$obj->_qtdefilme; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Valor Filme</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="valorfilme" id="valorfilme" class="texto01" value="<?= @$obj->_valorfilme; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Qtde Porte</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="qtdeporte" id="qtdeporte" class="texto01" value="<?= @$obj->_qtdeporte; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Valor Porte</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="valorporte" id="valorporte" class="texto01" value="<?= @$obj->_valorporte; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Qtde UCO</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="qtdeuco" id="qtdeuco" class="texto01" value="<?= @$obj->_qtdeuco; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Valor UCO</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="valoruco"id="valoruco" class="texto01" value="<?= @$obj->_valoruco; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Valor TOTAL</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="valortotal"  id="valortotal" class="texto01" value="<?= @$obj->_valortotal; ?>" />
+                        </dd>
+                    </div>
 
                 </dl>    
 
@@ -113,12 +150,30 @@
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
 <!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
+$("#grupodiv").hide();
+    $('#brasindice').change(function () {
+        if ($(this).is(":checked")) {
+            $("#valoresdiv").hide();
+            $("#procedimentodiv").hide();
+            $("#grupodiv").show();
+            $("#grupo").prop('required', true);
+            
+        } else {
+            $("#valoresdiv").show();
+            $("#procedimentodiv").show();
+            $("#grupodiv").hide();
+            $("#grupo").prop('required', false);
+//            $("#procedimento").toggle();
+        }
+    });
 
-                            $(function () {
-                                $("#accordion").accordion();
-                            });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 //                            $(document).ready(function () {
 
@@ -148,89 +203,89 @@
 //                            });
 
 
-                            $(function () {
-                                $('#qtdech').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+    $(function () {
+        $('#qtdech').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                $('#qtdefilme').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+            $('#valortotal').val(valortotal);
+        });
+        $('#qtdefilme').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                $('#qtdeuco').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+            $('#valortotal').val(valortotal);
+        });
+        $('#qtdeuco').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                $('#qtdeporte').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+            $('#valortotal').val(valortotal);
+        });
+        $('#qtdeporte').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                $('#valorch').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+            $('#valortotal').val(valortotal);
+        });
+        $('#valorch').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                $('#valorfilme').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+            $('#valortotal').val(valortotal);
+        });
+        $('#valorfilme').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                $('#valoruco').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+            $('#valortotal').val(valortotal);
+        });
+        $('#valoruco').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                $('#valorporte').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+            $('#valortotal').val(valortotal);
+        });
+        $('#valorporte').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                $('#qtdech').change(function () {
-                                    valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
-                                    valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
-                                    valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
-                                    valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
-                                    valortotal = valoruco + valorfilme + valorporte + valorch;
+            $('#valortotal').val(valortotal);
+        });
+        $('#qtdech').change(function () {
+            valorch = parseFloat($('#qtdech').val()) * parseFloat($('#valorch').val());
+            valorfilme = parseFloat($('#qtdefilme').val()) * parseFloat($('#valorfilme').val());
+            valoruco = parseFloat($('#qtdeuco').val()) * parseFloat($('#valoruco').val());
+            valorporte = parseFloat($('#qtdeporte').val()) * parseFloat($('#valorporte').val());
+            valortotal = valoruco + valorfilme + valorporte + valorch;
 //                                    alert(valortotal);
-                                    $('#valortotal').val(valortotal);
-                                });
-                                
-                            });
+            $('#valortotal').val(valortotal);
+        });
+
+    });
 
 </script>

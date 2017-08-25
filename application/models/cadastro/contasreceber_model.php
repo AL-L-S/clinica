@@ -59,7 +59,7 @@ class contasreceber_model extends Model {
         }
         else{
             $empresa_id = $this->session->userdata('empresa_id');
-            $this->db->where('empresa_id', $empresa_id);
+            $this->db->where('fc.empresa_id', $empresa_id);
         }
         
         if (isset($args['nome']) && strlen($args['nome']) > 0) {

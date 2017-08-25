@@ -201,7 +201,9 @@ class Laudo extends BaseController {
         $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
         $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
-
+        $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
+        $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
+        $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');
@@ -661,10 +663,9 @@ class Laudo extends BaseController {
             if ($data['laudo']['0']->situacao == "DIGITANDO") {
                 $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt; text-align:center;'><tr><td>" . $data['laudo']['0']->carimbo . "</td></tr>
             <tr><td><center></td></tr></table><img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
-
-            } elseif($data['laudo']['0']->situacao == "FINALIZADO") {
+            } elseif ($data['laudo']['0']->situacao == "FINALIZADO") {
 //                echo $data['laudo']['0']->carimbo;
-            $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table><img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'><br><br><br>";
+                $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table><img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'><br><br><br>";
             }
             $html = $this->load->view('ambulatorio/impressaolaudo_1pacajus', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);

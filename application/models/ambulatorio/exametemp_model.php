@@ -216,20 +216,18 @@ class exametemp_model extends Model {
 
     function listarhorarioscalendariovago($medico = null, $especialidade = null, $empresa_id = null, $sala_id = null, $grupo = null, $tipoagenda = null) {
         $data = date('Y-m-d');
-        $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
-        $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
+        $data_passado = date('Y-m-d', strtotime("-1 year", strtotime($data)));
+        $data_futuro = date('Y-m-d', strtotime("+1 year", strtotime($data)));
         $empresa_atual = $this->session->userdata('empresa_id');
         if ($medico != '') {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
-        } elseif ($especialidade != '') {
-            $this->db->select('ae.data, count(ae.data) as contagem, situacao,o.cbo_ocupacao_id as especialidade');
         } else {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao');
         }
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
-        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id');
+        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id', 'left');
         $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
         $this->db->where("ae.tipo IN ('CONSULTA', 'ESPECIALIDADE', 'FISIOTERAPIA', 'EXAME')");
         $this->db->where("ae.data is not null");
@@ -242,7 +240,7 @@ class exametemp_model extends Model {
         }
         if ($sala_id != '') {
             $this->db->where("ae.agenda_exames_nome_id", $sala_id);
-        } 
+        }
         if ($grupo != '') {
             $this->db->where("esg.grupo", $grupo);
         }
@@ -255,8 +253,7 @@ class exametemp_model extends Model {
         } else {
             $this->db->groupby("ae.data, situacao");
         }
-
-        $this->db->orderby("ae.data");
+        $this->db->orderby("ae.data, situacao");
 
         $return = $this->db->get();
         return $return->result();
@@ -277,6 +274,7 @@ class exametemp_model extends Model {
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id', 'left');
         $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
         $this->db->where("ae.tipo IN ('EXAME')");
         $this->db->where("ae.data is not null");
@@ -292,7 +290,7 @@ class exametemp_model extends Model {
             $this->db->where("ae.agenda_exames_nome_id", $sala_id);
         }
         if ($grupo != '') {
-            $this->db->where("es.grupo", $grupo);
+            $this->db->where("esg.grupo", $grupo);
         }
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);
@@ -342,26 +340,23 @@ class exametemp_model extends Model {
         }
         if ($tipoagenda != '') {
             $this->db->where('ae.tipo_consulta_id', $tipoagenda);
-            $this->db->groupby("ae.data, situacao, ae.tipo_consulta_id");
         } else {
             $this->db->groupby("ae.data, situacao");
         }
 
-        $this->db->orderby("ae.data");
+        $this->db->orderby("ae.data, situacao");
 
         $return = $this->db->get();
         return $return->result();
     }
 
-    function listarhorarioscalendarioespecialidade($medico = null, $especialidade = null, $empresa_id = null) {
+    function listarhorarioscalendarioespecialidade($medico = null, $tipoagenda = null, $empresa_id = null) {
         $data = date('Y-m-d');
         $data_passado = date('d-m-Y', strtotime("-1 year", strtotime($data)));
         $data_futuro = date('d-m-Y', strtotime("+1 year", strtotime($data)));
         $empresa_atual = $this->session->userdata('empresa_id');
         if ($medico != '') {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao, ae.medico_agenda as medico');
-        } elseif ($especialidade != '') {
-            $this->db->select('ae.data, count(ae.data) as contagem, situacao,o.cbo_ocupacao_id as especialidade');
         } else {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao');
         }
@@ -382,14 +377,15 @@ class exametemp_model extends Model {
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);
             $this->db->groupby("ae.data, situacao, ae.medico_agenda");
-        } elseif ($especialidade != '') {
-            $this->db->where('o.cbo_ocupacao_id', $especialidade);
-            $this->db->groupby("ae.data, situacao, o.cbo_ocupacao_id");
+        }
+        if ($tipoagenda != '') {
+            $this->db->where('ae.tipo_consulta_id', $tipoagenda);
+//            $this->db->groupby("ae.data, situacao, ae.tipo_consulta_id");
         } else {
             $this->db->groupby("ae.data, situacao");
         }
 
-        $this->db->orderby("ae.data");
+        $this->db->orderby("ae.data, situacao");
 
         $return = $this->db->get();
         return $return->result();
@@ -604,7 +600,8 @@ class exametemp_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
         $this->db->where("a.confirmado", 'false');
-//        $this->db->where("a.guia_id", null);
+        $this->db->where("a.guia_id", null);
+        $this->db->where("(a.numero_sessao = 1 OR a.numero_sessao is null)");
         $this->db->where('a.data', $data);
         $this->db->where('a.ativo', 'false');
         $this->db->where("a.paciente_id", $pacientetemp_id);
@@ -2885,7 +2882,9 @@ class exametemp_model extends Model {
                     $paciente_id = $this->db->insert_id();
                 } else {
                     $paciente_id = $_POST['txtNomeid'];
-
+                    if ($_POST['nascimento'] != '') {
+                        $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+                    }
                     $this->db->set('celular', $_POST['txtCelular']);
                     $this->db->set('telefone', $_POST['txtTelefone']);
                     $this->db->set('nome', $_POST['txtNome']);
@@ -4397,7 +4396,7 @@ class exametemp_model extends Model {
 
 
                 $tipo = $this->verificaexamemedicamento($procedimento_tuss_id);
-                if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO') && $_POST['medico'][$i] == '') {
+                if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO' || $tipo == 'MATERIAL') && $_POST['medico'][$i] == '') {
                     return 2;
                 }
 
@@ -4842,6 +4841,11 @@ class exametemp_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -4858,6 +4862,11 @@ class exametemp_model extends Model {
         $this->db->where("cop.ativo", 't');
         $this->db->where('cop.convenio_id', $parametro);
         $this->db->where('cop.operador', $teste);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -4889,6 +4898,11 @@ class exametemp_model extends Model {
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -4907,6 +4921,11 @@ class exametemp_model extends Model {
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -4925,6 +4944,11 @@ class exametemp_model extends Model {
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -4938,11 +4962,16 @@ class exametemp_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
-        $this->db->where("(ag.tipo = 'MAT/MED' OR ag.tipo = 'MEDICAMENTO')");
+        $this->db->where("(ag.tipo = 'MATERIAL' OR ag.tipo = 'MEDICAMENTO')");
 //        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
 //        $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -4976,6 +5005,11 @@ class exametemp_model extends Model {
         if ($parametro2 != null) {
             $this->db->where('pt.grupo', $parametro2);
         }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
 
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
@@ -5000,6 +5034,11 @@ class exametemp_model extends Model {
         }
         if ($parametro2 != null) {
             $this->db->where('pt.grupo', $parametro2);
+        }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
         }
 
         $this->db->orderby("pt.nome");
@@ -5030,6 +5069,11 @@ class exametemp_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -5044,10 +5088,15 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
 //        $this->db->where("ag.tipo !=", 'EXAME');
 //        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
-//        $this->db->where("ag.tipo !=", 'MEDICAMENTO');
+//        $this->db->where("ag.tipo NOT IN ('MEDICAMENTO', 'MATERIAL')");
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -5062,10 +5111,15 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("ag.tipo !=", 'EXAME');
         $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
-        $this->db->where("ag.tipo !=", 'MEDICAMENTO');
+        $this->db->where("ag.tipo NOT IN ('MEDICAMENTO', 'MATERIAL')");
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -5080,10 +5134,15 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("ag.tipo !=", 'EXAME');
         $this->db->where("ag.tipo !=", 'CONSULTA');
-        $this->db->where("ag.tipo !=", 'MEDICAMENTO');
+        $this->db->where("ag.tipo NOT IN ('MEDICAMENTO', 'MATERIAL')");
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -5131,6 +5190,7 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function listarautocompletegrupoempresasalatodos($parametro = null) {
         $this->db->select('DISTINCT(es.exame_sala_id), es.nome');
         $this->db->from('tb_exame_sala es');
@@ -5165,6 +5225,11 @@ class exametemp_model extends Model {
         $this->db->where("pt.grupo", 'PSICOLOGIA');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();

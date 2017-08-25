@@ -185,6 +185,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
             $especialidade = $this->exame->listarespecialidade();
             $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
+            $tipo_consulta = $this->tipoconsulta->listarcalendario();
             ?>
             <table>
                 <thead>
@@ -192,7 +193,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
 
                     <tr>
                         <th class="tabela_title">Empresa</th>
-                        <th class="tabela_title">Especialidade</th>
+                        <th class="tabela_title">Tipo Agenda</th>
                         <th class="tabela_title">Medico</th>
                         <th class="tabela_title">Nome</th>
                     </tr>
@@ -219,13 +220,32 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
                             </select>
 
                         </th>
-                        <th class="tabela_title">
+                        <th class="tabela_title" style="display: none">
                             <select name="especialidade" id="especialidade" class="size2">
                                 <option value=""></option>
                                 <option value="">TODOS</option>
                                 <? foreach ($especialidade as $value) : ?>
                                     <option value="<?= $value->cbo_ocupacao_id; ?>" <?
                                     if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
+                                    endif;
+                                    ?>>
+                                                <?
+//                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
+//                                                    echo '<script>carregaMedicoEspecialidade();</script>';
+//                                                endif;
+                                                ?>
+                                                <?php echo $value->descricao; ?>
+                                    </option>
+                                <? endforeach; ?>
+                            </select>
+                        </th>
+                        <th class="tabela_title">
+                            <select name="tipoagenda" id="tipoagenda" class="size2">
+                                <option value=""></option>
+                                <option value="">TODOS</option>
+                                <? foreach ($tipo_consulta as $value) : ?>
+                                    <option value="<?= $value->ambulatorio_tipo_consulta_id; ?>" <?
+                                    if (@$_GET['tipoagenda'] == $value->ambulatorio_tipo_consulta_id):echo 'selected';
                                     endif;
                                     ?>>
                                                 <?
@@ -539,6 +559,11 @@ if (@$_GET['data'] != '') {
 } else {
     $data = date('Y-m-d');
 }
+if (@$_GET['nome'] != '') {
+    $nome = $_GET['nome'];
+} else {
+    $nome = "";
+}
 ?>
 <script>
 //alert($('#medico').val());
@@ -562,7 +587,11 @@ if (@$_GET['data'] != '') {
 
 
 //    function date() {
-
+    if ($('#nome').val() != '') {
+        var paciente = '<?=$nome?>';
+    } else {
+        var paciente = '';
+    }
 
     $('#calendar').fullCalendar({
         header: {
@@ -584,7 +613,7 @@ if (@$_GET['data'] != '') {
         },
         dayClick: function (date) {
             var data = date.format();
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoespecialidadecalendario?empresa=' + $('#empresa').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=', '_self');
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaoespecialidadecalendario?empresa=' + $('#empresa').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY')  + '&nome=' + paciente +  '', '_self');
         },
 //        eventDragStop: function (date, jsEvent, view) {
 ////            alert(date.format());
@@ -609,7 +638,9 @@ if (@$_GET['data'] != '') {
                 data: {
                     medico: $('#medico').val(),
                     especialidade: $('#especialidade').val(),
-                    empresa: $('#empresa').val()
+                    tipoagenda: $('#tipoagenda').val(),
+                    empresa: $('#empresa').val(),
+                    paciente: paciente
                 },
                 error: function () {
 //                    alert('Houve !');

@@ -19,16 +19,28 @@
     <table>
         <tbody>
         <td rowspan="3" width="70%;"><img align = 'left'  width='330px' height='100px' src=<?= base_url() . "img/logoclinicadez.png" ?>></td>
-        <td>( &nbsp; ) RAIOS X</td>
-        <td>( &nbsp; ) DENS.</td>
+        <tr>
+        <td>( &nbsp; ) RAIOS X 
+            <br>( &nbsp; ) DENS. 
+            <br>( &nbsp; ) MMG
+            <br>( &nbsp; ) RNM
+            <br>( &nbsp; ) USG SALA
+            <br>( &nbsp; ) TOMOGRAFIA
+        
+        </td>
+        <!--<td>( &nbsp; ) DENS.</td>-->
         </tr>
         <tr>
-            <td>( &nbsp; ) MMG</td>
-            <td>( &nbsp; ) RNM</td>
+        <!--<td>( &nbsp; ) RAIOS X</td>-->
+        <!--<td>( &nbsp; ) DENS.</td>-->
         </tr>
         <tr>
-            <td>( &nbsp; ) USG</td>
-            <td>( &nbsp; ) TOMOGRAFIA</td>
+            <!--<td>( &nbsp; ) MMG</td>-->
+            <!--<td>( &nbsp; ) RNM</td>-->
+        </tr>
+        <tr>
+            <!--<td>( &nbsp; ) USG</td>-->
+            <!--<td>( &nbsp; ) TOMOGRAFIA</td>-->
         </tr>
         <tr>
             <td ><font size = -1><?= substr($exame[0]->sala, 0, 10); ?></td>
