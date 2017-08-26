@@ -57,7 +57,7 @@
                         <select name="tipoRelatorio" id="tipoRelatorio" class="size2">
                             <option value="0">Agenda Consulta</option>
                             <option value="1">Agenda Exame</option>
-                            <option value="2">Agenda Especialidade</option>
+                            <option value="3">Agenda Especialidade</option>
                             <option value="2">Faltas</option>
                             
                         </select>

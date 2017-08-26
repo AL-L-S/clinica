@@ -2559,7 +2559,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
-        $this->db->where("(ae.tipo ='FISIOTERAPIA' OR 'ESPECIALIDADE')");
+        $this->db->where("(ae.tipo = 'FISIOTERAPIA' OR ae.tipo = 'ESPECIALIDADE')");
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -2774,7 +2774,7 @@ class exame_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        if ($_POST['medicos'] != "0") {
+        if ($_POST['medicos'] != "") {
             $this->db->where('ae.medico_agenda', $_POST['medicos']);
         }
         if ($_POST['salas'] != "0") {

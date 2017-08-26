@@ -2375,6 +2375,8 @@ class Exame extends BaseController {
         $j = $b - 53;
         $zero = '0000000000000000';
         $corpo = "";
+//        var_dump($corpo);die;
+        
         if ($versao == '3.03.01' || $versao == '3.03.02') {
             if ($modelo == 'cpf') {
 

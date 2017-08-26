@@ -99,7 +99,7 @@
                     ?>
                     <tr>
                         <td ><b><?= $situacao; ?></b></td>
-                        <td <b><?= $item->paciente; ?></b></td>
+                        <td <b><?= $item->paciente; ?></b> <?= $item->agenda_exames_id; ?></td>
                         <td ><?= substr($item->secretaria, 0, 9); ?></td>
                         <td><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                         <td ><?= substr($dia, 0, 3); ?></td>
