@@ -58,12 +58,8 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
-    
-
-                                    $(function() {
-                                        $("#accordion").accordion();
-                                    });
-
-    
+    $(function() {
+        $("#accordion").accordion();
+    });  
 
 </script>

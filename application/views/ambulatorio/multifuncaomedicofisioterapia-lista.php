@@ -127,6 +127,7 @@
                     <tr>
                         <th class="tabela_header" >Status</th>
                         <th class="tabela_header" width="400px;">Nome</th>
+                        <th class="tabela_header"></th>
                         <th class="tabela_header" width="250px;">Telefone</th>
                         <th class="tabela_header" width="250px;">Tempo</th>
                         <th class="tabela_header" width="60px;">Convenio</th>

@@ -64,9 +64,9 @@
 
                             <tr>
                                 <th class="tabela_header">Qtde</th>
+                                <th class="tabela_header">Medico</th>
                                 <th class="tabela_header">Convenio</th>
                                 <th class="tabela_header">Material</th>
-                                <!--<th class="tabela_header">Medico</th>-->
                                 <!--<th class="tabela_header">Tipo</th>-->
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">V. Unit</th>
@@ -78,6 +78,14 @@
                         <tbody>
                             <tr>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" onchange="alteraQuantidade()" class="texto00"/></td>
+                                <td> 
+                                    <select  name="medicoagenda" id="medicoagenda" class="size2"  required="">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($medicos as $item) : ?>
+                                            <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
+                                                <? endforeach; ?>
+                                    </select>
+                                </td>
                                 <td  width="50px;">
                                     <select  name="convenio1" id="convenio1" class="size1" required="">
                                         <option value="-1">Selecione</option>

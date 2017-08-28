@@ -4920,7 +4920,8 @@ class exame_model extends Model {
 
     function verificadiasessaohomecare($agenda_exames_id) {
 
-        $this->db->select('agrupador_fisioterapia, ag.nome,
+        $this->db->select(' agrupador_fisioterapia, 
+                            ag.nome,
                             numero_sessao,
                             pt.home_care,
                             qtde_sessao');
@@ -4937,14 +4938,14 @@ class exame_model extends Model {
         $agrupador = $retorno[0]->agrupador_fisioterapia;
         $qtde_sessao = $retorno[0]->qtde_sessao;
         $grupo = $retorno[0]->nome;
-//        echo '<pre>';
-//        var_dump($home_care);
-//        die;
-
-
 
         $i = 1;
         $x = 0;
+        
+//        echo "<pre>";
+//        var_dump($home_care, $sessao, $agrupador, $qtde_sessao, $grupo);
+//        die;
+        
         while ($i < $qtde_sessao) {
 
             $data = date("Y-m-d");
@@ -4957,18 +4958,21 @@ class exame_model extends Model {
             $this->db->where('agrupador_fisioterapia', $agrupador);
             $this->db->where('numero_sessao', $i);
             $this->db->where('c.dinheiro', 'false');
+            $this->db->where('ae.confirmado', 't');
             $this->db->where('ag.nome', $grupo);
             $this->db->where('data', $data);
             $query2 = $this->db->get();
             $retorno2 = $query2->result();
-//            var_dump($retorno2);
-
 
             if (count($retorno2) != 0) {
+//                echo "<pre>";
+//                var_dump($i, $grupo, $data, $qtde_sessao, $agrupador);
+//                var_dump($retorno2); die;
                 $x++;
             }
             $i++;
         }
+        
 //        die;
         return $x;
     }

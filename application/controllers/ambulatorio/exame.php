@@ -584,8 +584,8 @@ class Exame extends BaseController {
     }
 
     function autorizarsessao($agenda_exames_id, $paciente_id, $guia_id) {
+//        var_dump($agenda_exames_id); die;
         $home_care = $this->exame->procedimentohomecare($agenda_exames_id);
-//        var_dump($home_care); die;
         $intervalo = $this->exame->verificadiasessaohomecare($agenda_exames_id);
         if ($intervalo == 0) {
             $this->exame->autorizarsessao($agenda_exames_id);
@@ -691,6 +691,7 @@ class Exame extends BaseController {
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->login->listar();
         $data['exames'] = $this->exame->listarexamesguiamatmed($guia_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
 //        var_dump($data['exames']); die;
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guiafaturamentomatmed-form', $data);
