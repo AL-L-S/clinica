@@ -9725,10 +9725,10 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('tipo', $tipo);
             $this->db->set('ativo', 'f');
             $this->db->set('realizada', 't');
-//            if ($_POST['medicoagenda'] != "") {
-//                $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+            if ($_POST['medicoagenda'] != "") {
+                $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
 //                $this->db->set('medico_solicitante', $_POST['medicoagenda']);
-//            }
+            }
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');
             $this->db->set('guia_id', $_POST['txtguia_id']);
@@ -9751,7 +9751,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('empresa_id', $_POST['txtempresa']);
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
-//            $this->db->set('medico_realizador', $_POST['medicoagenda']);
+            $this->db->set('medico_realizador', $_POST['medicoagenda']);
             $this->db->set('situacao', 'FINALIZADO');
             $this->db->set('guia_id', $_POST['txtguia_id']);
             $this->db->set('agenda_exames_id', $agenda_exames_id);

@@ -243,7 +243,7 @@ class Procedimentoplano extends BaseController {
             $data['mensagem'] = 'Sucesso ao replicar os Procedimentos.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentual");
+        redirect(base_url() . "ambulatorio/procedimentoplano/conveniopercentual");
     }
 
     function procedimentoconveniopercentualmedico() {
@@ -275,7 +275,8 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/procedimentopercentualpromotor-form', $data);
     }
 
-    function editarprocedimento($procedimento_percentual_medico_id) {
+    function editarprocedimento($procedimento_percentual_medico_id, $convenio_id) {
+        $data['convenio_id'] = $convenio_id;
         $data['dados'] = $procedimento_percentual_medico_id;
         $this->loadView('ambulatorio/procedimentopercentualmedico-editar', $data);
     }
@@ -383,13 +384,13 @@ class Procedimentoplano extends BaseController {
 
     function excluirpercentualpromotorgeral($procedimento_percentual_medico_id) {
         if ($this->procedimentoplano->excluirpercentualpromotorgeral($procedimento_percentual_medico_id)) {
-            $mensagem = 'Sucesso ao excluir o Percentual medico';
+            $mensagem = 'Sucesso ao excluir o Percentual promotor';
         } else {
-            $mensagem = 'Erro ao excluir o Percentual medico. Opera&ccedil;&atilde;o cancelada.';
+            $mensagem = 'Erro ao excluir o Percentual promotor. Opera&ccedil;&atilde;o cancelada.';
         }
 
         $this->session->set_flashdata('message', $mensagem);
-        redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentual");
+        redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentualpromotor");
     }
 
     function excluirmedicopercentual($procedimento_percentual_medico_convenio_id) {
@@ -468,7 +469,7 @@ class Procedimentoplano extends BaseController {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentual");
+        redirect(base_url() . "ambulatorio/procedimentoplano/conveniopercentual");
     }
 
     function gravarpercentualpromotor() {

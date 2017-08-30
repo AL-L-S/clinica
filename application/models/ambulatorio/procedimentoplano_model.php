@@ -1507,11 +1507,10 @@ class procedimentoplano_model extends Model {
             $convenio = $_POST['covenio'];
             $promotor = $_POST['promotor'];
             $procediemento = $_POST['procedimento'];
-//            var_dump($_POST);
-//            die;
 
 
-            if ($grupo == "SELECIONE") {  // inicio grupo=selecione
+
+            if ($grupo == "") {  // inicio grupo=selecione
                 if ($promotor == "TODOS") { // inicio grupo=selecione  promotor=todos
                     $this->db->select('paciente_indicacao_id, nome');
                     $this->db->from('tb_paciente_indicacao');
@@ -1530,12 +1529,12 @@ class procedimentoplano_model extends Model {
                     $procedimento_percentual_promotor_id = $this->db->insert_id();
 
                     foreach ($promotors as $item) {
-                        $promotor_id = $item->paciente_indicacao_id;
+                        $operador = $item->operador_id;
 
                         /* inicia o mapeamento no banco */
 
                         $this->db->set('procedimento_percentual_promotor_id', $procedimento_percentual_promotor_id);
-                        $this->db->set('promotor', $promotor_id);
+                        $this->db->set('promotor', $operador);
                         $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                         $percentual = $_POST['percentual'];
                         $this->db->set('percentual', $percentual);
@@ -1562,8 +1561,8 @@ class procedimentoplano_model extends Model {
                     $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                     $percentual = $_POST['percentual'];
                     $this->db->set('percentual', $percentual);
-//                    $horario = date("Y-m-d H:i:s");
-//                    $operador_id = $this->session->userdata('operador_id');
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_procedimento_percentual_promotor_convenio');
@@ -1601,12 +1600,12 @@ class procedimentoplano_model extends Model {
 
                             $procedimento_percentual_promotor_id = $this->db->insert_id();
                             foreach ($promotors as $item) {
-                                $promotor_id = $item->paciente_indicacao_id;
+                                $operador = $item->operador_id;
 
                                 /* inicia o mapeamento no banco */
 
                                 $this->db->set('procedimento_percentual_promotor_id', $procedimento_percentual_promotor_id);
-                                $this->db->set('promotor', $promotor_id);
+                                $this->db->set('promotor', $operador);
                                 $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                                 $percentual = $_POST['percentual'];
                                 $this->db->set('percentual', $percentual);
@@ -1663,12 +1662,12 @@ class procedimentoplano_model extends Model {
                         $procedimento_percentual_promotor_id = $this->db->insert_id();
 
                         foreach ($promotors as $item) {
-                            $promotor_id = $item->paciente_indicacao_id;
+                            $operador = $item->operador_id;
 
                             /* inicia o mapeamento no banco */
 
                             $this->db->set('procedimento_percentual_promotor_id', $procedimento_percentual_promotor_id);
-                            $this->db->set('promotor', $promotor_id);
+                            $this->db->set('promotor', $operador);
                             $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                             $percentual = $_POST['percentual'];
                             $this->db->set('percentual', $percentual);
@@ -1705,12 +1704,16 @@ class procedimentoplano_model extends Model {
             } // fim grupo todos
             else { //inicio grupo especifico
                 $this->db->select('pt.procedimento_tuss_id,
-                                   pc.procedimento_convenio_id
-                                      ');
+                                   pc.procedimento_convenio_id');
                 $this->db->from('tb_procedimento_tuss pt');
                 $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
                 $this->db->where('pc.convenio_id', $convenio);
                 $this->db->where('pt.grupo', $grupo);
+
+                if ($procediemento != "") {
+                    $this->db->where('pc.procedimento_convenio_id', $procediemento);
+                }
+
                 $this->db->where('pc.ativo', 't');
                 $this->db->where('pt.ativo', 't');
                 $this->db->orderby("pt.nome");
@@ -1739,11 +1742,11 @@ class procedimentoplano_model extends Model {
 
                         $procedimento_percentual_promotor_id = $this->db->insert_id();
                         foreach ($promotors as $item) {
-                            $promotor_id = $item->paciente_indicacao_id;
+                            $operador = $item->operador_id;
                             /* inicia o mapeamento no banco */
 
                             $this->db->set('procedimento_percentual_promotor_id', $procedimento_percentual_promotor_id);
-                            $this->db->set('promotor', $promotor_id);
+                            $this->db->set('promotor', $operador);
                             $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                             $percentual = $_POST['percentual'];
                             $this->db->set('percentual', $percentual);

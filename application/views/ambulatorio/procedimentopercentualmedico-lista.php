@@ -1,5 +1,10 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
+    <div class="bt_link_voltar">
+        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentual">
+            Voltar
+        </a>
+    </div>
     <table>
         <tr>
             <td>
@@ -84,7 +89,7 @@
                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentual/<?= $item->procedimento_percentual_medico_id; ?>/<?=$convenio_id?>">Excluir&nbsp;
                                     </a>
                                     <a 
-                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimento/<?= $item->procedimento_percentual_medico_id; ?>">Editar
+                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimento/<?= $item->procedimento_percentual_medico_id; ?>/<?=$convenio_id?>">Editar
                                     </a>  
                                 </td>
                             </tr>
