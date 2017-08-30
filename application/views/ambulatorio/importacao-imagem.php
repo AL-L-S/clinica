@@ -54,7 +54,7 @@
                 </a>
             </div>
         </div>
-        <h3><a href="#">Anexar Arquivos <?= $ambulatorio_laudo_id ?></a></h3>
+        <h3><a href="#">Anexar Arquivos</a></h3>
         <div >
             <?= form_open_multipart(base_url() . 'ambulatorio/exame/importararquivopdf'); ?>
             <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
