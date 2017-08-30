@@ -253,6 +253,7 @@ class Operador extends BaseController {
         $this->load->helper('directory');
         $operador_id = $_POST['operador_id'];
         $_FILES['userfile']['name'] = $operador_id . ".jpg";
+//        var_dump($_FILES['userfile']); die;
 
         if (!is_dir("./upload/1ASSINATURAS")) {
             mkdir("./upload/1ASSINATURAS");
@@ -269,11 +270,13 @@ class Operador extends BaseController {
                 $arquivo_existe = false;
             }
         }
+               
 
         if (!$arquivo_existe) {
+//             var_dump($arquivo_existe); die;
             //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
             $config['upload_path'] = "./upload/1ASSINATURAS/";
-            $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar';
+            $config['allowed_types'] = 'gif|jpg|JPG|png|jpeg|JPEG|pdf|doc|docx|xls|xlsx|ppt|zip|rar|bmp|BMP';
             $config['max_size'] = '0';
             $config['overwrite'] = FALSE;
             $config['encrypt_name'] = FALSE;
@@ -287,6 +290,9 @@ class Operador extends BaseController {
                 $data = array('upload_data' => $this->upload->data());
             }
             $data['operador_id'] = $operador_id;
+            var_dump($error) ;
+            
+            die;
         }
 
         redirect(base_url() . "seguranca/operador/anexarimagem/ $operador_id");
