@@ -18,7 +18,7 @@
                     <tr>
                         <th colspan="5" class="tabela_title">
                     </tr>
-                <form method="post" action="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimento/<?= $dados; ?>">
+                <form method="post" action="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimento/<?= $dados; ?>/<?= $convenio_id; ?>">
                     <tr>
                         <th class="tabela_title">Medico</th>  
                         <th class="tabela_title" width="10px;" >Valor</th>

@@ -37,6 +37,7 @@ class exame_model extends Model {
                             nome');
         $this->db->from('tb_agenda_exames');
         $this->db->where('horarioagenda_id', $horario_id);
+        $this->db->where('paciente_id IS NULL');
 //        if (isset($args['nome']) && strlen($args['nome']) > 0) {
 //            $this->db->where('nome ilike', $args['nome'] . "%");
 //        }
@@ -6452,8 +6453,8 @@ class exame_model extends Model {
             $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
             /* inicia o mapeamento no banco */
             $this->db->set('horarioagenda_id', $agenda_id);
-            $this->db->set('inicio', $horaconsulta);
             $this->db->set('horario_id', $horario_id);
+            $this->db->set('inicio', $horaconsulta);
             $this->db->set('fim', $horaverifica);
             $this->db->set('nome', $nome);
             $this->db->set('data_inicio', $datainicial);

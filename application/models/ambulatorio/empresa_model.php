@@ -57,6 +57,7 @@ class empresa_model extends Model {
                             el.texto,
                             el.perfil_destino,
                             el.operador_destino,
+                            el.ativo,
                             o.nome as operador,
                             (
                                 SELECT COUNT(*) 
@@ -66,7 +67,7 @@ class empresa_model extends Model {
         $this->db->from('tb_empresa_lembretes el');
         $this->db->join('tb_operador o', "o.operador_id = el.operador_destino");
         $this->db->where('el.empresa_id', $empresa_id);
-        $this->db->where('el.ativo', 't');
+//        $this->db->where('el.ativo', 't');
 
         if (isset($args['texto']) && strlen(@$args['texto']) > 0) {
             $this->db->where('el.texto ilike', "%" . $args['texto'] . "%");

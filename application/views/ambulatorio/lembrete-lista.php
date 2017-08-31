@@ -43,6 +43,7 @@
                     <th class="tabela_header">Operador</th>
                     <th class="tabela_header">Texto</th>
                     <th class="tabela_header">Status</th>
+                    <th class="tabela_header"></th>
                     <th class="tabela_header" colspan="3"><center>Detalhes</center></th>
                 </tr>
                 </thead>
@@ -56,7 +57,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->empresa->listarlembretes($_GET)->limit($limit, $pagina)->orderby("nome")->get()->result();
+                        $lista = $this->empresa->listarlembretes($_GET)->limit($limit, $pagina)->orderby("ativo DESC, nome")->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -71,7 +72,14 @@
                                     } else{
                                         echo "Nao visualizado";
                                     }
-?>
+                                    ?>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <? 
+                                    if($item->ativo != 't'){
+                                        echo "Excluido";
+                                    }
+                                    ?>
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>" colspan="3"><div class="bt_link">

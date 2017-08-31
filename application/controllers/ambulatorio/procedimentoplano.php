@@ -153,6 +153,7 @@ class Procedimentoplano extends BaseController {
     function carregarprocedimentoformapagamento($procedimento_convenio_id) {
         $data["procedimento_convenio_id"] = $procedimento_convenio_id;
         $data["formapagamento_grupo"] = $this->formapagamento->listargrupos();
+        $data["grupos_associados"] = $this->formapagamento->listargruposasssociados($procedimento_convenio_id);
         $this->loadView('ambulatorio/procedimentoformapagamento-form', $data);
     }
 

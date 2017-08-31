@@ -1,5 +1,16 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
+    <table>
+        <tr>
+            <td>
+                <div class="bt_link_new">
+                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/mostrarlembretes', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=700');" >
+                        Lembretes
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
     <div id="accordion">
         <h3 class="singular"><a href="#">Multifuncao Medico Consulta</a></h3>
 

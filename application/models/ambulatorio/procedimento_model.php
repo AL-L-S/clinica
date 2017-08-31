@@ -544,7 +544,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function gravartuss() {
         try {
 
@@ -598,6 +598,22 @@ class procedimento_model extends Model {
             return 1;
         } catch (Exception $exc) {
             return -1;
+        }
+    }
+
+    function gravarajustevalores() {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+                      
+            $sql = "UPDATE ponto.tb_procedimento_tuss
+                    SET perc_medico = {$_POST['txtperc_medico']}, percentual = '{$_POST['percentual']}'
+                    WHERE grupo = '{$_POST['grupo']}' ";
+            
+            $this->db->query($sql);
+            
+        } catch (Exception $exc) {
+            return false;
         }
     }
 

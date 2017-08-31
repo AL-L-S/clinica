@@ -24,7 +24,8 @@
                     </dt>
                     <dd>
                         <select name="covenio" id="covenio" class="size4">
-                            <option value="">SELECIONE</option>
+                            <option value="">TODOS</option>
+                            <!--<option value="TODOS">TODOS</option>-->
                             <? foreach ($convenio as $value) : ?>
                                 <option  value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>                            
                             <? endforeach; ?>                                                                                             

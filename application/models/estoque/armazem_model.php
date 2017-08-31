@@ -94,6 +94,7 @@ class armazem_model extends Model {
         $this->db->from('tb_estoque_produto p');
         $this->db->join('tb_estoque_entrada e', 'e.produto_id = p.estoque_produto_id', 'left');
         $this->db->where('e.armazem_id', $armazem);
+        $this->db->orderby('p.descricao');
         $this->db->groupby('p.estoque_produto_id, p.descricao');
         $return = $this->db->get();
         return $return->result();

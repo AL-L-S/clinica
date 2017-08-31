@@ -30,7 +30,7 @@ class Login extends Controller {
         }
 
         $servicosms = $this->session->userdata('servicosms');
-        
+//        var_dump($servicosms);
         if ($servicosms == 't') {
 //            $verificacoes = $this->login->verificacaosmsdia();
 //            if ($verificacoes[0]->total < 3 && ( date("H") == "08" ) ) {
@@ -105,6 +105,7 @@ class Login extends Controller {
                 }
                 // Buscando mensagens  no banco que deverao ser mandadas para o webservice
                 $dados = $this->login->listarsms();
+                var_dump($dados);die;
 
                 /* ENVIANDO PARA O WEBSERVICE */
                 $cliente = new SoapClient(null, array(

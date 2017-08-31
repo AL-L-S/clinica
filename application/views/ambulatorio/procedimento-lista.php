@@ -1,10 +1,25 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
-    <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarprocedimento/0">
-            Novo Procedimento
-        </a>
-    </div>
+    <table border="0">
+        <tr>
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarprocedimento/0">
+                        Novo Procedimento
+                    </a>
+                </div>
+            </td>
+                
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarajustevalores">
+                        Ajustar Valores
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
     <?
     $perfil_id = $this->session->userdata('perfil_id');
     ?>

@@ -95,6 +95,19 @@ class exametemp_model extends Model {
         return $this->db;
     }
 
+    function listarlembretesoperador() {
+        $operador_id = $this->session->userdata('operador_id');
+        
+        $this->db->select('empresa_lembretes_id,
+                            texto');
+        $this->db->from('tb_empresa_lembretes');
+        $this->db->where("ativo", 't');
+        $this->db->where("operador_destino", $operador_id);
+        $this->db->orderby("data_cadastro DESC");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listaragendas($ambulatorio_pacientetemp_id) {
         $this->db->select('agenda_exames_id,
                             inicio,

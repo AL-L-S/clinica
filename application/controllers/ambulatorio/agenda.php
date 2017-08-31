@@ -75,6 +75,14 @@ class Agenda extends BaseController {
 //            $this->carregarView($data);
     }
     
+    function editaragendacriada($agenda) {
+        $data['horario_id'] = $agenda;
+        $data['horarios'] = $this->agenda->listarhorariosagendacriada($agenda);
+//        echo "<pre>";
+//        var_dump($data['horarios']);die;
+        $this->loadView('ambulatorio/editaragendacriada-form',$data );
+    }
+    
     function carregarexclusaohorario($horariovariavel_id, $horariotipo) {
 //        var_dump($horariotipo); die;
         $data['horariotipo'] = $horariotipo;
@@ -95,6 +103,16 @@ class Agenda extends BaseController {
         $this->loadView('ambulatorio/agendaexclusao-form',$data );
 //        $this->session->set_flashdata('message', $mensagem);
 //        redirect(base_url() . "ambulatorio/agenda/listarhorarioagenda/$horariotipo");
+    }
+
+    function excluiragendascriadas($horariotipo) {
+        if ( $this->agenda->excluiragendascriadas() ) {
+            $mensagem = 'Sucesso ao excluir as agendas.';
+        } else {
+            $mensagem = 'Erro ao excluir as agendas. Opera&ccedil;&atilde;o cancelada.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/agenda/listarhorarioagenda/$horariotipo");
     }
 
     function excluirhorarioagenda($horariovariavel_id, $horariotipo) {
