@@ -174,6 +174,7 @@ $("#grupodiv").hide();
     $(function () {
         $("#accordion").accordion();
     });
+    $("#grupo").prop('required', false);
 
 //                            $(document).ready(function () {
 

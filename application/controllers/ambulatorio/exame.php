@@ -935,8 +935,8 @@ class Exame extends BaseController {
                 $this->gerardicom($laudo_id); //clinica ronaldo
                 $empresa_id = $this->session->userdata('empresa_id');
                 $empresa = $this->guia->listarempresa($empresa_id);
-                if($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA'){
-                     $this->laudo->chamadaconsulta($laudo_id);
+                if ($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA') {
+                    $this->laudo->chamadaconsulta($laudo_id);
                 }
 //                $this->laudo->chamada($laudo_id);
             }
@@ -1250,18 +1250,21 @@ class Exame extends BaseController {
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
         }
-        $data['arquivo_pasta_pdf'] = directory_map("./upload/arquivospdf/$exame_id/");
-        if ($data['arquivo_pasta_pdf'] != false) {
-            sort($data['arquivo_pasta_pdf']);
-        }
+
         $data['arquivos_deletados'] = directory_map("./uploadopm/$exame_id/");
         $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
         $convenio_id = $data['agenda_exames'][0]->convenio_id;
+        $ambulatorio_laudo_id = $data['agenda_exames'][0]->ambulatorio_laudo_id;
+        $data['arquivo_pasta_pdf'] = directory_map("./upload/consulta/$ambulatorio_laudo_id/");
+        if ($data['arquivo_pasta_pdf'] != false) {
+            sort($data['arquivo_pasta_pdf']);
+        }
 //        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
         //$data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinica/uploadopm/$exame_id/");
         $data['convenio_id'] = $convenio_id;
         $data['exame_id'] = $exame_id;
         $data['sala_id'] = $sala_id;
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->loadView('ambulatorio/importacao-imagem', $data);
     }
 
@@ -1310,37 +1313,38 @@ class Exame extends BaseController {
     }
 
     function importararquivopdf() {
+        $ambulatorio_laudo_id = $_POST['ambulatorio_laudo_id'];
+
+        for ($i = 0; $i < count($_FILES['arquivos']['name']); $i++) {
+            $_FILES['userfile']['name'] = $_FILES['arquivos']['name'][$i];
+            $_FILES['userfile']['type'] = $_FILES['arquivos']['type'][$i];
+            $_FILES['userfile']['tmp_name'] = $_FILES['arquivos']['tmp_name'][$i];
+            $_FILES['userfile']['error'] = $_FILES['arquivos']['error'][$i];
+            $_FILES['userfile']['size'] = $_FILES['arquivos']['size'][$i];
+
+            if (!is_dir("./upload/consulta/$ambulatorio_laudo_id")) {
+                mkdir("./upload/consulta/$ambulatorio_laudo_id");
+                $destino = "./upload/consulta/$ambulatorio_laudo_id";
+                chmod($destino, 0777);
+            }
+
+            //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
+            $config['upload_path'] = "./upload/consulta/" . $ambulatorio_laudo_id . "/";
+            $config['allowed_types'] = 'gif|jpg|BMP|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar';
+            $config['max_size'] = '0';
+            $config['overwrite'] = FALSE;
+            $config['encrypt_name'] = FALSE;
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) {
+                $error = array('error' => $this->upload->display_errors());
+            } else {
+                $error = null;
+                $data = array('upload_data' => $this->upload->data());
+            }
+        }
         $exame_id = $_POST['exame_id'];
         $sala_id = $_POST['sala_id'];
-        $data = $_FILES['userfile'];
-//        var_dump($data);
-//        die;
-        if (!is_dir("./upload/arquivospdf")) {
-            mkdir("./upload/arquivospdf");
-            $destino = "./upload/arquivospdf";
-            chmod($destino, 0777);
-        }
-        if (!is_dir("./upload/arquivospdf/$exame_id")) {
-            mkdir("./upload/arquivospdf/$exame_id");
-            $destino = "./upload/arquivospdf/$exame_id";
-            chmod($destino, 0777);
-        }
-
-        $config['upload_path'] = "./upload/arquivospdf/" . $exame_id . "/";
-        $config['allowed_types'] = 'pdf';
-        $config['max_size'] = '0';
-        $config['overwrite'] = TRUE;
-        $config['encrypt_name'] = TRUE;
-        $this->load->library('upload', $config);
-
-        if (!$this->upload->do_upload()) {
-            $error = array('error' => $this->upload->display_errors());
-        } else {
-            $error = null;
-            $data = array('upload_data' => $this->upload->data());
-        }
-        $data['exame_id'] = $exame_id;
-//        $this->anexarimagem($exame_id, $sala_id);
         redirect(base_url() . "ambulatorio/exame/anexarimagem/$exame_id/$sala_id");
     }
 

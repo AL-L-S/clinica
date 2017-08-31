@@ -49,33 +49,43 @@
         <h3><a href="#">Gastos de Sala</a></h3>
         <div >
             <div class="bt_link">
-                <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id"?>', '_blank', 'toolbar=no,Location=no,menubar=no,scrollbars=yes,width=1000,height=600');">
+                <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id" ?>', '_blank', 'toolbar=no,Location=no,menubar=no,scrollbars=yes,width=1000,height=600');">
                     Inserir
                 </a>
             </div>
         </div>
-        <h3><a href="#">Anexar Arquivos PDF</a></h3>
+        <h3><a href="#">Anexar Arquivos</a></h3>
         <div >
             <?= form_open_multipart(base_url() . 'ambulatorio/exame/importararquivopdf'); ?>
             <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
-            <input type="file" name="userfile"/>
+            <input type="file" multiple="" name="arquivos[]"/>
             <button type="submit" name="btnEnviar">Enviar</button>
             <input type="hidden" name="exame_id" value="<?= $exame_id; ?>" />
+            <input type="hidden" name="ambulatorio_laudo_id" value="<?= $ambulatorio_laudo_id ?>" />
             <input type="hidden" name="sala_id" value="<?= $sala_id; ?>" />
             <?= form_close(); ?>
         </div>
-        <h3><a href="#">Arquivos PDF</a></h3>
+        <h3><a href="#">Arquivos</a></h3>
         <div >
             <table>
-                <?
-                if ($arquivo_pasta_pdf != false):
-                    foreach ($arquivo_pasta_pdf as $value) :
-                        ?>
-                        <td><img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/arquivospdf/" . $exame_id . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "img/pdf.png" ?>"><br><a href="<?= base_url() ?>ambulatorio/exame/excluirimagem/<?= $exame_id ?>/<?= $value ?>/<?= $sala_id ?>">Excluir</a></td>
-                        <?
-                    endforeach;
-                endif
-                ?>
+                <tr>
+                    <?
+                    $i = 0;
+                    if ($arquivo_pasta_pdf != false):
+                        foreach ($arquivo_pasta_pdf as $value) :
+                            $i++;
+                            ?>
+
+                            <td width="10px"><img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/consulta/" . $ambulatorio_laudo_id . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "upload/consulta/" . $ambulatorio_laudo_id . "/" . $value ?>"><br><? echo substr($value, 0, 10) ?><br><a href="<?= base_url() ?>ambulatorio/laudo/excluirimagem/<?= $ambulatorio_laudo_id ?>/<?= $value ?>">Excluir</a></td>
+                            <?
+                            if ($i == 8) {
+                                ?>
+                            </tr><tr>
+                                <?
+                            }
+                        endforeach;
+                    endif
+                    ?>
             </table>
         </div>
         <!-- Final da DIV content -->
