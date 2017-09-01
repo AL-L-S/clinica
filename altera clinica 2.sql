@@ -565,3 +565,12 @@ ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN operador_atualizacao 
 ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN data_atualizacao date;
 ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN ativo boolean DEFAULT true;
 
+
+
+
+--01/09/2017
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN data_contaspagar boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa ADD COLUMN medico_laudodigitador boolean DEFAULT false;
+
+

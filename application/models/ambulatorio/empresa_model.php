@@ -479,6 +479,16 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('imagem', 'f');
             }
+            if (isset($_POST['data_contaspagar'])) {
+                $this->db->set('data_contaspagar', 't');
+            } else {
+                $this->db->set('data_contaspagar', 'f');
+            }
+            if (isset($_POST['medico_laudodigitador'])) {
+                $this->db->set('medico_laudodigitador', 't');
+            } else {
+                $this->db->set('medico_laudodigitador', 'f');
+            }
             if (isset($_POST['chamar_consulta'])) {
                 $this->db->set('chamar_consulta', 't');
             } else {
@@ -615,6 +625,8 @@ class empresa_model extends Model {
                                chamar_consulta,
                                procedimento_multiempresa,
                                financeiro,
+                               data_contaspagar,
+                               medico_laudodigitador,
                                laboratorio,
                                ponto,
                                marketing,
@@ -672,6 +684,8 @@ class empresa_model extends Model {
             $this->_impressao_recibo = $return[0]->impressao_recibo;
             $this->_calendario = $return[0]->calendario;
             $this->_botao_faturar_guia = $return[0]->botao_faturar_guia;
+            $this->_data_contaspagar = $return[0]->data_contaspagar;
+            $this->_medico_laudodigitador = $return[0]->medico_laudodigitador;
             $this->_botao_faturar_proc = $return[0]->botao_faturar_procedimento;
             $this->_chamar_consulta = $return[0]->chamar_consulta;
             $this->_procedimento_multiempresa = $return[0]->procedimento_multiempresa;

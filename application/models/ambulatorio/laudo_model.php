@@ -722,12 +722,12 @@ class laudo_model extends Model {
         $salas = $return[0]->sala;
         $data = date("Y-m-d H:i:s");
         $medico = $return[0]->descricao;
-        if($return[0]->painel_id != ''){
+        if ($return[0]->painel_id != '') {
             $painel_id = $return[0]->painel_id;
-        }else{
+        } else {
             $painel_id = 1;
         }
-        
+
 
         $paciente = $return[0]->paciente;
         $superior = 'Paciente: ' . $paciente;
@@ -737,7 +737,7 @@ class laudo_model extends Model {
     VALUES ('$data', '$inferior', '$superior', $painel_id);";
         $DB1->query($sql);
     }
-    
+
     function chamadaconsulta($ambulatorio_laudo_id) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -777,12 +777,12 @@ class laudo_model extends Model {
         $salas = $return[0]->sala;
         $data = date("Y-m-d H:i:s");
         $medico = $return[0]->descricao;
-        if($return[0]->painel_id != ''){
+        if ($return[0]->painel_id != '') {
             $painel_id = $return[0]->painel_id;
-        }else{
+        } else {
             $painel_id = 1;
         }
-        
+
 
         $paciente = $return[0]->paciente;
         $superior = 'Paciente: ' . $paciente;
@@ -1123,7 +1123,7 @@ class laudo_model extends Model {
         return $return->result();
     }
 
-    function listardigitador($args = array()) {
+    function listardigitador($args = array(), $medico_laudodigitador) {
 
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
@@ -1156,7 +1156,8 @@ class laudo_model extends Model {
         $this->db->where("ag.cancelada", 'false');
         $this->db->where('age.sala_preparo', 'f');
 
-        if ($perfil_id == 4) {
+        
+        if ($perfil_id == 4 && $medico_laudodigitador == 'f') {
             $this->db->where('age.medico_consulta_id', $operador_id);
         }
 
@@ -1190,7 +1191,7 @@ class laudo_model extends Model {
         return $this->db;
     }
 
-    function listar2digitador($args = array()) {
+    function listar2digitador($args = array(), $medico_laudodigitador) {
         $data = date("Y-m-d");
         $contador = count($args);
         $empresa_id = $this->session->userdata('empresa_id');
@@ -1242,7 +1243,7 @@ class laudo_model extends Model {
             $this->db->where('ag.data >=', $data);
         }
 
-        if ($perfil_id == 4) {
+        if ($perfil_id == 4 && $medico_laudodigitador == 'f') {
             $this->db->where('age.medico_consulta_id', $operador_id);
         }
 
@@ -2016,7 +2017,7 @@ class laudo_model extends Model {
 //                        $this->db->where('pt.ativo', 'true');
                 $percentual = $this->db->get()->result();
             }
-            
+
             if (isset($_POST['rev'])) {
                 switch ($_POST['tempoRevisao']) {
                     case '1a':

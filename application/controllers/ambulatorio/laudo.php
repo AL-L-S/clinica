@@ -2614,7 +2614,7 @@ class Laudo extends BaseController {
 
             //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
             $config['upload_path'] = "./upload/consulta/" . $ambulatorio_laudo_id . "/";
-            $config['allowed_types'] = 'gif|jpg|BMP|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar';
+            $config['allowed_types'] = 'gif|jpg|BMP|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar|xml|txt';
             $config['max_size'] = '0';
             $config['overwrite'] = FALSE;
             $config['encrypt_name'] = FALSE;
@@ -2627,6 +2627,7 @@ class Laudo extends BaseController {
                 $data = array('upload_data' => $this->upload->data());
             }
         }
+//        var_dump($error); die;
 
 
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;

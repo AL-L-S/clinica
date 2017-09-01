@@ -776,7 +776,11 @@ class Guia extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
         }
-        $caixa = $this->guia->fecharmedico();
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data_contaspagar = $data['empresa'][0]->data_contaspagar;
+        $caixa = $this->guia->fecharmedico($data_contaspagar);
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
         } else {

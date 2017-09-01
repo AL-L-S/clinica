@@ -162,6 +162,9 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>-->
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>-->
 <script type="text/javascript">
+//$('#data_realizacao').mask('00/00/0000  00:00');
+  $('#data_realizacao').mask('00/00/0000 00:00:00');
+  $('#data_autorizacao').mask('00/00/0000 00:00:00');
 
 
 

@@ -59,7 +59,7 @@
             </tr>
             <tr>
                 <td colspan="2"><font size = -1>C&oacute;d. Paciente: <?= $paciente['0']->paciente_id; ?></td>
-                <td><font size = -1>Finalizado:<?= substr(@$exame[0]->data_finalizado, 10, 9); ?></td>
+                <td><font size = -1>Finalizado: <?= date("H:i:s", strtotime($exame[0]->data_entregue)); ?></td>
             </tr>
             <tr>
                 <td colspan="2"><font size = -1>Paciente:<b><?= utf8_decode($paciente['0']->nome); ?></b></td>
@@ -91,7 +91,7 @@
                 <td><font size = -1>Valor Devido:_________</td>
             </tr>
             <tr>
-                <td colspan="2"><font size = -1>TECNICA:</td>
+                <td colspan="2"><font size = -1>TECNICO(A):</td>
                 <td><font size = -1>Valor Pago:___________</td>
             </tr>
         </tbody>
