@@ -32,6 +32,27 @@
                 <button type="reset" name="btnLimpar">Limpar</button>
             </form>
         </div>
+        
+        <h3 class="singular"><a href="#">Grupo Cadastrado</a></h3>
+        <? if( count($grupos_associados) > 0){ ?>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <td colspan="2" class="tabela_header">Nome</td>
+                    </tr>
+                </thead>
+                <?
+                $estilo_linha = "tabela_content01";
+                foreach ($grupos_associados as $item) {
+                    ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";?>
+                    <td colspan="2" class="<?php echo $estilo_linha; ?>"><?=$item->nome?></td>
+                    <?
+                }
+                ?>
+            </table>
+        </div>
+        <? } ?>
     </div>
 </div> <!-- Final da DIV content -->
 

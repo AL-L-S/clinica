@@ -100,13 +100,40 @@ class agenda_model extends Model {
         else
             return true;
     }
+    
+    function excluiragendascriadas() {
+        $this->db->where('nome', $_GET['nome']);
+        $this->db->where('horarioagenda_id', $_GET['horario_id']);
+        $this->db->where('paciente_id IS NULL');
+        $this->db->delete('tb_agenda_exames');
+    }
+        
+    function listarhorariosagendacriada($agenda_id) {
+        $this->db->select('e.nome as empresa,
+                           h.dia,
+                           h.horaentrada1,
+                           h.horasaida1,
+                           h.intervaloinicio,
+                           h.intervalofim,
+                           h.tempoconsulta,
+                           h.agenda_id,
+                           h.qtdeconsulta,
+                           h.empresa_id,
+                           h.observacoes,
+                           h.horarioagenda_id');
+        $this->db->from('tb_horarioagenda h');
+        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->where("h.agenda_id", $agenda_id);
+//        $this->db->where("h.horarioagenda_id IN (   
+//                                SELECT horario_id 
+//                                FROM ponto.tb_agenda_exames
+//                                WHERE horarioagenda_id = '{$agenda_id}'
+//                                AND nome = '{$_GET['nome']}')");
+        $this->db->orderby('dia');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
-    /**
-     * Função para gravar valores na tabela TB_SERVIDOR.
-     * @author Equipe de desenvolvimento APH
-     * @access public
-     * @return Resposta true/false da conexão com o banco
-     */
     function gravar() {
         try {
 

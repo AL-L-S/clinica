@@ -90,59 +90,67 @@
             </table>
         </div>
     </div>
-    <!--<br>-->
+    
     <br>
-<!--    <div id="accordion2">
-        <h3 class="singular"><a href="#">Agendas Criadas A Partir Desse(s) Horário(s)</a></h3>
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th class="tabela_header" colspan="2">Agenda</th>
-                        <th class="tabela_header"></th>
-
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <?php
-                    $estilo_linha = "tabela_content01";
-                    foreach ($lista_agenda as $item) {
-                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                        ?>
+    <? if ( count($lista_agenda) > 0 ) {?>
+        <div id="accordion">
+            <div>
+                <table>
+                    <thead>
                         <tr>
-                            <td class="<?php echo $estilo_linha; ?>"><?= $item->horarioagenda_id; ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
-
-
-
-                            <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                <div class="bt_link">
-                                    <a href="<?= base_url() ?>ambulatorio/agenda/carregar/<?= $item->horarioagenda_id ?>" target="_blank">
-                                        Excluir
-                                    </a>
-                                </div>
-
-                            </td>
-                            <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                <div class="bt_link">
-                                    <a href="<?= base_url() ?>ambulatorio/agenda/carregar/<?= $item->horarioagenda_id ?>" target="_blank">
-                                        Editar
-                                    </a>
-                                </div>
-
-                            </td>
+                            <th colspan="5" style="font-size: 12pt; background-color: #ddd; text-align: center; font-weight: bold">AGENDAS CRIADAS</th>
                         </tr>
+                        <tr>
+                            <th class="tabela_header" width="800">Nome</th>
+                            <th class="tabela_header" colspan="3">&nbsp;</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php
+                        $i = 0;
+                        $estilo_linha = "tabela_content01";
+                        foreach ($lista_agenda as $item) {
+                            $i++;
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            ?>
+                            <tr>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <div class="bt_link_new">
+                                        <form method="get" name="editaragenda<?= $i ?>" action="<?= base_url() ?>ambulatorio/agenda/editaragendacriada/<?=@ $agenda ?>" target="_blank">
+                                            <input type="hidden" name="nome" value="<?= @$item->nome ?>"/>
+                                            <input type="hidden" name="horario_id" value="<?=@ $agenda ?>"/>
+                                            <a onclick="document.editaragenda<?= $i ?>.submit()">
+                                                Editar
+                                            </a>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td  class="<?php echo $estilo_linha; ?>">
+                                    <div class="bt_link_new">
+                                        <form method="get" name="excluiragenda<?= $i ?>" action="<?= base_url() ?>ambulatorio/agenda/excluiragendascriadas/<?=@ $agenda ?>">
+                                            <input type="hidden" name="nome" value="<?= @$item->nome ?>"/>
+                                            <input type="hidden" name="horario_id" value="<?=@ $agenda ?>"/>
+                                            <a onclick="document.excluiragenda<?= $i ?>.submit()">
+                                                Excluir
+                                            </a>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php
+                    }
+                    ?>
+
 
                     </tbody>
-                    <?php
-                }
-                ?>
-
-            </table>
+                </table>
+            </div>
         </div>
-    </div>-->
-
+    <? } ?>
+    <br>
+    
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 

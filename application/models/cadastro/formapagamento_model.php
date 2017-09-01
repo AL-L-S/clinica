@@ -34,6 +34,17 @@ class formapagamento_model extends Model {
         return $this->db;
     }
 
+    function listargruposasssociados($procedimento_convenio_id) {
+        $this->db->select('procedimento_convenio_pagamento_id, fg.nome');
+        $this->db->from('tb_procedimento_convenio_pagamento pcp');
+        $this->db->join('tb_grupo_formapagamento gp', "gp.grupo_formapagamento_id = pcp.grupo_pagamento_id", 'left');
+        $this->db->join('tb_financeiro_grupo fg', "fg.financeiro_grupo_id = gp.grupo_id", 'left');
+        $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listargrupo($args = array()) {
         $this->db->select('financeiro_grupo_id,
                             nome 

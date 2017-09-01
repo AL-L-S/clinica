@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_voltar">
-        <a href="<?= base_url() ?>ponto/horariostipo">
+        <a href="<?= base_url() ?>ambulatorio/agenda">
             Voltar
         </a>
     </div>

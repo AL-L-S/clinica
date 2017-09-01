@@ -255,6 +255,14 @@ class Exametemp extends BaseController {
 //        var_dump($data['valortotal']);die;
         $this->loadView('ambulatorio/carregarcredito-lista', $data);
     }
+    
+    
+    function mostrarlembretes() {
+        
+        $data['lembretes'] = $this->exametemp->listarlembretesoperador();
+        
+        $this->load->view('ambulatorio/mostrarlembretes', $data);
+    }
 
     function carregarcredito($paciente_id) {
         $data['paciente_id'] = $paciente_id;

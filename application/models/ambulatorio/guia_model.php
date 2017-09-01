@@ -9734,7 +9734,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('realizada', 't');
             if ($_POST['medicoagenda'] != "") {
                 $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
-//                $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+                $this->db->set('medico_solicitante', $_POST['medicoagenda']);
             }
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');

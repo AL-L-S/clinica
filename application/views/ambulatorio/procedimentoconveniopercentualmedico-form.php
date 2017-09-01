@@ -44,8 +44,8 @@
                         <label>Medico</label>
                     </dt>
                     <dd>                    
-                        <select name="medico" id="medico" class="size4">
-                            <option>SELECIONE</option>
+                        <select name="medico" id="medico" class="size4" required="">
+                            <option value="">SELECIONE</option>
                             <option>TODOS</option>
                             <? foreach ($medicos as $value) : ?>
                                 <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
@@ -56,7 +56,7 @@
                         <label>Valor</label>
                     </dt>
                     <dd>
-                        <input type="text" name="valor" id="valor" class="texto01" />
+                        <input type="text" name="valor" id="valor" class="texto01" required=""/>
                     </dd>
                     <dt>
                         <label>Percentual</label>

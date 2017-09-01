@@ -1,0 +1,1810 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+    <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
+       <ans:cabecalho>
+          <ans:identificacaoTransacao>
+             <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
+             <ans:sequencialTransacao>10225</ans:sequencialTransacao>
+             <ans:dataRegistroTransacao>2017-08-29</ans:dataRegistroTransacao>
+             <ans:horaRegistroTransacao>12:55:52</ans:horaRegistroTransacao>
+          </ans:identificacaoTransacao>
+          <ans:origem>
+             <ans:identificacaoPrestador>
+                <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+             </ans:identificacaoPrestador>
+          </ans:origem>
+          <ans:destino>
+             <ans:registroANS>348805</ans:registroANS>
+          </ans:destino>
+          <ans:Padrao>3.03.01</ans:Padrao>
+       </ans:cabecalho>
+       
+       <ans:prestadorParaOperadora>
+          <ans:loteGuias>
+             <ans:numeroLote>10278</ans:numeroLote>
+                <ans:guiasTISS>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3160457</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13996716</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-23</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>157960100</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>ANA LUCIA DE OLIVEIRA MORAES</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-23</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-23</ans:dataExecucao>
+                                <ans:horaInicial>09:44:42</ans:horaInicial>
+                                <ans:horaFinal>09:44:42</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>90300092</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >AGUA DESTILADA 10ML</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >0.69</ans:valorUnitario >
+                                <ans:valorTotal>0.69</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.69</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>0.69</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3160457</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13996716</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-23</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>157960100</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>ANA LUCIA DE OLIVEIRA MORAES</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-23</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-23</ans:dataExecucao>
+                                <ans:horaInicial>09:44:42</ans:horaInicial>
+                                <ans:horaFinal>09:44:42</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>90147316</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >OPTIRAY 320 100  ML (BRASINDICE)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >356.95</ans:valorUnitario >
+                                <ans:valorTotal>356.95</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>356.95</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>356.95</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3160457</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13996716</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-23</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>157960100</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>ANA LUCIA DE OLIVEIRA MORAES</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>SABINA DA SILVA J.D. POVOA</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >23413</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-23</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-23</ans:dataExecucao>
+                                <ans:horaInicial>09:44:42</ans:horaInicial>
+                                <ans:horaFinal>09:44:42</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                    <ans:codigoProcedimento>41001010</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >TC - Crânio ou sela túrcica ou órbitas</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >267.82</ans:valorUnitario >
+                                <ans:valorTotal>267.82</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ALISSON OLIVEIRA</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>49499</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >267.82</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>267.82</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3160457</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13996716</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-23</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>157960100</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>ANA LUCIA DE OLIVEIRA MORAES</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-23</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-23</ans:dataExecucao>
+                                <ans:horaInicial>09:44:42</ans:horaInicial>
+                                <ans:horaFinal>09:44:42</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70705348</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >SERINGA 20 ML (BRASINDICE)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >7.35</ans:valorUnitario >
+                                <ans:valorTotal>7.35</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>7.35</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>7.35</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3160457</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13996716</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-23</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>157960100</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>ANA LUCIA DE OLIVEIRA MORAES</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-23</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-23</ans:dataExecucao>
+                                <ans:horaInicial>09:44:42</ans:horaInicial>
+                                <ans:horaFinal>09:44:42</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>19</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70139032</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >CATETER INTRAVENOSO 20 G (BRASINDICE)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >19.62</ans:valorUnitario >
+                                <ans:valorTotal>19.62</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>19.62</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>19.62</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3160457</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13996716</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-23</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>157960100</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>ANA LUCIA DE OLIVEIRA MORAES</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-23</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-23</ans:dataExecucao>
+                                <ans:horaInicial>09:44:42</ans:horaInicial>
+                                <ans:horaFinal>09:44:42</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>19</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70014370</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >Agulha 40x12- Amil</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >1.08</ans:valorUnitario >
+                                <ans:valorTotal>1.08</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>1.08</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>1.08</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3153505</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13793746</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-07-14</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>147188102</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>PAULO HENRIQUE AMANCIO PEREIRA RISPOLI</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>AGNALDO BERTUCCI</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >23033</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-07-14</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-07-14</ans:dataExecucao>
+                                <ans:horaInicial>14:43:16</ans:horaInicial>
+                                <ans:horaFinal>14:43:16</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70705348</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >SERINGA 20 ML (BRASINDICE)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >7.35</ans:valorUnitario >
+                                <ans:valorTotal>7.35</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>7.35</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>7.35</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3153505</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13793746</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-07-14</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>147188102</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>PAULO HENRIQUE AMANCIO PEREIRA RISPOLI</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>AGNALDO BERTUCCI</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >23033</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-07-14</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-07-14</ans:dataExecucao>
+                                <ans:horaInicial>14:43:16</ans:horaInicial>
+                                <ans:horaFinal>14:43:16</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>19</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70139032</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >CATETER INTRAVENOSO 20 G (BRASINDICE)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >19.62</ans:valorUnitario >
+                                <ans:valorTotal>19.62</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>19.62</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>19.62</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3153505</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13793746</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-07-14</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>147188102</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>PAULO HENRIQUE AMANCIO PEREIRA RISPOLI</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>AGNALDO BERTUCCI</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >23033</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-07-14</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-07-14</ans:dataExecucao>
+                                <ans:horaInicial>14:43:16</ans:horaInicial>
+                                <ans:horaFinal>14:43:16</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>90147260</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >Optimark 20 ml</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >335.21</ans:valorUnitario >
+                                <ans:valorTotal>335.21</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>335.21</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>335.21</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3153505</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13793746</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-07-14</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>147188102</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>PAULO HENRIQUE AMANCIO PEREIRA RISPOLI</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-07-14</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-07-14</ans:dataExecucao>
+                                <ans:horaInicial>14:43:16</ans:horaInicial>
+                                <ans:horaFinal>14:43:16</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>90300092</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >AGUA DESTILADA 10ML</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >0.69</ans:valorUnitario >
+                                <ans:valorTotal>0.69</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.69</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>0.69</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3153505</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13793746</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-07-14</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>147188102</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>PAULO HENRIQUE AMANCIO PEREIRA RISPOLI</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-07-14</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-07-14</ans:dataExecucao>
+                                <ans:horaInicial>14:43:16</ans:horaInicial>
+                                <ans:horaFinal>14:43:16</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>19</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70014370</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >Agulha 40x12- Amil</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >1.08</ans:valorUnitario >
+                                <ans:valorTotal>1.08</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>1.08</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>1.08</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3153505</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13793746</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-07-14</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>147188102</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>PAULO HENRIQUE AMANCIO PEREIRA RISPOLI</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>AGNALDO BERTUCCI</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >23033</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-07-14</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-07-14</ans:dataExecucao>
+                                <ans:horaInicial>14:43:16</ans:horaInicial>
+                                <ans:horaFinal>14:43:16</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                    <ans:codigoProcedimento>41101014</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >RM - Crânio (encéfalo)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >601.41</ans:valorUnitario >
+                                <ans:valorTotal>601.41</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>PAULO HENRIQUE MOREIRA ALVES</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>65514</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >601.41</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>601.41</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3158291</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13928974</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-10</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>114621000</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>JAIME HONORIO DA SILVA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-10</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-10</ans:dataExecucao>
+                                <ans:horaInicial>08:36:53</ans:horaInicial>
+                                <ans:horaFinal>08:36:53</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>90300092</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >AGUA DESTILADA 10ML</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >0.69</ans:valorUnitario >
+                                <ans:valorTotal>0.69</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.69</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>0.69</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3158291</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13928974</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-10</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>114621000</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>JAIME HONORIO DA SILVA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-10</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-10</ans:dataExecucao>
+                                <ans:horaInicial>08:36:53</ans:horaInicial>
+                                <ans:horaFinal>08:36:53</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>19</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70014370</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >Agulha 40x12- Amil</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >1.08</ans:valorUnitario >
+                                <ans:valorTotal>1.08</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>1.08</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>1.08</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3158291</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13928974</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-10</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>114621000</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>JAIME HONORIO DA SILVA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-10</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-10</ans:dataExecucao>
+                                <ans:horaInicial>08:36:53</ans:horaInicial>
+                                <ans:horaFinal>08:36:53</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>90147260</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >Optimark 20 ml</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >335.21</ans:valorUnitario >
+                                <ans:valorTotal>335.21</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>335.21</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>335.21</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3158291</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13928974</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-10</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>114621000</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>JAIME HONORIO DA SILVA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-10</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-10</ans:dataExecucao>
+                                <ans:horaInicial>08:36:53</ans:horaInicial>
+                                <ans:horaFinal>08:36:53</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>19</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70139032</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >CATETER INTRAVENOSO 20 G (BRASINDICE)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >19.62</ans:valorUnitario >
+                                <ans:valorTotal>19.62</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>19.62</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>19.62</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3158291</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13928974</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-10</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>114621000</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>JAIME HONORIO DA SILVA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>ADMINISTRADOR</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >1010</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-10</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-10</ans:dataExecucao>
+                                <ans:horaInicial>08:36:53</ans:horaInicial>
+                                <ans:horaFinal>08:36:53</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>20</ans:codigoTabela>
+                                    <ans:codigoProcedimento>70705348</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >SERINGA 20 ML (BRASINDICE)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >7.35</ans:valorUnitario >
+                                <ans:valorTotal>7.35</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>ADMINISTRADOR</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>0000000</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >0.00</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>7.35</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>7.35</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3158291</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>13928974</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-10</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>114621000</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>JAIME HONORIO DA SILVA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>DANIEL TEIXEIRA FERNANDES</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >45317</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-10</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-10</ans:dataExecucao>
+                                <ans:horaInicial>08:36:53</ans:horaInicial>
+                                <ans:horaFinal>08:36:53</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                    <ans:codigoProcedimento>41101316</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >RM - Articular (por articulação)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >601.41</ans:valorUnitario >
+                                <ans:valorTotal>601.41</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>GUSTAVO FELIX MARCONI</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>48011</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >601.41</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>601.41</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3161078</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>14015272 </ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-26</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>147190901</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>OLGA MARIA ARRUDA BORGES</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>FATIMA REGINA F.N. ARAUJO</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >20424</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-26</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-26</ans:dataExecucao>
+                                <ans:horaInicial>07:42:48</ans:horaInicial>
+                                <ans:horaFinal>07:42:48</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                    <ans:codigoProcedimento>40901122</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >US - Abdome total (abdome superior, rins, bexiga, aorta, vei</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >123.78</ans:valorUnitario >
+                                <ans:valorTotal>123.78</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>LEONARDO ROBERTO DOS SANTOS COSTA</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>51820</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >123.78</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>123.78</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3160913</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>14010600</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-08-25</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>156400201</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>ELAINE CRISTINA DE FARIA OLIVEIRA </ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                      
+                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cpfContratado>04111340601</ans:cpfContratado>
+                               <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>LAYLLA ALIONTINA LEMES</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >98001</ans:numeroConselhoProfissional >
+                            <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-08-25</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      
+                      <ans:dadosExecutante>
+                        <ans:contratadoExecutante>
+                            <ans:cpfContratado>04111340601</ans:cpfContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                        
+                      <ans:dadosAtendimento>
+                        <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                        <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                        <ans:tipoConsulta>1</ans:tipoConsulta>
+                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      </ans:dadosAtendimento>
+                      
+                      <ans:procedimentosExecutados>
+                         <ans:procedimentoExecutado>
+                                <ans:dataExecucao>2017-08-25</ans:dataExecucao>
+                                <ans:horaInicial>09:37:39</ans:horaInicial>
+                                <ans:horaFinal>09:37:39</ans:horaFinal>
+                                <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                    <ans:codigoProcedimento>40901297</ans:codigoProcedimento>
+                                    <ans:descricaoProcedimento >US - Obstétrica 1º trimestre (endovaginal)</ans:descricaoProcedimento >
+                                </ans:procedimento>                        
+                                <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >122.52</ans:valorUnitario >
+                                <ans:valorTotal>122.52</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>MARCIO BENTO VILLALVA </ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>139365</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                      </ans:procedimentoExecutado>
+                    </ans:procedimentosExecutados>
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >122.52</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>122.52</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>   </ans:guiasTISS>
+          </ans:loteGuias>
+       </ans:prestadorParaOperadora>
+       <ans:epilogo>
+          <ans:hash>035753bf836c231bedbc68a08daf4668</ans:hash>
+       </ans:epilogo>
+    </ans:mensagemTISS>

@@ -59,6 +59,22 @@ class Procedimento extends BaseController {
     function pesquisartuss($args = array()) {
         $this->loadView('ambulatorio/procedimentotuss-lista', $args);
     }
+    
+    function carregarajustevalores() {
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $this->loadView('ambulatorio/ajustevalores-form', $data);
+    }
+    
+    function gravarajustevalores() {
+        $verifica = $this->procedimento->gravarajustevalores();
+        if ($verifica) {
+            $data['mensagem'] = 'Erro ao ajustar os valores. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao ajustar os valores.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/procedimento");
+    }
 
     function carregarprocedimento($procedimento_tuss_id) {
         $obj_procedimento = new procedimento_model($procedimento_tuss_id);
