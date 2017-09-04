@@ -572,6 +572,15 @@ ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN ativo boolean DEFAULT
 
 ALTER TABLE ponto.tb_empresa ADD COLUMN data_contaspagar boolean DEFAULT false;
 ALTER TABLE ponto.tb_empresa ADD COLUMN medico_laudodigitador boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN guiaconvenio character varying(25);
+
+UPDATE ponto.tb_agenda_exames ae
+SET guiaconvenio = g.guiaconvenio
+FROM ponto.tb_ambulatorio_guia g
+WHERE g.ambulatorio_guia_id = ae.guia_id
+AND ae.guiaconvenio is null
+AND ae.guia_id is not null
+AND ae.paciente_id is not null;
 
 CREATE TABLE ponto.tb_horarioagenda_editada
 (
@@ -595,7 +604,15 @@ CREATE TABLE ponto.tb_horarioagenda_editada
   CONSTRAINT tb_horarioagenda_editada_pkey PRIMARY KEY (horarioagenda_editada_id)
 );
 
+
+-- 02/09/2017
+
+INSERT INTO ponto.tb_perfil(
+            perfil_id, nome, ativo)
+    VALUES (16, 'ASSISTENTE DE FATURAMENTO', true);
+
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN agenda_editada boolean DEFAULT false;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horarioagenda_editada_id integer;
 ALTER TABLE ponto.tb_horarioagenda_editada ADD COLUMN ativo boolean NOT NULL DEFAULT true;
 ALTER TABLE ponto.tb_horarioagenda_editada ADD COLUMN consolidado boolean NOT NULL DEFAULT false;
+

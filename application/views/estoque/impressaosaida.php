@@ -25,6 +25,8 @@
         <thead>
             <tr>
                 <td class="tabela_teste"><font size="-2">PRODUTO</td>
+                <td class="tabela_teste"><font size="-2">VALOR DE COMPRA</td>
+                <td class="tabela_teste"><font size="-2">VALOR DE VENDA</td>
                 <td class="tabela_teste"><font size="-2">QTDE/SOLIC.</td>
                 <td class="tabela_teste"><font size="-2">UNID</td>
                 <td class="tabela_teste"><font size="-2">SAÍDA</td>
@@ -37,6 +39,8 @@
             <? foreach ($produtossaida as $item) : ?>
                 <tr>
                     <td><font size="-2"><?= $item->descricao; ?></td>
+                    <td><font size="-2"><?= number_format($item->valor_compra, 2, ",", ".") ; ?></td>
+                    <td><font size="-2"><?= number_format($item->valor_venda, 2, ",", ".") ; ?></td>
                     <td><font size="-2"><?= $item->quantidade_solicitada; ?></td>
                     <td><font size="-2"><?= $item->unidade; ?></td>
                     <td><font size="-2"><?= $item->quantidade; ?></td>

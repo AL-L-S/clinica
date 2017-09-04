@@ -2476,6 +2476,9 @@ class Exame extends BaseController {
         $listarpacienete = $this->exame->listarpacientesxmlfaturamento();
         $listarexame = $this->exame->listargxmlfaturamento();
         $listarexames = $this->exame->listarxmlfaturamentoexames();
+//        echo '<pre>';
+//        var_dump($listarexames); die;
+//        var_dump($listarexames); die;
 
         $horario = date("Y-m-d");
         $hora = date("H:i:s");

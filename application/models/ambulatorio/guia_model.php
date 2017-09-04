@@ -5201,6 +5201,15 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function guiaconvenioexame($agenda_exames_id) {
+
+        $this->db->select('guiaconvenio, agenda_exames_id');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where("agenda_exames_id", $agenda_exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function verificaodeclaracao($guia_id) {
 
@@ -6450,8 +6459,14 @@ AND data <= '$data_fim'";
 
     function gravarguiaconvenio($guia_id) {
         $this->db->set('guiaconvenio', $_POST['guiaconvenio']);
-        $this->db->where('ambulatorio_guia_id', $guia_id);
-        $this->db->update('tb_ambulatorio_guia');
+        $this->db->where('guia_id', $guia_id);
+        $this->db->update('tb_agenda_exames');
+    }
+    
+    function gravarguiaconvenioexame($agenda_exames_id) {
+        $this->db->set('guiaconvenio', $_POST['guiaconvenio']);
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->update('tb_agenda_exames');
     }
 
     function gravarfaturamento() {
@@ -8958,10 +8973,11 @@ ORDER BY ae.agenda_exames_id)";
 //            $this->db->set('percentual_medico', $valor_percentual);
             $this->db->set('quantidade', $_POST['qtde1']);
             $this->db->set('autorizacao', $_POST['autorizacao1']);
+            $this->db->set('guiaconvenio', $_POST['guiaconvenio']);
 //            $this->db->set('observacoes', $_POST['observacao']);
             if ($_POST['ordenador'] != "") {
                 $this->db->set('ordenador', $_POST['ordenador']);
-                ;
+                
             }
             if ($_POST['indicacao'] != "") {
                 $this->db->set('indicacao', $_POST['indicacao']);
@@ -9727,6 +9743,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('valor_total', $valortotal);
             $this->db->set('quantidade', $_POST['qtde1']);
             $this->db->set('autorizacao', $_POST['autorizacao1']);
+            $this->db->set('guiaconvenio', $_POST['guiaconvenio']);
             $this->db->set('empresa_id', $_POST['txtempresa']);
             $this->db->set('confirmado', 't');
             $this->db->set('tipo', $tipo);

@@ -66,7 +66,8 @@
                             <th class="tabela_header">Convenio</th>
                             <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento</th>
-                            <th class="tabela_header">autorizacao</th>
+                            <th class="tabela_header">Autorizacao</th>
+                            <th class="tabela_header">Guia Convênio</th>
                             <th class="tabela_header">V. Unit</th>
                             <th class="tabela_header">Pagamento</th>
                             <th class="tabela_header">Recomendação</th>
@@ -119,6 +120,7 @@
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao<?= $i; ?>" class="size1"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="guiaconvenio[<?= $i; ?>]" id="guianumero<?= $i; ?>" class="size1"/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >

@@ -197,10 +197,10 @@
                                             </td>
                                         <? } ?>
 
-                                                                                                                                                                                                                                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                                                                                                                                                                                                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
-                                                                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                                                                        </td>-->
+                                                                                                                                                                                                                                                                                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                                                                                                                                                                                                                                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
+                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                                                                                        </td>-->
                                         <? if ($item->grupo != 'MEDICAMENTO' && $item->grupo != 'MATERIAL') { ?>
 
 
@@ -229,6 +229,12 @@
                                                 <?
                                             }
                                             ?>
+                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                <a href="#" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenioexame/$guia_id/$item->agenda_exames_id"; ?> ', '_blank', 'width=800,height=250');">N. Guia
+
+                                                </a>
+                                            </td>
+
 
                                             <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
                                                 <? if ($perfil_id != 11) { ?>
@@ -244,11 +250,17 @@
                                                 </td>
                                             <? } ?>
                                         <? } else { ?>
-                                            <td colspan="6" class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/matmedcancelamento/" . $item->agenda_exames_id; ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Excluir
+                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                <a href="#" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenioexame/$guia_id/$item->agenda_exames_id"; ?> ', '_blank', 'width=800,height=250');">N. Guia
 
                                                 </a>
                                             </td>
+                                            <td colspan="5" class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                <a  onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/matmedcancelamento/" . $item->agenda_exames_id; ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Excluir
+
+                                                </a>
+                                            </td>
+
                                         <? }
                                         ?>   
                                     </tr>
