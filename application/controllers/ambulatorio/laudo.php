@@ -333,6 +333,31 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/laudoconsulta-form', $data);
     }
 
+    function pendenteexamemultifuncao($exames_id) {
+//        $sala_id = $exames_id;
+        $verificar = $this->exame->pendenteexamemultifuncao($exames_id);
+        if ($verificar == "-1") {
+            $data['mensagem'] = 'Erro ao encaminhar para sala de pendentes. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao encaminhar para sala de pendentes.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+
+    function pendenteespecialidade($exames_id) {
+//        $sala_id = $exames_id;
+        $verificar = $this->exame->pendenteespecialidade($exames_id);
+        if ($verificar == "-1") {
+            $data['mensagem'] = 'Erro ao encaminhar para sala de pendentes. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao encaminhar para sala de pendentes.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
     function carregaranamineseantigo($paciente_id) {
 
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);

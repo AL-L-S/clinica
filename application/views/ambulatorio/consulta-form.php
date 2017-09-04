@@ -53,7 +53,7 @@
                     </dd>
                     </dd>
                     <dt>
-                    <label>Tipo Consulta *</label>
+                    <label>Tipo Agenda *</label>
                     </dt>
                     <dd>
                         <select name="txttipo" id="txttipo" class="size4">

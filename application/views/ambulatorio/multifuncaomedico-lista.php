@@ -183,8 +183,12 @@
                             } elseif ($item->realizada == 't' && $item->situacaoexame == 'FINALIZADO') {
                                 $situacao = "Finalizado";
                                 $verifica = 4;
-                            } elseif ($item->confirmado == 'f') {
+                            } 
+                            elseif ($item->confirmado == 'f') {
                                 $situacao = "agenda";
+                                $verifica = 1;
+                            } elseif ($item->situacaoexame == 'PENDENTE') {
+                                $situacao = "pendente";
                                 $verifica = 1;
                             } else {
 //                                echo $item->situacaoexame;
@@ -234,7 +238,7 @@
                             <? } ?>
                             <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
                                                                                                                                                                                     width=500,height=230');">=><?= $item->observacoes; ?></td>
-                                <? if ($item->situacaolaudo != '') { ?>
+                                <? if ($item->situacaolaudo != '' && $item->situacaoexame != 'PENDENTE') { ?>
                                     <?
                                     if (($item->medico_parecer1 == $operador_id && $item->situacaolaudo == 'FINALIZADO') || ($item->situacaolaudo != 'FINALIZADO' && $item->situacaolaudo != '') || $operador_id == 1) {
                                         if ($item->grupo == 'ECOCARDIOGRAMA') {

@@ -55,6 +55,11 @@
                                 <div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
                                         Editar</a></div>
+                                <div class="bt_link_new">
+                                    <a href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
+                                        Pendente
+                                    </a>
+                                </div>
                                 <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
                                 <!--                                        impressaolaudo -->
                             </td>

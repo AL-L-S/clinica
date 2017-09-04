@@ -15,7 +15,8 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Pre&ccedil;o procedimento</a></h3>
         <div>
-            <? $grupo = $this->procedimento->listargrupos(); ?>
+            <? $grupo = $this->procedimento->listargrupos(); 
+               $convenio = $this->convenio->listardados(); ?>
             <table>
                 <thead>
                     <tr>
@@ -30,7 +31,17 @@
                     </tr>
                     <tr>
                         <th class="tabela_title">
-                            <input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />
+                            <!--<input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />-->
+                            <select name="convenio" id="convenio" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($convenio as $value) : ?>
+                                    <option value="<?= $value->convenio_id; ?>"
+                                            <?if($value->convenio_id == @$_GET['convenio']) echo 'selected';?>>
+                                            <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
                         </th>
                         <th class="tabela_title">
                             <select name="grupo" id="grupo" class="size2">

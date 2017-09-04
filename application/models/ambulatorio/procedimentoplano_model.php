@@ -42,8 +42,8 @@ class procedimentoplano_model extends Model {
 //        if ($procedimento_multiempresa == 't') {
 //            $this->db->where('pc.empresa_id', $empresa_id);
 //        }
-        if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('c.nome ilike', $args['nome'] . "%");
+        if (isset($args['procedimento']) && @$args['convenio'] != '') {
+            $this->db->where('c.convenio_id', $args['convenio']);
         }
         if (isset($args['procedimento']) && strlen($args['procedimento']) > 0) {
             $this->db->where('pt.nome ilike', $args['procedimento'] . "%");

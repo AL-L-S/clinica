@@ -174,7 +174,7 @@
                             $verifica = 0;
 
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            if ($item->realizada == 't' && $item->situacaolaudo != 'FINALIZADO') {
+                            if (($item->realizada == 't' && $item->situacaolaudo != 'FINALIZADO') && $item->situacaoexame != "PENDENTE") {
                                 $situacao = "Aguardando";
                                 $verifica = 2;
                             } elseif ($item->realizada == 't' && $item->situacaolaudo == 'FINALIZADO') {
@@ -182,6 +182,9 @@
                                 $verifica = 4;
                             } elseif ($item->confirmado == 'f') {
                                 $situacao = "agenda";
+                                $verifica = 1;
+                            } elseif ($item->situacaoexame == 'PENDENTE') {
+                                $situacao = "pendente";
                                 $verifica = 1;
                             } else {
                                 $situacao = "espera";
@@ -233,7 +236,7 @@
                                     Chamar
                                 </a></div>
                         </td>-->
-                        <? if ($item->confirmado == 't') { ?>
+                        <? if ($item->confirmado == 't' && $item->situacaoexame != 'PENDENTE') { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="70px;">
                             </td>
                             <? if (($item->medico_parecer1 == $operador_id && $item->situacao == 'FINALIZADO') || $item->situacao != 'FINALIZADO' && $item->realizada == 't' || $operador_id == 1) { ?>

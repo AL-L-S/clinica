@@ -63,7 +63,6 @@ if (count($pacs) > 0) {
                 <fieldset>
                     <legend>Dados</legend>
                     <table> 
-                        <? //= @$obj->_guia_id  ?>
                         <tr>
                             <td width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <td width="400px;">Exame: <?= @$obj->_procedimento ?></td>
@@ -81,6 +80,14 @@ if (count($pacs) > 0) {
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
                                         chamar</a></div>
                                 <!--                                        impressaolaudo -->
+                            </td>
+                            
+                            <td>
+                                <div class="bt_link_new">
+                                    <a href="<?= base_url() ?>ambulatorio/laudo/pendenteexamemultifuncao/<?= $exame_id ?>" >
+                                        Pendente
+                                    </a>
+                                </div>
                             </td>
 
                         </tr>

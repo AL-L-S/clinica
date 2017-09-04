@@ -177,6 +177,13 @@
                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
 
                             </a></div></center></th>
+                            <th colspan="2" align="center">
+                                <center>
+                                <div class="bt_linkf">
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/orcamentocadastrofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
+                                </a></div>
+                                </center>
+                            </th>
                     </tr>
                     </tfoot>
                 </table> 

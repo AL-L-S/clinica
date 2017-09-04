@@ -1118,6 +1118,20 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/orcamento-form', $data);
     }
     
+    function orcamentocadastrofila($orcamento) {
+        
+        $data['emissao'] = date("d-m-Y");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
+        $html = $this->load->View('ambulatorio/impressaoorcamento', $data, true);
+        
+        $html = utf8_decode($html);
+        $tipo = 'ORÇAMENTO';
+        $this->guia->gravarfiladeimpressao($html, $tipo);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
       
     function excluirorcamento($ambulatorio_orcamento_item_id, $paciente_id, $orcamento_id) {
         if ($this->exametemp->excluirorcamento($ambulatorio_orcamento_item_id)) {

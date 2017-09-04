@@ -3756,6 +3756,7 @@ class exame_model extends Model {
                             ae.procedimento_tuss_id,
                             ae.confirmado,
                             e.exames_id,
+                            e.situacao as situacaoexame,
                             e.sala_id,                            
                             c.nome as convenio,
                             co.nome as convenio_paciente,
@@ -4195,6 +4196,7 @@ class exame_model extends Model {
                             al.ambulatorio_laudo_id,
                             al.exame_id,
                             al.procedimento_tuss_id,
+                            e.situacao as situacaoexame,
                             p.paciente_id,
                             ae.agenda_exames_nome_id,
                             an.nome as sala,
@@ -4218,6 +4220,7 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
+//        $this->db->where('e.situacao !=', 'PENDENTE');
 //        $this->db->where('ae.confirmado', 't');
         $this->db->where("( (ag.tipo = 'ESPECIALIDADE') OR ( (ae.tipo = 'FISIOTERAPIA' OR ae.tipo = 'ESPECIALIDADE') AND ae.procedimento_tuss_id IS NULL) )");
         $this->db->orderby('ae.data');
@@ -6318,6 +6321,68 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('exames_id', $exames_id);
+            $this->db->update('tb_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function pendenteexamemultifuncao($exames_id) {
+        try {
+            $this->db->select('e.sala_id');
+            $this->db->from('tb_exames e');
+            $this->db->where("exames_id", $exames_id);
+            $query = $this->db->get();
+            $return = $query->result();
+            
+            if(@$return[0]->sala_id != ''){
+                $this->db->set('ativo', 't');
+                $this->db->where('exame_sala_id', $return[0]->sala_id);
+                $this->db->update('tb_exame_sala');
+            }
+
+            $this->db->set('situacao', 'PENDENTE');
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('data_pendente', $horario);
+            $this->db->set('operador_pendente', $operador_id);
+            $this->db->where('exames_id', $exames_id);
+            $this->db->update('tb_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function pendenteespecialidade($exames_id) {
+        try {
+            $this->db->select('e.sala_id');
+            $this->db->from('tb_exames e');
+            $this->db->where("exames_id", $exames_id);
+            $query = $this->db->get();
+            $return = $query->result();
+            
+            if(@$return[0]->sala_id != ''){
+                $this->db->set('ativo', 't');
+                $this->db->where('exame_sala_id', $return[0]->sala_id);
+                $this->db->update('tb_exame_sala');
+            }
+
+            $this->db->set('situacao', 'PENDENTE');
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('data_pendente', $horario);
+            $this->db->set('operador_pendente', $operador_id);
             $this->db->where('exames_id', $exames_id);
             $this->db->update('tb_exames');
             $erro = $this->db->_error_message();
