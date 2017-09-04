@@ -5753,6 +5753,7 @@ class guia_model extends Model {
                             pi.nome as indicacao,
                             es.nome as agenda,
                             ae.fim,
+                            ae.data_entregue,
                             (ae.valor * ae.quantidade) as valor,
                             ae.valor_total,
                             ae.ativo,
@@ -8493,7 +8494,7 @@ ORDER BY ae.agenda_exames_id)";
         return $query->result();
     }
 
-    function fecharmedico() {
+    function fecharmedico($data_contaspagar) {
 //        try {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
@@ -8501,8 +8502,12 @@ ORDER BY ae.agenda_exames_id)";
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
 
-
-        $this->db->set('data', $data);
+        if($data_contaspagar == 't'){
+           $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida'])))); 
+        }else{
+           $this->db->set('data', $data); 
+        }
+        
         $this->db->set('valor', $_POST['valor']);
         $this->db->set('tipo', $_POST['tipo']);
         $this->db->set('credor', $_POST['nome']);
@@ -8593,6 +8598,8 @@ ORDER BY ae.agenda_exames_id)";
                             cnes,
                             producaomedicadinheiro,
                             impressao_declaracao,
+                            data_contaspagar,
+                            medico_laudodigitador,
                             impressao_laudo,
                             chamar_consulta,
                             impressao_recibo,

@@ -228,7 +228,7 @@
                                                                         $('.carregando').hide();
                                                         });
                                                     }
-                                                    opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
+                                                    opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + ' - ' + t[c].codigo + '</option>';
                                                     slt = '';
                                                 }
                                                 $('#procedimento<?= $b ?>').html(opt).show();

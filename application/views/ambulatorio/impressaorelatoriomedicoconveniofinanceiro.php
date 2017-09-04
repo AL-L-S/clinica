@@ -1,3 +1,8 @@
+<!--<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
+<link href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
+<!--<script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
 <?
 $MES = date("m");
 
@@ -51,13 +56,14 @@ switch ($MES) {
         <h4>Revisor: TODOS</h4>
     <? } else { ?>
         <h4>Revisor: <?= $revisor[0]->operador; ?></h4>
-    <? } 
-    if ($medico == 0) { ?>
+    <? }
+    if ($medico == 0) {
+        ?>
         <h4>Medico: TODOS</h4>
     <? } else { ?>
         <h4>Medico: <?= $medico[0]->operador; ?></h4>
-    <? } ?>
-        
+<? } ?>
+
 
     <hr>
     <?
@@ -65,7 +71,7 @@ switch ($MES) {
         $totalperc = 0;
         ?>
 
-        <? if (count($relatorio) > 0): ?>
+    <? if (count($relatorio) > 0): ?>
             <table border="1">
                 <thead>
                     <tr>
@@ -80,21 +86,21 @@ switch ($MES) {
                     <th class="tabela_header" width="100px;"><font size="-1">Data</th>
                     <th class="tabela_header"><font size="-1">Qtde</th>
                     <th class="tabela_header" width="220px;"><font size="-1">Procedimento</th>
-                    <? if ($clinica == 'SIM') { ?>
+        <? if ($clinica == 'SIM') { ?>
                         <th class="tabela_header" ><font size="-1">Valor Bruto</th>
                         <th class="tabela_header" ><font size="-1">ISS</th>
                         <th class="tabela_header" ><font size="-1">Valor Liquido</th>
-                    <? } ?>
+        <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
                     <? if ($mostrar_taxa == 'SIM') { ?>
                         <th class="tabela_header" ><font size="-1">Taxa Administração</th>
-                    <? } ?>
+        <? } ?>
 
                     <th class="tabela_header"><font size="-1">Revisor</th>
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
-                    <? } ?>
+        <? } ?>
                 </tr>
                 </thead>
                 <tbody>
@@ -134,9 +140,13 @@ switch ($MES) {
                             <td><font size="-2"><?= $item->paciente; ?></td>
                             <td><font size="-2"><?= $item->medico; ?></td>
                             <td><font size="-2">
-                                <? if($item->data_antiga != ""){ echo " ** ";} ?>
-                                <?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
-                                <? if($item->data_antiga != ""){ echo " ** ";} ?>
+                                <? if ($item->data_antiga != "") {
+                                    echo " ** ";
+                                } ?>
+            <?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
+                            <? if ($item->data_antiga != "") {
+                                echo " ** ";
+                            } ?>
                             </td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= $item->procedimento; ?></td>
@@ -152,37 +162,36 @@ switch ($MES) {
                             if ($item->percentual_medico == "t") {
                                 $simbolopercebtual = " %";
 
-                                $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100))*/;
+                                $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
 
                                 $perc = $valor_total * ($valorpercentualmedico / 100);
                                 $totalperc = $totalperc + $perc;
                                 $totalgeral = $totalgeral + $valor_total;
                             } else {
                                 $simbolopercebtual = "";
-                                $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100))*/;
+                                $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
 
                                 $perc = $valorpercentualmedico;
                                 $perc = $perc * $item->quantidade;
                                 $totalperc = $totalperc + $perc;
                                 $totalgeral = $totalgeral + $valor_total;
                             }
-
                             ?>
 
                             <td style='text-align: right;'><font size="-2"><?= number_format($valorpercentualmedico, 2, ",", "") . $simbolopercebtual ?></td>
-                            
+
                             <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
-                            
-                            <? if ($mostrar_taxa == 'SIM') { ?>
+
+            <? if ($mostrar_taxa == 'SIM') { ?>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->taxa_administracao, 2, ",", "."); ?> (%)</td>
                                 <? $taxaAdministracao += ((float) $perc * ((float) $item->taxa_administracao / 100)); ?>
                             <? } ?>
-                            
+
                             <td><font size="-2"><?= $item->revisor; ?></td>
-                            
-                            <? if ($solicitante == 'SIM') { ?>
+
+            <? if ($solicitante == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
-                            <? } ?>
+                        <? } ?>
                         </tr>
 
 
@@ -196,16 +205,16 @@ switch ($MES) {
                         <td style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
                         <? if ($clinica == 'SIM') { ?>
                             <td colspan="5" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
-                        <? } else { ?>
+        <? } else { ?>
                             <td colspan="4" style='text-align: right;'><font size="-1">&nbsp;</td>
-                        <? } ?>
+            <? } ?>
                         <td colspan="2" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
                     </tr>
                 </tbody>
             </table>
-        <? endif; ?>
+    <? endif; ?>
 
-        <? if (count($relatoriohomecare) > 0): ?>
+    <? if (count($relatoriohomecare) > 0): ?>
             <hr>
             <table border="1">
                 <thead>
@@ -229,7 +238,7 @@ switch ($MES) {
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
 
-                    <? if ($solicitante == 'SIM') { ?>
+        <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
                     <? } ?>
                 </tr>
@@ -297,9 +306,9 @@ switch ($MES) {
                             <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
                             <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
 
-                            <? if ($solicitante == 'SIM') { ?>
+            <? if ($solicitante == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
-                            <? } ?>
+                        <? } ?>
                         </tr>
 
 
@@ -313,19 +322,19 @@ switch ($MES) {
                         <td style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
                         <? if ($clinica == 'SIM') { ?>
                             <td colspan="5" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeralhome, 2, ",", "."); ?></td>
-                        <? } else { ?>
+        <? } else { ?>
                             <td colspan="4" style='text-align: right;'><font size="-1">&nbsp;</td>
-                        <? } ?>
+            <? } ?>
                         <td colspan="2" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperchome, 2, ",", "."); ?></td>
                     </tr>
                 </tbody>
             </table>
         <? endif; ?>
 
-        <?
-        if (count(@$relatoriocirurgico) > 0):
-            $totalprocedimentoscirurgicos = 0;
-            ?>
+    <?
+    if (count(@$relatoriocirurgico) > 0):
+        $totalprocedimentoscirurgicos = 0;
+        ?>
             <br>
             <table border="1">
                 <thead>
@@ -333,7 +342,7 @@ switch ($MES) {
                         <td colspan="50"><center>PRODUÇÃO CIRURGICA</center></td>
                 </tr>
                 <tr>
-                <th class="tabela_header"><font size="-1"><center>Convenio</center></th>
+                    <th class="tabela_header"><font size="-1"><center>Convenio</center></th>
                 <th class="tabela_header"><font size="-1"><center>Nome</center></th>
                 <th class="tabela_header"><font size="-1"><center>Medico</center></th>
                 <th class="tabela_header"><font size="-1"><center>Data</center></th>
@@ -364,10 +373,10 @@ switch ($MES) {
                             <td style='text-align: right;'><font size="-2"><?= number_format($itens->valor_medico, 2, ",", "."); ?></td>
                         </tr>
 
-                        <?
-                    endforeach;
-                    $totalperc += $totalMedicoCirurgico;
-                    ?>
+            <?
+        endforeach;
+        $totalperc += $totalMedicoCirurgico;
+        ?>
                     <tr>
                         <td ><font size="-1">TOTAL</td>
                         <td style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $totalprocedimentoscirurgicos; ?></td>
@@ -384,15 +393,15 @@ switch ($MES) {
             ?>
 
             <hr>
-            <? if ($medico != 0 && $recibo == 'NAO') { ?> 
+                <? if ($medico != 0 && $recibo == 'NAO') { ?> 
                 <table border="1">
                     <tr>
                         <th colspan="2" width="200px;">RESUMO</th>
                     </tr>
-                    <?
-                    $resultado = $totalperc;
-                    if (@$totalretorno > 0 || @$totalconsulta > 0) :
-                        ?>
+            <?
+            $resultado = $totalperc;
+            if (@$totalretorno > 0 || @$totalconsulta > 0) :
+                ?>
                         <tr>
                             <td>TOTAL CONSULTAS</td>
                             <td style='text-align: right;' width="30px;"><?= $totalconsulta; ?></td>
@@ -402,15 +411,15 @@ switch ($MES) {
                             <td>TOTAL RETORNO</td>
                             <td style='text-align: right;'><?= $totalretorno; ?></td>
                         </tr>
-                        <?
-                    endif;
-                    if (@$totalprocedimentoscirurgicos > 0):
-                        ?>
+                <?
+            endif;
+            if (@$totalprocedimentoscirurgicos > 0):
+                ?>
                         <tr>
                             <td>TOTAL PROC. CIRURGICOS</td>
                             <td style='text-align: right;'><?= $totalprocedimentoscirurgicos; ?></td>
                         </tr>
-                    <? endif; ?>
+                <? endif; ?>
                 </table>
                 <?
                 if (@$totalperchome != 0) {
@@ -436,14 +445,15 @@ switch ($MES) {
                             <td style='text-align: right;'><?= number_format($irpf, 2, ",", "."); ?></td>
                         </tr>
                         <? if ($mostrar_taxa == 'SIM') { ?>
-                        <tr>
-                            <td>TAXA ADMINISTRAÇÃO</td>
-                            <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
-                        </tr>
-                        <? }
-                        $resultado = $totalperc - $irpf - $taxaAdministracao;
-                    } else {
-                        ?>
+                            <tr>
+                                <td>TAXA ADMINISTRAÇÃO</td>
+                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
+                            </tr>
+                <?
+                }
+                $resultado = $totalperc - $irpf - $taxaAdministracao;
+            } else {
+                ?>
                         <hr>
                         <table border="1">
                             <tr>
@@ -458,10 +468,10 @@ switch ($MES) {
                             $resultado = $resultado - $pis - $csll - $cofins;
                             ?>
 
-<!--                            <tr>
-                                <td>TAXA ADMINISTRAÇÃO</td>
-                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
-                            </tr>-->
+                <!--                            <tr>
+                                                <td>TAXA ADMINISTRAÇÃO</td>
+                                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
+                                            </tr>-->
                             <tr>
                                 <td>PIS</td>
                                 <td style='text-align: right;'><?= number_format($pis, 2, ",", "."); ?></td>
@@ -484,34 +494,53 @@ switch ($MES) {
                                 <td>ISS</td>
                                 <td style='text-align: right;'><?= number_format($iss, 2, ",", "."); ?></td>
                             </tr>
-                        <? } ?>
+                    <? } ?>
                         <tr>
                             <td>RESULTADO</td>
                             <td style='text-align: right;'><?= number_format($resultado, 2, ",", "."); ?></td>
                         </tr>
                     </table>
-                <? } ?>
-                <? ?>
-                <? if ($medico != 0 & $revisor == 0) {
-                    ?>
+        <? } ?>
+        <? ?>
+        <? if ($medico != 0 & $revisor == 0) {
+            ?>
 
                     <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharmedico" method="post">
                         <input type="hidden" class="texto3" name="tipo" value="<?= $medico[0]->tipo_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="nome" value="<?= $medico[0]->credor_devedor_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="conta" value="<?= $medico[0]->conta_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="classe" value="<?= $medico[0]->classe; ?>" readonly/>
-                        <input type="hidden" class="texto3" name="observacao" value="<?= "Período " . $txtdata_inicio . " até " . $txtdata_fim . " médico: " . $medico[0]->operador; ?>" readonly/>
+                        <input type="hidden" class="texto3" name="observacao" value="<?= "Período " . substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) . " até " . substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4) . " médico: " . $medico[0]->operador; ?>" readonly/>
+                        <input type="hidden" class="texto3" name="data" value="<?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) ?>" readonly/>
                         <input type="hidden" class="texto3" name="valor" value="<?= $resultado; ?>" readonly/>
                         <? if ($medico != 0 && $recibo == 'NAO') { ?> 
+                        <br>
+                <?
+                $empresa_id = $this->session->userdata('empresa_id');
+                $data['empresa'] = $this->guia->listarempresa($empresa_id);
+                $data_contaspagar = $data['empresa'][0]->data_contaspagar;
+                if ($data_contaspagar == 't') {
+                    ?>
+                                
+                                <br>
+                                <label>Data Contas a Pagar</label><br>
+                                <input type="text" class="texto3" name="data_escolhida" id="data_escolhida" value=""/>
+                                <br>
+                                <br>  
+                            <? }
+                            ?>
+
+                            <!--<br>-->
                             <button type="submit" name="btnEnviar">Producao medica</button>
-                        <? } ?>
+
+                    <? } ?>
                     </form>
-                    <?
-                }
-            }
-            ?>
+            <?
+        }
+    }
+    ?>
             <br>
-            <? if ($medico != 0 && $recibo == 'NAO') { ?> 
+    <? if ($medico != 0 && $recibo == 'NAO') { ?> 
                 <div>
                     <div style="display: inline-block">
                         <table border="1">
@@ -526,9 +555,9 @@ switch ($MES) {
                             </tr>
                             </thead>
                             <tbody>
-                                <?
-                                foreach ($relatoriogeral as $itens) :
-                                    ?>
+        <?
+        foreach ($relatoriogeral as $itens) :
+            ?>
 
                                     <tr>
                                         <td><font size="-2"><?= $itens->medico; ?></td>
@@ -536,16 +565,16 @@ switch ($MES) {
                                         <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
                                     </tr>
 
-                                <? endforeach; ?>
+        <? endforeach; ?>
                             </tbody>
                         </table>
                     </div>
-                <? } ?>
+    <? } ?>
                 <div style="display: inline-block;margin: 5pt">
                 </div>
 
-                <? if (count($relatoriocirurgicogeral) > 0):
-                    ?>
+    <? if (count($relatoriocirurgicogeral) > 0):
+        ?>
                     <div style="display: inline-block">
                         <table border="1">
                             <thead>
@@ -559,9 +588,9 @@ switch ($MES) {
                             </tr>
                             </thead>
                             <tbody>
-                                <?
-                                foreach ($relatoriocirurgicogeral as $itens) :
-                                    ?>
+        <?
+        foreach ($relatoriocirurgicogeral as $itens) :
+            ?>
 
                                     <tr>
                                         <td><font size="-2"><?= $itens->medico; ?></td>
@@ -569,13 +598,13 @@ switch ($MES) {
                                         <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
                                     </tr>
 
-                                <? endforeach; ?>
+                    <? endforeach; ?>
                             </tbody>
                         </table>
                     </div>
-                <? endif; ?>
-                <? if (count($relatoriohomecaregeral) > 0):
-                    ?>
+    <? endif; ?>
+    <? if (count($relatoriohomecaregeral) > 0):
+        ?>
                     <div style="display: inline-block">
                         <table border="1">
                             <thead>
@@ -589,9 +618,9 @@ switch ($MES) {
                             </tr>
                             </thead>
                             <tbody>
-                                <?
-                                foreach ($relatoriohomecaregeral as $itens) :
-                                    ?>
+        <?
+        foreach ($relatoriohomecaregeral as $itens) :
+            ?>
 
                                     <tr>
                                         <td><font size="-2"><?= $itens->medico; ?></td>
@@ -599,18 +628,18 @@ switch ($MES) {
                                         <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
                                     </tr>
 
-                                <? endforeach; ?>
+        <? endforeach; ?>
                             </tbody>
                         </table>
                     </div>
-                <? endif; ?>
+            <? endif; ?>
             </div>
 
             <hr>
             <style>
                 /*.pagebreak { page-break-before: always; }*/
             </style>
-            <? if ($medico != 0 && $recibo == 'SIM') { ?>
+    <? if ($medico != 0 && $recibo == 'SIM') { ?>
                 <div>
 
                     <!--                    <div>
@@ -618,11 +647,11 @@ switch ($MES) {
                                         </div>-->
                     <div>
                         <p style="text-align: center;font-size: 14pt"> <strong>RECIBO</strong></p>
-                        <?
-                        $valor = number_format($totalperc, 2, ",", ".");
-                        $valoreditado = str_replace(",", "", str_replace(".", "", $valor));
-                        $extenso = GExtenso::moeda($valoreditado);
-                        ?>
+        <?
+        $valor = number_format($totalperc, 2, ",", ".");
+        $valoreditado = str_replace(",", "", str_replace(".", "", $valor));
+        $extenso = GExtenso::moeda($valoreditado);
+        ?>
                         <p style="text-align: center;">EU   <u><b><?= $medico[0]->operador ?></b></u>, RECEBI DA CLÍNICA,</p>
                         <p style="text-align: center;">  A QUANTIA DE R$ <?= number_format($totalperc, 2, ",", "."); ?> (<?= strtoupper($extenso) ?>)
 
@@ -630,9 +659,9 @@ switch ($MES) {
                             CLÍNICOS DO PERÍODO DE <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> a <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?> </p>
                         <!--<p><?= $empresamunicipio[0]->municipio ?> </p>-->
                         <p style="text-align: center"><?= $empresamunicipio[0]->municipio ?>,
-                            <?= date("d") . " de " . $MES . " de " . date("Y"); ?> -
+        <?= date("d") . " de " . $MES . " de " . date("Y"); ?> -
 
-                            <?= date("H:i") ?>
+        <?= date("H:i") ?>
                         </p>
                     <!--<p><center><font size = 4><b>DECLARA&Ccedil;&Atilde;O</b></font></center></p>-->
                         <br>
@@ -654,18 +683,29 @@ switch ($MES) {
         } else {
             ?>
             <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
-            <?
-        }
-        ?>
+    <?
+}
+?>
 
 </div> <!-- Final da DIV content -->
-<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
+
 <script type="text/javascript">
 
 
 
     $(function () {
         $("#accordion").accordion();
+    });
+    $(function () {
+        $("#data_escolhida").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
     });
 
 </script>

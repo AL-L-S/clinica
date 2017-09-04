@@ -245,6 +245,18 @@
                         <dd>
                             <input type="checkbox" id="procedimentos_multiempresa" name="procedimentos_multiempresa" <? if (@$obj->_procedimentos_multiempresa == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Data manual na produção médica .">Data Manual Produção M.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="data_contaspagar" name="data_contaspagar" <? if (@$obj->_data_contaspagar == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Médico pode pesquisar por outros médicos no Laudo Digitador .">Medico Laudo Digitador.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="data_contaspagar" name="medico_laudodigitador" <? if (@$obj->_medico_laudodigitador == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>
