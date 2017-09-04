@@ -549,7 +549,7 @@ ALTER TABLE ponto.tb_tuss ADD COLUMN grupo_matmed character varying(100);
 
 ALTER TABLE ponto.tb_procedimento_tuss ALTER COLUMN nome TYPE character varying(500);
 
---24/08/2017
+-- 24/08/2017
 
 UPDATE ponto.tb_procedimento_convenio pc
    SET  empresa_id=empresa.empresa_id
@@ -582,8 +582,37 @@ AND ae.guiaconvenio is null
 AND ae.guia_id is not null
 AND ae.paciente_id is not null;
 
+CREATE TABLE ponto.tb_horarioagenda_editada
+(
+  horarioagenda_editada_id serial NOT NULL,
+  agenda_id integer NOT NULL,
+  dia character varying(20),
+  horaentrada1 time without time zone,
+  horasaida1 time without time zone,
+  intervaloinicio time without time zone,
+  intervalofim time without time zone,
+  tempoconsulta integer,
+  qtdeconsulta integer,
+  empresa_id integer,
+  nome character varying(50),
+  medico_id integer,
+  observacoes character varying(1000),
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_horarioagenda_editada_pkey PRIMARY KEY (horarioagenda_editada_id)
+);
+
+
 -- 02/09/2017
 
 INSERT INTO ponto.tb_perfil(
             perfil_id, nome, ativo)
     VALUES (16, 'ASSISTENTE DE FATURAMENTO', true);
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN agenda_editada boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horarioagenda_editada_id integer;
+ALTER TABLE ponto.tb_horarioagenda_editada ADD COLUMN ativo boolean NOT NULL DEFAULT true;
+ALTER TABLE ponto.tb_horarioagenda_editada ADD COLUMN consolidado boolean NOT NULL DEFAULT false;
+
