@@ -102,6 +102,7 @@
                         </tr>
                         <tr>
                             <th class="tabela_header" width="800">Nome</th>
+                            <th class="tabela_header" width="800">Médico</th>
                             <th class="tabela_header" colspan="3">&nbsp;</th>
                         </tr>
                     </thead>
@@ -116,9 +117,11 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <div class="bt_link_new">
                                         <form method="get" name="editaragenda<?= $i ?>" action="<?= base_url() ?>ambulatorio/agenda/editaragendacriada/<?=@ $agenda ?>" target="_blank">
+                                            <input type="hidden" name="medico_id" value="<?= @$item->medico_id ?>"/>
                                             <input type="hidden" name="nome" value="<?= @$item->nome ?>"/>
                                             <input type="hidden" name="horario_id" value="<?=@ $agenda ?>"/>
                                             <a onclick="document.editaragenda<?= $i ?>.submit()">
@@ -130,6 +133,7 @@
                                 <td  class="<?php echo $estilo_linha; ?>">
                                     <div class="bt_link_new">
                                         <form method="get" name="excluiragenda<?= $i ?>" action="<?= base_url() ?>ambulatorio/agenda/excluiragendascriadas/<?=@ $agenda ?>">
+                                            <input type="hidden" name="medico_id" value="<?= @$item->medico_id ?>"/>
                                             <input type="hidden" name="nome" value="<?= @$item->nome ?>"/>
                                             <input type="hidden" name="horario_id" value="<?=@ $agenda ?>"/>
                                             <a onclick="document.excluiragenda<?= $i ?>.submit()">

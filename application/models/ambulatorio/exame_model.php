@@ -34,16 +34,15 @@ class exame_model extends Model {
     
     function listaragendacriada($horario_id) {
         $this->db->select('distinct(horarioagenda_id),
-                            nome');
-        $this->db->from('tb_agenda_exames');
+                            medico_agenda as medico_id,
+                            o.nome as medico,
+                            ae.nome');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda');
         $this->db->where('horarioagenda_id', $horario_id);
         $this->db->where('paciente_id IS NULL');
-//        if (isset($args['nome']) && strlen($args['nome']) > 0) {
-//            $this->db->where('nome ilike', $args['nome'] . "%");
-//        }
-        $this->db->groupby('horarioagenda_id, nome');
+        $this->db->groupby('horarioagenda_id, ae.nome, medico_agenda, o.nome');
         $return = $this->db->get();
-//        var_dump($return->result()); die;
         return $return->result();
     }
 
@@ -5321,6 +5320,24 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listardadosagendacriada() {
+
+        $this->db->select('ae.data_fim,
+                           ae.data_inicio,
+                           ae.tipo,
+                           tipo_consulta_id,
+                           agenda_exames_nome_id');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where("ae.horarioagenda_id", $_GET['agenda_id']);
+        $this->db->where("ae.medico_agenda", $_GET['medico_id']);
+        $this->db->where("ae.nome", $_GET['nome_agenda']);
+        $this->db->where("((tipo = 'EXAME' AND ae.paciente_id IS NULL) OR (tipo != 'EXAME'))");
+        $this->db->limit(1);
+        $return = $this->db->get();
+        return $return->result();
+        
+    }
+
     function relatorioagendadoauditoria($agenda_exames_id) {
 
         $this->db->select('ae.paciente_id,
@@ -6448,6 +6465,53 @@ class exame_model extends Model {
         }
     }
 
+    function gravarhorarioseditadosagendacriada($horario_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $empresa_id, $obs = null, $tipo,  $sala_id, $tipo_consulta_id) {
+        try {
+//            die('morreu');
+
+            $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
+            /* inicia o mapeamento no banco */
+            $this->db->set('horarioagenda_id', (int)$agenda_id);
+            $this->db->set('horarioagenda_editada_id', (int)$horario_id);
+            $this->db->set('inicio', $horaconsulta);
+            $this->db->set('fim', $horaverifica);
+            $this->db->set('nome', $nome);
+            $this->db->set('data_inicio', $datainicial);
+            $this->db->set('data_fim', $datafinal);
+            $this->db->set('data', $index);
+            $this->db->set('nome_id', $id);
+            $this->db->set('medico_consulta_id', (int)$medico_id);
+            $this->db->set('medico_agenda', (int)$medico_id);
+            $this->db->set('tipo_agenda', 'editada');
+            $this->db->set('agenda_editada', 't');
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            if($tipo == "EXAME") {
+                $this->db->set('agenda_exames_nome_id', (int)$sala_id);
+            }
+            else {
+                $this->db->set('tipo_consulta_id', (int)$tipo_consulta_id);
+            }
+
+            $this->db->set('observacoes', $obs);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('tipo', $tipo);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_agenda_exames');
+//            die;
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                $agenda_exames_id = $this->db->insert_id();
+            return $agenda_exames_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
     function gravarespecialidade($horario_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $empresa_id, $obs = null) {
         try {
 
@@ -6524,6 +6588,30 @@ class exame_model extends Model {
         }
     }
 
+    function removendoprocedimentoduplicadoagendaeditada() {
+        
+            $sql = "SELECT horarioagenda_id, inicio, fim, nome, data, medico_agenda
+                      FROM ponto.tb_agenda_exames
+                    WHERE (encaixe != 't' OR encaixe IS NULL)
+                    GROUP BY horarioagenda_id, inicio, fim, nome, data, medico_agenda
+                    HAVING COUNT(*) > 1";
+            
+            $return = $this->db->query($sql);
+            $return = $return->result();
+            
+            foreach ($return as $value) {
+                $this->db->where('horarioagenda_id', $value->horarioagenda_id);
+                $this->db->where('inicio', $value->inicio);
+                $this->db->where('fim', $value->fim);
+                $this->db->where('data', $value->data);
+                $this->db->where('nome', $value->nome);
+                $this->db->where('medico_agenda', $value->medico_agenda);
+                $this->db->where('paciente_id IS NULL');
+                $this->db->delete('tb_agenda_exames');
+            }
+            
+    }
+
     function fecharfinanceiro() {
 //        try {
         /* inicia o mapeamento no banco */
@@ -6547,7 +6635,7 @@ class exame_model extends Model {
         $pagamento = $returno[0]->pagamento;
         $pagamentodata = substr($data, 0, 7) . "-" . $returno[0]->entrega;
         
-        var_dump($pagamentodata);
+//        var_dump($pagamentodata);
         
         $data30 = date('Y-m-d', strtotime("+$pagamento days", strtotime($pagamentodata)));
         $ir = $returno[0]->ir / 100;
@@ -6602,7 +6690,7 @@ ORDER BY ae.agenda_exames_id)";
         }
         
         
-        die;
+//        die;
     }
 
     private
