@@ -422,6 +422,7 @@ class Guia extends BaseController {
             }
 //            $this->load->View('ambulatorio/', $data);
         }
+//        echo 'something'; die;
     }
 
     function impressaoorcamento($orcamento) {
@@ -3067,6 +3068,11 @@ class Guia extends BaseController {
         $data['guia_id'] = $this->guia->guiaconvenio($guia_id);
         $this->load->View('ambulatorio/guiaconvenio-form', $data);
     }
+    
+    function guiaconvenioexame($guia_id, $agenda_exames_id) {
+        $data['guia_id'] = $this->guia->guiaconvenioexame($agenda_exames_id);
+        $this->load->View('ambulatorio/guiaconvenioexame-form', $data);
+    }
 
     function guiadeclaracao($guia_id) {
         $data['guia_id'] = $this->guia->verificaodeclaracao($guia_id);
@@ -3103,6 +3109,10 @@ class Guia extends BaseController {
 
     function gravarguiaconvenio($guia_id) {
         $this->guia->gravarguiaconvenio($guia_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    function gravarguiaconvenioexame($guia_id) {
+        $this->guia->gravarguiaconvenioexame($guia_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 

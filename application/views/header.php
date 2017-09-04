@@ -463,19 +463,21 @@ function debug($object) {
                         </ul>
                     </li>
                     <?}?>
+                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 7 || $perfil_id == 15) { ?>
                     <li><span class="folder">Atendimento</span>
                         <ul>
                             <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 7 || $perfil_id == 15) { ?>
+                                
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalasespera">Salas de Espera</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalaspreparo">Salas de Preparo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamerealizando">Salas de Atendimento</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamependente">Atendimentos pendentes</a></span></ul>
-                                <? } ?>
+                               
                             </li>
                         </ul>
                     </li>
+                     <? } ?>
                     <? if ($imagem == 't'  && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10  || $perfil_id == 15)) { ?>
                         <li><span class="folder">Imagem</span>
                             <ul>
@@ -583,13 +585,13 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($faturamento == 't' && ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10)) { ?>
+                    <? if ($faturamento == 't' && ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16)) { ?>
 
 
                         <li><span class="folder">Faturamento</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                    <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentoexame">Faturar</a></span></ul>
                                         <? if ($perfil_id != 10) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentomanual">Faturaramento Manual</a></span></ul>
@@ -602,7 +604,7 @@ function debug($object) {
                                     <? } ?>
                                 </li>
                                 <li><span class="folder">Relatorios</span>
-                                    <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexame">Relatorio Conferencia</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriorecolhimento">Relatorio Recolhimento</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogastosala">Relatorio Gasto de Sala</a></span></ul>
@@ -667,7 +669,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10)) { ?>
+                    <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16)) { ?>
 
 
                         <li><span class="folder">Financeiro</span>
@@ -685,7 +687,7 @@ function debug($object) {
                                 </li> 
                                 <li><span class="folder">Relatorios</span>
                                     <?
-                                    if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 13 || $perfil_id == 10) {
+                                    if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaida">Relatorio Saida</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaidagrupo">Relatorio Saida Tipo</a></span></ul>
@@ -701,7 +703,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatorioacompanhamentodecontas">Relatorio Acompanhamento de contas</a></span></ul>
                                         <?
                                     }
-                                    if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 13 || $perfil_id == 10) {
+                                    if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixapersonalizado">Relatorio Caixa Personalizado</a></span></ul>
@@ -836,7 +838,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <?if($perfil_id != 4){?>
+                    <?if($perfil_id != 4 && $perfil_id != 16){?>
                     <li><span class="folder">Configura&ccedil;&atilde;o</span>
                         <ul>
                             <li><span class="folder">Recep&ccedil;&atilde;o</span>

@@ -131,6 +131,7 @@
 
                     <fieldset>
                         <legend>Anamnese</legend>
+                        <div>
                         <label>Laudo</label>
                         <select name="exame" id="exame" class="size2" >
                             <option value='' >selecione</option>
@@ -147,7 +148,8 @@
                         ?>
                         <label>Queixa Principal</label>
                         <input type="text" id="cabecalho" class="texto7" name="cabecalho" value="<?= $cabecalho ?>"/>
-
+                        </div>
+                        <!--<br>-->
                         <div>
 
                             <!--                        </div>    
@@ -160,6 +162,17 @@
                             <label>CID Secundario</label>
                             <input type="hidden" name="txtCICSecundario" id="txtCICSecundario" value="<?= @$obj->_cid2; ?>" class="size2" />
                             <input type="text" name="txtCICSecundariolabel" id="txtCICSecundariolabel" value="<?= @$obj->_cid2descricao; ?>" class="size8" />
+                        </div>
+                        <!--<br>-->
+                        <div>
+
+                            <!--                        </div>    
+                                                    <div>-->
+                            <label>Pesquisar Código TUSS</label>
+                            <input type="hidden" name="txtCodigoTuss" id="txtCodigoTuss" value="<?= @$obj->_cid; ?>" class="size2" />
+                            <input type="text" name="txtCodigoTusslabel" id="txtCodigoTusslabel" value="<?= @$obj->_ciddescricao; ?>" class="size8" />
+
+                            
                         </div>
 
                         <div>
@@ -485,13 +498,18 @@
     #sortable { list-style-type: none; margin: 0; padding: 0; width: 1300px; }
     #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
 </style>
+<!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
 <link href="<?= base_url() ?>css/estilo.css" rel="stylesheet" type="text/css" />
 <link href="<?= base_url() ?>css/form.css" rel="stylesheet" type="text/css" />
 <link href="<?= base_url() ?>css/style_p.css" rel="stylesheet" type="text/css" />
 <link href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
 <link href="<?= base_url() ?>css/jquery-treeview.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/jquery.tinymce.min.js"></script>
@@ -630,6 +648,23 @@
                                                             select: function (event, ui) {
                                                                 $("#txtCICPrimariolabel").val(ui.item.value);
                                                                 $("#txtCICPrimario").val(ui.item.id);
+                                                                return false;
+                                                            }
+                                                        });
+                                                    });
+                                                     $(function () {
+                                                        $("#txtCodigoTusslabel").autocomplete({
+                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotusspesquisa",
+                                                            minLength: 3,
+                                                            focus: function (event, ui) {
+                                                                $("#txtCodigoTusslabel").val(ui.item.label);
+                                                                return false;
+                                                            },
+                                                            select: function (event, ui) {
+                                                                $("#txtCodigoTusslabel").val(ui.item.value);
+                                                                $("#txtCodigoTuss").val(ui.item.id);
+//                                                                $("#txtcodigo").val(ui.item.codigo);
+//                                                                $("#txtdescricao").val(ui.item.descricao);
                                                                 return false;
                                                             }
                                                         });

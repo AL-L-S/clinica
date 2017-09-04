@@ -12,8 +12,13 @@
                         <label>Guia convenio</label>
                         </dt>
                         <dd>
-                            <input type="text" value="<?=$guia_id[0]->guiaconvenio?>" name="guiaconvenio">
+                            <input type="text" value="" name="guiaconvenio">
                         </dd>
+                        <dt>
+                        <label>Obs: Alterar esse item irá alterar as guias em todos os exames abaixo<br>
+                        Para ter um número de guia por cada procedimento, altere no procedimento
+                        </label>
+                        </dt>
                     </dl>    
 
                     <hr/>

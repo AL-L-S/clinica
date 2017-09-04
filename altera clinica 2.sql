@@ -572,5 +572,18 @@ ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN ativo boolean DEFAULT
 
 ALTER TABLE ponto.tb_empresa ADD COLUMN data_contaspagar boolean DEFAULT false;
 ALTER TABLE ponto.tb_empresa ADD COLUMN medico_laudodigitador boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN guiaconvenio character varying(25);
 
+UPDATE ponto.tb_agenda_exames ae
+SET guiaconvenio = g.guiaconvenio
+FROM ponto.tb_ambulatorio_guia g
+WHERE g.ambulatorio_guia_id = ae.guia_id
+AND ae.guiaconvenio is null
+AND ae.guia_id is not null
+AND ae.paciente_id is not null;
 
+-- 02/09/2017
+
+INSERT INTO ponto.tb_perfil(
+            perfil_id, nome, ativo)
+    VALUES (16, 'ASSISTENTE DE FATURAMENTO', true);

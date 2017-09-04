@@ -68,7 +68,8 @@
                                 <th class="tabela_header">Convenio</th>
                                 <th class="tabela_header">Material</th>
                                 <!--<th class="tabela_header">Tipo</th>-->
-                                <th class="tabela_header">autorizacao</th>
+                                <th class="tabela_header">Autorizacao</th>
+                                <th class="tabela_header">N.Guia</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Empresa</th>
                                 <!--<th class="tabela_header">Laudo</th>-->
@@ -108,6 +109,7 @@
                                 </td>-->
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
+                                <td  width="50px;"><input type="text" name="guiaconvenio" id="guiaconvenio" class="size1"/></td>
                                 <td  width="20px;">
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
                                     <input type="hidden" name="valortot" id="valortot" class="texto01" readonly=""/>

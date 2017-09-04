@@ -3309,7 +3309,7 @@ class exametemp_model extends Model {
 
     function autorizarpacientetemp($paciente_id, $ambulatorio_guia_id) {
         try {
-//            var_dump($_POST['medicoexecutante']);
+//            var_dump($_POST['guiaconvenio']);
 //            die;
             $i = 0;
             $confimado = "";
@@ -3332,6 +3332,7 @@ class exametemp_model extends Model {
                 $g = 0;
                 $h = 0;
                 $j = 0;
+                $l = 0;
                 $i++;
 
                 foreach ($_POST['qtde'] as $itemnome) {
@@ -3392,10 +3393,17 @@ class exametemp_model extends Model {
                             break;
                         }
                     }
+                    foreach ($_POST['guiaconvenio'] as $itemguiaconvenio) {
+                        $l++;
+                        if ($i == $l) {
+                            $guiaconvenio = $itemguiaconvenio;
+                            break;
+                        }
+                    }
                     if ($medicoexecutante == '') {
                         $medicoexecutante = 0;
                     }
-//                var_dump($medicoexecutante); die;
+//                var_dump($guiaconvenio); die;
                     $this->db->select('mc.valor as perc_medico, mc.percentual');
                     $this->db->from('tb_procedimento_percentual_medico_convenio mc');
                     $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
@@ -3500,6 +3508,7 @@ class exametemp_model extends Model {
                     }
 
                     $this->db->set('autorizacao', $autorizacao);
+                    $this->db->set('guiaconvenio', $guiaconvenio);
                     $this->db->set('guia_id', $ambulatorio_guia_id);
                     $this->db->set('quantidade', $qtde);
                     $this->db->set('valor', $valor);

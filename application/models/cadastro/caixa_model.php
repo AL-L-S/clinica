@@ -770,6 +770,7 @@ class caixa_model extends Model {
                 $this->db->set('conta', $_POST['conta']);
                 $this->db->set('nome', $_POST['devedor']);
                 $this->db->set('saida_id', $saida_id);
+                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('data', $_POST['inicio']);
                 $this->db->set('empresa_id', $empresa_id);
@@ -793,6 +794,7 @@ class caixa_model extends Model {
                 $this->db->set('nome', $_POST['devedor']);
                 $this->db->set('observacao', $_POST['Observacao']);
                 $this->db->set('data_cadastro', $horario);
+                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->where('saidas_id', $_POST['saida_id']);
                 $this->db->update('tb_saidas');
@@ -807,6 +809,7 @@ class caixa_model extends Model {
                 $this->db->set('nome', $_POST['devedor']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('data', $_POST['inicio']);
+                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->where('saida_id', $_POST['saida_id']);
                 $this->db->update('tb_saldo');
@@ -821,6 +824,7 @@ class caixa_model extends Model {
 
     function gravartransferencia() {
         try {
+            $empresa_id = $this->session->userdata('empresa_id');
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');

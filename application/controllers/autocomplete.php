@@ -2074,6 +2074,23 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
+    
+    function procedimentotusspesquisa() {
+
+        if (isset($_GET['term'])) {
+            $result = $this->procedimento->listarautocompletetuss($_GET['term']);
+        } else {
+            $result = $this->procedimento->listarautocompletetuss();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = "Código : " . $item->codigo . ' - Descrição :' . $item->descricao . ' - ' . $item->ans;
+            $retorno['id'] = $item->tuss_id;
+            $retorno['codigo'] = $item->codigo;
+            $retorno['descricao'] = $item->descricao . ' - ' . $item->ans;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
 
     function cbo() {
 

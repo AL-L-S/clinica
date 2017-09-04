@@ -95,6 +95,7 @@
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
+                                <th class="tabela_header">Guia Convênio</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Recomendação</th>
@@ -162,6 +163,7 @@
                                 </td>
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
+                                <td  width="50px;"><input type="text" name="guiaconvenio" id="guiaconvenio" class="size1"/></td>
                                 <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
                                 <td  width="50px;">
                                     <select  name="formapamento" id="formapamento" class="size1" >
