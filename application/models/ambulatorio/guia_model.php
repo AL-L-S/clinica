@@ -8535,45 +8535,20 @@ ORDER BY ae.agenda_exames_id)";
     }
 
     function fecharmedico($data_contaspagar) {
-//        try {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
         $data = date("Y-m-d");
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
+        
+        if($this->session->userdata('producao_medica_saida') != 't'){
+            if($data_contaspagar == 't'){
+               $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida'])))); 
+            }else{
+               $this->db->set('data', $data); 
+            }
 
-        if($data_contaspagar == 't'){
-           $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida'])))); 
-        }else{
-           $this->db->set('data', $data); 
-        }
-        
-        $this->db->set('valor', $_POST['valor']);
-        $this->db->set('tipo', $_POST['tipo']);
-        $this->db->set('credor', $_POST['nome']);
-        $this->db->set('conta', $_POST['conta']);
-        $this->db->set('classe', $_POST['classe']);
-        $this->db->set('observacao', $_POST['observacao']);
-        $this->db->set('data_cadastro', $horario);
-        $this->db->set('empresa_id', $empresa_id);
-        $this->db->set('operador_cadastro', $operador_id);
-        $this->db->insert('tb_financeiro_contaspagar');
-        
-        for ($i = 0; $i < count($_POST['valor_recebimento']); $i++) {
-            
-            $tempoRecebimento = $_POST['tempo_recebimento'][$i];
-            
-            if( date('d') <= $_POST['dia_faturamento'][$i] ){
-                $data_pagamento = date("Y-m-") . $_POST['dia_faturamento'][$i];                
-            }
-            else {
-                $data_pagamento = date("Y-m-", strtotime("+1 month")) . $_POST['dia_faturamento'][$i];
-            }
-            
-            $data_pagamento = date("Y-m-d", strtotime("+{$tempoRecebimento} days", strtotime($data_pagamento) ) );
-            
-            $this->db->set('data', $data_pagamento);
-            $this->db->set('valor', $_POST['valor_recebimento'][$i]);
+            $this->db->set('valor', $_POST['valor']);
             $this->db->set('tipo', $_POST['tipo']);
             $this->db->set('credor', $_POST['nome']);
             $this->db->set('conta', $_POST['conta']);
@@ -8583,6 +8558,76 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_financeiro_contaspagar');
+
+            for ($i = 0; $i < count($_POST['valor_recebimento']); $i++) {
+
+                $tempoRecebimento = $_POST['tempo_recebimento'][$i];
+
+                if( date('d') <= $_POST['dia_faturamento'][$i] ){
+                    $data_pagamento = date("Y-m-") . $_POST['dia_faturamento'][$i];                
+                }
+                else {
+                    $data_pagamento = date("Y-m-", strtotime("+1 month")) . $_POST['dia_faturamento'][$i];
+                }
+
+                $data_pagamento = date("Y-m-d", strtotime("+{$tempoRecebimento} days", strtotime($data_pagamento) ) );
+
+                $this->db->set('data', $data_pagamento);
+                $this->db->set('valor', $_POST['valor_recebimento'][$i]);
+                $this->db->set('tipo', $_POST['tipo']);
+                $this->db->set('credor', $_POST['nome']);
+                $this->db->set('conta', $_POST['conta']);
+                $this->db->set('classe', $_POST['classe']);
+                $this->db->set('observacao', $_POST['observacao']);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_contaspagar');
+            }
+        }
+        else{
+            if($data_contaspagar == 't'){
+               $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida'])))); 
+            }else{
+               $this->db->set('data', $data); 
+            }
+
+            $this->db->set('valor', $_POST['valor']);
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('nome', $_POST['nome']);
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_saidas');
+
+            for ($i = 0; $i < count($_POST['valor_recebimento']); $i++) {
+
+                $tempoRecebimento = $_POST['tempo_recebimento'][$i];
+
+                if( date('d') <= $_POST['dia_faturamento'][$i] ){
+                    $data_pagamento = date("Y-m-") . $_POST['dia_faturamento'][$i];                
+                }
+                else {
+                    $data_pagamento = date("Y-m-", strtotime("+1 month")) . $_POST['dia_faturamento'][$i];
+                }
+
+                $data_pagamento = date("Y-m-d", strtotime("+{$tempoRecebimento} days", strtotime($data_pagamento) ) );
+
+                $this->db->set('data', $data_pagamento);
+                $this->db->set('valor', $_POST['valor_recebimento'][$i]);
+                $this->db->set('tipo', $_POST['tipo']);
+                $this->db->set('nome', $_POST['nome']);
+                $this->db->set('conta', $_POST['conta']);
+                $this->db->set('classe', $_POST['classe']);
+                $this->db->set('observacao', $_POST['observacao']);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_saidas');
+            }
         }
     }
 

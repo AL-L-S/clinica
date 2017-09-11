@@ -662,6 +662,42 @@ switch ($MES) {
             </div>
 
             <hr>
+            <? if ($tabela_recebimento == "SIM") { ?>
+                <table border="1">
+                    <tr>
+                        <td colspan="2">PREVISÃO DE RECEBIMENTO</td>
+                    </tr>
+                    <tr>
+                        <td>Valor</td>
+                        <td>Data Prevista</td>
+                    </tr>
+                    <tr>
+                        <td><?= ($resultado - $valor_recebimento) ?></td>
+                        <td><?= date("d/m/Y") ?></td>
+                    </tr>
+                    <? 
+//                    var_dump($tempoRecebimento);die;
+                    foreach ($tempoRecebimento as $value) { 
+                        $vlr = $value['valor_recebimento'];
+                        $tmpRecebimento = $value['tempo_recebimento'];
+            
+                        if( date('d') <= $value['dia_faturamento'] ){
+                            $dt_recebimento = date("Y-m-") . $value['dia_faturamento'];                
+                        }
+                        else {
+                            $dt_recebimento = date("Y-m-", strtotime("+1 month")) . $value['dia_faturamento'];
+                        }
+
+                        $dt_recebimento = date("d/m/Y", strtotime("+{$tmpRecebimento} days", strtotime($dt_recebimento) ) );
+                        ?>
+                        <tr>
+                            <td><?= $vlr ?></td>
+                            <td><?= $dt_recebimento ?></td>
+                        </tr> 
+                    <? } ?>
+                </table>
+            <hr>
+            <? } ?>
             <style>
                 /*.pagebreak { page-break-before: always; }*/
             </style>
@@ -709,9 +745,9 @@ switch ($MES) {
         } else {
             ?>
             <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
-    <?
-}
-?>
+            <?
+        }
+    ?>
 
 </div> <!-- Final da DIV content -->
 

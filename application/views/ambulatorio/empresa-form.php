@@ -142,25 +142,25 @@
                             <input type="text" id="impressao_declaracao" class="texto01" name="impressao_declaracao" value="<?= @$obj->_impressao_declaracao; ?>" />
                         </dd>
                         <dt>
-                            <label title="Habilitar a Imagem.">Imagem</label>
+                            <label title="Habilitar Modulo de Imagem.">Imagem</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="imagem" name="imagem" <? if (@$obj->_imagem == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Habilitar a Consulta.">Consulta</label>
+                            <label title="Habilitar Modulo de Consulta.">Consulta</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="consulta" name="consulta" <? if (@$obj->_consulta == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Habilitar Especialidade chat.">Especialidade</label>
+                            <label title="Habilitar Modulo de Especialidade.">Especialidade</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="especialidade" name="especialidade" <? if (@$obj->_especialidade == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Habilitar Especialidade chat.">Odontologia</label>
+                            <label title="Habilitar Modulo de Odontologia.">Odontologia</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="odontologia" name="odontologia" <? if (@$obj->_odontologia == 't') echo "checked"; ?>/> 
@@ -262,6 +262,12 @@
                         </dt>
                         <dd>
                             <input type="checkbox" id="data_contaspagar" name="medico_laudodigitador" <? if (@$obj->_medico_laudodigitador == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ao fechar a produção médica, os valores ja irão cair como saida no Financeiro.">Produção Médica ir direto para Saida</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="producao_medica_saida" name="producao_medica_saida" <? if (@$obj->_producao_medica_saida == 't') echo "checked"; ?>/> 
                         </dd>
                     <? } ?>
                 </dl>    

@@ -624,3 +624,6 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN sala_pendente boolean NOT NULL DEF
 -- Dia 09/08/2017
 ALTER TABLE ponto.tb_procedimento_percentual_medico_convenio ADD COLUMN dia_recebimento integer;
 ALTER TABLE ponto.tb_procedimento_percentual_medico_convenio ADD COLUMN tempo_recebimento integer;
+
+-- Dia 11/09/2017
+ALTER TABLE ponto.tb_empresa ADD COLUMN producao_medica_saida boolean DEFAULT false;

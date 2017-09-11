@@ -126,6 +126,17 @@
                             <option value='SIM' >SIM</option>
                         </select>
                     </dd>
+
+                    <dt>
+                        <label>Previsão de recebimento</label>
+                    </dt>
+                    <dd>
+                        <select name="tabela_recebimento" id="recibo" class="size1" >
+
+                            <option value='NAO' >NÃO</option>
+                            <option value='SIM' >SIM</option>
+                        </select>
+                    </dd>
                     <dt>
                         <label>Empresa</label>
                     </dt>

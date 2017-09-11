@@ -575,6 +575,11 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('botao_faturar_procedimento', 'f');
             }
+            if (isset($_POST['producao_medica_saida'])) {
+                $this->db->set('producao_medica_saida', 't');
+            } else {
+                $this->db->set('producao_medica_saida', 'f');
+            }
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -647,7 +652,8 @@ class empresa_model extends Model {
                                servicoemail,
                                chat,
                                botao_faturar_guia,
-                               botao_faturar_procedimento');
+                               botao_faturar_procedimento,
+                               producao_medica_saida');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->where("empresa_id", $empresa_id);
@@ -697,6 +703,7 @@ class empresa_model extends Model {
             $this->_botao_faturar_proc = $return[0]->botao_faturar_procedimento;
             $this->_chamar_consulta = $return[0]->chamar_consulta;
             $this->_procedimento_multiempresa = $return[0]->procedimento_multiempresa;
+            $this->_producao_medica_saida = $return[0]->producao_medica_saida;
         } else {
             $this->_empresa_id = null;
         }
