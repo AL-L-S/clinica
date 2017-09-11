@@ -287,10 +287,11 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/procedimentopercentualpromotor-editar', $data);
     }
 
-    function novomedico($procedimento_percentual_medico_id) {
+    function novomedico($procedimento_percentual_medico_id, $convenio_id) {
         $data['dados'] = $this->procedimentoplano->novomedico($procedimento_percentual_medico_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['procedimento_percentual_medico_id'] = $procedimento_percentual_medico_id;
+        $data['convenio_id'] = $convenio_id;
         $this->loadView('ambulatorio/procedimentopercentualmediconovo', $data);
     }
 
@@ -301,7 +302,7 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/procedimentopercentualpromotornovo', $data);
     }
 
-    function gravarnovomedico($procedimento_percentual_medico_id) {
+    function gravarnovomedico($procedimento_percentual_medico_id, $convenio_id) {
         $return = $this->procedimentoplano->gravarnovomedico($procedimento_percentual_medico_id);
         if ($return == 1) {
             $mensagem = 'Sucesso ao gravar Médico.';
@@ -311,7 +312,7 @@ class Procedimentoplano extends BaseController {
             $mensagem = 'Erro: Médico já cadastrado.';
         }
         $this->session->set_flashdata('message', $mensagem);
-        redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimento/$procedimento_percentual_medico_id");
+        redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimento/$procedimento_percentual_medico_id/$convenio_id");
     }
 
     function gravarnovopromotor($procedimento_percentual_promotor_id) {
@@ -394,7 +395,7 @@ class Procedimentoplano extends BaseController {
         redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentualpromotor");
     }
 
-    function excluirmedicopercentual($procedimento_percentual_medico_convenio_id) {
+    function excluirmedicopercentual($procedimento_percentual_medico_convenio_id, $percentual_medico_id, $convenio_id) {
         if ($this->procedimentoplano->excluirmedicopercentual($procedimento_percentual_medico_convenio_id)) {
             $mensagem = 'Sucesso ao excluir o Percentual medico';
         } else {
@@ -402,7 +403,7 @@ class Procedimentoplano extends BaseController {
         }
 
         $this->session->set_flashdata('message', $mensagem);
-        redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentual");
+        redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimento/$percentual_medico_id/$convenio_id");
     }
 
     function excluirpromotorpercentual($procedimento_percentual_promotor_convenio_id, $dados) {
@@ -416,7 +417,9 @@ class Procedimentoplano extends BaseController {
         redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimentopromotor/$dados");
     }
 
-    function editarmedicopercentual($procedimento_percentual_medico_convenio_id) {
+    function editarmedicopercentual($procedimento_percentual_medico_convenio_id, $percentual_medico_id, $convenio_id) {
+        $data['percentual_medico_id'] = $percentual_medico_id;
+        $data['convenio_id'] = $convenio_id;
         $data['busca'] = $this->procedimentoplano->buscarmedicopercentual($procedimento_percentual_medico_convenio_id);
         $data['procedimento_percentual_medico_convenio_id'] = $procedimento_percentual_medico_convenio_id;
         $this->loadView("ambulatorio/medicopercentual-editar", $data);
@@ -430,6 +433,9 @@ class Procedimentoplano extends BaseController {
     }
 
     function gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id) {
+        $convenio_id = $_POST['convenio_id'];
+        $percentual_medico_id = $_POST['percentual_medico_id'];
+        
         if ($this->procedimentoplano->gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id)) {
             $mensagem = 'Sucesso ao editar o Percentual medico';
         } else {
@@ -437,7 +443,7 @@ class Procedimentoplano extends BaseController {
         }
 
         $this->session->set_flashdata('message', $mensagem);
-        redirect(base_url() . "ambulatorio/procedimentoplano/procedimentopercentual");
+        redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimento/{$percentual_medico_id}/{$convenio_id}");
     }
 
     function gravareditarpromotorpercentual($procedimento_percentual_promotor_convenio_id, $dados) {

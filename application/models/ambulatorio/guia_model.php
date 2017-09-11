@@ -3662,7 +3662,7 @@ class guia_model extends Model {
 
     function relatoriomedicoconveniofinanceiro() {
 
-        $this->db->select('ae.quantidade,
+        $this->db->select("ae.quantidade,
                             p.nome as paciente,
                             pt.nome as procedimento,
                             pc.procedimento_convenio_id,
@@ -3675,6 +3675,7 @@ class guia_model extends Model {
                             ae.desconto_ajuste4,
                             ae.data,
                             ae.data_antiga,
+                            ae.sala_pendente,
                             e.situacao,
                             op.operador_id,
                             ae.valor,
@@ -3686,6 +3687,30 @@ class guia_model extends Model {
                             pc.procedimento_tuss_id,
                             al.medico_parecer1,
                             pt.perc_medico,
+                            (
+                                SELECT dia_recebimento 
+                                FROM ponto.tb_procedimento_percentual_medico_convenio ppmc
+                                INNER JOIN ponto.tb_procedimento_percentual_medico ppm 
+                                ON ppm.procedimento_percentual_medico_id = ppmc.procedimento_percentual_medico_id
+                                WHERE ppm.procedimento_tuss_id = ae.procedimento_tuss_id
+                                AND ppm.ativo = 't'
+                                AND ppmc.ativo = 't'
+                                AND ppmc.medico = al.medico_parecer1
+                                ORDER BY ppmc.data_cadastro DESC
+                                LIMIT 1
+                            ) as dia_recebimento,
+                            (
+                                SELECT tempo_recebimento 
+                                FROM ponto.tb_procedimento_percentual_medico_convenio ppmc
+                                INNER JOIN ponto.tb_procedimento_percentual_medico ppm 
+                                ON ppm.procedimento_percentual_medico_id = ppmc.procedimento_percentual_medico_id
+                                WHERE ppm.procedimento_tuss_id = ae.procedimento_tuss_id
+                                AND ppm.ativo = 't'
+                                AND ppmc.ativo = 't'
+                                AND ppmc.medico = al.medico_parecer1
+                                ORDER BY ppmc.data_cadastro DESC
+                                LIMIT 1
+                            ) as tempo_recebimento,
                             al.situacao as situacaolaudo,
                             tu.classificacao,
                             o.nome as revisor,
@@ -3694,7 +3719,7 @@ class guia_model extends Model {
                             op.nome as medico,
                             ops.nome as medicosolicitante,
                             c.nome as convenio,
-                            c.iss');
+                            c.iss");
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -8533,7 +8558,32 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('operador_cadastro', $operador_id);
         $this->db->insert('tb_financeiro_contaspagar');
-//        $saida_id = $this->db->insert_id();
+        
+        for ($i = 0; $i < count($_POST['valor_recebimento']); $i++) {
+            
+            $tempoRecebimento = $_POST['tempo_recebimento'][$i];
+            
+            if( date('d') <= $_POST['dia_faturamento'][$i] ){
+                $data_pagamento = date("Y-m-") . $_POST['dia_faturamento'][$i];                
+            }
+            else {
+                $data_pagamento = date("Y-m-", strtotime("+1 month")) . $_POST['dia_faturamento'][$i];
+            }
+            
+            $data_pagamento = date("Y-m-d", strtotime("+{$tempoRecebimento} days", strtotime($data_pagamento) ) );
+            
+            $this->db->set('data', $data_pagamento);
+            $this->db->set('valor', $_POST['valor_recebimento'][$i]);
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('credor', $_POST['nome']);
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_financeiro_contaspagar');
+        }
     }
 
     function listardados($convenio) {

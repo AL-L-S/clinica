@@ -5621,6 +5621,18 @@ class exametemp_model extends Model {
             return true;
     }
 
+    function excluirexametempencaixeodontologia($agenda_exames_id) {
+
+
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->delete('tb_agenda_exames');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
     function excluirexametempencaixe($agenda_exames_id) {
 
 

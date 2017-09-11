@@ -457,7 +457,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
                                     <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><?= $item->paciente; ?></b></td>
                                 <? } if ($verifica == 6) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente . $item->agenda_exames_id; ?></b></td>
                                 <? } ?>
                             <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
@@ -625,7 +625,7 @@ if (@$_GET['nome'] != '') {
         defaultDate: '<?= $data ?>',
         locale: 'pt-br',
         editable: false,
-        eventLimit: true, // allow "more" link when too many events
+        eventLimit: false, // allow "more" link when too many events
         schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
 //            events: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
 

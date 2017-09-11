@@ -510,6 +510,11 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('especialidade', 'f');
             }
+            if (isset($_POST['odontologia'])) {
+                $this->db->set('odontologia', 't');
+            } else {
+                $this->db->set('odontologia', 'f');
+            }
             if (isset($_POST['laboratorio'])) {
                 $this->db->set('laboratorio', 't');
             } else {
@@ -632,6 +637,7 @@ class empresa_model extends Model {
                                ponto,
                                marketing,
                                imagem,
+                               odontologia,
                                impressao_tipo,
                                impressao_laudo,
                                impressao_recibo,
@@ -671,6 +677,7 @@ class empresa_model extends Model {
             $this->_centro_cirurgico = $return[0]->centrocirurgico;
             $this->_consulta = $return[0]->consulta;
             $this->_especialidade = $return[0]->especialidade;
+            $this->_odontologia = $return[0]->odontologia;
             $this->_geral = $return[0]->geral;
             $this->_faturamento = $return[0]->faturamento;
             $this->_estoque = $return[0]->estoque;

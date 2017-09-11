@@ -160,6 +160,12 @@
                             <input type="checkbox" id="especialidade" name="especialidade" <? if (@$obj->_especialidade == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
+                            <label title="Habilitar Especialidade chat.">Odontologia</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="odontologia" name="odontologia" <? if (@$obj->_odontologia == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
                             <label title="Habilitar Laboratorio.">Laboratorio</label>
                         </dt>
                         <dd>

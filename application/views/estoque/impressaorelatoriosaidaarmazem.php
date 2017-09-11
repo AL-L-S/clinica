@@ -138,10 +138,10 @@
                             <td colspan="8"><font size="-2"><b>Armazem:&nbsp;<?= utf8_decode($item->armazem); ?></b></td>
                         </tr>
                         <tr>
-                            <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
-                            <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
+                            <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->unidade); ?></td>
+                            <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_venda, 2, ",", "."); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>
                             <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>

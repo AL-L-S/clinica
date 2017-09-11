@@ -614,6 +614,7 @@ class exame_model extends Model {
                             e.sala_id,
                             ae.inicio,
                             e.data_cadastro,
+                            e.data_pendente,
                             es.nome as sala,
                             pt.nome as procedimento');
         $this->db->from('tb_exames e');
@@ -4091,6 +4092,200 @@ class exame_model extends Model {
         return $this->db;
     }
 
+    function listarmultifuncaoodontologia($args = array()) {
+        $teste = empty($args);
+        $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
+        $dataAtual = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->where('ae.empresa_id', $empresa_id);
+//        $this->db->where('ae.confirmado', 't');
+        $this->db->where("( (ag.tipo = 'ESPECIALIDADE') OR ( (ae.tipo = 'FISIOTERAPIA' OR ae.tipo = 'ESPECIALIDADE') AND ae.procedimento_tuss_id IS NULL) )");
+//        $this->db->orderby('ae.realizada', 'desc');
+//        $this->db->orderby('al.situacao');
+//        $this->db->orderby('ae.data_autorizacao');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.inicio');
+//        $this->db->where('ae.confirmado', 'true');
+//        $this->db->where('ae.ativo', 'false');
+//        $this->db->where('ae.realizada', 'false');
+        $this->db->where('ae.cancelada', 'false');
+
+        if ($teste == true) {
+            $this->db->where('ae.data', $dataAtual);
+            $this->db->where('ae.medico_consulta_id', $operador_id);
+        } else {
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            }
+
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+            }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
+            }
+            if (isset($args['data']) && strlen($args['data']) > 0) {
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            }
+            if (isset($args['sala']) && strlen($args['sala']) > 0) {
+                $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
+            }
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
+                $this->db->where('ae.medico_consulta_id', $args['medico']);
+            }
+            if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
+                if ($args['situacao'] == "BLOQUEADO") {
+                    $this->db->where('ae.bloqueado', 't');
+                }
+                if ($args['situacao'] == "LIVRE") {
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.situacao', 'LIVRE');
+                }
+                if ($args['situacao'] == "OK") {
+                    $this->db->where('ae.situacao', 'OK');
+                }
+                if ($args['situacao'] == "FALTOU") {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $this->db->where('ae.data <', $data_atual);
+                    $this->db->where('ae.situacao', 'OK');
+                    $this->db->where('ae.realizada', 'f');
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.operador_atualizacao is not null');
+                }
+            }
+        }
+        return $this->db;
+    }
+    
+    function listarmultifuncao2odontologia($args = array()) {
+        $teste = empty($args);
+        $operador_id = $this->session->userdata('operador_id');
+        $perfil_id = $this->session->userdata('perfil_id');
+        $dataAtual = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.inicio,
+                            ae.data_autorizacao,
+                            ae.fim,
+                            ae.ativo,
+                            ae.telefonema,
+                            ae.situacao,
+                            ae.encaixe,
+                            ae.guia_id,
+                            ae.data_atualizacao,
+                            ae.paciente_id,
+                            ae.bloqueado,
+                            ae.observacoes,
+                            ae.realizada,
+                            al.medico_parecer1,
+                            al.ambulatorio_laudo_id,
+                            al.exame_id,
+                            al.procedimento_tuss_id,
+                            e.situacao as situacaoexame,
+                            p.paciente_id,
+                            ae.agenda_exames_nome_id,
+                            an.nome as sala,
+                            o.nome as medicoconsulta,
+                            p.nome as paciente,
+                            p.telefone,
+                            p.celular,
+                            ae.procedimento_tuss_id,
+                            ae.confirmado,
+                            c.nome as convenio,
+                            pt.nome as procedimento,
+                            al.situacao as situacaolaudo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->where('ae.empresa_id', $empresa_id);
+//        $this->db->where('e.situacao !=', 'PENDENTE');
+//        $this->db->where('ae.confirmado', 't');
+        $this->db->where("( (ag.tipo = 'ESPECIALIDADE') OR ( (ae.tipo = 'FISIOTERAPIA' OR ae.tipo = 'ESPECIALIDADE') AND ae.procedimento_tuss_id IS NULL) )");
+        $this->db->orderby('ae.data');
+        $this->db->orderby('ae.inicio');
+        $this->db->orderby('ae.realizada', 'desc');
+        $this->db->orderby('al.situacao');
+        $this->db->orderby('ae.data_autorizacao');
+//        $this->db->orderby('ae.data');
+//        $this->db->orderby('ae.inicio');
+//        $this->db->where('ae.confirmado', 'true');
+//        $this->db->where('ae.ativo', 'false');
+//        $this->db->where('ae.realizada', 'false');
+        $this->db->where('ae.cancelada', 'false');
+        if ($teste == true) {
+            $this->db->where('ae.data', $dataAtual);
+            $this->db->where('ae.medico_consulta_id', $operador_id);
+        } else {
+            if ($perfil_id == 4) {
+                $this->db->where('ae.medico_consulta_id', $operador_id);
+            }
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+            }
+            if (isset($args['txtCICPrimario']) && strlen($args['txtCICPrimario']) > 0) {
+                $this->db->where('al.cid ilike', "%" . $args['txtCICPrimario'] . "%");
+//                $this->db->orwhere('al.cid2 ilike', "%" . $args['txtCICPrimario'] . "%");
+            }
+            if (isset($args['data']) && strlen($args['data']) > 0) {
+                $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            }
+            if (isset($args['sala']) && strlen($args['sala']) > 0) {
+                $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
+            }
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
+                $this->db->where('ae.medico_consulta_id', $args['medico']);
+            }
+            if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
+                $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
+            }
+            if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
+                if ($args['situacao'] == "BLOQUEADO") {
+                    $this->db->where('ae.bloqueado', 't');
+                }
+                if ($args['situacao'] == "LIVRE") {
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.situacao', 'LIVRE');
+                }
+                if ($args['situacao'] == "OK") {
+                    $this->db->where('ae.situacao', 'OK');
+                }
+                if ($args['situacao'] == "FALTOU") {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $this->db->where('ae.data <', $data_atual);
+                    $this->db->where('ae.situacao', 'OK');
+                    $this->db->where('ae.realizada', 'f');
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.operador_atualizacao is not null');
+                }
+            }
+        }
+        return $this->db;
+    }
+
     function listarmultifuncaofisioterapia($args = array()) {
         $teste = empty($args);
         $operador_id = $this->session->userdata('operador_id');
@@ -6111,9 +6306,11 @@ class exame_model extends Model {
 
     function voltarexame($exame_id, $sala_id, $agenda_exames_id) {
         try {
-
+            
+            $data = date("Y-m-d");
 
             $this->db->set('realizada', 'f');
+            $this->db->set('sala_pendente', 't');
             $this->db->where('agenda_exames_id', $agenda_exames_id);
             $this->db->update('tb_agenda_exames');
 

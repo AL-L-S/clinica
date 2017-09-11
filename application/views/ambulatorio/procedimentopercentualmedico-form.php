@@ -10,7 +10,8 @@
                         <label>Covênio</label>
                     </dt>
                     <dd>
-                        <select name="covenio" id="covenio" class="size4" required disabled="">
+                        <input type="hidden" name="covenio" id="covenio" value="<?= $convenio_id ?>"/>
+                        <select name="__covenio" id="__covenio" class="size4" required disabled="">
                             <option value="">SELECIONE</option>
                             <? foreach ($convenio as $value) : ?>
                                 <option  value="<?= $value->convenio_id; ?>" <?if($value->convenio_id == $convenio_id) echo 'selected'?>>
@@ -68,6 +69,18 @@
                             <option value="1"> SIM</option>
                             <option value="0"> NÃO</option>                                   
                         </select>
+                    </dd>
+                    <dt>
+                        <label>Dia Faturamento</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="entrega" class="texto02" name="dia_recebimento" alt="99"/>
+                    </dd>
+                    <dt>
+                        <label>Tempo para Recebimento</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="pagamento" class="texto02" name="tempo_recebimento" alt="99"/>
                     </dd>
                 </dl>    
                 <hr/>

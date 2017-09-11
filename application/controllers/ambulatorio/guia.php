@@ -2964,6 +2964,10 @@ class Guia extends BaseController {
         $data['empresamunicipio'] = $this->guia->listarempresamunicipio($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
+        
+//        echo "<pre>";
+//        var_dump($data['relatorio']);die;
+        
         $data['relatoriogeral'] = $this->guia->relatoriomedicoconveniofinanceirotodos();
         $data['relatoriohomecare'] = $this->guia->relatoriomedicoconveniofinanceirohomecare();
         $data['relatoriohomecaregeral'] = $this->guia->relatoriomedicoconveniofinanceirohomecaretodos();

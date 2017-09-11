@@ -473,6 +473,11 @@ class Exametemp extends BaseController {
         redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
 
+    function excluirexametempencaixeodontologia($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->excluirexametempencaixeodontologia($agenda_exames_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
+    }
+
     function excluirexametempencaixe($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");

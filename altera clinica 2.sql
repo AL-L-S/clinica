@@ -616,3 +616,11 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horarioagenda_editada_id integer;
 ALTER TABLE ponto.tb_horarioagenda_editada ADD COLUMN ativo boolean NOT NULL DEFAULT true;
 ALTER TABLE ponto.tb_horarioagenda_editada ADD COLUMN consolidado boolean NOT NULL DEFAULT false;
 
+
+-- Dia 08/09/2017
+ALTER TABLE ponto.tb_empresa ADD COLUMN odontologia boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN sala_pendente boolean NOT NULL DEFAULT false;
+
+-- Dia 09/08/2017
+ALTER TABLE ponto.tb_procedimento_percentual_medico_convenio ADD COLUMN dia_recebimento integer;
+ALTER TABLE ponto.tb_procedimento_percentual_medico_convenio ADD COLUMN tempo_recebimento integer;

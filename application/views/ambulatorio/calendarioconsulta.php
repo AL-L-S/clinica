@@ -513,7 +513,7 @@ if (@$_GET['nome'] != '') {
         defaultDate: '<?= $data ?>',
         locale: 'pt-br',
         editable: false,
-        eventLimit: true, // allow "more" link when too many events
+        eventLimit: false, // allow "more" link when too many events
         schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
 //            events: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
 

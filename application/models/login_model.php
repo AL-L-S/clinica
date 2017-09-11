@@ -42,6 +42,7 @@ class login_model extends Model {
             $imagem = $retorno[0]->imagem;
             $consulta = $retorno[0]->consulta;
             $especialidade = $retorno[0]->especialidade;
+            $odontologia = $retorno[0]->odontologia;
             $geral = $retorno[0]->geral;
             $faturamento = $retorno[0]->faturamento;
             $estoque = $retorno[0]->estoque;
@@ -85,6 +86,7 @@ class login_model extends Model {
                 'imagem' => $imagem,
                 'consulta' => $consulta,
                 'especialidade' => $especialidade,
+                'odontologia' => $odontologia,
                 'geral' => $geral,
                 'faturamento' => $faturamento,
                 'estoque' => $estoque,

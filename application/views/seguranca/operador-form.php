@@ -301,34 +301,39 @@
                                 <? endforeach; ?>
                     </select>
                 </div>
-                <div>
-                    <label>Taxa Adminsitração</label>
-                    <input type="text" id="taxaadm" class="texto02" name="taxaadm" alt="decimal" value="<?= @$obj->_taxa_administracao; ?>" />
-                </div>
-                <div>
-                    <label>IR</label>
-                    <input type="text" id="ir" class="texto02" name="ir" alt="decimal" value="<?= @$obj->_ir; ?>" />
-                </div>
-                <div>
-                    <label>PIS</label>
-                    <input type="text" id="pis" class="texto02" name="pis" alt="decimal" value="<?= @$obj->_pis; ?>" />
-                </div>
-                <div>
-                    <label>COFINS</label>
-                    <input type="text" id="cofins" class="texto02" name="cofins" alt="decimal" value="<?= @$obj->_cofins; ?>" />
-                </div>
-                <div>
-                    <label>CSLL</label>
-                    <input type="text" id="csll" class="texto02" name="csll" alt="decimal" value="<?= @$obj->_csll; ?>" />
-                </div>
-                <div>
-                    <label>ISS</label>
-                    <input type="text" id="iss" class="texto02" name="iss" alt="decimal" value="<?= @$obj->_iss; ?>" />
-                </div>
-                <div>
-                    <label>Valor Base para Imposto</label>
-                    <input type="text" id="valor_base" class="texto02" name="valor_base" alt="decimal" value="<?= @$obj->_valor_base; ?>" />
-                </div>
+                
+                <fieldset>
+                    <legend>Impostos e Taxas</legend>
+                    <div>
+                        <label>Taxa Adminsitração</label>
+                        <input type="text" id="taxaadm" class="texto02" name="taxaadm" alt="decimal" value="<?= @$obj->_taxa_administracao; ?>" />
+                    </div>
+                    <div>
+                        <label>IR</label>
+                        <input type="text" id="ir" class="texto02" name="ir" alt="decimal" value="<?= @$obj->_ir; ?>" />
+                    </div>
+                    <div>
+                        <label>PIS</label>
+                        <input type="text" id="pis" class="texto02" name="pis" alt="decimal" value="<?= @$obj->_pis; ?>" />
+                    </div>
+                    <div>
+                        <label>COFINS</label>
+                        <input type="text" id="cofins" class="texto02" name="cofins" alt="decimal" value="<?= @$obj->_cofins; ?>" />
+                    </div>
+                    <div>
+                        <label>CSLL</label>
+                        <input type="text" id="csll" class="texto02" name="csll" alt="decimal" value="<?= @$obj->_csll; ?>" />
+                    </div>
+                    <div>
+                        <label>ISS</label>
+                        <input type="text" id="iss" class="texto02" name="iss" alt="decimal" value="<?= @$obj->_iss; ?>" />
+                    </div>
+                    <div>
+                        <label>Valor Base para Imposto</label>
+                        <input type="text" id="valor_base" class="texto02" name="valor_base" alt="decimal" value="<?= @$obj->_valor_base; ?>" />
+                    </div>
+                    
+                </fieldset>
             </fieldset>
             <fieldset>
                 <div>

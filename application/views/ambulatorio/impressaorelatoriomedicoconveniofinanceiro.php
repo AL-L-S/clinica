@@ -69,6 +69,8 @@ switch ($MES) {
     <?
     if ($contador > 0 || count($relatoriocirurgico) > 0 || count($relatoriohomecare) > 0) {
         $totalperc = 0;
+        $valor_recebimento = 0;
+        
         ?>
 
     <? if (count($relatorio) > 0): ?>
@@ -105,6 +107,7 @@ switch ($MES) {
                 </thead>
                 <tbody>
                     <?php
+                    $dados = array();
                     $i = 0;
                     $valor = 0;
                     $valortotal = 0;
@@ -140,13 +143,18 @@ switch ($MES) {
                             <td><font size="-2"><?= $item->paciente; ?></td>
                             <td><font size="-2"><?= $item->medico; ?></td>
                             <td><font size="-2">
-                                <? if ($item->data_antiga != "") {
-                                    echo " ** ";
-                                } ?>
-            <?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
-                            <? if ($item->data_antiga != "") {
-                                echo " ** ";
-                            } ?>
+                            <? 
+                            $modificado = "";
+                            $onclick = "";
+                            if ( $item->data_antiga != "" ) {
+                                $modificado = " ** ";
+                            }
+                            
+                            echo $modificado, 
+                                 substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4),
+                                 ($item->sala_pendente != "f") ? " (PENDENTE)" : "",
+                                 $modificado; 
+                            ?>
                             </td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= $item->procedimento; ?></td>
@@ -157,32 +165,41 @@ switch ($MES) {
 //                                $valorLiqMed = ((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100)) - ((float) $valor_total * ((float) $item->taxa_administracao / 100))); 
                                 ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
-                            <? } ?>
-                            <?
+                            <? } 
+                            
                             if ($item->percentual_medico == "t") {
                                 $simbolopercebtual = " %";
 
                                 $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
 
                                 $perc = $valor_total * ($valorpercentualmedico / 100);
-                                $totalperc = $totalperc + $perc;
-                                $totalgeral = $totalgeral + $valor_total;
                             } else {
                                 $simbolopercebtual = "";
                                 $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
 
                                 $perc = $valorpercentualmedico;
                                 $perc = $perc * $item->quantidade;
-                                $totalperc = $totalperc + $perc;
-                                $totalgeral = $totalgeral + $valor_total;
                             }
+                            
+                            $totalperc = $totalperc + $perc;
+                            $totalgeral = $totalgeral + $valor_total;
+                            
+                            if($item->dia_recebimento != "" && $item->tempo_recebimento != ""){
+                                $valor_recebimento = $valor_recebimento + $perc;
+                                $tempoRecebimento[] = array(
+                                    "valor_recebimento" => $perc,
+                                    "dia_faturamento" => $item->dia_recebimento,
+                                    "tempo_recebimento" => $item->tempo_recebimento
+                                );
+                            }
+                            
                             ?>
 
                             <td style='text-align: right;'><font size="-2"><?= number_format($valorpercentualmedico, 2, ",", "") . $simbolopercebtual ?></td>
 
                             <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
 
-            <? if ($mostrar_taxa == 'SIM') { ?>
+                            <? if ($mostrar_taxa == 'SIM') { ?>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->taxa_administracao, 2, ",", "."); ?> (%)</td>
                                 <? $taxaAdministracao += ((float) $perc * ((float) $item->taxa_administracao / 100)); ?>
                             <? } ?>
@@ -512,15 +529,24 @@ switch ($MES) {
                         <input type="hidden" class="texto3" name="classe" value="<?= $medico[0]->classe; ?>" readonly/>
                         <input type="hidden" class="texto3" name="observacao" value="<?= "Período " . substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) . " até " . substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4) . " médico: " . $medico[0]->operador; ?>" readonly/>
                         <input type="hidden" class="texto3" name="data" value="<?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) ?>" readonly/>
-                        <input type="hidden" class="texto3" name="valor" value="<?= $resultado; ?>" readonly/>
-                        <? if ($medico != 0 && $recibo == 'NAO') { ?> 
+                        <input type="hidden" class="texto3" name="valor" value="<?= $resultado - $valor_recebimento; ?>" readonly/>
+                        <? 
+                        $j = 0;
+                        foreach ($tempoRecebimento as $value) { 
+                            foreach ($value as $key => $item) { ?>
+                                <input type="hidden" name="<?= $key; ?>[<?= $j; ?>]" value="<?= $item; ?>"/>  
+                            <?
+                            }
+                            $j++;
+                        }
+                        if ($medico != 0 && $recibo == 'NAO') { ?> 
                         <br>
-                <?
-                $empresa_id = $this->session->userdata('empresa_id');
-                $data['empresa'] = $this->guia->listarempresa($empresa_id);
-                $data_contaspagar = $data['empresa'][0]->data_contaspagar;
-                if ($data_contaspagar == 't') {
-                    ?>
+                            <?
+                            $empresa_id = $this->session->userdata('empresa_id');
+                            $data['empresa'] = $this->guia->listarempresa($empresa_id);
+                            $data_contaspagar = $data['empresa'][0]->data_contaspagar;
+                            if ($data_contaspagar == 't') {
+                                ?>
                                 
                                 <br>
                                 <label>Data Contas a Pagar</label><br>
