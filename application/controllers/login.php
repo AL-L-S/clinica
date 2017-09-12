@@ -105,7 +105,7 @@ class Login extends Controller {
                 }
                 // Buscando mensagens  no banco que deverao ser mandadas para o webservice
                 $dados = $this->login->listarsms();
-                var_dump($dados);die;
+//                var_dump($dados);die;
 
                 /* ENVIANDO PARA O WEBSERVICE */
                 $cliente = new SoapClient(null, array(

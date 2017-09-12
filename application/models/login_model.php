@@ -42,6 +42,7 @@ class login_model extends Model {
             $imagem = $retorno[0]->imagem;
             $consulta = $retorno[0]->consulta;
             $especialidade = $retorno[0]->especialidade;
+            $odontologia = $retorno[0]->odontologia;
             $geral = $retorno[0]->geral;
             $faturamento = $retorno[0]->faturamento;
             $estoque = $retorno[0]->estoque;
@@ -53,6 +54,7 @@ class login_model extends Model {
             $procedimento_multiempresa = $retorno[0]->procedimento_multiempresa;
             $botao_faturar_guia = $retorno[0]->botao_faturar_guia;
             $botao_faturar_proc = $retorno[0]->botao_faturar_procedimento;
+            $producao_medica_saida = $retorno[0]->producao_medica_saida;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -85,6 +87,7 @@ class login_model extends Model {
                 'imagem' => $imagem,
                 'consulta' => $consulta,
                 'especialidade' => $especialidade,
+                'odontologia' => $odontologia,
                 'geral' => $geral,
                 'faturamento' => $faturamento,
                 'estoque' => $estoque,
@@ -102,6 +105,7 @@ class login_model extends Model {
                 'botao_faturar_proc' => $botao_faturar_proc,
                 'empresa_id' => $empresa,
                 'procedimento_multiempresa' => $procedimento_multiempresa,
+                'producao_medica_saida' => $producao_medica_saida,
                 'empresa' => $empresanome
             );
             $this->session->set_userdata($p);
@@ -133,7 +137,10 @@ class login_model extends Model {
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular));
+                
+                $numero = ($item->celular != '') ? $item->celular : $item->telefone;
+                
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $numero));
                 $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'AGRADECIMENTO');
                 $this->db->set('data', $horario);
@@ -166,10 +173,12 @@ class login_model extends Model {
                 $this->db->where('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
                 
+                $numero = ($item->celular != '') ? $item->celular : $item->telefone;
+                        
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular));
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $numero));
                 $this->db->set('mensagem', $mensagem . " Consulta: " . $item->nome);
                 $this->db->set('tipo', 'CONFIRMACAO');
                 $this->db->set('data', $horario);
@@ -191,14 +200,15 @@ class login_model extends Model {
                            p.nome as paciente,
                            p.celular,
                            pt.nome,
-                           pt.revisao_dias');
+                           pt.revisao_dias,
+                           p.telefone');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->where('ae.cancelada', 'f');
         $this->db->where('ae.realizada', 'f');
-        $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
+        $this->db->where("((p.celular IS NOT NULL AND p.celular != '') OR (p.telefone IS NOT NULL AND p.telefone != ''))");
         $this->db->where("pt.procedimento_tuss_id IN (
                             SELECT procedimento_tuss_id FROM ponto.tb_procedimento_tuss
                             WHERE revisao = 't'
@@ -224,7 +234,8 @@ class login_model extends Model {
             if ($i <= $disponivel) {
                 $msg = $mensagem . " Procedimento: " . $item->nome;
                 $this->db->set('paciente_id', $item->paciente_id);
-                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular));
+                $numero = ($item->celular != '') ? $item->celular : $item->telefone;
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $numero));
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('mensagem', $msg);
                 $this->db->set('tipo', 'REVISAO');
@@ -254,7 +265,8 @@ class login_model extends Model {
         foreach ($aniversariantes as $item) {
             if ($i <= $disponivel) {
                 $this->db->set('paciente_id', $item->paciente_id);
-                $this->db->set('numero', preg_replace('/[^\d]+/', '', $item->celular));
+                $numero = ($item->celular != '') ? $item->celular : $item->telefone;
+                $this->db->set('numero', preg_replace('/[^\d]+/', '', $numero));
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'ANIVERSARIANTE');
@@ -376,10 +388,11 @@ class login_model extends Model {
         $mes = date('m');
         $this->db->select('p.paciente_id,
                            p.nome as paciente,
-                           p.celular');
+                           p.celular,
+                           p.telefone');
         $this->db->from('tb_paciente p');
         $this->db->where('p.ativo', 't');
-        $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
+        $this->db->where("((p.celular IS NOT NULL AND p.celular != '') OR (p.telefone IS NOT NULL AND p.telefone != ''))");
         $this->db->where("EXTRACT(DAY FROM p.nascimento) = $dia AND EXTRACT(MONTH FROM p.nascimento) = $mes");
         $return = $this->db->get();
         return $return->result();
@@ -390,13 +403,14 @@ class login_model extends Model {
         $this->db->select('ae.agenda_exames_id,
                            p.paciente_id,
                            p.nome as paciente,
-                           p.celular');
+                           p.celular,
+                           p.telefone');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->where('ae.cancelada', 'f');
         $this->db->where('ae.sms_enviado', 'f');
         $this->db->where('ae.realizada', 't');
-        $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
+        $this->db->where("((p.celular IS NOT NULL AND p.celular != '') OR (p.telefone IS NOT NULL AND p.telefone != ''))");
         $this->db->where('ae.data', $horario);
         $return = $this->db->get();
         return $return->result();
@@ -409,6 +423,7 @@ class login_model extends Model {
                            p.paciente_id,
                            p.nome as paciente,
                            p.celular,
+                           p.telefone,
                            pt.nome');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -417,7 +432,7 @@ class login_model extends Model {
         $this->db->where('ae.cancelada', 'f');
         $this->db->where('ae.sms_enviado', 'f');
         $this->db->where('ae.realizada', 'f');
-        $this->db->where("(p.celular IS NOT NULL AND p.celular != '')");
+        $this->db->where("((p.celular IS NOT NULL AND p.celular != '') OR (p.telefone IS NOT NULL AND p.telefone != ''))");
         $this->db->where('ae.data', $diaSeguinte);
 //        $this->db->limit(50);
         $return = $this->db->get();

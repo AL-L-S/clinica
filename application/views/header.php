@@ -12,6 +12,7 @@ $chat = $this->session->userdata('chat');
 $imagem = $this->session->userdata('imagem');
 $consulta = $this->session->userdata('consulta');
 $especialidade = $this->session->userdata('especialidade');
+$odontologia = $this->session->userdata('odontologia');
 $geral = $this->session->userdata('geral');
 $faturamento = $this->session->userdata('faturamento');
 $estoque = $this->session->userdata('estoque');
@@ -535,6 +536,27 @@ function debug($object) {
                                     <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapia">Multifuncao Especialidade</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapiareagendar">Reagendar</a></span></ul>
+                                        <?
+                                    }
+                                    ?>
+                                </li>
+                                <li><span class="folder">Relatorios</span>
+                                    <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
+                                    <? } ?>
+                                </li>  
+                            </ul>
+                        </li>
+                    <? } ?>
+                    <? if ($odontologia == 't'  && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10)) { ?>
+
+
+                        <li><span class="folder">Odontologia</span>
+                            <ul>
+                                <li><span class="folder">Rotinas</span>
+                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12) { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicoodontologia">Multifuncao Especialidade</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicoodontologiareagendar">Reagendar</a></span></ul>
                                         <?
                                     }
                                     ?>

@@ -554,9 +554,11 @@ class procedimentoplano_model extends Model {
     }
 
     function buscarmedicopercentual($procedimento_percentual_medico_convenio_id) {
-        $this->db->select('mc.valor,
+        $this->db->select('o.nome,
+                            mc.valor,
                             mc.percentual,
-                            o.nome');
+                            mc.dia_recebimento,
+                            mc.tempo_recebimento');
         $this->db->from('tb_procedimento_percentual_medico_convenio mc');
         $this->db->join('tb_operador o', 'o.operador_id = mc.medico', 'left');
         $this->db->where("mc.ativo", 't');
@@ -667,6 +669,12 @@ class procedimentoplano_model extends Model {
                 $operador_id = $this->session->userdata('operador_id');
 
                 $this->db->set('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
+                if( $_POST['dia_recebimento'] != ''){
+                    $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                }
+                if($_POST['tempo_recebimento'] != ''){
+                    $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                }
                 $this->db->set('medico', $_POST['medico']);
                 $this->db->set('valor', $_POST['valor']);
                 $this->db->set('percentual', $_POST['percentual']);
@@ -736,6 +744,12 @@ class procedimentoplano_model extends Model {
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->set('valor', $_POST['valor']);
             $this->db->set('percentual', $_POST['percentual']);
+            if( $_POST['dia_recebimento'] != ''){
+                $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+            }
+            if($_POST['tempo_recebimento'] != ''){
+                $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+            }
             $this->db->where("procedimento_percentual_medico_convenio_id", $procedimento_percentual_medico_convenio_id);
             $this->db->update('tb_procedimento_percentual_medico_convenio ');
 
@@ -1125,7 +1139,9 @@ class procedimentoplano_model extends Model {
             $this->db->select('pc.convenio_id, 
                                pc.procedimento_tuss_id, 
                                ppmc.valor, ppmc.percentual, 
-                               ppm.procedimento_percentual_medico_id');
+                               ppm.procedimento_percentual_medico_id,
+                               ppmc.dia_recebimento,
+                               ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico_convenio ppmc');
             $this->db->join('tb_procedimento_percentual_medico ppm', "ppm.procedimento_percentual_medico_id = ppmc.procedimento_percentual_medico_id");
             $this->db->join('tb_procedimento_convenio pc', "pc.procedimento_convenio_id = ppm.procedimento_tuss_id");
@@ -1175,7 +1191,12 @@ class procedimentoplano_model extends Model {
                 $this->db->set('medico', $medicoDestino);
                 $this->db->set('valor', $item->valor);
                 $this->db->set('percentual', $item->percentual);
-
+                if($item->dia_recebimento != ""){
+                    $this->db->set('dia_recebimento', $item->dia_recebimento);
+                }
+                if($item->tempo_recebimento != ""){
+                    $this->db->set('tempo_recebimento', $item->tempo_recebimento);
+                }
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
 
@@ -1199,13 +1220,11 @@ class procedimentoplano_model extends Model {
 
     function gravarpercentualmedico() {
         try {
-
+//            echo "<pre>"; var_dump($_POST);die;
             $grupo = $_POST['grupo'];
             $convenio = $_POST['covenio'];
             $medico = $_POST['medico'];
             $procediemento = $_POST['procedimento'];
-
-
 
             if ($grupo == "") {  // inicio grupo=selecione
                 if ($medico == "TODOS") { // inicio grupo=selecione  medico=todos
@@ -1235,6 +1254,12 @@ class procedimentoplano_model extends Model {
                         $this->db->set('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
                         $this->db->set('medico', $operador);
                         $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                        if( $_POST['dia_recebimento'] != ''){
+                            $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                        }
+                        if($_POST['tempo_recebimento'] != ''){
+                            $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                        }
                         $percentual = $_POST['percentual'];
                         $this->db->set('percentual', $percentual);
                         $horario = date("Y-m-d H:i:s");
@@ -1258,6 +1283,12 @@ class procedimentoplano_model extends Model {
                     $this->db->set('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
                     $this->db->set('medico', $_POST['medico']);
                     $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                    if( $_POST['dia_recebimento'] != ''){
+                        $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                    }
+                    if($_POST['tempo_recebimento'] != ''){
+                        $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                    }
                     $percentual = $_POST['percentual'];
                     $this->db->set('percentual', $percentual);
                     $horario = date("Y-m-d H:i:s");
@@ -1309,6 +1340,12 @@ class procedimentoplano_model extends Model {
                                 $this->db->set('medico', $operador);
                                 $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                                 $percentual = $_POST['percentual'];
+                                if( $_POST['dia_recebimento'] != ''){
+                                    $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                                }
+                                if($_POST['tempo_recebimento'] != ''){
+                                    $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                                }
                                 $this->db->set('percentual', $percentual);
                                 $horario = date("Y-m-d H:i:s");
                                 $operador_id = $this->session->userdata('operador_id');
@@ -1334,6 +1371,12 @@ class procedimentoplano_model extends Model {
                             $procedimento_percentual_medico_id = $this->db->insert_id();
                             $this->db->set('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
                             $this->db->set('medico', $_POST['medico']);
+                            if( $_POST['dia_recebimento'] != ''){
+                                $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                            }
+                            if($_POST['tempo_recebimento'] != ''){
+                                $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                            }
                             $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                             $percentual = $_POST['percentual'];
                             $this->db->set('percentual', $percentual);
@@ -1374,6 +1417,12 @@ class procedimentoplano_model extends Model {
                             $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                             $percentual = $_POST['percentual'];
                             $this->db->set('percentual', $percentual);
+                            if( $_POST['dia_recebimento'] != ''){
+                                $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                            }
+                            if($_POST['tempo_recebimento'] != ''){
+                                $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                            }
                             $horario = date("Y-m-d H:i:s");
                             $operador_id = $this->session->userdata('operador_id');
                             $this->db->set('data_cadastro', $horario);
@@ -1398,6 +1447,12 @@ class procedimentoplano_model extends Model {
                         $percentual = $_POST['percentual'];
                         $this->db->set('percentual', $percentual);
                         $horario = date("Y-m-d H:i:s");
+                        if( $_POST['dia_recebimento'] != ''){
+                            $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                        }
+                        if($_POST['tempo_recebimento'] != ''){
+                            $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                        }
                         $operador_id = $this->session->userdata('operador_id');
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);
@@ -1457,6 +1512,12 @@ class procedimentoplano_model extends Model {
                             $this->db->set('percentual', $percentual);
                             $horario = date("Y-m-d H:i:s");
                             $operador_id = $this->session->userdata('operador_id');
+                            if( $_POST['dia_recebimento'] != ''){
+                                $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                            }
+                            if($_POST['tempo_recebimento'] != ''){
+                                $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                            }
                             $this->db->set('data_cadastro', $horario);
                             $this->db->set('operador_cadastro', $operador_id);
                             $this->db->insert('tb_procedimento_percentual_medico_convenio');
@@ -1483,6 +1544,12 @@ class procedimentoplano_model extends Model {
                         $percentual = $_POST['percentual'];
                         $this->db->set('percentual', $percentual);
                         $horario = date("Y-m-d H:i:s");
+                        if( $_POST['dia_recebimento'] != ''){
+                            $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                        }
+                        if($_POST['tempo_recebimento'] != ''){
+                            $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                        }
                         $operador_id = $this->session->userdata('operador_id');
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);

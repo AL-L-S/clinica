@@ -98,7 +98,7 @@
                     </dd>
 
                     <? if ($this->session->userdata('operador_id') == 1) { ?>
-                        
+
                         <dt>
                             <label>Serviço de SMS</label>
                         </dt>
@@ -142,22 +142,28 @@
                             <input type="text" id="impressao_declaracao" class="texto01" name="impressao_declaracao" value="<?= @$obj->_impressao_declaracao; ?>" />
                         </dd>
                         <dt>
-                            <label title="Habilitar a Imagem.">Imagem</label>
+                            <label title="Habilitar Modulo de Imagem.">Imagem</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="imagem" name="imagem" <? if (@$obj->_imagem == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Habilitar a Consulta.">Consulta</label>
+                            <label title="Habilitar Modulo de Consulta.">Consulta</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="consulta" name="consulta" <? if (@$obj->_consulta == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Habilitar Especialidade chat.">Especialidade</label>
+                            <label title="Habilitar Modulo de Especialidade.">Especialidade</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="especialidade" name="especialidade" <? if (@$obj->_especialidade == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Habilitar Modulo de Odontologia.">Odontologia</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="odontologia" name="odontologia" <? if (@$obj->_odontologia == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
                             <label title="Habilitar Laboratorio.">Laboratorio</label>
@@ -225,14 +231,14 @@
                         <dd>
                             <input type="checkbox" id="chamar_consulta" name="chamar_consulta" <? if (@$obj->_chamar_consulta == 't') echo "checked"; ?>/> 
                         </dd>
-                        
+
                         <dt>
                             <label title="Aparecer o botão de faturar procedimento no cadastro.">Botão Faturar Procedimentos</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="calendario" name="botao_faturar_proc" <? if (@$obj->_botao_faturar_proc == 't') echo "checked"; ?>/> 
                         </dd>
-                        
+
                         <dt>
                             <label title="Aparecer  o botão de faturar guia no cadastro.">Botão Faturar Guia</label>
                         </dt>
@@ -257,7 +263,7 @@
                         <dd>
                             <input type="checkbox" id="data_contaspagar" name="medico_laudodigitador" <? if (@$obj->_medico_laudodigitador == 't') echo "checked"; ?>/> 
                         </dd>
-                        
+
                         <dt>
                             <label title="Impressao .">Cabeçalho Configurável.</label>
                         </dt>
@@ -288,7 +294,14 @@
                         <dd>
                             <input type="checkbox" id="ficha_config" name="ficha_config" <? if (@$obj->_ficha_config == 't') echo "checked"; ?>/> 
                         </dd>
-                    <? } ?>
+                        <dt>
+                            <label title="Ao fechar a produção médica, os valores ja irão cair como saida no Financeiro.">Produção Médica ir direto para Saida</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="producao_medica_saida" name="producao_medica_saida" <? if (@$obj->_producao_medica_saida == 't') echo "checked"; ?>/> 
+                        </dd>
+
+                        <? } ?>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

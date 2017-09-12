@@ -454,6 +454,11 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/multifuncaomedicopsicologia-lista', $args);
     }
 
+    function listarmultifuncaomedicoodontologia($args = array()) {
+
+        $this->loadView('ambulatorio/multifuncaomedicoodontologia-lista', $args);
+    }
+
     function listarmultifuncaomedicofisioterapia($args = array()) {
 
         $this->loadView('ambulatorio/multifuncaomedicofisioterapia-lista', $args);
@@ -486,8 +491,8 @@ class Exame extends BaseController {
     }
 
     function reagendarespecialidade() {
-        var_dump($_POST);
-        die;
+//        var_dump($_POST);
+//        die;
         set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
         ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão 
 
@@ -538,8 +543,8 @@ class Exame extends BaseController {
     }
 
     function gravarguiaambulatorial() {
-        var_dump($_POST);
-        die;
+//        var_dump($_POST);
+//        die;
         $ambulatorio_guia = $this->guia->gravarguiacirurgica();
 
         if ($ambulatorio_guia == "-1") {

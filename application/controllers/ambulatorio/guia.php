@@ -783,12 +783,12 @@ class Guia extends BaseController {
         $data_contaspagar = $data['empresa'][0]->data_contaspagar;
         $caixa = $this->guia->fecharmedico($data_contaspagar);
         if ($caixa == "-1") {
-            $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
+            $data['mensagem'] = 'Erro ao fechar a produção do médico. Opera&ccedil;&atilde;o cancelada.';
         } else {
-            $data['mensagem'] = 'Sucesso ao fechar caixa.';
+            $data['mensagem'] = 'Sucesso ao fechar a produção do médico.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/guia/relatoriocaixa", $data);
+        redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
     }
 
     function gravarprocedimentos() {
@@ -2941,6 +2941,7 @@ class Guia extends BaseController {
     function gerarelatoriomedicoconveniofinanceiro() {
         $medicos = $_POST['medicos'];
         $revisor = $_POST['revisor'];
+        $data['tabela_recebimento'] = $_POST['tabela_recebimento'];
         $data['recibo'] = $_POST['recibo'];
         $data['clinica'] = $_POST['clinica'];
         $data['solicitante'] = $_POST['solicitante'];
@@ -2965,6 +2966,10 @@ class Guia extends BaseController {
         $data['empresamunicipio'] = $this->guia->listarempresamunicipio($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
+        
+//        echo "<pre>";
+//        var_dump($data['relatorio']);die;
+        
         $data['relatoriogeral'] = $this->guia->relatoriomedicoconveniofinanceirotodos();
         $data['relatoriohomecare'] = $this->guia->relatoriomedicoconveniofinanceirohomecare();
         $data['relatoriohomecaregeral'] = $this->guia->relatoriomedicoconveniofinanceirohomecaretodos();

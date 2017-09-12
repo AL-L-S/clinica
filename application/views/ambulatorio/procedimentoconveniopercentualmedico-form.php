@@ -7,7 +7,7 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                        <label>Covênio</label>
+                        <label>Convênio</label>
                     </dt>
                     <dd>
                         <select name="covenio" id="covenio" class="size4" required>
@@ -66,6 +66,18 @@
                             <option value="1"> SIM</option>
                             <option value="0"> NÃO</option>                                   
                         </select>
+                    </dd>
+                    <dt>
+                        <label>Dia Faturamento</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="entrega" class="texto02" name="dia_recebimento" alt="99"/>
+                    </dd>
+                    <dt>
+                        <label>Tempo para Recebimento</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="pagamento" class="texto02" name="tempo_recebimento" alt="99"/>
                     </dd>
                 </dl>    
                 <hr/>

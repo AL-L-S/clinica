@@ -3,13 +3,13 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Honor&aacute;rios M&eacute;dicos</a></h3>
         <div>
-            <form name="form_procedimentonovomedico" id="form_procedimentonovomedico" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarnovomedico/<?= $procedimento_percentual_medico_id ?>" method="post" onSubmit="enviardados();">
+            <form name="form_procedimentonovomedico" id="form_procedimentonovomedico" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarnovomedico/<?= $procedimento_percentual_medico_id ?>/<?= $convenio_id?>" method="post" onSubmit="enviardados();">
 
                 <dl class="dl_desconto_lista">
                     <dt>
                         <label>Covênio</label>
                     </dt>
-                    <dd>                        
+                    <dd>                                                                                                                                                                                                      
                         <input type="text" name="covenio" id="covenio" class="texto04" value="<?= $dados[0]->convenio; ?>" readonly />                                                                                                                                                                                 
                     </dd>                                                           
                     <dt>                         
@@ -50,6 +50,18 @@
                             <option value="1"> SIM</option>
                             <option value="0"> NÃO</option>                                   
                         </select>
+                    </dd>
+                    <dt>
+                        <label>Dia Faturamento</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="entrega" class="texto02" name="dia_recebimento" alt="99"/>
+                    </dd>
+                    <dt>
+                        <label>Tempo para Recebimento</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="pagamento" class="texto02" name="tempo_recebimento" alt="99"/>
                     </dd>
                 </dl>    
                 <hr/>

@@ -567,6 +567,11 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('especialidade', 'f');
             }
+            if (isset($_POST['odontologia'])) {
+                $this->db->set('odontologia', 't');
+            } else {
+                $this->db->set('odontologia', 'f');
+            }
             if (isset($_POST['laboratorio'])) {
                 $this->db->set('laboratorio', 't');
             } else {
@@ -626,6 +631,11 @@ class empresa_model extends Model {
                 $this->db->set('botao_faturar_procedimento', 't');
             } else {
                 $this->db->set('botao_faturar_procedimento', 'f');
+            }
+            if (isset($_POST['producao_medica_saida'])) {
+                $this->db->set('producao_medica_saida', 't');
+            } else {
+                $this->db->set('producao_medica_saida', 'f');
             }
             if (isset($_POST['cabecalho_config'])) {
                 $this->db->set('cabecalho_config', 't');
@@ -714,6 +724,7 @@ class empresa_model extends Model {
                                ponto,
                                marketing,
                                imagem,
+                               odontologia,
                                impressao_tipo,
                                impressao_laudo,
                                impressao_recibo,
@@ -728,7 +739,8 @@ class empresa_model extends Model {
                                servicoemail,
                                chat,
                                botao_faturar_guia,
-                               botao_faturar_procedimento');
+                               botao_faturar_procedimento,
+                               producao_medica_saida');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->where("empresa_id", $empresa_id);
@@ -758,6 +770,7 @@ class empresa_model extends Model {
             $this->_centro_cirurgico = $return[0]->centrocirurgico;
             $this->_consulta = $return[0]->consulta;
             $this->_especialidade = $return[0]->especialidade;
+            $this->_odontologia = $return[0]->odontologia;
             $this->_geral = $return[0]->geral;
             $this->_faturamento = $return[0]->faturamento;
             $this->_estoque = $return[0]->estoque;
@@ -782,6 +795,7 @@ class empresa_model extends Model {
             $this->_laudo_config = $return[0]->laudo_config;
             $this->_recibo_config = $return[0]->recibo_config;
             $this->_ficha_config = $return[0]->ficha_config;
+            $this->_producao_medica_saida = $return[0]->producao_medica_saida;
         } else {
             $this->_empresa_id = null;
         }

@@ -398,6 +398,7 @@ class entrada_model extends Model {
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
             es.validade as data,
+            es.estoque_entrada_id,
             ea.descricao as armazem,
             ef.fantasia,
             es.quantidade,
@@ -472,6 +473,7 @@ class entrada_model extends Model {
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
+            es.estoque_saida_id,
             es.validade as data,
             ea.descricao as armazem,
             ef.fantasia,
