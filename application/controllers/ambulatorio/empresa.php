@@ -41,11 +41,18 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/lembrete-form', $data);
     }
 
-    function configurarimpressao() {
+    function listarcabecalho() {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
-        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
 //        var_dump($data['impressao']); die;
-        $this->load->View('ambulatorio/configurarimpressao-form', $data);
+        $this->loadView('ambulatorio/configurarimpressaocabecalho-lista');
+    }
+    
+    function configurarcabecalho($empresa_impressao_cabecalho_id) {
+        $data['empresa_impressao_cabecalho_id'] = $empresa_impressao_cabecalho_id;
+        $data['impressao'] = $this->empresa->listarconfiguracaoimpressaocabecalho($empresa_impressao_cabecalho_id);
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaocabecalho-form', $data);
     }
 
     function excluirlembrete($empresa_lembretes_id) {
@@ -77,6 +84,18 @@ class Empresa extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
+    }
+    
+    function gravarimpressaocabecalho() {
+        $impressao_id = $_POST['impressao_id'];
+        if ($this->empresa->gravarconfiguracaoimpressao($impressao_id)) {
+            $mensagem = 'Sucesso ao gravar cabeçalho e rodapé';
+        } else {
+            $mensagem = 'Erro ao gravar cabeçalho e rodapé. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/listarcabecalho");
     }
 
     function carregarempresa($exame_empresa_id) {

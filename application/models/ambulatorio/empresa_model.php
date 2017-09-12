@@ -95,9 +95,22 @@ class empresa_model extends Model {
     function listarconfiguracaoimpressao() {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('*');
-        $this->db->from('tb_empresa_impressao');
-        $this->db->where('empresa_id', $empresa_id);
+        $this->db->select('ei.empresa_impressao_cabecalho_id,ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_cabecalho ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_id', $empresa_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        return $this->db;
+    }
+
+    function listarconfiguracaoimpressaocabecalho($empresa_impressao_cabecalho_id) {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_cabecalho_id,ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_cabecalho ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_impressao_cabecalho_id', $empresa_impressao_cabecalho_id);
 //        $this->db->where('paciente_id', $paciente_id);
 //        $this->db->where('data_criacao', $data);
         $return = $this->db->get();
@@ -296,6 +309,50 @@ class empresa_model extends Model {
             return false;
         else
             return true;
+    }
+
+    function gravarconfiguracaoimpressao() {
+        try {
+//            var_dump($_POST['impressao_id']); die;
+            /* inicia o mapeamento no banco */
+            $empresa_id = $this->session->userdata('empresa_id');
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->select('ei.empresa_impressao_cabecalho_id,');
+            $this->db->from('tb_empresa_impressao_cabecalho ei');
+            $this->db->where('ei.empresa_id', $empresa_id);
+            $teste = $this->db->get()->result();
+            if(count($teste) > 0){
+              $impressao_id = $teste[0]->empresa_impressao_cabecalho_id;
+            }
+
+            if (count($teste) == 0) {
+                $this->db->set('cabecalho', $_POST['cabecalho']);
+                $this->db->set('rodape', $_POST['rodape']);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_empresa_impressao_cabecalho');
+            } else {
+                $this->db->set('cabecalho', $_POST['cabecalho']);
+                $this->db->set('rodape', $_POST['rodape']);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->where('empresa_impressao_cabecalho_id', $impressao_id);
+                $this->db->update('tb_empresa_impressao_cabecalho');
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+//                $ambulatorio_guia_id = $this->db->insert_id();
+                return true;
+        } catch (Exception $exc) {
+            return false;
+        }
     }
 
     function gravaripservidor($servidor_id) {
@@ -570,6 +627,31 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('botao_faturar_procedimento', 'f');
             }
+            if (isset($_POST['cabecalho_config'])) {
+                $this->db->set('cabecalho_config', 't');
+            } else {
+                $this->db->set('cabecalho_config', 'f');
+            }
+            if (isset($_POST['rodape_config'])) {
+                $this->db->set('rodape_config', 't');
+            } else {
+                $this->db->set('rodape_config', 'f');
+            }
+            if (isset($_POST['laudo_config'])) {
+                $this->db->set('laudo_config', 't');
+            } else {
+                $this->db->set('laudo_config', 'f');
+            }
+            if (isset($_POST['recibo_config'])) {
+                $this->db->set('recibo_config', 't');
+            } else {
+                $this->db->set('recibo_config', 'f');
+            }
+            if (isset($_POST['ficha_config'])) {
+                $this->db->set('ficha_config', 't');
+            } else {
+                $this->db->set('ficha_config', 'f');
+            }
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -636,6 +718,11 @@ class empresa_model extends Model {
                                impressao_laudo,
                                impressao_recibo,
                                impressao_declaracao,
+                               cabecalho_config,
+                               rodape_config,
+                               laudo_config,
+                               recibo_config,
+                               ficha_config,
                                calendario,
                                servicosms,
                                servicoemail,
@@ -690,6 +777,11 @@ class empresa_model extends Model {
             $this->_botao_faturar_proc = $return[0]->botao_faturar_procedimento;
             $this->_chamar_consulta = $return[0]->chamar_consulta;
             $this->_procedimento_multiempresa = $return[0]->procedimento_multiempresa;
+            $this->_cabecalho_config = $return[0]->cabecalho_config;
+            $this->_rodape_config = $return[0]->rodape_config;
+            $this->_laudo_config = $return[0]->laudo_config;
+            $this->_recibo_config = $return[0]->recibo_config;
+            $this->_ficha_config = $return[0]->ficha_config;
         } else {
             $this->_empresa_id = null;
         }

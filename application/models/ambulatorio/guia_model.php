@@ -3547,22 +3547,22 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        
+
         $periodo = explode("/", $_POST['periodo']);
         $mes = $periodo[0];
         $ano = $periodo[1];
-        
+
         $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
-        
+
         $this->db->groupby('pt.nome, pt.procedimento_tuss_id');
-        
+
         $this->db->orderby('pt.nome');
 //        $this->db->orderby('al.medico_parecer1');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function relatoriomedicoprocedimentoatendimentomensal() {
 
         $this->db->select(' SUM(ae.quantidade) as total,
@@ -3601,22 +3601,22 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        
+
         $periodo = explode("/", $_POST['periodo']);
         $mes = $periodo[0];
         $ano = $periodo[1];
-        
+
         $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
-        
+
         $this->db->groupby('al.medico_parecer1, op.nome, pt.nome, pt.procedimento_tuss_id');
-        
+
         $this->db->orderby('pt.nome');
         $this->db->orderby('al.medico_parecer1');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function relatoriomedicoatendimentomensal() {
 
         $this->db->select('op.nome as medico, al.medico_parecer1');
@@ -3647,15 +3647,15 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        
+
         $periodo = explode("/", $_POST['periodo']);
         $mes = $periodo[0];
         $ano = $periodo[1];
-        
+
         $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
 
         $this->db->groupby('op.nome, al.medico_parecer1');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -5201,7 +5201,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function guiaconvenioexame($agenda_exames_id) {
 
         $this->db->select('guiaconvenio, agenda_exames_id');
@@ -6462,7 +6462,7 @@ AND data <= '$data_fim'";
         $this->db->where('guia_id', $guia_id);
         $this->db->update('tb_agenda_exames');
     }
-    
+
     function gravarguiaconvenioexame($agenda_exames_id) {
         $this->db->set('guiaconvenio', $_POST['guiaconvenio']);
         $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -8517,12 +8517,12 @@ ORDER BY ae.agenda_exames_id)";
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
 
-        if($data_contaspagar == 't'){
-           $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida'])))); 
-        }else{
-           $this->db->set('data', $data); 
+        if ($data_contaspagar == 't') {
+            $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+        } else {
+            $this->db->set('data', $data);
         }
-        
+
         $this->db->set('valor', $_POST['valor']);
         $this->db->set('tipo', $_POST['tipo']);
         $this->db->set('credor', $_POST['nome']);
@@ -8618,12 +8618,30 @@ ORDER BY ae.agenda_exames_id)";
                             impressao_laudo,
                             chamar_consulta,
                             impressao_recibo,
+                            cabecalho_config,
+                            rodape_config,
+                            laudo_config,
+                            recibo_config,
+                            ficha_config,
                             celular,
                             bairro,
                             impressao_tipo');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->orderby('empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarconfiguracaoimpressao() {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_cabecalho_id,ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_cabecalho ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_id', $empresa_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
         $return = $this->db->get();
         return $return->result();
     }
@@ -8977,7 +8995,6 @@ ORDER BY ae.agenda_exames_id)";
 //            $this->db->set('observacoes', $_POST['observacao']);
             if ($_POST['ordenador'] != "") {
                 $this->db->set('ordenador', $_POST['ordenador']);
-                
             }
             if ($_POST['indicacao'] != "") {
                 $this->db->set('indicacao', $_POST['indicacao']);

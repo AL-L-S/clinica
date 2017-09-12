@@ -252,8 +252,10 @@ class Operador extends BaseController {
     function importarimagem() {
         $this->load->helper('directory');
         $operador_id = $_POST['operador_id'];
-        $_FILES['userfile']['name'] = $operador_id . ".jpg";
+//        $_FILES['userfile']['name'] = $operador_id . ".jpg";
+//        $_FILES['userfile']['type'] = "image/png";
 //        var_dump($_FILES['userfile']); die;
+        $nome = $_FILES['userfile']['name'];
 
         if (!is_dir("./upload/1ASSINATURAS")) {
             mkdir("./upload/1ASSINATURAS");
@@ -271,7 +273,8 @@ class Operador extends BaseController {
             }
         }
                
-
+        $arquivoantigo = "./upload/1ASSINATURAS/$nome"; 
+        $arquivonovo = "./upload/1ASSINATURAS/1.jpg"; 
         if (!$arquivo_existe) {
 //             var_dump($arquivo_existe); die;
             //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
@@ -290,12 +293,15 @@ class Operador extends BaseController {
                 $data = array('upload_data' => $this->upload->data());
             }
             $data['operador_id'] = $operador_id;
-            var_dump($error) ;
             
-            die;
+
+            rename($arquivoantigo, $arquivonovo);
+            
+//            var_dump($error);
+//            die;
         }
 
-        redirect(base_url() . "seguranca/operador/anexarimagem/ $operador_id");
+        redirect(base_url() . "seguranca/operador/anexarimagem/$operador_id");
     }
 
     function excluirlogo($operador_id) {
