@@ -317,7 +317,7 @@ class Operador extends BaseController {
         $data['convenios'] = $this->operador_m->listarconveniooperador($operador_id);
         $this->loadView('seguranca/operadorconvenio-form', $data);
     }
-
+    
     function operadorconvenioprocedimento($convenio_id, $operador_id) {
 
         $data['operador'] = $this->operador_m->listarCada($operador_id);

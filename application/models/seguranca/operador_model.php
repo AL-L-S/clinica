@@ -223,7 +223,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function listarprocedimentoconveniooperador($operador_id) {
         $this->db->select('cop.convenio_operador_procedimento_id,
                             pt.nome as procedimento,

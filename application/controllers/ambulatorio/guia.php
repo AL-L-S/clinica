@@ -1247,17 +1247,10 @@ class Guia extends BaseController {
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
-//            echo 'oi';
-//            var_dump($teste);
-//            die;
             if (empty($teste)) {
-//                var_dump($teste);
                 $data['x'] ++;
             }
         }
-//        echo "<hr>";
-//        var_dump($data['exames']);
-//        die;
 
         if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);

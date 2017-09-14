@@ -41,7 +41,7 @@
 
                 <tr>
                     <th class="tabela_header">Convenio</th>
-                    <th class="tabela_header">Procedimentp</th>
+                    <th class="tabela_header">Procedimento</th>
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
             </thead>
