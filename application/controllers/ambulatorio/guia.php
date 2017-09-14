@@ -2823,10 +2823,11 @@ class Guia extends BaseController {
     }
 
     function impressaorecibo($paciente_id, $guia_id, $exames_id) {
-
+//        echo CI_VERSION;
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['exame'] = $this->guia->listarexame($exames_id);
         $grupo = $data['exame'][0]->grupo;
         $convenioid = $data['exame'][0]->convenio_id;

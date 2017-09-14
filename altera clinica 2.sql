@@ -498,7 +498,7 @@ ALTER TABLE ponto.tb_procedimento_convenio_antigo ADD COLUMN empresa_id integer;
 
 -- Dia 21/08/17
 
-CREATE TABLE ponto.tb_empresa_impressao
+CREATE TABLE ponto.tb_empresa_impressao_cabecalho
 (
   empresa_impressao_id serial NOT NULL,
 
@@ -616,8 +616,106 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN horarioagenda_editada_id integer;
 ALTER TABLE ponto.tb_horarioagenda_editada ADD COLUMN ativo boolean NOT NULL DEFAULT true;
 ALTER TABLE ponto.tb_horarioagenda_editada ADD COLUMN consolidado boolean NOT NULL DEFAULT false;
 
+--02/09/2017
+DROP TABLE ponto.tb_empresa_impressao;
 
--- Dia 08/09/2017
+CREATE TABLE ponto.tb_empresa_impressao_cabecalho
+(
+  empresa_impressao_cabecalho_id serial NOT NULL,
+
+  cabecalho text,
+  rodape text,
+  paciente boolean DEFAULT false,
+  procedimento boolean DEFAULT false,
+  convenio boolean DEFAULT false,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_impressao_cabecalho_pkey PRIMARY KEY (empresa_impressao_cabecalho_id)
+);
+
+CREATE TABLE ponto.tb_empresa_impressao_cabecalho
+(
+  empresa_impressao_cabecalho_id serial NOT NULL,
+
+  cabecalho text,
+  rodape text,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_impressao_cabecalho_pkey PRIMARY KEY (empresa_impressao_cabecalho_id)
+);
+
+
+
+CREATE TABLE ponto.tb_empresa_impressao_recibo
+(
+  empresa_impressao_recibo_id serial NOT NULL,
+  texto text,
+  nome text,
+  cabecalho boolean DEFAULT false,
+  rodape boolean DEFAULT false,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_impressao_recibo_pkey PRIMARY KEY (empresa_impressao_recibo_id)
+);
+
+CREATE TABLE ponto.tb_empresa_impressao_ficha
+(
+  empresa_impressao_ficha_id serial NOT NULL,
+  texto text,
+  nome text,
+  cabecalho boolean DEFAULT false,
+  rodape boolean DEFAULT false,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_impressao_ficha_pkey PRIMARY KEY (empresa_impressao_ficha_id)
+);
+
+
+CREATE TABLE ponto.tb_empresa_impressao_laudo
+(
+  empresa_impressao_laudo_id serial NOT NULL,
+  texto text,
+  nome text,
+  cabecalho boolean DEFAULT false,
+  rodape boolean DEFAULT false,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_empresa_impressao_laudo_pkey PRIMARY KEY (empresa_impressao_laudo_id)
+);
+
+UPDATE ponto.tb_procedimento_tuss
+   SET qtde=1
+ WHERE qtde = 0;
+
+
+-- 08/09/2017
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN cabecalho_config boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa ADD COLUMN rodape_config boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa ADD COLUMN laudo_config boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa ADD COLUMN recibo_config boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa ADD COLUMN ficha_config boolean DEFAULT false;
+
 ALTER TABLE ponto.tb_empresa ADD COLUMN odontologia boolean DEFAULT false;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN sala_pendente boolean NOT NULL DEFAULT false;
 

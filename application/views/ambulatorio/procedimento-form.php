@@ -206,7 +206,7 @@
                         <label>Qtde de sess&otilde;es</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtqtde" class="texto" value="<?= @$obj->_qtde; ?>" />
+                        <input required type="number" name="txtqtde" min="1" class="texto" value="<?= @$obj->_qtde; ?>" />
                     </dd>
                     <dt>
                         <label>Prazo entrega</label>

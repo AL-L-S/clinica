@@ -98,7 +98,7 @@
                     </dd>
 
                     <? if ($this->session->userdata('operador_id') == 1) { ?>
-                        
+
                         <dt>
                             <label>Serviço de SMS</label>
                         </dt>
@@ -231,14 +231,14 @@
                         <dd>
                             <input type="checkbox" id="chamar_consulta" name="chamar_consulta" <? if (@$obj->_chamar_consulta == 't') echo "checked"; ?>/> 
                         </dd>
-                        
+
                         <dt>
                             <label title="Aparecer o botão de faturar procedimento no cadastro.">Botão Faturar Procedimentos</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="calendario" name="botao_faturar_proc" <? if (@$obj->_botao_faturar_proc == 't') echo "checked"; ?>/> 
                         </dd>
-                        
+
                         <dt>
                             <label title="Aparecer  o botão de faturar guia no cadastro.">Botão Faturar Guia</label>
                         </dt>
@@ -249,7 +249,7 @@
                             <label title="Procedimentos separados por empresa.">Proc. Multiempresa</label>
                         </dt>
                         <dd>
-                            <input type="checkbox" id="procedimentos_multiempresa" name="procedimentos_multiempresa" <? if (@$obj->_procedimentos_multiempresa == 't') echo "checked"; ?>/> 
+                            <input type="checkbox" id="procedimentos_multiempresa" name="procedimentos_multiempresa" <? if (@$obj->_procedimento_multiempresa == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
                             <label title="Data manual na produção médica .">Data Manual Produção M.</label>
@@ -262,6 +262,37 @@
                         </dt>
                         <dd>
                             <input type="checkbox" id="data_contaspagar" name="medico_laudodigitador" <? if (@$obj->_medico_laudodigitador == 't') echo "checked"; ?>/> 
+                        </dd>
+
+                        <dt>
+                            <label title="Impressao .">Cabeçalho Configurável.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="cabecalho_config" name="cabecalho_config" <? if (@$obj->_cabecalho_config == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Impressao .">Rodapé Configurável.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="rodape_config" name="rodape_config" <? if (@$obj->_rodape_config == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Impressao .">Laudo Configurável.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="laudo_config" name="laudo_config" <? if (@$obj->_laudo_config == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Impressao .">Recibo Configurável.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="recibo_config" name="recibo_config" <? if (@$obj->_recibo_config == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Impressao .">Ficha Configurável.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="ficha_config" name="ficha_config" <? if (@$obj->_ficha_config == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
                             <label title="Ao fechar a produção médica, os valores ja irão cair como saida no Financeiro.">Produção Médica ir direto para Saida</label>

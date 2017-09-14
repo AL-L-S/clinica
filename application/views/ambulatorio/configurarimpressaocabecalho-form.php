@@ -1,24 +1,19 @@
 
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <h3>Configurações Serviço de Email</h3>
+    <h3>Configurações Cabeçalho e Rodapé das impressões</h3>
     <!--<div style="width: 100%">-->
-        <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/empresa/gravarconfiguracaoemail" method="post">
+        <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/empresa/gravarimpressaocabecalho" method="post">
             <fieldset>
-                <legend>Lembrete de Consulta</legend>
-                <textarea name="lembr" id=""><?= @$mensagem[0]->email_mensagem_confirmacao ?></textarea>
+                <legend>Cabeçalho</legend>
+                <textarea name="cabecalho" id=""><?= @$impressao[0]->cabecalho ?></textarea>
                 <input type="hidden" id="empresa_id" name="empresa_id" value="<?= @$empresa_id ?>"/>
+                <input type="hidden" id="impressao_id" name="impressao_id" value="<?= @$empresa_impressao_cabecalho_id ?>"/>
 
             </fieldset>
-            
-            <fieldset>
-                <legend>Mensagem para pacientes que faltaram</legend>
-                <textarea name="falta" id=""><?= @$mensagem[0]->email_mensagem_falta ?></textarea>
 
-            </fieldset>
-            
             <fieldset>
-                <legend>Mensagem de Agradecimento</legend>
-                <textarea name="agrade" id=""><?= @$mensagem[0]->email_mensagem_agradecimento ?></textarea>
+                 <legend>Rodapé</legend>
+                <textarea name="rodape" id=""><?= @$impressao[0]->rodape ?></textarea>
                 <div style="width: 100%">
                     <hr/>
                     <button type="submit" name="btnEnviar">Enviar</button>
@@ -51,7 +46,7 @@
         // General options
         mode: "textareas",
         theme: "advanced",
-plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
         // Theme options
         theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
         theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",

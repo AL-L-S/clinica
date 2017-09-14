@@ -957,6 +957,21 @@ function debug($object) {
                                     <? } ?>
                                 </li> 
                             <? } ?>
+                            <? if ($perfil_id == 1) { ?>
+                                <li><span class="folder">Impressão</span>
+                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarcabecalho">Config.Cabeçalho</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarcabecalho">Config.Recibo</a></span></ul>
+            <!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarcabecalho">Config.Ficha</a></span></ul>
+                                        <? if ($perfil_id != 10) { ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarcabecalho">Config.Laudo</a></span></ul>
+                                            <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Config.Cabeçalho</a></span></ul>-->
+
+                                        <? } ?>
+                                    <? } ?>
+                                </li> 
+                            <? } ?>
                             <li><span class="folder">Administrativas</span>
                                 <? if ($perfil_id == 1) { ?>
                                     <? if ($perfil_id == 1) { ?>

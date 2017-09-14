@@ -58,7 +58,7 @@ class contaspagar_model extends Model {
             $this->db->where('fc.empresa_id', $args['txtempresa']);
         }
         else{
-            echo 'something';
+//            echo 'something';
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->where('empresa_id', $empresa_id);
         }
