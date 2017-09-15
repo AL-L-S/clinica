@@ -21,6 +21,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Convenio Honor&aacute;rios M&eacute;dicos</a></h3>
         <div>
+            <? $convenio = $this->convenio->listardados(); ?>
             <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentual">
                 <table>
                     <thead>
@@ -40,7 +41,16 @@
                                 <input type="text" name="grupo" class="texto03" value="<?php echo @$_GET['grupo']; ?>" />
                             </th>-->
                             <th class="tabela_title">
-                                <input type="text" name="convenio" class="texto06" value="<?php echo @$_GET['convenio']; ?>" />
+                                <select name="convenio" id="convenio" class="size2">
+                                    <option value="">Selecione</option>
+                                    <? foreach ($convenio as $value) : ?>
+                                        <option value="<?= $value->convenio_id; ?>"
+                                                <?if($value->convenio_id == @$_GET['convenio']) echo 'selected';?>>
+                                                <?= $value->nome; ?>
+                                        </option>
+                                    <? endforeach; ?>
+
+                                </select>
                             </th>
                             <th class="tabela_title">
                                 <button type="submit" id="enviar">Pesquisar</button>

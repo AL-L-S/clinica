@@ -30,7 +30,7 @@ class login_model extends Model {
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
 //        
-        $this->db->where('empresa_id', $empresa);
+        $this->db->where('e.empresa_id', $empresa);
         $retorno = $this->db->get()->result();
 
         if (count($retorno) > 0) {

@@ -25,6 +25,8 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento Convenio</a></h3>
         <div>
+            <? $grupo = $this->procedimento->listargrupos(); 
+               $convenio = $this->convenio->listardados(); ?>
             <table>
                 <thead>
                     <tr>
@@ -33,19 +35,46 @@
                 <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/pesquisar">
                     <tr>
                         <th class="tabela_title">Plano</th>
-                        <th class="tabela_title">Procedimento</th>
                         <th class="tabela_title">Grupo</th>
+                        <th class="tabela_title">Procedimento</th>
                         <th colspan="2" class="tabela_title">Codigo</th>
                     </tr>
                     <tr>
                         <th class="tabela_title">
+                            <!--<input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />-->
+                            <select name="convenio" id="convenio" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($convenio as $value) : ?>
+                                    <option value="<?= $value->convenio_id; ?>"
+                                            <?if($value->convenio_id == @$_GET['convenio']) echo 'selected';?>>
+                                            <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
+                        </th>
+                        <th class="tabela_title">
+                            <select name="grupo" id="grupo" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($grupo as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"
+                                        <? if (@$_GET['grupo'] == $value->nome) echo 'selected'?>>
+                                    <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
+                            <!--<input type="text" name="" class="texto04" value="<?php echo @$_GET['grupo']; ?>" />-->
+
+                        </th>
+<!--                        <th class="tabela_title">
                             <input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
                         <th class="tabela_title">
-                            <input type="text" name="procedimento" class="texto04" value="<?php echo @$_GET['procedimento']; ?>" />
-                        </th>
-                        <th class="tabela_title">
                             <input type="text" name="grupo" class="texto04" value="<?php echo @$_GET['grupo']; ?>" />
+                        </th>-->
+                        <th class="tabela_title">
+                            <input type="text" name="procedimento" class="texto04" value="<?php echo @$_GET['procedimento']; ?>" />
                         </th>
                         <th class="tabela_title">
                             <input type="text" name="codigo" class="texto04" value="<?php echo @$_GET['codigo']; ?>" />

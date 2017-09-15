@@ -46,7 +46,7 @@ class procedimentoplano_model extends Model {
 //            var_dump($args['nome']); die;
             $this->db->where('c.nome', $args['nome']);
         }
-        if (isset($args['procedimento']) && @$args['convenio'] != '') {
+        if (isset($args['convenio']) && @$args['convenio'] != '') {
             $this->db->where('c.convenio_id', $args['convenio']);
         }
         if (isset($args['procedimento']) && strlen($args['procedimento']) > 0) {
@@ -128,8 +128,8 @@ class procedimentoplano_model extends Model {
                             GROUP BY pc.convenio_id)");
 
 
-        if (isset($args['convenio']) && strlen($args['convenio']) > 0) {
-            $this->db->where('c.nome ilike', "%" . $args['convenio'] . "%");
+        if (isset($args['convenio']) && @$args['convenio'] != '') {
+            $this->db->where('c.convenio_id', $args['convenio']);
         }
         
         return $this->db;
@@ -140,8 +140,7 @@ class procedimentoplano_model extends Model {
         $this->db->select('pm.procedimento_percentual_medico_id,
                             pt.nome as procedimento,
                             c.nome as convenio,
-                            pt.grupo as grupo,
-                            ');
+                            pt.grupo as grupo');
         $this->db->from('tb_procedimento_percentual_medico pm');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pm.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -224,8 +223,8 @@ class procedimentoplano_model extends Model {
         $this->db->where("pm.ativo", 't');
 
 
-        if (isset($args['convenio']) && strlen($args['convenio']) > 0) {
-            $this->db->where('c.nome ilike', "%" . $args['convenio'] . "%");
+        if (isset($args['convenio']) && @$args['convenio'] != '') {
+            $this->db->where('c.convenio_id', $args['convenio']);
         }
         if (isset($args['procedimento']) && strlen($args['procedimento']) > 0) {
             $this->db->where('pt.nome ilike', "%" . $args['procedimento'] . "%");
@@ -543,13 +542,30 @@ class procedimentoplano_model extends Model {
     function listarconveniomedico($medico_id) {
         $this->db->select('c.convenio_id,
                             c.nome,');
-        $this->db->from('tb_ambulatorio_convenio_operador co');
-        $this->db->join('tb_convenio c', 'c.convenio_id = co.convenio_id', 'left');
-        $this->db->where("co.operador_id", $medico_id);
-        $this->db->where("co.ativo", 't');
+        $this->db->from('tb_convenio c');
+        
+//        $procedimento_excecao = $this->session->userdata('procedimento_excecao');
+//        if ($procedimento_excecao == "t") {
+//            $this->db->where("c.convenio_id NOT IN (
+//                                SELECT pc2.convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+//                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+//                                WHERE cop.operador = {$medico_id}
+//                                AND cop.ativo = 't'
+//                            )");
+//        }
+//        else {
+//            $this->db->where("c.convenio_id IN (
+//                                SELECT pc2.convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+//                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+//                                WHERE cop.operador = {$medico_id}
+//                                AND cop.ativo = 't'
+//                            )");
+//        }
+        
         $this->db->where("c.ativo", 't');
         $this->db->orderby('c.nome');
         $return = $this->db->get();
+        
         return $return->result();
     }
 
