@@ -7,6 +7,8 @@
 
             <?
             $salas = $this->exame->listartodassalas();
+            $empresa = $this->guia->listarempresasaladeespera();
+            @$ordem_chegada = @$empresa[0]->ordem_chegada;
             $medicos = $this->operador_m->listarmedicos();
             $especialidade = $this->exame->listarespecialidade();
             $perfil_id = $this->session->userdata('perfil_id');
@@ -84,7 +86,7 @@
                 </thead>
             </table>
             <?
-            $listas = $this->exame->listarmultifuncao2geral($_GET)->get()->result();
+            $listas = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->get()->result();
             $aguardando = 0;
             $espera = 0;
             $finalizado = 0;
@@ -135,7 +137,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->exame->listarmultifuncao2geral($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         $operador_id = $this->session->userdata('operador_id');
 
@@ -194,6 +196,7 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente; ?></td>
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?if($item->data_autorizacao != ''){echo date("H:i:s", strtotime($item->data_autorizacao)) ;}  ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
         <!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
@@ -278,123 +281,123 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>    
 <script type="text/javascript">
-                                                $(document).ready(function () {
+                                    $(document).ready(function () {
 //alert('teste_parada');
-                                                    if ($('#especialidade').val() != '') {
-                                                        $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
-                                                            var options = '<option value=""></option>';
-                                                            var slt = '';
-                                                            for (var c = 0; c < j.length; c++) {
-                                                                if (j[0].operador_id != undefined) {
-                                                                    if (j[c].operador_id == '<?= @$_GET['medico'] ?>') {
-                                                                        slt = 'selected';
-                                                                    }
-                                                                    options += '<option value="' + j[c].operador_id + '" ' + slt + '>' + j[c].nome + '</option>';
-                                                                    slt = '';
-                                                                }
-                                                            }
-                                                            $('#medico').html(options).show();
-                                                            $('.carregando').hide();
-
-
-
-                                                        });
+                                        if ($('#especialidade').val() != '') {
+                                            $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
+                                                var options = '<option value=""></option>';
+                                                var slt = '';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    if (j[0].operador_id != undefined) {
+                                                        if (j[c].operador_id == '<?= @$_GET['medico'] ?>') {
+                                                            slt = 'selected';
+                                                        }
+                                                        options += '<option value="' + j[c].operador_id + '" ' + slt + '>' + j[c].nome + '</option>';
+                                                        slt = '';
                                                     }
-                                                    $(function () {
-                                                        $('#especialidade').change(function () {
+                                                }
+                                                $('#medico').html(options).show();
+                                                $('.carregando').hide();
 
-                                                            if ($(this).val()) {
+
+
+                                            });
+                                        }
+                                        $(function () {
+                                            $('#especialidade').change(function () {
+
+                                                if ($(this).val()) {
 
 //                                                  alert('teste_parada');
-                                                                $('.carregando').show();
+                                                    $('.carregando').show();
 //                                                        alert('teste_parada');
-                                                                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                                                                    options = '<option value=""></option>';
-                                                                    console.log(j);
+                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        console.log(j);
 
-                                                                    for (var c = 0; c < j.length; c++) {
-
-
-                                                                        if (j[0].operador_id != undefined) {
-                                                                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                                                                        }
-                                                                    }
-                                                                    $('#medico').html(options).show();
-                                                                    $('.carregando').hide();
+                                                        for (var c = 0; c < j.length; c++) {
 
 
-
-                                                                });
-                                                            } else {
-                                                                $('.carregando').show();
-//                                                        alert('teste_parada');
-                                                                $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                                                                    options = '<option value=""></option>';
-                                                                    console.log(j);
-
-                                                                    for (var c = 0; c < j.length; c++) {
-
-
-                                                                        if (j[0].operador_id != undefined) {
-                                                                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                                                                        }
-                                                                    }
-                                                                    $('#medico').html(options).show();
-                                                                    $('.carregando').hide();
-
-
-
-                                                                });
+                                                            if (j[0].operador_id != undefined) {
+                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
 
                                                             }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#txtCICPrimariolabel").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#txtCICPrimariolabel").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#txtCICPrimariolabel").val(ui.item.value);
-                                                                $("#txtCICPrimario").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-
-
-                                                    $(function () {
-                                                        $("#data").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#accordion").accordion();
-                                                    });
-
-                                                    setTimeout('delayReload()', 20000);
-                                                    function delayReload()
-                                                    {
-                                                        if (navigator.userAgent.indexOf("MSIE") != -1) {
-                                                            history.go(0);
-                                                        } else {
-                                                            window.location.reload();
                                                         }
-                                                    }
+                                                        $('#medico').html(options).show();
+                                                        $('.carregando').hide();
 
-                                                });
+
+
+                                                    });
+                                                } else {
+                                                    $('.carregando').show();
+//                                                        alert('teste_parada');
+                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        console.log(j);
+
+                                                        for (var c = 0; c < j.length; c++) {
+
+
+                                                            if (j[0].operador_id != undefined) {
+                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+
+                                                            }
+                                                        }
+                                                        $('#medico').html(options).show();
+                                                        $('.carregando').hide();
+
+
+
+                                                    });
+
+                                                }
+                                            });
+                                        });
+
+                                        $(function () {
+                                            $("#txtCICPrimariolabel").autocomplete({
+                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                                                minLength: 3,
+                                                focus: function (event, ui) {
+                                                    $("#txtCICPrimariolabel").val(ui.item.label);
+                                                    return false;
+                                                },
+                                                select: function (event, ui) {
+                                                    $("#txtCICPrimariolabel").val(ui.item.value);
+                                                    $("#txtCICPrimario").val(ui.item.id);
+                                                    return false;
+                                                }
+                                            });
+                                        });
+
+
+
+                                        $(function () {
+                                            $("#data").datepicker({
+                                                autosize: true,
+                                                changeYear: true,
+                                                changeMonth: true,
+                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                dateFormat: 'dd/mm/yy'
+                                            });
+                                        });
+
+                                        $(function () {
+                                            $("#accordion").accordion();
+                                        });
+
+                                        setTimeout('delayReload()', 20000);
+                                        function delayReload()
+                                        {
+                                            if (navigator.userAgent.indexOf("MSIE") != -1) {
+                                                history.go(0);
+                                            } else {
+                                                window.location.reload();
+                                            }
+                                        }
+
+                                    });
 </script>

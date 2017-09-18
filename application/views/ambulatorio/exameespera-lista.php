@@ -5,6 +5,8 @@
         <div>
             <?
             $salas = $this->exame->listartodassalas();
+            $empresa = $this->guia->listarempresasaladeespera();
+           @$ordem_chegada = @$empresa[0]->ordem_chegada;
             $medicos = $this->operador_m->listarmedicos();
             $situacaocaixa = $this->exame->listarcaixaempresa();
 //            var_dump($situacaocaixa);
@@ -88,7 +90,7 @@
                     <tbody>
                         <?php
                         $perfil_id = $this->session->userdata('perfil_id');
-                        $lista = $this->exame->listarexameagendaconfirmada2($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->exame->listarexameagendaconfirmada2($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
 //                        echo '<pre>';
 //                        var_dump($lista); die;

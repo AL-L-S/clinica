@@ -18,6 +18,8 @@
 
             <?
             $salas = $this->exame->listartodassalas();
+            $empresa = $this->guia->listarempresasaladeespera();
+            @$ordem_chegada = @$empresa[0]->ordem_chegada;
             $medicos = $this->operador_m->listarmedicos();
             $especialidade = $this->exame->listarespecialidade();
             $perfil_id = $this->session->userdata('perfil_id');
@@ -108,7 +110,7 @@
                 </thead>
             </table>
             <?
-            $listas = $this->exame->listarmultifuncao2consulta($_GET)->get()->result();
+            $listas = $this->exame->listarmultifuncao2consulta($_GET, @$ordem_chegada)->get()->result();
             $aguardando = 0;
             $espera = 0;
             $finalizado = 0;
@@ -145,6 +147,7 @@
                         <th class="tabela_header" width="60px;">Convenio</th>
                         <th class="tabela_header" width="60px;">Data</th>                        
                         <th class="tabela_header" width="60px;">Agenda</th>
+                        <th class="tabela_header" width="60px;;">Autorização</th>
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">OBS</th>
                         <th class="tabela_header" colspan="2"><center>A&ccedil;&otilde;es</center></th>
@@ -163,7 +166,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->exame->listarmultifuncao2consulta($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->exame->listarmultifuncao2consulta($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         $operador_id = $this->session->userdata('operador_id');
 //                        echo '<pre>';
@@ -228,6 +231,7 @@
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?if($item->data_autorizacao != ''){echo date("H:i:s", strtotime($item->data_autorizacao)) ;}  ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
         <!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
@@ -235,7 +239,7 @@
                                             Chamar
                                         </a></div>
                                 </td>-->
-                                <? if ($item->situacaolaudo != '' && isset($item->paciente_id) && $item->situacaoexame != 'PENDENTE' ) { ?>
+                                <? if ($item->situacaolaudo != '' && isset($item->paciente_id) && $item->situacaoexame != 'PENDENTE') { ?>
                                     <? if (($item->medico_parecer1 == $operador_id && $item->situacaolaudo == 'FINALIZADO') || ($item->realizada == 't' && $item->situacaolaudo != 'FINALIZADO') || $operador_id == 1) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaranaminese/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
@@ -292,27 +296,27 @@
                                     $(document).ready(function () {
 //alert('teste_parada');
 
-        if ($('#especialidade').val() != '') {
-            $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
-                var options = '<option value=""></option>';
-                var slt = '';
-                for (var c = 0; c < j.length; c++) {
-                    if (j[0].operador_id != undefined) {
-                        if (j[c].operador_id == '<?= @$_GET['medico'] ?>') {
-                            slt = 'selected';
-                        }
-                        options += '<option value="' + j[c].operador_id + '" ' + slt + '>' + j[c].nome + '</option>';
-                        slt = '';
-                    }
-                }
-                $('#medico').html(options).show();
-                $('.carregando').hide();
+                                        if ($('#especialidade').val() != '') {
+                                            $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
+                                                var options = '<option value=""></option>';
+                                                var slt = '';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    if (j[0].operador_id != undefined) {
+                                                        if (j[c].operador_id == '<?= @$_GET['medico'] ?>') {
+                                                            slt = 'selected';
+                                                        }
+                                                        options += '<option value="' + j[c].operador_id + '" ' + slt + '>' + j[c].nome + '</option>';
+                                                        slt = '';
+                                                    }
+                                                }
+                                                $('#medico').html(options).show();
+                                                $('.carregando').hide();
 
 
 
-            });
-        }
-        
+                                            });
+                                        }
+
                                         $(function () {
                                             $('#especialidade').change(function () {
 

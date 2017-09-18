@@ -23,6 +23,8 @@
         <div>
             <?
             $salas = $this->exame->listartodassalas();
+            $empresa = $this->guia->listarempresasaladeespera();
+            @$ordem_chegada = @$empresa[0]->ordem_chegada;
             $medicos = $this->operador_m->listarmedicos();
             $especialidade = $this->exame->listarespecialidade();
             $perfil_id = $this->session->userdata('perfil_id');
@@ -145,6 +147,7 @@
                         <th class="tabela_header" width="250px;">Tempo</th>
                         <th class="tabela_header" width="60px;">Convenio</th>
                         <th class="tabela_header" width="60px;">Agenda</th>
+                        <th class="tabela_header" width="60px;;">Autorização</th>
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">Observações</th>
                         <th class="tabela_header" colspan="5"><center>A&ccedil;&otilde;es</center></th>
@@ -161,7 +164,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->exame->listarmultifuncao2fisioterapia($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->exame->listarmultifuncao2fisioterapia($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         $operador_id = $this->session->userdata('operador_id');
                         foreach ($lista as $item) {
@@ -228,9 +231,10 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $teste; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data)) . " " . $item->inicio; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><?if($item->data_autorizacao != ''){echo date("H:i:s", strtotime($item->data_autorizacao)) ;}  ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
         <!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
                                 <a href="<?= base_url() ?>ambulatorio/exame/anexarimagem/">
                                     Chamar
@@ -261,30 +265,30 @@
                             </td>-->
                             <? if (($operador_id == 1 || $perfil_id == 1) && $item->realizada == 't') { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">
-                                    <? if($item->encaixe == 't') { ?>
+                                    <? if ($item->encaixe == 't') { ?>
                                         <div class="bt_link">
-                                        <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
-                                            Cancelar</a></div>
+                                            <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
+                                                Cancelar</a></div>
                                     <? } else { ?>
                                         <div class="bt_link"><a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exame_id ?>/<?= $item->agenda_exames_nome_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
-                                            Cancelar
-                                        </a></div>
+                                                Cancelar
+                                            </a></div>
                                     <? } ?>
                                 </td>
-                            <? }elseif (($operador_id == 1 || $perfil_id == 1) && $item->realizada == 'f'){?>
+                            <? } elseif (($operador_id == 1 || $perfil_id == 1) && $item->realizada == 'f') { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">
-                                    <? if($item->encaixe == 't') { ?>
+                                    <? if ($item->encaixe == 't') { ?>
                                         <div class="bt_link">
-                                        <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
-                                            Cancelar</a></div>
+                                            <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
+                                                Cancelar</a></div>
                                     <? } else { ?>
-                                    <div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
-                                            Cancelar
-                                        </a></div>
+                                        <div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
+                                                Cancelar
+                                            </a></div>
                                     <? } ?>
                                 </td>
-                            <?} ?>
+                            <? } ?>
 
                         <? } else { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="70px;">
@@ -295,9 +299,9 @@
                             </td>
 
                             <? if ($item->paciente_id == "" && $item->bloqueado == 'f') { ?>
-                                                <!--                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><font size="-2">
-                                                                                            <a></a></font>
-                                                                                        </td>-->
+                                                                <!--                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><font size="-2">
+                                                                                                            <a></a></font>
+                                                                                                        </td>-->
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
                                         </a></div>
@@ -323,22 +327,23 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
 
                                     <?
-                                    if (($perfil_id == 4) || $perfil_id == 1) { 
-                                        if($item->encaixe == 't') { ?>
+                                    if (($perfil_id == 4) || $perfil_id == 1) {
+                                        if ($item->encaixe == 't') {
+                                            ?>
                                             <div class="bt_link">
-                                            <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
-                                                Cancelar</a></div>
-                                        <? } else { ?>
+                                                <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
+                                                    Cancelar</a></div>
+                    <? } else { ?>
                                             <div class="bt_link">
-                                            <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>">
-                                                Cancelar</a></div>
+                                                <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>">
+                                                    Cancelar</a></div>
                                         <? } ?>
-                                        
-                                    <? } ?></font>
+
+                <? } ?></font>
                                 </td>
 
                             <? } ?>
-                        <? } ?>
+        <? } ?>
                         </tr>
 
                         </tbody>
@@ -349,7 +354,7 @@
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="13">
-                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>
