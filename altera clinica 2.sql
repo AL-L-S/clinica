@@ -749,3 +749,15 @@ WHERE empresa_id NOT IN ( SELECT empresa_id FROM ponto.tb_empresa_permissoes );
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento_id integer;
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN data date;
  
+-- Dia 19/09/2017
+--UPDATE ponto.tb_procedimento_tuss
+ --  SET grupo = 'ODONTOLOGIA'
+ --WHERE grupo ='TOMOGRAFIA';
+
+
+-- UPDATE ponto.tb_procedimento_tuss
+--   SET qtde=1 
+-- WHERE qtde is null;
+
+--INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+--    VALUES ('ODONTOLOGIA', 'ESPECIALIDADE');
