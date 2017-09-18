@@ -1245,17 +1245,10 @@ class Guia extends BaseController {
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
-//            echo 'oi';
-//            var_dump($teste);
-//            die;
             if (empty($teste)) {
-//                var_dump($teste);
                 $data['x'] ++;
             }
         }
-//        echo "<hr>";
-//        var_dump($data['exames']);
-//        die;
 
         if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
@@ -1269,6 +1262,7 @@ class Guia extends BaseController {
     function faturar($agenda_exames_id, $procedimento_convenio_id) {
         $data['forma_pagamento'] = $this->guia->formadepagamentoprocedimento($procedimento_convenio_id);
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
+        $data['guia_id'] = $data['exame'][0]->guia_id;
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['valor'] = 0.00;
         $this->load->View('ambulatorio/faturar-form', $data);
@@ -1373,6 +1367,11 @@ class Guia extends BaseController {
         $resulta = $_POST['valortotal'];
         if ($resulta == "0.00") {
             $ambulatorio_guia_id = $this->guia->gravarfaturamento();
+            
+            if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
+                $this->guia->descontacreditopaciente();
+            }
+            
             if ($ambulatorio_guia_id == "-1") {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
             } else {
@@ -1617,6 +1616,11 @@ class Guia extends BaseController {
 
             if (!$erro) {
                 $ambulatorio_guia_id = $this->guia->gravarfaturamentototalprocedimentos();
+                
+                if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
+                    $this->guia->descontacreditopaciente();
+                }
+                
                 if ($ambulatorio_guia_id == "-1") {
                     $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
                 } else {
@@ -3314,6 +3318,9 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixa();
+        $data['creditos'] = $this->guia->relatoriocaixacreditoslancados();
+//        echo "<pre>";
+//        var_dump($data['creditos']);die;
         $data['relatoriohomecare'] = $this->guia->relatoriocaixahomecare();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['contador'] = $this->guia->relatoriocaixacontador();

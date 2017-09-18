@@ -230,6 +230,7 @@
                                 <input type="text" name="valortotal" id="valortotal"  onkeyup="multiplica()"  class="texto01" readonly/>
                                 <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->total; ?>"/>
                                 <input type="hidden" name="juros" id="juros" value="0">
+                                <input type="hidden" name="valorcredito" id="valorcredito" value="0">
                             </td>
                         </tr>
 
@@ -313,6 +314,43 @@
                                         multiplica();
                                         $(function () {
                                             $('#formapamento1').change(function () {
+                                                if(this.value == 1000){
+                                                    var selecionado = false;
+
+                                                    for (var i = 1; i < 5; i++) {
+                                                        if (i == 1) {
+                                                            continue;
+                                                        }
+                                                        if($('#formapamento'+i).val() == 1000){
+                                                            selecionado = true;
+                                                        }
+                                                    }
+                                                
+                                                    var valorDiferenca = $('#valortotal').val();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/buscarsaldopaciente', {guia_id: <?= $guia_id ?>, ajax: true}, function (j) {
+                                                        if(!selecionado){
+                                                            if(parseFloat(j.saldo) >=  parseFloat(valorDiferenca)){
+                                                                $('#valor1').val(valorDiferenca);
+                                                            }
+                                                            else{
+                                                                $('#valor1').val(j.saldo);
+                                                            }
+                                                            
+                                                            $('#valorcredito').val($('#valor1').val());
+                                                        }
+
+
+                                                        $('#paciente_id').val(j.paciente_id);
+                                                        $('#valor1').attr("readonly", 'true');
+
+                                                        multiplica();
+                                                    });
+                                                }
+                                                else{
+                                                    $('#valor1').removeAttr("readonly");
+                                                    multiplica();
+                                                }
+                                                
                                                 if ($(this).val()) {
                                                     forma_pagamento_id = document.getElementById("formapamento1").value;
                                                     $('.carregando').show();
@@ -349,6 +387,43 @@
                                         });
                                         $(function () {
                                             $('#formapamento2').change(function () {
+                                                if(this.value == 1000){
+                                                    var selecionado = false;
+
+                                                    for (var i = 1; i < 5; i++) {
+                                                        if (i == 1) {
+                                                            continue;
+                                                        }
+                                                        if($('#formapamento'+i).val() == 1000){
+                                                            selecionado = true;
+                                                        }
+                                                    }
+                                                
+                                                    var valorDiferenca = $('#valortotal').val();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/buscarsaldopaciente', {guia_id: <?= $guia_id ?>, ajax: true}, function (j) {
+                                                        if(!selecionado){
+                                                            if(parseFloat(j.saldo) >=  parseFloat(valorDiferenca)){
+                                                                $('#valor2').val(valorDiferenca);
+                                                            }
+                                                            else{
+                                                                $('#valor2').val(j.saldo);
+                                                            }
+                                                            
+                                                            $('#valorcredito').val($('#valor2').val());
+                                                        }
+
+
+                                                        $('#paciente_id').val(j.paciente_id);
+                                                        $('#valor2').attr("readonly", 'true');
+
+                                                        multiplica();
+                                                    });
+                                                }
+                                                else{
+                                                    $('#valor2').removeAttr("readonly");
+                                                    multiplica();
+                                                }
+                                                
                                                 if ($(this).val()) {
                                                     forma_pagamento_id = document.getElementById("formapamento2").value;
                                                     $('.carregando').show();
@@ -387,6 +462,43 @@
                                         });
                                         $(function () {
                                             $('#formapamento3').change(function () {
+                                                if(this.value == 1000){
+                                                    var selecionado = false;
+
+                                                    for (var i = 1; i < 5; i++) {
+                                                        if (i == 1) {
+                                                            continue;
+                                                        }
+                                                        if($('#formapamento'+i).val() == 1000){
+                                                            selecionado = true;
+                                                        }
+                                                    }
+                                                
+                                                    var valorDiferenca = $('#valortotal').val();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/buscarsaldopaciente', {guia_id: <?= $guia_id ?>, ajax: true}, function (j) {
+                                                        if(!selecionado){
+                                                            if(parseFloat(j.saldo) >=  parseFloat(valorDiferenca)){
+                                                                $('#valor3').val(valorDiferenca);
+                                                            }
+                                                            else{
+                                                                $('#valor3').val(j.saldo);
+                                                            }
+                                                            
+                                                            $('#valorcredito').val($('#valor3').val());
+                                                        }
+
+
+                                                        $('#paciente_id').val(j.paciente_id);
+                                                        $('#valor3').attr("readonly", 'true');
+
+                                                        multiplica();
+                                                    });
+                                                }
+                                                else{
+                                                    $('#valor3').removeAttr("readonly");
+                                                    multiplica();
+                                                }
+                                                
                                                 if ($(this).val()) {
                                                     forma_pagamento_id = document.getElementById("formapamento3").value;
                                                     $('.carregando').show();
@@ -422,6 +534,43 @@
                                         });
                                         $(function () {
                                             $('#formapamento4').change(function () {
+                                                if(this.value == 1000){
+                                                    var selecionado = false;
+
+                                                    for (var i = 1; i < 5; i++) {
+                                                        if (i == 1) {
+                                                            continue;
+                                                        }
+                                                        if($('#formapamento'+i).val() == 1000){
+                                                            selecionado = true;
+                                                        }
+                                                    }
+                                                
+                                                    var valorDiferenca = $('#valortotal').val();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/buscarsaldopaciente', {guia_id: <?= $guia_id ?>, ajax: true}, function (j) {
+                                                        if(!selecionado){
+                                                            if(parseFloat(j.saldo) >=  parseFloat(valorDiferenca)){
+                                                                $('#valor4').val(valorDiferenca);
+                                                            }
+                                                            else{
+                                                                $('#valor4').val(j.saldo);
+                                                            }
+                                                            
+                                                            $('#valorcredito').val($('#valor4').val());
+                                                        }
+
+
+                                                        $('#paciente_id').val(j.paciente_id);
+                                                        $('#valor4').attr("readonly", 'true');
+
+                                                        multiplica();
+                                                    });
+                                                }
+                                                else{
+                                                    $('#valor4').removeAttr("readonly");
+                                                    multiplica();
+                                                }
+                                                
                                                 if ($(this).val()) {
                                                     forma_pagamento_id = document.getElementById("formapamento4").value;
                                                     $('.carregando').show();

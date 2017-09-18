@@ -268,18 +268,19 @@
                                 $(document).ready(function () {
                                      <? for ($i = 1; $i < 5; $i++) { // Caso selecione credito especial?>
                                             $('#formapamento<?= $i ?>').change(function() {
-                                                var selecionado = false;
-                                                
-                                                for (var i = 1; i < 5; i++) {
-                                                    if (i == <?= $i ?>) {
-                                                        continue;
-                                                    }
-                                                    if($('#formapamento'+i).val() == 1000){
-                                                        selecionado = true;
-                                                    }
-                                                }
-                                                
                                                 if(this.value == 1000){
+                                                    
+                                                    var selecionado = false;
+
+                                                    for (var i = 1; i < 5; i++) {
+                                                        if (i == <?= $i ?>) {
+                                                            continue;
+                                                        }
+                                                        if($('#formapamento'+i).val() == 1000){
+                                                            selecionado = true;
+                                                        }
+                                                    }
+
                                                     var valorDiferenca = $('#valortotal').val();
                                                     $.getJSON('<?= base_url() ?>autocomplete/buscarsaldopaciente', {guia_id: <?= $guia_id; ?>, ajax: true}, function (j) {
                                                         if(!selecionado){
@@ -289,18 +290,18 @@
                                                             else{
                                                                 $('#valor<?= $i ?>').val(j.saldo);
                                                             }
+                                                            
+                                                            $('#valorcredito').val($('#valor<?= $i ?>').val());
                                                         }
                                                         
-                                                        $('#paciente_id').val(j.paciente_id);
-                                                        $('#valorcredito').val($('#valor<?= $i ?>').val());
                                                             
+                                                        $('#paciente_id').val(j.paciente_id);
                                                         $('#valor<?= $i ?>').attr("readonly", 'true');
                                                         
                                                         multiplica();
                                                     });
                                                 }
                                                 else{
-//                                                    $('#valor<?= $i ?>').val(0);
                                                     $('#valor<?= $i ?>').removeAttr("readonly");
                                                     multiplica();
                                                 }

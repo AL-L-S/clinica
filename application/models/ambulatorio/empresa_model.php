@@ -766,6 +766,15 @@ class empresa_model extends Model {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa');
+                
+                if (isset($_POST['procedimento_excecao'])) {
+                    $this->db->set('procedimento_excecao', 't');
+                } else {
+                    $this->db->set('procedimento_excecao', 'f');
+                }
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_empresa_permissoes');
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") // erro de banco
                     return -1;
@@ -778,6 +787,16 @@ class empresa_model extends Model {
                 $empresa_id = $_POST['txtempresaid'];
                 $this->db->where('empresa_id', $empresa_id);
                 $this->db->update('tb_empresa');
+                
+                if (isset($_POST['procedimento_excecao'])) {
+                    $this->db->set('procedimento_excecao', 't');
+                } else {
+                    $this->db->set('procedimento_excecao', 'f');
+                }
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->where('empresa_id', $empresa_id);
+                $this->db->update('tb_empresa_permissoes');
             }
             return $empresa_id;
         } catch (Exception $exc) {
@@ -788,7 +807,7 @@ class empresa_model extends Model {
     private function instanciar($empresa_id) {
 
         if ($empresa_id != 0) {
-            $this->db->select('empresa_id, 
+            $this->db->select('f.empresa_id, 
                                f.nome,
                                razao_social,
                                cnpj,
@@ -834,12 +853,15 @@ class empresa_model extends Model {
                                servicosms,
                                servicoemail,
                                chat,
+                               procedimento_excecao,
                                botao_faturar_guia,
                                botao_faturar_procedimento,
-                               producao_medica_saida');
+                               producao_medica_saida,
+                               ep.procedimento_excecao');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
-            $this->db->where("empresa_id", $empresa_id);
+            $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
+            $this->db->where("f.empresa_id", $empresa_id);
             $query = $this->db->get();
             $return = $query->result();
             $this->_empresa_id = $empresa_id;
@@ -892,6 +914,7 @@ class empresa_model extends Model {
             $this->_recibo_config = $return[0]->recibo_config;
             $this->_ficha_config = $return[0]->ficha_config;
             $this->_producao_medica_saida = $return[0]->producao_medica_saida;
+            $this->_procedimento_excecao = $return[0]->procedimento_excecao;
         } else {
             $this->_empresa_id = null;
         }

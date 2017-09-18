@@ -6760,6 +6760,24 @@ AND data <= '$data_fim'";
         }
     }
 
+    function relatoriocaixacreditoslancados() {
+        $this->db->select(" SUM(pc.valor) AS valor,
+                            p.nome as paciente,
+                            pc.data,
+                            f.forma_pagamento_id,
+                            f.nome as formapagamento");
+        $this->db->from('tb_paciente_credito pc');
+        $this->db->join('tb_paciente p', 'p.paciente_id = pc.paciente_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento_id', 'left');
+        $this->db->where("pc.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("pc.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("pc.ativo", 't');
+        $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+        return $return;
+    }
+
     function descontacreditopaciente() {
         $this->db->set('valor', (-1) * (float) $_POST['valorcredito']);
         $this->db->set('paciente_id', $_POST['paciente_id']);
@@ -8268,7 +8286,8 @@ AND data <= '$data_fim'";
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_saldo');
-                } else {
+                } 
+                else {
 
 
 //                    echo $classe, ' => ';
@@ -8369,7 +8388,8 @@ AND data <= '$data_fim'";
                         }
                         $this->db->set('ativo', 'f');
                         $this->db->update('tb_financeiro_contasreceber_temp');
-                    } else {
+                    }
+                    else {
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
 
                             $valor_n_parcelado = $valor_total;
@@ -8459,7 +8479,78 @@ AND data <= '$data_fim'";
                     }
                 }
             }
+            
+            if( count($_POST['creditoForma']) > 0 ){
+                //INSERINDO OS CRÉDITOS LANÇADOS HOJE
+                foreach($_POST['creditoForma'] as $key => $item5){
+                    if($_POST['creditoForma'][$key] == $value->forma_pagamento_id && $_POST['creditoValor'][$key] != '0.00'){
+                        if ($value->nome == '' || $value->conta_id == '' || $value->credor_devedor == '' || $value->parcelas == '') {
+                            return 10;
+                        }
+
+                        if ((!isset($value->tempo_receber) || $value->tempo_receber == 0) && (!isset($value->dia_receber) || $value->dia_receber == 0)) {
+    //$_POST['creditoData'][$key]
+                            $this->db->set('data', $data_inicio);
+                            $this->db->set('valor', $_POST['creditoValor'][$key]);
+                            $this->db->set('classe', $classe);
+                            $this->db->set('nome', $value->credor_devedor);
+                            $this->db->set('conta', $value->conta_id);
+                            $this->db->set('observacao', $observacao . " (CREDITO)");
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('empresa_id', $empresa_id);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->insert('tb_entradas');
+                            $entradas_id = $this->db->insert_id();
+
+                            $this->db->set('data', $_POST['data1']);
+                            $this->db->set('valor', $_POST['creditoValor'][$key]);
+                            $this->db->set('entrada_id', $entradas_id);
+                            $this->db->set('conta', $value->conta_id);
+                            $this->db->set('nome', $value->credor_devedor);
+                            $this->db->set('empresa_id', $empresa_id);
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->insert('tb_saldo');
+                        } 
+                        else {
+                            $data_atual = $_POST['data1'];
+                            $dia_atual = substr($_POST['data1'], 8);
+                            $mes_atual = substr($_POST['data1'], 5, 2);
+                            $ano_atual = substr($_POST['data1'], 0, 4);
+
+                            if (isset($value->dia_receber) && $value->dia_receber > 0){
+                                if ($dia_atual < $value->dia_receber) {
+                                    $data_receber = $ano_atual . '-' . $mes_atual . '-' . $value->dia_receber;
+                                } else {
+                                    $data_passada = $ano_atual . '-' . $mes_atual . '-' . $value->dia_receber;
+                                    $data_receber = date("Y-m-d", strtotime("+1 month", strtotime($data_passada)));
+                                }
+
+                                $data_receber_p = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_receber)));
+                            } 
+                            else {
+                                $data_receber_p = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
+                            }
+
+                            $this->db->set('valor', $_POST['creditoValor'][$key]);
+                            $this->db->set('devedor', $value->credor_devedor);
+                            $this->db->set('parcela', 1);
+                            $this->db->set('data', $data_receber_p);
+                            $this->db->set('classe', $classe);
+                            $this->db->set('conta', $value->conta_id);
+                            $this->db->set('observacao', $observacao . " (CREDITO)");
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->set('empresa_id', $empresa_id);
+                            $this->db->insert('tb_financeiro_contasreceber');
+                        }
+                    }
+                }
+            }
         }
+        
+        
+        
         $empresa = (isset($_POST['empresa']) ? ' AND ae.empresa_id = ' . $_POST['empresa'] : '');
 
         if ($_POST['grupo'] == 0) {

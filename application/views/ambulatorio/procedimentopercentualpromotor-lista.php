@@ -8,6 +8,8 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento Honor&aacute;rios Promotores</a></h3>
         <div>
+            <? $grupo = $this->procedimento->listargrupos(); 
+               $convenio = $this->convenio->listardados(); ?>
             <table>
                 <thead>
                     <tr>
@@ -15,19 +17,36 @@
                     </tr>
                 <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">
                     <tr>
-                        <th class="tabela_title">Procedimento</th>
-                        <th class="tabela_title" >Grupo</th>                  
                         <th class="tabela_title" >Convenio</th>                        
+                        <th class="tabela_title" >Grupo</th>                  
+                        <th class="tabela_title">Procedimento</th>
                     </tr>
                     <tr>
                         <th class="tabela_title">
-                            <input type="text" name="procedimento" class="texto05" value="<?php echo @$_GET['procedimento']; ?>" />
+                            <select name="convenio" id="convenio" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($convenio as $value) : ?>
+                                    <option value="<?= $value->convenio_id; ?>"
+                                            <?if($value->convenio_id == @$_GET['convenio']) echo 'selected';?>>
+                                            <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+                            </select>
                         </th>
                         <th class="tabela_title">
-                            <input type="text" name="grupo" class="texto03" value="<?php echo @$_GET['grupo']; ?>" />
-                        <th class="tabela_title">
-                            <input type="text" name="convenio" class="texto03" value="<?php echo @$_GET['convenio']; ?>" />
+                            <select name="grupo" id="grupo" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($grupo as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"
+                                        <? if (@$_GET['grupo'] == $value->nome) echo 'selected'?>>
+                                    <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
                         </th>
+                        <th class="tabela_title">
+                            <input type="text" name="procedimento" id="procedimento" class="texto05" value="<?php echo @$_GET['procedimento']; ?>" />
                         </th>
                         <th class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -107,5 +126,19 @@
     $(function () {
         $("#accordion").accordion();
     });
-
+    
+    $(function() {
+        $("#procedimento").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=listarprocedimentoautocomplete",
+            minLength: 3,
+            focus: function( event, ui ) {
+                $( "#procedimento" ).val( ui.item.label );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( "#procedimento" ).val( ui.item.value );
+                return false;
+            }
+        });
+    });
 </script>

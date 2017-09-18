@@ -41,12 +41,25 @@
                                 <? endforeach; ?>
                             </select>
                         </dd>
+                        
                         <dt>Procedimento</dt>
                         <dd>
                             <select  name="procedimento1" id="procedimento1" class="size8" required>
                                 <option value="">-- Escolha um procedimento --</option>
                             </select>
                         </dd>
+                        
+                        <dt>Forma de Pagamento</dt>
+                        <dd>
+                            <select name="forma_pagamento" id="forma_pagamento" class="size2" required>
+                                <option value="">Selecione</option>
+                                <? foreach ($forma_pagamento as $item) : //Não vai mostrar forma de pagamento credito.
+                                    if ($item->forma_pagamento_id == 1000 ) continue; ?>
+                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                <? endforeach; ?>
+                            </select>
+                        </dd>
+                        
                         <dt>Valor Unitario</dt>
                         <dd><input type="text" name="valor1" id="valor1" class="texto01" readonly="" required/></dd>
                     </dl>
@@ -97,7 +110,14 @@
                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor',{procedimento1:$(this).val(), ajax:true}, function(j){
                     options =  "";
                     options += j[0].valortotal;
-                    document.getElementById("valor1").value = options
+                    if( j[0].grupo == "ODONTOLOGIA" ){
+                        $("#valor1").removeAttr("readonly", "false");
+                    }
+                    else{
+                        $("#valor1").attr("readonly", "");
+                    }
+                    
+                    document.getElementById("valor1").value = options;
                     $('.carregando').hide();
                 });
             } else {

@@ -33,16 +33,27 @@
                     </tr>
                 <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentual/<?=$convenio_id?>">
                     <tr>
-                        <th class="tabela_title">Procedimento</th>
                         <th class="tabela_title" >Grupo</th>                  
+                        <th class="tabela_title">Procedimento</th>
                         <!--<th class="tabela_title" >Convenio</th>-->                        
                     </tr>
                     <tr>
                         <th class="tabela_title">
-                            <input type="text" name="procedimento" class="texto05" value="<?php echo @$_GET['procedimento']; ?>" />
+                            <select name="grupo" id="grupo" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($grupo as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"
+                                        <? if (@$_GET['grupo'] == $value->nome) echo 'selected'?>>
+                                    <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
+                            <!--<input type="text" name="" class="texto04" value="<?php echo @$_GET['grupo']; ?>" />-->
+
                         </th>
                         <th class="tabela_title">
-                            <input type="text" name="grupo" class="texto03" value="<?php echo @$_GET['grupo']; ?>" />
+                            <input type="text" name="procedimento" id="procedimento" class="texto05" value="<?php echo @$_GET['procedimento']; ?>" />
                         </th>
                         <th class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -116,6 +127,21 @@
 
     $(function () {
         $("#accordion").accordion();
+    });
+    
+    $(function() {
+        $("#procedimento").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=listarprocedimentoautocomplete",
+            minLength: 3,
+            focus: function( event, ui ) {
+                $( "#procedimento" ).val( ui.item.label );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( "#procedimento" ).val( ui.item.value );
+                return false;
+            }
+        });
     });
 
 </script>

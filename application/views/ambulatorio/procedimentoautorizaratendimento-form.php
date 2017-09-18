@@ -220,21 +220,23 @@
 
 <? for ($b = 1; $b <= $i; $b++) { ?>
     <? $it = ($b == 1) ? '' : $b; ?>
-                                 $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio<?= $b ?>', {medico_id<?= $b ?>: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
-
+                                 $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
+//                                        alert('ola');
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             var selected = '';
                                             
                                             convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
                                             proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
+//                                            alert(convenio_agendado[<?= $b - 1 ?>], proc_agendado[<?= $b - 1 ?>]);
 //                                            var convenio_agendado = <?= @$exames[$b-1]->convenio_agenda ?>;
 //                                            var proc_agendado = <?= @$exames[$b-1]->procedimento_tuss_id ?>;
                                             
                                             if(convenio_agendado[<?= $b - 1 ?>] == j[i].convenio_id){
                                                 selected = "selected='true'";
                                                 <?$it = ($b == 1)?'':$b;?>
-                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos<?= $it ?>', {convenio<?= $b ?>: j[i].convenio_id, ajax: true}, function (t) {
+//                                                        procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#medico1').val(), 
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: j[i].convenio_id, teste: $('#medico_id<?= $b ?>').val(), ajax: true}, function (t) {
                                                     var opt = '<option value=""></option>';
                                                     var slt = '';
                                                     for (var c = 0; c < t.length; c++) {
@@ -286,9 +288,10 @@
 
                                     
                                     $('#grupo<?= $b ?>').change(function () {
+//                                        alert('teste');
                                         if ($('#convenio<?= $b ?>').val()) {
                                             $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $(this).val(), convenio1: $('#convenio1').val(), teste: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
                                                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
@@ -484,7 +487,7 @@
                             $('#medico_id1').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio1', {medico_id1: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -502,7 +505,7 @@
                             $('#convenio1').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#medico_id1').val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -548,7 +551,7 @@
                             $('#medico_id2').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio2', {medico_id2: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -566,7 +569,7 @@
                             $('#convenio2').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos2', {convenio2: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#medico2').val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -611,7 +614,7 @@
                             $('#medico_id3').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio3', {medico_id3: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -628,7 +631,7 @@
                             $('#convenio3').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos3', {convenio3: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#medico3').val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -674,7 +677,7 @@
                             $('#medico_id4').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio4', {medico_id4: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -692,7 +695,7 @@
                             $('#convenio4').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos4', {convenio4: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#medico4').val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -738,7 +741,7 @@
                             $('#medico_id5').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio5', {medico_id5: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -756,7 +759,7 @@
                             $('#convenio5').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos5', {convenio5: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#medico5').val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -802,7 +805,7 @@
                             $('#medico_id6').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio6', {medico_id6: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -820,7 +823,7 @@
                             $('#convenio6').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos6', {convenio6: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#medico6').val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
@@ -866,7 +869,7 @@
                             $('#medico_id7').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio7', {medico_id7: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -930,7 +933,7 @@
                             $('#medico_id8').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio8', {medico_id8: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -994,7 +997,7 @@
                             $('#medico_id9').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio9', {medico_id9: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -1058,7 +1061,7 @@
                             $('#medico_id10').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio10', {medico_id10: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -1123,7 +1126,7 @@
                             $('#medico_id11').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio11', {medico_id11: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -1183,7 +1186,7 @@
                             $('#medico_id12').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio12', {medico_id12: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -1243,7 +1246,7 @@
                             $('#medico_id13').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio13', {medico_id13: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -1303,7 +1306,7 @@
                             $('#medico_id14').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio14', {medico_id14: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
@@ -1358,7 +1361,7 @@
                             $('#medico_id15').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio15', {medico_id15: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';

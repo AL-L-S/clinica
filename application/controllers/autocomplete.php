@@ -173,6 +173,20 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function listarprocedimentoautocomplete() {
+        if (isset($_GET['term'])) {
+            $result = $this->procedimento->listarprocedimentoautocomplete($_GET['term']);
+        } else {
+            $result = $this->procedimento->listarprocedimentoautocomplete();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nome;
+            $retorno['id'] = $item->procedimento_tuss_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function procedimentoproduto() {
         if (isset($_GET['term'])) {
             $result = $this->procedimento->listarprocedimentoautocomplete($_GET['term']);
@@ -652,6 +666,18 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function buscarsaldopacientefaturar() {
+        if (isset($_GET['paciente_id'])) {
+            
+            $paciente_id = $_GET['paciente_id'];
+            
+            $saldoCredito = $this->exametemp->listarsaldocreditopaciente($paciente_id);
+            
+        }
+        
+        echo json_encode(array("saldo" => $saldoCredito[0]->saldo, "paciente_id" => $paciente_id));
+    }
+
     function buscarsaldopaciente() {
         if (isset($_GET['guia_id'])) {
             
@@ -937,6 +963,15 @@ class Autocomplete extends Controller {
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentosgrupo(@$_GET['convenio1'], @$_GET['grupo1']);
         }
+        echo json_encode($result);
+    }
+
+    function procedimentoconveniogrupomedico() {
+//        var_dump($_GET);die;
+        if (isset($_GET['convenio1']) && isset($_GET['grupo1']) && isset($_GET['teste'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosgrupomedico($_GET['convenio1'], $_GET['grupo1'], $_GET['teste']);
+        } 
+        
         echo json_encode($result);
     }
 

@@ -725,3 +725,27 @@ ALTER TABLE ponto.tb_procedimento_percentual_medico_convenio ADD COLUMN tempo_re
 
 -- Dia 11/09/2017
 ALTER TABLE ponto.tb_empresa ADD COLUMN producao_medica_saida boolean DEFAULT false;
+
+
+-- Dia 12/09/2017
+CREATE TABLE ponto.tb_empresa_permissoes
+(
+  empresa_permissoes_id serial NOT NULL,
+  empresa_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  procedimento_excecao boolean DEFAULT false,
+  CONSTRAINT tb_empresa_permissoes_pkey PRIMARY KEY (empresa_permissoes_id)
+);
+
+INSERT INTO ponto.tb_empresa_permissoes(empresa_id, procedimento_excecao)
+SELECT empresa_id, 'f' FROM ponto.tb_empresa
+WHERE empresa_id NOT IN ( SELECT empresa_id FROM ponto.tb_empresa_permissoes );
+
+-- Dia 16/09/2017
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento_id integer;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN data date;
+ 

@@ -35,8 +35,6 @@
 
                 <div>
                     <label>Nascimento</label>
-
-
                     <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
                 </div>
 
@@ -49,8 +47,6 @@
 
                 <div>
                     <label>Nome da M&atilde;e</label>
-
-
                     <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                 </div>
             </fieldset>
@@ -239,7 +235,7 @@
                                             <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
                                                 <? if ($perfil_id != 11) { ?>
                                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');">Faturar
 
                                                         </a>
 

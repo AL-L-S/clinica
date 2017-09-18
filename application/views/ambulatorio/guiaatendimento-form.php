@@ -11,7 +11,6 @@
     </div>
     <div >
         <?
-//        die;
         $perfil_id = $this->session->userdata('perfil_id');
         
         $botao_faturar_guia = $this->session->userdata('botao_faturar_guia');
@@ -160,7 +159,8 @@
                                 <td  width="50px;">
                                     <select  name="formapamento" id="formapamento" class="size1" >
                                         <option value="0">Selecione</option>
-                                        <? foreach ($forma_pagamento as $item) : ?>
+                                        <? foreach ($forma_pagamento as $item) : 
+                                            if($item->forma_pagamento_id == 1000) continue;?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                         <? endforeach; ?>
                                     </select>
@@ -437,9 +437,10 @@
                                 $(function () {
                                     $("#accordion").accordion();
                                 });
-
+                                
                                 if($("#exame").val()){
-                                    var convenio = <?= @$exames[count(@$exames) - 1]->convenio_id ?>;
+                                    
+                                    var convenio = <?= (@$exames[count(@$exames) - 1]->convenio_id != "") ? @$exames[count(@$exames) - 1]->convenio_id : 0; ?>;
                                     $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $("#exame").val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
@@ -450,7 +451,7 @@
                                         $('.carregando').hide();
                                         
                                         if( $('#grupo1').val() && select != ""){
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $('#grupo1').val(), convenio1: convenio}, function (j) {
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $('#grupo1').val(), convenio1: convenio, teste: $('#exame').val()}, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
                                                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
@@ -466,7 +467,7 @@
                                     $('#grupo1').change(function () {
                                         if ($('#convenio1').val()) {
                                             $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $(this).val(), convenio1: $('#convenio1').val(), teste: $('#exame').val()}, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
                                                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
@@ -517,7 +518,7 @@
                                     $('#convenio1').change(function () {
                                         if ($(this).val()) {
                                             $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#exame').val(), ajax: true}, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
                                                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
@@ -528,7 +529,7 @@
                                             
                                             if($("#grupo1").val()){
                                                 
-                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val(), teste: $('#exame').val()}, function (j) {
                                                     options = '<option value=""></option>';
                                                     for (var c = 0; c < j.length; c++) {
                                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';

@@ -45,6 +45,7 @@ class exametemp_model extends Model {
                            pcr.paciente_id,
                            pcr.procedimento_convenio_id,
                            pcr.valor,
+                           pcr.data,
                            c.nome as convenio,
                            p.nome as paciente,
                            pt.nome as procedimento');
@@ -1937,6 +1938,8 @@ class exametemp_model extends Model {
             $this->db->set('valor', $_POST['valor1']);
             $this->db->set('procedimento_convenio_id', $_POST['procedimento1']);
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->set('forma_pagamento_id', $_POST['forma_pagamento']);
+            $this->db->set('data', date("Y-m-d"));
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -4894,7 +4897,8 @@ class exametemp_model extends Model {
 
     function listarautocompleteprocedimentostodos($parametro) {
         $this->db->select(' pc.procedimento_convenio_id,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento, 
+                            pt.codigo');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -4912,15 +4916,39 @@ class exametemp_model extends Model {
 
     function listarautocompleteprocedimentosconveniomedico($parametro, $teste) {
         $this->db->select(' pc.procedimento_convenio_id,
-                            pt.nome as procedimento');
-        $this->db->from('tb_convenio_operador_procedimento cop');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = cop.procedimento_convenio_id');
+                            pt.nome as procedimento, 
+                            pt.codigo');
+        $this->db->from('tb_procedimento_convenio pc');
+//        $this->db->join('tb_convenio_operador_procedimento cop', 'pc.procedimento_convenio_id = cop.procedimento_convenio_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("pc.ativo", 't');
-        $this->db->where("cop.ativo", 't');
-        $this->db->where('cop.convenio_id', $parametro);
-        $this->db->where('cop.operador', $teste);
+        $this->db->where('pc.convenio_id', $parametro);
+//        $this->db->where("cop.ativo", 't');
+        $procedimento_excecao = $this->session->userdata('procedimento_excecao');
+        if ($procedimento_excecao == "t") {
+            $this->db->where("pc.procedimento_convenio_id NOT IN (
+                                SELECT cop.procedimento_convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                INNER JOIN ponto.tb_convenio c2 ON c2.convenio_id = pc2.convenio_id
+                                INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
+                                WHERE pc2.convenio_id = {$parametro}
+                                AND cop.operador = {$teste}
+                                AND cop.ativo = 't'
+                            )");
+        }
+        else {
+            $this->db->where("pc.procedimento_convenio_id IN (
+                                SELECT cop.procedimento_convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                INNER JOIN ponto.tb_convenio c2 ON c2.convenio_id = pc2.convenio_id
+                                INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
+                                WHERE pc2.convenio_id = '{$parametro}'
+                                AND cop.operador = {$teste}
+                                AND cop.ativo = 't'
+                            )");
+        }
+        
         $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa == 't') {
@@ -5075,6 +5103,57 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompleteprocedimentosgrupomedico($convenio_id = null, $grupo = null, $medico_id = null) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $procedimento_excecao = $this->session->userdata('procedimento_excecao');
+        if ($procedimento_excecao == "t") {
+            $this->db->where("pc.procedimento_convenio_id NOT IN (
+                                SELECT cop.procedimento_convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                INNER JOIN ponto.tb_convenio c2 ON c2.convenio_id = pc2.convenio_id
+                                INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
+                                WHERE pc2.convenio_id = {$convenio_id}
+                                AND cop.operador = {$medico_id}
+                                AND cop.ativo = 't'
+                            )");
+        }
+        else {
+            $this->db->where("pc.procedimento_convenio_id IN (
+                                SELECT cop.procedimento_convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                INNER JOIN ponto.tb_convenio c2 ON c2.convenio_id = pc2.convenio_id
+                                INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
+                                WHERE pc2.convenio_id = '{$convenio_id}'
+                                AND cop.operador = {$medico_id}
+                                AND cop.ativo = 't'
+                            )");
+        }
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+
+        if ($convenio_id != null) {
+            $this->db->where('pc.convenio_id', $convenio_id);
+        }
+        if ($grupo != null) {
+            $this->db->where('pt.grupo', $grupo);
+        }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
+
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompleteprocedimentosgrupo($parametro = null, $parametro2 = null) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
@@ -5109,10 +5188,25 @@ class exametemp_model extends Model {
 
         $this->db->select('c.convenio_id,
                             c.nome,');
-        $this->db->from('tb_ambulatorio_convenio_operador co');
-        $this->db->join('tb_convenio c', 'c.convenio_id = co.convenio_id', 'left');
-        $this->db->where('co.operador_id', $parametro);
-        $this->db->where('co.ativo', 't');
+        $this->db->from('tb_convenio c');
+//        $procedimento_excecao = $this->session->userdata('procedimento_excecao');
+//        if ($procedimento_excecao == "t") {
+//            $this->db->where("c.convenio_id NOT IN (
+//                                SELECT pc2.convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+//                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+//                                WHERE cop.ativo = 't'
+//                                AND cop.operador = {$parametro}
+//                            )");
+//        }
+//        else {
+//            $this->db->where("c.convenio_id IN (
+//                                SELECT pc2.convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+//                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+//                                WHERE cop.ativo = 't'
+//                                AND cop.operador = {$parametro}
+//                            )");
+//        }
+        
         $this->db->where('c.ativo', 't');
         $this->db->orderby('c.nome');
         $return = $this->db->get();

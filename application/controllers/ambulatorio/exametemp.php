@@ -15,6 +15,7 @@ class Exametemp extends BaseController {
 
     function Exametemp() {
         parent::Controller();
+        $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('ambulatorio/exametemp_model', 'exametemp');
         $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->model('ambulatorio/laudo_model', 'laudo');
@@ -267,6 +268,7 @@ class Exametemp extends BaseController {
     function carregarcredito($paciente_id) {
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
+        $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/novocredito-form', $data);
     }
