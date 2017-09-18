@@ -559,6 +559,11 @@
                                                 } else {
                                                     $('#homecare').val("");
                                                 }
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
 
                                                 options = "";
                                                 options += j[0].valortotal;

@@ -554,6 +554,11 @@
                                                 options += j[0].valortotal;
                                                 qtde = "";
                                                 qtde += j[0].qtde;
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                                 document.getElementById("valor1").value = options;
                                                 document.getElementById("qtde").value = qtde;
                                                 $('.carregando').hide();

@@ -274,7 +274,7 @@ class Operador extends BaseController {
         }
                
         $arquivoantigo = "./upload/1ASSINATURAS/$nome"; 
-        $arquivonovo = "./upload/1ASSINATURAS/1.jpg"; 
+        $arquivonovo = "./upload/1ASSINATURAS/$operador_id.jpg"; 
         if (!$arquivo_existe) {
 //             var_dump($arquivo_existe); die;
             //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";

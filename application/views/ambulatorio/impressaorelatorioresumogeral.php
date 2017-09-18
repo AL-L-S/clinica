@@ -80,6 +80,7 @@
             $total_convenio = 0;
             $liquidodinheiro = 0;
             $faturamento_clinica = 0;
+            $TOTALCARTAO = 0;
 
             foreach ($formapagamento as $value) {
                 $data[$value->nome] = 0;
@@ -148,51 +149,7 @@
                             $medicos = $medicos + $perc;
                         }
                     }
-//                    echo $itens->dinheiro;
-//                    if ($itens->dinheiro == 't') {
-//                        
-//                        foreach ($formapagamento as $value) {
-//                            if ($itens->forma_pagamento == $value->forma_pagamento_id) {
-//                                $data[$value->nome] = $data[$value->nome] + $itens->valor1;
-//                                $numero[$value->nome] ++;
-////                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-//                            }
-//                        }
-//                        foreach ($formapagamento as $value) {
-//                            if ($itens->forma_pagamento2 == $value->forma_pagamento_id) {
-//                                $data[$value->nome] = $data[$value->nome] + $itens->valor2;
-//                                $numero[$value->nome] ++;
-////                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-//                            }
-//                        }
-//                        foreach ($formapagamento as $value) {
-//                            if ($itens->forma_pagamento3 == $value->forma_pagamento_id) {
-//                                $data[$value->nome] = $data[$value->nome] + $itens->valor3;
-//
-//                                $numero[$value->nome] ++;
-////                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-//                            }
-//                        }
-//                        foreach ($formapagamento as $value) {
-//                            if ($itens->forma_pagamento4 == $value->forma_pagamento_id) {
-//                                $data[$value->nome] = $data[$value->nome] + $itens->valor4;
-//                                $numero[$value->nome] ++;
-////                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-//                            }
-//                        }
-//                    }
-//
-//                    foreach ($formapagamento as $value) {
-//                        if ($data[$value->nome] != 0) {
-//
-//
-//                            echo $data[$value->nome] . '<br>';
-//                            echo $numero[$value->nome] . '<br>';
-//                            echo '<hr>';
-//                        }
-////                          echo  $desconto[$value->nome]. '<br>';
-//                    }
-//
+
 
                 endforeach;
                 $i++;
@@ -445,10 +402,24 @@
                 <td ><font size="-1"><?= $value->nome ?></td>
                 <td ><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
             </tr>  
-            <?}?>
-
+            <?}
+            $totalgeral = $totalgeral + $data[$value->nome];
+            if($value->cartao != 'f'){
+               $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];  
+            }
+            
+            ?>
+            
 
         <? } ?>
+            <tr>
+                <td ><font size="-1">TOTAL CARTÃO</td>
+                <td ><font size="-1"> <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
+            </tr>  
+            <tr>
+                <td ><font size="-1">TOTAL GERAL</td>
+                <td ><font size="-1"><?= number_format($totalgeral, 2, ',', '.'); ?></td>
+            </tr>  
 
     </table>
 

@@ -70,8 +70,12 @@ if(@$empresa[0]->cabecalho_config == 't'){
 <h4><center>Raz&atilde;o Social: <?= $exame[0]->razao_social; ?></center></h4>
 <h4><center>CNPJ: <?= $exame[0]->cnpj; ?></center></h4>
 <?
+@$cabecalho = @$cabecalho[0]->rodape;
+@$cabecalho = str_replace("_assinatura_", '', @$cabecalho);
 if(@$empresa[0]->rodape_config == 't'){
-    echo @$cabecalho[0]->rodape;
+    
+    echo @$cabecalho;
+    
 }else{?>
 <p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p>
 <?}

@@ -246,6 +246,11 @@
                                                                 if(qtde == 0){
                                                                     qtde = 1;
                                                                 }
+                                                if(a[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor<?= $b ?>").prop('readonly', false);
+                                                }else{
+                                                    $("#valor<?= $b ?>").prop('readonly', true);
+                                                }
                                                                 document.getElementById("valor<?= $b ?>").value = valor;
                                                                 document.getElementById("qtde<?= $b ?>").value = qtde;
                                                                 $('.carregando').hide();
@@ -524,6 +529,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                                                        if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                         document.getElementById("valor1").value = options;
                                         document.getElementById("qtde1").value = qtde;
                                         $('.carregando').hide();
@@ -582,7 +592,11 @@
                                            qtde += j[0].qtde; 
                                         }else{
                                            qtde = 1; 
-                                        }
+                                        }                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                         document.getElementById("valor2").value = options;
                                         document.getElementById("qtde2").value = qtde;
                                         $('.carregando').hide();
@@ -641,6 +655,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                                                        if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                         document.getElementById("valor3").value = options;
                                         document.getElementById("qtde3").value = qtde;
                                         $('.carregando').hide();
@@ -700,6 +719,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                         document.getElementById("valor4").value = options;
                                         document.getElementById("qtde4").value = qtde;
                                         $('.carregando').hide();
@@ -759,6 +783,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                                                        if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                         document.getElementById("valor5").value = options;
                                         document.getElementById("qtde5").value = qtde;
                                         $('.carregando').hide();
@@ -818,6 +847,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                         document.getElementById("valor6").value = options;
                                         document.getElementById("qtde6").value = qtde;
                                         $('.carregando').hide();
@@ -877,6 +911,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                         document.getElementById("valor7").value = options;
                                         document.getElementById("qtde7").value = qtde;
                                         $('.carregando').hide();
@@ -936,6 +975,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }                                        
                                         document.getElementById("valor8").value = options;
                                         document.getElementById("qtde8").value = qtde;
                                         $('.carregando').hide();
@@ -995,7 +1039,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
-                                        
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }                                        
                                         document.getElementById("valor9").value = options;
                                         document.getElementById("qtde9").value = qtde;
                                         $('.carregando').hide();
@@ -1055,6 +1103,11 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }                                        
                                         document.getElementById("valor10").value = options;
                                         document.getElementById("qtde10").value = qtde;
                                         $('.carregando').hide();
@@ -1111,6 +1164,11 @@
                                         options += j[0].valortotal;
                                         qtde = "";
                                         qtde += j[0].qtde;
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }                                        
                                         document.getElementById("valor11").value = options;
                                         document.getElementById("qtde11").value = qtde;
                                         $('.carregando').hide();
@@ -1166,6 +1224,11 @@
                                         options += j[0].valortotal;
                                         qtde = "";
                                         qtde += j[0].qtde;
+                                                if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }                                        
                                         document.getElementById("valor12").value = options;
                                         document.getElementById("qtde12").value = qtde;
                                         $('.carregando').hide();
@@ -1221,6 +1284,11 @@
                                         options += j[0].valortotal;
                                         qtde = "";
                                         qtde += j[0].qtde;
+                                                                                        if(j[0].grupo == 'ODONTOLOGIA'){
+                                                    $("#valor1").prop('readonly', false);
+                                                }else{
+                                                    $("#valor1").prop('readonly', true);
+                                                }
                                         document.getElementById("valor13").value = options;
                                         document.getElementById("qtde13").value = qtde;
                                         $('.carregando').hide();

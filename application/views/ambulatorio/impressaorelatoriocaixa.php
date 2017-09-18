@@ -98,7 +98,7 @@
                             $faturado = 'f';
                         }
 
-                        $valortotal = $valortotal + $item->valor_total - $item->desconto;
+                        $valortotal = $valortotal + $item->valor_total;
 
                         if ($i == 1 || $item->nome == $operadorexames) {
 
@@ -312,32 +312,56 @@
                             </tr>
 
                             <?php
+                            $u = 0;
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_2 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_3 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_4 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             if ($item->faturado == 'f') {
@@ -498,32 +522,55 @@
                                 ?>
                             </tr>
                             <?
-                            foreach ($formapagamento as $value) {
+foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_2 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_3 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_4 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             if ($item->forma_pagamento == "") {
@@ -610,7 +657,7 @@
                             $faturado = 'f';
                         }
 
-                        $valortotal = $valortotal + $item->valor_total - $item->desconto;
+                        $valortotal = $valortotal + $item->valor_total;
 
                         if ($i == 1 || $item->nome == $operadorexames) {
 
@@ -824,32 +871,55 @@
                             </tr>
 
                             <?php
-                            foreach ($formapagamento as $value) {
+ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_2 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_3 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_4 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             if ($item->faturado == 'f') {
@@ -1017,25 +1087,55 @@
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                 }
                             }
+foreach ($formapagamento as $value) {
+                                if ($item->forma_pagamento == $value->nome) {
+                                    $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                                    $numero[$value->nome] ++;
+                                    if($u == 0){
+                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
+                                }
+                            }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_2 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_3 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_4 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                     $numero[$value->nome] ++;
+                                    if($u == 0){
+
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    }
+                                    if($item->desconto != ''){
+                                        $u++;
+                                    }
                                 }
                             }
                             if ($item->forma_pagamento == "") {
@@ -1114,7 +1214,7 @@
                             <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
 
                         <? } elseif (count($operador) > 0 && $financeiro == 'f') { ?>
-                            <td colspan="2" ><b>Só é possível fechar por operador</b></td> 
+                            <td colspan="2" ><b>Não é possível fechar por operador</b></td> 
                         <? } else {
                             ?>
                             <td colspan="2" ><b>Caixa Fechado</b></td>

@@ -243,8 +243,14 @@
                                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
                                                             var valor = a[0].valortotal;
                                                             var qtde = a[0].qtde;
-                                                            document.getElementById("valor<?= $b ?>").value = valor;
-                                                            document.getElementById("qtde<?= $b ?>").value = qtde;
+                                                        if(a[0].grupo == 'ODONTOLOGIA'){
+                                                            $("#valor<?= $b?>").prop('readonly', false);
+                                                        }else{
+                                                            $("#valor<?= $b?>").prop('readonly', true);
+                                                        }
+//                                                        console.log(valor);
+                                                            document.getElementById("valor<?=$b?>").value = valor;
+                                                            document.getElementById("qtde<?=$b?>").value = qtde;
                                                             $('.carregando').hide();
                                                         });
                                                         
@@ -328,6 +334,11 @@
                                                                         options += j[0].valortotal;
                                                                         qtde = "";
                                                                         qtde += j[0].qtde;
+                                                                         if(j[0].grupo == 'ODONTOLOGIA'){
+                                                                         $("#valor<?= $b ?>").prop('readonly', false);
+                                                                          }else{
+                                                                         $("#valor<?= $b ?>").prop('readonly', true);
+                                                                         }
                                                                         document.getElementById("valor<?= $b ?>").value = options;
                                                                         document.getElementById("qtde<?= $b ?>").value = qtde;
                                                                         $('.carregando').hide();

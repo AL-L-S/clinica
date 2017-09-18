@@ -48,11 +48,25 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/configurarimpressaocabecalho-lista');
     }
     
+    function listarlaudoconfig() {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaolaudo-lista');
+    }
+    
     function configurarcabecalho($empresa_impressao_cabecalho_id) {
         $data['empresa_impressao_cabecalho_id'] = $empresa_impressao_cabecalho_id;
         $data['impressao'] = $this->empresa->listarconfiguracaoimpressaocabecalho($empresa_impressao_cabecalho_id);
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaocabecalho-form', $data);
+    }
+    
+    function configurarlaudo($empresa_impressao_laudo_id) {
+        $data['empresa_impressao_laudo_id'] = $empresa_impressao_laudo_id;
+        $data['impressao'] = $this->empresa->listarconfiguracaoimpressaolaudoform($empresa_impressao_laudo_id);
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaolaudo-form', $data);
     }
 
     function excluirlembrete($empresa_lembretes_id) {
@@ -64,6 +78,16 @@ class Empresa extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
+    }
+    function ativarconfiguracaolaudo($impressao_id) {
+        if ($this->empresa->ativarconfiguracaolaudo($impressao_id)) {
+            $mensagem = 'Laudo ativado com sucesso';
+        } else {
+            $mensagem = 'Erro ao ativar laudo. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/listarlaudoconfig");
     }
 
     function checandolembrete() {
@@ -96,6 +120,18 @@ class Empresa extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/listarcabecalho");
+    }
+    
+    function gravarimpressaolaudo() {
+        $impressao_id = $_POST['impressao_id'];
+        if ($this->empresa->gravarconfiguracaoimpressaolaudo($impressao_id)) {
+            $mensagem = 'Sucesso ao gravar cabeçalho e rodapé';
+        } else {
+            $mensagem = 'Erro ao gravar cabeçalho e rodapé. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/listarlaudoconfig");
     }
 
     function carregarempresa($exame_empresa_id) {

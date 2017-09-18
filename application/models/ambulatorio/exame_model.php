@@ -955,6 +955,8 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.faturado,
                             p.nome as paciente,
+                            p.nascimento,
+                            p.cpf,
                             ae.procedimento_tuss_id,
                             pt.nome as exame,
                             c.nome as convenio,

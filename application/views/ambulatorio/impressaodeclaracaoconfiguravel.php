@@ -62,13 +62,27 @@ if (@$empresa[0]->cabecalho_config == 't') {
 ?> 
 
 
+<?
+$corpo = $modelo[0]->texto;
+$corpo = str_replace("_paciente_", $exames['0']->paciente, $corpo);
+$corpo = str_replace("_sexo_", $exames['0']->sexo, $corpo);
+$corpo = str_replace("_nascimento_",date("d/m/Y",strtotime($exames['0']->nascimento)), $corpo);
+$corpo = str_replace("_convenio_", $exames['0']->convenio, $corpo);
+//$corpo = str_replace("_sala_", $exames['0']->sala, $corpo);
+$corpo = str_replace("_CPF_", $exames['0']->cpf, $corpo);
+//$corpo = str_replace("_solicitante_", $exames['0']->solicitante, $corpo);
+$corpo = str_replace("_data_", date( "d/m/Y",strtotime($exames['0']->data)), $corpo);
+//$corpo = str_replace("_medico_", $exames['0']->medico, $corpo);
+//$corpo = str_replace("_revisor_", $exames['0']->medicorevisor, $corpo);
+$corpo = str_replace("_procedimento_", $exames['0']->procedimento, $corpo);
+//$corpo = str_replace("_laudo_", $exames['0']->texto, $corpo);
+//$corpo = str_replace("_nomedolaudo_", $exames['0']->cabecalho, $corpo);
+//$corpo = str_replace("_queixa_", $exames['0']->cabecalho, $corpo);
+//$corpo = str_replace("_peso_", $exames['0']->peso, $corpo);
+//$corpo = str_replace("_altura_", $exames['0']->altura, $corpo);
 
-
-
-
-
-<p>Paciente: <strong><?= utf8_decode($paciente['0']->nome); ?></strong></p>
-<? echo $modelo[0]->texto ?>
+?>
+<? echo $corpo ?>
 
 <style>
     footer {
@@ -110,6 +124,8 @@ if (@$empresa[0]->cabecalho_config == 't') {
     }
     $perfil_id = $this->session->userdata('perfil_id');
     ?>
+
+
 </p>
 <style>
     @media print {

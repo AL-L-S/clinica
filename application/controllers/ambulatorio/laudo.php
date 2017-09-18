@@ -645,11 +645,13 @@ class Laudo extends BaseController {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
-        $data['impressao'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
-        $cabecalho_config = $data['impressao'][0]->cabecalho;
-        $rodape_config = $data['impressao'][0]->rodape;
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['impressaolaudo'] = $this->guia->listarconfiguracaoimpressaolaudo($empresa_id);
+        $cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        $rodape_config = $data['cabecalho'][0]->rodape;
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+
 
         $dataFuturo = date("Y-m-d");
         $dataAtual = $data['laudo']['0']->nascimento;
@@ -657,9 +659,46 @@ class Laudo extends BaseController {
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
 
-        $data['integracao'] = $this->laudo->listarlaudosintegracao($agenda_exames_id);
+        $data['integracao'] = $this->laudo->listarlaudosintegracao(@$agenda_exames_id);
         if (count($data['integracao']) > 0) {
             $this->laudo->atualizacaolaudosintegracao($agenda_exames_id);
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        //LAUDO CONFIGURÁVEL
+        if ($data['empresa'][0]->laudo_config == 't') {
+            $filename = "laudo.pdf";
+            if ($data['impressaolaudo'][0]->cabecalho == 't') {
+
+                if ($data['empresa'][0]->cabecalho_config == 't') {
+
+                    $cabecalho = "$cabecalho_config";
+                } else {
+                    $cabecalho = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
+                }
+            } else {
+                $cabecalho = '';
+            }
+            if (file_exists("upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {
+                $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg'>";
+            } else {
+                $assinatura = "";
+            }
+//            var_dump($assinatura); die;
+            if ($data['impressaolaudo'][0]->rodape == 't') {
+                if ($data['empresa'][0]->rodape_config == 't') {
+//                $cabecalho = $cabecalho_config;
+                    $rodape_config = str_replace("_assinatura_", $assinatura, $rodape_config);
+                    $rodape = $rodape_config;
+                } else {
+                    $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+                }
+            } else {
+                $rodape = "";
+            }
+
+            $html = $this->load->view('ambulatorio/impressaolaudoconfiguravel', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape);
+//            $this->load->View('ambulatorio/impressaolaudo_1', $data);
         }
 //        var_dump($cabecalho_config); die;
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1052,8 +1091,8 @@ class Laudo extends BaseController {
             } else {
                 $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
             }
-            
-            
+
+
             $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
             $this->load->View('ambulatorio/impressaolaudo_1', $data);
@@ -1440,6 +1479,10 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
         $data['receituario'] = true;
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['impressaolaudo'] = $this->guia->listarconfiguracaoimpressaolaudo($empresa_id);
+        $cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        $rodape_config = $data['cabecalho'][0]->rodape;
 
         $dataFuturo = date("Y-m-d");
         $dataAtual = $data['laudo']['0']->nascimento;
@@ -1460,7 +1503,7 @@ class Laudo extends BaseController {
                 $arquivo_pasta = directory_map("./upload/1ASSINATURAS/");
                 foreach ($arquivo_pasta as $value) {
                     if ($value == $data['laudo'][0]->medico_parecer1 . ".jpg") {
-                        $carimbo = "<img width='200px;' height='50px;' src='$base_url" . "upload/1ASSINATURAS/$value' />";
+                        $carimbo = "<img width='200px;' height='100px;' src='$base_url" . "upload/1ASSINATURAS/$value' />";
                     }
                 }
             }
@@ -1469,6 +1512,7 @@ class Laudo extends BaseController {
         } else {
             $carimbo = "";
         }
+        $data['assinatura'] = $carimbo;
 
 //        var_dump($carimbo);die;
         $meses = array('01' => "Janeiro", '02' => "Fevereiro", '03' => "Março", '04' => "Abril", '05' => "Maio", '06' => "Junho", '07' => "Julho", '08' => "Agosto", '09' => "Setembro", '10' => "Outubro", '11' => "Novembro", '12' => "Dezembro");
@@ -1484,7 +1528,26 @@ class Laudo extends BaseController {
         $texto_rodape = "Fortaleza, " . $dia . " de " . $nomemes . " de " . $ano;
 
 //        var_dump($data['empresa'][0]->impressao_tipo); die('morreu');
+        if($data['empresa'][0]->ficha_config == 't') {
+            if ($data['empresa'][0]->cabecalho_config == 't') {
+                $cabecalho = $cabecalho_config;
+            } else {
+                $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr></table>";
+            }
+            $rodape_config = str_replace("_assinatura_", $carimbo, $rodape_config);
+            if ($data['empresa'][0]->rodape_config == 't') {
+                $rodape = $texto_rodape . $rodape_config;
+            } else {
+                $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td  >$carimbo</td></tr></table><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
+            }
 
+            $filename = "laudo.pdf";
+//            $cabecalho = "<table ><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td><center><b><p style='text-align: center; font-weight: bold;'>Receita Médica</p></b></center></td></tr><tr><td>Para:" . $data['laudo']['0']->paciente . "<br></td></tr></table>";
+//            $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td ></td></tr></table><div>$carimbo</div><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
+            $html = $this->load->view('ambulatorio/impressaoreceituarioconfiguravel', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape);
+        }
+        
         if ($data['empresa'][0]->impressao_tipo == 1) {//HUMANA        
             $filename = "laudo.pdf";
             $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/humana.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
@@ -1674,6 +1737,11 @@ class Laudo extends BaseController {
         $data['imprimircid'] = $data['laudo']['0']->imprimir_cid;
         $data['co_cid'] = $data['laudo']['0']->cid1;
         $data['co_cid2'] = $data['laudo']['0']->cid2;
+//        var_dump($data); die;
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['impressaolaudo'] = $this->guia->listarconfiguracaoimpressaolaudo($empresa_id);
+        $cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        $rodape_config = $data['cabecalho'][0]->rodape;
 
         if (isset($data['co_cid'])) {
             $data['cid'] = $this->laudo->listarcid($data['co_cid']);
@@ -1707,7 +1775,7 @@ class Laudo extends BaseController {
                 $arquivo_pasta = directory_map("./upload/1ASSINATURAS/");
                 foreach ($arquivo_pasta as $value) {
                     if ($value == $data['laudo'][0]->medico_parecer1 . ".jpg") {
-                        $carimbo = "<img width='200px;' height='50px;' src='$base_url" . "upload/1ASSINATURAS/$value' />";
+                        $carimbo = "<img width='200px;' height='100px;' src='$base_url" . "upload/1ASSINATURAS/$value'/>";
                     }
                 }
             }
@@ -1716,7 +1784,8 @@ class Laudo extends BaseController {
         } else {
             $carimbo = "";
         }
-
+        $data['assinatura'] = $carimbo;
+//        var_dump($carimbo); die;
 
         $meses = array('01' => "Janeiro", '02' => "Fevereiro", '03' => "Março", '04' => "Abril", '05' => "Maio", '06' => "Junho", '07' => "Julho", '08' => "Agosto", '09' => "Setembro", '10' => "Outubro", '11' => "Novembro", '12' => "Dezembro");
 
@@ -1734,6 +1803,29 @@ class Laudo extends BaseController {
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
+        if ($data['empresa'][0]->ficha_config == 't') {
+            if ($arquivo_existe) {
+                $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';
+            } else {
+                $src = 'img/cabecalho.jpg';
+            }
+            $filename = "Atestado.pdf";
+            if ($data['empresa'][0]->cabecalho_config == 't') {
+                $cabecalho = $cabecalho_config;
+            } else {
+                $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='{$src}'></td></tr></table>";
+            }
+            $rodape_config = str_replace("_assinatura_", $carimbo, $rodape_config);
+            if ($data['empresa'][0]->rodape_config == 't') {
+                $rodape = $texto_rodape . $rodape_config;
+            } else {
+                $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td  >$carimbo</td></tr></table><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
+            }
+
+            $html = $this->load->view('ambulatorio/impressaoatestadoconfiguravel', $data, true);
+            pdf($html, $filename, $cabecalho, $rodape);
+//            $this->load->View('ambulatorio/impressaoreceituario', $data);
+        }
 
 
         if ($data['empresa'][0]->impressao_tipo == 14) {//MEDLAB
@@ -1743,7 +1835,13 @@ class Laudo extends BaseController {
                 $src = 'img/medlab.jpg';
             }
             $filename = "laudo.pdf";
-            $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='{$src}'></td></tr></table>";
+
+            if ($data['empresa'][0]->cabecalho_config == 't') {
+                $cabecalho = "$cabecalho_config";
+            } else {
+                $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='{$src}'></td></tr></table>";
+            }
+
 //        $rodape = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
             $html = $this->load->view('ambulatorio/impressaoreceituariomedlab', $data, true);
             pdf($html, $filename, $cabecalho);
@@ -1852,7 +1950,7 @@ class Laudo extends BaseController {
             $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td  >$carimbo</td></tr></table><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
             $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
-            $this->load->View('ambulatorio/impressaoreceituario', $data);
+//            $this->load->View('ambulatorio/impressaoreceituario', $data);
         }
     }
 

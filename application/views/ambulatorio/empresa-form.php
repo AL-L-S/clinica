@@ -289,7 +289,7 @@
                             <input type="checkbox" id="recibo_config" name="recibo_config" <? if (@$obj->_recibo_config == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Impressao .">Ficha Configurável.</label>
+                            <label title="Impressao .">Ficha/Declaração/Atestado Configurável.</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="ficha_config" name="ficha_config" <? if (@$obj->_ficha_config == 't') echo "checked"; ?>/> 

@@ -5596,6 +5596,8 @@ class guia_model extends Model {
                             ae.forma_pagamento3,
                             ae.forma_pagamento4,
                             p.sexo,
+                            p.nascimento,
+                            p.cpf,
                             es.nome as sala,
                             c.nome as convenio,
                             ae.autorizacao,
@@ -8735,6 +8737,20 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->from('tb_empresa_impressao_cabecalho ei');
         $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
         $this->db->where('ei.empresa_id', $empresa_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarconfiguracaoimpressaolaudo() {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_laudo_id,ei.cabecalho,ei.texto,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_laudo ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_id', $empresa_id);
+        $this->db->where('ei.ativo', 't');
 //        $this->db->where('paciente_id', $paciente_id);
 //        $this->db->where('data_criacao', $data);
         $return = $this->db->get();
