@@ -559,7 +559,7 @@ class Exame extends BaseController {
     }
 
     function guiacirurgicaitens($guia_id) {
-
+        $data['guia_id'] = $guia_id;
         $data['guia'] = $this->guia->instanciarguia($guia_id);
         $data['procedimentos'] = $this->exame->listarprocedimentocirurgicoconvenio($data['guia'][0]->convenio_id);
         $data['procedimentos_cadastrados'] = $this->exame->listarprocedimentosadcionados($guia_id);

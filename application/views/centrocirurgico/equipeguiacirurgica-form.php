@@ -1,5 +1,10 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content --> 
     <h3 class="singular"><a href="#">Montar Equipe</a></h3>
+    <div class="bt_link_new">
+        <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/excluirguiacirurgica/<?= @$guia_id; ?>" onclick="javascript: return confirm('Deseja realmente excluir esta guia?');">
+            Cancelar Guia
+        </a>
+    </div>
     <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarguiacirurgicaequipe" method="post">
 
         <fieldset>

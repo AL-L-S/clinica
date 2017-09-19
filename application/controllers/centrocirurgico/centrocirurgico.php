@@ -200,6 +200,15 @@ class centrocirurgico extends BaseController {
     }
     
     
+    function excluirguiacirurgica($guia) {
+        $this->centrocirurgico_m->excluirguiacirurgica($guia);
+        
+        $data['mensagem'] = 'Guia Cirurgica cancelada com sucesso';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        
+        redirect(base_url() . "ambulatorio/exame/faturamentomanual");
+    }
+    
     function finalizarcadastroequipecirurgica($guia) {
         $verifica = $this->centrocirurgico_m->finalizarcadastroequipecirurgica($guia);
         if($verifica){

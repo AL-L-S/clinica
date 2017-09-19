@@ -418,6 +418,18 @@ class centrocirurgico_model extends BaseModel {
         }
     }
 
+    function excluirguiacirurgica($guia) {
+        try {
+            $this->db->where('guia_id', $guia);
+            $this->db->delete('tb_agenda_exames');
+            
+            $this->db->where('ambulatorio_guia_id', $guia);
+            $this->db->delete('tb_ambulatorio_guia');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function excluirequipecirurgica($equipe_id) {
         try {
 

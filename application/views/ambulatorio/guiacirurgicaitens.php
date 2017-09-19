@@ -1,5 +1,10 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
+    <div class="bt_link_new">
+        <a href="<?php echo base_url() ?>centrocirurgico/centrocirurgico/excluirguiacirurgica/<?= @$guia_id; ?>" onclick="javascript: return confirm('Deseja realmente excluir esta guia?');">
+            Cancelar Guia
+        </a>
+    </div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarguiacirurgicaprocedimentos" method="post">
         <fieldset>
             <legend>Dados da Guia</legend>
@@ -163,8 +168,8 @@
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>-->
 <script type="text/javascript">
 //$('#data_realizacao').mask('00/00/0000  00:00');
-  $('#data_realizacao').mask('00/00/0000 00:00:00');
-  $('#data_autorizacao').mask('00/00/0000 00:00:00');
+//  $('#data_realizacao').mask('00/00/0000 00:00:00');
+//  $('#data_autorizacao').mask('00/00/0000 00:00:00');
 
 
 
