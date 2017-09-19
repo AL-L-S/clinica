@@ -306,6 +306,12 @@
                         <dd>
                             <input type="checkbox" id="procedimento_excecao" name="procedimento_excecao" <? if (@$obj->_procedimento_excecao == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ordem de chegada na sala de espera">Ordem de Chegada.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="procedimento_excecao" name="ordem_chegada" <? if (@$obj->_ordem_chegada == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

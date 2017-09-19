@@ -1367,11 +1367,11 @@ class Guia extends BaseController {
         $resulta = $_POST['valortotal'];
         if ($resulta == "0.00") {
             $ambulatorio_guia_id = $this->guia->gravarfaturamento();
-            
+
             if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
                 $this->guia->descontacreditopaciente();
             }
-            
+
             if ($ambulatorio_guia_id == "-1") {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
             } else {
@@ -1616,11 +1616,11 @@ class Guia extends BaseController {
 
             if (!$erro) {
                 $ambulatorio_guia_id = $this->guia->gravarfaturamentototalprocedimentos();
-                
+
                 if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
                     $this->guia->descontacreditopaciente();
                 }
-                
+
                 if ($ambulatorio_guia_id == "-1") {
                     $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
                 } else {
@@ -2098,10 +2098,29 @@ class Guia extends BaseController {
         $data['convenios'] = $this->convenio->listardados();
 
         $data['formapagamento'] = $this->formapagamento->listarforma();
+        $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
+//        echo '<pre>'; 
+//        var_dump($data['relatoriocredito']); die;
         $data['relatoriocirurgico'] = $this->guia->relatorioresumocirurgicomedico();
         $data['procedimentoscirurgicos'] = $this->guia->relatorioresumocirurgicomedicotodos();
 
         $this->load->View('ambulatorio/impressaorelatorioresumogeral', $data);
+    }
+
+    function relatoriocredito() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriocreditopaciente', $data);
+    }
+
+    function gerarelatoriocredito() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['txtNome'] = $_POST['txtNome'];
+
+        $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
+//        var_dump($data['relatoriocredito']); die;
+        $this->load->View('ambulatorio/impressaorelatoriocredito', $data);
     }
 
     function relatoriomedicosolicitante() {

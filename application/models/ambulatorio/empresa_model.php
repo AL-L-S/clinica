@@ -772,6 +772,11 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('procedimento_excecao', 'f');
                 }
+                if (isset($_POST['ordem_chegada'])) {
+                    $this->db->set('ordem_chegada', 't');
+                } else {
+                    $this->db->set('ordem_chegada', 'f');
+                }
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_permissoes');
@@ -792,6 +797,11 @@ class empresa_model extends Model {
                     $this->db->set('procedimento_excecao', 't');
                 } else {
                     $this->db->set('procedimento_excecao', 'f');
+                }
+                if (isset($_POST['ordem_chegada'])) {
+                    $this->db->set('ordem_chegada', 't');
+                } else {
+                    $this->db->set('ordem_chegada', 'f');
                 }
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -854,6 +864,7 @@ class empresa_model extends Model {
                                servicoemail,
                                chat,
                                procedimento_excecao,
+                               ordem_chegada,
                                botao_faturar_guia,
                                botao_faturar_procedimento,
                                producao_medica_saida,
@@ -915,6 +926,7 @@ class empresa_model extends Model {
             $this->_ficha_config = $return[0]->ficha_config;
             $this->_producao_medica_saida = $return[0]->producao_medica_saida;
             $this->_procedimento_excecao = $return[0]->procedimento_excecao;
+            $this->_ordem_chegada = $return[0]->ordem_chegada;
         } else {
             $this->_empresa_id = null;
         }
