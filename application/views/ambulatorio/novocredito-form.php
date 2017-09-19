@@ -110,7 +110,14 @@
                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor',{procedimento1:$(this).val(), ajax:true}, function(j){
                     options =  "";
                     options += j[0].valortotal;
-                    document.getElementById("valor1").value = options
+                    if( j[0].grupo == "ODONTOLOGIA" ){
+                        $("#valor1").removeAttr("readonly", "false");
+                    }
+                    else{
+                        $("#valor1").attr("readonly", "");
+                    }
+                    
+                    document.getElementById("valor1").value = options;
                     $('.carregando').hide();
                 });
             } else {

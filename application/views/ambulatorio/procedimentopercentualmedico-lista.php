@@ -53,7 +53,7 @@
 
                         </th>
                         <th class="tabela_title">
-                            <input type="text" name="procedimento" class="texto05" value="<?php echo @$_GET['procedimento']; ?>" />
+                            <input type="text" name="procedimento" id="procedimento" class="texto05" value="<?php echo @$_GET['procedimento']; ?>" />
                         </th>
                         <th class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
@@ -127,6 +127,21 @@
 
     $(function () {
         $("#accordion").accordion();
+    });
+    
+    $(function() {
+        $("#procedimento").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=listarprocedimentoautocomplete",
+            minLength: 3,
+            focus: function( event, ui ) {
+                $( "#procedimento" ).val( ui.item.label );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( "#procedimento" ).val( ui.item.value );
+                return false;
+            }
+        });
     });
 
 </script>
