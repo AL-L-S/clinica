@@ -652,6 +652,18 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function buscarsaldopacientefaturar() {
+        if (isset($_GET['paciente_id'])) {
+            
+            $paciente_id = $_GET['paciente_id'];
+            
+            $saldoCredito = $this->exametemp->listarsaldocreditopaciente($paciente_id);
+            
+        }
+        
+        echo json_encode(array("saldo" => $saldoCredito[0]->saldo, "paciente_id" => $paciente_id));
+    }
+
     function buscarsaldopaciente() {
         if (isset($_GET['guia_id'])) {
             

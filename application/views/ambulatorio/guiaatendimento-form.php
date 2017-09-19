@@ -159,7 +159,8 @@
                                 <td  width="50px;">
                                     <select  name="formapamento" id="formapamento" class="size1" >
                                         <option value="0">Selecione</option>
-                                        <? foreach ($forma_pagamento as $item) : ?>
+                                        <? foreach ($forma_pagamento as $item) : 
+                                            if($item->forma_pagamento_id == 1000) continue;?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                         <? endforeach; ?>
                                     </select>

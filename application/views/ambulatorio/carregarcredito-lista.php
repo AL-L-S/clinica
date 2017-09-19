@@ -34,6 +34,7 @@
             <table>
                 <tr>
                     <th class="tabela_header">Paciente</th>
+                    <th class="tabela_header">Data</th>
                     <th class="tabela_header">Procedimento</th>
                     <th class="tabela_header">Convênio</th>
                     <th class="tabela_header">Valor (R$)</th>
@@ -59,6 +60,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= date( "d/m/Y", strtotime($item->data) ); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", ""); ?></td>

@@ -744,3 +744,8 @@ CREATE TABLE ponto.tb_empresa_permissoes
 INSERT INTO ponto.tb_empresa_permissoes(empresa_id, procedimento_excecao)
 SELECT empresa_id, 'f' FROM ponto.tb_empresa
 WHERE empresa_id NOT IN ( SELECT empresa_id FROM ponto.tb_empresa_permissoes );
+
+-- Dia 16/09/2017
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento_id integer;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN data date;
+ 

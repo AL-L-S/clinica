@@ -45,6 +45,7 @@ class exametemp_model extends Model {
                            pcr.paciente_id,
                            pcr.procedimento_convenio_id,
                            pcr.valor,
+                           pcr.data,
                            c.nome as convenio,
                            p.nome as paciente,
                            pt.nome as procedimento');
@@ -1937,6 +1938,8 @@ class exametemp_model extends Model {
             $this->db->set('valor', $_POST['valor1']);
             $this->db->set('procedimento_convenio_id', $_POST['procedimento1']);
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->set('forma_pagamento_id', $_POST['forma_pagamento']);
+            $this->db->set('data', date("Y-m-d"));
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
