@@ -279,6 +279,16 @@ class caixa_model extends Model {
     }
 
     function relatoriosaidagrupo() {
+         if ($_POST['tipo'] > 0) {
+            $this->db->select('
+                            tes.descricao,
+                            tipo_entradas_saida_id
+                            ');
+            $this->db->from('tb_tipo_entradas_saida tes');
+            $this->db->where('tes.ativo', 'true');
+            $this->db->where('tes.tipo_entradas_saida_id', $_POST['tipo']);
+            $return = $this->db->get()->result();
+        }
         $this->db->select('s.valor,
                             s.saidas_id,
                             s.observacao,
@@ -290,7 +300,7 @@ class caixa_model extends Model {
         $this->db->from('tb_saidas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+//        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
@@ -299,10 +309,10 @@ class caixa_model extends Model {
             $this->db->where('s.empresa_id', $_POST['empresa']);
         }
         if ($_POST['tipo'] != 0) {
-            $this->db->where('tipo_id', $_POST['tipo']);
+            $this->db->where('tipo', @$return[0]->descricao);
         }
         if ($_POST['classe'] != '') {
-            $this->db->where('classe', $_POST['classe']);
+            $this->db->where('s.classe', $_POST['classe']);
         }
         if ($_POST['conta'] != 0) {
             $this->db->where('s.conta', $_POST['conta']);
@@ -379,6 +389,16 @@ class caixa_model extends Model {
     }
 
     function relatoriosaidacontador() {
+                 if ($_POST['tipo'] > 0) {
+            $this->db->select('
+                            tes.descricao,
+                            tipo_entradas_saida_id
+                            ');
+            $this->db->from('tb_tipo_entradas_saida tes');
+            $this->db->where('tes.ativo', 'true');
+            $this->db->where('tes.tipo_entradas_saida_id', $_POST['tipo']);
+            $return = $this->db->get()->result();
+        }
         $this->db->select('s.valor');
         $this->db->from('tb_saidas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
@@ -388,7 +408,7 @@ class caixa_model extends Model {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
         if ($_POST['tipo'] != 0) {
-            $this->db->where('tipo', $_POST['tipo']);
+            $this->db->where('tipo', @$return[0]->descricao);
         }
         if ($_POST['classe'] != 0) {
             $this->db->where('classe', $_POST['classe']);
