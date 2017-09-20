@@ -370,7 +370,7 @@ class Guia extends BaseController {
             if ($grupo == "CONSULTA") {
                 $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
             }
-            if ($grupo == "FISIOTERAPIA") {
+            if ($grupo == "FISIOTERAPIA" || $grupo == "ESPECIALIDADE") {
                 $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
             }
             if ($data['exame'][0]->tipo == "EXAME") {
@@ -2912,7 +2912,7 @@ class Guia extends BaseController {
 
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
-        $valor = number_format($valor_total, 2, ',', '.');
+        $valor = number_format($data['guia'][0]->valor_guia, 2, ',', '.');
 
         $data['valor'] = $valor;
 

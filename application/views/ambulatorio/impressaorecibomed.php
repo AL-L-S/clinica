@@ -71,7 +71,7 @@ $formapagamento ='';
     <td ><font size = -1>-------------------------------------------------------------</font></td>
 </tr>
 <tr>
-    <td ><font size = -1><b>TOTAL R$ <?= number_format($totalpagar, 2, ',', '.')?> <?= $formapagamento; ?></b></font></td>
+    <td ><font size = -1><b>TOTAL R$ <?= number_format($guia[0]->valor_guia, 2, ',', '.')?> <?= $formapagamento; ?></b></font></td>
 </tr>
 <tr>
     <td ><font size = -1>-------------------------------------------------------------</font></td>

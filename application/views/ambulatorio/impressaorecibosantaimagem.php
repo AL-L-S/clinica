@@ -155,7 +155,7 @@ $idade = $diff->format('%Y');
         <td ><font >-------------------------------------------------------------</font></td>
     </tr>
     <tr>
-        <td ><font ><b>TOTAL R$ <?= number_format($totalpagar, 2, ',', '.') ?> <?= @$formas; ?></b></font></td>
+        <td ><font ><b>TOTAL R$ <?= number_format($guia[0]->valor_guia, 2, ',', '.') ?> <?= @$formas; ?></b></font></td>
     </tr>
     <tr>
         <td ><font >-------------------------------------------------------------</font></td>
