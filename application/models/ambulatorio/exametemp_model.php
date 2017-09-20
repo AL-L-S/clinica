@@ -5423,6 +5423,7 @@ class exametemp_model extends Model {
             $this->db->select('fp.nome,
                            fp.forma_pagamento_id');
             $this->db->from('tb_forma_pagamento fp');
+            $this->db->where('fp.forma_pagamento_id !=', 1000 );
             $return2 = $this->db->get();
             $result2 = $return2->result();
             return $result2;

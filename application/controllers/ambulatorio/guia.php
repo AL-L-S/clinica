@@ -1150,6 +1150,7 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
         $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
@@ -2406,6 +2407,12 @@ class Guia extends BaseController {
     }
 
     function relatorioindicacaoexames() {
+        $data['indicacao'] = $this->paciente->listaindicacao();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatorioindicacaoexames', $data);
+    }
+    
+    function relatorioindicacaoexamescadastro() {
         $data['indicacao'] = $this->paciente->listaindicacao();
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioindicacaoexames', $data);

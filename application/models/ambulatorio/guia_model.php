@@ -4307,12 +4307,12 @@ class guia_model extends Model {
 
 
         $this->db->where("pac.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
-        $this->db->where("pac.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))). " 23:59:59");
+        $this->db->where("pac.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
         $this->db->where("pac.valor > 0");
-        if( $_POST['txtNome'] != "" ){
-            $this->db->where("p.nome ilike", "%" . $_POST['txtNome'] . "%");    
+        if ($_POST['txtNome'] != "") {
+            $this->db->where("p.nome ilike", "%" . $_POST['txtNome'] . "%");
         }
-        
+
 
         $return = $this->db->get();
         return $return->result();
@@ -6049,6 +6049,18 @@ class guia_model extends Model {
                             parcela_minima');
         $this->db->from('tb_forma_pagamento');
         $this->db->where('ativo', 't');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function formadepagamentoguianovo() {
+        $this->db->select('forma_pagamento_id,
+                            nome,
+                            parcela_minima');
+        $this->db->from('tb_forma_pagamento');
+        $this->db->where('ativo', 't');
+        $this->db->where('forma_pagamento_id !=', 1000);
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
@@ -9081,7 +9093,6 @@ ORDER BY ae.agenda_exames_id)";
             $valor = (float) $procedimentos[$i]->valor_total;
             $valProcedimento = ($procedimentos[$i]->horario_especial == 't') ? ($valor) + ($valor * (30 / 100)) : $valor;
             if ($guia->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
-                
                 if ($guia->via == 'D') {// VIA DIFERENTE
                     if ($i == 0) {
                         $valMedicoProc = $valProcedimento;
@@ -9095,10 +9106,7 @@ ORDER BY ae.agenda_exames_id)";
                         $valMedicoProc = ($valProcedimento * (50 / 100));
                     }
                 }
-                
-            } 
-            else { //APARTAMENTO
-                
+            } else { //APARTAMENTO
                 if ($guia->via == 'D') {// VIA DIFERENTE
                     if ($i == 0) {
                         $valMedicoProc = 2 * $valProcedimento;
@@ -9112,23 +9120,19 @@ ORDER BY ae.agenda_exames_id)";
                         $valMedicoProc = $valProcedimento;
                     }
                 }
-                
             }
 
             //VALOR DO CIRURGIAO/ANESTESISTA
             $valMedico = $valMedicoProc;
-            
+
             //DEFININDO OS VALORES
             if ((int) $_POST['funcao'] == 0) {
                 $val = number_format($valMedico, 2, '.', '');
-            } 
-            elseif ((int) $_POST['funcao'] == 6) {
+            } elseif ((int) $_POST['funcao'] == 6) {
                 $val = number_format($valMedico, 2, '.', '');
-            } 
-            elseif ((int) $_POST['funcao'] == 1) {
+            } elseif ((int) $_POST['funcao'] == 1) {
                 $val = number_format(($valMedico * (30 / 100)), 2, '.', '');
-            } 
-            else {
+            } else {
                 $val = number_format(($valMedico * (20 / 100)), 2, '.', '');
             }
 
