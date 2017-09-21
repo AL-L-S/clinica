@@ -576,6 +576,7 @@
                                                 for (var c = 0; c < j.length; c++) {
                                                     if (j[c].forma_pagamento_id != null) {
                                                         options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+//                                                        alert('sd');
                                                     }
                                                 }
                                                 $('#formapamento').html(options).show();

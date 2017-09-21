@@ -415,6 +415,10 @@ class empresa_model extends Model {
             $this->db->from('tb_empresa_impressao_laudo ei');
             $this->db->where('ei.empresa_impressao_laudo_id', $_POST['impressao_id']);
             $teste = $this->db->get()->result();
+            $this->db->select('ei.empresa_impressao_laudo_id,');
+            $this->db->from('tb_empresa_impressao_laudo ei');
+//            $this->db->where('ei.empresa_impressao_laudo_id', $_POST['impressao_id']);
+            $teste2 = $this->db->get()->result();
             if(count($teste) > 0){
               $impressao_id = $teste[0]->empresa_impressao_laudo_id;
             }
@@ -425,6 +429,9 @@ class empresa_model extends Model {
                 $this->db->set('rodape', $_POST['rodape']);
                 $this->db->set('texto', $_POST['texto']);
                 $this->db->set('empresa_id', $empresa_id);
+                if(count($teste2) > 0){
+                $this->db->set('ativo', 'f');
+                }
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_impressao_laudo');

@@ -755,7 +755,18 @@ class procedimentoplano_model extends Model {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
+            
+            $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico_convenio_antigo(procedimento_percentual_medico_convenio_id, 
+            procedimento_percentual_medico_id, medico, valor, percentual, 
+            ativo, data_cadastro, operador_cadastro, data_atualizacao, operador_atualizacao, 
+            dia_recebimento, tempo_recebimento)
+            SELECT procedimento_percentual_medico_convenio_id, procedimento_percentual_medico_id, 
+            medico, valor, percentual, ativo, '$horario', $operador_id, 
+            '$horario', $operador_id, dia_recebimento, tempo_recebimento
+            FROM ponto.tb_procedimento_percentual_medico_convenio
+            WHERE procedimento_percentual_medico_convenio_id = $procedimento_percentual_medico_convenio_id";
+            $this->db->query($sql);
+            
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->set('valor', $_POST['valor']);
@@ -767,7 +778,7 @@ class procedimentoplano_model extends Model {
                 $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
             }
             $this->db->where("procedimento_percentual_medico_convenio_id", $procedimento_percentual_medico_convenio_id);
-            $this->db->update('tb_procedimento_percentual_medico_convenio ');
+            $this->db->update('tb_procedimento_percentual_medico_convenio');
 
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco

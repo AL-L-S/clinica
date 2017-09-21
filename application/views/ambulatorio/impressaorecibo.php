@@ -35,7 +35,7 @@ if(@$empresa[0]->cabecalho_config == 't'){
 <p>
 <p><center>N&SmallCircle; PEDIDO:<?= $exame[0]->agenda_exames_id; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALOR:# <?= $valor; ?> &nbsp;#</center></p>
 <p>
-<p>Recebi de <?= utf8_decode($paciente['0']->nome); ?>, a importancia de <?= $valor; ?> (<?= $extenso; ?>)  referente
+<p>Recebi de <?= utf8_decode($paciente['0']->nome); ?>, a importancia de <?= $guia[0]->valor_guia; ?> (<?= $extenso; ?>)  referente
     a   <?
     $formapagamento = "";
     $teste = "";

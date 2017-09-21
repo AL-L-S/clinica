@@ -249,6 +249,7 @@ class Entrada extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['contador'] = $this->entrada->relatoriosaidaarmazemcontador();
         $data['relatorio'] = $this->entrada->relatoriosaidaarmazem();
+        $data['relatorioconsolidado'] = $this->entrada->relatoriosaidaarmazemconsolidado();
         $this->load->View('estoque/impressaorelatoriosaidaarmazem', $data);
     }
 

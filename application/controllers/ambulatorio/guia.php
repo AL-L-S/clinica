@@ -370,7 +370,7 @@ class Guia extends BaseController {
             if ($grupo == "CONSULTA") {
                 $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
             }
-            if ($grupo == "FISIOTERAPIA") {
+            if ($grupo == "FISIOTERAPIA" || $grupo == "ESPECIALIDADE") {
                 $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
             }
             if ($data['exame'][0]->tipo == "EXAME") {
@@ -1150,6 +1150,7 @@ class Guia extends BaseController {
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
         $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
@@ -1577,7 +1578,7 @@ class Guia extends BaseController {
             $this->load->View('ambulatorio/erro');
         }
     }
-
+    
     function gravarfaturadoprocedimentos() {
 
         $resulta = $_POST['valortotal'];
@@ -1616,6 +1617,8 @@ class Guia extends BaseController {
 
             if (!$erro) {
                 $ambulatorio_guia_id = $this->guia->gravarfaturamentototalprocedimentos();
+
+//                var_dump($_POST['guia_id']);die;
 
                 if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
                     $this->guia->descontacreditopaciente();
@@ -2118,7 +2121,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['txtNome'] = $_POST['txtNome'];
 
-        $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
+        $data['relatoriocredito'] = $this->guia->relatoriocredito();
 //        var_dump($data['relatoriocredito']); die;
         $this->load->View('ambulatorio/impressaorelatoriocredito', $data);
     }
@@ -2406,6 +2409,12 @@ class Guia extends BaseController {
     }
 
     function relatorioindicacaoexames() {
+        $data['indicacao'] = $this->paciente->listaindicacao();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatorioindicacaoexames', $data);
+    }
+    
+    function relatorioindicacaoexamescadastro() {
         $data['indicacao'] = $this->paciente->listaindicacao();
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioindicacaoexames', $data);
@@ -2905,7 +2914,7 @@ class Guia extends BaseController {
 
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
-        $valor = number_format($valor_total, 2, ',', '.');
+        $valor = number_format($data['guia'][0]->valor_guia, 2, ',', '.');
 
         $data['valor'] = $valor;
 
