@@ -119,6 +119,11 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/grauparticipacao-form');
     }
 
+    function configurarpercentuais() {
+        $data = array();
+        $this->loadView('centrocirurgico/configurarpercentuais-lista', $data);
+    }
+
     function carregar($emergencia_solicitacao_acolhimento_id) {
         $obj_paciente = new paciente_model($emergencia_solicitacao_acolhimento_id);
         $data['obj'] = $obj_paciente;

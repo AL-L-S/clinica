@@ -2677,7 +2677,7 @@ class Exame extends BaseController {
                         <ans:tipoAtendimento>04</ans:tipoAtendimento>
                         <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
-                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                        
                       </ans:dadosAtendimento>
                       
                       <ans:procedimentosExecutados>
@@ -2769,7 +2769,7 @@ class Exame extends BaseController {
                         <ans:tipoAtendimento>04</ans:tipoAtendimento>
                         <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
-                        <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                        
                       </ans:dadosAtendimento>
                       
                       <ans:procedimentosExecutados>
@@ -3178,7 +3178,7 @@ class Exame extends BaseController {
                       <ans:tipoAtendimento>04</ans:tipoAtendimento>
                       <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                       <ans:tipoConsulta>1</ans:tipoConsulta>
-                      <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      
                       </ans:dadosAtendimento>
                       <ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
@@ -3265,7 +3265,7 @@ class Exame extends BaseController {
                       <ans:tipoAtendimento>04</ans:tipoAtendimento>
                       <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                       <ans:tipoConsulta>1</ans:tipoConsulta>
-                      <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      
                       </ans:dadosAtendimento>
                       <ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
@@ -3672,7 +3672,7 @@ class Exame extends BaseController {
                       <ans:tipoAtendimento>04</ans:tipoAtendimento>
                       <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                       <ans:tipoConsulta>1</ans:tipoConsulta>
-                      <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      
                       </ans:dadosAtendimento>
                       <ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
@@ -3758,7 +3758,7 @@ class Exame extends BaseController {
                       <ans:tipoAtendimento>04</ans:tipoAtendimento>
                       <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                       <ans:tipoConsulta>1</ans:tipoConsulta>
-                      <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                      
                       </ans:dadosAtendimento>
                       <ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
@@ -4084,7 +4084,7 @@ class Exame extends BaseController {
                   <ans:tipoAtendimento>04</ans:tipoAtendimento>
                   <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                   <ans:tipoConsulta>1</ans:tipoConsulta>
-                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  
                   </ans:dadosAtendimento>
                   <ans:procedimentosExecutados>
                      <ans:procedimentoExecutado>
@@ -4170,7 +4170,7 @@ class Exame extends BaseController {
                   <ans:tipoAtendimento>04</ans:tipoAtendimento>
                   <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                   <ans:tipoConsulta>1</ans:tipoConsulta>
-                  <ans:motivoEncerramento>41</ans:motivoEncerramento>
+                  
                   </ans:dadosAtendimento>
                   <ans:procedimentosExecutados>
                      <ans:procedimentoExecutado>

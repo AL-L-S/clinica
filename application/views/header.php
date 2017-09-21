@@ -805,7 +805,7 @@ function debug($object) {
                                         <ul>
                                             <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico">Listar Solicitacoes</a></span></li>
                                             <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarcirurgia">Fila de Cirurgia</a></span></li>
-                                            <li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarequipecirurgica">Equipe Cirurgica</a></span></li>
+                                            <!--<li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarequipecirurgica">Equipe Cirurgica</a></span></li>-->
                                         </ul>
                                     <? } ?>
                                 </li>
@@ -915,6 +915,7 @@ function debug($object) {
                                     <? if ($perfil_id == 1 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 10) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarhospitais">Manter Hospital</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisargrauparticipacao">Grau de Participação</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/configurarpercentuais">Configurar Percentuais</a></span></ul>
                                     <? } ?>
                                 </li>
                             <? } ?>
