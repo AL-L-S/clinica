@@ -27,7 +27,7 @@
                     none;border-right:none;' colspan="4">&nbsp;</th>
             </tr>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
             </tr>
             <tr>
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">EMPRESA: <?= $tipoempresa ?></th>
@@ -106,7 +106,17 @@
                             </tr>
                         <? } ?>
                         <tr>
-                            <td><font size="-2"><?= utf8_decode($item->nome); ?></td>
+                            <?
+                            //////////////// Caso não exista cliente/setor associado, ou seja, no caso de ser gasto de sala, ele mostra o nome do armazem
+                            if ($item->nome == '') {
+                                ?>
+                                <td><font size="-2"><?= utf8_decode($item->armazem); ?></td> 
+                            <? } else { ?>
+                                <td><font size="-2"><?= utf8_decode($item->nome); ?></td> 
+                            <? }
+                            ?>
+
+
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->unidade); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
@@ -138,14 +148,25 @@
                             <td colspan="8"><font size="-2"><b>Armazem:&nbsp;<?= utf8_decode($item->armazem); ?></b></td>
                         </tr>
                         <tr>
+                            <? //////////////// Caso não exista cliente/setor associado, ou seja, no caso de ser gasto de sala, ele mostra o nome do armazem
+                            ?>
+                            <? if ($item->nome == '') { ?>
+                                <td><font size="-2"><?= utf8_decode($item->armazem); ?></td> 
+                            <? } else { ?>
+                                <td><font size="-2"><?= utf8_decode($item->nome); ?></td> 
+                            <? }
+                            ?>
+
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
-                            <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->unidade); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_venda, 2, ",", "."); ?></td>
-                            <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>
+                            <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                            <td style='text-align: right;'><font size="-2"><?= substr($item->data_entrada, 8, 2) . '/' . substr($item->data_entrada, 5, 2) . '/' . substr($item->data_entrada, 0, 4); ?></td>
+                            <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>
+                            <td><font size="-2"><?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
+                            <!--<td style='text-align: right;'><font size="-2"><?= substr($item->data_entrada, 8, 2) . '/' . substr($item->data_entrada, 5, 2) . '/' . substr($item->data_entrada, 0, 4); ?></td>-->
+
                         </tr>
                         <?
                     }
@@ -158,7 +179,7 @@
             </tbody>
         </table>
         <hr>
-        <table>
+        <table border="1px">
             <tbody>
                 <tr>
                     <td width="140px;" align="Right" ><b>TOTAL GERAL</b></td>
@@ -167,8 +188,33 @@
             </tbody>
 
         </table>
-    <? } else {
-        ?>
+        
+        <h4>Quantidade Total de Produtos</h4>
+
+        <table border="1px">
+            <thead>
+                <tr>
+
+                    <td class="tabela_teste"><font size="-2">Produto</td>
+                    <td class="tabela_teste"><font size="-2">Quantidade Total</td>
+
+    <!--<td class="tabela_teste"><font size="-2">Data Entrada</td>-->
+
+                </tr>
+                
+            </thead>
+<? foreach ($relatorioconsolidado as $item) { ?>
+                    <tr>
+                        <td width="600px;" ><?=utf8_decode($item->produto)?></td>
+                        <td width="140px;" >&nbsp;<?=$item->quantidade?></td>
+                    </tr> 
+                <? }
+                ?>
+
+        </table>
+
+<? } else {
+    ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
     <? }
     ?>

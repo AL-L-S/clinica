@@ -15,19 +15,19 @@
                     <label>Nome</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtNome" class="texto10 bestupper"/>
+                        <input type="text" name="txtNome" class="texto10 bestupper" required/>
                     </dd>
                     <dt>
                     <label>Data inicial</label>
                     </dt>
                     <dd>
-                        <input type="text"  id="txtdatainicial" name="txtdatainicial" alt="date" class="size2" />
+                        <input type="text"  id="txtdatainicial" name="txtdatainicial" alt="date" class="size2" required/>
                     </dd>
                     <dt>
                     <label>Data final</label>
                     </dt>
                     <dd>
-                        <input type="text"  id="txtdatafinal" name="txtdatafinal" alt="date" class="size2" />
+                        <input type="text"  id="txtdatafinal" name="txtdatafinal" alt="date" class="size2" required/>
                     </dd>
                     <dt>
                     <label>Horario *</label>
@@ -45,7 +45,8 @@
                     <label>Medico *</label>
                     </dt>
                     <dd>
-                        <select name="txtmedico" id="txtsala" class="size4">
+                        <select name="txtmedico" id="txtsala" class="size4" required>
+                             <option value="">Selecione</option>
                             <? foreach ($medico as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
                                     <? endforeach; ?>
@@ -56,7 +57,9 @@
                     <label>Tipo Agenda *</label>
                     </dt>
                     <dd>
-                        <select name="txttipo" id="txttipo" class="size4">
+                        
+                        <select name="txttipo" id="txttipo" class="size4" required>
+                             <option value="">Selecione</option>
                             <? foreach ($tipo as $item) : ?>
                                 <option value="<?= $item->ambulatorio_tipo_consulta_id; ?>"><?= $item->descricao; ?></option>
                                     <? endforeach; ?>

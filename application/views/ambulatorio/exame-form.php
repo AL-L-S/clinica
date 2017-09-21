@@ -15,32 +15,34 @@
                         <label>Nome</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtNome" class="texto10 bestupper"/>
+                        <input type="text" name="txtNome" class="texto10 bestupper" required/>
                     </dd>
                     <dt>
                         <label>Data inicial</label>
                     </dt>
                     <dd>
-                        <input type="text"  id="txtdatainicial" name="txtdatainicial" alt="date" class="size2" />
+                        <input type="text"  id="txtdatainicial" name="txtdatainicial" alt="date" class="size2" required/>
                     </dd>
                     <dt>
                         <label>Data final</label>
                     </dt>
                     <dd>
-                        <input type="text"  id="txtdatafinal" name="txtdatafinal" alt="date" class="size2" />
+                        <input type="text"  id="txtdatafinal" name="txtdatafinal" alt="date" class="size2" required/>
                     </dd>
                     <dt>
                         <label>Horario *</label>
                     </dt>
                     <dd>
-                        <input type="hidden"  id="txthorario" name="txthorario" value="<?= $agenda_id ?>"  class="size2" />
+                        <input type="hidden"  id="txthorario" name="txthorario" value="<?= $agenda_id ?>"  class="size2"  />
                         <input type="text"  id="txthorariolabel" name="txthorariotitulo" value="<?= $agenda[0]->nome ?>"  class="size4" readonly=""/>
                     </dd>
                     <dt>
                         <label>Salas *</label>
                     </dt>
                     <dd>
-                        <select name="txtsala" id="txtsala" class="size4">
+                        
+                        <select name="txtsala" id="txtsala" class="size4" required>
+                            <option value="">Selecione</option>
                             <? foreach ($salas as $item) : ?>
                                 <option value="<?= $item->exame_sala_id; ?>"><?= $item->nome; ?></option>
                             <? endforeach; ?>
@@ -50,7 +52,7 @@
                         <label>Medico *</label>
                     </dt>
                     <dd>
-                        <select name="txtmedico" id="txtsala" class="size4">
+                        <select name="txtmedico" id="txtsala" class="size4" required>
                             <option value="">Selecione</option>
                             <? foreach ($medico as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>

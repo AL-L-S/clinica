@@ -516,6 +516,51 @@ class entrada_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function relatoriosaidaarmazemconsolidado() {
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
+        $datahorainicio = $datainicio . ' 00:00:00';
+        $datahorafim = $datafim . ' 23:59:59';
+        $this->db->select('
+            
+            sum(es.quantidade) as quantidade,
+  
+            ep.descricao as produto,
+           ');
+        $this->db->from('tb_estoque_saida es');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
+        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
+        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = es.produto_id', 'left');
+        $this->db->join('tb_estoque_solicitacao_itens esi', 'esi.estoque_solicitacao_itens_id = es.estoque_solicitacao_itens_id', 'left');
+        $this->db->join('tb_estoque_solicitacao_cliente sc', 'sc.estoque_solicitacao_setor_id = esi.solicitacao_cliente_id', 'left');
+        $this->db->join('tb_estoque_cliente ec', 'ec.estoque_cliente_id = sc.cliente_id', 'left');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = ep.unidade_id', 'left');
+        $this->db->join('tb_estoque_entrada e', 'e.estoque_entrada_id = es.estoque_entrada_id', 'left');
+        $this->db->where("es.data_cadastro >=", $datahorainicio);
+        $this->db->where("es.data_cadastro <=", $datahorafim);
+        $this->db->where('es.ativo', 'true');
+        if ($_POST['armazem'] != "0") {
+            $this->db->where('es.armazem_id', $_POST['armazem']);
+        }
+        if ($_POST['setor'] != "0") {
+            $this->db->where('ec.estoque_cliente_id', $_POST['setor']);
+        }
+        if ($_POST['txtfornecedor'] != "0" && $_POST['txtfornecedor'] != "") {
+            $this->db->where("es.fornecedor_id", $_POST['txtfornecedor']);
+        }
+        if ($_POST['txtproduto'] != "0" && $_POST['txtproduto'] != "") {
+            $this->db->where("es.produto_id", $_POST['txtproduto']);
+        }
+        
+        $this->db->groupby('es.quantidade, ep.descricao');
+        $this->db->orderby('ep.descricao');
+//        if ($_POST['empresa'] != "0") {
+//            $this->db->where('ae.empresa_id', $_POST['empresa']);
+//        }
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function relatoriosaidaarmazemcontador() {
         $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );

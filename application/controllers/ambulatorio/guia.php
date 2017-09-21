@@ -1578,7 +1578,7 @@ class Guia extends BaseController {
             $this->load->View('ambulatorio/erro');
         }
     }
-
+    
     function gravarfaturadoprocedimentos() {
 
         $resulta = $_POST['valortotal'];
@@ -1617,6 +1617,8 @@ class Guia extends BaseController {
 
             if (!$erro) {
                 $ambulatorio_guia_id = $this->guia->gravarfaturamentototalprocedimentos();
+
+//                var_dump($_POST['guia_id']);die;
 
                 if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
                     $this->guia->descontacreditopaciente();
@@ -2119,7 +2121,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['txtNome'] = $_POST['txtNome'];
 
-        $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
+        $data['relatoriocredito'] = $this->guia->relatoriocredito();
 //        var_dump($data['relatoriocredito']); die;
         $this->load->View('ambulatorio/impressaorelatoriocredito', $data);
     }

@@ -4292,6 +4292,56 @@ class guia_model extends Model {
 
     function relatorioresumocredito() {
 
+        $this->db->select('op.nome as medico,
+                           ae.valor_total,
+                           p.nome as paciente,
+                           ae.valor_medico,
+                           ae.forma_pagamento,
+                           ae.forma_pagamento2,
+                           ae.forma_pagamento3,
+                           ae.forma_pagamento4,
+                           ae.valor1,
+                           ae.valor2,
+                           ae.valor3,
+                           ae.valor4,
+                           c.dinheiro,
+                           c.nome,
+                           ae.percentual_medico,
+                           pt.perc_medico,
+                           pt.nome as procedimento,
+                           ae.data,
+                           pt.procedimento_tuss_id,
+                           al.medico_parecer1,
+                           pt.percentual');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('ae.valor_medico is not null');
+        $this->db->where('(ae.forma_pagamento = 1000 OR ae.forma_pagamento2 = 1000 OR ae.forma_pagamento3 = 1000 OR ae.forma_pagamento4 = 1000)');
+//        $this->db->where('ppm.ativo', 'true');
+        //$this->db->where('al.situacao', 'FINALIZADO');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+
+
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriocredito() {
+
         $this->db->select('pac.data_cadastro,
                            p.nome as paciente,
                            pac.valor,
