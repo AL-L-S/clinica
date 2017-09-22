@@ -9137,54 +9137,103 @@ ORDER BY ae.agenda_exames_id)";
     }
 
     function gravarguiacirurgicaequipe($procedimentos, $guia) {
-
+        $this->db->select(' leito_enfermaria,
+                            leito_apartamento,
+                            mesma_via,
+                            via_diferente,
+                            horario_especial,
+                            valor,
+                            valor_base');
+        $this->db->from('tb_centrocirurgico_percentual_outros cpo');
+        $this->db->where("ativo", 't');
+        $query = $this->db->get();
+        $return = $query->result();
+        foreach ($return as $value) {
+            
+            if ($value->horario_especial == 't') {
+                $horario_especial = ($value->valor / 100);
+                continue;
+            }
+            
+            if($value->leito_enfermaria == 't'){
+                if($value->mesma_via == 't'){
+                    $enfermaria_mesma_via['maior'] = (float)$value->valor / 100;
+                    $enfermaria_mesma_via['base'] = (float)$value->valor_base / 100;
+                }
+                else{
+                    $enfermaria_via_diferente['maior'] =(float) $value->valor / 100;
+                    $enfermaria_via_diferente['base'] = (float)$value->valor_base / 100;
+                }
+            }
+            else{
+                if($value->mesma_via == 't'){
+                    $apartamento_mesma_via['maior'] =(float) $value->valor / 100;
+                    $apartamento_mesma_via['base'] = (float)$value->valor_base / 100;
+                }
+                else{
+                    $apartamento_via_diferente['maior'] =(float) $value->valor / 100;
+                    $apartamento_via_diferente['base'] = (float)$value->valor_base / 100;
+                }
+                
+            }
+        }
+        
         $valMedico = 0;
+        
         for ($i = 0; $i < count($procedimentos); $i++) {
             $valor = (float) $procedimentos[$i]->valor_total;
-            $valProcedimento = ($procedimentos[$i]->horario_especial == 't') ? ($valor) + ($valor * (30 / 100)) : $valor;
+            $valProcedimento = ($procedimentos[$i]->horario_especial == 't') ? ($valor) + ($valor * $horario_especial) : $valor;
+            
             if ($guia->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
                 if ($guia->via == 'D') {// VIA DIFERENTE
                     if ($i == 0) {
-                        $valMedicoProc = $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $enfermaria_via_diferente['maior'];
                     } else {
-                        $valMedicoProc = ($valProcedimento * (70 / 100));
+                        $valMedicoProc = ($valProcedimento * $enfermaria_via_diferente['base']);
                     }
                 } elseif ($guia->via == 'M') {// MESMA VIA
                     if ($i == 0) {
-                        $valMedicoProc = $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $enfermaria_mesma_via['maior'];
                     } else {
-                        $valMedicoProc = ($valProcedimento * (50 / 100));
+                        $valMedicoProc = ($valProcedimento * $enfermaria_mesma_via['base']);
                     }
                 }
             } else { //APARTAMENTO
                 if ($guia->via == 'D') {// VIA DIFERENTE
                     if ($i == 0) {
-                        $valMedicoProc = 2 * $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $apartamento_via_diferente['maior'];
                     } else {
-                        $valMedicoProc = ($valProcedimento * (140 / 100));
+                        $valMedicoProc = ($valProcedimento * $apartamento_via_diferente['base']);
                     }
                 } elseif ($guia->via == 'M') {// MESMA VIA
                     if ($i == 0) {
-                        $valMedicoProc = 2 * $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $apartamento_mesma_via['maior'];
                     } else {
-                        $valMedicoProc = $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $apartamento_mesma_via['base'];
                     }
                 }
             }
 
             //VALOR DO CIRURGIAO/ANESTESISTA
             $valMedico = $valMedicoProc;
+//            var_dump($guia->leito, $guia->via); die;
+            
+            if((int) $_POST['funcao'] != 0){
+                $this->db->select('valor');
+                $this->db->from('tb_centrocirurgico_percentual_funcao');
+                $this->db->where("funcao", $_POST['funcao']);
+                $query = $this->db->get();
+                $return2 = $query->result();
 
-            //DEFININDO OS VALORES
-            if ((int) $_POST['funcao'] == 0) {
-                $val = number_format($valMedico, 2, '.', '');
-            } elseif ((int) $_POST['funcao'] == 6) {
-                $val = number_format($valMedico, 2, '.', '');
-            } elseif ((int) $_POST['funcao'] == 1) {
-                $val = number_format(($valMedico * (30 / 100)), 2, '.', '');
-            } else {
-                $val = number_format(($valMedico * (20 / 100)), 2, '.', '');
+                //DEFININDO OS VALORES
+                $val = number_format($valMedico * ($return2[0]->valor / 100) , 2, '.', '');
             }
+            else{
+                $val = number_format($valMedico, 2, '.', '');
+            }
+            
+//            echo "<pre>";
+//            var_dump($val); echo "<hr>";
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -9197,6 +9246,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('funcao', $_POST['funcao']);
             $this->db->insert('tb_agenda_exame_equipe');
         }
+//        die;
     }
 
     function gravarorcamentorecepcao($paciente_id) {

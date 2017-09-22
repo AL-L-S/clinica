@@ -118,9 +118,28 @@ class centrocirurgico extends BaseController {
     function novograuparticipacao() {
         $this->loadView('centrocirurgico/grauparticipacao-form');
     }
+    
+    function editarpercentualoutros($percentual_id) {
+        $data['percentual_id'] = $percentual_id;
+        $data['percentual'] = $this->centrocirurgico_m->carregarpercentualoutros($percentual_id);
+        $this->loadView('centrocirurgico/configurarpercentuaisoutros-form', $data);
+    }
+    
+    function editarpercentualfuncao($percentual_id) {
+        $data['percentual_id'] = $percentual_id;
+        $data['percentual'] = $this->centrocirurgico_m->carregarpercentualfuncao($percentual_id);
+        $this->loadView('centrocirurgico/configurarpercentuais-form', $data);
+    }
+    
+    function editarhorarioespecial($percentual_id) {
+        $data['percentual_id'] = $percentual_id;
+        $data['percentual'] = $this->centrocirurgico_m->carregarpercentualfuncao($percentual_id);
+        $this->loadView('centrocirurgico/configurarhorarioespecial-form', $data);
+    }
 
     function configurarpercentuais() {
-        $data = array();
+        $data['funcao'] = $this->centrocirurgico_m->listarpercentualfuncao();
+        $data['percentual'] = $this->centrocirurgico_m->listarpercentualoutros();
         $this->loadView('centrocirurgico/configurarpercentuais-lista', $data);
     }
 
@@ -176,6 +195,33 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
     }
     
+    
+    function gravarpercentualhorarioespecial() {
+        $this->centrocirurgico_m->gravarpercentualhorarioespecial();
+        
+        $data['mensagem'] = 'Percentual gravado com sucesso.';
+        $this->session->set_flashdata('message', $data['mensagem']);      
+        
+        redirect(base_url() . "centrocirurgico/centrocirurgico/configurarpercentuais");
+    }
+    
+    function gravarpercentualoutros() {
+        $this->centrocirurgico_m->gravarpercentualoutros();
+        
+        $data['mensagem'] = 'Percentual gravado com sucesso.';
+        $this->session->set_flashdata('message', $data['mensagem']);      
+        
+        redirect(base_url() . "centrocirurgico/centrocirurgico/configurarpercentuais");
+    }
+    
+    function gravarpercentualfuncao() {
+        $this->centrocirurgico_m->gravarpercentualfuncao();
+        
+        $data['mensagem'] = 'Percentual gravado com sucesso.';
+        $this->session->set_flashdata('message', $data['mensagem']);      
+        
+        redirect(base_url() . "centrocirurgico/centrocirurgico/configurarpercentuais");
+    }
     
     function gravarguiacirurgicaequipe() {
         $guia_id = $_POST['txtambulatorioguiaid'];
