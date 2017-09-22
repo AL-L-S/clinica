@@ -4292,7 +4292,7 @@ class guia_model extends Model {
 
     function relatorioresumocredito() {
 
-        $this->db->select('op.nome as medico,
+        $this->db->select("op.nome as medico,
                            ae.valor_total,
                            p.nome as paciente,
                            ae.valor_medico,
@@ -4304,6 +4304,9 @@ class guia_model extends Model {
                            ae.valor2,
                            ae.valor3,
                            ae.valor4,
+                           (
+                            SELECT SUM(pcr.valor) FROM ponto.tb_paciente_credito pcr WHERE pcr.ativo = 't' AND pcr.paciente_id = p.paciente_id
+                           ) as saldo_credito,
                            c.dinheiro,
                            c.nome,
                            ae.percentual_medico,
@@ -4312,7 +4315,7 @@ class guia_model extends Model {
                            ae.data,
                            pt.procedimento_tuss_id,
                            al.medico_parecer1,
-                           pt.percentual');
+                           pt.percentual");
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
@@ -6848,6 +6851,24 @@ AND data <= '$data_fim'";
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function relatorioresumocreditoslancados() {
+        $this->db->select(" SUM(pc.valor) AS valor,
+                            p.nome as paciente,
+                            pc.data,
+                            f.forma_pagamento_id,
+                            f.nome as formapagamento");
+        $this->db->from('tb_paciente_credito pc');
+        $this->db->join('tb_paciente p', 'p.paciente_id = pc.paciente_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento_id', 'left');
+        $this->db->where("pc.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("pc.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("pc.ativo", 't');
+        $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+        return $return;
     }
 
     function relatoriocaixacreditoslancados() {

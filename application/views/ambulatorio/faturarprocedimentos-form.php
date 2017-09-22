@@ -231,6 +231,7 @@
                                 <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->total; ?>"/>
                                 <input type="hidden" name="juros" id="juros" value="0">
                                 <input type="hidden" name="valorcredito" id="valorcredito" value="0">
+                                <input type="hidden" name="paciente_id" id="paciente_id">
                             </td>
                         </tr>
 
