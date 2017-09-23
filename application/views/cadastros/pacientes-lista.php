@@ -93,6 +93,9 @@
                 </tr>
                 </thead>
                 <?php
+                $imagem = $this->session->userdata('imagem');
+                $consulta = $this->session->userdata('consulta');
+                                
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->paciente->listar($_GET);
                 $total = $consulta->count_all_results();
@@ -129,16 +132,22 @@
                                             <b>Op&ccedil;&otilde;es</b>
                                         </a></div>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="50px;" ><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacientetemp/<?= $item->paciente_id ?>">
-                                            <b>Exames</b>
-                                        </a></div>
-                                </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="50px;" ><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $item->paciente_id ?>">
-                                            <b>Consultas</b>
-                                        </a></div>
-                                </td>
+                                <? if($imagem == 't'){ ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="50px;" >
+                                            <div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacientetemp/<?= $item->paciente_id ?>">
+                                                    <b>Exames</b>
+                                                </a></div>
+                                    </td>
+                                <? } 
+                                if($imagem == 't'){ ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="50px;" >
+                                            <div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $item->paciente_id ?>">
+                                                    <b>Consultas</b>
+                                                </a></div>
+                                    </td>
+                                <? } ?>
         <!--                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/pacientes/procedimentoautorizar/<?= $item->paciente_id ?>">
                                             <b>Autorizar</b>

@@ -84,3 +84,7 @@ SELECT insereValor();
 ALTER TABLE ponto.tb_grau_participacao ALTER column codigo type integer USING codigo::integer;
 ALTER TABLE ponto.tb_agenda_exame_equipe ALTER column funcao type integer USING funcao::integer;
 ALTER TABLE ponto.tb_centrocirurgico_percentual_funcao ALTER column funcao type integer USING funcao::integer;
+
+-- VERSÃO 1.0.00009
+INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+    VALUES ('1.0.00009', '1.0.00009');

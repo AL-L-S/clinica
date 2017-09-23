@@ -9,6 +9,13 @@
                     </a>
                 </div>
             </td>
+            <td>
+                <div class="bt_link_new">
+                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/mostrarpendencias', '_blank', 'width=1600,height=700');" >
+                        Ver Pendentes
+                    </a>
+                </div>
+            </td>
         </tr>
     </table>
     <div id="accordion">

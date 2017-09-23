@@ -1867,6 +1867,16 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/procedimento-form', $data);
     }
 
+    function novoagendageral($agenda_id) {
+        $data['agenda_id'] = $agenda_id;
+        $data['medico'] = $this->exame->listarmedico();
+        $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
+        $data['salas'] = $this->exame->listartodassalas();
+        $data['tipo'] = $this->tipoconsulta->listartodos();
+        $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
+        $this->loadView('ambulatorio/geral-form', $data);
+    }
+
     function novoagendaexame($agenda_id) {
         $data['agenda_id'] = $agenda_id;
         $data['medico'] = $this->exame->listarmedico();
@@ -2027,6 +2037,132 @@ class Exame extends BaseController {
                                 $horaconsulta = $horaverifica;
                                 $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
                                 $this->exame->gravar($horarioagenda_id, $agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs);
+                            }
+                            $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
+                        }
+                    }
+                }
+            }
+        }
+
+        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/agenda");
+    }
+
+    function gravargeral() {
+
+        $agenda_id = $_POST['txthorario'];
+        $sala_id = $_POST['txtsala'];
+        $medico_id = $_POST['txtmedico'];
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $nome = $_POST['txtNome'];
+        
+        $tipo = $this->agenda->listartiposala($sala_id);
+        $tipo = $tipo[0]->tipo;
+        $horarioagenda = $this->agenda->listarhorarioagendacriacao($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
+//        var_dump($horarioagenda); die;
+        $id = 0;
+
+        foreach ($horarioagenda as $item) {
+
+            $tempoconsulta = $item->tempoconsulta;
+            $qtdeconsulta = $item->qtdeconsulta;
+            $qtdeconsulta = (int) $qtdeconsulta;
+            $horarioagenda_id = $item->horarioagenda_id;
+            $empresa_id = $item->empresa_id;
+            $obs = $item->observacoes;
+
+            if (($qtdeconsulta != 0) && ($item->intervaloinicio == "00:00:00")) {
+                $entrada = $item->horaentrada1;
+                $saida = $item->horasaida1;
+                $hora1 = explode(":", $entrada);
+                $hora2 = explode(":", $saida);
+                $acumulador1 = ($hora1[0] * 60) + $hora1[1];
+                $acumulador2 = ($hora2[0] * 60) + $hora2[1];
+                $resultado = $acumulador2 - $acumulador1;
+                $tempoconsulta = $resultado / $item->qtdeconsulta;
+                $tempoconsulta = (int) $tempoconsulta + 1;
+            }
+            if (($qtdeconsulta != 0) && ($item->intervaloinicio != "00:00:00")) {
+                $entrada = $item->horaentrada1;
+                $saida = $item->horasaida1;
+                $intervaloinicio = $item->intervaloinicio;
+                $intervalofim = $item->intervalofim;
+                $hora1 = explode(":", $entrada);
+                $hora2 = explode(":", $saida);
+                $horainicio = explode(":", $intervaloinicio);
+                $horafim = explode(":", $intervalofim);
+                $acumulador1 = ($hora1[0] * 60) + $hora1[1];
+                $acumulador2 = ($hora2[0] * 60) + $hora2[1];
+                $acumulador3 = ($horainicio[0] * 60) + $horainicio[1];
+                $acumulador4 = ($horafim[0] * 60) + $horafim[1];
+                $resultado = ($acumulador3 - $acumulador1) + ($acumulador2 - $acumulador4);
+                $tempoconsulta = $resultado / $item->qtdeconsulta;
+                $tempoconsulta = (int) $tempoconsulta + 1;
+            }
+
+            for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+
+                $data = strftime("%A", strtotime($index));
+
+                switch ($data) {
+                    case"Sunday": $data = "Domingo";
+                        break;
+                    case"Monday": $data = "Segunda";
+                        break;
+                    case"Tuesday": $data = "Terça";
+                        break;
+                    case"Wednesday": $data = "Quarta";
+                        break;
+                    case"Thursday": $data = "Quinta";
+                        break;
+                    case"Friday": $data = "Sexta";
+                        break;
+                    case"Saturday": $data = "Sabado";
+                        break;
+                }
+                $i = 0;
+                $horaconsulta = 0;
+                $horaverifica = 0;
+                $horasaida = 0;
+                if ($data == substr($item->dia, 4)) {
+                    for ($horaindex = $item->horaentrada1; $horaindex <= $item->horasaida1; $horaindex = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaindex)))) {
+
+                        if ($item->intervaloinicio == "00:00:00") {
+                            if ($i == 0) {
+                                $horaconsulta = date('H:i:s', strtotime($item->horaentrada1));
+                                $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($item->horaentrada1)));
+                                $i = 1;
+                                if ($id == 0) {
+                                    $id = $this->exame->gravarnome($nome);
+                                }
+                                $this->exame->gravargeral($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs, $tipo);
+                            }
+                            if (( $horaverifica < $item->horasaida1)) {
+                                $x = 1;
+                                $horaconsulta = $horaverifica;
+                                $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
+                                $this->exame->gravargeral($horarioagenda_id, $agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs, $tipo);
+                            }
+                            $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
+                        } else {
+                            if ($i == 0) {
+                                $horaconsulta = date('H:i:s', strtotime($item->horaentrada1));
+                                $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($item->horaentrada1)));
+                                $i = 1;
+                                if ($id == 0) {
+                                    $id = $this->exame->gravarnome($nome);
+                                }
+                                $this->exame->gravargeral($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs, $tipo);
+                            }
+                            if ((($horaverifica < $item->intervaloinicio) || ($horaverifica >= $item->intervalofim)) && ( $horaverifica < $item->horasaida1)) {
+                                $x = 1;
+                                $horaconsulta = $horaverifica;
+                                $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
+                                $this->exame->gravargeral($horarioagenda_id, $agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs, $tipo);
                             }
                             $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
                         }
