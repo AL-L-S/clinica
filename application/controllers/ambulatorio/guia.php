@@ -1618,11 +1618,11 @@ class Guia extends BaseController {
             if (!$erro) {
                 $ambulatorio_guia_id = $this->guia->gravarfaturamentototalprocedimentos();
 
-//                var_dump($_POST['guia_id']);die;
 
                 if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
                     $this->guia->descontacreditopaciente();
                 }
+//                var_dump($_POST['valorcredito']);die;
 
                 if ($ambulatorio_guia_id == "-1") {
                     $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
@@ -2099,7 +2099,7 @@ class Guia extends BaseController {
         $data['medicorecebido'] = $this->guia->relatorioresumogeralmedico();
         $data['convenio'] = $this->guia->relatorioresumogeralconvenio();
         $data['convenios'] = $this->convenio->listardados();
-
+        $data['creditos'] = $this->guia->relatorioresumocreditoslancados();
         $data['formapagamento'] = $this->formapagamento->listarforma();
         $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
 //        echo '<pre>'; 

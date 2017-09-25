@@ -258,6 +258,27 @@ class Exametemp extends BaseController {
     }
     
     
+    function mostrarpendencias() {
+        
+        $data['pendencias'] = $this->exametemp->listarpendenciasoperador();
+        
+        
+        $this->load->view('ambulatorio/mostrarpendencias', $data);
+    }
+    
+    
+    function enviarpendenteatendimento($exames_id, $sala_id, $agenda_exames_id) {
+        $verificar = $this->exametemp->enviarpendenteatendimento($exames_id, $sala_id, $agenda_exames_id);
+        if ($verificar == -1) {
+            $data['mensagem'] = 'Erro ao finalizar o Exame. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);        
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    
     function mostrarlembretes() {
         
         $data['lembretes'] = $this->exametemp->listarlembretesoperador();

@@ -6717,6 +6717,50 @@ class exame_model extends Model {
         }
     }
 
+    function gravargeral($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null, $tipo) {
+        try {
+
+            $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
+
+            /* inicia o mapeamento no banco */
+            $this->db->set('horarioagenda_id', $agenda_id);
+            $this->db->set('horario_id', $horarioagenda_id);
+            $this->db->set('inicio', $horaconsulta);
+            $this->db->set('fim', $horaverifica);
+            $this->db->set('nome', $nome);
+            $this->db->set('data_inicio', $datainicial);
+            $this->db->set('data_fim', $datafinal);
+            $this->db->set('data', $index);
+            $this->db->set('nome_id', $id);
+            $this->db->set('tipo_consulta_id', $_POST['txttipo']);
+            if ($medico_id != '') {
+                $this->db->set('medico_consulta_id', $medico_id);
+                $this->db->set('medico_agenda', $medico_id);
+            }
+            $this->db->set('tipo_agenda', 'normal');
+            $this->db->set('agenda_exames_nome_id', $sala_id);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+//            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('observacoes', $obs);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('tipo', $tipo);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_agenda_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                $agenda_exames_id = $this->db->insert_id();
+            return $agenda_exames_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarconsulta($horario_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id) {
         try {
 

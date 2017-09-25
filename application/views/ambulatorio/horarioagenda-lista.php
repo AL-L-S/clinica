@@ -1,6 +1,8 @@
 <?php
-//Utilitario::pmf_mensagem($message);
-//unset($message);
+$imagem = $this->session->userdata('imagem');
+$consulta = $this->session->userdata('consulta');
+$especialidade = $this->session->userdata('especialidade');
+$geral = $this->session->userdata('geral');
 ?>
 <div class="content"> <!-- Inicio da DIV content -->
     <table>
@@ -12,27 +14,42 @@
                     </a>
                 </div>  
             </td>
-            <td>
-                <div class="bt_link_new" style="width: 250px">
-                    <a style="width: 250px" href="<?php echo base_url() ?>ambulatorio/exame/novoagendaexame/<?= $agenda; ?>" target="_blank">
-                        Consolidar Agenda Exame
-                    </a>
-                </div> 
-            </td>
-            <td>
-                <div class="bt_link_new" style="width: 250px">
-                    <a style="width: 250px" href="<?php echo base_url() ?>ambulatorio/exame/novoagendaconsulta/<?= $agenda; ?>" target="_blank">
-                        Consolidar Agenda Consulta
-                    </a>
-                </div> 
-            </td>
-            <td>
-                <div class="bt_link_new" style="width: 300px">
-                    <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaespecializacao/<?= $agenda; ?>" style="width: 300px" target="_blank">
-                        Consolidar Agenda Especializacao
-                    </a>
-                </div> 
-            </td>
+            <? if ($geral == 't') { ?>
+                <td>
+                    <div class="bt_link_new" style="width: 250px">
+                        <a style="width: 250px" href="<?php echo base_url() ?>ambulatorio/exame/novoagendageral/<?= $agenda; ?>" target="_blank">
+                            Consolidar Agenda
+                        </a>
+                    </div> 
+                </td>
+            <? } 
+            if ($imagem == 't') { ?>
+                <td>
+                    <div class="bt_link_new" style="width: 250px">
+                        <a style="width: 250px" href="<?php echo base_url() ?>ambulatorio/exame/novoagendaexame/<?= $agenda; ?>" target="_blank">
+                            Consolidar Agenda Exame
+                        </a>
+                    </div> 
+                </td>
+            <? } 
+            if ($consulta == 't') { ?>
+                <td>
+                    <div class="bt_link_new" style="width: 250px">
+                        <a style="width: 250px" href="<?php echo base_url() ?>ambulatorio/exame/novoagendaconsulta/<?= $agenda; ?>" target="_blank">
+                            Consolidar Agenda Consulta
+                        </a>
+                    </div> 
+                </td>
+            <? } 
+            if ($especialidade == 't') { ?>
+                <td>
+                    <div class="bt_link_new" style="width: 300px">
+                        <a href="<?php echo base_url() ?>ambulatorio/exame/novoagendaespecializacao/<?= $agenda; ?>" style="width: 300px" target="_blank">
+                            Consolidar Agenda Especializacao
+                        </a>
+                    </div> 
+                </td>
+            <? } ?>
         </tr>
     </table>
 

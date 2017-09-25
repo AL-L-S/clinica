@@ -34,6 +34,16 @@ class agenda_model extends Model {
         return $query->result();
     }
 
+    function listartiposala() {
+        $this->db->select('tipo');
+        $this->db->from('tb_exame_sala_grupo esg');        
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = esg.grupo', 'left');
+        $this->db->where('esg.ativo', 't');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     function listaragenda() {
         $this->db->select('agenda_id,
                             nome, 

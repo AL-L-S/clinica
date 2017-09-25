@@ -4321,7 +4321,7 @@ class guia_model extends Model {
 
     function relatorioresumocredito() {
 
-        $this->db->select('op.nome as medico,
+        $this->db->select("op.nome as medico,
                            ae.valor_total,
                            p.nome as paciente,
                            ae.valor_medico,
@@ -4333,6 +4333,9 @@ class guia_model extends Model {
                            ae.valor2,
                            ae.valor3,
                            ae.valor4,
+                           (
+                            SELECT SUM(pcr.valor) FROM ponto.tb_paciente_credito pcr WHERE pcr.ativo = 't' AND pcr.paciente_id = p.paciente_id
+                           ) as saldo_credito,
                            c.dinheiro,
                            c.nome,
                            ae.percentual_medico,
@@ -4341,7 +4344,7 @@ class guia_model extends Model {
                            ae.data,
                            pt.procedimento_tuss_id,
                            al.medico_parecer1,
-                           pt.percentual');
+                           pt.percentual");
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
@@ -6879,6 +6882,24 @@ AND data <= '$data_fim'";
         }
     }
 
+    function relatorioresumocreditoslancados() {
+        $this->db->select(" SUM(pc.valor) AS valor,
+                            p.nome as paciente,
+                            pc.data,
+                            f.forma_pagamento_id,
+                            f.nome as formapagamento");
+        $this->db->from('tb_paciente_credito pc');
+        $this->db->join('tb_paciente p', 'p.paciente_id = pc.paciente_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento_id', 'left');
+        $this->db->where("pc.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("pc.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("pc.ativo", 't');
+        $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+        return $return;
+    }
+
     function relatoriocaixacreditoslancados() {
         $this->db->select(" SUM(pc.valor) AS valor,
                             p.nome as paciente,
@@ -9166,54 +9187,103 @@ ORDER BY ae.agenda_exames_id)";
     }
 
     function gravarguiacirurgicaequipe($procedimentos, $guia) {
-
+        $this->db->select(' leito_enfermaria,
+                            leito_apartamento,
+                            mesma_via,
+                            via_diferente,
+                            horario_especial,
+                            valor,
+                            valor_base');
+        $this->db->from('tb_centrocirurgico_percentual_outros cpo');
+        $this->db->where("ativo", 't');
+        $query = $this->db->get();
+        $return = $query->result();
+        foreach ($return as $value) {
+            
+            if ($value->horario_especial == 't') {
+                $horario_especial = ($value->valor / 100);
+                continue;
+            }
+            
+            if($value->leito_enfermaria == 't'){
+                if($value->mesma_via == 't'){
+                    $enfermaria_mesma_via['maior'] = (float)$value->valor / 100;
+                    $enfermaria_mesma_via['base'] = (float)$value->valor_base / 100;
+                }
+                else{
+                    $enfermaria_via_diferente['maior'] =(float) $value->valor / 100;
+                    $enfermaria_via_diferente['base'] = (float)$value->valor_base / 100;
+                }
+            }
+            else{
+                if($value->mesma_via == 't'){
+                    $apartamento_mesma_via['maior'] =(float) $value->valor / 100;
+                    $apartamento_mesma_via['base'] = (float)$value->valor_base / 100;
+                }
+                else{
+                    $apartamento_via_diferente['maior'] =(float) $value->valor / 100;
+                    $apartamento_via_diferente['base'] = (float)$value->valor_base / 100;
+                }
+                
+            }
+        }
+        
         $valMedico = 0;
+        
         for ($i = 0; $i < count($procedimentos); $i++) {
             $valor = (float) $procedimentos[$i]->valor_total;
-            $valProcedimento = ($procedimentos[$i]->horario_especial == 't') ? ($valor) + ($valor * (30 / 100)) : $valor;
+            $valProcedimento = ($procedimentos[$i]->horario_especial == 't') ? ($valor) + ($valor * $horario_especial) : $valor;
+            
             if ($guia->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
                 if ($guia->via == 'D') {// VIA DIFERENTE
                     if ($i == 0) {
-                        $valMedicoProc = $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $enfermaria_via_diferente['maior'];
                     } else {
-                        $valMedicoProc = ($valProcedimento * (70 / 100));
+                        $valMedicoProc = ($valProcedimento * $enfermaria_via_diferente['base']);
                     }
                 } elseif ($guia->via == 'M') {// MESMA VIA
                     if ($i == 0) {
-                        $valMedicoProc = $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $enfermaria_mesma_via['maior'];
                     } else {
-                        $valMedicoProc = ($valProcedimento * (50 / 100));
+                        $valMedicoProc = ($valProcedimento * $enfermaria_mesma_via['base']);
                     }
                 }
             } else { //APARTAMENTO
                 if ($guia->via == 'D') {// VIA DIFERENTE
                     if ($i == 0) {
-                        $valMedicoProc = 2 * $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $apartamento_via_diferente['maior'];
                     } else {
-                        $valMedicoProc = ($valProcedimento * (140 / 100));
+                        $valMedicoProc = ($valProcedimento * $apartamento_via_diferente['base']);
                     }
                 } elseif ($guia->via == 'M') {// MESMA VIA
                     if ($i == 0) {
-                        $valMedicoProc = 2 * $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $apartamento_mesma_via['maior'];
                     } else {
-                        $valMedicoProc = $valProcedimento;
+                        $valMedicoProc = $valProcedimento * $apartamento_mesma_via['base'];
                     }
                 }
             }
 
             //VALOR DO CIRURGIAO/ANESTESISTA
             $valMedico = $valMedicoProc;
+//            var_dump($guia->leito, $guia->via); die;
+            
+            if((int) $_POST['funcao'] != 0){
+                $this->db->select('valor');
+                $this->db->from('tb_centrocirurgico_percentual_funcao');
+                $this->db->where("funcao", $_POST['funcao']);
+                $query = $this->db->get();
+                $return2 = $query->result();
 
-            //DEFININDO OS VALORES
-            if ((int) $_POST['funcao'] == 0) {
-                $val = number_format($valMedico, 2, '.', '');
-            } elseif ((int) $_POST['funcao'] == 6) {
-                $val = number_format($valMedico, 2, '.', '');
-            } elseif ((int) $_POST['funcao'] == 1) {
-                $val = number_format(($valMedico * (30 / 100)), 2, '.', '');
-            } else {
-                $val = number_format(($valMedico * (20 / 100)), 2, '.', '');
+                //DEFININDO OS VALORES
+                $val = number_format($valMedico * ($return2[0]->valor / 100) , 2, '.', '');
             }
+            else{
+                $val = number_format($valMedico, 2, '.', '');
+            }
+            
+//            echo "<pre>";
+//            var_dump($val); echo "<hr>";
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -9226,6 +9296,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('funcao', $_POST['funcao']);
             $this->db->insert('tb_agenda_exame_equipe');
         }
+//        die;
     }
 
     function gravarorcamentorecepcao($paciente_id) {

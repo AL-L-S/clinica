@@ -157,8 +157,136 @@ class exametemp_model extends Model {
 //        echo '<pre>';
 //        var_dump($return->result());die;
         return $return->result();
+    }    
+    
+    function listarpendenciasoperador() {
+        $this->db->select('e.exames_id,
+                            e.paciente_id,
+                            p.nome as paciente,
+                            e.agenda_exames_id,
+                            e.sala_id,
+                            ae.inicio,
+                            e.data_cadastro,
+                            e.data_pendente,
+                            es.nome as sala,
+                            pt.nome as procedimento');
+        $this->db->from('tb_exames e');
+        $this->db->join('tb_paciente p', 'p.paciente_id = e.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = e.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = e.sala_id', 'left');
+        $this->db->where('e.situacao', 'PENDENTE');
+        $this->db->where('e.cancelada', 'false');
+        
+        $medico_id = $this->session->userdata('operador_id');
+        $this->db->where('ae.medico_consulta_id', $medico_id);
+        
+        $return = $this->db->get();
+        return $return->result();
     }
+    
+    function enviarpendenteatendimento($exame_id, $sala_id, $agenda_exames_id) {
+        try {
+            // Voltando exame
+            $this->db->set('realizada', 'f');
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_agenda_exames');
 
+            $this->db->set('ativo', 't');
+            $this->db->where('exame_sala_id', $sala_id);
+            $this->db->update('tb_exame_sala');
+
+            $this->db->where('exames_id', $exame_id);
+            $this->db->delete('tb_exames');
+
+            $this->db->where('exame_id', $exame_id);
+            $this->db->delete('tb_ambulatorio_laudo');
+
+            // Enviando da sala de espera
+            $this->db->select('ae.agenda_exames_nome_id, 
+                               ae.paciente_id, 
+                               ae.medico_agenda, 
+                               ae.guia_id, 
+                               ae.procedimento_tuss_id, 
+                               e.medico_realizador,  
+                               e.sala_id,  
+                               ag.tipo');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->join('tb_exames e', 'e.exames_id = ae.agenda_exames_id', 'left');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+            $this->db->where('ae.agenda_exames_id', $agenda_exames_id);
+            $retorno = $this->db->get()->result();
+
+            $horario = date("Y-m-d H:i:s");
+            $data = date("Y-m-d");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('paciente_id', $retorno[0]->paciente_id);
+            $this->db->set('procedimento_tuss_id', $retorno[0]->procedimento_tuss_id);
+            $this->db->set('guia_id', $retorno[0]->guia_id);
+            $this->db->set('tipo', $retorno[0]->tipo);
+            $this->db->set('agenda_exames_id', $agenda_exames_id);
+            $this->db->set('sala_id', $retorno[0]->sala_id);
+            if ($retorno[0]->medico_realizador != "") {
+                $this->db->set('medico_realizador', $retorno[0]->medico_realizador);
+            }
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_exames');
+            $exames_id = $this->db->insert_id();
+
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('data', $data);
+            $this->db->set('paciente_id', $retorno[0]->paciente_id);
+            $this->db->set('procedimento_tuss_id', $retorno[0]->procedimento_tuss_id);
+            $this->db->set('exame_id', $exames_id);
+            $this->db->set('guia_id', $retorno[0]->guia_id);
+            $this->db->set('tipo', $retorno[0]->tipo);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            if ($retorno[0]->medico_realizador != "") {
+                $this->db->set('medico_parecer1', $retorno[0]->medico_realizador);
+            }
+            $this->db->insert('tb_ambulatorio_laudo');
+            $laudo_id = $this->db->insert_id();
+            $guia_id = $retorno[0]->guia_id;
+
+            if ($retorno[0]->medico_realizador != "") {
+                $this->db->set('medico_consulta_id', $retorno[0]->medico_realizador);
+                $this->db->set('medico_agenda', $retorno[0]->medico_realizador);
+
+//                $this->db->set('valor_medico', $percentual[0]->perc_medico);
+//                $this->db->set('percentual_medico', $percentual[0]->percentual);
+            }
+            $this->db->set('realizada', 'true');
+            $this->db->set('senha', md5($agenda_exames_id));
+            $this->db->set('data_realizacao', $horario);
+            $this->db->set('operador_realizacao', $operador_id);
+            $this->db->set('agenda_exames_nome_id', $retorno[0]->agenda_exames_nome_id);
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_agenda_exames');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('agenda_exames_id', $agenda_exames_id);
+            $this->db->set('sala_id', $retorno[0]->sala_id);
+            $this->db->set('paciente_id', $retorno[0]->paciente_id);
+            $this->db->insert('tb_ambulatorio_chamada');
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function buscaexamesanteriores($paciente_id, $procedimento_id) {
         $data = date('Y-m-d', strtotime("-30 day", strtotime(date('Y-m-d'))));
         $empresa_id = $this->session->userdata('empresa_id');

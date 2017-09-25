@@ -45,50 +45,28 @@
             <?
             $contador = count($convenio);
             ?>
-
-            <? if (count($medico) > 0): ?>
+            
+            <? if( count($creditos) > 0) { ?>
                 <tr>
-                    <td colspan="4"><center><font size="-1"><B>PACIENTES CRÉDITO</B></center></td>
-            </tr>
-            <tr>
-                <th style='text-align: left;'><font size="-1">Paciente</th>
-                <th style='text-align: right;'width="120px;"><font size="-1">Procedimento</th>
-                <th style='text-align: right;'width="120px;"><font size="-1">Valor Crédito</th>
-                <th style='text-align: right;'width="120px;"><font size="-1">Data</th>
-            </tr> 
-
-        <? endif; ?>
-
-        <?
-        if (count($relatoriocredito) > 0) {
-
-
-            foreach ($relatoriocredito as $item) {
-                if ($item->forma_pagamento == 1000) {
-                    $credito = $credito + $item->valor1;
-                }
-                if ($item->forma_pagamento2 == 1000) {
-                    $credito = $credito + $item->valor2;
-                }
-                if ($item->forma_pagamento3 == 1000) {
-                    $credito = $credito + $item->valor3;
-                }
-                if ($item->forma_pagamento4 == 1000) {
-                    $credito = $credito + $item->valor4;
-                }
-                ?>
+                    <td colspan="4"><center><font size="-1"><B>CRÉDITOS LANÇADOS</B></center></td>
+                </tr>
                 <tr>
-                    <td ><font size="-1"><?= $item->paciente ?></td>
-                    <td style='text-align: right;'width="120px;"><font size="-1"><?= $item->procedimento ?></td>
-                    <td style='text-align: right;'width="120px;"><font size="-1"><?= "R$ " . number_format($credito, 2, ',', '.') ?></td>
-                    <td style='text-align: right;'width="120px;"><font size="-1"><?= date("d/m/Y", strtotime($item->data)) ?></td>
-                </tr> 
-
-                <?
-                $credito = 0;
-            }
-        }
-        ?>
+                    <td width="350px;"><font size="-1"><B>Paciente</B></td>
+                    <td style='text-align: right;'width="120px;"><font size="-1"><B>Data</B></td>
+                    <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></td>
+                </tr>
+                <? foreach ($creditos as $item){ ?>
+                <tr>
+                    <td><?= $item->paciente ?></td>
+                    <td style='text-align: right;'><?= date("d/m/Y", strtotime($item->data)) ?></td>
+                    <td style='text-align: right;'><?= number_format($item->valor, 2, ',', '') ?></td>
+                </tr>
+                <? } ?>
+                <tr>
+                    <td colspan="3"><hr><br></td>
+                </tr>
+            <? } ?>
+        
 <? if (count($medico) > 0): ?>
             <tr>
                 <td colspan="4"><center><font size="-1"><B>PRODUÇÃO AMBULATORIAL</B></center></td>
@@ -469,6 +447,50 @@
         </tr>  
 
     </table>
+    <?
+        if (count($relatoriocredito) > 0) { ?>
+            <br>
+            <table border="1">
+                <tr>
+                    <td colspan="5"><center><font size="-1"><B>PACIENTES CRÉDITO</B></center></td>
+                </tr>
+                <tr>
+                    <th style='text-align: left;'><font size="-1">Paciente</th>
+                    <th style='text-align: right;'width="120px;"><font size="-1">Procedimento</th>
+                    <th style='text-align: right;'width="120px;"><font size="-1">Valor Crédito</th>
+                    <th style='text-align: right;'width="120px;"><font size="-1">Saldo Atual</th>
+                    <th style='text-align: right;'width="120px;"><font size="-1">Data</th>
+                </tr> <?
+
+                foreach ($relatoriocredito as $item) {
+                    if ($item->forma_pagamento == 1000) {
+                        $credito = $credito + $item->valor1;
+                    }
+                    if ($item->forma_pagamento2 == 1000) {
+                        $credito = $credito + $item->valor2;
+                    }
+                    if ($item->forma_pagamento3 == 1000) {
+                        $credito = $credito + $item->valor3;
+                    }
+                    if ($item->forma_pagamento4 == 1000) {
+                        $credito = $credito + $item->valor4;
+                    }
+                    ?>
+                    <tr>
+                        <td ><font size="-1"><?= $item->paciente ?></td>
+                        <td style='text-align: right;'width="120px;"><font size="-1"><?= $item->procedimento ?></td>
+                        <td style='text-align: right;'width="120px;"><font size="-1"><?= "R$ " . number_format($credito, 2, ',', '.') ?></td>
+                        <td style='text-align: right;'width="120px;"><font size="-1"><?= "R$ " . number_format($item->saldo_credito, 2, ',', '.') ?></td>
+                        <td style='text-align: right;'width="120px;"><font size="-1"><?= date("d/m/Y", strtotime($item->data)) ?></td>
+                    </tr> 
+
+                    <?
+                    $credito = 0;
+                }?>
+            </table>
+            <?
+        }
+        ?>
 
 
 

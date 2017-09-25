@@ -149,6 +149,69 @@ class centrocirurgico_model extends BaseModel {
         return $return->result();
     }
 
+    function carregarpercentualoutros($percentual_id) {
+//        $data = date("Y-m-d");
+        $this->db->select(" leito_enfermaria,
+                            leito_apartamento,
+                            via_diferente,
+                            mesma_via,
+                            valor_base,
+                            valor");
+        $this->db->from('tb_centrocirurgico_percentual_outros cpo');
+        $this->db->where("cpo.ativo", 't');
+        $this->db->where("cpo.centrocirurgico_percentual_outros_id", $percentual_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function carregarpercentualfuncao($percentual_id) {
+//        $data = date("Y-m-d");
+        $this->db->select(" cpf.valor,
+                            cpf.valor_base,
+                            gp.descricao,
+                            gp.codigo");
+        $this->db->from('tb_centrocirurgico_percentual_funcao cpf');
+        $this->db->join('tb_grau_participacao gp', 'gp.codigo = cpf.funcao', 'left');
+        $this->db->where("cpf.ativo", 't');
+        $this->db->where("cpf.centrocirurgico_percentual_funcao_id", $percentual_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarpercentualoutros() {
+//        $data = date("Y-m-d");
+        $this->db->select(" centrocirurgico_percentual_outros_id,
+                            leito_enfermaria,
+                            leito_apartamento,
+                            via_diferente,
+                            mesma_via,
+                            horario_especial,
+                            valor_base,
+                            valor");
+        $this->db->from('tb_centrocirurgico_percentual_outros cpo');
+        $this->db->where("cpo.ativo", 't');
+        $this->db->orderby("cpo.leito_enfermaria");
+        $this->db->orderby("cpo.via_diferente");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarpercentualfuncao() {
+        $data = date("Y-m-d");
+        $this->db->select(" cpf.centrocirurgico_percentual_funcao_id,
+                            cpf.valor,
+                            cpf.valor_base,
+                            gp.descricao,
+                            gp.codigo");
+        $this->db->from('tb_centrocirurgico_percentual_funcao cpf');
+        $this->db->join('tb_grau_participacao gp', 'gp.codigo = cpf.funcao', 'left');
+        $this->db->where("cpf.ativo", 't');
+        $this->db->where("gp.codigo !=", '0');
+        $this->db->orderby("cpf.centrocirurgico_percentual_funcao_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprocedimentosguiacirurgica($guia) {
         $data = date("Y-m-d");
         $this->db->select('a.agenda_exames_id,
@@ -326,6 +389,69 @@ class centrocirurgico_model extends BaseModel {
 
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function gravarpercentualhorarioespecial() {
+        try {
+            /* inicia o mapeamento no banco */
+            $_POST['valor'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['valor']));
+            
+            $this->db->set('valor', $_POST['valor']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('centrocirurgico_percentual_outros_id', $_POST['percentual_id']);
+            $this->db->update('tb_centrocirurgico_percentual_outros');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarpercentualoutros() {
+        try {
+            /* inicia o mapeamento no banco */
+            $_POST['maior_valor'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['maior_valor']));
+            $_POST['valor_base'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['valor_base']));
+            
+            $this->db->set('valor', $_POST['maior_valor']);
+            $this->db->set('valor_base', $_POST['valor_base']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('centrocirurgico_percentual_outros_id', $_POST['percentual_id']);
+            $this->db->update('tb_centrocirurgico_percentual_outros');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarpercentualfuncao() {
+        try {
+            /* inicia o mapeamento no banco */
+//            $_POST['maior_valor'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['maior_valor']));
+//            $_POST['valor_base'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['valor_base']));
+//            $this->db->set('valor', $_POST['maior_valor']);
+//            $this->db->set('valor_base', $_POST['valor_base']);
+            
+            $_POST['valor'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['valor']));
+            $this->db->set('valor', $_POST['valor']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('centrocirurgico_percentual_funcao_id', $_POST['percentual_id']);
+            $this->db->update('tb_centrocirurgico_percentual_funcao');
+        } catch (Exception $exc) {
+            return -1;
+        }
     }
 
     function gravarequipeoperadores() {
