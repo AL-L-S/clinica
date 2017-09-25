@@ -1627,7 +1627,7 @@ class procedimentoplano_model extends Model {
                     $procedimento_percentual_promotor_id = $this->db->insert_id();
 
                     foreach ($promotors as $item) {
-                        $operador = $item->operador_id;
+                        $operador = $item->paciente_indicacao_id;
 
                         /* inicia o mapeamento no banco */
 
@@ -1698,7 +1698,7 @@ class procedimentoplano_model extends Model {
 
                             $procedimento_percentual_promotor_id = $this->db->insert_id();
                             foreach ($promotors as $item) {
-                                $operador = $item->operador_id;
+                                $operador = $item->paciente_indicacao_id;
 
                                 /* inicia o mapeamento no banco */
 
@@ -1760,7 +1760,7 @@ class procedimentoplano_model extends Model {
                         $procedimento_percentual_promotor_id = $this->db->insert_id();
 
                         foreach ($promotors as $item) {
-                            $operador = $item->operador_id;
+                            $operador = $item->paciente_indicacao_id;
 
                             /* inicia o mapeamento no banco */
 
@@ -1840,7 +1840,7 @@ class procedimentoplano_model extends Model {
 
                         $procedimento_percentual_promotor_id = $this->db->insert_id();
                         foreach ($promotors as $item) {
-                            $operador = $item->operador_id;
+                            $operador = $item->paciente_indicacao_id;
                             /* inicia o mapeamento no banco */
 
                             $this->db->set('procedimento_percentual_promotor_id', $procedimento_percentual_promotor_id);

@@ -21,8 +21,14 @@ $corpo = str_replace("_peso_", $laudo['0']->peso, $corpo);
 $corpo = str_replace("_altura_", $laudo['0']->altura, $corpo);
 if($imprimircid == 't'){
 $corpo = str_replace("_cid1_", @$cid['0']->co_cid . "-" . @$cid['0']->no_cid, $corpo);
-$corpo = str_replace("_cid2_", @$cid2['0']->co_cid . "-" . @$cid2['0']->no_cid, $corpo);   
+$corpo = str_replace("_cid2_", @$cid2['0']->co_cid . "-" . @$cid2['0']->no_cid, $corpo);
+}else{
+   $corpo = str_replace("_cid1_", "", $corpo);  
+   $corpo = str_replace("_cid2_", "", $corpo);  
 }
 $corpo = str_replace("_assinatura_", $assinatura, $corpo);
+if($imprimircid == 't'){
+$corpo = $corpo . "<br><br><br> Resolução CFM 1.658/2002 - Art. 5º - Os médicos somente podem fornecer atestados com o diagnóstico codificado ou não quando por justa causa, exercício de dever legal, solicitação do próprio paciente ou de seu representante legal.";
+}
 echo $corpo;
 ?>

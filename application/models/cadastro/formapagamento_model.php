@@ -334,7 +334,11 @@ class formapagamento_model extends Model {
             $this->db->set('taxa_juros', $taxa_juros);
             $this->db->set('fixar', $arredondamento);
             $this->db->set('cartao', $cartao);
+            if($_POST['credor_devedor'] != ''){
             $this->db->set('credor_devedor', $_POST['credor_devedor']);
+            }else{
+            $this->db->set('credor_devedor', null);    
+            }
             $this->db->set('dia_receber', $diareceber);
             $this->db->set('tempo_receber', $temporeceber);
             $horario = date("Y-m-d H:i:s");

@@ -1578,7 +1578,7 @@ class Guia extends BaseController {
             $this->load->View('ambulatorio/erro');
         }
     }
-    
+
     function gravarfaturadoprocedimentos() {
 
         $resulta = $_POST['valortotal'];
@@ -2240,6 +2240,12 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatoriopacientewhatsapp', $data);
     }
 
+    function relatoriopacienteduplicado() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriopacienteduplicado', $data);
+    }
+
     function relatorioperfilpaciente() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2413,7 +2419,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioindicacaoexames', $data);
     }
-    
+
     function relatorioindicacaoexamescadastro() {
         $data['indicacao'] = $this->paciente->listaindicacao();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2473,6 +2479,13 @@ class Guia extends BaseController {
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatorioindicacao();
+        $data['indicacao_valor'] = $this->paciente->listaindicacao();
+        if ($_POST['indicacao'] != '0') {
+            $data['indicacao'] = $this->guia->listacadaindicacao($_POST['indicacao']);
+            $data['indicacao'] = $data['indicacao'][0]->indicacao;
+        } else {
+            $data['indicacao'] = '0';
+        }
         $data['consolidado'] = $this->guia->relatorioindicacaoconsolidado();
 //        echo "<pre>";
 //        var_dump($data['consolidado']);die;
@@ -2715,6 +2728,22 @@ class Guia extends BaseController {
             } else {
                 $this->load->View('ambulatorio/impressaorelatoriopacientewhatsapp', $data);
             }
+        } else {
+            $data['mensagem'] = 'Insira um periodo válido.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "/ambulatorio/guia/relatoriopacientewhatsapp");
+        }
+    }
+
+    function gerarelatoriopacienteduplicado() {
+        if ($_POST["txtdata_inicio"] != "" && $_POST["txtdata_fim"] != "") {
+//            $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+//            var_dump($_POST['txtdata_inicio'], $_POST['txtdata_fim']); die;
+            $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+            $data['txtdata_fim'] = $_POST['txtdata_fim'];
+            $data['relatorio'] = $this->guia->relatoriopacienteduplicado();
+
+            $this->load->View('ambulatorio/impressaorelatoriopacienteduplicado', $data);
         } else {
             $data['mensagem'] = 'Insira um periodo válido.';
             $this->session->set_flashdata('message', $data['mensagem']);

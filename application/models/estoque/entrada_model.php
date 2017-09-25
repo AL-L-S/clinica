@@ -523,9 +523,7 @@ class entrada_model extends Model {
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('
-            
             sum(es.quantidade) as quantidade,
-  
             ep.descricao as produto,
            ');
         $this->db->from('tb_estoque_saida es');
@@ -553,13 +551,15 @@ class entrada_model extends Model {
             $this->db->where("es.produto_id", $_POST['txtproduto']);
         }
         
-        $this->db->groupby('es.quantidade, ep.descricao');
+        $this->db->groupby('es.produto_id ,ep.descricao');
         $this->db->orderby('ep.descricao');
 //        if ($_POST['empresa'] != "0") {
 //            $this->db->where('ae.empresa_id', $_POST['empresa']);
 //        }
         $return = $this->db->get();
         return $return->result();
+//        echo '<pre>';
+//        var_dump($return->result()); die;
     }
 
     function relatoriosaidaarmazemcontador() {

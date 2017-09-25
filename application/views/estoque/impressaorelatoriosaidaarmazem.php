@@ -107,12 +107,12 @@
                         <? } ?>
                         <tr>
                             <?
-                            //////////////// Caso não exista cliente/setor associado, ou seja, no caso de ser gasto de sala, ele mostra o nome do armazem
+                            //////////////// Caso não exista cliente/setor associado, ou seja, no caso de ser gasto de sala, ele mostra TRANSFERÊNCIA
                             if ($item->nome == '') {
                                 ?>
                                 <td><font size="-2"><?= utf8_decode($item->armazem); ?></td> 
                             <? } else { ?>
-                                <td><font size="-2"><?= utf8_decode($item->nome); ?></td> 
+                                <td><font size="-2"><?=utf8_decode('TRANSFERÊNCIA')?></td> 
                             <? }
                             ?>
 
@@ -148,12 +148,12 @@
                             <td colspan="8"><font size="-2"><b>Armazem:&nbsp;<?= utf8_decode($item->armazem); ?></b></td>
                         </tr>
                         <tr>
-                            <? //////////////// Caso não exista cliente/setor associado, ou seja, no caso de ser gasto de sala, ele mostra o nome do armazem
+                            <? //////////////// Caso não exista cliente/setor associado, ou seja, no caso de ser gasto de sala, ele mostra TRANSFERÊNCIA
                             ?>
                             <? if ($item->nome == '') { ?>
                                 <td><font size="-2"><?= utf8_decode($item->armazem); ?></td> 
                             <? } else { ?>
-                                <td><font size="-2"><?= utf8_decode($item->nome); ?></td> 
+                                <td><font size="-2"><?=utf8_decode('TRANSFERÊNCIA')?></td> 
                             <? }
                             ?>
 
@@ -205,8 +205,8 @@
             </thead>
 <? foreach ($relatorioconsolidado as $item) { ?>
                     <tr>
-                        <td width="600px;" ><?=utf8_decode($item->produto)?></td>
-                        <td width="140px;" >&nbsp;<?=$item->quantidade?></td>
+                        <td width="400px;" ><font size="-2"><?=utf8_decode($item->produto)?></td>
+                        <td width="140px;" ><font size="-2">&nbsp;<?=$item->quantidade?></td>
                     </tr> 
                 <? }
                 ?>

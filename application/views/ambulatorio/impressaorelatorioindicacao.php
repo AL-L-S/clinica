@@ -63,8 +63,10 @@
         <table border="1">
             <thead>
                 <tr>
-                    <td class="tabela_teste">Nome</th>
-                    <td class="tabela_teste">Indica&ccedil;&atilde;o</th>
+                    <th class="tabela_teste">Nome</th>
+                    <th class="tabela_teste">Indica&ccedil;&atilde;o</th>
+                    <th class="tabela_teste">Valor Da Indicação</th>    
+                    <th class="tabela_teste">Valor Pago</th>    
                 </tr>
             </thead>
             <hr>
@@ -77,28 +79,66 @@
                 $tecnicos = "";
                 $paciente = "";
                 $indicacao = "";
+                $totalgeral = 0;
+                $totalperc = 0;
+                foreach ($indicacao_valor as $value) {
+                    $data[$value->nome] = '';
+                    $numero[$value->nome] = 0;
+                    $valor[$value->nome] = 0;
+                   
+                }
                 foreach ($relatorio as $item) :
                     $i++;
                     $qtdetotal++;
+                     $valor_total = $item->valor_total;
+                    ?>
+                    <?
+                    if ($item->percentual_promotor == "t") {
+                        $simbolopercebtual = " %";
+
+                        $valorpercentualmedico = $item->valor_promotor;
+
+                        $perc = $valor_total * ($valorpercentualmedico / 100);
+                        $totalperc = $totalperc + $perc;
+                        $totalgeral = $totalgeral + $valor_total;
+                        $data[$item->indicacao] = $item->indicacao;
+                        $numero[$item->indicacao] ++;
+                        $valor[$item->indicacao] = $valor[$item->indicacao] + $perc;
+                        $valor_promotor = $item->valor_promotor . $simbolopercebtual;
+                    } else {
+                        $simbolopercebtual = "";
+                        $valorpercentualmedico = $item->valor_promotor;
+
+                        $perc = $valorpercentualmedico;
+                        $totalperc = $totalperc + $perc;
+                        $totalgeral = $totalgeral + $valor_total;
+                        $data[$item->indicacao] = $item->indicacao;
+                        $numero[$item->indicacao] ++;
+                        $valor[$item->indicacao] = $valor[$item->indicacao] + $perc;
+                        $valor_promotor = "R$ ".  number_format($item->valor_promotor, 2, ",", ".")  ;
+                    }
                     ?>
                     <tr>
 
                         <td><?= utf8_decode($item->paciente); ?></td>
 
                         <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
+                        <td style='text-align: center;'><font size="-2"><?= $valor_promotor; ?></td>
+                        <td style='text-align: center;'><font size="-2"><?="R$ ". number_format($perc, 2, ",", "."); ?></td>
                     </tr>
                 <? endforeach; ?>
 
                 <tr>
-                    <td width="140px;" align="Right" colspan="2"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
+                    <td width="140px;" align="Right" colspan="4"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
                 </tr>
             </tbody>
         </table>
-        <table border="1">
+         <table border="1">
             <thead>
                 <tr>
-                    <td class="tabela_teste">Indica&ccedil;&atilde;o</th>
-                    <td class="tabela_teste">Qtde</th>
+                    <th class="tabela_teste">Indicação</th>
+                    <th class="tabela_teste">Qtde</th>
+                    <th class="tabela_teste">Valor R$</th>
                 </tr>
             </thead>
             <hr>
@@ -112,6 +152,7 @@
                     <tr>
                         <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
                         <td><?= $item->quantidade; ?></td>
+                        <td><?= number_format($valor[$item->indicacao], 2, ",", "."); ?></td>
                     </tr>
 
                 <? endforeach; ?>
