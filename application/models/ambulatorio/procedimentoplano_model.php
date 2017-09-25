@@ -488,6 +488,19 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimento3() {
+        $this->db->select('procedimento_tuss_id,
+                            nome,
+                            grupo,
+                            codigo');
+        $this->db->from('tb_procedimento_tuss');
+        $this->db->orderby('grupo');
+        $this->db->orderby('nome');
+        $this->db->where("ativo", 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarconvenio() {
         $this->db->select('convenio_id,
                             nome,');
@@ -996,6 +1009,68 @@ class procedimentoplano_model extends Model {
      * @access public
      * @return Resposta true/false da conexão com o banco
      */
+    function gravarmultiplos() {
+        try {
+            /* inicia o mapeamento no banco */
+            $empresa_id = $_POST['empresa'];
+            $convenio_id = $_POST['convenio'];
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            foreach($_POST['valortotal'] as $key => $value){
+                
+                if ($_POST['valortotal'][$key] != "") {// insert
+                    $this->db->select('convenio_id');
+                    $this->db->from('tb_procedimento_convenio pc');
+                    $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+                    $this->db->where('pc.ativo', 't');
+                    $this->db->where('pc.empresa_id', $empresa_id);
+                    $this->db->where("pc.convenio_id", $convenio_id);
+                    $this->db->where("pt.procedimento_tuss_id", $_POST['procedimento_id'][$key]);
+                    $query = $this->db->get();
+                    $return = $query->result();
+                    $qtde = count($return);
+
+                    if ($qtde == 0) {
+                        $this->db->set('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                        $this->db->set('convenio_id', $convenio_id);
+                        $this->db->set('empresa_id', $empresa_id);
+                        
+                        $this->db->set('qtdech', (($_POST['qtdech'][$key] == "") ? 0 : $_POST['qtdech'][$key]));
+                        $this->db->set('valorch', (($_POST['valorch'][$key] == "") ? 0 : $_POST['valorch'][$key]));
+                        $this->db->set('qtdefilme', (($_POST['qtdefilme'][$key] == "") ? 0 : $_POST['qtdefilme'][$key]));
+                        $this->db->set('valorfilme', (($_POST['valorfilme'][$key] == "") ? 0 : $_POST['valorfilme'][$key]));
+                        $this->db->set('qtdeporte', (($_POST['qtdeporte'][$key] == "") ? 0 : $_POST['qtdeporte'][$key]));
+                        $this->db->set('valorporte', (($_POST['valorporte'][$key] == "") ? 0 : $_POST['valorporte'][$key]));
+                        $this->db->set('qtdeuco', (($_POST['qtdeuco'][$key] == "") ? 0 : $_POST['qtdeuco'][$key]));
+                        $this->db->set('valoruco', (($_POST['valoruco'][$key] == "") ? 0 : $_POST['valoruco'][$key]));
+                        $this->db->set('valortotal', (($_POST['valortotal'][$key] == "") ? 0 : $_POST['valortotal'][$key]));
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        
+                        $this->db->insert('tb_procedimento_convenio');
+                        $erro = $this->db->_error_message();
+                        if (trim($erro) != "") // erro de banco
+                            return -1;
+                        else
+                            $procedimento_convenio_id = $this->db->insert_id();
+                    }else {
+                        return -1;
+                    }
+                }
+                else{
+                    continue;
+                }
+                
+            }
+                
+            return $servidor_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function gravar() {
         try {
 
