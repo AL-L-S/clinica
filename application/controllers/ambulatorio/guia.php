@@ -1099,7 +1099,7 @@ class Guia extends BaseController {
     function valorexame($paciente_id, $guia_id, $ambulatorio_guia_id) {
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
-        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $data['guia_id'] = $guia_id;
@@ -2026,6 +2026,12 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
+        $medicos = $_POST['medico'];
+        if ($medicos != 0) {
+            $data['medico'] = $this->operador_m->listarCada($medicos);
+        } else {
+            $data['medico'] = 0;
+        }
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
@@ -2917,7 +2923,7 @@ class Guia extends BaseController {
         if ($_POST['escolha'] == 'R') {
             $this->impressaorecibo($paciente_id, $guia_id, $exames_id);
         } else {
-            
+            $this->impressaorecibo($paciente_id, $guia_id, $exames_id);
         }
     }
 
@@ -2932,18 +2938,26 @@ class Guia extends BaseController {
         $convenioid = $data['exame'][0]->convenio_id;
         $dinheiro = $data['exame'][0]->dinheiro;
         $data['exames'] = $this->guia->listarexamesguiaconvenio($guia_id, $convenioid);
+        $data['guiavalor'] = $this->guia->guiavalor($guia_id, $convenioid);
         $exames = $data['exames'];
         $valor_total = 0;
 
         foreach ($exames as $item) :
             if ($dinheiro == "t") {
                 $valor_total = $valor_total + ($item->valor_total);
+                
             }
         endforeach;
 
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
-        $valor = number_format($data['guia'][0]->valor_guia, 2, ',', '.');
+        if($dinheiro == "t"){
+        
+        $valor = number_format($data['guiavalor'][0]->valor_guia, 2, ',', '.');
+        }else{
+         $valor = '0,00';  
+        }
+//        var_dump($data['exames'][0]->valor_guia); die;
 
         $data['valor'] = $valor;
 
@@ -3175,6 +3189,11 @@ class Guia extends BaseController {
         $data['guia_id'] = $this->guia->verificaobservacao($guia_id);
         $this->load->View('ambulatorio/guiaobservacao-form', $data);
     }
+    
+    function guiavalor($guia_id) {
+        $data['guia_id'] = $this->guia->verificavalor($guia_id);
+        $this->load->View('ambulatorio/guiavalor-form', $data);
+    }
 
     function guiaconvenio($guia_id) {
         $data['guia_id'] = $this->guia->guiaconvenio($guia_id);
@@ -3218,7 +3237,12 @@ class Guia extends BaseController {
         $this->guia->gravarobservacaoguia($guia_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-
+    
+    function gravarvalorguia($guia_id) {
+        $this->guia->gravarvalorguia($guia_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
     function gravarguiaconvenio($guia_id) {
         $this->guia->gravarguiaconvenio($guia_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");

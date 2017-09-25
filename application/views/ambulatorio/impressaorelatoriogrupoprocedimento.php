@@ -18,7 +18,7 @@
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">FATURAMENTO POR GRUPO DE PRODUTO</th>
             </tr>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
             </tr>
             <? if ($grupo == "0") { ?>
                 <tr>
@@ -33,6 +33,15 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $grupo; ?></th>
                 </tr>
             <? } ?>
+            <? if ($medico == "0") { ?>
+                <tr>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MEDICO: TODOS</th>
+                </tr>
+            <? } else { ?>
+                <tr>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MEDICO: <?= utf8_decode($medico[0]->operador); ?></th>
+                </tr>
+            <? } ?>
             <? if ($conveniotipo == "0") { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODOS OS CONVENIOS</th>
@@ -45,7 +54,7 @@
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">CONVENIOS</th>
                 </tr>
-            <?
+                <?
             } else {
                 $i = 1;
                 ?>
@@ -53,7 +62,7 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">CONVENIO: <?= $convenios[0]->nome; ?></th>
                 </tr>
 
-<? } ?>
+            <? } ?>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
@@ -111,7 +120,6 @@
                             <td><font size="-2"><?= number_format($item->valor, 2, ',', '.') ?></td>
                         </tr>
                         <?php
-    
                         $qtde = $qtde + $item->quantidade;
                         $qtdetotal = $qtdetotal + $item->quantidade;
                         $valor = $valor + $item->valor;
@@ -165,7 +173,7 @@
             </tbody>
         </table>
         <hr>
-     
+
     <? } else {
         ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
@@ -181,7 +189,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

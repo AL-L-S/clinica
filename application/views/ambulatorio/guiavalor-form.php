@@ -4,13 +4,45 @@
     <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Observa&ccedil;&atilde;o</h3>
         <div>
-            <form name="form1" id="form1" action="<?= base_url() ?>ambulatorio/guia/gravarobservacaoguia/<?= $guia_id[0]->ambulatorio_guia_id ?>" method="post">
+            <form name="form1" id="form1" action="<?= base_url() ?>ambulatorio/guia/gravarvalorguia/<?= $guia_id[0]->ambulatorio_guia_id ?>" method="post">
                 <fieldset>
                     <table>
-                       
                         <tr>
                             <td style="text-align: left">
-                                Obsevação
+                                Nota Fiscal<?php
+                                if ($guia_id[0]->nota_fiscal == "t") {
+                                    ?>
+                                    <input type="checkbox" name="nota_fiscal" checked ="true" />
+                                    <?php
+                                } else {
+                                    ?>
+                                    <input type="checkbox" name="nota_fiscal"  />
+                                    <?php
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left">
+                                Recibo <?php
+                                if ($guia_id[0]->recibo == "t") {
+                                    ?>
+                                    <input type="checkbox" name="recibo" checked ="true" />
+                                    <?php
+                                } else {
+                                    ?>
+                                    <input type="checkbox" name="recibo" />
+                                    <?php
+                                }
+                                ?>
+                                    <br>
+                        <br>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="text-align: left">
+                                Valor
                                    
                             </td>
                           
@@ -19,9 +51,10 @@
                         <tr>
                             
                             <td>
-                                <textarea id="observacoes" name="observacoes" cols="50" rows="3" ><?= $guia_id[0]->observacoes ?></textarea>
+                                <input type="integer" name="txtvalorguia" id="txtvalorguia" value="<?=$guia_id[0]->valor_guia?>" alt="decimal"/>
                             </td>
                         </tr>
+                        
 
 
 
