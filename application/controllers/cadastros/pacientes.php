@@ -126,6 +126,25 @@ class pacientes extends BaseController {
 //        $this->anexarimagem($paciente_id);
     }
 
+    function excluirimagemlaudo($paciente_id, $nome) {
+
+        if (!is_dir("./uploadopm/paciente/$paciente_id")) {
+            mkdir("./uploadopm/paciente");
+            mkdir("./uploadopm/paciente/$paciente_id");
+            $destino = "./uploadopm/paciente/$paciente_id";
+            chmod($destino, 0777);
+        }
+
+        $origem = "./upload/paciente/$paciente_id/$nome";
+        $destino = "./uploadopm/paciente/$paciente_id/$nome";
+        copy($origem, $destino);
+        unlink($origem);
+
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+
+//        $this->anexarimagem($paciente_id);
+    }
+
     function autorizarambulatoriotemp($paciente_id) {
 
         $resultadoguia = $this->guia->listarguia($paciente_id);
@@ -280,9 +299,10 @@ class pacientes extends BaseController {
         $data['listaconvenio'] = $this->paciente->listaconvenio();
         $this->loadView('cadastros/paciente-fichasubstituir', $data);
     }
-    
+
     function contatosite() {
-        var_dump($_POST); die;
+        var_dump($_POST);
+        die;
 
 //        $data['idade'] = 0;
 //        $data['listaLogradouro'] = $this->paciente->listaTipoLogradouro();

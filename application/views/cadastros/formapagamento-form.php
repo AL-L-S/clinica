@@ -63,7 +63,7 @@
                         <label>Credor/Devedor</label>
                     </dt>
                     <dd>
-                        <select name="credor_devedor" id="credor_devedor" class="texto03" required>
+                        <select name="credor_devedor" id="credor_devedor" class="texto03">
                             <option value="">SELECIONE</option>
                             <? foreach ($credor_devedor as $value) { ?>
                                 <option value="<?= $value->financeiro_credor_devedor_id ?>" <?
@@ -89,7 +89,9 @@
     </div>
 </div> <!-- Final da DIV content -->
 
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
     $('#btnVoltar').click(function () {
@@ -98,6 +100,26 @@
 
     $(function () {
         $("#accordion").accordion();
+    });
+
+       if ($('#cartao').is(":checked")) {
+            
+            $("#credor_devedor").prop('required', true);
+
+        } else {
+            
+            $("#credor_devedor").prop('required', false);
+        }
+
+    $('#cartao').change(function () {
+        if ($(this).is(":checked")) {
+            
+            $("#credor_devedor").prop('required', true);
+
+        } else {
+            
+            $("#credor_devedor").prop('required', false);
+        }
     });
 
 

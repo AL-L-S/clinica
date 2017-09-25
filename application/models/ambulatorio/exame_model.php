@@ -836,11 +836,12 @@ class exame_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->orderby('ae.ordenador');
-        if ($ordem_chegada == 't') {
-            $this->db->orderby('ae.data_autorizacao desc');
+//        var_dump($ordem_chegada); die;
+        if ($ordem_chegada == 'f') {
             $this->db->orderby('ae.data');
+            $this->db->orderby('ae.inicio');
         } else {
-            $this->db->orderby('ae.data');
+//            $this->db->orderby('ae.data');
             $this->db->orderby('ae.data_autorizacao');
         }
 

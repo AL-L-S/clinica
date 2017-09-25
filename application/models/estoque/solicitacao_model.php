@@ -189,12 +189,14 @@ class solicitacao_model extends Model {
     }
     function listarsaidaitemrelatorio($estoque_solicitacao_id) {
 
-        $this->db->select(" ep.estoque_saida_id,
+        $this->db->select("ep.estoque_saida_id,
                             p.descricao,
                             p.valor_compra,
                             p.valor_venda,
                             ep.validade,
                             ep.quantidade,
+                            ( e.valor_compra / e.quantidade) as valor_unitario,
+                            (( e.valor_compra / e.quantidade) * ep.quantidade) as valor_total,
                             si.quantidade as quantidade_solicitada,
                             sum(s.quantidade) as saldo,
                             (
@@ -204,6 +206,7 @@ class solicitacao_model extends Model {
                             ) as saldo_atual,
                             u.descricao as unidade");
         $this->db->from('tb_estoque_saida ep');
+        $this->db->join('tb_estoque_entrada e', 'e.estoque_entrada_id = ep.estoque_entrada_id');
         $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = ep.produto_id');
         $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id= p.unidade_id');
         $this->db->join('tb_estoque_saldo s', 's.produto_id = ep.produto_id', 'left');
@@ -212,7 +215,7 @@ class solicitacao_model extends Model {
         $this->db->where('ep.data_cadastro >= s.data_cadastro');
 //        $this->db->where('s.ativo', 't');
         $this->db->where('ep.ativo', 'true');
-        $this->db->groupby('ep.estoque_saida_id,si.quantidade, p.descricao, ep.validade , u.descricao,p.valor_compra, p.valor_venda, ');
+        $this->db->groupby('ep.estoque_saida_id,si.quantidade, p.descricao, ep.validade , u.descricao,p.valor_compra, p.valor_venda,e.valor_compra,e.quantidade ');
         $this->db->orderby('ep.estoque_saida_id');
         $return = $this->db->get();
         return $return->result();

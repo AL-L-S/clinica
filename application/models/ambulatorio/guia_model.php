@@ -2014,6 +2014,9 @@ class guia_model extends Model {
     function relatorioindicacao() {
 
         $this->db->select('p.nome as paciente,
+            ae.valor_promotor,
+            ae.valor_total,
+            ae.percentual_promotor,
             pi.nome as indicacao');
         $this->db->from('tb_paciente p');
         $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao');
@@ -2099,6 +2102,32 @@ class guia_model extends Model {
 //        $this->db->groupby('p.paciente_id');
         $this->db->orderby('p.sexo');
         $this->db->orderby('p.estado_civil_id');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+    
+    function relatoriopacienteduplicado() {
+        $this->db->select('
+                           distinct(p.paciente_id), 
+                           p.nome as paciente,
+                           p.sexo, 
+                           p.nascimento,
+                           p.whatsapp,
+                           p.cpf,
+                           p.nome_mae,
+                           p.escolaridade_id,
+                           p.estado_civil_id
+                           ');
+        $this->db->from('tb_paciente p');
+
+        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('p.nome');
+//        $this->db->groupby('p.paciente_id');
+        $this->db->orderby('p.sexo');
+        $this->db->orderby('p.nome_mae');
+        $this->db->orderby('p.cpf');
         $return = $this->db->get();
 //        var_dump($return->result()); die;
         return $return->result();
