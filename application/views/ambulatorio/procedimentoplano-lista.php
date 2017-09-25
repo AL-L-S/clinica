@@ -9,6 +9,14 @@
                     </a>
                 </div>
             </td>
+            
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarmultiplosprocedimentoplano" target="_blank">
+                        Multiplos Procedimentos 
+                    </a>
+                </div>
+            </td>
 <!--            <td>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoexcluirgrupo">

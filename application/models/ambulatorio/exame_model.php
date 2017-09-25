@@ -437,9 +437,11 @@ class exame_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,
                             nome');
-        $this->db->from('tb_exame_sala');
+        $this->db->from('tb_exame_sala es');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->where('excluido', 'f');
+        $this->db->where("( SELECT COUNT(*) FROM ponto.tb_exame_sala_grupo esg 
+                            WHERE es.exame_sala_id = esg.exame_sala_id) > 0");
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();

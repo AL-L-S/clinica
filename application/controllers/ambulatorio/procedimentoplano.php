@@ -130,6 +130,17 @@ class Procedimentoplano extends BaseController {
         redirect(base_url() . "ambulatorio/procedimentoplano/agrupadoradicionar/$agrupador_id");
     }
 
+    function carregarmultiplosprocedimentoplano() {
+        $data['procedimento'] = $this->procedimentoplano->listarprocedimento3();
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['grupos'] = $this->procedimentoplano->listargrupo();
+//        var_dump($data['grupos']);die;
+        $data['empresa'] = $this->empresa->listarempresasprocedimento();
+        
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/multiplosprocedimentoplano-form', $data);
+    }
+
     function carregarprocedimentoplano($procedimentoplano_tuss_id) {
         $obj_procedimentoplano = new procedimentoplano_model($procedimentoplano_tuss_id);
         $data['obj'] = $obj_procedimentoplano;
@@ -457,6 +468,17 @@ class Procedimentoplano extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimentopromotor/$dados");
+    }
+
+    function gravarmultiplos() {
+        $procedimentoplano_tuss_id = $this->procedimentoplano->gravarmultiplos();
+        if ($procedimentoplano_tuss_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Procedimento já cadastrado.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravar() {

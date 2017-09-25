@@ -29,7 +29,7 @@
                                     if (@$obj->_procedimento_tuss_id == $value->procedimento_tuss_id):echo'selected';
                                     endif;
                                     ?>><?php echo $value->codigo . " - " . $value->nome; ?></option>
-                                        <? endforeach; ?>
+                                <? endforeach; ?>
                             </select>
                         </dd>
                     </div>
