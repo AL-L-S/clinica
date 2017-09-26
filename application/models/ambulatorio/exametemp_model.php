@@ -1259,6 +1259,7 @@ class exametemp_model extends Model {
                             c.nome as convenio,
                             pt.codigo,
                             pt.grupo,
+                            pt.descricao_procedimento,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
@@ -1631,6 +1632,7 @@ class exametemp_model extends Model {
                             c.dinheiro,
                             c.nome as convenio,
                             pt.codigo,
+                            pt.descricao_procedimento,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento');

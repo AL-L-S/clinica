@@ -2106,7 +2106,7 @@ class guia_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
-    
+
     function relatoriopacienteduplicado() {
         $this->db->select('
                            distinct(p.paciente_id), 
@@ -5314,6 +5314,19 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function verificavalor($guia_id) {
+
+        $this->db->select('ambulatorio_guia_id,
+                            nota_fiscal,
+                            recibo,
+                            valor_guia,
+                            observacoes');
+        $this->db->from('tb_ambulatorio_guia');
+        $this->db->where("ambulatorio_guia_id", $guia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function verificaobservacaorelatorio($guia_id) {
 
         $this->db->select('ambulatorio_guia_id,
@@ -5858,6 +5871,7 @@ class guia_model extends Model {
                             c.dinheiro,
                             c.convenio_id,
                             ae.autorizacao,
+                            g.valor_guia,
                             fp.nome as formadepagamento,
                             fp2.nome as formadepagamento2,
                             fp3.nome as formadepagamento3,
@@ -5872,6 +5886,7 @@ class guia_model extends Model {
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_guia g', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -5886,6 +5901,20 @@ class guia_model extends Model {
 //        $this->db->where("c.convenio_id", $convenioid);
         $this->db->where("ae.cancelada", "f");
         $this->db->orderby('ae.guia_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function guiavalor($guia_id) {
+
+        
+        $this->db->select('g.valor_guia');
+                            
+        $this->db->from('tb_ambulatorio_guia g');
+        
+        $this->db->where("g.ambulatorio_guia_id", $guia_id);
+//        $this->db->where("c.convenio_id", $convenioid);
+        $this->db->orderby('g.ambulatorio_guia_id');
         $return = $this->db->get();
         return $return->result();
     }
@@ -6576,6 +6605,17 @@ AND data <= '$data_fim'";
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('observacoes', $_POST['observacoes']);
+        
+        $this->db->set('data_observacoes', $horario);
+        $this->db->set('operador_observacoes', $operador_id);
+        $this->db->where('ambulatorio_guia_id', $guia_id);
+        $this->db->update('tb_ambulatorio_guia');
+    }
+
+    function gravarvalorguia($guia_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+//        $this->db->set('observacoes', $_POST['observacoes']);
         $this->db->set('nota_fiscal', $_POST['nota_fiscal']);
         if ($_POST['txtvalorguia'] != '') {
             $this->db->set('valor_guia', str_replace(",", ".", $_POST['txtvalorguia']));
@@ -9199,41 +9239,37 @@ ORDER BY ae.agenda_exames_id)";
         $query = $this->db->get();
         $return = $query->result();
         foreach ($return as $value) {
-            
+
             if ($value->horario_especial == 't') {
                 $horario_especial = ($value->valor / 100);
                 continue;
             }
-            
-            if($value->leito_enfermaria == 't'){
-                if($value->mesma_via == 't'){
-                    $enfermaria_mesma_via['maior'] = (float)$value->valor / 100;
-                    $enfermaria_mesma_via['base'] = (float)$value->valor_base / 100;
+
+            if ($value->leito_enfermaria == 't') {
+                if ($value->mesma_via == 't') {
+                    $enfermaria_mesma_via['maior'] = (float) $value->valor / 100;
+                    $enfermaria_mesma_via['base'] = (float) $value->valor_base / 100;
+                } else {
+                    $enfermaria_via_diferente['maior'] = (float) $value->valor / 100;
+                    $enfermaria_via_diferente['base'] = (float) $value->valor_base / 100;
                 }
-                else{
-                    $enfermaria_via_diferente['maior'] =(float) $value->valor / 100;
-                    $enfermaria_via_diferente['base'] = (float)$value->valor_base / 100;
+            } else {
+                if ($value->mesma_via == 't') {
+                    $apartamento_mesma_via['maior'] = (float) $value->valor / 100;
+                    $apartamento_mesma_via['base'] = (float) $value->valor_base / 100;
+                } else {
+                    $apartamento_via_diferente['maior'] = (float) $value->valor / 100;
+                    $apartamento_via_diferente['base'] = (float) $value->valor_base / 100;
                 }
-            }
-            else{
-                if($value->mesma_via == 't'){
-                    $apartamento_mesma_via['maior'] =(float) $value->valor / 100;
-                    $apartamento_mesma_via['base'] = (float)$value->valor_base / 100;
-                }
-                else{
-                    $apartamento_via_diferente['maior'] =(float) $value->valor / 100;
-                    $apartamento_via_diferente['base'] = (float)$value->valor_base / 100;
-                }
-                
             }
         }
-        
+
         $valMedico = 0;
-        
+
         for ($i = 0; $i < count($procedimentos); $i++) {
             $valor = (float) $procedimentos[$i]->valor_total;
             $valProcedimento = ($procedimentos[$i]->horario_especial == 't') ? ($valor) + ($valor * $horario_especial) : $valor;
-            
+
             if ($guia->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
                 if ($guia->via == 'D') {// VIA DIFERENTE
                     if ($i == 0) {
@@ -9267,8 +9303,8 @@ ORDER BY ae.agenda_exames_id)";
             //VALOR DO CIRURGIAO/ANESTESISTA
             $valMedico = $valMedicoProc;
 //            var_dump($guia->leito, $guia->via); die;
-            
-            if((int) $_POST['funcao'] != 0){
+
+            if ((int) $_POST['funcao'] != 0) {
                 $this->db->select('valor');
                 $this->db->from('tb_centrocirurgico_percentual_funcao');
                 $this->db->where("funcao", $_POST['funcao']);
@@ -9276,12 +9312,11 @@ ORDER BY ae.agenda_exames_id)";
                 $return2 = $query->result();
 
                 //DEFININDO OS VALORES
-                $val = number_format($valMedico * ($return2[0]->valor / 100) , 2, '.', '');
-            }
-            else{
+                $val = number_format($valMedico * ($return2[0]->valor / 100), 2, '.', '');
+            } else {
                 $val = number_format($valMedico, 2, '.', '');
             }
-            
+
 //            echo "<pre>";
 //            var_dump($val); echo "<hr>";
 
