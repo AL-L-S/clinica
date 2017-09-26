@@ -127,6 +127,11 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/examemultifuncaogeral-lista', $args);
     }
 
+    function listarmultifuncaocalendario2($args = array()) {
+
+        $this->load->View('ambulatorio/calendario2', $args);
+    }
+
     function listarmultifuncaocalendario($args = array()) {
 
         $this->load->View('ambulatorio/calendario', $args);

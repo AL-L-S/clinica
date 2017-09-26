@@ -2591,17 +2591,17 @@ class agenda_model extends Model {
                 $horaentrada1 = $_POST['txthoraEntrada'][$x];
                 if ($horaentrada1 != '') {
                     $this->db->select('e.nome as empresa,
-                               h.dia,
-                               h.horaentrada1,
-                               h.horasaida1,
-                               h.intervaloinicio,
-                               h.intervalofim,
-                               h.tempoconsulta,
-                               h.agenda_id,
-                               h.qtdeconsulta,
-                               h.empresa_id,
-                               h.observacoes,
-                               h.horarioagenda_id');
+                                       h.dia,
+                                       h.horaentrada1,
+                                       h.horasaida1,
+                                       h.intervaloinicio,
+                                       h.intervalofim,
+                                       h.tempoconsulta,
+                                       h.agenda_id,
+                                       h.qtdeconsulta,
+                                       h.empresa_id,
+                                       h.observacoes,
+                                       h.horarioagenda_id');
                     $this->db->from('tb_horarioagenda h');
                     $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
                     $this->db->where("h.agenda_id", $agenda_id);
@@ -2681,8 +2681,12 @@ class agenda_model extends Model {
                     $this->db->set('horasaida1', $horasaida1);
                     $this->db->set('intervaloinicio', $intervaloinicio);
                     $this->db->set('intervalofim', $intervalofim);
-                    $this->db->set('tempoconsulta', $tempoconsulta);
-                    $this->db->set('qtdeconsulta', $qtdeconsulta);
+                    if($tempoconsulta != ''){
+                        $this->db->set('tempoconsulta', $tempoconsulta);
+                    }
+                    if($qtdeconsulta != ''){
+                        $this->db->set('qtdeconsulta', $qtdeconsulta);
+                    }
                     $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('medico_id', $_POST['medico_id']);
                     $this->db->set('nome', $_POST['nome_agenda']);
@@ -2730,8 +2734,14 @@ class agenda_model extends Model {
                     $this->db->set('horasaida1', $horasaida1);
                     $this->db->set('intervaloinicio', $intervaloinicio);
                     $this->db->set('intervalofim', $intervalofim);
-                    $this->db->set('tempoconsulta', $tempoconsulta);
-                    $this->db->set('qtdeconsulta', $qtdeconsulta);
+                    
+                    if($tempoconsulta != ""){
+                        $this->db->set('tempoconsulta', $tempoconsulta);
+                    }
+                    if($qtdeconsulta != ""){
+                        $this->db->set('qtdeconsulta', $qtdeconsulta);
+                    }
+                    
                     $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('observacoes', $_POST['obs']);
 

@@ -115,3 +115,7 @@ ALTER TABLE ponto.tb_centrocirurgico_percentual_funcao ALTER column funcao type 
 -- VERSÃO 1.0.00009
 INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
     VALUES ('1.0.00009', '1.0.00009');
+
+-- Dia 26/09/2017
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN calendario_layout boolean DEFAULT false;
+

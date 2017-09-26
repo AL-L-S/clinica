@@ -5445,6 +5445,21 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompletemedicotipoagenda($parametro = "") {
+        $this->db->select('o.nome,
+                           o.operador_id');
+        $this->db->from('tb_operador o');
+        $this->db->where('o.ativo', 't');
+        $this->db->where('o.medico', 't');
+        if ($parametro != ""){
+            $this->db->where("o.operador_id IN (SELECT medico_agenda FROM ponto.tb_agenda_exames WHERE tipo_consulta_id = {$parametro})");
+        }
+
+//        $this->db->groupby("e.empresa_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompletegrupoempresa($parametro = null) {
         $this->db->select('distinct(e.empresa_id), e.nome');
         $this->db->from('tb_exame_sala es');
