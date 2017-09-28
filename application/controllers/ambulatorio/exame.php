@@ -2618,7 +2618,7 @@ class Exame extends BaseController {
         $listarexame = $this->exame->listargxmlfaturamento();
         $listarexames = $this->exame->listarxmlfaturamentoexames();
 //        echo '<pre>';
-//        var_dump($listarexames); die;
+//        var_dump($listarexame); 
 //        var_dump($listarexames); die;
 
         $horario = date("Y-m-d");
@@ -2714,18 +2714,20 @@ class Exame extends BaseController {
 
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $tabela = '22';
-                                
+//                                die('morreu');
                                 $valorProcedimento = $item->valor_total;
                                 $valorMaterial = 0.00;
                                 $valorMedicamento = 0.00;
                                 
                                 if($item->grupo == "MATERIAL") { //caso seja material
                                     $tabela = '19';
+                                    $codDespesa = '03';
                                     $valorMaterial = $item->valor_total;
                                     $valorProcedimento = 0.00;
                                 }
                                 elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                                     $tabela = '20';
+                                    $codDespesa = '02';
                                     $valorMedicamento = $item->valor_total;
                                     $valorProcedimento = 0.00;
                                 }
@@ -2814,9 +2816,9 @@ class Exame extends BaseController {
                         <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         
-                      </ans:dadosAtendimento>
-                      
-                      <ans:procedimentosExecutados>
+                      </ans:dadosAtendimento>" . (
+                      ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") 
+                      ? "<ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
                                 <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
@@ -2841,7 +2843,24 @@ class Exame extends BaseController {
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                       </ans:procedimentoExecutado>
-                      </ans:procedimentosExecutados>
+                      </ans:procedimentosExecutados>" 
+                                            
+                      : "<ans:outrasDespesas>
+                             <ans:despesa><ans:servicosExecutados>
+                                    <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
+                                    <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
+                                    <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
+                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                                    <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                                    <ans:unidadeMedida>036</ans:unidadeMedida>
+                                    <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                    <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                                    <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                                    <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                          </ans:servicosExecutados></ans:despesa>
+                      </ans:outrasDespesas>
+                      " )  . "
                       <ans:observacao>III</ans:observacao>
                          <ans:valorTotal >
                          <ans:valorProcedimentos >" . number_format($valorProcedimento, 2, '.', '') . "</ans:valorProcedimentos >
@@ -2856,6 +2875,8 @@ class Exame extends BaseController {
                       </ans:guiaSP-SADT>";
                                 } 
                                 else {
+                                    
+//                                    die('morreu02');
                                     $corpo = $corpo . "
                 <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -2906,9 +2927,9 @@ class Exame extends BaseController {
                         <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         
-                      </ans:dadosAtendimento>
-                      
-                      <ans:procedimentosExecutados>
+                      </ans:dadosAtendimento>" . 
+                      ( ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") 
+                      ? "<ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
                                 <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
@@ -2933,7 +2954,28 @@ class Exame extends BaseController {
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                       </ans:procedimentoExecutado>
-                    </ans:procedimentosExecutados>
+                    </ans:procedimentosExecutados>" 
+                                            
+                      : "<ans:outrasDespesas>
+                             <ans:despesa>
+                             
+                                <ans:codigoDespesa>" . $codDespesa . "</ans:codigoDespesa>
+                                <ans:servicosExecutados>
+                                    <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
+                                    <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
+                                    <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
+                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                                    <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                                    <ans:unidadeMedida>036</ans:unidadeMedida>
+                                    <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                    <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                                    <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                                    <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                            </ans:servicosExecutados>
+                          </ans:despesa>
+                      </ans:outrasDespesas>
+                      " ) . "
                       <ans:observacao>III</ans:observacao>
                          <ans:valorTotal >
                          <ans:valorProcedimentos >" . number_format($valorProcedimento, 2, '.', '') . "</ans:valorProcedimentos >
@@ -3050,11 +3092,13 @@ class Exame extends BaseController {
 
                         if($item->grupo == "MATERIAL") { //caso seja material
                             $tabela = '19';
+                            $codDespesa = '03';
                             $valorMaterial = $item->valor_total;
                             $valorProcedimento = 0.00;
                         }
                         elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                             $tabela = '20';
+                            $codDespesa = '02';
                             $valorMedicamento = $item->valor_total;
                             $valorProcedimento = 0.00;
                         }
@@ -3231,11 +3275,13 @@ class Exame extends BaseController {
                                 
                                 if($item->grupo == "MATERIAL") { //caso seja material
                                     $tabela = '19';
+                                    $codDespesa = '03';
                                     $valorMaterial = $item->valor_total;
                                     $valorProcedimento = 0.00;
                                 }
                                 elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                                     $tabela = '20';
+                                    $codDespesa = '02';
                                     $valorMedicamento = $item->valor_total;
                                     $valorProcedimento = 0.00;
                                 }
@@ -3316,32 +3362,55 @@ class Exame extends BaseController {
                       <ans:tipoConsulta>1</ans:tipoConsulta>
                       
                       </ans:dadosAtendimento>
-                      <ans:procedimentosExecutados>
-                         <ans:procedimentoExecutado>
-                                <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
-                                <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
-                                <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
-                                <ans:procedimento>
-                                <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
-                               <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
-                               <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
-                               </ans:procedimento>                        
-                        <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
-                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
-                            <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
-                            <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
-                            <ans:equipeSadt>
-                            <ans:codProfissional>
-                            <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-                            </ans:codProfissional>
-                            <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                            <ans:conselho>01</ans:conselho>
-                            <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
-                            </ans:equipeSadt>
-                      </ans:procedimentoExecutado>
-                      </ans:procedimentosExecutados>
+                      " . (
+                      ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") 
+                      ? "<ans:procedimentosExecutados>
+                             <ans:procedimentoExecutado>
+                                    <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
+                                    <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
+                                    <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
+                                    <ans:procedimento>
+                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                   <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                                   <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                                   </ans:procedimento>                        
+                            <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                                <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                                <ans:equipeSadt>
+                                <ans:codProfissional>
+                                <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                                </ans:codProfissional>
+                                <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                                <ans:conselho>01</ans:conselho>
+                                <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
+                                <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                          </ans:procedimentoExecutado>
+                      </ans:procedimentosExecutados>" 
+                                            
+                      : "<ans:outrasDespesas>
+                             <ans:despesa>
+                                <ans:codigoDespesa>" . $codDespesa . "</ans:codigoDespesa>
+                                <ans:servicosExecutados>
+                                    <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
+                                    <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
+                                    <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
+                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                                    <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                                    <ans:unidadeMedida>036</ans:unidadeMedida>
+                                    <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                    <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                                    <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                                    <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                                </ans:servicosExecutados>
+                            </ans:despesa>
+                      </ans:outrasDespesas>
+                      " )  . "
+                      
                       <ans:observacao>III</ans:observacao>
                          <ans:valorTotal >
                          <ans:valorProcedimentos >" . number_format($valorProcedimento, 2, '.', '') . "</ans:valorProcedimentos >
@@ -3402,33 +3471,55 @@ class Exame extends BaseController {
                       <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                       <ans:tipoConsulta>1</ans:tipoConsulta>
                       
-                      </ans:dadosAtendimento>
-                      <ans:procedimentosExecutados>
-                         <ans:procedimentoExecutado>
-                                <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
-                                <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
-                                <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
-                                <ans:procedimento>
-                                <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
-                               <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
-                               <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
-                               </ans:procedimento>                        
-                        <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
-                            <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
-                            <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
-                            <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
-                            <ans:equipeSadt>
-                            <ans:codProfissional>
-                            <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-                            </ans:codProfissional>
-                            <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                            <ans:conselho>01</ans:conselho>
-                            <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
-                            </ans:equipeSadt>
-                      </ans:procedimentoExecutado>
-                      </ans:procedimentosExecutados>
+                      </ans:dadosAtendimento>" . (
+                      ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") 
+                      ? "<ans:procedimentosExecutados>
+                             <ans:procedimentoExecutado>
+                                    <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
+                                    <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
+                                    <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
+                                    <ans:procedimento>
+                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                   <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                                   <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                                   </ans:procedimento>                        
+                            <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                                <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                                <ans:equipeSadt>
+                                <ans:codProfissional>
+                                <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                                </ans:codProfissional>
+                                <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                                <ans:conselho>01</ans:conselho>
+                                <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
+                                <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                          </ans:procedimentoExecutado>
+                      </ans:procedimentosExecutados>" 
+                                            
+                      : "<ans:outrasDespesas>
+                             <ans:despesa>
+                                <ans:codigoDespesa>" . $codDespesa . "</ans:codigoDespesa>
+                                <ans:servicosExecutados>
+                                    <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
+                                    <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
+                                    <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
+                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
+                                    <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
+                                    <ans:unidadeMedida>036</ans:unidadeMedida>
+                                    <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                    <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
+                                    <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
+                                    <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
+                                </ans:servicosExecutados>
+                            </ans:despesa>
+                      </ans:outrasDespesas>
+                      " )  . "
+                      
                       <ans:observacao>III</ans:observacao>
                          <ans:valorTotal >
                          <ans:valorProcedimentos >" . number_format($valorProcedimento, 2, '.', '') . "</ans:valorProcedimentos >

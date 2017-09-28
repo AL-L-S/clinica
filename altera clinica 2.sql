@@ -762,3 +762,4 @@ ALTER TABLE ponto.tb_paciente_credito ADD COLUMN data date;
 --INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
 --    VALUES ('ODONTOLOGIA', 'ESPECIALIDADE');
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN ordem_chegada boolean DEFAULT false;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN empresa_id integer;

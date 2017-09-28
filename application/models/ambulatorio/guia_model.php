@@ -3405,6 +3405,7 @@ class guia_model extends Model {
         $this->db->select('ae.quantidade,
             p.nome as paciente,
             pt.nome as procedimento,
+            pc.convenio_id,
             ae.autorizacao,
             ae.data,
             al.situacao as situacaolaudo,
@@ -5904,14 +5905,14 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function guiavalor($guia_id) {
 
-        
+
         $this->db->select('g.valor_guia');
-                            
+
         $this->db->from('tb_ambulatorio_guia g');
-        
+
         $this->db->where("g.ambulatorio_guia_id", $guia_id);
 //        $this->db->where("c.convenio_id", $convenioid);
         $this->db->orderby('g.ambulatorio_guia_id');
@@ -6605,7 +6606,7 @@ AND data <= '$data_fim'";
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('observacoes', $_POST['observacoes']);
-        
+
         $this->db->set('data_observacoes', $horario);
         $this->db->set('operador_observacoes', $operador_id);
         $this->db->where('ambulatorio_guia_id', $guia_id);
@@ -6933,6 +6934,9 @@ AND data <= '$data_fim'";
         $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento_id', 'left');
         $this->db->where("pc.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("pc.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['empresa'] != '') {
+            $this->db->where('pc.empresa_id', $_POST['empresa']);
+        }
         $this->db->where("pc.ativo", 't');
         $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome");
         $query = $this->db->get();
@@ -6941,7 +6945,7 @@ AND data <= '$data_fim'";
     }
 
     function relatoriocaixacreditoslancados() {
-        $this->db->select(" SUM(pc.valor) AS valor,
+        $this->db->select("SUM(pc.valor) AS valor,
                             p.nome as paciente,
                             pc.data,
                             f.forma_pagamento_id,
@@ -6951,6 +6955,9 @@ AND data <= '$data_fim'";
         $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento_id', 'left');
         $this->db->where("pc.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("pc.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['empresa'] != '') {
+            $this->db->where('pc.empresa_id', $_POST['empresa']);
+        }
         $this->db->where("pc.ativo", 't');
         $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome");
         $query = $this->db->get();
@@ -6964,7 +6971,8 @@ AND data <= '$data_fim'";
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->set('empresa_id', $empresa_id);
         $this->db->set('data_cadastro', $horario);
         $this->db->set('operador_cadastro', $operador_id);
 

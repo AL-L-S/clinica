@@ -71,7 +71,7 @@
                                     </a>
                                 </th>
 
-                                <? if ($perfil_id != 11) { ?>
+                                <? if ($perfil_id != 12) { ?>
                                     <? if ($botao_faturar_guia == 't') { ?>
                                         <th class="tabela_header"><div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'width=1000,height=600');">F. Guia
@@ -252,7 +252,7 @@
 
 
                                             <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
-                                                <? if ($perfil_id != 11) { ?>
+                                                <? if ($perfil_id != 12) { ?>
                                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');">Faturar
 

@@ -103,8 +103,8 @@ class empresa_model extends Model {
 //        $this->db->where('data_criacao', $data);
         return $this->db;
     }
-    
-     function listarconfiguracaoimpressaolaudo() {
+
+    function listarconfiguracaoimpressaolaudo() {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ei.empresa_impressao_laudo_id,ei.nome as nome_laudo, ei.cabecalho,ei.ativo,ei.rodape, e.nome as empresa');
@@ -128,7 +128,7 @@ class empresa_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarconfiguracaoimpressaocabecalho($empresa_impressao_cabecalho_id) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -291,7 +291,7 @@ class empresa_model extends Model {
         else
             return true;
     }
-    
+
     function ativarconfiguracaolaudo($impressao_id) {
 //        var_dump($impressao_id); die;
         $horario = date("Y-m-d H:i:s");
@@ -301,8 +301,8 @@ class empresa_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('empresa_impressao_laudo_id', $impressao_id);
         $this->db->update('tb_empresa_impressao_laudo');
-        
-        
+
+
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
@@ -333,25 +333,56 @@ class empresa_model extends Model {
 
     function gravarlembrete($empresa_lembretes_id) {
 
+        $this->db->select('operador_id, nome');
+        $this->db->from('tb_operador');
+//        $this->db->where('consulta', 'true');
+//        $this->db->where('ativo', 'true');
+        $return = $this->db->get()->result();
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
 
-        $this->db->set('texto', $_POST['descricao']);
-        $this->db->set('operador_destino', $_POST['operador_id']);
-        $this->db->set('empresa_id', $empresa_id);
 
-        if ($empresa_lembretes_id == "" || $empresa_lembretes_id == "0") {// insert
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_empresa_lembretes');
-        } else { // update
-            $this->db->set('data_atualizacao', $horario);
-            $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where('empresa_lembretes_id', $empresa_lembretes_id);
-            $this->db->update('tb_empresa_lembretes');
+        if ($_POST['operador_id'] == 'TODOS') {
+            foreach ($return as $value) {
+
+
+                if ($empresa_lembretes_id == "" || $empresa_lembretes_id == "0") {// insert
+                    $this->db->set('texto', $_POST['descricao']);
+                    $this->db->set('operador_destino', $value->operador_id);
+                    $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_empresa_lembretes');
+                } else { // update
+                    $this->db->set('texto', $_POST['descricao']);
+                    $this->db->set('operador_destino', $value->operador_id);
+                    $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->where('empresa_lembretes_id', $empresa_lembretes_id);
+                    $this->db->update('tb_empresa_lembretes');
+                }
+            }
+        } else {
+            if ($empresa_lembretes_id == "" || $empresa_lembretes_id == "0") {// insert
+                $this->db->set('texto', $_POST['descricao']);
+                $this->db->set('operador_destino', $_POST['operador_id']);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_empresa_lembretes');
+            } else { // update
+                $this->db->set('texto', $_POST['descricao']);
+                $this->db->set('operador_destino', $_POST['operador_id']);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('empresa_lembretes_id', $empresa_lembretes_id);
+                $this->db->update('tb_empresa_lembretes');
+            }
         }
-
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;
@@ -371,8 +402,8 @@ class empresa_model extends Model {
             $this->db->from('tb_empresa_impressao_cabecalho ei');
             $this->db->where('ei.empresa_id', $empresa_id);
             $teste = $this->db->get()->result();
-            if(count($teste) > 0){
-              $impressao_id = $teste[0]->empresa_impressao_cabecalho_id;
+            if (count($teste) > 0) {
+                $impressao_id = $teste[0]->empresa_impressao_cabecalho_id;
             }
 
             if (count($teste) == 0) {
@@ -402,7 +433,7 @@ class empresa_model extends Model {
             return false;
         }
     }
-    
+
     function gravarconfiguracaoimpressaolaudo() {
         try {
 //            var_dump($_POST['impressao_id']); die;
@@ -419,8 +450,8 @@ class empresa_model extends Model {
             $this->db->from('tb_empresa_impressao_laudo ei');
 //            $this->db->where('ei.empresa_impressao_laudo_id', $_POST['impressao_id']);
             $teste2 = $this->db->get()->result();
-            if(count($teste) > 0){
-              $impressao_id = $teste[0]->empresa_impressao_laudo_id;
+            if (count($teste) > 0) {
+                $impressao_id = $teste[0]->empresa_impressao_laudo_id;
             }
 
             if (count($teste) == 0) {
@@ -429,8 +460,8 @@ class empresa_model extends Model {
                 $this->db->set('rodape', $_POST['rodape']);
                 $this->db->set('texto', $_POST['texto']);
                 $this->db->set('empresa_id', $empresa_id);
-                if(count($teste2) > 0){
-                $this->db->set('ativo', 'f');
+                if (count($teste2) > 0) {
+                    $this->db->set('ativo', 'f');
                 }
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -773,7 +804,7 @@ class empresa_model extends Model {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa');
-                
+
                 if (isset($_POST['procedimento_excecao'])) {
                     $this->db->set('procedimento_excecao', 't');
                 } else {
@@ -799,7 +830,7 @@ class empresa_model extends Model {
                 $empresa_id = $_POST['txtempresaid'];
                 $this->db->where('empresa_id', $empresa_id);
                 $this->db->update('tb_empresa');
-                
+
                 if (isset($_POST['procedimento_excecao'])) {
                     $this->db->set('procedimento_excecao', 't');
                 } else {

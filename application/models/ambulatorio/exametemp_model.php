@@ -20,7 +20,8 @@ class exametemp_model extends Model {
 
         $this->db->select('SUM(pcr.valor) as saldo');
         $this->db->from('tb_paciente_credito pcr');
-
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->where('pcr.empresa_id', $empresa_id);
         $this->db->where('pcr.ativo', 'true');
         $this->db->where('pcr.paciente_id', $paciente_id);
 
@@ -57,6 +58,8 @@ class exametemp_model extends Model {
         $this->db->where('pcr.ativo', 'true');
         $this->db->where('pcr.paciente_id', $paciente_id);
         $this->db->where('pcr.procedimento_convenio_id IS NOT NULL');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->where('pcr.empresa_id', $empresa_id);
 
         if (@$_GET['procedimento'] != '') {
             $this->db->where('pt.nome ilike', "%" . $_GET['procedimento'] . "%");
@@ -2073,9 +2076,11 @@ class exametemp_model extends Model {
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
 
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('empresa_id', $empresa_id);
 
             $this->db->insert('tb_paciente_credito');
 

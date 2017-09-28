@@ -1143,12 +1143,12 @@ class exame_model extends Model {
 
             if ($_POST['laudo'] == "on") {
                 $this->db->set('empresa_id', $_POST['txtempresa']);
-                $this->db->set('data', $_POST['txtdata']);
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
                 $this->db->set('medico_parecer1', $_POST['medicoagenda']);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
                 $this->db->set('exame_id', $exames_id);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
+                $this->db->set('guia_id', $ambulatorio_guia);
                 $this->db->set('tipo', $_POST['tipo']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);

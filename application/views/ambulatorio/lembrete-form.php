@@ -12,6 +12,7 @@
                             <td>
                                 <select name="operador_id" id="operador_id" class="size2" required="">
                                     <option value='' >Selecione</option>
+                                    <option value='TODOS'>TODOS</option>
                                 <? foreach ($operadores as $value) : ?>
                                     <option value="<?= $value->operador_id; ?>" 
                                         <? // if (@$_GET['operador_id'] == $value->operador_id) echo 'selected' ?>>
