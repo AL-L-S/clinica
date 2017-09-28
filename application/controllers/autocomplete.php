@@ -379,9 +379,12 @@ class Autocomplete extends Controller {
             $ano = date("Y", strtotime($item->data));
 
 //            $medico = $item->medico;
-
-            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome";
-
+            if($this->session->userdata('calendario_layout') == 't'){
+                $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario2?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome";
+            }
+            else{
+                $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome";
+            }
 
             $var[] = $retorno;
         }
@@ -1944,6 +1947,17 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompletemedicoespecialidade();
         }
 
+
+        echo json_encode($result);
+    }
+
+    function listarmedicotipoagenda() {
+//        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['tipoagenda'])) {
+            $result = $this->exametemp->listarautocompletemedicotipoagenda($_GET['tipoagenda']);
+        } else {
+            $result = $this->exametemp->listarautocompletemedicotipoagenda();
+        }
 
         echo json_encode($result);
     }

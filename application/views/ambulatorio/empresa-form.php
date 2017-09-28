@@ -226,6 +226,12 @@
                             <input type="checkbox" id="calendario" name="calendario" <? if (@$obj->_calendario == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
+                            <label title="Habilitar o layout de calendario criado para a MED (apenas na multifunção geral).">Calendario (layout personalizado)</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="calendario_layout" name="calendario_layout" <? if (@$obj->_calendario_layout == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
                             <label title="Habilitar Calendario.">Chamar Consulta na sala de espera</label>
                         </dt>
                         <dd>
@@ -308,6 +314,12 @@
                         </dd>
                         <dt>
                             <label title="Ordem de chegada na sala de espera">Ordem de Chegada.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="procedimento_excecao" name="ordem_chegada" <? if (@$obj->_ordem_chegada == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o manter indicação irá aparecer nas configurações.">Usar Indicação como repasse?</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="procedimento_excecao" name="ordem_chegada" <? if (@$obj->_ordem_chegada == 't') echo "checked"; ?>/> 

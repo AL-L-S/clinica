@@ -26,7 +26,7 @@ class login_model extends Model {
         $this->db->where('p.ativo = true');
         $return = $this->db->get()->result();
 
-        $this->db->select('e.*, ep.procedimento_excecao');
+        $this->db->select('e.*, ep.procedimento_excecao, ep.calendario_layout');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
 //        
@@ -58,6 +58,7 @@ class login_model extends Model {
             $botao_faturar_proc = $retorno[0]->botao_faturar_procedimento;
             $producao_medica_saida = $retorno[0]->producao_medica_saida;
             $procedimento_excecao = $retorno[0]->procedimento_excecao;
+            $calendario_layout = $retorno[0]->calendario_layout;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -110,6 +111,7 @@ class login_model extends Model {
                 'procedimento_multiempresa' => $procedimento_multiempresa,
                 'producao_medica_saida' => $producao_medica_saida,
                 'procedimento_excecao' => $procedimento_excecao,
+                'calendario_layout' => $calendario_layout,
                 'empresa' => $empresanome
             );
             $this->session->set_userdata($p);

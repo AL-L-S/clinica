@@ -127,6 +127,11 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/examemultifuncaogeral-lista', $args);
     }
 
+    function listarmultifuncaocalendario2($args = array()) {
+
+        $this->load->View('ambulatorio/calendario2', $args);
+    }
+
     function listarmultifuncaocalendario($args = array()) {
 
         $this->load->View('ambulatorio/calendario', $args);
@@ -286,11 +291,11 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['empresa_id'] = $_POST['empresa'];
         $data['relatorio'] = $this->exame->gerarelatorioorcamentos();
-        
+
 //        echo "<pre>";
 //        var_dump($data['relatorio']);
 //        die;
-        
+
         $this->load->View('ambulatorio/impressaorelatorioorcamentos', $data);
     }
 
@@ -1354,14 +1359,23 @@ class Exame extends BaseController {
     }
 
     function excluirimagemmedico($exame_id, $nome, $sala_id) {
+        $this->load->helper('directory');
 
+        $contador = directory_map("./uploadopm/$exame_id/");
+//        var_dump(count($contador)); die;
+        if ($contador > 0) {
+            $novonome = count($contador) + 1 . '.jpg';
+        } else {
+            $novonome = $nome;
+        }
+        
         if (!is_dir("./uploadopm/$exame_id")) {
             mkdir("./uploadopm/$exame_id");
             $pasta = "./uploadopm/$exame_id";
             chmod($pasta, 0777);
         }
         $origem = "./upload/$exame_id/$nome";
-        $destino = "./uploadopm/$exame_id/$nome";
+        $destino = "./uploadopm/$exame_id/$novonome";
         copy($origem, $destino);
         unlink($origem);
         redirect(base_url() . "ambulatorio/exame/anexarimagemmedico/$exame_id/$sala_id");
@@ -2059,7 +2073,7 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $nome = $_POST['txtNome'];
-        
+
         $tipo = $this->agenda->listartiposala($sala_id);
         $tipo = $tipo[0]->tipo;
         $horarioagenda = $this->agenda->listarhorarioagendacriacao($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
@@ -2301,14 +2315,14 @@ class Exame extends BaseController {
 
     function gravaralteracaoagendacriada() {
         $dados = $this->exame->listardadosagendacriada();
-        if( count($dados) == 0 ){
-            
+        if (count($dados) == 0) {
+
             $data['mensagem'] = 'Erro. Todos os registros associados a essa agenda já foram excluidos. Por favor, crie uma nova agenda!';
-            
+
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/agenda");
         }
-        
+
         $agenda_id = $_GET['agenda_id'];
         $medico_id = $_GET['medico_id'];
         $nome = $_GET['nome_agenda'];
@@ -2317,13 +2331,13 @@ class Exame extends BaseController {
         $datainicial = $dados[0]->data_inicio;
         $datafinal = $dados[0]->data_fim;
         $tipo = $dados[0]->tipo;
-        
+
         $agenda = $this->agenda->listarnovoshorarioseditaragendacriada();
         $id = 0;
-        
+
         $data['mensagem'] = 'Sucesso ao criar novos horarios para essa agenda no periodo de ' . date("d/m/Y", strtotime($datainicial)) . " até " . date("d/m/Y", strtotime($datafinal));
         $this->session->set_flashdata('message', $data['mensagem']);
-        
+
         foreach ($agenda as $item) {
             $this->agenda->consolidandonovoshorarios($item->horarioagenda_editada_id);
             $tempoconsulta = $item->tempoconsulta;
@@ -2427,15 +2441,14 @@ class Exame extends BaseController {
                         }
                     }
                 }
-
             }
         }
-        
+
         $this->exame->removendoprocedimentoduplicadoagendaeditada();
-        
+
         redirect(base_url() . "ambulatorio/agenda");
     }
-    
+
     function gravarespecialidade() {
         $agenda_id = $_POST['txthorario'];
         $medico_id = $_POST['txtmedico'];
@@ -4682,5 +4695,3 @@ class Exame extends BaseController {
 
 /* End of file welcome.php */
     /* Location: ./system/application/controllers/welcome.php */
-
-    

@@ -41,14 +41,14 @@
                                                                     <option value="7 - Domingo">7 - Domingo</option>-->
                                 </select>
                             </td>
-                            <td><input type='text'  id="txthoraEntrada1" name="txthoraEntrada[1]" alt='time' class='size1 hora' /></td>
-                            <td><input type='text'  id='txthoraSaida1' name="txthoraSaida[1]" alt='time' class='size1 hora' /></td>
-                            <td><input type='text'  id="txtIniciointervalo1" name="txtIniciointervalo[1]" alt='time' value='00:00' class='size1 hora' /></td>
-                            <td><input type='text'  id="txtFimintervalo1" name="txtFimintervalo[1]" alt='time' value='00:00' class='size1 hora' /></td>
-                            <td><input type='text'  id="txtTempoconsulta1" name="txtTempoconsulta[1]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
-                            <td><input type='text'  id="txtQtdeconsulta1" name="txtQtdeconsulta[1]" value='0' class='size1' /></td>
+                            <td><input type='text' id="txthoraEntrada1" name="txthoraEntrada[1]" alt='time' class='size1 hora' /></td>
+                            <td><input type='text' id='txthoraSaida1' name="txthoraSaida[1]" alt='time' class='size1 hora' /></td>
+                            <td><input type='text' id="txtIniciointervalo1" name="txtIniciointervalo[1]" alt='time' value='00:00' class='size1 hora' /></td>
+                            <td><input type='text' id="txtFimintervalo1" name="txtFimintervalo[1]" alt='time' value='00:00' class='size1 hora' /></td>
+                            <td><input type='text' id="txtTempoconsulta1" name="txtTempoconsulta[1]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
+                            <td><input type='text' id="txtQtdeconsulta1" name="txtQtdeconsulta[1]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='empresa[1]' class='size2' >
+                                <select name='empresa[1]' id="empresa1" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
                                         <option value="<?= $row->empresa_id ?>"
@@ -83,7 +83,7 @@
                             <td><input type='text'  id="txtTempoconsulta2" name="txtTempoconsulta[2]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta2" name="txtQtdeconsulta[2]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='empresa[2]' class='size2' >
+                                <select name='empresa[2]' id="empresa2" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
                                         <option value="<?= $row->empresa_id ?>"
@@ -118,7 +118,7 @@
                             <td><input type='text'  id="txtTempoconsulta3" name="txtTempoconsulta[3]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta3" name="txtQtdeconsulta[3]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='empresa[3]' class='size2' >
+                                <select name='empresa[3]' id="empresa3" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
                                         <option value="<?= $row->empresa_id ?>"
@@ -153,7 +153,7 @@
                             <td><input type='text'  id="txtTempoconsulta4" name="txtTempoconsulta[4]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta4" name="txtQtdeconsulta[4]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='empresa[4]' class='size2' >
+                                <select name='empresa[4]' id="empresa4" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
                                         <option value="<?= $row->empresa_id ?>"
@@ -188,7 +188,7 @@
                             <td><input type='text'  id="txtTempoconsulta5" name="txtTempoconsulta[5]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta5" name="txtQtdeconsulta[5]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='empresa[5]' class='size2' >
+                                <select name='empresa[5]' id="empresa5" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
                                         <option value="<?= $row->empresa_id ?>"
@@ -223,7 +223,7 @@
                             <td><input type='text'  id="txtTempoconsulta6" name="txtTempoconsulta[6]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta6" name="txtQtdeconsulta[6]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='empresa[6]' class='size2' >
+                                <select name='empresa[6]' id="empresa6" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
                                         <option value="<?= $row->empresa_id ?>"
@@ -317,13 +317,15 @@
             $("#txthoraSaida1").prop('required', true);
             $("#txtIniciointervalo1").prop('required', true);
             $("#txtFimintervalo1").prop('required', true);
-//            $("#txtTempoconsulta1").prop('required', true);
+            $("#empresa1").prop('required', true);
+            $("#txtTempoconsulta1").prop('required', true);
 //            $("#txtQtdeconsulta1").prop('required', true);
         } else {
             $("#txthoraSaida1").prop('required', false);
             $("#txtIniciointervalo1").prop('required', false);
             $("#txtFimintervalo1").prop('required', false);
-//            $("#txtTempoconsulta1").prop('required', false);
+            $("#empresa1").prop('required', false);
+            $("#txtTempoconsulta1").prop('required', false);
 //            $("#txtQtdeconsulta1").prop('required', false);
         }
     });
@@ -333,13 +335,15 @@
             $("#txthoraSaida2").prop('required', true);
             $("#txtIniciointervalo2").prop('required', true);
             $("#txtFimintervalo2").prop('required', true);
-//            $("#txtTempoconsulta1").prop('required', true);
+            $("#empresa2").prop('required', true);
+            $("#txtTempoconsulta2").prop('required', true);
 //            $("#txtQtdeconsulta1").prop('required', true);
         } else {
             $("#txthoraSaida2").prop('required', false);
             $("#txtIniciointerval2").prop('required', false);
             $("#txtFimintervalo2").prop('required', false);
-//            $("#txtTempoconsulta1").prop('required', false);
+            $("#empresa2").prop('required', false);
+            $("#txtTempoconsulta2").prop('required', false);
 //            $("#txtQtdeconsulta1").prop('required', false);
         }
     });
@@ -350,13 +354,15 @@
             $("#txthoraSaida3").prop('required', true);
             $("#txtIniciointervalo3").prop('required', true);
             $("#txtFimintervalo3").prop('required', true);
-//            $("#txtTempoconsulta1").prop('required', true);
+            $("#empresa3").prop('required', true);
+            $("#txtTempoconsulta3").prop('required', true);
 //            $("#txtQtdeconsulta1").prop('required', true);
         } else {
             $("#txthoraSaida3").prop('required', false);
             $("#txtIniciointerval3").prop('required', false);
             $("#txtFimintervalo3").prop('required', false);
-//            $("#txtTempoconsulta1").prop('required', false);
+            $("#empresa3").prop('required', false);
+            $("#txtTempoconsulta3").prop('required', false);
 //            $("#txtQtdeconsulta1").prop('required', false);
         }
     });
@@ -366,13 +372,15 @@
             $("#txthoraSaida4").prop('required', true);
             $("#txtIniciointervalo4").prop('required', true);
             $("#txtFimintervalo4").prop('required', true);
-//            $("#txtTempoconsulta1").prop('required', true);
+            $("#empresa4").prop('required', true);
+            $("#txtTempoconsulta4").prop('required', true);
 //            $("#txtQtdeconsulta1").prop('required', true);
         } else {
             $("#txthoraSaida4").prop('required', false);
             $("#txtIniciointerval4").prop('required', false);
             $("#txtFimintervalo4").prop('required', false);
-//            $("#txtTempoconsulta1").prop('required', false);
+            $("#empresa4").prop('required', false);
+            $("#txtTempoconsulta4").prop('required', false);
 //            $("#txtQtdeconsulta1").prop('required', false);
         }
     });
@@ -382,13 +390,15 @@
             $("#txthoraSaida5").prop('required', true);
             $("#txtIniciointervalo5").prop('required', true);
             $("#txtFimintervalo5").prop('required', true);
-//            $("#txtTempoconsulta1").prop('required', true);
+            $("#empresa5").prop('required', true);
+            $("#txtTempoconsulta5").prop('required', true);
 //            $("#txtQtdeconsulta1").prop('required', true);
         } else {
             $("#txthoraSaida5").prop('required', false);
             $("#txtIniciointerval5").prop('required', false);
             $("#txtFimintervalo5").prop('required', false);
-//            $("#txtTempoconsulta1").prop('required', false);
+            $("#empresa5").prop('required', false);
+            $("#txtTempoconsulta5").prop('required', false);
 //            $("#txtQtdeconsulta1").prop('required', false);
         }
     });
@@ -398,13 +408,15 @@
             $("#txthoraSaida6").prop('required', true);
             $("#txtIniciointervalo6").prop('required', true);
             $("#txtFimintervalo6").prop('required', true);
-//            $("#txtTempoconsulta1").prop('required', true);
+            $("#empresa6").prop('required', true);
+            $("#txtTempoconsulta6").prop('required', true);
 //            $("#txtQtdeconsulta1").prop('required', true);
         } else {
             $("#txthoraSaida6").prop('required', false);
             $("#txtIniciointerval6").prop('required', false);
             $("#txtFimintervalo6").prop('required', false);
-//            $("#txtTempoconsulta1").prop('required', false);
+            $("#empresa6").prop('required', false);
+            $("#txtTempoconsulta6").prop('required', false);
 //            $("#txtQtdeconsulta1").prop('required', false);
         }
     });
@@ -414,13 +426,15 @@
             $("#txthoraSaida7").prop('required', true);
             $("#txtIniciointervalo7").prop('required', true);
             $("#txtFimintervalo7").prop('required', true);
-//            $("#txtTempoconsulta1").prop('required', true);
+            $("#empresa7").prop('required', true);
+            $("#txtTempoconsulta7").prop('required', true);
 //            $("#txtQtdeconsulta1").prop('required', true);
         } else {
             $("#txthoraSaida7").prop('required', false);
             $("#txtIniciointerval7").prop('required', false);
             $("#txtFimintervalo7").prop('required', false);
-//            $("#txtTempoconsulta1").prop('required', false);
+            $("#empresa7").prop('required', false);
+            $("#txtTempoconsulta7").prop('required', false);
 //            $("#txtQtdeconsulta1").prop('required', false);
         }
     });

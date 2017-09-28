@@ -21,6 +21,7 @@ $marketing = $this->session->userdata('marketing');
 $laboratorio = $this->session->userdata('laboratorio');
 $ponto = $this->session->userdata('ponto');
 $calendario = $this->session->userdata('calendario');
+$calendario_layout = $this->session->userdata('calendario_layout');
 
 function alerta($valor) {
     echo "<script>alert('$valor');</script>";
@@ -363,9 +364,15 @@ function debug($object) {
 
                                     <? if ($perfil_id != 4 ) { ?>
                                         <? if ($calendario == 't') { ?>
-                                        <? if ($geral == 't') { ?>
-                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario" target="_blank">Multifuncao Geral</a></span></ul>
-                                            <? } ?>
+                                            <? if ($geral == 't') {
+                                                if($calendario_layout == 't') {
+                                                    ?>
+                                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario2" target="_blank">Multifuncao Geral</a></span></ul>
+                                                <? }
+                                                else { ?>
+                                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario" target="_blank">Multifuncao Geral</a></span></ul>
+                                                <? }
+                                            } ?>
                                             <? if ($imagem == 't') { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoexamecalendario" target="_blank">Multifuncao Exame </a></span></ul>
                                             <? } ?>
@@ -656,7 +663,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($estoque == 't' && ($perfil_id == 1 || $perfil_id == 8 || $perfil_id == 10)) { ?>
+                    <? if ($estoque == 't') { ?>
 
 
                         <li><span class="folder">Estoque</span>

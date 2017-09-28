@@ -815,6 +815,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
+                if (isset($_POST['calendario_layout'])) {
+                    $this->db->set('calendario_layout', 't');
+                } else {
+                    $this->db->set('calendario_layout', 'f');
+                }
+                
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_permissoes');
@@ -841,6 +847,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
+                if (isset($_POST['calendario_layout'])) {
+                    $this->db->set('calendario_layout', 't');
+                } else {
+                    $this->db->set('calendario_layout', 'f');
+                }
+                
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
@@ -906,7 +918,8 @@ class empresa_model extends Model {
                                botao_faturar_guia,
                                botao_faturar_procedimento,
                                producao_medica_saida,
-                               ep.procedimento_excecao');
+                               ep.procedimento_excecao,
+                               ep.calendario_layout');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -965,6 +978,7 @@ class empresa_model extends Model {
             $this->_producao_medica_saida = $return[0]->producao_medica_saida;
             $this->_procedimento_excecao = $return[0]->procedimento_excecao;
             $this->_ordem_chegada = $return[0]->ordem_chegada;
+            $this->_calendario_layout = $return[0]->calendario_layout;
         } else {
             $this->_empresa_id = null;
         }
