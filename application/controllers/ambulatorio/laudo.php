@@ -2092,6 +2092,7 @@ class Laudo extends BaseController {
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
+//        var_dump($data['empresa'][0]->impressao_tipo); die;
 
         if ($data['empresa'][0]->laudo_config == 't') {
             if ($data['impressaolaudo'][0]->cabecalho == 't') {
@@ -2114,6 +2115,26 @@ class Laudo extends BaseController {
                 $filename = "laudo.pdf";
                 $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
                 $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'>";
+
+                if ($verificador == 1) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
+                }
+                if ($verificador == 2) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
+                }
+                if ($verificador == 3) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
+                }
+                if ($verificador == 4) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
+                }
+                if ($verificador == 5) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
+                }
+                if ($verificador == 6 || $verificador == "") {
+
+                    $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
+                }
             }
 
 /////////////////////////////////////////////////////////////////////////////////        
@@ -2159,6 +2180,7 @@ class Laudo extends BaseController {
             
                                                                                                                                                                                                         </table>";
                 $rodape = "";
+//                var_dump($html); die;
                 $html = $this->load->view('ambulatorio/impressaoimagem6gastrosul', $data, true);
             }
 
@@ -2184,25 +2206,7 @@ class Laudo extends BaseController {
             }
         }
 
-        if ($verificador == 1) {
-            $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
-        }
-        if ($verificador == 2) {
-            $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
-        }
-        if ($verificador == 3) {
-            $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
-        }
-        if ($verificador == 4) {
-            $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
-        }
-        if ($verificador == 5) {
-            $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
-        }
-        if ($verificador == 6 || $verificador == "") {
 
-            $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
-        }
         $grupo = $data['laudo']['0']->grupo;
 
         pdf($html, $filename, $cabecalho, $rodape, $grupo);
@@ -2906,7 +2910,7 @@ class Laudo extends BaseController {
         unlink($origem);
         $this->anexarimagem($ambulatorio_laudo_id);
     }
-    
+
     function excluirimagemlaudo($ambulatorio_laudo_id, $nome) {
 
         if (!is_dir("./uploadopm/consulta/$ambulatorio_laudo_id")) {

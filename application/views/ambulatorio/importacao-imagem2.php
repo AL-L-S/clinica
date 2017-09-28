@@ -6,8 +6,8 @@
                     <a href="<?= base_url() ?>ambulatorio/exame/moverimagensmedico/<?= $exame_id ?>/<?= $sala_id ?>">Carregar</a>
                 </div>
                 <div >
-                    <fieldset>
-                        <ul id="sortable">
+                    <fieldset style="overflow: hidden">
+                        <ul style="height: 300px"  id="sortable">
                             <legend>Vizualizar imagens</legend>
 
                             <?

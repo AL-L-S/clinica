@@ -118,6 +118,7 @@
                 $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentrada', {produto: $(this).val(), armazem: $("#armazem").val()}, function(j) {
                     var options = '<option value=""></option>';
                     for (var i = 0; i < j.length; i++) {
+                        if(j[i].total < 0) continue;
                         options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total +  '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
                     }
                     $('#entrada').html(options).show();

@@ -291,11 +291,11 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['empresa_id'] = $_POST['empresa'];
         $data['relatorio'] = $this->exame->gerarelatorioorcamentos();
-        
+
 //        echo "<pre>";
 //        var_dump($data['relatorio']);
 //        die;
-        
+
         $this->load->View('ambulatorio/impressaorelatorioorcamentos', $data);
     }
 
@@ -1359,14 +1359,23 @@ class Exame extends BaseController {
     }
 
     function excluirimagemmedico($exame_id, $nome, $sala_id) {
+        $this->load->helper('directory');
 
+        $contador = directory_map("./uploadopm/$exame_id/");
+//        var_dump(count($contador)); die;
+        if ($contador > 0) {
+            $novonome = count($contador) + 1 . '.jpg';
+        } else {
+            $novonome = $nome;
+        }
+        
         if (!is_dir("./uploadopm/$exame_id")) {
             mkdir("./uploadopm/$exame_id");
             $pasta = "./uploadopm/$exame_id";
             chmod($pasta, 0777);
         }
         $origem = "./upload/$exame_id/$nome";
-        $destino = "./uploadopm/$exame_id/$nome";
+        $destino = "./uploadopm/$exame_id/$novonome";
         copy($origem, $destino);
         unlink($origem);
         redirect(base_url() . "ambulatorio/exame/anexarimagemmedico/$exame_id/$sala_id");
@@ -2064,7 +2073,7 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $nome = $_POST['txtNome'];
-        
+
         $tipo = $this->agenda->listartiposala($sala_id);
         $tipo = $tipo[0]->tipo;
         $horarioagenda = $this->agenda->listarhorarioagendacriacao($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
@@ -2306,14 +2315,14 @@ class Exame extends BaseController {
 
     function gravaralteracaoagendacriada() {
         $dados = $this->exame->listardadosagendacriada();
-        if( count($dados) == 0 ){
-            
+        if (count($dados) == 0) {
+
             $data['mensagem'] = 'Erro. Todos os registros associados a essa agenda já foram excluidos. Por favor, crie uma nova agenda!';
-            
+
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/agenda");
         }
-        
+
         $agenda_id = $_GET['agenda_id'];
         $medico_id = $_GET['medico_id'];
         $nome = $_GET['nome_agenda'];
@@ -2322,13 +2331,13 @@ class Exame extends BaseController {
         $datainicial = $dados[0]->data_inicio;
         $datafinal = $dados[0]->data_fim;
         $tipo = $dados[0]->tipo;
-        
+
         $agenda = $this->agenda->listarnovoshorarioseditaragendacriada();
         $id = 0;
-        
+
         $data['mensagem'] = 'Sucesso ao criar novos horarios para essa agenda no periodo de ' . date("d/m/Y", strtotime($datainicial)) . " até " . date("d/m/Y", strtotime($datafinal));
         $this->session->set_flashdata('message', $data['mensagem']);
-        
+
         foreach ($agenda as $item) {
             $this->agenda->consolidandonovoshorarios($item->horarioagenda_editada_id);
             $tempoconsulta = $item->tempoconsulta;
@@ -2432,15 +2441,14 @@ class Exame extends BaseController {
                         }
                     }
                 }
-
             }
         }
-        
+
         $this->exame->removendoprocedimentoduplicadoagendaeditada();
-        
+
         redirect(base_url() . "ambulatorio/agenda");
     }
-    
+
     function gravarespecialidade() {
         $agenda_id = $_POST['txthorario'];
         $medico_id = $_POST['txtmedico'];
@@ -2672,7 +2680,7 @@ class Exame extends BaseController {
         $zero = '0000000000000000';
         $corpo = "";
 //        var_dump($corpo);die;
-        
+
         if ($versao == '3.03.01' || $versao == '3.03.02') {
             if ($modelo == 'cpf') {
 
@@ -2719,22 +2727,21 @@ class Exame extends BaseController {
 
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $tabela = '22';
-                                
+
                                 $valorProcedimento = $item->valor_total;
                                 $valorMaterial = 0.00;
                                 $valorMedicamento = 0.00;
-                                
-                                if($item->grupo == "MATERIAL") { //caso seja material
+
+                                if ($item->grupo == "MATERIAL") { //caso seja material
                                     $tabela = '19';
                                     $valorMaterial = $item->valor_total;
                                     $valorProcedimento = 0.00;
-                                }
-                                elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                                } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                                     $tabela = '20';
                                     $valorMedicamento = $item->valor_total;
                                     $valorProcedimento = 0.00;
                                 }
-                                
+
                                 $i++;
                                 $totExames++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
@@ -2827,7 +2834,7 @@ class Exame extends BaseController {
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                 <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                 <ans:procedimento>
-                                   <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                   <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                    <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                    <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                </ans:procedimento>                        
@@ -2859,8 +2866,7 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } 
-                                else {
+                                } else {
                                     $corpo = $corpo . "
                 <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -2919,7 +2925,7 @@ class Exame extends BaseController {
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                 <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                 <ans:procedimento>
-                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                     <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                     <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                 </ans:procedimento>                        
@@ -2975,8 +2981,7 @@ class Exame extends BaseController {
                                         $corpo = "";
                                         $rodape = "";
                                     }
-                                } 
-                                else {
+                                } else {
                                     if ($i == 80) {
                                         $contador = $contador - $i;
 
@@ -3020,8 +3025,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -3053,17 +3057,16 @@ class Exame extends BaseController {
                         $valorMaterial = 0.00;
                         $valorMedicamento = 0.00;
 
-                        if($item->grupo == "MATERIAL") { //caso seja material
+                        if ($item->grupo == "MATERIAL") { //caso seja material
                             $tabela = '19';
                             $valorMaterial = $item->valor_total;
                             $valorProcedimento = 0.00;
-                        }
-                        elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                        } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                             $tabela = '20';
                             $valorMedicamento = $item->valor_total;
                             $valorProcedimento = 0.00;
                         }
-                                
+
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
                         } else {
@@ -3113,7 +3116,7 @@ class Exame extends BaseController {
                         <ans:dataAtendimento>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAtendimento>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         <ans:procedimento>
-                            <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                            <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                             <ans:codigoProcedimento>" . $value->codigo . "</ans:codigoProcedimento>
                             <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
                         </ans:procedimento>
@@ -3185,8 +3188,7 @@ class Exame extends BaseController {
                         }
                     }
                 }
-            } 
-            else {
+            } else {
 
                 if ($listarexame[0]->grupo != 'CONSULTA') {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -3229,22 +3231,21 @@ class Exame extends BaseController {
                         foreach ($listarexames as $item) {
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $tabela = '22';
-                                
+
                                 $valorProcedimento = $item->valor_total;
                                 $valorMaterial = 0.00;
                                 $valorMedicamento = 0.00;
-                                
-                                if($item->grupo == "MATERIAL") { //caso seja material
+
+                                if ($item->grupo == "MATERIAL") { //caso seja material
                                     $tabela = '19';
                                     $valorMaterial = $item->valor_total;
                                     $valorProcedimento = 0.00;
-                                }
-                                elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                                } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                                     $tabela = '20';
                                     $valorMedicamento = $item->valor_total;
                                     $valorProcedimento = 0.00;
                                 }
-                                
+
                                 $i++;
                                 $totExames++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
@@ -3327,7 +3328,7 @@ class Exame extends BaseController {
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                 <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                 <ans:procedimento>
-                                <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                </ans:procedimento>                        
@@ -3359,8 +3360,7 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } 
-                                else {
+                                } else {
                                     $corpo = $corpo . "
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -3414,7 +3414,7 @@ class Exame extends BaseController {
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                 <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                 <ans:procedimento>
-                                <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                </ans:procedimento>                        
@@ -3468,8 +3468,7 @@ class Exame extends BaseController {
                                         $corpo = "";
                                         $rodape = "";
                                     }
-                                } 
-                                else {
+                                } else {
 
                                     if ($i == 80) {
                                         $contador = $contador - $i;
@@ -3519,8 +3518,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -3548,22 +3546,21 @@ class Exame extends BaseController {
                     $contador = count($listarexame);
 
                     foreach ($listarexame as $value) {
-                        $tabela = '22';       
+                        $tabela = '22';
                         $valorProcedimento = $item->valor_total;
                         $valorMaterial = 0.00;
                         $valorMedicamento = 0.00;
 
-                        if($item->grupo == "MATERIAL") { //caso seja material
+                        if ($item->grupo == "MATERIAL") { //caso seja material
                             $tabela = '19';
                             $valorMaterial = $item->valor_total;
                             $valorProcedimento = 0.00;
-                        }
-                        elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                        } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                             $tabela = '20';
                             $valorMedicamento = $item->valor_total;
                             $valorProcedimento = 0.00;
                         }
-                        
+
                         $i++;
                         $totExames++;
                         if ($value->convenionumero == '') {
@@ -3615,7 +3612,7 @@ class Exame extends BaseController {
                         <ans:dataAtendimento>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAtendimento>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         <ans:procedimento>
-                            <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                            <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                             <ans:codigoProcedimento>" . $value->codigo . "</ans:codigoProcedimento>
                             <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
                         </ans:procedimento>
@@ -3643,8 +3640,7 @@ class Exame extends BaseController {
                                 $corpo = "";
                                 $rodape = "";
                             }
-                        } 
-                        else {
+                        } else {
                             if ($i == 80) {
                                 $contador = $contador - $i;
                                 $i = 0;

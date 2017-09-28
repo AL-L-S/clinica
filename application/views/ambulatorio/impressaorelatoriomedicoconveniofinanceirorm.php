@@ -1,7 +1,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <h4>HUMANA IMAGEM</h4>
     <h4>Medico Convenios RM</h4>
-    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
+    <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
     <h4>Medico: <?= $medico[0]->operador; ?></h4>
     <hr>
     <? if ($contador > 0) {
@@ -42,17 +42,38 @@
                         <td><font size="-2"><?= $item->situacaolaudo; ?></td>
                         <td><font size="-2"><?= substr($item->revisor, 0, 20); ?></td>
                         <? if ($item->revisor == "") { ?>
-                            <td><font size="-2">R$ 75,00</td>
-                            <?
-                            $y++;
-                            $valor = $valor + 75;
-                            $valortotalexames = $valortotalexames + 75;
+                            <? if ($item->convenio_id != 9 && $item->convenio_id != 12 && $item->convenio_id != 5 && $item->convenio_id != 17 && $item->convenio_id != 8 && $item->convenio_id != 6 && $item->convenio_id != 19 && $item->convenio_id != 36 && $item->convenio_id != 4 && $item->convenio_id != 50 && $item->convenio_id != 52) { ?>
+                                <td><font size="-2">R$ 50,00 </td>
+                            <? } else { ?>
+                                <td><font size="-2">R$ 75,00 </td>
+                            <? }
                             ?>
-                        <? } else { ?>
-                            <td><font size="-2">R$ 50,00</td>
 
                             <?
-                            $valortotalexames = $valortotalexames + 50;
+                            $y++;
+                            if ($item->convenio_id != 9 && $item->convenio_id != 12 && $item->convenio_id != 5 && $item->convenio_id != 17 && $item->convenio_id != 8 && $item->convenio_id != 6 && $item->convenio_id != 19 && $item->convenio_id != 36 && $item->convenio_id != 4 && $item->convenio_id != 50 && $item->convenio_id != 52) {
+                                $valor = $valor + 50;
+                                $valortotalexames = $valortotalexames + 50;
+                            } else {
+                                $valor = $valor + 75;
+                                $valortotalexames = $valortotalexames + 75;
+                            }
+                            ?>
+                        <? } else { ?>
+                            <? if ($item->convenio_id != 9 && $item->convenio_id != 12 && $item->convenio_id != 5 && $item->convenio_id != 17 && $item->convenio_id != 8 && $item->convenio_id != 6 && $item->convenio_id != 19 && $item->convenio_id != 36 && $item->convenio_id != 4 && $item->convenio_id != 50 && $item->convenio_id != 52) { ?>
+                                <td><font size="-2">R$ 35,00</td>
+                            <? } else { ?>
+                                <td><font size="-2">R$ 50,00</td>
+                            <? }
+                            ?>
+
+
+                            <?
+                            if ($item->convenio_id != 9 && $item->convenio_id != 12 && $item->convenio_id != 5 && $item->convenio_id != 17 && $item->convenio_id != 8 && $item->convenio_id != 6 && $item->convenio_id != 19 && $item->convenio_id != 36 && $item->convenio_id != 4 && $item->convenio_id != 50 && $item->convenio_id != 52) {
+                                $valortotalexames = $valortotalexames + 35;
+                            } else {
+                                $valortotalexames = $valortotalexames + 50;
+                            }
                         }
                         ?>
                     </tr>
@@ -69,17 +90,16 @@
             </tr>
             </tbody>
         </table>
-        <? } else {
-            $y = 0;
-            $valor = 0;
+        <?
+    } else {
+        $y = 0;
+        $valor = 0;
         ?>
         <h4>Medico: <?= $medico[0]->operador; ?>, n&atilde;o fez laudo</h4>
         <?
     }
-    if (count($revisada)> 0) {
-    
-
-    ?>
+    if (count($revisada) > 0) {
+        ?>
         <hr>
         <table border="1">
             <tr>
@@ -91,7 +111,10 @@
             <tr>
                 <td ><font size="-1"><b>SEM REVISOR</b></td>
                 <td ><font size="-1"><?= $y ?></td>
-                <td ><font size="-1">R$ 75,00</td>
+                <td ><font size="-1">Novo(R$ 50,00) Antigo (R$ 75,00)</td>
+
+
+
                 <td ><font size="-1">R$<?= number_format($valor, 2, ',', '.'); ?></td>
             </tr>
             <tr>
@@ -102,13 +125,22 @@
             $qtdetotal = $y;
             foreach ($revisor as $items) :
                 if ($items->revisor != "") {
-                    $totalrevisor = $items->quantidade * 50.00;
+                    if ($item->convenio_id != 9 && $item->convenio_id != 12 && $item->convenio_id != 5 && $item->convenio_id != 17 && $item->convenio_id != 8 && $item->convenio_id != 6 && $item->convenio_id != 19 && $item->convenio_id != 36 && $item->convenio_id != 4 && $item->convenio_id != 50 && $item->convenio_id != 52) {
+                        $totalrevisor = $items->quantidade * 35.00;
+                    } else {
+                        $totalrevisor = $items->quantidade * 50.00;
+                    }
                     ?>
 
                     <tr>
                         <td ><font size="-1"><?= $items->revisor ?></td>
                         <td ><font size="-1"><?= $items->quantidade ?></td>
-                        <td ><font size="-1">R$ 50,00</td>
+                        <? if ($item->convenio_id != 9 && $item->convenio_id != 12 && $item->convenio_id != 5 && $item->convenio_id != 17 && $item->convenio_id != 8 && $item->convenio_id != 6 && $item->convenio_id != 19 && $item->convenio_id != 36 && $item->convenio_id != 4 && $item->convenio_id != 50 && $item->convenio_id != 52) { ?>
+                            <td ><font size="-1">R$ 35,00</td>
+                        <? } else { ?>
+                            <td ><font size="-1">R$ 50,00</td>
+                        <? }
+                        ?>
                         <td ><font size="-1">R$<?= number_format($totalrevisor, 2, ',', '.'); ?></td>
                     </tr>
 
@@ -125,13 +157,19 @@
             <?
             foreach ($revisada as $items) :
                 if ($items->revisor != "") {
-                    $totalrevisor = $items->quantidade * 25.00;
+                    if ($item->convenio_id != 9 && $item->convenio_id != 12 && $item->convenio_id != 5 && $item->convenio_id != 17 && $item->convenio_id != 8 && $item->convenio_id != 6 && $item->convenio_id != 19 && $item->convenio_id != 36 && $item->convenio_id != 4 && $item->convenio_id != 50 && $item->convenio_id != 52) {
+                        $totalrevisor = $items->quantidade * 15.00;
+                    } else {
+                        $totalrevisor = $items->quantidade * 25.00;
+                    }
                     ?>
 
                     <tr>
                         <td ><font size="-1"><?= $items->revisor ?></td>
                         <td ><font size="-1"><?= $items->quantidade ?></td>
-                        <td ><font size="-1">R$ 25,00</td>
+                        <td ><font size="-1">Novo(R$ 15,00) Antigo (R$ 25,00)</td>
+
+
                         <td ><font size="-1">R$<?= number_format($totalrevisor, 2, ',', '.'); ?></td>
                     </tr>
 
@@ -148,12 +186,12 @@
                 <td colspan="2"><font size="-1"><center><?= number_format($valortotal, 2, ',', '.'); ?></center></td>
             </tr>
         </table>
-    <?}else{
+    <? } else {
         ?>
-            <h4>Medico: <?= $medico[0]->operador; ?>, n&atilde;o foi revisor</h4>
-            <?
+        <h4>Medico: <?= $medico[0]->operador; ?>, n&atilde;o foi revisor</h4>
+        <?
     }
-?>
+    ?>
 
 </div> <!-- Final da DIV content -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -162,7 +200,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
