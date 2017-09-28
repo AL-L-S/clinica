@@ -85,7 +85,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
         <div>
             <?
             $medicos = $this->operador_m->listarmedicos();
-            $salas = $this->exame->listartodassalas();
+            $salas = $this->exame->listartodassalasgrupos();
             $especialidade = $this->exame->listarespecialidade();
             $grupos = $this->procedimento->listargrupos();
             $empresas = $this->exame->listarempresas();

@@ -433,7 +433,7 @@ class exame_model extends Model {
         return $return->result();
     }
 
-    function listartodassalas() {
+    function listartodassalasgrupos() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,
                             nome');
@@ -442,6 +442,18 @@ class exame_model extends Model {
         $this->db->where('excluido', 'f');
         $this->db->where("( SELECT COUNT(*) FROM ponto.tb_exame_sala_grupo esg 
                             WHERE es.exame_sala_id = esg.exame_sala_id) > 0");
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listartodassalas() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('exame_sala_id,
+                            nome');
+        $this->db->from('tb_exame_sala es');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('excluido', 'f');
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
