@@ -116,26 +116,27 @@
                               }
                               ?> 
                 </select>
-                <label>Indicacao</label>
-
-
-                <select name="indicacao" id="indicacao" class="size2" >
-                    <option value=''>Selecione</option>
-                    <?php
-                    $indicacao = $this->paciente->listaindicacao($_GET);
-                    foreach ($indicacao as $item) {
-                        ?>
-                        <option value="<?php echo $item->paciente_indicacao_id; ?>" 
-                        <?
-                        if (@$obj->_indicacao == $item->paciente_indicacao_id):echo 'selected';
-                        endif;
-                        ?>>
-                                    <?php echo $item->nome; ?>
-                        </option>
+                
+                <? if ($this->session->userdata('recomendacao_configuravel') != "t") { ?>
+                    <label>Indicacao</label>
+                    <select name="indicacao" id="indicacao" class="size2" >
+                        <option value=''>Selecione</option>
                         <?php
-                    }
-                    ?> 
-                </select>
+                        $indicacao = $this->paciente->listaindicacao($_GET);
+                        foreach ($indicacao as $item) {
+                            ?>
+                            <option value="<?php echo $item->paciente_indicacao_id; ?>" 
+                            <?
+                            if (@$obj->_indicacao == $item->paciente_indicacao_id):echo 'selected';
+                            endif;
+                            ?>>
+                                        <?php echo $item->nome; ?>
+                            </option>
+                            <?php
+                        }
+                        ?> 
+                    </select>
+                <? } ?>
             </div>
             <div>
                 <label>Endere&ccedil;o</label>

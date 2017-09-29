@@ -426,8 +426,10 @@ function debug($object) {
                                             
                                         <? } ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoplanoconsulta">Pre&ccedil;o procedimento</a></span></ul>
-                                        <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter indica&ccedil;&atilde;o</a></span></ul>
+                                        <? if ($perfil_id != 11 && $perfil_id != 2) { 
+                                            if ($this->session->userdata('recomendacao_configuravel') != "t") { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter indica&ccedil;&atilde;o</a></span></ul>
+                                            <? } ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/pesquisarfiladeimpressao">Fila de Impressão</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/pesquisarmedicosolicitante">Editar Medico Solicitante</a></span></ul>
                                         <? } ?>
@@ -741,7 +743,9 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixafaturado">Relatorio Caixa Faturamento</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixacartao">Relatorio Caixa Cartao</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixacartaoconsolidado">Relatorio Consolidado Cartao</a></span></ul>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacao">Relatorio Indicacao Cadastro</a></span></ul>
+                                        <? if ($this->session->userdata('recomendacao_configuravel') != "t") { ?>?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacao">Relatorio Indicacao Cadastro</a></span></ul>
+                                        <? } ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacaoexames">Relatorio Recomendação</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconveniofinanceiro">Relatorio Produ&ccedil;&atilde;o M&eacute;dica</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenioprevisaofinanceiro">Relatorio Previs&atilde;o M&eacute;dica</a></span></ul>
@@ -872,11 +876,15 @@ function debug($object) {
                         <ul>
                             <li><span class="folder">Recep&ccedil;&atilde;o</span>
                                 <? if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 10) { ?>
+                                
                                     <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador">Listar Profissionais</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/motivocancelamento">Motivo cancelamento</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/tipoconsulta">Tipo Agenda</a></span></ul>
                                     <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/horario">Manter Horarios</a></span></ul>-->
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
+                                    <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter indica&ccedil;&atilde;o</a></span></ul>
+                                    <? } ?>
                                     <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
                                 <? } ?>
                                 <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) { ?>

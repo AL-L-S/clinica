@@ -47,9 +47,11 @@
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/sala/carregarsala/<?= $item->exame_sala_id ?>">Editar</a></div>
                             </td>
-                            <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                <a href="<?= base_url() ?>ambulatorio/sala/ativar/<?= $item->exame_sala_id ?>">Ativar</a></div>
-                            </td>
+                            <?if ($this->session->userdata('botao_ativar_sala') == "t"){?>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/sala/ativar/<?= $item->exame_sala_id ?>">Ativar</a></div>
+                                </td>
+                            <?}?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/sala/carregarsalagrupo/<?= $item->exame_sala_id ?>">Grupo</a></div>
                             </td>

@@ -124,3 +124,8 @@ INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
 -- Dia 26/09/2017
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN calendario_layout boolean DEFAULT false;
 
+-- Dia 29/09/2017
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN recomendacao_configuravel boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_ativar_sala boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa_sms ADD COLUMN ip_servidor_sms character varying(50);
+-- UPDATE ponto.tb_empresa_sms SET ip_servidor_sms = '200.98.64.240';

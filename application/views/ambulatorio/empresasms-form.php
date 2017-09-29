@@ -33,6 +33,10 @@
                         <label onclick="mostrarPopUpIndentificao()">Identificação da Empresa</label>
                         <input type="text" name="numero_identificacao_sms" value="<?= @$mensagem[0]->numero_indentificacao_sms ?>"/>
                     </div>
+                    <div style="width: 100%">
+                        <label>Ip do Servidor SMS</label>
+                        <input type="text" name="ip_server" value="<?= @$mensagem[0]->ip_servidor_sms ?>"/>
+                    </div>
                 <? } ?>
                 <div style="width: 100%">
                     <input type="checkbox" id="msgensExcedentes" name="msgensExcedentes" <? if (@$mensagem[0]->enviar_excedentes == 't') echo "checked" ?>/>

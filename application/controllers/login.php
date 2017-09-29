@@ -36,12 +36,16 @@ class Login extends Controller {
 //            if ($verificacoes[0]->total < 3 && ( date("H") == "08" ) ) {
                 
                 $registro_sms_id = $this->login->criandoregistrosms();
-
+                
+                $dadosEmpresaSms = $this->login->listarempresasmsdados();
+//                var_dump($dadosEmpresaSms);die;
+                
                 // verificando o total de mensagens utilizadas do pacote
                 $totalUtilizado = (int) $this->login->totalutilizado();
                 $totalPacote = (int) $this->login->listarempresapacote();
 
-                if ($totalUtilizado < $totalPacote) {
+                if ($totalUtilizado < $totalPacote || $dadosEmpresaSms[0]->enviar_excedentes == "t") {
+                    
                     //calculando total disponivel
                     $disponivel = $totalPacote - $totalUtilizado;
 
@@ -116,8 +120,8 @@ class Login extends Controller {
                      * ALTER TABLE sms ADD COLUMN sms_associacao_id integer;
                      *                   
                      */
-                    'location' => "http://localhost/webservice/webservice/servidor.php",
-                    'uri' => "http://localhost/webservice/webservice/",
+                    'location' => "http://". $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/servidor.php",
+                    'uri' => "http://". $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/",
                     'trace' => 1
                 ));
 

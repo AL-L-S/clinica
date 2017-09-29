@@ -204,6 +204,7 @@ class empresa_model extends Model {
                             empresa_sms_id,
                             numero_indentificacao_sms,
                             enviar_excedentes,
+                            ip_servidor_sms,
                             mensagem_revisao, 
                             mensagem_confirmacao, 
                             mensagem_agradecimento,
@@ -537,8 +538,9 @@ class empresa_model extends Model {
     function gravarconfiguracaosms() {
         try {
             /* inicia o mapeamento no banco */
-            $this->db->set('empresa_id', $_POST['empresa_id']);
             $this->db->set('pacote_id', $_POST['txtpacote']);
+            $this->db->set('empresa_id', $_POST['empresa_id']);
+            $this->db->set('ip_servidor_sms', $_POST['ip_server']);
             $this->db->set('numero_indentificacao_sms', $_POST['numero_identificacao_sms']);
 
             if (isset($_POST['msgensExcedentes'])) {
@@ -820,6 +822,16 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('calendario_layout', 'f');
                 }
+                if (isset($_POST['recomendacao_configuravel'])) {
+                    $this->db->set('recomendacao_configuravel', 't');
+                } else {
+                    $this->db->set('recomendacao_configuravel', 'f');
+                }
+                if (isset($_POST['botao_ativar_sala'])) {
+                    $this->db->set('botao_ativar_sala', 't');
+                } else {
+                    $this->db->set('botao_ativar_sala', 'f');
+                }
                 
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -851,6 +863,16 @@ class empresa_model extends Model {
                     $this->db->set('calendario_layout', 't');
                 } else {
                     $this->db->set('calendario_layout', 'f');
+                }
+                if (isset($_POST['recomendacao_configuravel'])) {
+                    $this->db->set('recomendacao_configuravel', 't');
+                } else {
+                    $this->db->set('recomendacao_configuravel', 'f');
+                }
+                if (isset($_POST['botao_ativar_sala'])) {
+                    $this->db->set('botao_ativar_sala', 't');
+                } else {
+                    $this->db->set('botao_ativar_sala', 'f');
                 }
                 
                 $this->db->set('data_cadastro', $horario);
@@ -919,7 +941,9 @@ class empresa_model extends Model {
                                botao_faturar_procedimento,
                                producao_medica_saida,
                                ep.procedimento_excecao,
-                               ep.calendario_layout');
+                               ep.calendario_layout,
+                               ep.botao_ativar_sala,
+                               ep.recomendacao_configuravel');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -979,6 +1003,8 @@ class empresa_model extends Model {
             $this->_procedimento_excecao = $return[0]->procedimento_excecao;
             $this->_ordem_chegada = $return[0]->ordem_chegada;
             $this->_calendario_layout = $return[0]->calendario_layout;
+            $this->_recomendacao_configuravel = $return[0]->recomendacao_configuravel;
+            $this->_botao_ativar_sala = $return[0]->botao_ativar_sala;
         } else {
             $this->_empresa_id = null;
         }

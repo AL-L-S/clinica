@@ -319,10 +319,16 @@
                             <input type="checkbox" id="procedimento_excecao" name="ordem_chegada" <? if (@$obj->_ordem_chegada == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Ativando essa flag, o manter indicação irá aparecer nas configurações.">Usar Indicação como repasse?</label>
+                            <label title="Ativando essa flag, o manter indicação irá aparecer nas configurações.">Tornar a recomendação configuravel.</label>
                         </dt>
                         <dd>
-                            <input type="checkbox" id="procedimento_excecao" name="ordem_chegada" <? if (@$obj->_ordem_chegada == 't') echo "checked"; ?>/> 
+                            <input type="checkbox" id="recomendacao_configuravel" name="recomendacao_configuravel" <? if (@$obj->_recomendacao_configuravel == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o manter indicação irá aparecer nas configurações.">Botão de reativar sala.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="botao_ativar_sala" name="botao_ativar_sala" <? if (@$obj->_botao_ativar_sala == 't') echo "checked"; ?>/> 
                         </dd>
                     <? } ?>
                 </dl>    
