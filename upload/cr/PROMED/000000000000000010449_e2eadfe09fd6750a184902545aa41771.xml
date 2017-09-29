@@ -1,0 +1,369 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+    <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
+       <ans:cabecalho>
+          <ans:identificacaoTransacao>
+             <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
+             <ans:sequencialTransacao>10395</ans:sequencialTransacao>
+             <ans:dataRegistroTransacao>2017-09-28</ans:dataRegistroTransacao>
+             <ans:horaRegistroTransacao>13:33:23</ans:horaRegistroTransacao>
+          </ans:identificacaoTransacao>
+          <ans:origem>
+             <ans:identificacaoPrestador>
+                <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+             </ans:identificacaoPrestador>
+          </ans:origem>
+          <ans:destino>
+             <ans:registroANS>348805</ans:registroANS>
+          </ans:destino>
+          <ans:Padrao>3.03.02</ans:Padrao>
+       </ans:cabecalho>
+       <ans:prestadorParaOperadora>
+          <ans:loteGuias>
+             <ans:numeroLote>10448</ans:numeroLote>
+                <ans:guiasTISS>
+                                                          <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3166424</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>14185491</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-09-28</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>1146211.01</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>MARIZA DE FATIMA OLIVEIRA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                                                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cnpjContratado>21243399000101</ans:cnpjContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>MARIA DO CARMO SILVA ARANTES</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >21558</ans:numeroConselhoProfissional >
+                                <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-09-28</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      <ans:dadosExecutante>
+                            <ans:contratadoExecutante>
+                            <ans:cnpjContratado>21243399000101</ans:cnpjContratado>
+                         <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                      <ans:dadosAtendimento>
+                      <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                      <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                      <ans:tipoConsulta>1</ans:tipoConsulta>
+                      
+                      </ans:dadosAtendimento><ans:procedimentosExecutados>
+                             <ans:procedimentoExecutado>
+                                    <ans:dataExecucao>2017-09-28</ans:dataExecucao>
+                                    <ans:horaInicial>07:49:10</ans:horaInicial>
+                                    <ans:horaFinal>07:49:10</ans:horaFinal>
+                                    <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                   <ans:codigoProcedimento>40901211</ans:codigoProcedimento>
+                                   <ans:descricaoProcedimento >US - Estruturas superficiais (cervical ou axilas ou músculo </ans:descricaoProcedimento >
+                                   </ans:procedimento>                        
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >60.75</ans:valorUnitario >
+                                <ans:valorTotal>60.75</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:grauPart>12</ans:grauPart>
+                                    <ans:codProfissional>
+                                    <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>TIAGO ROSSETTO CARVALHO</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>69019</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                          </ans:procedimentoExecutado>
+                      </ans:procedimentosExecutados>
+                      
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >60.75</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>60.75</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                                                          <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3166424</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>14185491</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-09-28</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>1146211.01</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>MARIZA DE FATIMA OLIVEIRA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                                                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cnpjContratado>21243399000101</ans:cnpjContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>MARIA DO CARMO SILVA ARANTES</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >21558</ans:numeroConselhoProfissional >
+                                <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-09-28</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      <ans:dadosExecutante>
+                            <ans:contratadoExecutante>
+                            <ans:cnpjContratado>21243399000101</ans:cnpjContratado>
+                         <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                      <ans:dadosAtendimento>
+                      <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                      <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                      <ans:tipoConsulta>1</ans:tipoConsulta>
+                      
+                      </ans:dadosAtendimento><ans:procedimentosExecutados>
+                             <ans:procedimentoExecutado>
+                                    <ans:dataExecucao>2017-09-28</ans:dataExecucao>
+                                    <ans:horaInicial>07:49:10</ans:horaInicial>
+                                    <ans:horaFinal>07:49:10</ans:horaFinal>
+                                    <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                   <ans:codigoProcedimento>40808033</ans:codigoProcedimento>
+                                   <ans:descricaoProcedimento >Mamografia convencional bilateral</ans:descricaoProcedimento >
+                                   </ans:procedimento>                        
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >91.43</ans:valorUnitario >
+                                <ans:valorTotal>91.43</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:grauPart>12</ans:grauPart>
+                                    <ans:codProfissional>
+                                    <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>TIAGO ROSSETTO CARVALHO</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>69019</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                          </ans:procedimentoExecutado>
+                      </ans:procedimentosExecutados>
+                      
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >91.43</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>91.43</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                                                          <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3166424</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>14185491</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-09-28</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>1146211.01</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>MARIZA DE FATIMA OLIVEIRA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                                                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cnpjContratado>21243399000101</ans:cnpjContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>MARIA DO CARMO SILVA ARANTES</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >21558</ans:numeroConselhoProfissional >
+                                <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-09-28</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      <ans:dadosExecutante>
+                            <ans:contratadoExecutante>
+                            <ans:cnpjContratado>21243399000101</ans:cnpjContratado>
+                         <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                      <ans:dadosAtendimento>
+                      <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                      <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                      <ans:tipoConsulta>1</ans:tipoConsulta>
+                      
+                      </ans:dadosAtendimento><ans:procedimentosExecutados>
+                             <ans:procedimentoExecutado>
+                                    <ans:dataExecucao>2017-09-28</ans:dataExecucao>
+                                    <ans:horaInicial>07:49:10</ans:horaInicial>
+                                    <ans:horaFinal>07:49:10</ans:horaFinal>
+                                    <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                   <ans:codigoProcedimento>40901114</ans:codigoProcedimento>
+                                   <ans:descricaoProcedimento >US - Mamas</ans:descricaoProcedimento >
+                                   </ans:procedimento>                        
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >72.44</ans:valorUnitario >
+                                <ans:valorTotal>72.44</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:grauPart>12</ans:grauPart>
+                                    <ans:codProfissional>
+                                    <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>TIAGO ROSSETTO CARVALHO</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>69019</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                          </ans:procedimentoExecutado>
+                      </ans:procedimentosExecutados>
+                      
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >72.44</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>72.44</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT>
+                                                          <ans:guiaSP-SADT>
+                          <ans:cabecalhoGuia>
+                            <ans:registroANS>348805</ans:registroANS>
+                         <ans:numeroGuiaPrestador>3166424</ans:numeroGuiaPrestador>
+                         <ans:guiaPrincipal>1</ans:guiaPrincipal>
+                      </ans:cabecalhoGuia>
+                      <ans:dadosAutorizacao>
+                      <ans:numeroGuiaOperadora>14185491</ans:numeroGuiaOperadora>
+                      <ans:dataAutorizacao>2017-09-28</ans:dataAutorizacao>
+                      </ans:dadosAutorizacao>
+                      <ans:dadosBeneficiario>
+                         <ans:numeroCarteira>1146211.01</ans:numeroCarteira>
+                             <ans:atendimentoRN>S</ans:atendimentoRN>
+                         <ans:nomeBeneficiario>MARIZA DE FATIMA OLIVEIRA</ans:nomeBeneficiario>
+                      </ans:dadosBeneficiario>
+                                                      <ans:dadosSolicitante>
+                         <ans:contratadoSolicitante>
+                               <ans:cnpjContratado>21243399000101</ans:cnpjContratado>
+                            <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoSolicitante>
+                         <ans:profissionalSolicitante>
+                            <ans:nomeProfissional>MARIA DO CARMO SILVA ARANTES</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >21558</ans:numeroConselhoProfissional >
+                                <ans:UF>31</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
+                         </ans:profissionalSolicitante>
+                      </ans:dadosSolicitante>
+                      <ans:dadosSolicitacao>
+                         <ans:dataSolicitacao>2017-09-28</ans:dataSolicitacao>
+                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:indicacaoClinica>I</ans:indicacaoClinica>
+                      </ans:dadosSolicitacao>
+                      <ans:dadosExecutante>
+                            <ans:contratadoExecutante>
+                            <ans:cnpjContratado>21243399000101</ans:cnpjContratado>
+                         <ans:nomeContratado>PROIMAGEM DIAGNOSTICO POR IMAGEM</ans:nomeContratado>
+                         </ans:contratadoExecutante>
+                         <ans:CNES>3145115</ans:CNES>
+                      </ans:dadosExecutante>
+                      <ans:dadosAtendimento>
+                      <ans:tipoAtendimento>04</ans:tipoAtendimento>
+                      <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
+                      <ans:tipoConsulta>1</ans:tipoConsulta>
+                      
+                      </ans:dadosAtendimento><ans:procedimentosExecutados>
+                             <ans:procedimentoExecutado>
+                                    <ans:dataExecucao>2017-09-28</ans:dataExecucao>
+                                    <ans:horaInicial>07:49:10</ans:horaInicial>
+                                    <ans:horaFinal>07:49:10</ans:horaFinal>
+                                    <ans:procedimento>
+                                    <ans:codigoTabela>22</ans:codigoTabela>
+                                   <ans:codigoProcedimento>40901300</ans:codigoProcedimento>
+                                   <ans:descricaoProcedimento >US - Transvaginal (utero, ovario, anexos e vagina)</ans:descricaoProcedimento >
+                                   </ans:procedimento>                        
+                            <ans:quantidadeExecutada>1</ans:quantidadeExecutada>
+                                <ans:reducaoAcrescimo>1.00</ans:reducaoAcrescimo>
+                                <ans:valorUnitario >72.43</ans:valorUnitario >
+                                <ans:valorTotal>72.43</ans:valorTotal>
+                                <ans:equipeSadt>
+                                    <ans:grauPart>12</ans:grauPart>
+                                    <ans:codProfissional>
+                                    <ans:codigoPrestadorNaOperadora>99330172</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>TIAGO ROSSETTO CARVALHO</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>69019</ans:numeroConselhoProfissional>
+                                    <ans:UF>31</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
+                                </ans:equipeSadt>
+                          </ans:procedimentoExecutado>
+                      </ans:procedimentosExecutados>
+                      
+                      <ans:observacao>III</ans:observacao>
+                         <ans:valorTotal >
+                         <ans:valorProcedimentos >72.43</ans:valorProcedimentos >
+                         <ans:valorDiarias>0.00</ans:valorDiarias>
+                         <ans:valorTaxasAlugueis>0.00</ans:valorTaxasAlugueis>
+                         <ans:valorMateriais>0.00</ans:valorMateriais>
+                         <ans:valorMedicamentos>0.00</ans:valorMedicamentos>
+                         <ans:valorOPME>0.00</ans:valorOPME>
+                         <ans:valorGasesMedicinais>0.00</ans:valorGasesMedicinais>
+                         <ans:valorTotalGeral>72.43</ans:valorTotalGeral>
+                      </ans:valorTotal>
+                      </ans:guiaSP-SADT></ans:guiasTISS>
+        </ans:loteGuias>
+    </ans:prestadorParaOperadora>
+    <ans:epilogo>
+    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+    </ans:epilogo>
+    </ans:mensagemTISS>
