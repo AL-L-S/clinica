@@ -118,7 +118,7 @@
                                     <td>&nbsp;</td>
                                     <td>&nbsp;</td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= $item->guia_id?></td>
+                                    <td><font size="-2"><?= $item->guia_id ?></td>
                                     <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
                                         <? if ($item->verificado == 't') {
                                             ?>&Sqrt;<? }
@@ -317,10 +317,10 @@
                                 if ($item->forma_pagamento == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    if ($u == 0) {
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -329,11 +329,11 @@
                                 if ($item->forma_pagamento_2 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -342,11 +342,11 @@
                                 if ($item->forma_pagamento_3 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -355,11 +355,11 @@
                                 if ($item->forma_pagamento_4 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -522,14 +522,14 @@
                                 ?>
                             </tr>
                             <?
-foreach ($formapagamento as $value) {
+                            foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    if ($u == 0) {
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -538,11 +538,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_2 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -551,11 +551,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_3 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -564,11 +564,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_4 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -871,14 +871,14 @@ foreach ($formapagamento as $value) {
                             </tr>
 
                             <?php
- foreach ($formapagamento as $value) {
+                            foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    if ($u == 0) {
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -887,11 +887,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_2 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -900,11 +900,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_3 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -913,11 +913,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_4 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -1087,14 +1087,14 @@ foreach ($formapagamento as $value) {
                                     $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                 }
                             }
-foreach ($formapagamento as $value) {
+                            foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor1;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                    if ($u == 0) {
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -1103,11 +1103,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_2 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor2;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -1116,11 +1116,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_3 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor3;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -1129,11 +1129,11 @@ foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento_4 == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor4;
                                     $numero[$value->nome] ++;
-                                    if($u == 0){
+                                    if ($u == 0) {
 
-                                    $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
                                     }
-                                    if($item->desconto != ''){
+                                    if ($item->desconto != '') {
                                         $u++;
                                     }
                                 }
@@ -1159,13 +1159,14 @@ foreach ($formapagamento as $value) {
             <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixa" method="post">
                 <?
                 foreach ($formapagamento as $value) {
-                    
+
                     //Caso seja forma de pagamento CREDITO não será processado no fechar caixa da mesma forma que os outros
-                    if($value->forma_pagamento_id == 1000) continue;
-                    
-                    
+                    if ($value->forma_pagamento_id == 1000)
+                        continue;
+
+
                     $w++;
-                    
+
                     /*
                      * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
                      * tais como '-', ' ', entre outros ao se fazer isso:
@@ -1187,22 +1188,23 @@ foreach ($formapagamento as $value) {
     <input type="hidden" class="texto3" name="cartaohiper" value="<?= number_format($CARTAOHIPER, 2, ',', '.'); ?>" readonly/>
     <input type="hidden" class="texto3" name="cartaoelo" value="<?= number_format($CARTAOELO, 2, ',', '.'); ?>" readonly/>-->
     <!--                <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>-->
-                <? 
+                <?
                 $j = 0;
-                foreach ($creditos as $item) { ?>
+                foreach ($creditos as $item) {
+                    ?>
                     <input type="hidden" class="texto3" name="creditoValor[<?= $j; ?>]" value="<?= $item->valor; ?>"/>
                     <input type="hidden" class="texto3" name="creditoData[<?= $j; ?>]" value="<?= $item->data; ?>"/>
                     <input type="hidden" class="texto3" name="creditoForma[<?= $j; ?>]" value="<?= $item->forma_pagamento_id; ?>"/>
-                    <? $j++; ?>
-                <? } ?>
-                    
+        <? $j++; ?>
+    <? } ?>
+
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
                 <input type="hidden" class="texto3" name="grupo" value="<?= $grupo; ?>"/>
                 <!--<input type="hidden" class="texto3" name="empresa" value="<?= $grupo; ?>"/>-->
                 <? if (count($empresa) > 0) { ?>
                     <input type="hidden" class="texto3" name="empresa" value="<?= $empresa[0]->empresa_id; ?>"/>
-                <? } ?>
+    <? } ?>
 
                 <tr>
                     <td colspan="5"></td><td colspan="2"><font size="-1"><b>TOTAL</b></td>
@@ -1218,7 +1220,7 @@ foreach ($formapagamento as $value) {
                 </tr>
                 <tr>
                     <td colspan="5"></td>
-                    <? if ($faturado == 't' && $exame == "") { ?>
+    <? if ($faturado == 't' && $exame == "") { ?>
                         <? if ((count($operador) == 0 && $financeiro == 'f')) { ?>
                             <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
 
@@ -1230,7 +1232,7 @@ foreach ($formapagamento as $value) {
                         <? } ?>
                     <? } else { ?>
                         <td colspan="3" ><b>Pendencias de Faturamento / Finalizar exame</b></td>
-                    <? } ?>
+    <? } ?>
                 </tr>
 
 
@@ -1245,7 +1247,7 @@ foreach ($formapagamento as $value) {
                         <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
                 <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
                 </tr>
-                <? foreach ($formapagamento as $value) { ?>
+    <? foreach ($formapagamento as $value) { ?>
                     <tr>
                         <td width="140px;"><font size="-1"><?= $value->nome ?></td>
                         <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
@@ -1254,7 +1256,7 @@ foreach ($formapagamento as $value) {
                     </tr>    
 
 
-                <? } ?>
+    <? } ?>
                 <tr>
                     <td width="140px;"><font size="-1">PENDENTES</td>
                     <td width="140px;"><font size="-1"><?= $NUMEROOUTROS ?></td>
@@ -1266,7 +1268,7 @@ foreach ($formapagamento as $value) {
                 $QTDECARTAO = 0;
                 foreach ($formapagamento as $value) {
                     /* A linha abaixo era a condiçao do IF antigamente. Agora tudo que nao for cartao sera DINHEIRO */
-    //                ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') 
+                    //                ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') 
                     if ($value->cartao != 'f') {
                         $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
                         $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
@@ -1288,28 +1290,28 @@ foreach ($formapagamento as $value) {
             </table>
         </div>
         <div style="display: inline-block; margin-left: 10pt">
-        <? if( count($creditos) > 0) { ?>
-            <table border="1" cellpadding="5" cellspacing="5" style="magin-right: 50pt;">
-                <thead>
-                    <tr>
-                        <th colspan="3" bgcolor="#C0C0C0">CRÉDITOS LANÇADOS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td bgcolor="#C0C0C0">PACIENTE</td>
-                        <td bgcolor="#C0C0C0">DATA</td>
-                        <td bgcolor="#C0C0C0">VALOR</td>
-                    </tr>
-                    <? foreach ($creditos as $item){ ?>
-                    <tr>
-                        <td><?= $item->paciente ?></td>
-                        <td><?= date("d/m/Y", strtotime($item->data)) ?></td>
-                        <td><?= number_format($item->valor, 2, ',', '') ?></td>
-                    </tr>
-                    <? } ?>
-                </tbody>
-            </table> 
+    <? if (count($creditos) > 0) { ?>
+                <table border="1" cellpadding="5" cellspacing="5" style="magin-right: 50pt;">
+                    <thead>
+                        <tr>
+                            <th colspan="3" bgcolor="#C0C0C0">CRÉDITOS LANÇADOS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#C0C0C0">PACIENTE</td>
+                            <td bgcolor="#C0C0C0">DATA</td>
+                            <td bgcolor="#C0C0C0">VALOR</td>
+                        </tr>
+        <? foreach ($creditos as $item) { ?>
+                            <tr>
+                                <td><?= $item->paciente ?></td>
+                                <td><?= date("d/m/Y", strtotime($item->data)) ?></td>
+                                <td><?= number_format($item->valor, 2, ',', '') ?></td>
+                            </tr>
+                <? } ?>
+                    </tbody>
+                </table> 
         <? } ?>
         </div>
         <h4>(*) Valores alterados.</h4>
@@ -1321,7 +1323,7 @@ foreach ($formapagamento as $value) {
         $PERCENTUALCARTAOHIPER = ($NUMEROCARTAOHIPER * 100) / $i;
         $PERCENTUALCARTAOELO = ($NUMEROCARTAOELO * 100) / $i;
         $PERCENTUALOUTROS = ($NUMEROOUTROS * 100) / $i;
-        if( $valortotal != 0 ) {
+        if ($valortotal != 0) {
             $PERCENTUALVALORDINHEIRO = ($DINHEIRO * 100) / $valortotal;
             $PERCENTUALVALORDEBITO_CONTA = ($DEBITO_CONTA * 100) / $valortotal;
             $PERCENTUALVALORCARTAOVISA = ($CARTAOVISA * 100) / $valortotal;
@@ -1329,7 +1331,7 @@ foreach ($formapagamento as $value) {
             $PERCENTUALVALORCARTAOHIPER = ($CARTAOHIPER * 100) / $valortotal;
             $PERCENTUALVALORCARTAOELO = ($CARTAOELO * 100) / $valortotal;
             $PERCENTUALVALOROUTROS = ($OUTROS * 100) / $valortotal;
-        }else{
+        } else {
             $PERCENTUALVALORDINHEIRO = 0;
             $PERCENTUALVALORDEBITO_CONTA = 0;
             $PERCENTUALVALORCARTAOVISA = 0;
@@ -1351,7 +1353,7 @@ foreach ($formapagamento as $value) {
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $NUMERODINHEIRO; ?>,<?= $NUMERODEBITO_CONTA; ?>,<?= $NUMEROCARTAOVISA; ?>,<?= $NUMEROCARTAOMASTER; ?>,<?= $NUMEROCARTAOHIPER; ?>,<?= $NUMEROCARTAOELO; ?>,<?= $NUMEROOUTROS; ?>&chtt=QUANTIDADE DE EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALOUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste"/></center>
                 GRAFICO DE VALOR DE EXAMES
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $VALORDINHEIRO; ?>,<?= $VALORDEBITO_CONTA; ?>,<?= $VALORCARTAOVISA; ?>,<?= $VALORCARTAOMASTER; ?>,<?= $VALORCARTAOHIPER; ?>,<?= $VALORCARTAOELO; ?>,<?= $VALOROUTROS; ?>&chtt=VALOR DOS EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALVALORDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOHIPER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALOROUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste2" /></center>-->
-        <? if (count($caixa)) { ?>
+    <? if (count($caixa)) { ?>
             <table border="1">
                 <thead>
                     <tr>
@@ -1363,12 +1365,35 @@ foreach ($formapagamento as $value) {
                     </tr>
                 </thead>
                 <tbody>
-                    <? foreach ($caixa as $item) : ?>
+                    <?
+                    $valorsangria = 0;
+                    ?>
+                    <?
+                    foreach ($caixa as $item) :
+                        $valorsangria = $valorsangria + $item->valor;
+                        ?>
                         <tr>
                             <td><?= utf8_decode($item->operador_caixa); ?></td>
                             <td><?= number_format($item->valor, 2, ',', '.'); ?></td>
                         </tr>
-                    <? endforeach; ?>
+        <? endforeach; ?>
+        <!--                        <tr>
+                        
+                    </tr>-->
+                    <tr>
+                        <th colspan="2" bgcolor="#C0C0C0">Total de Sangria</th>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold">Total</td>
+                        <td><?= number_format($valorsangria, 2, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2" bgcolor="#C0C0C0">Total Apurado Menos Sangria</th>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold">Total</td>
+                        <td><?= number_format( $valortotal - $valorsangria, 2, ',', '.'); ?></td>
+                    </tr>
                 </tbody>
             </table>
             <? //  var_dump($data[$value->nome]);     ?>
