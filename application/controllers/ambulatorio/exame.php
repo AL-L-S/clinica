@@ -2795,17 +2795,17 @@ class Exame extends BaseController {
                       </ans:dadosBeneficiario>
                       
                       <ans:dadosSolicitante>
-                         <ans:contratadoSolicitante>
+                        <ans:contratadoSolicitante>
                             <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
                             <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
-                         </ans:contratadoSolicitante>
+                        </ans:contratadoSolicitante>
                       
                         <ans:profissionalSolicitante>
-                              <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
-                              <ans:conselhoProfissional>06</ans:conselhoProfissional>
-                              <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
-                              <ans:UF>" . $codigoUF . "</ans:UF>
-                              <ans:CBOS>999999</ans:CBOS>
+                            <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
+                            <ans:UF>" . $codigoUF . "</ans:UF>
+                            <ans:CBOS>999999</ans:CBOS>
                         </ans:profissionalSolicitante>
                       
                       </ans:dadosSolicitante>
@@ -2817,8 +2817,8 @@ class Exame extends BaseController {
                       </ans:dadosSolicitacao>
                       
                       <ans:dadosExecutante>
-                            <ans:contratadoExecutante>
-                            <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
+                         <ans:contratadoExecutante>
+                         <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
                          <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                          </ans:contratadoExecutante>
                          <ans:CNES>" . $cnes . "</ans:CNES>
@@ -2846,6 +2846,7 @@ class Exame extends BaseController {
                                 <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
                                 <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
                                 <ans:equipeSadt>
+                                    <ans:grauPart>12</ans:grauPart>
                                     <ans:codProfissional>
                                         <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
                                     </ans:codProfissional>
@@ -2957,6 +2958,7 @@ class Exame extends BaseController {
                                 <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
                                 <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
                                 <ans:equipeSadt>
+                                    <ans:grauPart>12</ans:grauPart>
                                     <ans:codProfissional>
                                         <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
                                     </ans:codProfissional>
@@ -3239,7 +3241,6 @@ class Exame extends BaseController {
                 }
             } 
             else {
-
                 if ($listarexame[0]->grupo != 'CONSULTA') {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -3392,14 +3393,15 @@ class Exame extends BaseController {
                                 <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
                                 <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
                                 <ans:equipeSadt>
-                                <ans:codProfissional>
-                                <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-                                </ans:codProfissional>
-                                <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                                <ans:conselho>01</ans:conselho>
-                                <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                                <ans:UF>" . $codigoUF . "</ans:UF>
-                                <ans:CBOS>999999</ans:CBOS>
+                                    <ans:grauPart>12</ans:grauPart>
+                                    <ans:codProfissional>
+                                        <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                                    <ans:UF>" . $codigoUF . "</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                           </ans:procedimentoExecutado>
                       </ans:procedimentosExecutados>" 
@@ -3501,14 +3503,15 @@ class Exame extends BaseController {
                                 <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
                                 <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
                                 <ans:equipeSadt>
-                                <ans:codProfissional>
-                                <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-                                </ans:codProfissional>
-                                <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                                <ans:conselho>01</ans:conselho>
-                                <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                                <ans:UF>" . $codigoUF . "</ans:UF>
-                                <ans:CBOS>999999</ans:CBOS>
+                                    <ans:grauPart>12</ans:grauPart>
+                                    <ans:codProfissional>
+                                    <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                                    </ans:codProfissional>
+                                    <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                                    <ans:conselho>01</ans:conselho>
+                                    <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                                    <ans:UF>" . $codigoUF . "</ans:UF>
+                                    <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                           </ans:procedimentoExecutado>
                       </ans:procedimentosExecutados>" 
@@ -3929,14 +3932,15 @@ class Exame extends BaseController {
                             <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
                             <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
                             <ans:equipeSadt>
-                            <ans:codProfissional>
-                            <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-                            </ans:codProfissional>
-                            <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                            <ans:conselho>1</ans:conselho>
-                            <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
+                                <ans:grauPart>12</ans:grauPart>
+                                <ans:codProfissional>
+                                <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                                </ans:codProfissional>
+                                <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                                <ans:conselho>1</ans:conselho>
+                                <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
+                                <ans:CBOS>999999</ans:CBOS>
                             </ans:equipeSadt>
                       </ans:procedimentoExecutado>
                       </ans:procedimentosExecutados>
@@ -4015,14 +4019,15 @@ class Exame extends BaseController {
                             <ans:valorUnitario >" . $item->valor . "</ans:valorUnitario >
                             <ans:valorTotal>" . $item->valor_total . "</ans:valorTotal>
                             <ans:equipeSadt>
-                            <ans:codProfissional>
-                            <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-                            </ans:codProfissional>
-                            <ans:nomeProf>" . $medico . "</ans:nomeProf>
-                            <ans:conselho>1</ans:conselho>
-                            <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
-                            <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
+                                <ans:grauPart>12</ans:grauPart>
+                                <ans:codProfissional>
+                                <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                                </ans:codProfissional>
+                                <ans:nomeProf>" . $medico . "</ans:nomeProf>
+                                <ans:conselho>1</ans:conselho>
+                                <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
+                                <ans:CBOS>999999</ans:CBOS>
                             </ans:equipeSadt>
                       </ans:procedimentoExecutado>
                       </ans:procedimentosExecutados>

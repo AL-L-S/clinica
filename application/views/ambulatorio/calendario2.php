@@ -149,115 +149,127 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                             </div> 
                         </th>
                         <th>
-                            <table>
-                                <tr>
-                                    <th class="tabela_title">Grupo</th>
-                                    <th class="tabela_title">Empresa</th>
+                            <div style="border: 1pt dotted #444; border-radius: 10pt;">
+                                
+                                <table border="1" style="border">
+                                    <tr>
+                                        <th class="tabela_title">Grupo</th>
+                                        <th class="tabela_title">Empresa</th>
 
-                                </tr>
-                                <tr>
-                                    <th class="tabela_title">
-                                        <select name="grupo" id="grupo" class="size2" >
-                                            <option value='' >TODOS</option>
-                                            <? foreach ($grupos as $grupo) { ?>                                
-                                                <option value='<?= $grupo->nome ?>' <?
-                                                if (@$_GET['grupo'] == $grupo->nome):echo 'selected';
-                                                endif;
-                                                ?>><?= $grupo->nome ?></option>
-                                                    <? } ?>
-                                        </select>
+                                    </tr>
+                                    <tr>
+                                        <th class="tabela_title">
+                                            <select name="grupo" id="grupo" class="size2" >
+                                                <option value='' >TODOS</option>
+                                                <? foreach ($grupos as $grupo) { ?>                                
+                                                    <option value='<?= $grupo->nome ?>' <?
+                                                    if (@$_GET['grupo'] == $grupo->nome):echo 'selected';
+                                                    endif;
+                                                    ?>><?= $grupo->nome ?></option>
+                                                        <? } ?>
+                                            </select>
 
-                                    </th>
-                                    <th class="tabela_title">
-                                        <select name="empresa" id="empresa" class="size2">
-                                            <option value="">TODOS</option>
-                                            <?
-                                            $selected = false;
-                                            foreach ($empresas as $value) :
-                                                ?>
-                                                <option value="<?= $value->empresa_id; ?>" <?
-                                                if ((isset($_GET['empresa']) || @$_GET['empresa'] != '') && @$_GET['empresa'] == $value->empresa_id) {
-                                                    echo 'selected';
-                                                    $selected = true;
-                                                } else {
-                                                    if ($empresa_logada == $value->empresa_id && $selected == false) {
+                                        </th>
+                                        <th class="tabela_title">
+                                            <select name="empresa" id="empresa" class="size2">
+                                                <option value="">TODOS</option>
+                                                <?
+                                                $selected = false;
+                                                foreach ($empresas as $value) :
+                                                    ?>
+                                                    <option value="<?= $value->empresa_id; ?>" <?
+                                                    if ((isset($_GET['empresa']) || @$_GET['empresa'] != '') && @$_GET['empresa'] == $value->empresa_id) {
                                                         echo 'selected';
                                                         $selected = true;
+                                                    } else {
+                                                        if ($empresa_logada == $value->empresa_id && $selected == false) {
+                                                            echo 'selected';
+                                                            $selected = true;
+                                                        }
                                                     }
-                                                }
-                                                ?>><?php echo $value->nome; ?></option>
-                                                    <? endforeach; ?>
-                                        </select>
+                                                    ?>><?php echo $value->nome; ?></option>
+                                                        <? endforeach; ?>
+                                            </select>
 
-                                    </th>
+                                        </th>
 
-                                </tr>
-                                <tr>
-                                    <th class="tabela_title">Sala</th>
-                                    <th class="tabela_title">Tipo Agenda</th>
+                                    </tr>
+                                </table>
+                            
+                                <table border="1">
+                                    <tr>
+                                        <th class="tabela_title">Sala</th>
 
-                                </tr>
-                                <tr>
-                                    <th class="tabela_title">
-                                        <select name="sala" id="sala" class="size2">
-                                            <option value="">TODOS</option>
-                                            <? foreach ($salas as $value) : ?>
-                                                <option value="<?= $value->exame_sala_id; ?>" <?
-                                                if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
-                                                endif;
-                                                ?>><?php echo $value->nome; ?></option>
-                                                    <? endforeach; ?>
-                                        </select>
+                                    </tr>
+                                    <tr>
+                                        <th class="tabela_title">
+                                            <select name="sala" id="sala" class="size2">
+                                                <option value="">TODOS</option>
+                                                <? foreach ($salas as $value) : ?>
+                                                    <option value="<?= $value->exame_sala_id; ?>" <?
+                                                    if (@$_GET['sala'] == $value->exame_sala_id):echo 'selected';
+                                                    endif;
+                                                    ?>><?php echo $value->nome; ?></option>
+                                                        <? endforeach; ?>
+                                            </select>
 
-                                    </th>
-                                    <th class="tabela_title">
-                                        <select name="tipoagenda" id="tipoagenda" class="size2">
-                                            <!--<option value=""></option>-->
-                                            <option value="">TODOS</option>
-                                            <? foreach ($tipo_consulta as $value) : ?>
-                                                <option value="<?= $value->ambulatorio_tipo_consulta_id; ?>" <?
-                                                if (@$_GET['tipoagenda'] == $value->ambulatorio_tipo_consulta_id):echo 'selected';
-                                                endif;
-                                                ?>>
-                                                            <?
-            //                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
-            //                                                    echo '<script>carregaMedicoEspecialidade();</script>';
-            //                                                endif;
-                                                            ?>
-                                                            <?php echo $value->descricao; ?>
-                                                </option>
-                                            <? endforeach; ?>
-                                        </select>
-                                    </th>
+                                        </th>
 
-                                </tr>
-                                <tr>
-                                    <th class="tabela_title" colspan="2">Medico</th>
-                                    <!--<th class="tabela_title">Nome</th>-->
-
-                                </tr>
-                                <tr>
-                                    <th class="tabela_title" colspan="2">
-                                        <select name="medico" id="medico" class="size2">
-                                            <option value=""> </option>
-                                            <? foreach ($medicos as $value) : ?>
-                                                <option value="<?= $value->operador_id; ?>"<?
-                                                if (@$_GET['medico'] == $value->operador_id):echo 'selected';
-                                                endif;
-                                                ?>>
-
-                                                    <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
-
-
-                                                </option>
-                                            <? endforeach; ?>
-
-                                        </select>
-                                    </th>
-
-
-                                </tr>
+                                    </tr>    
+                                </table>
                                 
+                            </div>
+                            
+                            <div style="border: 1pt dotted #444; border-radius: 10pt;">
+                                <table border="1">
+                                    <tr>
+                                        <th class="tabela_title">Tipo Agenda</th>
+                                        <th class="tabela_title" colspan="2">Medico</th>
+
+                                    </tr>
+                                    <tr>
+
+                                        <th class="tabela_title">
+                                            <select name="tipoagenda" id="tipoagenda" class="size2">
+                                                <!--<option value=""></option>-->
+                                                <option value="">TODOS</option>
+                                                <? foreach ($tipo_consulta as $value) : ?>
+                                                    <option value="<?= $value->ambulatorio_tipo_consulta_id; ?>" <?
+                                                    if (@$_GET['tipoagenda'] == $value->ambulatorio_tipo_consulta_id):echo 'selected';
+                                                    endif;
+                                                    ?>>
+                                                                <?
+                //                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
+                //                                                    echo '<script>carregaMedicoEspecialidade();</script>';
+                //                                                endif;
+                                                                ?>
+                                                                <?php echo $value->descricao; ?>
+                                                    </option>
+                                                <? endforeach; ?>
+                                            </select>
+                                        </th>
+                                        <th class="tabela_title" colspan="2">
+                                            <select name="medico" id="medico" class="size2">
+                                                <option value=""> </option>
+                                                <? foreach ($medicos as $value) : ?>
+                                                    <option value="<?= $value->operador_id; ?>"<?
+                                                    if (@$_GET['medico'] == $value->operador_id):echo 'selected';
+                                                    endif;
+                                                    ?>>
+
+                                                        <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
+
+
+                                                    </option>
+                                                <? endforeach; ?>
+
+                                            </select>
+                                        </th>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <table border="1">
                                 <tr>
                                     
                                     <th colspan="2" class="tabela_title">Nome</th>
@@ -277,6 +289,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                                     </th>
                                 </tr>
                             </table>
+                            
                         </th>
                     </tr>
                 </form>
