@@ -883,7 +883,7 @@ function debug($object) {
                                     <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/horario">Manter Horarios</a></span></ul>-->
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
                                     <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter indica&ccedil;&atilde;o</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter Recomendação</a></span></ul>
                                     <? } ?>
                                     <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
                                 <? } ?>

@@ -119,14 +119,15 @@
                                     </a>
                                 </div>
                             </td>
-                            <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
+                            <td ><?= number_format(@$item->valor, 2, ",", "."); ?></td>
                             <?
                             if ($item->faturado != "t") {?>
                                 <td width="40px;"></td>
                             <? } else { ?>
                                 <td>Faturado&nbsp;</td>
-                            <? } 
-                            if($tipo != "CIRURGICO"){
+                            <? }
+                            
+                            if($tipo == "CIRURGICO"){
                                 if ($item->equipe == "t") {?>
                                 <td width="110px;">
                                     <div class="bt_link" style="width: 100pt">
@@ -145,12 +146,23 @@
                                     </div>
                                 </td>
                                 <?}
-                            }?>
+                            }
+                            else { ?>
+                                <td width="110px;">
+                                    <div class="bt_link" style="width: 100pt">
+                                        <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturaramentomanualguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
+                                            Faturar guia
+                                        </a>
+                                    </div>
+                                </td>
+                            <?
+                            }
+                            ?>
                         </tr>
 
                     </tbody>
                     <?php
-                    $valortotal += (float) $item->valor;
+                    $valortotal += (float) @$item->valor;
                 }
             }
             ?>

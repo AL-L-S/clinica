@@ -148,7 +148,10 @@
                                 </td>
                                 
                                 <td  width="50px;">
-                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
+<!--                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
+                                        <option value="">Selecione</option>
+                                    </select>-->
+                                    <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
@@ -411,10 +414,21 @@
         </div> 
     </div> 
 </div> <!-- Final da DIV content -->
+<style>
+    .chosen-container{ margin-top: 5pt;}
+    #procedimento1_chosen a { width: 400px; }
+</style>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+
 <script type="text/javascript">
 
 
@@ -456,7 +470,10 @@
                                                 for (var c = 0; c < j.length; c++) {
                                                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                                 }
-                                                $('#procedimento1').html(options).show();
+                                                $('#procedimento1 option').remove();
+                                                $('#procedimento1').append(options);
+                                                $("#procedimento1").trigger("chosen:updated");
+//                                                $('#procedimento1').html(options).show();
                                                 $('.carregando').hide();
                                             });
                                         }
@@ -472,7 +489,10 @@
                                                 for (var c = 0; c < j.length; c++) {
                                                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                                 }
-                                                $('#procedimento1').html(options).show();
+//                                                $('#procedimento1').html(options).show();
+                                                $('#procedimento1 option').remove();
+                                                $('#procedimento1').append(options);
+                                                $("#procedimento1").trigger("chosen:updated");
                                                 $('.carregando').hide();
                                             });
                                         }
@@ -523,7 +543,10 @@
                                                 for (var c = 0; c < j.length; c++) {
                                                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                                 }
-                                                $('#procedimento1').html(options).show();
+//                                                $('#procedimento1').html(options).show();
+                                                $('#procedimento1 option').remove();
+                                                $('#procedimento1').append(options);
+                                                $("#procedimento1").trigger("chosen:updated");
                                                 $('.carregando').hide();
                                             });
                                             
@@ -534,7 +557,10 @@
                                                     for (var c = 0; c < j.length; c++) {
                                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                                     }
-                                                    $('#procedimento1').html(options).show();
+//                                                    $('#procedimento1').html(options).show();
+                                                    $('#procedimento1 option').remove();
+                                                    $('#procedimento1').append(options);
+                                                    $("#procedimento1").trigger("chosen:updated");
                                                     $('.carregando').hide();
                                                 });
                                             }
