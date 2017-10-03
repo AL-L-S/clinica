@@ -3699,6 +3699,8 @@ class guia_model extends Model {
                             ae.autorizacao,
                             ae.percentual_medico,
                             ae.valor_medico,
+                            ae.percentual_promotor,
+                            ae.valor_promotor,
                             ae.desconto_ajuste1,
                             ae.desconto_ajuste2,
                             ae.desconto_ajuste3,
@@ -3747,11 +3749,13 @@ class guia_model extends Model {
                             op.taxa_administracao,
                             pt.percentual,
                             op.nome as medico,
+                            pi.nome as indicacao,
                             ops.nome as medicosolicitante,
                             c.nome as convenio,
                             c.iss");
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = ae.indicacao', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
@@ -3833,12 +3837,16 @@ class guia_model extends Model {
             tu.classificacao,
             o.nome as revisor,
             pt.percentual,
+            pi.nome as indicacao,
+            ae.percentual_promotor,
+            ae.valor_promotor,
             op.nome as medico,
             ops.nome as medicosolicitante,
             c.nome as convenio,
             c.iss');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = ae.indicacao', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
