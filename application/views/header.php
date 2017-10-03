@@ -439,7 +439,7 @@ function debug($object) {
                                 <? } ?>
                             </li>
                             <li><span class="folder">Relatorios</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 5 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 15) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriorecepcaoagenda">Relatorio Recepção Agenda</a></span></ul>
                                     <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriorecepcaoagendaduplicidade">Relatorio Duplicidade Agenda</a></span></ul>-->
     <!--                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendaconsultas">Relatorio agenda Consulta</a></span></ul>
@@ -454,17 +454,17 @@ function debug($object) {
 
                                     <?
                                 }
-                                if ($perfil_id == 1 || $perfil_id == 6) {
+                                if ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 15) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogruporm">Relatorio Rm</a></span></ul>
                                     <?
                                 }
-                                if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 11 || $perfil_id == 12) {
+                                if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 15) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriorecepcaomedicoconvenio">Relatorio Medico Convenio</a></span></ul>
                                     <?
                                 }
-                                if ($perfil_id != 9 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) {
+                                if ($perfil_id != 9 && $perfil_id != 4 && $perfil_id != 7) {
                                     ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioatendenteconvenio">Relatorio Atendente Convenio</a></span></ul>
                                 <? } ?>    

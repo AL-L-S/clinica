@@ -124,6 +124,11 @@ class Procedimentoplano extends BaseController {
         redirect(base_url() . "ambulatorio/procedimentoplano/agrupador");
     }
 
+    function excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $convenio_id) {
+        $this->procedimentoplano->excluirformapagamentoplanoconvenio($convenio_formapagamento_id);
+        redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
+    }
+
     function excluirprocedimentoagrupador($procedimento_agrupado_id, $agrupador_id) {
         $this->procedimentoplano->excluirprocedimentoagrupador($procedimento_agrupado_id);
 //        $this->session->set_flashdata('message', $data['mensagem']);
@@ -152,6 +157,16 @@ class Procedimentoplano extends BaseController {
         
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimentoplano-form', $data);
+    }
+
+    function carregarprocedimentoplanoformapagamento($convenio_id) {
+
+        $data['convenio_id'] = $convenio_id;
+        
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
+        $data['formas'] = $this->procedimentoplano->listarformaspagamentoconvenio($convenio_id);
+        
+        $this->loadView('ambulatorio/procedimentoplanoformapagamento', $data);
     }
 
     function carregarprocedimentoplanoexcluirgrupo($convenio_id) {
@@ -339,6 +354,13 @@ class Procedimentoplano extends BaseController {
         }
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimentopromotor/$procedimento_percentual_promotor_id");
+    }
+
+    function gravarformapagamentoplanoconvenio($convenio_id) {
+        $return = $this->procedimentoplano->gravarformapagamentoplanoconvenio();
+        $mensagem = 'Sucesso ao gravar Forma de Pagamento.';
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
     }
 
     function gravarformapagamentoprocedimento() {
