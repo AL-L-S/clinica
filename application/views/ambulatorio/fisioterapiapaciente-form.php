@@ -78,7 +78,10 @@
             </div>
             <div>
                 <label>Procedimento</label>
-                <select  name="procedimento" id="procedimento" class="size1" required>
+<!--                <select  name="procedimento" id="procedimento" class="size1" required>
+                    <option value="">Selecione</option>
+                </select>-->
+                <select name="procedimento" id="procedimento" class="size3 chosen-select" data-placeholder="Selecione" tabindex="1" required="">
                     <option value="">Selecione</option>
                 </select>
             </div>
@@ -292,6 +295,17 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<style>
+    .chosen-container{ margin-top: 5pt;}
+    #procedimento1_chosen a { width: 130px; }
+</style>
+
 <script>
                     function mascaraTelefone(campo) {
 
@@ -428,11 +442,16 @@ for ($i = 1; $i <= 6; $i++) {
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                     }
-                    $('#procedimento').html(options).show();
+                    $('#procedimento option').remove();
+                    $('#procedimento').append(options);
+                    $("#procedimento").trigger("chosen:updated");
+//                    $('#procedimento').html(options).show();
                     $('.carregando').hide();
                 });
             } else {
-                $('#procedimento').html('<option value="">Selecione</option>');
+                $('#procedimento option').remove();
+                $('#procedimento').append('');
+                $("#procedimento").trigger("chosen:updated");
             }
         });
     });

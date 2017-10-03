@@ -46,7 +46,7 @@
                 <input type="text" id="txtconvenio" class="texto02" name="convenio" value="<?= @$obj->_descricaoconvenio; ?>" readonly />
             </div>
         </fieldset>
-        <fieldset>
+<!--        <fieldset>
             <div>
                 <label>Data</label>
                 <input type="text"  id="data_ficha" name="data_ficha" class="size1"  required/>
@@ -80,7 +80,7 @@
                 <button type="submit" name="btnEnviar">Adicionar</button>
             </div>
     </form>
-</fieldset>
+</fieldset>-->
 
 <fieldset>
     <?

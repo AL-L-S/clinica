@@ -2759,7 +2759,7 @@ class exametemp_model extends Model {
             if ($_POST['horarios'] != "") {
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('tipo', 'FISIOTERAPIA');
+                $this->db->set('tipo', 'ESPECIALIDADE');
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 'f');
@@ -3189,7 +3189,7 @@ class exametemp_model extends Model {
 
 
             $this->db->set('empresa_id', $empresa_id);
-            $this->db->set('tipo', 'FISIOTERAPIA');
+            $this->db->set('tipo', 'ESPECIALIDADE');
             $this->db->set('ativo', 'f');
             $this->db->set('cancelada', 'f');
             $this->db->set('confirmado', 'f');

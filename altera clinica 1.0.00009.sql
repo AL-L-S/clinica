@@ -129,3 +129,19 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN recomendacao_configuravel boo
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_ativar_sala boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_sms ADD COLUMN ip_servidor_sms character varying(50);
 -- UPDATE ponto.tb_empresa_sms SET ip_servidor_sms = '200.98.64.240';
+
+
+-- Dia 03/10/2017
+
+CREATE TABLE ponto.tb_convenio_formapagamento
+(
+  convenio_formapagamento_id serial NOT NULL,
+  formapagamento_id integer,
+  convenio_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_convenio_formapagamento_pkey PRIMARY KEY (convenio_formapagamento_id)
+);
