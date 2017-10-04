@@ -56,9 +56,9 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/examepreparo-lista', $args);
     }
 
-    function listarsalasespera($args = array()) {
-
-        $this->loadView('ambulatorio/exameespera-lista', $args);
+    function listarsalasespera($limite = 25) {
+        $data["limite_paginacao"] = $limite;
+        $this->loadView('ambulatorio/exameespera-lista', $data);
     }
 
     function listaresperacaixa($args = array()) {
@@ -664,9 +664,9 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/faturamentoexamexml-form', $args);
     }
 
-    function listarexamerealizando($args = array()) {
-
-        $this->loadView('ambulatorio/examerealizando-lista', $args);
+    function listarexamerealizando($limite = 25) {
+        $data["limite_paginacao"] = $limite;
+        $this->loadView('ambulatorio/examerealizando-lista', $data);
     }
 
     function listarexamependente($args = array()) {

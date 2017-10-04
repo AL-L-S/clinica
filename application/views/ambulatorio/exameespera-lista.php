@@ -82,7 +82,8 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listarexameagendaconfirmada($_GET);
                 $total = $consulta->count_all_results();
-                $limit = 100;
+                
+                $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 if ($total > 0) {
@@ -104,17 +105,20 @@
                             
                            
                             if($item->ordenador == 1){
-                               $ordenador = 'Normal';  
+                               $ordenador = 'Normal'; 
+                               $cor = 'blue';
                             }elseif($item->ordenador == 2){
                                 $ordenador = 'Prioridade';  
+                                $cor = 'darkorange';
                             }elseif($item->ordenador == 3){
-                                $ordenador = 'Urgência';  
+                                $ordenador = 'Urgência'; 
+                                 $cor = 'red';
                             }else{
                                 $ordenador = $item->ordenador;
                             }
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $ordenador; ?></td>
+                                <td style="color: <?=$cor?>" class="<?php echo $estilo_linha; ?>"><?= $ordenador; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examepacientedetalhes/<?= $item->paciente_id; ?>/<?= $item->procedimento_tuss_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id; ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $item->paciente; ?></a></td>
                                 <?
                                 $idade = date("Y-m-d") - $item->nascimento;
@@ -195,7 +199,31 @@
                     <tr>
                         <th class="tabela_footer" colspan="12">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            Total de registros: <?php echo $total; ?>
+                            Total de registros: <?php echo $total; ?> <div style="display: inline">
+                                <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>
+                                <select style="width: 57px">
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarsalasespera/25');" <?
+                                    if ($limit == 25) {
+                                        echo "selected";
+                                    }
+                                    ?>>25 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarsalasespera/50');" <?
+                                    if ($limit == 50) {
+                                        echo "selected";
+                                    }
+                                    ?>>50 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarsalasespera/100');" <?
+                                            if ($limit == 100) {
+                                                echo "selected";
+                                            }
+                                    ?>> 100 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarsalasespera/todos');" <?
+                                            if ($limit == "todos") {
+                                                echo "selected";
+                                            }
+                                    ?>> Todos </option>
+                                </select>
+                            </div>
                         </th>
                     </tr>
                 </tfoot>
