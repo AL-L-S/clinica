@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th colspan="6" class="tabela_header">Detalhes</th>
+                        <th colspan="6" class="tabela_header"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
@@ -77,6 +77,12 @@
                                         </a>
                                     </div>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
+                                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/<?= $item->convenio_id ?>">
+                                            F. Pagamento
+                                        </a>
+                                    </div>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript: return confirm('Deseja realmente excluir o convenio?\n\nObs: Irá excluir também os procedimentos associados ao convenio  ');" href="<?= base_url() ?>cadastros/convenio/excluir/<?= $item->convenio_id ?>">
                                             
@@ -93,7 +99,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="6">
+                        <th class="tabela_footer" colspan="7">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

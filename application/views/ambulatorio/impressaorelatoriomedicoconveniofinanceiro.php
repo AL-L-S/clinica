@@ -56,14 +56,14 @@ switch ($MES) {
         <h4>Revisor: TODOS</h4>
     <? } else { ?>
         <h4>Revisor: <?= $revisor[0]->operador; ?></h4>
-    <?
+        <?
     }
     if ($medico == 0) {
         ?>
         <h4>Medico: TODOS</h4>
     <? } else { ?>
         <h4>Medico: <?= $medico[0]->operador; ?></h4>
-<? } ?>
+    <? } ?>
 
 
     <hr>
@@ -95,6 +95,13 @@ switch ($MES) {
                     <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
+                    <? if ($_POST['promotor'] == 'SIM') { ?>
+                        <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor Promotor</th>
+                        <th class="tabela_header" width="80px;"><font size="-1">Valor Promotor</th>   
+                        <th class="tabela_header" width="80px;"><font size="-1">Promotor</th>   
+                    <? }
+                    ?>
+
                     <? if ($mostrar_taxa == 'SIM') { ?>
                         <th class="tabela_header" ><font size="-1">Taxa Administração</th>
                     <? } ?>
@@ -120,6 +127,9 @@ switch ($MES) {
                     $iss = 0;
                     $perc = 0;
                     $totalgeral = 0;
+                    $percpromotor = 0;
+                    $totalgeralpromotor = 0;
+                    $totalpercpromotor = 0;
                     $totalconsulta = 0;
                     $totalretorno = 0;
                     $taxaAdministracao = 0;
@@ -165,7 +175,7 @@ switch ($MES) {
 //                                $valorLiqMed = ((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100)) - ((float) $valor_total * ((float) $item->taxa_administracao / 100))); 
                                 ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
-                            <?
+                                <?
                             }
 
                             if ($item->percentual_medico == "t") {
@@ -185,6 +195,23 @@ switch ($MES) {
                             $totalperc = $totalperc + $perc;
                             $totalgeral = $totalgeral + $valor_total;
 
+                            if ($item->percentual_promotor == "t") {
+                                $simbolopercebtualpromotor = " %";
+
+                                $valorpercentualpromotor = $item->valor_promotor/* - ((float) $item->valor_promotor * ((float) $item->taxa_administracao / 100)) */;
+
+                                $percpromotor = $valor_total * ($valorpercentualpromotor / 100);
+                            } else {
+                                $simbolopercebtualpromotor = "";
+                                $valorpercentualpromotor = $item->valor_promotor/* - ((float) $item->valor_promotor * ((float) $item->taxa_administracao / 100)) */;
+
+                                $percpromotor = $valorpercentualpromotor;
+                                $percpromotor = $percpromotor * $item->quantidade;
+                            }
+
+                            $totalpercpromotor = $totalpercpromotor + $percpromotor;
+                            $totalgeralpromotor = $totalgeralpromotor + $valor_total;
+
                             if ($item->dia_recebimento != "" && $item->tempo_recebimento != "") {
                                 $valor_recebimento = $valor_recebimento + $perc;
                                 $tempoRecebimento[] = array(
@@ -198,6 +225,16 @@ switch ($MES) {
                             <td style='text-align: right;'><font size="-2"><?= number_format($valorpercentualmedico, 2, ",", "") . $simbolopercebtual ?></td>
 
                             <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
+
+                            <? if ($_POST['promotor'] == 'SIM') { ?>
+                                <td style='text-align: right;'><font size="-2"><?= number_format($valorpercentualpromotor, 2, ",", "") . $simbolopercebtual ?></td>
+
+                                <td style='text-align: right;'><font size="-2"><?= number_format($percpromotor, 2, ",", "."); ?></td>
+                                <td style='text-align: left;'><font size="-2"><?= $item->indicacao ?></td>
+
+                            <? }
+                            ?>
+
 
                             <? if ($mostrar_taxa == 'SIM') { ?>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->taxa_administracao, 2, ",", "."); ?> (%)</td>
@@ -215,17 +252,26 @@ switch ($MES) {
                         <?php
                         $qtdetotal = $qtdetotal + $item->quantidade;
                     endforeach;
-                    $resultadototalgeral = $totalgeral - $totalperc;
+                    if ($_POST['promotor'] == 'SIM') {
+                        $resultadototalgeral = $totalgeral - $totalperc - $totalpercpromotor;
+                    } else {
+                        $resultadototalgeral = $totalgeral - $totalperc;
+                    }
                     ?>
                     <tr>
                         <td ><font size="-1">TOTAL</td>
-                        <td style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
+                        <td  colspan="2" style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
                         <? if ($clinica == 'SIM') { ?>
                             <td colspan="5" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
                         <? } else { ?>
                             <td colspan="4" style='text-align: right;'><font size="-1">&nbsp;</td>
                         <? } ?>
-                        <td colspan="2" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
+                        <? if ($_POST['promotor'] == 'SIM') { ?>
+                            <td colspan="3" style='text-align: right;'><font size="-1">TOTAL PROMOTOR: <?= number_format($totalpercpromotor, 2, ",", "."); ?></td>
+
+                        <? }
+                        ?>
+                        <td colspan="3" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -254,6 +300,12 @@ switch ($MES) {
                     <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
+                    <? if ($_POST['promotor'] == 'SIM') { ?>
+                        <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor Promotor</th>
+                        <th class="tabela_header" width="80px;"><font size="-1">Valor Promotor</th>   
+                        <th class="tabela_header" width="80px;"><font size="-1">Promotor</th>   
+                    <? }
+                    ?>
 
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
@@ -278,6 +330,9 @@ switch ($MES) {
                     $totalgeral = 0;
                     $totalconsulta = 0;
                     $totalretorno = 0;
+                    $percpromotorhome = 0;
+                    $totalpercpromotor = 0;
+                    $totalgeralpromotor = 0;
                     foreach ($relatoriohomecare as $item) :
                         $i++;
                         $procedimentopercentual = $item->procedimento_convenio_id;
@@ -319,9 +374,34 @@ switch ($MES) {
                                 $totalperchome = $totalperchome + $perchome;
                                 $totalgeralhome = $totalgeralhome + $valor_total;
                             }
+
+                            if ($item->percentual_promotor == "t") {
+                                $simbolopercebtualpromotorhome = " %";
+
+                                $valorpercentualpromotorhome = $item->valor_promotor/* - ((float) $item->valor_promotorhome * ((float) $item->taxa_administracao / 100)) */;
+
+                                $percpromotorhome = $valor_total * ($valorpercentualpromotorhome / 100);
+                            } else {
+                                $simbolopercebtualpromotorhome = "";
+                                $valorpercentualpromotorhome = $item->valor_promotor/* - ((float) $item->valor_promotorhome * ((float) $item->taxa_administracao / 100)) */;
+
+                                $percpromotorhome = $valorpercentualpromotorhome;
+                                $percpromotorhome = $percpromotorhome * $item->quantidade;
+                            }
+
+                            $totalpercpromotor = $totalpercpromotor + $percpromotorhome;
+                            $totalgeralpromotor = $totalgeralpromotor + $valor_total;
                             ?>
-                            <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtual ?></td>
+                            <td style='text-align: right;'><font size="-2"><?= $valorpercentualmedico . $simbolopercebtualpromotorhome ?></td>
                             <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
+                            <? if ($_POST['promotor'] == 'SIM') { ?>
+                                <td style='text-align: right;'><font size="-2"><?= $valorpercentualpromotorhome . $simbolopercebtualpromotorhome ?></td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format($percpromotorhome, 2, ",", "."); ?></td>  
+                                <td style='text-align: left;'><font size="-2"><?= $item->indicacao ?></td>
+                            <? }
+                            ?>
+
+
 
                             <? if ($solicitante == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
@@ -332,7 +412,11 @@ switch ($MES) {
                         <?php
                         $qtdetotal = $qtdetotal + $item->quantidade;
                     endforeach;
-                    $resultadototalgeralhome = $totalgeralhome - $totalperchome;
+                    if ($_POST['promotor'] == 'SIM') {
+                       $resultadototalgeralhome = $totalgeralhome - $totalperchome - $totalpercpromotor;
+                    } else {
+                       $resultadototalgeralhome = $totalgeralhome - $totalperchome;
+                    }
                     ?>
                     <tr>
                         <td ><font size="-1">TOTAL</td>
@@ -342,6 +426,11 @@ switch ($MES) {
                         <? } else { ?>
                             <td colspan="4" style='text-align: right;'><font size="-1">&nbsp;</td>
                         <? } ?>
+                        <? if ($_POST['promotor'] == 'SIM') { ?>
+                            <td colspan="3" style='text-align: right;'><font size="-1">TOTAL PROMOTOR: <?= number_format($totalpercpromotor, 2, ",", "."); ?></td>
+
+                        <? }
+                        ?>
                         <td colspan="2" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperchome, 2, ",", "."); ?></td>
                     </tr>
                 </tbody>
@@ -485,10 +574,10 @@ switch ($MES) {
                             $resultado = $resultado - $pis - $csll - $cofins;
                             ?>
 
-                                <!--                            <tr>
-                                                                <td>TAXA ADMINISTRAÇÃO</td>
-                                                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
-                                                            </tr>-->
+                                                                                                                                                                <!--                            <tr>
+                                                                                                                                                                                                <td>TAXA ADMINISTRAÇÃO</td>
+                                                                                                                                                                                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
+                                                                                                                                                                                            </tr>-->
                             <tr>
                                 <td>PIS</td>
                                 <td style='text-align: right;'><?= number_format($pis, 2, ",", "."); ?></td>
@@ -557,20 +646,20 @@ switch ($MES) {
                                 <input type="text" class="texto3" name="data_escolhida" id="data_escolhida" value=""/>
                                 <br>
                                 <br>  
-                <? }
-                ?>
+                            <? }
+                            ?>
 
                             <!--<br>-->
                             <button type="submit" name="btnEnviar">Producao medica</button>
 
-                    <? } ?>
+                        <? } ?>
                     </form>
                     <?
                 }
             }
             ?>
             <br>
-    <? if ($medico != 0 && $recibo == 'NAO') { ?> 
+            <? if ($medico != 0 && $recibo == 'NAO') { ?> 
                 <div>
                     <div style="display: inline-block">
                         <table border="1">
@@ -595,16 +684,16 @@ switch ($MES) {
                                         <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
                                     </tr>
 
-        <? endforeach; ?>
+                                <? endforeach; ?>
                             </tbody>
                         </table>
                     </div>
-    <? } ?>
+                <? } ?>
                 <div style="display: inline-block;margin: 5pt">
                 </div>
 
-    <? if (count($relatoriocirurgicogeral) > 0):
-        ?>
+                <? if (count($relatoriocirurgicogeral) > 0):
+                    ?>
                     <div style="display: inline-block">
                         <table border="1">
                             <thead>
@@ -628,13 +717,13 @@ switch ($MES) {
                                         <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
                                     </tr>
 
-        <? endforeach; ?>
+                                <? endforeach; ?>
                             </tbody>
                         </table>
                     </div>
                 <? endif; ?>
-    <? if (count($relatoriohomecaregeral) > 0):
-        ?>
+                <? if (count($relatoriohomecaregeral) > 0):
+                    ?>
                     <div style="display: inline-block">
                         <table border="1">
                             <thead>
@@ -658,15 +747,15 @@ switch ($MES) {
                                         <td ><font size="-2"><?= number_format($itens->valor, 2, ",", "."); ?></td>
                                     </tr>
 
-        <? endforeach; ?>
+                                <? endforeach; ?>
                             </tbody>
                         </table>
                     </div>
-    <? endif; ?>
+                <? endif; ?>
             </div>
 
             <hr>
-    <? if ($tabela_recebimento == "SIM") { ?>
+            <? if ($tabela_recebimento == "SIM") { ?>
                 <table border="1">
                     <tr>
                         <td colspan="2">PREVISÃO DE RECEBIMENTO</td>
@@ -697,14 +786,14 @@ switch ($MES) {
                             <td><?= $vlr ?></td>
                             <td><?= $dt_recebimento ?></td>
                         </tr> 
-        <? } ?>
+                    <? } ?>
                 </table>
                 <hr>
-    <? } ?>
+            <? } ?>
             <style>
                 /*.pagebreak { page-break-before: always; }*/
             </style>
-    <? if ($medico != 0 && $recibo == 'SIM') { ?>
+            <? if ($medico != 0 && $recibo == 'SIM') { ?>
                 <div>
 
                     <!--                    <div>
@@ -726,7 +815,7 @@ switch ($MES) {
                         <p style="text-align: center"><?= $empresamunicipio[0]->municipio ?>,
                             <?= date("d") . " de " . $MES . " de " . date("Y"); ?> -
 
-        <?= date("H:i") ?>
+                            <?= date("H:i") ?>
                         </p>
                     <!--<p><center><font size = 4><b>DECLARA&Ccedil;&Atilde;O</b></font></center></p>-->
                         <br>
@@ -753,24 +842,3 @@ switch ($MES) {
         ?>
 
 </div> <!-- Final da DIV content -->
-
-<script type="text/javascript">
-
-
-
-    $(function () {
-        $("#accordion").accordion();
-    });
-    $(function () {
-        $("#data_escolhida").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
-
-</script>

@@ -239,6 +239,7 @@ class Exametemp extends BaseController {
         $obj_paciente = new paciente_model($pacientetemp_id);
         $data['obj'] = $obj_paciente;
         $data['medico'] = $this->exametemp->listarmedicoconsulta();
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['contador'] = $this->exametemp->contadorfisioterapiapaciente($pacientetemp_id);
         $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapia($pacientetemp_id);
         $data['consultasanteriores'] = $this->exametemp->listarespecialidadeanterior($pacientetemp_id);

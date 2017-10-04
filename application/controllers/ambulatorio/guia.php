@@ -895,7 +895,6 @@ class Guia extends BaseController {
             }
             //            $this->gerardicom($ambulatorio_guia);
             $this->guia->gravarorcamentoitem($ambulatorio_orcamento);
-            //        $this->novo($paciente_id, $ambulatorio_guia);
             redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id/$ambulatorio_orcamento");
         }
     }
@@ -933,7 +932,6 @@ class Guia extends BaseController {
             }
             //        $this->gerardicom($ambulatorio_guia);
             $this->session->set_flashdata('message', $data['mensagem']);
-            //        $this->novo($paciente_id, $ambulatorio_guia);
             redirect(base_url() . "ambulatorio/guia/novoconsulta/$paciente_id/$ambulatorio_guia");
         }
     }

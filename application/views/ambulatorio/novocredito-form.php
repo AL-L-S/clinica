@@ -31,26 +31,35 @@
                 </fieldset>
 
                 <fieldset>
-                    <dl>
-                        <dt>Convenio</dt>
-                        <dd>
-                            <select name="convenio1" id="convenio1" class="size2" required>
+                    <table>
+                        <tr>
+                            <td>Convenio</td>
+                            <td>
+                                <select name="convenio1" id="convenio1" class="size2" required>
+                                    <option value="">Selecione</option>
+                                    <? foreach ($convenio as $item) : ?>
+                                        <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                        
+                        <td>Procedimento</td>
+                        <td>
+                            <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                 <option value="">Selecione</option>
-                                <? foreach ($convenio as $item) : ?>
-                                    <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
-                                <? endforeach; ?>
                             </select>
-                        </dd>
-                        
-                        <dt>Procedimento</dt>
-                        <dd>
-                            <select  name="procedimento1" id="procedimento1" class="size8" required>
+<!--                            <select  name="procedimento1" id="procedimento1" class="size8" required>
                                 <option value="">-- Escolha um procedimento --</option>
-                            </select>
-                        </dd>
+                            </select>-->
+                        </td>
+                        </tr>
+                        <tr>
                         
-                        <dt>Forma de Pagamento</dt>
-                        <dd>
+                        <td>Forma de Pagamento</td>
+                        <td>
                             <select name="forma_pagamento" id="forma_pagamento" class="size2" required>
                                 <option value="">Selecione</option>
                                 <? foreach ($forma_pagamento as $item) : //Não vai mostrar forma de pagamento credito.
@@ -58,11 +67,15 @@
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
-                        </dd>
+                        </td>
+                        </tr>
+                        <tr>
                         
-                        <dt>Valor Unitario</dt>
-                        <dd><input type="text" name="valor1" id="valor1" class="texto01" readonly="" required/></dd>
-                    </dl>
+                        <td>Valor Unitario</td>
+                        <td><input type="text" name="valor1" id="valor1" class="texto01" readonly="" required/></td>
+                        
+                        </tr>
+                    </table>
                     
                     <hr/>
                     
@@ -78,6 +91,17 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<style>
+    /*.chosen-container{ margin-top: 5pt;}*/
+    /*#procedimento1_chosen a { width: 130px; }*/
+</style>
+
 <script type="text/javascript">
 
     $(function() {
@@ -93,11 +117,17 @@
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                     }	
-                    $('#procedimento1').html(options).show();
+//                    $('#procedimento1').html(options).show();
+                    $('#procedimento1 option').remove();
+                    $('#procedimento1').append(options);
+                    $("#procedimento1").trigger("chosen:updated");
                     $('.carregando').hide();
                 });
             } else {
-                $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
+                $('#procedimento1 option').remove();
+                $('#procedimento1').append('');
+                $("#procedimento1").trigger("chosen:updated");
+//                $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
             }
         });
     });

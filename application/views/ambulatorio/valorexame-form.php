@@ -47,34 +47,51 @@ endif;
                 </fieldset>
 
                 <fieldset>
-                    <dl>
-                        <dt>Quantidade</dt>
-                        <dd><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></dd>
-                        <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" value="<?= $ambulatorio_guia_id; ?>"/>
-                        <input type="hidden" name="guia_id" id="guia_id" value="<?= $guia_id; ?>"/>
-                        <dt>Convenio</dt>
-                        <dd><select  name="convenio1" id="convenio1" class="size2" >
+                    <table>
+                        <tr>
+                            <td>Quantidade</td>
+                            <td>
+                                <input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/>
+                                <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" value="<?= $ambulatorio_guia_id; ?>"/>
+                                <input type="hidden" name="guia_id" id="guia_id" value="<?= $guia_id; ?>"/>
+                            </td>
+                        </tr>
+                        <tr>
+                        <td>Convenio</td>
+                        <td><select  name="convenio1" id="convenio1" class="size2" >
                                 <option value="-1">Selecione</option>
                                 <? foreach ($convenio as $item) : ?>
                                     <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
-                            </select></dd>
-                        <dt>Procedimento</dt>
-                        <dd><select  name="procedimento1" id="procedimento1" class="size10" >
-                                <option value="-1">-- Escolha um procedimento --</option>
-                            </select></dd>
-                        <dt>autorizacao</dt>
-                        <dd><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></dd>
-                        <dt>Valor Unitario</dt>
-                        <dd><input type="text" name="valor1" id="valor1" class="texto01"/></dd>
-                        <dt>Pagamento</dt>
-                        <dd><select  name="formapamento" id="formapamento" class="size2" >
-                                <option value="0">Selecione</option>
-                                <? foreach ($forma_pagamento as $item) : ?>
-                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                <? endforeach; ?>
-                            </select></dd>
-                    </dl>
+                            </select></td>
+                        </tr>
+                        <tr>
+                            <td>Procedimento</td>
+                            <td>
+                                <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                    <option value="">Selecione</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>autorizacao</td>
+                            <td><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
+                        </tr>
+                        <tr>
+                            <td>Valor Unitario</td>
+                            <td><input type="text" name="valor1" id="valor1" class="texto01"/></td>
+                        </tr>
+                        <tr>
+                            <td>Pagamento</td>
+                            <td><select  name="formapamento" id="formapamento" class="size2" >
+                                    <option value="0">Selecione</option>
+                                    <? foreach ($forma_pagamento as $item) : ?>
+                                        <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
                     <hr/>
                     <button type="submit" name="btnEnviar">Enviar</button>
                 </fieldset>
@@ -88,6 +105,16 @@ endif;
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<style>
+    /*.chosen-container{ margin-top: 5pt;}*/
+    #procedimento1_chosen { width: 430px; }
+</style>
 <script type="text/javascript">
 
     $(function() {
@@ -103,7 +130,10 @@ endif;
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                     }	
-                    $('#procedimento1').html(options).show();
+//                    $('#procedimento1').html(options).show();
+                    $('#procedimento1 option').remove();
+                    $('#procedimento1').append(options);
+                    $("#procedimento1").trigger("chosen:updated");
                     $('.carregando').hide();
                 });
             } else {

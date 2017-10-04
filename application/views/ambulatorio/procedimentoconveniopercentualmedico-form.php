@@ -35,8 +35,12 @@
                         <label>Procedimento</label>
                     </dt>
                     <dd>
-                        <select  name="procedimento" id="procedimento" class="size4" >
+<!--                        <select  name="procedimento" id="procedimento" class="size4" >
                             <option value="">SELECIONE</option>
+                        </select>-->
+                        
+                        <select name="procedimento" id="procedimento" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                            <option value="">Selecione</option>
                         </select>
 
                     </dd>
@@ -92,10 +96,17 @@
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+
 <script type="text/javascript">
-    $('#btnVoltar').click(function () {
-        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-    });
+//    $('#btnVoltar').click(function () {
+//        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+//    });
 
     $(function () {
         $("#accordion").accordion();
@@ -111,24 +122,34 @@
                         for (var c = 0; c < j.length; c++) {
                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                         }
-                        $('#procedimento').html(options).show();
+//                        $('#procedimento').html(options).show();
+                        $('#procedimento option').remove();
+                        $('#procedimento').append(options);
+                        $("#procedimento").trigger("chosen:updated");
                         $('.carregando').hide();
                     });
                 }
                 else{
                     if ( $('#grupo').val() != "SELECIONE") {
                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $('#grupo').val(), convenio1: $(this).val()}, function (j) {
-                            options = '<option value=""></option>';
+                            options = '<option value="">TODOS</option>';
                             for (var c = 0; c < j.length; c++) {
                                 options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                             }
-                            $('#procedimento').html(options).show();
+//                            $('#procedimento').html(options).show();
+                            $('#procedimento option').remove();
+                            $('#procedimento').append(options);
+                            $("#procedimento").trigger("chosen:updated");
                             $('.carregando').hide();
                         });
                     }
                 }
             } else {
-                $('#procedimento').html('<option value="">SELECIONE</option>');
+//                $('#procedimento').html();
+
+                $('#procedimento option').remove();
+                $('#procedimento').append('<option value="">SELECIONE</option>');
+                $("#procedimento").trigger("chosen:updated");
             }
         });
     });
@@ -141,11 +162,15 @@
             if ($('#covenio').val() != 'SELECIONE' && $('#grupo').val() != 'TODOS') {
                 $('.carregando').show();
                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#covenio').val()}, function (j) {
-                    options = '<option value=""></option>';
+                    options = '<option value="">TODOS</option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                     }
-                    $('#procedimento').html(options).show();
+//                    $('#procedimento').html(options).show();
+
+                    $('#procedimento option').remove();
+                    $('#procedimento').append(options);
+                    $("#procedimento").trigger("chosen:updated");
                     $('.carregando').hide();
                 });
             }
@@ -159,7 +184,10 @@
                         for (var c = 0; c < j.length; c++) {
                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                         }
-                        $('#procedimento').html(options).show();
+//                        $('#procedimento').html(options).show();
+                        $('#procedimento option').remove();
+                        $('#procedimento').append(options);
+                        $("#procedimento").trigger("chosen:updated");
                         $('.carregando').hide();
                     });
                 }

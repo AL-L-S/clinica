@@ -85,6 +85,15 @@
                             <option value='NAO' >NAO</option>
                         </select>
                     </dd>
+                    <dt>
+                        <label>Promotor</label>
+                    </dt>
+                    <dd>
+                        <select name="promotor" id="promotor" class="size1" >
+                            <option value='SIM' >SIM</option>
+                            <option value='NAO' >NAO</option>
+                        </select>
+                    </dd>
 
                     <dt>
                         <label>Situação</label>

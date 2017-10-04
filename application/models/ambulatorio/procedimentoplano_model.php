@@ -645,6 +645,43 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function excluirformapagamentoplanoconvenio($convenio_formapagamento_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('ativo', 'f');
+        $this->db->where('convenio_formapagamento_id', $convenio_formapagamento_id);
+        $this->db->update('tb_convenio_formapagamento');
+    }
+
+    function gravarformapagamentoplanoconvenio() {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        
+        $this->db->set('convenio_id', $_POST['convenio']);
+        $this->db->set('formapagamento_id', $_POST['formapagamento_id']);
+        $this->db->insert('tb_convenio_formapagamento');
+    }
+
+    function listarformaspagamentoconvenio($convenio_id) {
+
+        //verifica se esse medico já está cadastrado nesse procedimento 
+        $this->db->select('convenio_formapagamento_id, 
+                            fp.nome as formapagamento');
+        $this->db->from('tb_convenio_formapagamento cf');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = cf.formapagamento_id', 'left');
+        $this->db->where('cf.ativo', 't');
+        $this->db->where('convenio_id', $convenio_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+    
     function gravarformapagamentoprocedimento() {
 
         //verifica se esse medico já está cadastrado nesse procedimento 
