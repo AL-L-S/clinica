@@ -645,37 +645,92 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
-    function excluirformapagamentoplanoconvenio($convenio_formapagamento_id) {
+    function excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $grupopagamento_id) {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-
+        $sql = "DELETE FROM ponto.tb_procedimento_convenio_pagamento
+                WHERE grupo_pagamento_id = $grupopagamento_id
+                AND procedimento_convenio_id IN (
+                    SELECT procedimento_convenio_id 
+                    FROM ponto.tb_procedimento_convenio pc
+                    WHERE pc.ativo = 't'
+                    AND pc.convenio_id = $convenio_id 
+                 )";
+        
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->set('ativo', 'f');
-        $this->db->where('convenio_formapagamento_id', $convenio_formapagamento_id);
-        $this->db->update('tb_convenio_formapagamento');
+        $this->db->where('convenio_grupopagamento_id', $convenio_formapagamento_id);
+        $this->db->update('tb_convenio_grupopagamento');
     }
 
     function gravarformapagamentoplanoconvenio() {
-        $horario = date("Y-m-d H:i:s");
-        $operador_id = $this->session->userdata('operador_id');
-
-        $this->db->set('data_cadastro', $horario);
-        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->select('grupo_pagamento_id');
+        $this->db->from('tb_convenio_grupopagamento');
+        $this->db->where('ativo', 't');
+        $this->db->where('convenio_id', $_POST['convenio']);
+        $this->db->where('grupo_pagamento_id', $_POST['grupopagamento_id']);
+        $return = $this->db->get();
+        $return = $return->result();
         
-        $this->db->set('convenio_id', $_POST['convenio']);
-        $this->db->set('formapagamento_id', $_POST['formapagamento_id']);
-        $this->db->insert('tb_convenio_formapagamento');
+        if(count($return) == 0){
+        
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+
+            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('grupo_pagamento_id', $_POST['grupopagamento_id']);
+            $this->db->insert('tb_convenio_grupopagamento');
+
+            $convenio_id = $_POST['convenio'];
+
+            $sql = "DELETE FROM ponto.tb_procedimento_convenio_pagamento
+                    WHERE procedimento_convenio_id IN (
+                        SELECT procedimento_convenio_id 
+                        FROM ponto.tb_procedimento_convenio pc
+                        WHERE pc.ativo = 't'
+                        AND pc.convenio_id = $convenio_id 
+                     )";
+
+            $this->db->select('grupo_pagamento_id');
+            $this->db->from('tb_convenio_grupopagamento');
+            $this->db->where('ativo', 't');
+            $this->db->where('convenio_id', $convenio_id);
+            $return = $this->db->get();
+            $retorno = $return->result();
+
+            $this->db->select('procedimento_convenio_id');
+            $this->db->from('tb_procedimento_convenio');
+            $this->db->where('convenio_id', $convenio_id);
+            $this->db->where('ativo', 't');
+            $return = $this->db->get();
+            $result = $return->result();
+
+
+            foreach ($result as $value) {
+                foreach ($retorno as $item) {
+                    $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                    $this->db->set('grupo_pagamento_id', $item->grupo_pagamento_id);
+                    $this->db->insert('tb_procedimento_convenio_pagamento');                
+                }
+            }    
+            
+        }
+        
     }
 
     function listarformaspagamentoconvenio($convenio_id) {
 
         //verifica se esse medico já está cadastrado nesse procedimento 
-        $this->db->select('convenio_formapagamento_id, 
-                            fp.nome as formapagamento');
-        $this->db->from('tb_convenio_formapagamento cf');
-        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = cf.formapagamento_id', 'left');
-        $this->db->where('cf.ativo', 't');
+        $this->db->select('convenio_grupopagamento_id, 
+                            cg.grupo_pagamento_id,
+                            fg.nome as grupopagamento');
+        $this->db->from('tb_convenio_grupopagamento cg');
+        $this->db->join('tb_financeiro_grupo fg', 'fg.financeiro_grupo_id = cg.grupo_pagamento_id', 'left');
+        $this->db->where('cg.ativo', 't');
         $this->db->where('convenio_id', $convenio_id);
         $return = $this->db->get();
         $result = $return->result();
@@ -1048,10 +1103,19 @@ class procedimentoplano_model extends Model {
      */
     function gravarmultiplos() {
         try {
+
+            
             /* inicia o mapeamento no banco */
             $empresa_id = $_POST['empresa'];
             $convenio_id = $_POST['convenio'];
 
+            $this->db->select('grupo_pagamento_id');
+            $this->db->from('tb_convenio_grupopagamento cg');
+            $this->db->where('cg.ativo', 't');
+            $this->db->where("cg.convenio_id", $convenio_id);
+            $query = $this->db->get();
+            $grupoPagamento = $query->result();
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -1092,6 +1156,13 @@ class procedimentoplano_model extends Model {
                             return -1;
                         else
                             $procedimento_convenio_id = $this->db->insert_id();
+                        
+                        
+                        foreach($grupoPagamento as $gp){
+                            $this->db->set('procedimento_convenio_id', $procedimento_convenio_id);
+                            $this->db->set('grupo_pagamento_id', $gp->grupo_pagamento_id);
+                            $this->db->insert('tb_procedimento_convenio_pagamento');
+                        }
                     }else {
                         return -1;
                     }
@@ -1111,6 +1182,13 @@ class procedimentoplano_model extends Model {
     function gravar() {
         try {
 
+            $this->db->select('grupo_pagamento_id');
+            $this->db->from('tb_convenio_grupopagamento cg');
+            $this->db->where('cg.ativo', 't');
+            $this->db->where("cg.convenio_id", $_POST['convenio']);
+            $query = $this->db->get();
+            $grupoPagamento = $query->result();   
+                
             if (isset($_POST['brasindice'])) {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
@@ -1177,17 +1255,20 @@ class procedimentoplano_model extends Model {
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);
                         $this->db->insert('tb_procedimento_convenio');
+                        $procedimento_convenio_id = $this->db->insert_id();
+                        
+                        foreach($grupoPagamento as $gp){
+                            $this->db->set('procedimento_convenio_id', $procedimento_convenio_id);
+                            $this->db->set('grupo_pagamento_id', $gp->grupo_pagamento_id);
+                            $this->db->insert('tb_procedimento_convenio_pagamento');
+                        }
                     }
                 }
-
-//                echo '<pre>';
-//                var_dump($brasindice_tuss);
-//                die;
+                
             } else {
                 /* inicia o mapeamento no banco */
                 $procedimento_convenio_id = $_POST['txtprocedimentoplanoid'];
-                $convenio_id = $_POST['convenio'];
-
+                $convenio_id = $_POST['convenio'];      
 
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
@@ -1224,9 +1305,19 @@ class procedimentoplano_model extends Model {
                             return -1;
                         else
                             $procedimento_convenio_id = $this->db->insert_id();
+                        
+                        
+                        foreach($grupoPagamento as $gp){
+                            $this->db->set('procedimento_convenio_id', $procedimento_convenio_id);
+                            $this->db->set('grupo_pagamento_id', $gp->grupo_pagamento_id);
+                            $this->db->insert('tb_procedimento_convenio_pagamento');
+                        }
                     }else {
                         return -1;
                     }
+                    
+                    
+                    
                 } else { // update
                     $sql = "INSERT INTO ponto.tb_procedimento_convenio_antigo(procedimento_convenio_id, convenio_id, 
                         procedimento_tuss_id, qtdech, valorch, qtdefilme, valorfilme, 
@@ -1258,6 +1349,7 @@ class procedimentoplano_model extends Model {
                     $this->db->set('operador_atualizacao', $operador_id);
                     $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
                     $this->db->update('tb_procedimento_convenio');
+                    
                 }
             }
 

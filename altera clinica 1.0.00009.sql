@@ -133,17 +133,17 @@ ALTER TABLE ponto.tb_empresa_sms ADD COLUMN ip_servidor_sms character varying(50
 
 -- Dia 03/10/2017
 
-CREATE TABLE ponto.tb_convenio_formapagamento
+CREATE TABLE ponto.tb_convenio_grupopagamento
 (
-  convenio_formapagamento_id serial NOT NULL,
-  formapagamento_id integer,
+  convenio_grupopagamento_id serial NOT NULL,
+  grupo_pagamento_id integer,
   convenio_id integer,
   ativo boolean DEFAULT true,
   data_cadastro timestamp without time zone,
   operador_cadastro integer,
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
-  CONSTRAINT tb_convenio_formapagamento_pkey PRIMARY KEY (convenio_formapagamento_id)
+  CONSTRAINT tb_convenio_grupopagamento_pkey PRIMARY KEY (convenio_grupopagamento_id)
 );
 
 -- 05/10/2017

@@ -476,7 +476,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
                                 <td class="<?php echo $estilo_linha; ?>" width="250px;"><?= $item->convenio . ' - ' . $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style="color:red; cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                        width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
+                                                                                                                        width=500,height=230');">=><?= substr($item->observacoes, 0, 35); ?>(...)</td>
                                     <? if ($item->paciente_id != "") { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar

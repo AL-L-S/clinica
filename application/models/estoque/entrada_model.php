@@ -477,6 +477,8 @@ class entrada_model extends Model {
             es.validade as data,
             ea.descricao as armazem,
             ef.fantasia,
+            ( e.valor_compra / e.quantidade) as valor_unitario,
+            (( e.valor_compra / e.quantidade) * es.quantidade) as valor_total,
             es.quantidade,
             es.data_cadastro,
             ec.nome,
