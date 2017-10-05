@@ -49,7 +49,7 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listarexames($_GET);
                 $total = $consulta->count_all_results();
-                $limit = 10;
+              $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 if ($total > 0) {
@@ -135,6 +135,29 @@
                         <th class="tabela_footer" colspan="17">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
+                            <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>
+                                <select style="width: 57px">
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/25');" <?
+                                    if ($limit == 25) {
+                                        echo "selected";
+                                    }
+                                    ?>>25 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/50');" <?
+                                    if ($limit == 50) {
+                                        echo "selected";
+                                    }
+                                    ?>>50 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/100');" <?
+                                            if ($limit == 100) {
+                                                echo "selected";
+                                            }
+                                    ?>> 100 </option>
+                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/todos');" <?
+                                            if ($limit == "todos") {
+                                                echo "selected";
+                                            }
+                                    ?>> Todos </option>
+                                </select>
                         </th>
                     </tr>
                 </tfoot>
