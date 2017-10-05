@@ -41,7 +41,7 @@
                 </tr>
             <? } ?>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
             </tr>
 
         </thead>
@@ -67,6 +67,7 @@
                     <th class="tabela_teste">Indica&ccedil;&atilde;o</th>
                     <th class="tabela_teste">Valor Da Indicação</th>    
                     <th class="tabela_teste">Valor Pago</th>    
+                    <th class="tabela_teste">Procedimento </th>    
                 </tr>
             </thead>
             <hr>
@@ -85,12 +86,17 @@
                     $data[$value->nome] = '';
                     $numero[$value->nome] = 0;
                     $valor[$value->nome] = 0;
-                   
+                }
+
+                foreach ($indicacao_valor as $value) {
+                    $data_proc[$value->nome] = '';
+                    $numero_proc[$value->nome] = 0;
+                    $valor_proc[$value->nome] = 0;
                 }
                 foreach ($relatorio as $item) :
                     $i++;
                     $qtdetotal++;
-                     $valor_total = $item->valor_total;
+                    $valor_total = $item->valor_total;
                     ?>
                     <?
                     if ($item->percentual_promotor == "t") {
@@ -104,6 +110,9 @@
                         $data[$item->indicacao] = $item->indicacao;
                         $numero[$item->indicacao] ++;
                         $valor[$item->indicacao] = $valor[$item->indicacao] + $perc;
+                        $data_proc[$item->indicacao] = $item->indicacao;
+                        $numero_proc[$item->indicacao] ++;
+                        $valor_proc[$item->indicacao] = $valor_proc[$item->indicacao] + $item->valor_total;
                         $valor_promotor = $item->valor_promotor . $simbolopercebtual;
                     } else {
                         $simbolopercebtual = "";
@@ -115,7 +124,10 @@
                         $data[$item->indicacao] = $item->indicacao;
                         $numero[$item->indicacao] ++;
                         $valor[$item->indicacao] = $valor[$item->indicacao] + $perc;
-                        $valor_promotor = "R$ ".  number_format($item->valor_promotor, 2, ",", ".")  ;
+                        $data_proc[$item->indicacao] = $item->indicacao;
+                        $numero_proc[$item->indicacao] ++;
+                        $valor_proc[$item->indicacao] = $valor_proc[$item->indicacao] + $item->valor_total;
+                        $valor_promotor = "R$ " . number_format($item->valor_promotor, 2, ",", ".");
                     }
                     ?>
                     <tr>
@@ -124,16 +136,17 @@
 
                         <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
                         <td style='text-align: center;'><font size="-2"><?= $valor_promotor; ?></td>
-                        <td style='text-align: center;'><font size="-2"><?="R$ ". number_format($perc, 2, ",", "."); ?></td>
+                        <td style='text-align: center;'><font size="-2"><?= "R$ " . number_format($perc, 2, ",", "."); ?></td>
+                        <td style='text-align: center;'><font size="-2"><?= "R$ " . number_format($item->valor_total, 2, ",", "."); ?></td>
                     </tr>
-                <? endforeach; ?>
+    <? endforeach; ?>
 
                 <tr>
                     <td width="140px;" align="Right" colspan="4"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
                 </tr>
             </tbody>
         </table>
-         <table border="1">
+        <table border="1">
             <thead>
                 <tr>
                     <th class="tabela_teste">Indicação</th>
@@ -143,11 +156,11 @@
             </thead>
             <hr>
             <tbody>
-                <?php
-                foreach ($consolidado as $item) :
-                    $b++;
-                    $qtde++;
-                    ?>
+    <?php
+    foreach ($consolidado as $item) :
+        $b++;
+        $qtde++;
+        ?>
 
                     <tr>
                         <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
@@ -155,13 +168,39 @@
                         <td><?= number_format($valor[$item->indicacao], 2, ",", "."); ?></td>
                     </tr>
 
-                <? endforeach; ?>
+    <? endforeach; ?>
             </tbody>
         </table>
-    <?if($_POST['grafico'] == '1'&& $_POST['indicacao'] == '0'){?>
-        <div id="grafico" style="height: 300px;width: 800px;"></div>
-    <?}?>
-        
+    
+        <table border="1">
+            <thead>
+                <tr>
+                    <th class="tabela_teste">Indicação </th>
+                    <th class="tabela_teste">Qtde</th>
+                    <th class="tabela_teste">Valor (Procedimentos) R$</th>
+                </tr>
+            </thead>
+            <hr>
+            <tbody>
+    <?php
+    foreach ($consolidado as $item) :
+        $b++;
+        $qtde++;
+        ?>
+
+                    <tr>
+                        <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
+                        <td><?= $item->quantidade; ?></td>
+                        <td><?= number_format($valor_proc[$item->indicacao], 2, ",", "."); ?></td>
+                    </tr>
+
+    <? endforeach; ?>
+            </tbody>
+        </table>
+    <? if ($_POST['grafico'] == '1' && $_POST['indicacao'] == '0') { ?>
+            <div id="grafico" style="height: 300px;width: 800px;"></div>
+        <? } ?>
+
     <? } else {
         ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
@@ -185,7 +224,7 @@
         // the chart.
         data: [
 <? foreach ($consolidado as $item) { ?>
-                {indicacao: '<?= $item->indicacao; ?>', quantidade: <?= $item->quantidade; ?>, label:'<?= substr($item->indicacao, 0,11); ?>'},
+                {indicacao: '<?= $item->indicacao; ?>', quantidade: <?= $item->quantidade; ?>, label: '<?= substr($item->indicacao, 0, 11); ?>'},
 <? } ?>
 
         ],
@@ -193,7 +232,7 @@
         xkey: 'indicacao',
         resize: true,
         hideHover: true,
-        gridTextSize: 10 ,
+        gridTextSize: 10,
 //        axes: false
         // A list of names of data record attributes that contain y-values.
         ykeys: ['quantidade'],

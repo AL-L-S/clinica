@@ -1368,7 +1368,7 @@ class Exame extends BaseController {
         } else {
             $novonome = $nome;
         }
-        
+
         if (!is_dir("./uploadopm/$exame_id")) {
             mkdir("./uploadopm/$exame_id");
             $pasta = "./uploadopm/$exame_id";
@@ -1941,13 +1941,58 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/procedimento");
     }
 
-    function gravar() {
-
+    function gravarintervalo() {
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $intervalo = (int) $_POST['txtintervalo'];
+        $intervalo_teste = (int) $_POST['txtintervalo'] - 1;
+        $datainicial_intervalo = $datainicial;
+        $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo_teste days", strtotime($datainicial)));
+        $b = 0;
         $agenda_id = $_POST['txthorario'];
         $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
-        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+//        var_dump($datafinal);
+//        var_dump($datafinal_intervalo);
+//        die;
+        if($intervalo != '' && $intervalo > 0) {
+            while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
+                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
+                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
+//            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
+
+                $this->gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
+
+                if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
+
+                    $datafinal_intervalo = $datafinal;
+                } else {
+                    $somador_inicial = $intervalo + 1;
+                    $somador_final = $intervalo * 2;
+                    $datainicial_intervalo = date('Y-m-d', strtotime("+$somador_inicial days", strtotime($datafinal_intervalo)));
+                    $datafinal_intervalo = date('Y-m-d', strtotime("+$somador_final days", strtotime($datafinal_intervalo)));
+                }
+//            if(strtotime($datafinal_intervalo) > strtotime($datafinal) && $b == 0){
+//                $datafinal_intervalo = $datafinal;
+//                $b++;
+//            }
+            }
+        }else{
+        $this->gravar($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);    
+        }
+        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/agenda");
+    }
+
+    function gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id) {
+
+//        $agenda_id = $_POST['txthorario'];
+//        $sala_id = $_POST['txtsala'];
+//        $medico_id = $_POST['txtmedico'];
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $datainicial_intervalo)));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $datafinal_intervalo)));
         $nome = $_POST['txtNome'];
         $tipo = 'EXAME';
         $horarioagenda = $this->agenda->listarhorarioagendacriacao($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
@@ -2059,10 +2104,9 @@ class Exame extends BaseController {
             }
         }
 
-        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
-
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/agenda");
+//        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+//        $this->session->set_flashdata('message', $data['mensagem']);
+//        redirect(base_url() . "ambulatorio/agenda");
     }
 
     function gravargeral() {
@@ -2680,7 +2724,7 @@ class Exame extends BaseController {
         $zero = '0000000000000000';
         $corpo = "";
 //        var_dump($corpo);die;
-        
+
         if ($versao == '3.03.01' || $versao == '3.03.02') {
             if ($modelo == 'cpf') {
 
@@ -2731,20 +2775,19 @@ class Exame extends BaseController {
                                 $valorProcedimento = $item->valor_total;
                                 $valorMaterial = 0.00;
                                 $valorMedicamento = 0.00;
-                                
-                                if($item->grupo == "MATERIAL") { //caso seja material
+
+                                if ($item->grupo == "MATERIAL") { //caso seja material
                                     $tabela = '19';
                                     $codDespesa = '03';
                                     $valorMaterial = $item->valor_total;
                                     $valorProcedimento = 0.00;
-                                }
-                                elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                                } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                                     $tabela = '20';
                                     $codDespesa = '02';
                                     $valorMedicamento = $item->valor_total;
                                     $valorProcedimento = 0.00;
                                 }
-                                
+
                                 $i++;
                                 $totExames++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
@@ -2830,14 +2873,13 @@ class Exame extends BaseController {
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         
                       </ans:dadosAtendimento>" . (
-                      ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") 
-                      ? "<ans:procedimentosExecutados>
+                                            ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") ? "<ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
                                 <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                 <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                 <ans:procedimento>
-                                   <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                   <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                    <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                    <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                </ans:procedimento>                        
@@ -2857,14 +2899,12 @@ class Exame extends BaseController {
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                       </ans:procedimentoExecutado>
-                      </ans:procedimentosExecutados>" 
-                                            
-                      : "<ans:outrasDespesas>
+                      </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
                              <ans:despesa><ans:servicosExecutados>
                                     <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                     <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                     <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
-                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                     <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                     <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
                                     <ans:unidadeMedida>036</ans:unidadeMedida>
@@ -2874,7 +2914,7 @@ class Exame extends BaseController {
                                     <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                           </ans:servicosExecutados></ans:despesa>
                       </ans:outrasDespesas>
-                      " )  . "
+                      " ) . "
                       <ans:observacao>III</ans:observacao>
                          <ans:valorTotal >
                          <ans:valorProcedimentos >" . number_format($valorProcedimento, 2, '.', '') . "</ans:valorProcedimentos >
@@ -2887,9 +2927,8 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } 
-                                else {
-                                    
+                                } else {
+
 //                                    die('morreu02');
                                     $corpo = $corpo . "
                 <ans:guiaSP-SADT>
@@ -2941,15 +2980,14 @@ class Exame extends BaseController {
                         <ans:indicacaoAcidente>0</ans:indicacaoAcidente>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         
-                      </ans:dadosAtendimento>" . 
-                      ( ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") 
-                      ? "<ans:procedimentosExecutados>
+                      </ans:dadosAtendimento>" .
+                                            ( ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") ? "<ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
                                 <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                 <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                 <ans:procedimento>
-                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                     <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                     <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                 </ans:procedimento>                        
@@ -2969,9 +3007,7 @@ class Exame extends BaseController {
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                       </ans:procedimentoExecutado>
-                    </ans:procedimentosExecutados>" 
-                                            
-                      : "<ans:outrasDespesas>
+                    </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
                              <ans:despesa>
                              
                                 <ans:codigoDespesa>" . $codDespesa . "</ans:codigoDespesa>
@@ -2979,7 +3015,7 @@ class Exame extends BaseController {
                                     <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                     <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                     <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
-                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                     <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                     <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
                                     <ans:unidadeMedida>036</ans:unidadeMedida>
@@ -3027,8 +3063,7 @@ class Exame extends BaseController {
                                         $corpo = "";
                                         $rodape = "";
                                     }
-                                } 
-                                else {
+                                } else {
                                     if ($i == 80) {
                                         $contador = $contador - $i;
 
@@ -3072,8 +3107,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -3105,19 +3139,18 @@ class Exame extends BaseController {
                         $valorMaterial = 0.00;
                         $valorMedicamento = 0.00;
 
-                        if($item->grupo == "MATERIAL") { //caso seja material
+                        if ($item->grupo == "MATERIAL") { //caso seja material
                             $tabela = '19';
                             $codDespesa = '03';
                             $valorMaterial = $item->valor_total;
                             $valorProcedimento = 0.00;
-                        }
-                        elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                        } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                             $tabela = '20';
                             $codDespesa = '02';
                             $valorMedicamento = $item->valor_total;
                             $valorProcedimento = 0.00;
                         }
-                                
+
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
                         } else {
@@ -3167,7 +3200,7 @@ class Exame extends BaseController {
                         <ans:dataAtendimento>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAtendimento>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         <ans:procedimento>
-                            <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                            <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                             <ans:codigoProcedimento>" . $value->codigo . "</ans:codigoProcedimento>
                             <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
                         </ans:procedimento>
@@ -3239,8 +3272,7 @@ class Exame extends BaseController {
                         }
                     }
                 }
-            } 
-            else {
+            } else {
                 if ($listarexame[0]->grupo != 'CONSULTA') {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -3282,24 +3314,23 @@ class Exame extends BaseController {
                         foreach ($listarexames as $item) {
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $tabela = '22';
-                                
+
                                 $valorProcedimento = $item->valor_total;
                                 $valorMaterial = 0.00;
                                 $valorMedicamento = 0.00;
-                                
-                                if($item->grupo == "MATERIAL") { //caso seja material
+
+                                if ($item->grupo == "MATERIAL") { //caso seja material
                                     $tabela = '19';
                                     $codDespesa = '03';
                                     $valorMaterial = $item->valor_total;
                                     $valorProcedimento = 0.00;
-                                }
-                                elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                                } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                                     $tabela = '20';
                                     $codDespesa = '02';
                                     $valorMedicamento = $item->valor_total;
                                     $valorProcedimento = 0.00;
                                 }
-                                
+
                                 $i++;
                                 $totExames++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
@@ -3377,14 +3408,13 @@ class Exame extends BaseController {
                       
                       </ans:dadosAtendimento>
                       " . (
-                      ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") 
-                      ? "<ans:procedimentosExecutados>
+                                            ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") ? "<ans:procedimentosExecutados>
                              <ans:procedimentoExecutado>
                                     <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                     <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                     <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                     <ans:procedimento>
-                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                    <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                    <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                    </ans:procedimento>                        
@@ -3404,16 +3434,14 @@ class Exame extends BaseController {
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                           </ans:procedimentoExecutado>
-                      </ans:procedimentosExecutados>" 
-                                            
-                      : "<ans:outrasDespesas>
+                      </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
                              <ans:despesa>
                                 <ans:codigoDespesa>" . $codDespesa . "</ans:codigoDespesa>
                                 <ans:servicosExecutados>
                                     <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                     <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                     <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
-                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                     <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                     <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
                                     <ans:unidadeMedida>036</ans:unidadeMedida>
@@ -3424,7 +3452,7 @@ class Exame extends BaseController {
                                 </ans:servicosExecutados>
                             </ans:despesa>
                       </ans:outrasDespesas>
-                      " )  . "
+                      " ) . "
                       
                       <ans:observacao>III</ans:observacao>
                          <ans:valorTotal >
@@ -3438,8 +3466,7 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } 
-                                else {
+                                } else {
                                     $corpo = $corpo . "
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -3487,14 +3514,13 @@ class Exame extends BaseController {
                       <ans:tipoConsulta>1</ans:tipoConsulta>
                       
                       </ans:dadosAtendimento>" . (
-                      ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") 
-                      ? "<ans:procedimentosExecutados>
+                                            ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") ? "<ans:procedimentosExecutados>
                              <ans:procedimentoExecutado>
                                     <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                     <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                     <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
                                     <ans:procedimento>
-                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                    <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                    <ans:descricaoProcedimento >" . substr(utf8_decode($item->procedimento), 0, 60) . "</ans:descricaoProcedimento >
                                    </ans:procedimento>                        
@@ -3514,16 +3540,14 @@ class Exame extends BaseController {
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                           </ans:procedimentoExecutado>
-                      </ans:procedimentosExecutados>" 
-                                            
-                      : "<ans:outrasDespesas>
+                      </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
                              <ans:despesa>
                                 <ans:codigoDespesa>" . $codDespesa . "</ans:codigoDespesa>
                                 <ans:servicosExecutados>
                                     <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                     <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
                                     <ans:horaFinal>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaFinal>
-                                    <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                                    <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                                     <ans:codigoProcedimento>" . $item->codigo . "</ans:codigoProcedimento>
                                     <ans:quantidadeExecutada>" . $item->quantidade . "</ans:quantidadeExecutada>
                                     <ans:unidadeMedida>036</ans:unidadeMedida>
@@ -3534,7 +3558,7 @@ class Exame extends BaseController {
                                 </ans:servicosExecutados>
                             </ans:despesa>
                       </ans:outrasDespesas>
-                      " )  . "
+                      " ) . "
                       
                       <ans:observacao>III</ans:observacao>
                          <ans:valorTotal >
@@ -3570,8 +3594,7 @@ class Exame extends BaseController {
                                         $corpo = "";
                                         $rodape = "";
                                     }
-                                } 
-                                else {
+                                } else {
 
                                     if ($i == 80) {
                                         $contador = $contador - $i;
@@ -3621,8 +3644,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -3650,22 +3672,21 @@ class Exame extends BaseController {
                     $contador = count($listarexame);
 
                     foreach ($listarexame as $value) {
-                        $tabela = '22';       
+                        $tabela = '22';
                         $valorProcedimento = $item->valor_total;
                         $valorMaterial = 0.00;
                         $valorMedicamento = 0.00;
 
-                        if($item->grupo == "MATERIAL") { //caso seja material
+                        if ($item->grupo == "MATERIAL") { //caso seja material
                             $tabela = '19';
                             $valorMaterial = $item->valor_total;
                             $valorProcedimento = 0.00;
-                        }
-                        elseif($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                        } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
                             $tabela = '20';
                             $valorMedicamento = $item->valor_total;
                             $valorProcedimento = 0.00;
                         }
-                        
+
                         $i++;
                         $totExames++;
                         if ($value->convenionumero == '') {
@@ -3717,7 +3738,7 @@ class Exame extends BaseController {
                         <ans:dataAtendimento>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAtendimento>
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         <ans:procedimento>
-                            <ans:codigoTabela>". $tabela . "</ans:codigoTabela>
+                            <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
                             <ans:codigoProcedimento>" . $value->codigo . "</ans:codigoProcedimento>
                             <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
                         </ans:procedimento>
@@ -3745,8 +3766,7 @@ class Exame extends BaseController {
                                 $corpo = "";
                                 $rodape = "";
                             }
-                        } 
-                        else {
+                        } else {
                             if ($i == 80) {
                                 $contador = $contador - $i;
                                 $i = 0;

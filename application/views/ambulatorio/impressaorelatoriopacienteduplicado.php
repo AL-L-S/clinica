@@ -4,7 +4,7 @@
 <table>
     <thead>
 
-       
+
         <tr>
             <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Pacientes Duplicados</th>
         </tr>
@@ -39,15 +39,31 @@
     <table border="1" cellpadding="5">
         <thead>
             <tr>
+                <td class="tabela_teste">Prontuário</td>
                 <td class="tabela_teste">Nome</td>
-                <td class="tabela_teste">Sexo</td>
-                <td class="tabela_teste">Nome da Mãe</td>
-                <td class="tabela_teste">CPF</td>
+                <? if ($_POST['pesquisa'] == '1') { ?>
+
+                <? } elseif ($_POST['pesquisa'] == '2') { ?>
+                    <td class="tabela_teste">Nascimento</td>   
+
+                <? } elseif ($_POST['pesquisa'] == '3') { ?>
+
+                    <td class="tabela_teste">Nome da Mãe</td>
+                <? } elseif ($_POST['pesquisa'] == '4') { ?>
+
+                    <td class="tabela_teste">CPF</td>  
+                <? }
+                ?>
+                <td class="tabela_teste">Situação</td>
+                <!--<td class="tabela_teste">Registros</td>-->
+                <!--<td class="tabela_teste">Nome da Mãe</td>-->
+                <!--<td class="tabela_teste">CPF</td>-->
             </tr>
         </thead>
         <hr>
         <tbody>
             <?php
+            $contador = 0;
             $i = 0;
             $b = 0;
             $c = 0;
@@ -84,37 +100,125 @@
             $idosos = 0;
             $idades = array();
             foreach ($relatorio as $item) :
-                
-                
+
+                if ($_POST['pesquisa'] == '1') {
+                    if ($item->paciente == @$relatorio[$contador + 1]->paciente) {
+                        $conta = 'Duplicado';
+                        $cor = 'red';
+                    } else {
+                        $conta = 'Normal';
+                        $cor = 'black';
+                        if ($item->paciente == @$relatorio[$contador - 1]->paciente) {
+                            $conta = 'Duplicado';
+                             $cor = 'red';
+                        } else {
+                            $conta = 'Normal';
+                             $cor = 'black';
+                        }
+                    }
+                } elseif ($_POST['pesquisa'] == '2') {
+                    if ($item->nascimento == @$relatorio[$contador + 1]->nascimento) {
+                        $conta = 'Duplicado';
+                         $cor = 'red';
+                    } else {
+                        $conta = 'Normal';
+                         $cor = 'black';
+                        if ($item->nascimento == @$relatorio[$contador - 1]->nascimento) {
+                            $conta = 'Duplicado';
+                             $cor = 'red';
+                        } else {
+                            $conta = 'Normal';
+                             $cor = 'black';
+                        }
+                    }
+                } elseif ($_POST['pesquisa'] == '3') {
+                    if ($item->nome_mae == @$relatorio[$contador + 1]->nome_mae) {
+                        $conta = 'Duplicado';
+                         $cor = 'red';
+                    } else {
+                        $conta = 'Normal';
+                        $cor = 'black';
+                        if ($item->nome_mae == @$relatorio[$contador - 1]->nome_mae) {
+                            $conta = 'Duplicado';
+                             $cor = 'red';
+                        } else {
+                            $conta = 'Normal';
+                             $cor = 'black';
+                        }
+                    }
+                } elseif ($_POST['pesquisa'] == '4') {
+                    if ($item->cpf == @$relatorio[$contador + 1]->cpf) {
+                        $conta = 'Duplicado';
+                         $cor = 'red';
+                    } else {
+                        $conta = 'Normal';
+                         $cor = 'black';
+                        if ($item->cpf == @$relatorio[$contador - 1]->cpf) {
+                            $conta = 'Duplicado';
+                             $cor = 'red';
+                        } else {
+                            $conta = 'Normal';
+                             $cor = 'black';
+                        }
+                    }
+                }
+
+
+
+
+
+
+
                 $i++;
                 $qtdetotal++;
 
-                $dataFuturo = date("Y-m-d");
-                $dataAtual = $item->nascimento;
-                $date_time = new DateTime($dataAtual);
-                $diff = $date_time->diff(new DateTime($dataFuturo));
-                $teste = $diff->format('%Ya %mm %dd');
-                $idade = $teste = $diff->format('%Y');
-                
+//                $dataFuturo = date("Y-m-d");
+//                $dataAtual = $item->nascimento;
+//                $date_time = new DateTime($dataAtual);
+//                $diff = $date_time->diff(new DateTime($dataFuturo));
+//                $teste = $diff->format('%Ya %mm %dd');
+//                $idade = $teste = $diff->format('%Y');
+//                
                 ?>
-                <tr>
+                <tr  style='color: <?=$cor?>'>
 
+                    <td><?= $item->paciente_id; ?></td>
                     <td><?= utf8_decode($item->paciente); ?></td>
-                    <td style='text-align: center;'><?
-                        if ($item->sexo == "M") {
-                            echo 'Masculino';
-                            $masculino ++;
-                        } else {
-                            $feminino ++;
-                            echo 'Feminino';
-                        }
-                        ?></td>
-                    <td style='text-align: center;'><font size="-1"><?=utf8_decode($item->paciente); ?></td>
-                    
-                    <td style='text-align: center;'><?=$item->cpf
-                        ?></td>
+        <!--                    <td style='text-align: center;'><?
+                    if ($item->sexo == "M") {
+                        echo 'Masculino';
+                        $masculino ++;
+                    } else {
+                        $feminino ++;
+                        echo 'Feminino';
+                    }
+                    ?></td>-->
+
+                    <? if ($_POST['pesquisa'] == '1') { ?>
+
+                    <? } elseif ($_POST['pesquisa'] == '2') { ?>
+                        <td style='text-align: center;'><?= date('d/m/Y', strtotime($item->nascimento)) ?></td>
+
+                    <? } elseif ($_POST['pesquisa'] == '3') { ?>
+
+                        <td style='text-align: center;'><font size="-1"><?= utf8_decode($item->nome_mae); ?></td>
+                    <? } elseif ($_POST['pesquisa'] == '4') { ?>
+
+                        <td style='text-align: center;'><?= $item->cpf ?></td>
+
+                    <? }
+                    ?>
+
+
+
+                    <td style='text-align: center; color: <?=$cor?>'><?= $conta ?></td>
+                    <!--<td style='text-align: center;'><? //= $item->conta       ?></td>-->
+
                 </tr>
-            <? endforeach; ?>
+                <?
+                $contador++;
+            endforeach;
+            ?>
 
             <tr>
                 <td width="140px;" align="Right" colspan="4"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>

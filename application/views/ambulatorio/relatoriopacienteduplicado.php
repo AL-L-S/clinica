@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar Relatório WhatsApp Paciente</a></h3>
+        <h3><a href="#">Gerar Relatório Paciente Duplicados</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriopacienteduplicado">
                 <dl>
@@ -15,6 +15,18 @@
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
+                    </dd>
+                    <dt>
+                        <label>Pesquisa</label>
+                    </dt>
+                    <dd>
+                        <select name="pesquisa" id="situacao" class="size1" >
+                            <!--<option value='' >TODOS</option>-->
+                            <option value='1'>Nome do Paciente</option>
+                            <option value='2' >Data de Nascimento</option>
+                            <option value='3' >Nome da Mãe</option>
+                            <option value='4' >CPF</option>
+                        </select>
                     </dd>
                     
                     

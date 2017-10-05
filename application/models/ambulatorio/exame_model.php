@@ -847,7 +847,7 @@ class exame_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
-        $this->db->orderby('ae.ordenador');
+        $this->db->orderby('ae.ordenador desc');
 //        var_dump($ordem_chegada); die;
         if ($ordem_chegada == 'f') {
             $this->db->orderby('ae.data');
@@ -7002,6 +7002,12 @@ class exame_model extends Model {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
+        if($_POST['empresa'] != ''){
+        $empresa_id = $_POST['empresa'];    
+        }else{
+        $empresa_id = $this->session->userdata('empresa_id');        
+        }
+        
 
         $data = date("Y-m-d");
 
@@ -7070,6 +7076,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('observacao', "PERIODO DE $data_inicio ATE $data_fim");
             $this->db->set('conta', $conta_id);
             $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_financeiro_contasreceber');
         }
