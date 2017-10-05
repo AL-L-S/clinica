@@ -244,7 +244,7 @@
                         Valor Total Não Faturado: <?php echo number_format($valortotal_naofaturado, 2, ',', '.'); ?>
                     </th>
                     <? if ($financeiro == 't') { ?>
-                        <td width="40px;" style="color:green;">Faturamento Fechado</td>
+                        <td width="40px;" style="color:red;">Faturamento Fechado</td>
                     <? } elseif ($faturado == 0 && $convenios != 0) { ?>
                 <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/exame/fecharfinanceiro" method="post">
                     <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($valortotal, 2, ',', '.'); ?>" readonly/>

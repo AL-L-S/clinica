@@ -5262,8 +5262,8 @@ class exame_model extends Model {
 
 // ESTOQUE SAIDA E SALDO
         //   SELECIONA
-        
-        
+
+
         $this->db->select('ea.descricao as armazem,
             ef.fantasia,
             sum(es.quantidade) as total,
@@ -5319,26 +5319,24 @@ class exame_model extends Model {
         $ambulatorio_gasto_sala_id = $this->db->insert_id();
 
         //GRAVA SAIDA 
-
 //        echo '<pre>';
 //        var_dump($return);die;
-        
+
         $qtdeProduto = $_POST['txtqtde'];
         $qtdeProdutoSaldo = $saldo[0]->total;
         $i = 0;
-        while($qtdeProduto > 0){
-            if($qtdeProduto > $return[$i]->quantidade){
+        while ($qtdeProduto > 0) {
+            if ($qtdeProduto > $return[$i]->quantidade) {
                 $qtdeProduto = $qtdeProduto - $return[$i]->quantidade;
                 $qtde = $return[$i]->quantidade;
-            }
-            else{
+            } else {
                 $qtde = $qtdeProduto;
                 $qtdeProduto = 0;
             }
-            
-            
+
+
             $this->db->set('estoque_entrada_id', $return[$i]->estoque_entrada_id);
-    //        $this->db->set('solicitacao_cliente_id', $_POST['txtestoque_solicitacao_id']);
+            //        $this->db->set('solicitacao_cliente_id', $_POST['txtestoque_solicitacao_id']);
             if ($_POST['txtexame'] != '') {
                 $this->db->set('exames_id', $_POST['txtexame']);
             }
@@ -5374,7 +5372,7 @@ class exame_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_estoque_saldo');
-            
+
             $i++;
         }
     }
@@ -7002,13 +7000,14 @@ class exame_model extends Model {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        if($_POST['empresa'] != ''){
-        $empresa_id = $_POST['empresa'];    
-        }else{
-        $empresa_id = $this->session->userdata('empresa_id');        
+        if ($_POST['empresa'] != '0') {
+            $empresa_id = $_POST['empresa'];
+        } else {
+            $empresa_id = $this->session->userdata('empresa_id');
         }
-        
 
+//        var_dump($empresa_id);
+//        die;
         $data = date("Y-m-d");
 
         $credor_devedor_id = $_POST['relacao'];
@@ -7050,7 +7049,26 @@ class exame_model extends Model {
             $dineirodescontado = $dineirodescontado - ($dineiro * $cofins);
             $dineirodescontado = $dineirodescontado - ($dineiro * $csll);
             $dineirodescontado = $dineirodescontado - ($dineiro * $iss);
-            $sql = "UPDATE ponto.tb_agenda_exames
+            if ($_POST['empresa'] != '0') {
+                $sql = "UPDATE ponto.tb_agenda_exames
+SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
+where agenda_exames_id in (SELECT ae.agenda_exames_id
+FROM ponto.tb_agenda_exames ae 
+LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
+LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
+LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+WHERE ae.cancelada = 'false' 
+AND ae.confirmado >= 'true' 
+AND ae.data >= '$data_inicio' 
+AND ae.data <= '$data_fim' 
+AND ae.empresa_id = $empresa_id 
+AND c.convenio_id = $convenio_id 
+ORDER BY ae.agenda_exames_id)";
+            } else {
+
+                $sql = "UPDATE ponto.tb_agenda_exames
 SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro = 't'
 where agenda_exames_id in (SELECT ae.agenda_exames_id
 FROM ponto.tb_agenda_exames ae 
@@ -7065,6 +7083,8 @@ AND ae.data >= '$data_inicio'
 AND ae.data <= '$data_fim' 
 AND c.convenio_id = $convenio_id 
 ORDER BY ae.agenda_exames_id)";
+            }
+
 
 //            var_dump($data30); die;
             $this->db->query($sql);
