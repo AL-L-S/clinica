@@ -2108,26 +2108,33 @@ class guia_model extends Model {
     }
 
     function relatoriopacienteduplicado() {
-        $this->db->select('
-                           distinct(p.paciente_id), 
+        $this->db->select('paciente_id,
                            p.nome as paciente,
-                           p.sexo, 
                            p.nascimento,
-                           p.whatsapp,
-                           p.cpf,
                            p.nome_mae,
-                           p.escolaridade_id,
-                           p.estado_civil_id
+                           p.cpf
+                           
                            ');
         $this->db->from('tb_paciente p');
 
         $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        $this->db->orderby('p.nome');
-//        $this->db->groupby('p.paciente_id');
-        $this->db->orderby('p.sexo');
-        $this->db->orderby('p.nome_mae');
-        $this->db->orderby('p.cpf');
+        if($_POST['pesquisa'] == '1'){
+        $this->db->orderby('p.nome');    
+        }elseif($_POST['pesquisa'] == '2'){
+        $this->db->where('p.nascimento is not null');  
+        $this->db->orderby('p.nascimento, p.nome ');    
+        }elseif($_POST['pesquisa'] == '3'){
+        $this->db->where('p.nome_mae !=', '');        
+        $this->db->orderby('p.nome_mae,p.nome');    
+        }elseif($_POST['pesquisa'] == '4'){
+        $this->db->where('p.cpf !=', '');        
+        $this->db->orderby('p.cpf,p.nome');    
+        }
+        
+//        $this->db->orderby('p.sexo');
+//        $this->db->orderby('p.nome_mae');
+//        $this->db->orderby('p.cpf');
         $return = $this->db->get();
 //        var_dump($return->result()); die;
         return $return->result();
@@ -2178,11 +2185,6 @@ class guia_model extends Model {
                            p.nome as paciente,
                            p.sexo, 
                            p.nascimento,
-                           ( 
-                                SELECT COUNT(ae2.paciente_id) 
-                                FROM ponto.tb_agenda_exames ae2 
-                                WHERE ae2.paciente_id = ae.paciente_id
-                            ) as conta,
                            p.escolaridade_id,
                            p.estado_civil_id,
                            c.nome as plano");
@@ -2192,6 +2194,8 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
+        $this->db->where('ae.realizada', 't');
+        $this->db->where('ae.cancelada', 'f');
 //        if ($_POST['medico'] != "0") {
 //            $medico = $_POST['medico'];
 //            $this->db->where("ae.medico_agenda = {$medico} OR ae.medico_consulta_id = {$medico}");
@@ -2210,6 +2214,23 @@ class guia_model extends Model {
         $return = $this->db->get();
 //        var_dump($return->result()); die;
         return $return->result();
+    }
+    
+    function relatoriounicoretornopaciente($paciente_id) {
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $this->db->select("ae.paciente_id");
+        $this->db->from('tb_agenda_exames ae');
+//        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.paciente_id", $paciente_id);
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.realizada', 't');
+        $this->db->where('ae.cancelada', 'f');
+//        $this->db->limit(1);
+        
+
+        $return = $this->db->get()->result();
+        return $return;
     }
 
     function relatorioperfilpacienteidade() {
@@ -4925,6 +4946,8 @@ class guia_model extends Model {
         $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = ae.forma_pagamento3', 'left');
         $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador_grupo_medico ogm', 'ae.medico_consulta_id = ogm.operador_id', 'left');
+//        $this->db->join('tb_operador_grupo og', 'og.operador_grupo_id = ogm.operador_grupo_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
@@ -4938,6 +4961,14 @@ class guia_model extends Model {
         }
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        if ($_POST['procedimentos'] != "0") {
+            $this->db->where('pt.procedimento_tuss_id', $_POST['procedimentos']);
+        }
+//        var_dump($_POST['grupomedico']); die;
+        if ($_POST['grupomedico'] != "0") {
+            $this->db->where('ogm.operador_grupo_id', $_POST['grupomedico']);
+            $this->db->where('ogm.ativo', 't');
         }
         if ($_POST['medico'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medico']);

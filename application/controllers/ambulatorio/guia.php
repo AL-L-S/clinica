@@ -29,6 +29,7 @@ class Guia extends BaseController {
         $this->load->model('ambulatorio/indicacao_model', 'indicacao');
         $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico_m');
         $this->load->model('cadastro/grupoconvenio_model', 'grupoconvenio');
+        $this->load->model('cadastro/grupomedico_model', 'grupomedico');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/GExtenso', 'GExtenso');
         $this->load->library('mensagem');
@@ -2777,9 +2778,9 @@ class Guia extends BaseController {
             $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
             $data['txtdata_fim'] = $_POST['txtdata_fim'];
             $data['relatorio'] = $this->guia->relatoriounicoretorno();
-            $data['relatoriounico'] = $this->guia->relatoriounicoretorno();
+//            $data['relatoriounico'] = $this->guia->relatoriounicoretorno();
 //            echo '<pre>';
-//            var_dump($data['relatorio']); die;
+//            var_dump($data['relatoriounico']); die;
             $this->load->View('ambulatorio/impressaorelatoriounicoretorno', $data);
         } else {
             $data['mensagem'] = 'Insira um periodo válido.';
@@ -3307,6 +3308,8 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['grupos'] = $this->procedimento->listargrupos();
+        $data['procedimentos'] = $this->procedimento->listarprocedimentos();
+        $data['grupomedico'] = $this->grupomedico->listargrupomedicos();
         $this->loadView('ambulatorio/relatoriocaixa', $data);
     }
 
