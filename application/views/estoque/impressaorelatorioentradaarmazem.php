@@ -75,7 +75,8 @@
                     <td class="tabela_teste"><font size="-2">Unidade</td>
                     <td class="tabela_teste"><font size="-2">QTDE</td>
                     <td class="tabela_teste"><font size="-2">Fornecedor</td>
-                    <td class="tabela_teste"><font size="-2">Valor</td>
+                    <td class="tabela_teste"><font size="-2">Valor Unitario</td>
+                    <td class="tabela_teste"><font size="-2">Valor Total</td>
                     <td class="tabela_teste"><font size="-2">Validade</td>
                     <td class="tabela_teste"><font size="-2">Nota</td>
                     <td class="tabela_teste" width="10px"><font size="-2">Data</td>
@@ -106,6 +107,7 @@
                             <td><font size="-2"><?= utf8_decode($item->unidade); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
+                            <td style='text-align: right;'><font size="-2"><?= number_format(($item->valor_compra/$item->quantidade), 4, ",", "."); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_compra, 2, ",", "."); ?></td>
                             <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>

@@ -46,7 +46,9 @@
                 $estilo_linha = "tabela_content01";
                 foreach ($grupos_associados as $item) {
                     ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";?>
-                    <td colspan="2" class="<?php echo $estilo_linha; ?>"><?=$item->nome?></td>
+                    <tr>
+                        <td colspan="2" class="<?php echo $estilo_linha; ?>"><?=$item->nome?></td>
+                    </tr>
                     <?
                 }
                 ?>
