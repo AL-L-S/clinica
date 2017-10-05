@@ -151,7 +151,7 @@
 <!--                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
                                         <option value="">Selecione</option>
                                     </select>-->
-                                    <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                    <select name="procedimento1" id="procedimento1" class="size4" data-placeholder="Selecione" tabindex="1">
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>

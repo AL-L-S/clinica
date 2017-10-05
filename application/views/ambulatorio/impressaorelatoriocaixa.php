@@ -1221,11 +1221,11 @@
                 <tr>
                     <td colspan="5"></td>
     <? if ($faturado == 't' && $exame == "") { ?>
-                        <? if ((count($operador) == 0 && $financeiro == 'f')) { ?>
+                        <? if ((count($operador) == 0  && count($medico) == 0 && $_POST['grupomedico'] == 0 && $_POST['grupo'] == '0'  && $_POST['procedimentos'] == '0' && $financeiro == 'f')) { ?>
                             <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
 
-                        <? } elseif (count($operador) > 0 && $financeiro == 'f') { ?>
-                            <td colspan="2" ><b>Não é possível fechar por operador</b></td> 
+                        <? } elseif ((count($operador) > 0 || count($medico) > 0 || $_POST['grupomedico'] > 0 || $_POST['grupo'] != '0' || $_POST['procedimentos'] != '0')  && $financeiro == 'f') { ?>
+                            <td colspan="2" ><b>Retire os filtros de operador e/ou médico e/ou procedimentos para fechar o caixa</b></td> 
                         <? } else {
                             ?>
                             <td colspan="2" ><b>Caixa Fechado</b></td>

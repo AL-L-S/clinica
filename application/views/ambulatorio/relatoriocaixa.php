@@ -28,6 +28,17 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Grupo Médico</label>
+                    </dt>
+                    <dd>
+                        <select name="grupomedico" id="grupomedico" class="size2">
+                            <option value="0">TODOS</option>
+                            <? foreach ($grupomedico as $value) : ?>
+                                <option value="<?= $value->operador_grupo_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Data inicio</label>
                     </dt>
                     <dd>
@@ -54,6 +65,27 @@
                                     <? } ?>
                         </select>
                     </dd>
+                    <style>
+                        #grupo_chosen a{
+                            width: 180px;
+                        }
+                        
+                    </style>
+                    <dt>
+                        <label>Procedimentos</label>
+                    </dt>
+                    <dd>
+                        <select name="procedimentos" id="grupo" class="size4 chosen-select" tabindex="1">
+                            <option value='0' >TODOS</option>
+                            <!--<option value='1' >SEM RM</option>-->
+                            <? foreach ($procedimentos as $grupo) { ?>                                
+                                <option value='<?= $grupo->procedimento_tuss_id ?>' <?
+                                if (@$obj->_grupo == $grupo->procedimento_tuss_id):echo 'selected';
+                                endif;
+                                ?>><?= $grupo->codigo ?> - <?= $grupo->nome ?></option>
+                                    <? } ?>
+                        </select>
+                    </dd>
                     <dt>
                         <label>Empresa</label>
                     </dt>
@@ -76,7 +108,17 @@
 
 
 </div> <!-- Final da DIV content -->
-<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
     $(function () {
         $("#txtdata_inicio").datepicker({

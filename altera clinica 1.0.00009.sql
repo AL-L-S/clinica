@@ -145,3 +145,32 @@ CREATE TABLE ponto.tb_convenio_formapagamento
   operador_atualizacao integer,
   CONSTRAINT tb_convenio_formapagamento_pkey PRIMARY KEY (convenio_formapagamento_id)
 );
+
+-- 05/10/2017
+
+CREATE TABLE ponto.tb_operador_grupo
+(
+  operador_grupo_id serial NOT NULL,
+  nome character varying(250),
+  operador_id integer,
+  empresa_id integer,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_operador_grupo_pkey PRIMARY KEY (operador_grupo_id)
+);
+
+CREATE TABLE ponto.tb_operador_grupo_medico
+(
+  operador_grupo_medico_id serial NOT NULL,
+  operador_id integer,
+  operador_grupo_id integer,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_operador_grupo_medicos_pkey PRIMARY KEY (operador_grupo_medico_id)
+);

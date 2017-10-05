@@ -5,13 +5,13 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriounicoretorno">
                 <dl>
                     <dt>
-                        <label>Data Cadastro Inicio</label>
+                        <label>Data Inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                        <label>Data Cadastro fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
