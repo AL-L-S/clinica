@@ -178,7 +178,7 @@
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td  >
+                                <td>
 <!--                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
                                         <option value="">Selecione</option>
                                     </select>-->

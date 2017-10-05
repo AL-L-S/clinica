@@ -1941,6 +1941,141 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/procedimento");
     }
 
+    function gravarintervalogeral() {
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $intervalo = (int) $_POST['txtintervalo'];
+        $intervalo_teste = (int) $_POST['txtintervalo'] - 1;
+        $datainicial_intervalo = $datainicial;
+        $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo_teste days", strtotime($datainicial)));
+        $b = 0;
+        $agenda_id = $_POST['txthorario'];
+        $sala_id = $_POST['txtsala'];
+        $medico_id = $_POST['txtmedico'];
+//        var_dump($datafinal);
+//        var_dump($datafinal_intervalo);
+//        die;
+        if ($intervalo != '' && $intervalo > 0) {
+            while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
+//                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
+//                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
+//            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
+
+                $this->gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
+
+                if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
+
+                    $datafinal_intervalo = $datafinal;
+                } else {
+                    $somador_inicial = $intervalo + 1;
+                    $somador_final = $intervalo * 2;
+                    $datainicial_intervalo = date('Y-m-d', strtotime("+$somador_inicial days", strtotime($datafinal_intervalo)));
+                    $datafinal_intervalo = date('Y-m-d', strtotime("+$somador_final days", strtotime($datafinal_intervalo)));
+                }
+//            if(strtotime($datafinal_intervalo) > strtotime($datafinal) && $b == 0){
+//                $datafinal_intervalo = $datafinal;
+//                $b++;
+//            }
+            }
+        } else {
+            $this->gravargeral($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);
+        }
+        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/agenda");
+    }
+
+    function gravarintervaloespecialidade() {
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $intervalo = (int) $_POST['txtintervalo'];
+        $intervalo_teste = (int) $_POST['txtintervalo'] - 1;
+        $datainicial_intervalo = $datainicial;
+        $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo_teste days", strtotime($datainicial)));
+        $b = 0;
+        $agenda_id = $_POST['txthorario'];
+        $sala_id = $_POST['txtsala'];
+        $medico_id = $_POST['txtmedico'];
+//        var_dump($datafinal);
+//        var_dump($datafinal_intervalo);
+//        die;
+        if ($intervalo != '' && $intervalo > 0) {
+            while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
+//                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
+//                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
+//            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
+
+                $this->gravarespecialidade($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
+
+                if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
+
+                    $datafinal_intervalo = $datafinal;
+                } else {
+                    $somador_inicial = $intervalo + 1;
+                    $somador_final = $intervalo * 2;
+                    $datainicial_intervalo = date('Y-m-d', strtotime("+$somador_inicial days", strtotime($datafinal_intervalo)));
+                    $datafinal_intervalo = date('Y-m-d', strtotime("+$somador_final days", strtotime($datafinal_intervalo)));
+                }
+//            if(strtotime($datafinal_intervalo) > strtotime($datafinal) && $b == 0){
+//                $datafinal_intervalo = $datafinal;
+//                $b++;
+//            }
+            }
+        } else {
+            $this->gravarespecialidade($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);
+        }
+        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/agenda");
+    }
+
+    function gravarintervaloconsulta() {
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $intervalo = (int) $_POST['txtintervalo'];
+        $intervalo_teste = (int) $_POST['txtintervalo'] - 1;
+        $datainicial_intervalo = $datainicial;
+        $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo_teste days", strtotime($datainicial)));
+        $b = 0;
+        $agenda_id = $_POST['txthorario'];
+        $sala_id = $_POST['txtsala'];
+        $medico_id = $_POST['txtmedico'];
+//        var_dump($datafinal);
+//        var_dump($datafinal_intervalo);
+//        die;
+        if ($intervalo != '' && $intervalo > 0) {
+            while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
+//                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
+//                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
+//            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
+
+                $this->gravarconsulta($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+
+                if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
+
+                    $datafinal_intervalo = $datafinal;
+                } else {
+                    $somador_inicial = $intervalo + 1;
+                    $somador_final = $intervalo * 2;
+                    $datainicial_intervalo = date('Y-m-d', strtotime("+$somador_inicial days", strtotime($datafinal_intervalo)));
+                    $datafinal_intervalo = date('Y-m-d', strtotime("+$somador_final days", strtotime($datafinal_intervalo)));
+                }
+//            if(strtotime($datafinal_intervalo) > strtotime($datafinal) && $b == 0){
+//                $datafinal_intervalo = $datafinal;
+//                $b++;
+//            }
+            }
+        } else {
+            $this->gravarconsulta($datainicial, $datafinal, $agenda_id, $medico_id);
+        }
+        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/agenda");
+    }
+
     function gravarintervalo() {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
@@ -1955,10 +2090,10 @@ class Exame extends BaseController {
 //        var_dump($datafinal);
 //        var_dump($datafinal_intervalo);
 //        die;
-        if($intervalo != '' && $intervalo > 0) {
+        if ($intervalo != '' && $intervalo > 0) {
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
-                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
-                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
+//                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
+//                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
 //            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
 
                 $this->gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
@@ -1977,8 +2112,8 @@ class Exame extends BaseController {
 //                $b++;
 //            }
             }
-        }else{
-        $this->gravar($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);    
+        } else {
+            $this->gravar($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);
         }
         $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
 
@@ -2109,13 +2244,13 @@ class Exame extends BaseController {
 //        redirect(base_url() . "ambulatorio/agenda");
     }
 
-    function gravargeral() {
+    function gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id) {
 
-        $agenda_id = $_POST['txthorario'];
-        $sala_id = $_POST['txtsala'];
-        $medico_id = $_POST['txtmedico'];
-        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
-        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+//        $agenda_id = $_POST['txthorario'];
+//        $sala_id = $_POST['txtsala'];
+//        $medico_id = $_POST['txtmedico'];
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $datainicial_intervalo)));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $datafinal_intervalo)));
         $nome = $_POST['txtNome'];
 
         $tipo = $this->agenda->listartiposala($sala_id);
@@ -2229,17 +2364,17 @@ class Exame extends BaseController {
             }
         }
 
-        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+//        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
 
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/agenda");
+//        $this->session->set_flashdata('message', $data['mensagem']);
+//        redirect(base_url() . "ambulatorio/agenda");
     }
 
-    function gravarconsulta() {
-        $agenda_id = $_POST['txthorario'];
-        $medico_id = $_POST['txtmedico'];
-        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
-        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+    function gravarconsulta($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id) {
+//        $agenda_id = $_POST['txthorario'];
+//        $medico_id = $_POST['txtmedico'];
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $datainicial_intervalo)));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $datafinal_intervalo)));
         $nome = $_POST['txtNome'];
         $tipo = 'CONSULTA';
         $horarioagenda = $this->agenda->listarhorarioagendacriacao($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
@@ -2351,10 +2486,10 @@ class Exame extends BaseController {
             }
         }
 
-        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+//        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
 
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/agenda");
+//        $this->session->set_flashdata('message', $data['mensagem']);
+//        redirect(base_url() . "ambulatorio/agenda");
     }
 
     function gravaralteracaoagendacriada() {
@@ -2493,11 +2628,11 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/agenda");
     }
 
-    function gravarespecialidade() {
-        $agenda_id = $_POST['txthorario'];
-        $medico_id = $_POST['txtmedico'];
-        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
-        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+    function gravarespecialidade($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id) {
+//        $agenda_id = $_POST['txthorario'];
+//        $medico_id = $_POST['txtmedico'];
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $datainicial_intervalo)));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $datafinal_intervalo)));
         $nome = $_POST['txtNome'];
         $tipo = 'ESPECIALIDADE';
         $horarioagenda = $this->agenda->listarhorarioagendacriacaoespecialidade($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
@@ -2609,10 +2744,10 @@ class Exame extends BaseController {
             }
         }
 
-        $data['mensagem'] = 'Sucesso ao gravar a Agenda.';
+//        $data['mensagem'] = 'Sucesso ao gravar a Agenda.';
 
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/agenda");
+//        $this->session->set_flashdata('message', $data['mensagem']);
+//        redirect(base_url() . "ambulatorio/agenda");
     }
 
     private function carregarView($data = null, $view = null) {

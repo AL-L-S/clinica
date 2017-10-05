@@ -75,8 +75,8 @@
                     <td class="tabela_teste"><font size="-2">Unidade</td>
                     <td class="tabela_teste"><font size="-2">QTDE</td>
                     <td class="tabela_teste"><font size="-2">Fornecedor</td>
-                    <td class="tabela_teste"><font size="-2">Valor Unitario</td>
-                    <td class="tabela_teste"><font size="-2">Valor Total</td>
+                    <td class="tabela_teste"><font size="-2">Valor Unitario R$</td>
+                    <td class="tabela_teste"><font size="-2">Valor Total R$</td>
                     <td class="tabela_teste"><font size="-2">Validade</td>
                     <td class="tabela_teste"><font size="-2">Nota</td>
                     <td class="tabela_teste" width="10px"><font size="-2">Data</td>
