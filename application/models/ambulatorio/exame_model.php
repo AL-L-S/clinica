@@ -3871,6 +3871,7 @@ class exame_model extends Model {
                             al.medico_parecer1,
                             al.ambulatorio_laudo_id,
                             al.exame_id,
+                            e.situacao as situacaoexame,
                             al.procedimento_tuss_id,
                             p.paciente_id,
                             an.nome as sala,
