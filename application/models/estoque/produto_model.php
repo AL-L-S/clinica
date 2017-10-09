@@ -84,6 +84,15 @@ class produto_model extends Model {
             return 0;
     }
 
+    function listarprocedimentos() {
+        $this->db->select('pt.procedimento_tuss_id,
+                           pt.nome');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->where('pt.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function gravar() {
         try {
             /* inicia o mapeamento no banco */

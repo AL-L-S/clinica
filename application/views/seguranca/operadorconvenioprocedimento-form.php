@@ -18,9 +18,15 @@
             <legend>Cadastrar procedimento</legend>
             <div>
                 <label>Procedimento</label>
-                <select name="procedimento" id="procedimento" class="size4">
+<!--                <select name="procedimento" id="procedimento" class="size4">
                     <? foreach ($convenio as $value) : ?>
                         <option value="<?= $value->procedimento_convenio_id; ?>"><?php echo $value->procedimento; ?></option>
+                    <? endforeach; ?>
+                </select>-->
+                <select name="procedimento" id="procedimento" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1" required="">
+                    <option value='0' >TODOS</option>
+                    <? foreach ($convenio as $value) : ?>
+                        <option value="<?= $value->procedimento_convenio_id; ?>" ><?php echo $value->procedimento; ?></option>
                     <? endforeach; ?>
                 </select>
             </div>
@@ -78,6 +84,17 @@
 </div> <!-- Final da DIV content -->
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<style>
+    .chosen-container{ margin-top: 5pt;}
+    #procedimento1_chosen a { width: 130px; }
+</style>
+
 <script type="text/javascript">
 
 

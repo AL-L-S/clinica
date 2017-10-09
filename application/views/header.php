@@ -3,24 +3,24 @@
 if ($this->session->userdata('autenticado') != true) {
     redirect(base_url() . "login/index/login004", "refresh");
 }
-$perfil_id = $this->session->userdata('perfil_id');
-$operador_id = $this->session->userdata('operador_id');
-$internacao = $this->session->userdata('internacao');
-$centrocirurgico = $this->session->userdata('centrocirurgico');
-$relatoriorm = $this->session->userdata('relatoriorm');
 $chat = $this->session->userdata('chat');
-$imagem = $this->session->userdata('imagem');
-$consulta = $this->session->userdata('consulta');
-$especialidade = $this->session->userdata('especialidade');
-$odontologia = $this->session->userdata('odontologia');
 $geral = $this->session->userdata('geral');
-$faturamento = $this->session->userdata('faturamento');
-$estoque = $this->session->userdata('estoque');
-$financeiro = $this->session->userdata('financeiro');
-$marketing = $this->session->userdata('marketing');
-$laboratorio = $this->session->userdata('laboratorio');
 $ponto = $this->session->userdata('ponto');
+$imagem = $this->session->userdata('imagem');
+$estoque = $this->session->userdata('estoque');
+$consulta = $this->session->userdata('consulta');
+$perfil_id = $this->session->userdata('perfil_id');
+$marketing = $this->session->userdata('marketing');
+$internacao = $this->session->userdata('internacao');
+$financeiro = $this->session->userdata('financeiro');
 $calendario = $this->session->userdata('calendario');
+$operador_id = $this->session->userdata('operador_id');
+$relatoriorm = $this->session->userdata('relatoriorm');
+$odontologia = $this->session->userdata('odontologia');
+$laboratorio = $this->session->userdata('laboratorio');
+$faturamento = $this->session->userdata('faturamento');
+$especialidade = $this->session->userdata('especialidade');
+$centrocirurgico = $this->session->userdata('centrocirurgico');
 $calendario_layout = $this->session->userdata('calendario_layout');
 
 function alerta($valor) {
@@ -642,7 +642,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogastosala">Relatorio Gasto de Sala</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogeralsintetico">Relatorio Sintetico Geral</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexamech">Relatorio Faturamento Convenio CH</a></span></ul>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteexame">Relatorio Convenio Paciente</a></span></ul>
+                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteexame">Relatorio Convenio Paciente</a></span></ul>-->
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocancelamento">Relatorio Cancelamento</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotempoesperaexame">Relatorio Tempo espera exame</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotemposalaespera">Relatorio Tempo sala de espera</a></span></ul>
