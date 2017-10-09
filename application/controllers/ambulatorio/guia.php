@@ -371,7 +371,7 @@ class Guia extends BaseController {
             if ($grupo == "CONSULTA") {
                 $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
             }
-            if ($grupo == "FISIOTERAPIA" || $grupo == "ESPECIALIDADE") {
+            if ($grupo == "FISIOTERAPIA" || $grupo == "ESPECIALIDADE" || $grupo == "ODONTOLOGIA") {
                 $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
             }
             if ($data['exame'][0]->tipo == "EXAME") {

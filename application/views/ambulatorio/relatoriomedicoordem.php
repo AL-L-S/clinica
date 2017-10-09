@@ -20,12 +20,18 @@
                     <label>Procedimento</label>
                     </dt>
                     <dd>
-                        <select name="procedimentos" id="procedimentos" class="size2">
+                        <select name="procedimentos" id="procedimentos" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                             <option value="0">TODOS</option>
                             <? foreach ($procedimentos as $value) : ?>
                                 <option value="<?= $value->procedimento_tuss_id; ?>" ><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
                         </select>
+<!--                        <select name="procedimentos" id="procedimentos" class="size2">
+                            <option value="0">TODOS</option>
+                            <? foreach ($procedimentos as $value) : ?>
+                                <option value="<?= $value->procedimento_tuss_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>-->
 
                     <dt>
                     <dt>
@@ -85,6 +91,17 @@
 
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
+
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<style>
+    .chosen-container{ margin-top: 5pt;}
+    #procedimento1_chosen a { width: 130px; }
+</style>
 <script type="text/javascript">
     $(function() {
         $("#txtdata_inicio").datepicker({
