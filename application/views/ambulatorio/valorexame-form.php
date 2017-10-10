@@ -1,6 +1,6 @@
 <div class="content ficha_ceatox">
     <div >
-        <h3 class="singular"><a href="#">Marcar exames</a></h3>
+        <h3 class="singular"><a href="#">Marcar Exames</a></h3>
         <div>
             <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/valorexames" method="post">
                 <fieldset>

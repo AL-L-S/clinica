@@ -1076,13 +1076,18 @@ class Guia extends BaseController {
 
     function valorexames() {
         $paciente_id = $_POST['txtpaciente_id'];
+        $agenda_exames_id = $_POST['agenda_exames_id'];
+//        var_dump($agenda_exames_id);
+//        die;
+        $dadosantigos = $this->guia->listardadosantigoseditarvalor($agenda_exames_id);
         $ambulatorio_guia_id = $this->guia->valorexames();
         if ($ambulatorio_guia_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Dados. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a Dados.';
         }
-        $this->pesquisar($paciente_id);
+        redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
+//        $this->pesquisar($paciente_id);
     }
 
     function valorexamefaturamento($paciente_id, $guia_id, $ambulatorio_guia_id) {
