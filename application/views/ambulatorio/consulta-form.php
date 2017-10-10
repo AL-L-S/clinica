@@ -8,7 +8,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Horario</a></h3>
         <div>
-            <form name="form_exame" id="form_exame" action="<?= base_url() ?>ambulatorio/exame/gravarconsulta" method="post">
+            <form name="form_exame" id="form_exame" action="<?= base_url() ?>ambulatorio/exame/gravarintervaloconsulta" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>
@@ -28,6 +28,12 @@
                     </dt>
                     <dd>
                         <input type="text"  id="txtdatafinal" name="txtdatafinal" alt="date" class="size2" required/>
+                    </dd>
+                    <dt>
+                        <label title="Aqui é possível especificar o número de dias na criação de agendas. Um exemplo: De 15 em 15 dias (No exemplo de querer a agenda de X em X dias, digitar apenas o número). Caso queira a criação normal, não digite nada ou digite 0.">Intervalo de dias. (Ex: 15)</label>
+                    </dt>
+                    <dd>
+                        <input title="Aqui é possível especificar o número de dias na criação de agendas. Um exemplo: De 15 em 15 dias (No exemplo de querer a agenda de X em X dias, digitar apenas o número). Caso queira a criação normal, não digite nada ou digite 0." type="number" min="1"  id="txtintervalo" name="txtintervalo" class="size2"/>
                     </dd>
                     <dt>
                     <label>Horario *</label>

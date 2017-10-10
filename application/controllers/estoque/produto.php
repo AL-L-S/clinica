@@ -38,6 +38,8 @@ class Produto extends BaseController {
         $data['obj'] = $obj_produto;
         $data['sub'] = $this->produto->listarsub();
         $data['unidade'] = $this->produto->listarunidade();
+        $data['procedimentos'] = $this->produto->listarprocedimentos();
+//        echo "<pre>"; var_dump($data['procedimentos']); die;
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('estoque/produto-form', $data);
     }

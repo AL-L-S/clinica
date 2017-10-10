@@ -34,7 +34,7 @@
                         <label title="Aqui é possível especificar o número de dias na criação de agendas. Um exemplo: De 15 em 15 dias (No exemplo de querer a agenda de X em X dias, digitar apenas o número). Caso queira a criação normal, não digite nada ou digite 0.">Intervalo de dias. (Ex: 15)</label>
                     </dt>
                     <dd>
-                        <input title="Aqui é possível especificar o número de dias na criação de agendas. Um exemplo: De 15 em 15 dias (No exemplo de querer a agenda de X em X dias, digitar apenas o número). Caso queira a criação normal, não digite nada ou digite 0." type="number"  id="txtintervalo" name="txtintervalo" class="size2"/>
+                        <input title="Aqui é possível especificar o número de dias na criação de agendas. Um exemplo: De 15 em 15 dias (No exemplo de querer a agenda de X em X dias, digitar apenas o número). Caso queira a criação normal, não digite nada ou digite 0." type="number" min="1" id="txtintervalo" name="txtintervalo" class="size2"/>
                     </dd>
                     <dt>
                         <label>Horario *</label>
