@@ -44,8 +44,14 @@
                     <label>Procedimento</label>
                     </dt>
                     <dd>
-                        <input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2" value="" />
-                        <input type="text" name="procedimento" id="procedimento" class="texto10" value="<?=@$obj->_procedimento?>" />
+                        <select name="procedimentoID" id="procedimentoID" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                            <option value="">Selecione</option>
+                            <? foreach($procedimentos as $value){ ?>
+                                <option value="<?= $value->procedimento_tuss_id ?>"><?= $value->nome ?></option>
+                            <? } ?>
+                        </select>
+<!--                        <input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2" value="" />
+                        <input type="text" name="procedimento" id="procedimento" class="texto10" value="<?=@$obj->_procedimento?>" />-->
                     </dd>
                     
                     <dt>
@@ -78,6 +84,16 @@
 </div> <!-- Final da DIV content -->
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<style>
+    .chosen-container{ margin-top: 5pt;}
+    #procedimento1_chosen a { width: 130px; }
+</style>
 <script type="text/javascript">
     $('#btnVoltar').click(function() {
         $(location).attr('href', '<?= base_url(); ?>estoque/produto');

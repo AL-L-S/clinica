@@ -1268,6 +1268,7 @@ class guia_model extends Model {
             c.nome as convenio,
             ae.quantidade,
 	    p.nome,
+            e.situacao,
 	    pt.nome as procedimento,
             ae.valor_total as valor');
         $this->db->from('tb_agenda_exames ae');
@@ -1278,7 +1279,13 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('e.cancelada', 'false');
-        $this->db->where('e.situacao', 'FINALIZADO');
+//        $this->db->where('e.situacao', 'FINALIZADO');
+//        var_dump($_POST['situacao']); die;
+        if ($_POST['situacao'] == "1") {
+            $this->db->where('al.situacao', 'FINALIZADO');
+        } elseif ($_POST['situacao'] == "0") {
+            $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
         }
@@ -1297,8 +1304,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio'])));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim'])));
+//        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio'])));
+//        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim'])));
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('pc.convenio_id');
@@ -10585,6 +10592,56 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function listardadosantigoseditarvalor($agenda_exames_id) {
+//            echo 'model asdasdasdas'. '<br>';
+//            var_dump($agenda_exames_id); die;
+        $data = date("Y-m-d");
+        $horario = date("Y-m-d H:i:s");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->select('ae.agenda_exames_id,
+                            
+                            ae.valor_total,
+                            ae.valor,
+                            ae.procedimento_tuss_id,
+                            ae.forma_pagamento,
+                            ae.valor1,
+                            ae.forma_pagamento2,
+                            ae.valor2,
+                            ae.forma_pagamento3,
+                            ae.valor3,
+                            ae.forma_pagamento4,
+                            ae.valor4
+
+                            ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where('ae.agenda_exames_id', $agenda_exames_id);
+//        echo '<pre>';
+        $return = $this->db->get()->result();
+//        var_dump($return);
+
+
+        $this->db->set('valor_total', $return[0]->valor_total);
+        $this->db->set('valor', $return[0]->valor);
+        $this->db->set('procedimento_convenio_id', $return[0]->procedimento_tuss_id);
+        $this->db->set('forma_pagamento', $return[0]->forma_pagamento);
+        $this->db->set('valor1', $return[0]->valor1);
+        $this->db->set('forma_pagamento2', $return[0]->forma_pagamento2);
+        $this->db->set('valor2', $return[0]->valor2);
+        $this->db->set('forma_pagamento3', $return[0]->forma_pagamento3);
+        $this->db->set('valor3', $return[0]->valor3);
+        $this->db->set('forma_pagamento4', $return[0]->forma_pagamento4);
+        $this->db->set('valor4', $return[0]->valor4);
+        $this->db->set('agenda_exames_id', $return[0]->agenda_exames_id);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->insert('tb_agenda_exames_valor');
+
+
+//        die;
+//        return $return;
     }
 
     function gravareditarfichaxml($exames_id) {

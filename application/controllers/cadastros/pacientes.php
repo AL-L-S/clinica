@@ -64,8 +64,13 @@ class pacientes extends BaseController {
     function anexarimagem($paciente_id) {
 
         $this->load->helper('directory');
+        if (!is_dir("./upload/paciente")) {
+          mkdir("./upload/paciente");
+            $destino = "./upload/paciente";
+            chmod($destino, 0777);
+        }
         if (!is_dir("./upload/paciente/$paciente_id")) {
-            mkdir("./upload/paciente/$paciente_id");
+          mkdir("./upload/paciente/$paciente_id");
             $destino = "./upload/paciente/$paciente_id";
             chmod($destino, 0777);
         }
