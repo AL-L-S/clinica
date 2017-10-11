@@ -109,9 +109,9 @@
                         <tr>
                             <?
                             //////////////// Caso não exista cliente/setor associado, ou seja, no caso de ser gasto de sala, ele mostra TRANSFERÊNCIA
-                            if ($item->nome == '') {
+                            if ($item->nome != '') {
                                 ?>
-                                <td><font size="-2"><?= utf8_decode($item->armazem); ?></td> 
+                                <td><font size="-2"><?= utf8_decode($item->nome); ?></td> 
                             <? } else { ?>
                                 <td><font size="-2"><?=utf8_decode('TRANSFERÊNCIA')?></td> 
                             <? }

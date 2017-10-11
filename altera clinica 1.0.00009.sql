@@ -117,9 +117,7 @@ UPDATE ponto.tb_procedimento_tuss
  WHERE qtde is null;
 
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN empresa_id integer;
--- VERSÃO 1.0.00009
-INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
-    VALUES ('1.0.00009', '1.0.00009');
+
 
 -- Dia 26/09/2017
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN calendario_layout boolean DEFAULT false;
@@ -174,3 +172,65 @@ CREATE TABLE ponto.tb_operador_grupo_medico
   operador_atualizacao integer,
   CONSTRAINT tb_operador_grupo_medicos_pkey PRIMARY KEY (operador_grupo_medico_id)
 );
+
+
+-- 06/10/2017
+
+CREATE TABLE ponto.tb_agenda_exames_valor
+(
+
+  agenda_exames_valor_id serial NOT NULL,
+  agenda_exames_id integer,
+  procedimento_convenio_id integer,
+  valor_total numeric(10,2),
+  valor numeric(10,2),
+  forma_pagamento integer,
+  valor1 numeric(10,2) DEFAULT 0,
+  forma_pagamento2 integer,
+  valor2 numeric(10,2) DEFAULT 0,
+  forma_pagamento3 integer,
+  valor3 numeric(10,2) DEFAULT 0,
+  forma_pagamento4 integer,
+  valor4 numeric(10,2) DEFAULT 0,
+  operador_faturamento integer,
+  operador_cadastro integer,
+  ata_cadastro timestamp without time zone,
+  data_atualizacao timestamp without time zone,
+  CONSTRAINT tb_agenda_exames_valor_pkey PRIMARY KEY (agenda_exames_valor_id)
+);
+
+CREATE TABLE ponto.tb_procedimento_convenio_sessao
+(
+  procedimento_convenio_sessao_id serial NOT NULL,
+  procedimento_convenio_id integer,
+  valor_sessao numeric(10,2),
+  sessao integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  empresa_id integer,
+  CONSTRAINT tb_procedimento_convenio_sessao_pkey PRIMARY KEY (procedimento_convenio_sessao_id)
+);
+
+-- 08/10/2017
+
+ALTER TABLE ponto.tb_estoque_entrada ADD COLUMN transferencia boolean DEFAULT false;
+ALTER TABLE ponto.tb_estoque_entrada ADD COLUMN armazem_transferencia integer;
+ALTER TABLE ponto.tb_procedimento_percentual_medico_convenio ADD COLUMN revisor boolean DEFAULT false;
+
+-- 09/10/2017
+
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN valor_revisor numeric(10,2);
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN percentual_revisor boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_revisor numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_revisor boolean DEFAULT false;
+
+-- 11/10/2017
+ALTER TABLE ponto.tb_ambulatorio_guia ALTER COLUMN declaracao TYPE text;
+
+-- VERSÃO 1.0.00009
+INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+    VALUES ('1.0.00009', '1.0.00009');

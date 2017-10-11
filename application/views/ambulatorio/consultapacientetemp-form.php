@@ -14,6 +14,37 @@
             </div>
         </fieldset>
         <fieldset>
+            <?
+                if (@$obj->_telefone != '' && strlen(@$obj->_telefone) > 3) {
+
+                    if (preg_match('/\(/', @$obj->_telefone)) {
+                        $telefone = @$obj->_telefone;
+                    } else {
+                        $telefone = "(" . substr(@$obj->_telefone, 0, 2) . ")" . substr(@$obj->_telefone, 2, strlen(@$obj->_telefone) - 2);
+                    }
+                } else {
+                    $telefone = '';
+                }
+                if (@$obj->_celular != '' && strlen(@$obj->_celular) > 3) {
+                    if (preg_match('/\(/', @$obj->_celular)) {
+                        $celular = @$obj->_celular;
+                    } else {
+                        $celular = "(" . substr(@$obj->_celular, 0, 2) . ")" . substr(@$obj->_celular, 2, strlen(@$obj->_celular) - 2);
+                    }
+                } else {
+                    $celular = '';
+                }
+                if (@$obj->_whatsapp != '' && strlen(@$obj->_whatsapp) > 3) {
+                    if (preg_match('/\(/', @$obj->_whatsapp)) {
+                        $whatsapp = @$obj->_whatsapp;
+                    } else {
+                        $whatsapp = "(" . substr(@$obj->_whatsapp, 0, 2) . ")" . substr(@$obj->_whatsapp, 2, strlen(@$obj->_whatsapp) - 2);
+                    }
+                } else {
+                    $whatsapp = '';
+                }
+                ?>
+            
             <legend>Marcar Consulta</legend>
 
             <div>
@@ -39,11 +70,11 @@
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="txtTelefone" class="texto02" name="telefone" value="<?= @$obj->_telefone; ?>" />
+                <input type="text" id="txtTelefone" class="texto02" name="telefone" value="<?= @$telefone; ?>" />
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$obj->_celular; ?>" />
+                <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$celular; ?>" />
             </div>
             <div>
                 <label>Convenio</label>

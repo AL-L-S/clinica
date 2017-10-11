@@ -115,14 +115,14 @@
                         options += '<option value="' + j[i].produto_id + '">' + j[i].descricao + '</option>';
                     }
 //                    $('#produto').html(options).show();
-                    alert(options);
+//                    alert(options);
                     $('#produto option').remove();
                     $('#produto').append(options);
                     $("#produto").trigger("chosen:updated");
                     $('.carregando').hide();
                 });
             } else {
-                alert('s');
+//                alert('s');
                 $('#produto').html('<option value="">ESCOLHA UM ARMAZEM</option>');
             }
         });

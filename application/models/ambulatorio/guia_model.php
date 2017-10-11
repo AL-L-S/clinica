@@ -2119,19 +2119,19 @@ class guia_model extends Model {
 
         $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        if($_POST['pesquisa'] == '1'){
-        $this->db->orderby('p.nome');    
-        }elseif($_POST['pesquisa'] == '2'){
-        $this->db->where('p.nascimento is not null');  
-        $this->db->orderby('p.nascimento, p.nome ');    
-        }elseif($_POST['pesquisa'] == '3'){
-        $this->db->where('p.nome_mae !=', '');        
-        $this->db->orderby('p.nome_mae,p.nome');    
-        }elseif($_POST['pesquisa'] == '4'){
-        $this->db->where('p.cpf !=', '');        
-        $this->db->orderby('p.cpf,p.nome');    
+        if ($_POST['pesquisa'] == '1') {
+            $this->db->orderby('p.nome');
+        } elseif ($_POST['pesquisa'] == '2') {
+            $this->db->where('p.nascimento is not null');
+            $this->db->orderby('p.nascimento, p.nome ');
+        } elseif ($_POST['pesquisa'] == '3') {
+            $this->db->where('p.nome_mae !=', '');
+            $this->db->orderby('p.nome_mae,p.nome');
+        } elseif ($_POST['pesquisa'] == '4') {
+            $this->db->where('p.cpf !=', '');
+            $this->db->orderby('p.cpf,p.nome');
         }
-        
+
 //        $this->db->orderby('p.sexo');
 //        $this->db->orderby('p.nome_mae');
 //        $this->db->orderby('p.cpf');
@@ -2215,7 +2215,7 @@ class guia_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
-    
+
     function relatoriounicoretornopaciente($paciente_id) {
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
@@ -2227,7 +2227,7 @@ class guia_model extends Model {
         $this->db->where('ae.realizada', 't');
         $this->db->where('ae.cancelada', 'f');
 //        $this->db->limit(1);
-        
+
 
         $return = $this->db->get()->result();
         return $return;
@@ -3545,6 +3545,7 @@ class guia_model extends Model {
         $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);
         $this->db->where('mc.medico', $medicopercentual);
         $this->db->where('mc.ativo', 'true');
+        $this->db->where('mc.revisor', 'false');
         $return = $this->db->get();
 
         return $return->result();
@@ -6095,6 +6096,12 @@ class guia_model extends Model {
 
         $this->db->select('sum((valor * quantidade)) as total');
         $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+//        $this->db->where('faturado', 'f');
+        $this->db->where('confirmado', 't');
+//        $this->db->where('c.dinheiro', 't');
         $this->db->where("guia_id", $guia_id);
         $return = $this->db->get();
         return $return->result();
@@ -6104,7 +6111,12 @@ class guia_model extends Model {
 
         $this->db->select('sum((valor * quantidade)) as total');
         $this->db->from('tb_agenda_exames ae');
-        $this->db->where("faturado", 'f');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('faturado', 'f');
+        $this->db->where('confirmado', 't');
+        $this->db->where('c.dinheiro', 't');
         $this->db->where("guia_id", $guia_id);
         $return = $this->db->get();
         return $return->result();
@@ -9959,25 +9971,39 @@ ORDER BY ae.agenda_exames_id)";
                 }
 //              var_dump($_POST['indicacao']);
 //               die;
+                $sessao2_valor = $this->listarprocedimentoconveniosessao($_POST['procedimento1'], $index);
+//                if(){
+//                    
+//                }
+                $valor_convenio = $_POST['valor1'] / $qtde;
+                if (count($sessao2_valor) > 0) {
+                    $valor = $sessao2_valor[0]->valor_sessao;
+                } else {
+                    if ($index == 1) {
+                        $valor = $_POST['valor1'];
+                    } else {
+                        $valor = 0;
+                    }
+                }
                 if ($dinheiro == "t") {
                     if ($index == 1 && $_POST['homecare'] != 't') {
-                        $this->db->set('valor', $_POST['valor1']);
+                        $this->db->set('valor', $valor);
 //                        $this->db->set('percentual_medico', $valor_percentual);
-                        $this->db->set('valor_total', $_POST['valor1']);
+                        $this->db->set('valor_total', $valor);
                         $this->db->set('confirmado', 't');
                     } else {
-                        $this->db->set('valor', 0);
-                        $this->db->set('valor_total', 0);
+                        $this->db->set('valor', $valor);
+                        $this->db->set('valor_total', $valor);
                         $this->db->set('confirmado', 'f');
                     }
                 } else {
                     if ($index == 1 && $_POST['homecare'] != 't') {
-                        $this->db->set('valor', $_POST['valor1']);
-                        $this->db->set('valor_total', $_POST['valor1']);
+                        $this->db->set('valor', $valor_convenio);
+                        $this->db->set('valor_total', $valor_convenio);
                         $this->db->set('confirmado', 't');
                     } else {
-                        $this->db->set('valor', $_POST['valor1']);
-                        $this->db->set('valor_total', $_POST['valor1']);
+                        $this->db->set('valor', $valor_convenio);
+                        $this->db->set('valor_total', $valor_convenio);
                         $this->db->set('confirmado', 'f');
                     }
                 }
@@ -10033,6 +10059,23 @@ ORDER BY ae.agenda_exames_id)";
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function listarprocedimentoconveniosessao($convenio_id, $sessao) {
+
+        //verifica se esse medico já está cadastrado nesse procedimento 
+        $this->db->select('pc.procedimento_convenio_id, 
+                            pcs.procedimento_convenio_sessao_id,
+                            pcs.sessao,
+                            pcs.valor_sessao');
+        $this->db->from('tb_procedimento_convenio_sessao pcs');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcs.procedimento_convenio_id', 'left');
+        $this->db->where('pcs.ativo', 't');
+        $this->db->where('pcs.sessao', $sessao);
+        $this->db->where('pcs.procedimento_convenio_id', $convenio_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
     }
 
     function gravarpsicologia($ambulatorio_guia_id) {

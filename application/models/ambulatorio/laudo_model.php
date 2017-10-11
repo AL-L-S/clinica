@@ -1156,7 +1156,7 @@ class laudo_model extends Model {
         $this->db->where("ag.cancelada", 'false');
         $this->db->where('age.sala_preparo', 'f');
 
-        
+
         if ($perfil_id == 4 && $medico_laudodigitador == 'f') {
             $this->db->where('age.medico_consulta_id', $operador_id);
         }
@@ -2020,6 +2020,7 @@ class laudo_model extends Model {
             $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->where('mc.medico', $_POST['medico']);
             $this->db->where('mc.ativo', 'true');
+            $this->db->where('mc.revisor', 'false');
             $percentual = $this->db->get()->result();
 
             if (count($percentual) == 0) {
@@ -2030,6 +2031,25 @@ class laudo_model extends Model {
 //                        $this->db->where('pc.ativo', 'true');
 //                        $this->db->where('pt.ativo', 'true');
                 $percentual = $this->db->get()->result();
+            }
+            if ($_POST['medicorevisor'] != '') {
+                $this->db->select('mc.valor as perc_medico, mc.percentual');
+                $this->db->from('tb_procedimento_percentual_medico_convenio mc');
+                $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
+                $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+                $this->db->where('mc.medico', $_POST['medicorevisor']);
+                $this->db->where('mc.ativo', 'true');
+                $this->db->where('mc.revisor', 'true');
+                $percentualrevisor = $this->db->get()->result();
+                if (count($percentualrevisor) == 0) {
+                    $this->db->select('pt.valor_revisor as perc_medico, pt.percentual_revisor as percentual');
+                    $this->db->from('tb_procedimento_convenio pc');
+                    $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                    $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+//                        $this->db->where('pc.ativo', 'true');
+//                        $this->db->where('pt.ativo', 'true');
+                    $percentualrevisor = $this->db->get()->result();
+                }
             }
 
             if (isset($_POST['rev'])) {
@@ -2057,6 +2077,11 @@ class laudo_model extends Model {
 
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
+            if ($_POST['medicorevisor'] != '') {
+
+                $this->db->set('valor_revisor', $percentualrevisor[0]->perc_medico);
+                $this->db->set('percentual_revisor', $percentualrevisor[0]->percentual);
+            }
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('medico_consulta_id', $_POST['medico']);
             $this->db->where('agenda_exames_id', $return[0]->agenda_exames_id);

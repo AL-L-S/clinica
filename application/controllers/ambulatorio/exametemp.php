@@ -249,25 +249,43 @@ class Exametemp extends BaseController {
         $this->loadView('ambulatorio/fisioterapiapacientetemp-form', $data);
     }
 
+    function reangedarfisioterapiatemp($agenda_exames_id, $pacientetemp_id, $medico_consulta_id) {
+//        if (isset($faltou)) {
+//            $data['faltou'] = $faltou;
+//        }
+        $data['pacientetemp_id'] = $pacientetemp_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['medico_consulta_id'] = $medico_consulta_id;
+        $obj_paciente = new paciente_model($pacientetemp_id);
+        $data['obj'] = $obj_paciente;
+        $data['medico'] = $this->exametemp->listarmedicoconsulta();
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['contador'] = $this->exametemp->contadorfisioterapiapaciente($pacientetemp_id);
+        $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapiareangedar($agenda_exames_id);
+        $data['consultasanteriores'] = $this->exametemp->listarespecialidadeanterior($pacientetemp_id);
+        $data['consultaanteriorcontador'] = $this->exametemp->listarconsultaanteriorcontador($pacientetemp_id);
+
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/reagendarfisioterapiapacientetemp-form', $data);
+    }
+
     function listarcredito($paciente_id) {
-        
+
         $data['paciente_id'] = $paciente_id;
         $data['valortotal'] = $this->exametemp->listarsaldocreditopaciente($paciente_id);
-        
+
 //        var_dump($data['valortotal']);die;
         $this->loadView('ambulatorio/carregarcredito-lista', $data);
     }
-    
-    
+
     function mostrarpendencias() {
-        
+
         $data['pendencias'] = $this->exametemp->listarpendenciasoperador();
-        
-        
+
+
         $this->load->view('ambulatorio/mostrarpendencias', $data);
     }
-    
-    
+
     function enviarpendenteatendimento($exames_id, $sala_id, $agenda_exames_id) {
         $verificar = $this->exametemp->enviarpendenteatendimento($exames_id, $sala_id, $agenda_exames_id);
         if ($verificar == -1) {
@@ -275,15 +293,14 @@ class Exametemp extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
         }
-        $this->session->set_flashdata('message', $data['mensagem']);        
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
-    
     function mostrarlembretes() {
-        
+
         $data['lembretes'] = $this->exametemp->listarlembretesoperador();
-        
+
         $this->load->view('ambulatorio/mostrarlembretes', $data);
     }
 
@@ -297,11 +314,11 @@ class Exametemp extends BaseController {
 
     function gravarcredito() {
         $paciente_id = $_POST['txtpaciente_id'];
-        
+
         $data['paciente'] = $this->exametemp->gravarcredito();
         redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
     }
-    
+
     function carregaragendamultiempresa3($agenda_exames_id, $externo_id) {
         $data['externo_id'] = $externo_id;
         $data['agenda_exames_id'] = $agenda_exames_id;
@@ -511,7 +528,7 @@ class Exametemp extends BaseController {
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exame/listarmultifuncaomedicofisioterapia");
     }
-    
+
     function excluirfisioterapiatempencaixe($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
@@ -720,17 +737,17 @@ class Exametemp extends BaseController {
                 if ($agenda_selecionada != false) {
                     $this->exametemp->gravarpacientefisioterapiapersonalizadasessao($agenda_selecionada[0]->agenda_exames_id, $_POST['sessao'], $contador_sessao, $agrupador);
                 } else {
-                    
+
                     $agenda_inexistente = $this->exametemp->listaagendafisioterapiapersonalizadaerro($agenda_escolhida[$c], $semana);
 //                    var_dump($agenda_inexistente); die;
                     $medico = $agenda_inexistente[0]->medico;
                     $hora = $agenda_inexistente[0]->inicio;
-                    
+
                     $data = date("d/m/Y", strtotime($agenda_inexistente[0]->data));
                     $mensagem = "Horário de $medico em $data as $hora não existe ou está ocupado";
 //                    echo $mensagem; die;
                     $this->session->set_flashdata('message', $mensagem);
-                    
+
                     foreach ($agenda_escolhida as $item) {
                         $excluir = $this->exametemp->excluirfisioterapiatemp($item);
                     }
@@ -883,6 +900,15 @@ class Exametemp extends BaseController {
 
         $pacientetemp_id = $_POST['txtpaciente_id'];
         $this->exametemp->gravarfisioterapiapacienteexistente($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
+//        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+    }
+
+    function gravarfisioterapiapacientetempreagendar() {
+
+        $pacientetemp_id = $_POST['txtpaciente_id'];
+//        $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapiareangedar();
+        $this->exametemp->gravarfisioterapiapacientetempreagendar($pacientetemp_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
 //        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
     }

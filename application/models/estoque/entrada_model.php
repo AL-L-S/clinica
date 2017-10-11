@@ -29,7 +29,9 @@ class entrada_model extends Model {
                             e.fornecedor_id,
                             f.razao_social as fornecedor,
                             e.armazem_id,
+                            e.transferencia,
                             a.descricao as armazem,
+                            at.descricao as armazem_transferencia,
                             e.data_cadastro,
                             e.valor_compra,
                             e.quantidade,
@@ -39,6 +41,7 @@ class entrada_model extends Model {
         $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = e.produto_id', 'left');
         $this->db->join('tb_estoque_fornecedor f', 'f.estoque_fornecedor_id = e.fornecedor_id', 'left');
         $this->db->join('tb_estoque_armazem a', 'a.estoque_armazem_id = e.armazem_id', 'left');
+        $this->db->join('tb_estoque_armazem at', 'at.estoque_armazem_id = e.armazem_transferencia', 'left');
         $this->db->where('e.ativo', 'true');
         $this->db->where('e.inventario', 'false');
         if (isset($args['produto']) && strlen($args['produto']) > 0) {

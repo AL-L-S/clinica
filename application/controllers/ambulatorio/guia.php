@@ -1453,6 +1453,8 @@ class Guia extends BaseController {
             $data['exame2'] = $this->guia->listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id);
             $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         }
+//        echo '<pre>';
+//        var_dump($data['exame1']); die;
 
         $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['guia_id'] = $guia_id;

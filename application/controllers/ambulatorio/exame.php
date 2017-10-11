@@ -980,6 +980,7 @@ class Exame extends BaseController {
 
     function cancelarespera() {
         if ($this->session->userdata('perfil_id') != 12) {
+            $credito = $this->exame->creditocancelamentoespera();
             $verificar = $this->exame->cancelarespera();
             if ($verificar == "-1") {
                 $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
@@ -1010,6 +1011,7 @@ class Exame extends BaseController {
 
     function cancelarguia() {
         if ($this->session->userdata('perfil_id') != 12) {
+            $credito = $this->exame->creditocancelamentoguia();
             $verificar = $this->exame->cancelarespera();
             if ($verificar == "-1") {
                 $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
@@ -1125,6 +1127,7 @@ class Exame extends BaseController {
 
     function cancelarexame() {
         if ($this->session->userdata('perfil_id') != 12) {
+            $credito = $this->exame->creditocancelamento();
             $verificar = $this->exame->cancelarexame();
             if ($verificar == "-1") {
                 $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
@@ -1324,6 +1327,9 @@ class Exame extends BaseController {
 
     function importararquivopdf() {
         $ambulatorio_laudo_id = $_POST['ambulatorio_laudo_id'];
+        
+//        var_dump($_FILES);
+//        die;
 
         for ($i = 0; $i < count($_FILES['arquivos']['name']); $i++) {
             $_FILES['userfile']['name'] = $_FILES['arquivos']['name'][$i];
@@ -1353,6 +1359,7 @@ class Exame extends BaseController {
                 $data = array('upload_data' => $this->upload->data());
             }
         }
+        
         $exame_id = $_POST['exame_id'];
         $sala_id = $_POST['sala_id'];
         redirect(base_url() . "ambulatorio/exame/anexarimagem/$exame_id/$sala_id");

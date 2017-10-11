@@ -71,6 +71,17 @@
                             <option value="0"> NÃO</option>                                   
                         </select>
                     </dd>
+                    <div id="revisordiv">
+                    <dt>
+                        <label>Revisor</label>
+                    </dt>
+                    <dd>
+                        <select name="revisor"  id="revisor" class="size1">                            
+                            <option value="1"> SIM</option>
+                            <option value="0"> NÃO</option>                                   
+                        </select>
+                    </dd>
+                    </div>
                     <dt>
                         <label>Dia Faturamento</label>
                     </dt>
@@ -156,6 +167,25 @@
     
     
     
+    $('#revisordiv').toogle();
+    $(function () {
+        $('#grupo').change(function () {
+            if ($('#grupo').val() == 'RM') {
+                $('#revisordiv').show();
+            }else{
+                $('#revisordiv').hide();
+            }
+            
+            
+        });
+    });
+    
+    if ($('#grupo').val() == 'RM') {
+                $('#revisordiv').show();
+            }else{
+                $('#revisordiv').hide();
+            }
+            
     
     $(function () {
         $('#grupo').change(function () {

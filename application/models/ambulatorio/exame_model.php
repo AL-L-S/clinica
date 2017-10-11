@@ -5231,6 +5231,7 @@ class exame_model extends Model {
         $this->db->set('ordenador', '1');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('data', $data);
+        $this->db->set('data_faturar', $data);
         $this->db->set('inicio', $hora);
         $this->db->set('fim', $hora);
         $this->db->set('operador_atualizacao', $operador_id);
@@ -6376,6 +6377,201 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_ambulatorio_atendimentos_cancelamento');
 
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function creditocancelamentoespera() {
+        try {
+
+            $this->db->select('ae.agenda_exames_id, 
+                                
+                               ae.paciente_id,
+                               ae.procedimento_tuss_id,
+                               ae.valor1,
+                               ae.valor2,
+                               ae.valor3,
+                               ae.valor4,
+                               ae.forma_pagamento,
+                               ae.forma_pagamento2,
+                               ae.forma_pagamento3,
+                               ae.forma_pagamento4,
+                               ');
+
+
+            $this->db->from('tb_agenda_exames ae');
+//            $this->db->join('tb_exames e', 'e.exames_id = ae.agenda_exames_id', 'left');
+//            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+//            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+//            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+            $this->db->where('ae.agenda_exames_id', $_POST['txtagenda_exames_id']);
+            $this->db->where('(ae.forma_pagamento = 1000 OR ae.forma_pagamento2 = 1000 OR ae.forma_pagamento3 = 1000 OR ae.forma_pagamento4 = 1000)');
+            $credito = $this->db->get()->result();
+            if (count($credito) > 0) {
+
+
+                if ($credito[0]->forma_pagamento == 1000) {
+                    $valor_credito = $credito[0]->valor1;
+                } elseif ($credito[0]->forma_pagamento2 == 1000) {
+                    $valor_credito = $credito[0]->valor2;
+                } elseif ($credito[0]->forma_pagamento3 == 1000) {
+                    $valor_credito = $credito[0]->valor3;
+                } else {
+                    $valor_credito = $credito[0]->valor4;
+                }
+
+
+                $this->db->set('valor', $valor_credito);
+                $this->db->set('procedimento_convenio_id', $credito[0]->procedimento_tuss_id);
+                $this->db->set('paciente_id', $credito[0]->paciente_id);
+                $this->db->set('forma_pagamento_id', 1000);
+                $this->db->set('data', date("Y-m-d"));
+
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $empresa_id = $this->session->userdata('empresa_id');
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->set('empresa_id', $empresa_id);
+
+                $this->db->insert('tb_paciente_credito');
+//            echo '<pre>';
+//            var_dump($valor_credito);
+//            die;
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function creditocancelamentoguia() {
+        try {
+
+            $this->db->select('ae.agenda_exames_id, 
+                                
+                               ae.paciente_id,
+                               ae.procedimento_tuss_id,
+                               ae.valor1,
+                               ae.valor2,
+                               ae.valor3,
+                               ae.valor4,
+                               ae.forma_pagamento,
+                               ae.forma_pagamento2,
+                               ae.forma_pagamento3,
+                               ae.forma_pagamento4,
+                               ');
+
+
+            $this->db->from('tb_agenda_exames ae');
+//            $this->db->join('tb_exames e', 'e.exames_id = ae.agenda_exames_id', 'left');
+//            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+//            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+//            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+            $this->db->where('ae.agenda_exames_id', $_POST['txtagenda_exames_id']);
+            $this->db->where('(ae.forma_pagamento = 1000 OR ae.forma_pagamento2 = 1000 OR ae.forma_pagamento3 = 1000 OR ae.forma_pagamento4 = 1000)');
+            $credito = $this->db->get()->result();
+            if (count($credito) > 0) {
+
+
+                if ($credito[0]->forma_pagamento == 1000) {
+                    $valor_credito = $credito[0]->valor1;
+                } elseif ($credito[0]->forma_pagamento2 == 1000) {
+                    $valor_credito = $credito[0]->valor2;
+                } elseif ($credito[0]->forma_pagamento3 == 1000) {
+                    $valor_credito = $credito[0]->valor3;
+                } else {
+                    $valor_credito = $credito[0]->valor4;
+                }
+
+
+                $this->db->set('valor', $valor_credito);
+                $this->db->set('procedimento_convenio_id', $credito[0]->procedimento_tuss_id);
+                $this->db->set('paciente_id', $credito[0]->paciente_id);
+                $this->db->set('forma_pagamento_id', 1000);
+                $this->db->set('data', date("Y-m-d"));
+
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $empresa_id = $this->session->userdata('empresa_id');
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->set('empresa_id', $empresa_id);
+
+                $this->db->insert('tb_paciente_credito');
+//            echo '<pre>';
+//            var_dump($valor_credito);
+//            die;
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function creditocancelamento() {
+        try {
+
+            $this->db->select('ae.agenda_exames_id, 
+                                
+                               ae.paciente_id,
+                               ae.procedimento_tuss_id,
+                               ae.valor1,
+                               ae.valor2,
+                               ae.valor3,
+                               ae.valor4,
+                               ae.forma_pagamento,
+                               ae.forma_pagamento2,
+                               ae.forma_pagamento3,
+                               ae.forma_pagamento4,
+                               ');
+
+
+            $this->db->from('tb_agenda_exames ae');
+//            $this->db->join('tb_exames e', 'e.exames_id = ae.agenda_exames_id', 'left');
+//            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+//            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+//            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+            $this->db->where('ae.agenda_exames_id', $_POST['txtagenda_exames_id']);
+            $this->db->where('(ae.forma_pagamento = 1000 OR ae.forma_pagamento2 = 1000 OR ae.forma_pagamento3 = 1000 OR ae.forma_pagamento4 = 1000)');
+            $credito = $this->db->get()->result();
+            if (count($credito) > 0) {
+
+
+                if ($credito[0]->forma_pagamento == 1000) {
+                    $valor_credito = $credito[0]->valor1;
+                } elseif ($credito[0]->forma_pagamento2 == 1000) {
+                    $valor_credito = $credito[0]->valor2;
+                } elseif ($credito[0]->forma_pagamento3 == 1000) {
+                    $valor_credito = $credito[0]->valor3;
+                } else {
+                    $valor_credito = $credito[0]->valor4;
+                }
+
+
+                $this->db->set('valor', $valor_credito);
+                $this->db->set('procedimento_convenio_id', $credito[0]->procedimento_tuss_id);
+                $this->db->set('paciente_id', $credito[0]->paciente_id);
+                $this->db->set('forma_pagamento_id', 1000);
+                $this->db->set('data', date("Y-m-d"));
+
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $empresa_id = $this->session->userdata('empresa_id');
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->set('empresa_id', $empresa_id);
+
+                $this->db->insert('tb_paciente_credito');
+//            echo '<pre>';
+//            var_dump($valor_credito);
+//            die;
+            }
             return 0;
         } catch (Exception $exc) {
             return -1;

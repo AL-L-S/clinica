@@ -6,22 +6,27 @@
 
     </div>-->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Grupos Cadsatrados</a></h3>
+        <h3 class="singular"><a href="#">Cadastrar Sessão</a></h3>
         <div>
-            <form name="form_procedimentoplano" id="form_procedimentoplano" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarformapagamentoplanoconvenio/<?= $convenio_id ?>" method="post">
+            <form name="form_procedimentoplano" id="form_procedimentoplano" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarprocedimentoconveniosessao/<?= $convenio_id ?>" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                        <label>Grupo de Pagamento*</label>
+                        <label>Numero Sessão*</label>
                     </dt>
                     <dd>
-                        <input type="hidden" name="convenio" id="convenio" value="<?= $convenio_id ?>"/>
-                        <select name="grupopagamento_id" id="grupopagamento_id" class="size4" required>
-                            <option value="">Selecione</option>
-                            <? foreach ($formapagamento_grupo as $value) { ?>
-                                <option value="<?= $value->financeiro_grupo_id ?>" ><?= $value->nome ?></option>
-                            <? } ?> 
-                        </select>
+                        <input type="hidden" name="procedimento_convenio_id" id="convenio" value="<?= $convenio_id ?>"/>
+                        <input type="number" min="1" required name="numero_sessao" id="convenio" value=""/>
+                        
+                        
+                    </dd>
+                    <dt>
+                        <label>Valor Sessão*</label>
+                    </dt>
+                    <dd>
+                        <input type="text" required alt="decimal" name="valor_sessao" id="convenio" value=""/>
+                        
+                        
                     </dd>
                     
                    
@@ -34,13 +39,14 @@
                 <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
             </form>
         </div>
-        <? if(count($formas) > 0 ) {?>
-            <h3 class="singular"><a href="#">Forma de Pagamentos Cadastrados</a></h3>
+        <? if(count($sessao) > 0 ) {?>
+            <h3 class="singular"><a href="#">Sessões Cadastradas</a></h3>
             <div>
                 <table>
                     <thead>
                         <tr>
-                            <th class="tabela_header">Grupo de Pagamento</th>
+                            <th class="tabela_header">Sessão</th>
+                            <th class="tabela_header">Valor</th>
                             <th class="tabela_header"><center>Detalhes</center></th>
                         </tr>
                     </thead>
@@ -48,13 +54,14 @@
                     <tbody>
                         <?
                         $estilo_linha = "tabela_content01";
-                        foreach ($formas as $item) {
+                        foreach ($sessao as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01"; ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->grupopagamento; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->sessao; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor_sessao, 2, ",", ".");; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">  
                                     <center>
-                                        <a onclick="javascript: return confirm('Deseja realmente exlcuir essa Forma de Pagamento?');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirformapagamentoplanoconvenio/<?= $item->convenio_grupopagamento_id ?>/<?= $convenio_id ?>/<?= $item->grupo_pagamento_id ?>">Excluir</a>
+                                        <a onclick="javascript: return confirm('Deseja realmente exlcuir essa sessão?');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirprocedimentoplanoconveniosessao/<?= $item->procedimento_convenio_sessao_id ?>/<?= $item->procedimento_convenio_id ?>">Excluir</a>
                                     </center>
                                 </td>
                             </tr>

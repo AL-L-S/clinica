@@ -104,7 +104,7 @@
                         <th class="tabela_header">Grupo</th>
                         <th class="tabela_header">codigo</th>
                         <th class="tabela_header">Valor</th>
-                        <th class="tabela_header" colspan="3"><center>Detalhes</center></th>
+                        <th class="tabela_header" colspan="4"><center>Detalhes</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -154,6 +154,11 @@
                                             Pagamento
                                         </a>
                                     </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanosessao/<?= $item->procedimento_convenio_id ?>');">
+                                            Sessão
+                                        </a>
+                                    </td>
 
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">
@@ -166,6 +171,9 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
                                         Pagamento
                                     </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                        Sessão
+                                    </td>
                                 <? } ?>
                             </tr>
 
@@ -176,7 +184,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="8">
+                        <th class="tabela_footer" colspan="10">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                             <div style="display: inline">

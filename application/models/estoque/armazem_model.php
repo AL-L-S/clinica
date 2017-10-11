@@ -186,6 +186,7 @@ class armazem_model extends Model {
     function gravartransferencia() {
         try {
             $estoque_armazem_id = $_POST['armazementrada'];
+            $estoque_transferencia = $_POST['armazem'];
             /* inicia o mapeamento no banco */
             $this->db->select('estoque_entrada_id,
                             produto_id,
@@ -210,7 +211,7 @@ class armazem_model extends Model {
             // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
             // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
             // LEMBRAR DE COLOCAR UMA FlAG PRA VER SE É TRASNFERENCIA SENÂO VAI DAR BUXO LÀ NA FRENTE.
-
+            $valor_entrada = ($returno[0]->valor_compra / $returno[0]->quantidade) * $_POST['quantidade'];
             $estoque_entrada_id = $_POST['entrada'];
             $this->db->set('estoque_entrada_id', $estoque_entrada_id);
 //            $this->db->set('estoque_solicitacao_itens_id', $_POST['txtestoque_solicitacao_itens_id']);
@@ -221,7 +222,7 @@ class armazem_model extends Model {
             $this->db->set('produto_id', $returno[0]->produto_id);
             $this->db->set('fornecedor_id', $returno[0]->fornecedor_id);
             $this->db->set('armazem_id', $returno[0]->armazem_id);
-            $this->db->set('valor_venda', $returno[0]->valor_compra);
+            $this->db->set('valor_venda', $valor_entrada);
             $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
             $this->db->set('nota_fiscal', $returno[0]->nota_fiscal);
             if ($returno[0]->validade != "") {
@@ -248,7 +249,7 @@ class armazem_model extends Model {
             $this->db->set('produto_id', $returno[0]->produto_id);
             $this->db->set('fornecedor_id', $returno[0]->fornecedor_id);
             $this->db->set('armazem_id', $returno[0]->armazem_id);
-            $this->db->set('valor_compra', $returno[0]->valor_compra);
+            $this->db->set('valor_compra', $valor_entrada);
             $quantidade = -(str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
             $this->db->set('quantidade', $quantidade);
             $this->db->set('nota_fiscal', $returno[0]->nota_fiscal);
@@ -271,7 +272,9 @@ class armazem_model extends Model {
             $this->db->set('fornecedor_id', $returno[0]->fornecedor_id);
             $this->db->set('armazem_id', $estoque_armazem_id);
             $this->db->set('lote', $returno[0]->lote);
-            $this->db->set('valor_compra', $returno[0]->valor_compra);
+            $this->db->set('transferencia', 't');
+            $this->db->set('armazem_transferencia', $estoque_transferencia);
+            $this->db->set('valor_compra', $valor_entrada);
             $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade'])));
             $this->db->set('nota_fiscal', $returno[0]->nota_fiscal);
             if ($returno[0]->validade != "//") {

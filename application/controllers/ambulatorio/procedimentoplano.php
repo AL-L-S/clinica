@@ -128,7 +128,12 @@ class Procedimentoplano extends BaseController {
         $this->procedimentoplano->excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $grupopagamento_id);
         redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
     }
-
+    
+    function excluirprocedimentoplanoconveniosessao($procedimento_convenio_sessao_id, $procedimento_convenio_id) {
+        $this->procedimentoplano->excluirprocedimentoplanoconveniosessao($procedimento_convenio_sessao_id, $procedimento_convenio_id);
+        redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanosessao/$procedimento_convenio_id");
+    }
+    
     function excluirprocedimentoagrupador($procedimento_agrupado_id, $agrupador_id) {
         $this->procedimentoplano->excluirprocedimentoagrupador($procedimento_agrupado_id);
 //        $this->session->set_flashdata('message', $data['mensagem']);
@@ -167,6 +172,14 @@ class Procedimentoplano extends BaseController {
         $data['formas'] = $this->procedimentoplano->listarformaspagamentoconvenio($convenio_id);
         
         $this->loadView('ambulatorio/procedimentoplanoformapagamento', $data);
+    }
+    
+    function carregarprocedimentoplanosessao($convenio_id) {
+
+        $data['convenio_id'] = $convenio_id;
+        $data['sessao'] = $this->procedimentoplano->listarprocedimentoconveniosessao($convenio_id);
+        
+        $this->loadView('ambulatorio/procedimentoplanosessao', $data);
     }
 
     function carregarprocedimentoplanoexcluirgrupo($convenio_id) {
@@ -361,6 +374,18 @@ class Procedimentoplano extends BaseController {
         $mensagem = 'Sucesso ao gravar Forma de Pagamento.';
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
+    }
+    
+    function gravarprocedimentoconveniosessao($procedimento_convenio_id) {
+        $return = $this->procedimentoplano->gravarprocedimentoconveniosessao();
+        if($return == 1){
+        $mensagem = 'Sucesso ao gravar o valor da sessão.';    
+        }else{
+        $mensagem = 'Sessão já cadastrada.';    
+        }
+        
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanosessao/$procedimento_convenio_id");
     }
 
     function gravarformapagamentoprocedimento() {

@@ -859,6 +859,7 @@ class caixa_model extends Model {
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('observacao', $_POST['Observacao']);
             $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saidas');
             $saida_id = $this->db->insert_id();
@@ -868,6 +869,7 @@ class caixa_model extends Model {
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('saida_id', $saida_id);
             $this->db->set('data', $datainicio);
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saldo');
@@ -882,6 +884,7 @@ class caixa_model extends Model {
             $datainicio = $ano . '-' . $mes . '-' . $dia;
             $this->db->set('data', $datainicio);
             $this->db->set('tipo', 'TRANSFERENCIA');
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('conta', $_POST['contaentrada']);
             $this->db->set('observacao', $_POST['Observacao']);
             $this->db->set('data_cadastro', $horario);
@@ -896,6 +899,7 @@ class caixa_model extends Model {
             $this->db->set('entrada_id', $entrada_id);
             $this->db->set('saida_id', $saida_id);
             $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saldo');
 

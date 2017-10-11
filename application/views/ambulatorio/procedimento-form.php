@@ -203,6 +203,32 @@
                         </select>
                     </dd>-->
                     <dt>
+                        <label>Perc./Valor Revisor</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtperc_revisor" id="txtperc_revisor" class="texto" value="<?=@ $obj->_valor_revisor; ?>" />
+                    </dd>
+                    <dt>
+                        <label>Revisor Percentual</label>
+                    </dt>
+                    <dd>
+                        <select name="percentual_revisor" id="percentual_revisor" class="size2">
+                            <option value="" <?
+                            if (@$obj->_percentual_revisor == ""):echo 'selected';
+                            endif;
+                            ?>>Selecione</option>
+                            <option value="1" <?
+                            if (@$obj->_percentual_revisor == "t"):echo 'selected';
+                            endif;
+                            ?>>SIM</option>
+                            <option value="0" <?
+                            if (@$obj->_percentual_revisor == "f"):echo 'selected';
+                            endif;
+                            ?>>N&Atilde;O</option>
+                        </select>
+                    </dd>
+                            
+                    <dt>
                         <label>Qtde de sess&otilde;es</label>
                     </dt>
                     <dd>

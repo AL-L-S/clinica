@@ -470,9 +470,9 @@ class procedimento_model extends Model {
             if ($_POST['descricao'] != '') {
                 $this->db->set('descricao_procedimento', $_POST['descricao']);
             }
-            if ($_POST['observacao'] != '') {
-                $this->db->set('observacao_procedimento', $_POST['observacao']);
-            }
+//            if ($_POST['observacao'] != '') {
+//                $this->db->set('observacao_procedimento', $_POST['observacao']);
+//            }
             if ($_POST['entrega'] != '') {
                 $this->db->set('entrega', $_POST['entrega']);
             }
@@ -493,6 +493,13 @@ class procedimento_model extends Model {
             $this->db->set('grupo', $_POST['grupo']);
             if ($_POST['txtperc_medico'] != '') {
                 $this->db->set('perc_medico', str_replace(",", ".", $_POST['txtperc_medico']));
+            }
+            
+            if ($_POST['txtperc_revisor'] != '') {
+                $this->db->set('valor_revisor', str_replace(",", ".", $_POST['txtperc_revisor']));
+            }
+            if ($_POST['percentual_revisor'] != '') {
+            $this->db->set('percentual_revisor', $_POST['percentual_revisor']);
             }
 //
 //            if ($_POST['txtperc_promotor'] != '') {
@@ -669,6 +676,7 @@ class procedimento_model extends Model {
             $this->db->select('pt.nome, pt.codigo, pt.grupo, pt.tuss_id, 
                                pt.home_care, pt.descricao_procedimento, pt.entrega, 
                                pt.medico, pt.percentual,  t.descricao, pt.perc_medico,  pt.valor_promotor,  pt.percentual_promotor, 
+                               pt.valor_revisor,  pt.percentual_revisor, 
                                pt.qtde, pt.dencidade_calorica, pt.proteinas, 
                                pt.carboidratos, pt.lipidios, pt.kcal,
                                pt.revisao, pt.sala_preparo, pt.revisao_dias');
@@ -677,6 +685,8 @@ class procedimento_model extends Model {
             $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
             $query = $this->db->get();
             $return = $query->result();
+//            echo '<pre>';
+//            var_dump($return); die;
             $this->_procedimento_tuss_id = $procedimento_tuss_id;
 
             $this->_tuss_id = $return[0]->tuss_id;
@@ -699,6 +709,8 @@ class procedimento_model extends Model {
             $this->_sala_preparo = $return[0]->sala_preparo;
             $this->_valor_promotor = $return[0]->valor_promotor;
             $this->_percentual_promotor = $return[0]->percentual_promotor;
+            $this->_valor_revisor = $return[0]->valor_revisor;
+            $this->_percentual_revisor = $return[0]->percentual_revisor;
         } else {
             $this->_procedimento_tuss_id = null;
         }

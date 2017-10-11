@@ -316,13 +316,14 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                                     <th class="tabela_header" >Status</th>
                                     <th class="tabela_header" width="250px;">Nome</th>
                                     <!--<th class="tabela_header" width="70px;">Resp.</th>-->
-                                    <th class="tabela_header" width="70px;">Data</th>
+                                    <!--<th class="tabela_header" width="70px;">Data</th>-->
                                     <!--<th class="tabela_header" width="50px;">Dia</th>-->
                                     <th class="tabela_header" width="70px;">Agenda</th>
                                     <th class="tabela_header" width="70px;">    </th>
                                     <th class="tabela_header" width="150px;">Telefone</th>
                                     <th class="tabela_header" width="150px;">Convenio</th>
                                     <th class="tabela_header">Sala</th>
+                                    <th class="tabela_header">Médico</th>
                                     <th class="tabela_header" width="250px;">Observa&ccedil;&otilde;es</th>
                                     <th class="tabela_header" colspan="5"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
@@ -481,11 +482,11 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
                                 <!-- DATA, DIA E AGENDA -->
                                 <? if ($item->ocupado == 't') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>
+                                    <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>-->
                             <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>-->
                             <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
                         <? } else { ?>
-                            <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                            <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>-->
                             <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <? } ?>
@@ -512,16 +513,18 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
                         <!-- SALA -->   
                         <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= substr($item->sala, 0, 5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</b></td>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala; ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala; ?></b></td>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?=$item->medicoagenda; ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?=$item->medicoagenda ?></b></td>
                         <? } else { ?>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?>"><?= substr($item->sala, 0, 5) . " - " . substr($item->medicoagenda, 0, 5); ?>(...)</td>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala ?>"><?=$item->sala ?></td>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?=$item->medicoagenda ?>"><?= $item->medicoagenda; ?></td>
 
                         <? } ?>  
                         <!-- OBSERVAÇOES -->
                         <!--<td class="<?php // echo $estilo_linha;            ?>"><?= $item->observacoes; ?></td>-->
 
                         <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
+                                                                                                                                                                                width=500,height=230');">=><?=$item->observacoes; ?></td>
                             <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar

@@ -21,6 +21,7 @@
                                     <th class="tabela_title">Fornecedor</th>
                                     <th class="tabela_title">Armazem</th>
                                     <th class="tabela_title">Nota</th>
+                                    <!--<th class="tabela_title">Transferência</th>-->
                                 </tr>
                                 <tr>
                                     <th class="tabela_title">
@@ -46,6 +47,7 @@
                     <th class="tabela_header">Produto</th>
                     <th class="tabela_header">Fornecedor</th>
                     <th class="tabela_header">Armazem</th>
+                    <th class="tabela_header">Armazem de Saida</th>
                     <th class="tabela_header">Quantidade</th>
                     <th class="tabela_header">Nota</th>
                     <th class="tabela_header" width="70px;" colspan="3"><center>Detalhes</center></th>
@@ -68,9 +70,13 @@
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->produto; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->produto; ?> <?if($item->transferencia == 't'){
+                                    echo "<span style='color:red;'>(Transferência)</span>";
+                                    
+                                }?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->fantasia; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->armazem; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->armazem_transferencia; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nota_fiscal; ?></td>
                                 <?
@@ -110,7 +116,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="8">
+                        <th class="tabela_footer" colspan="9">
 <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
