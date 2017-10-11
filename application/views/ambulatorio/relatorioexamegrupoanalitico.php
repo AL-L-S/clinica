@@ -3,37 +3,37 @@
         <h3><a href="#">Gerar relatorio Faturamento por grupo</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriogrupoanalitico">
-  <dl>
+                <dl>
                     <dt>
-                <label>Convenio</label>
-                </dt>
-                <dd>
-                <select name="convenio" id="convenio" class="size2">
-                    <option value='0' >TODOS</option>
-                    <option value="" >CONVENIOS</option>
-                    <option value="-1" >PARTICULARES</option>
-                    <? foreach ($convenio as $value) : ?>
-                        <option value="<?= $value->convenio_id; ?>" ><?php echo $value->nome; ?></option>
-                    <? endforeach; ?>
-                </select>
-  </dd>
+                        <label>Convenio</label>
+                    </dt>
+                    <dd>
+                        <select name="convenio" id="convenio" class="size2">
+                            <option value='0' >TODOS</option>
+                            <option value="" >CONVENIOS</option>
+                            <option value="-1" >PARTICULARES</option>
+                            <? foreach ($convenio as $value) : ?>
+                                <option value="<?= $value->convenio_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
-                    <label>Especialidade</label>
+                        <label>Especialidade</label>
                     </dt>
                     <dd>
-                <select name="grupo" id="grupo" class="size1" >
+                        <select name="grupo" id="grupo" class="size1" >
                             <option value='0' >TODOS</option>
                             <option value='1' >SEM RM</option>
                             <? foreach ($grupos as $grupo) { ?>                                
@@ -42,20 +42,29 @@
                                 endif;
                                 ?>><?= $grupo->nome ?></option>
                                     <? } ?>
-                </select>
-                </dd>
-                <dt>
-                <label>Empresa</label>
-                </dt>
-                <dd>
-                    <select name="empresa" id="empresa" class="size2">
-                        <? foreach ($empresa as $value) : ?>
-                            <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
-                        <? endforeach; ?>
+                        </select>
+                    <dt>
+                        <label>Situação</label>
+                    </dt>
+                    <dd>
+                        <select name="situacao" id="situacao" class="size1" >
+                            <option value='' >TODOS</option>
+                            <option value='1'>FINALIZADO</option>
+                            <option value='0' >ABERTO</option>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Empresa</label>
+                    </dt>
+                    <dd>
+                        <select name="empresa" id="empresa" class="size2">
+                            <? foreach ($empresa as $value) : ?>
+                                <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
                             <option value="0">TODOS</option>
-                    </select>
-                </dd>
-                <dt>
+                        </select>
+                    </dd>
+                    <dt>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>
@@ -67,7 +76,7 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -79,7 +88,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -92,7 +101,7 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
