@@ -2430,7 +2430,48 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+ function gerarelatoriopacientetelefone() {
+        $data = date("Y-m-d");
+       
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            p.nome as paciente,
+                            p.celular,
+                            pt.grupo,
+                            c.nome as convenio,
+                            p.telefone,
+                            pc.valortotal,
+                            pt.nome,
+                            ae.inicio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
 
+        $this->db->where('ae.data <=', $data);
+     
+        $this->db->where('ae.procedimento_tuss_id is not null');
+//        $this->db->where('e.situacao', 'FINALIZADO');
+       
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+    //var_dump($_POST['procedimento']);die;
+    if ($_POST['procedimento'] != "") {
+        $this->db->where("pt.procedimento_tuss_id", $_POST['procedimento']);
+     }
+       
+     if ($_POST['grupo'] != "" ) {
+          $this->db->where('pt.grupo', $_POST['grupo']);
+     }
+    
+        $this->db->orderby('ae.data');
+        $return = $this->db->get();
+        return $return->result();
+    }
     function listaragendamentoteleoperadora($args = array()) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -2640,7 +2681,7 @@ class exame_model extends Model {
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
@@ -2675,7 +2716,7 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function listaragendaordemprioridade($args = array()) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -2718,7 +2759,7 @@ class exame_model extends Model {
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');

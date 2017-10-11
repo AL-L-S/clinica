@@ -272,7 +272,12 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriomedicoordem', $data);
     }
-
+     function relatoriopacientetelefone() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $data['procedimento'] = $this->procedimento->listarprocedimento2();
+        $this->loadView('ambulatorio/relatoriopacientetelefone', $data);
+    }
     function gerarelatoriorecepcaoagenda() {
         if ($_POST['tipoRelatorio'] == '0') {
             $this->gerarelatoriomedicoagendaconsultas();
@@ -312,6 +317,13 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendamentoteleoperadora();
         $this->load->View('ambulatorio/impressaorelatorioteleoperadora', $data);
+    }
+    function gerarelatoriopacientetelefone() {
+        
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['relatorio'] = $this->exame->gerarelatoriopacientetelefone();
+        $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data);
     }
 
     function gerarelatoriomedicoagendaconsultas() {
