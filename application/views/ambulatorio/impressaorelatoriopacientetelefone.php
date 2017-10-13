@@ -7,12 +7,12 @@
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
 </h4>
 <hr>
-<table border="1">
+<table border="1" cellpadding="5">
     <thead>
         <tr>
 
-            <th class="tabela_header" width="250px;">Paciente</th>
-            <th class="tabela_header" width="250px;">Pocedimento</th>
+            <th class="tabela_header" width="350px;">Paciente</th>
+            <th class="tabela_header" width="450px;">Pocedimento</th>
             <th class="tabela_header">Convênio</th>
             <th class="tabela_header">Grupo</th>
             <th class="tabela_header">Telefone</th>
