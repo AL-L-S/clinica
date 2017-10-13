@@ -6,7 +6,6 @@
             <?
             $salas = $this->exame->listartodassalas();
             $medicos = $this->operador_m->listarmedicos();
-            $especialidade = $this->exame->listarespecialidade();
             $perfil_id = $this->session->userdata('perfil_id');
             ?>
             <table>
@@ -16,7 +15,6 @@
                     <tr>
                         <th class="tabela_title">Salas</th>
                         <?if ($perfil_id != 4){?>
-                        <th class="tabela_title">Especialidade</th>
                         <th class="tabela_title">Medico</th>
                         <? } ?>
                         <th class="tabela_title">Data</th>
@@ -35,24 +33,7 @@
                             </select>
                         </th>
                         <?if ($perfil_id != 4){?>
-                         <th class="tabela_title">
-                                <select name="especialidade" id="especialidade" class="size1">
-                                    <option value=""></option>
-                                    <? foreach ($especialidade as $value) : ?>
-                                        <option value="<?= $value->cbo_ocupacao_id; ?>" <?
-                                        if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):echo 'selected';
-                                        endif;
-                                        ?>>
-                                                    <?
-//                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
-//                                                    echo '<script>carregaMedicoEspecialidade();</script>';
-//                                                endif;
-                                                    ?>
-                                                    <?php echo $value->descricao; ?>
-                                        </option>
-                                    <? endforeach; ?>
-                                </select>
-                            </th>
+                        
 
 
                             <th class="tabela_title">

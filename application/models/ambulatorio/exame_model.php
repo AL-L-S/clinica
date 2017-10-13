@@ -3512,9 +3512,6 @@ class exame_model extends Model {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_agenda', $args['medico']);
             }
-            if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
-                $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
-            }
         }
         return $this->db;
     }
@@ -3882,9 +3879,7 @@ class exame_model extends Model {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
-            if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
-                $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
-            }
+           
         }
         return $this->db;
     }
@@ -4339,9 +4334,7 @@ class exame_model extends Model {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
-            if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
-                $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
-            }
+            
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 if ($args['situacao'] == "BLOQUEADO") {
                     $this->db->where('ae.bloqueado', 't');
@@ -4538,9 +4531,7 @@ class exame_model extends Model {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
-            if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
-                $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
-            }
+            
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 if ($args['situacao'] == "BLOQUEADO") {
                     $this->db->where('ae.bloqueado', 't');
