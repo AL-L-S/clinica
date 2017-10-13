@@ -1294,6 +1294,7 @@ class guia_model extends Model {
             c.nome as convenio,
             ae.quantidade,
 	    p.nome,
+            e.situacao,
 	    pt.nome as procedimento,
             ae.valor_total as valor');
         $this->db->from('tb_agenda_exames ae');
@@ -1304,7 +1305,13 @@ class guia_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('e.cancelada', 'false');
-        $this->db->where('e.situacao', 'FINALIZADO');
+//        $this->db->where('e.situacao', 'FINALIZADO');
+//        var_dump($_POST['situacao']); die;
+        if ($_POST['situacao'] == "1") {
+            $this->db->where('al.situacao', 'FINALIZADO');
+        } elseif ($_POST['situacao'] == "0") {
+            $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
         }
@@ -1323,8 +1330,8 @@ class guia_model extends Model {
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio'])));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim'])));
+//        $this->db->where("ae.data >=", date("Y-m-d", strtotime($_POST['txtdata_inicio'])));
+//        $this->db->where("ae.data <=", date("Y-m-d", strtotime($_POST['txtdata_fim'])));
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('pc.convenio_id');

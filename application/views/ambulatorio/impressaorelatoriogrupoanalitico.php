@@ -184,8 +184,7 @@
                                 <td colspan="2"><font size="-1">Nr. Exa: <?= $qtde; ?></td>
                                 <td colspan="2"><font size="-1">VALOR TOTAL: <?= number_format($valor, 2, ',', '.'); ?></td>
                             </tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
+                            
                             <tr>
                                 <td colspan="5" bgcolor="#C0C0C0"><font ><?= $item->convenio; ?></td>
                             </tr>
@@ -280,103 +279,86 @@
                     <tr>
                         <td width="140px;"><font size="-1">RAIOX</td>
                         <td width="140px;"><font size="-1"><?= $NUMERORX; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"> <?= number_format($RX, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">US</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROUS; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"> <?= number_format($US, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">DENSITOMETRIA</td>
                         <td width="140px;"><font size="-1"><?= $NUMERODENSITOMETRIA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($DENSITOMETRIA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">MAMOGRAFIA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROMAMOGRAFIA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($MAMOGRAFIA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">RM</td>
                         <td width="140px;"><font size="-1"><?= $NUMERORM; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($RM, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">AUDIOMETRIA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROAUDIOMETRIA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($AUDIOMETRIA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">ELETROCARDIOGRAMA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROELETROCARDIOGRAMA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($ELETROCARDIOGRAMA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">ELETROENCEFALOGRAMA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROELETROENCEFALOGRAMA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($ELETROENCEFALOGRAMA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">ESPIROMETRIA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROESPIROMETRIA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($ESPIROMETRIA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">AUDIOMETRIA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROAUDIOMETRIA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($AUDIOMETRIA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">ELETROCARDIOGRAMA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROELETROCARDIOGRAMA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($ELETROCARDIOGRAMA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">ESPIROMETRIA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROESPIROMETRIA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($ESPIROMETRIA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">ECOCARDIOGRAMA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROECOCARDIOGRAMA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($ECOCARDIOGRAMA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">LABORATORIAL</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROLABORATORIAL; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($LABORATORIAL, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">TOMOGRAFIA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROTOMOGRAFIA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($TOMOGRAFIA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">CONSULTA</td>
                         <td width="140px;"><font size="-1"><?= $NUMEROCONSULTA; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1"><?= number_format($CONSULTA, 2, ',', '.'); ?></td>
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">TOTAL GERAL</td>
                         <td width="140px;"><font size="-1"><?= $qtdetotal; ?></td>
-                        <td><font size="-2"></td>
                         <td width="200px;"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
                     </tr>
                     </tbody>
