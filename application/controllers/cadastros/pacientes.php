@@ -90,6 +90,8 @@ class pacientes extends BaseController {
             $destino = "./upload/paciente/$paciente_id";
             chmod($destino, 0777);
         }
+        
+//        var_dump($_FILES); die;
 
         $config['upload_path'] = "./upload/paciente/" . $paciente_id . "/";
 //        $config['upload_path'] = "./upload/paciente/paciente/" . $paciente_id . "/";

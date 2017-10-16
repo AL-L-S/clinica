@@ -3435,6 +3435,14 @@ class guia_model extends Model {
             pt.nome as procedimento,
             pc.convenio_id,
             ae.autorizacao,
+            ae.valor_medico,
+            ae.percentual_medico,
+            ae.valor_total,
+            ae.valor_revisor,
+            ae.percentual_revisor,
+            ae.valor_promotor,
+            ae.agenda_exames_id,
+            al.ambulatorio_laudo_id,
             ae.data,
             al.situacao as situacaolaudo,
             o.nome as revisor,
@@ -5600,8 +5608,39 @@ class guia_model extends Model {
 
     function relatoriomedicoconveniormrevisor() {
 
-        $this->db->select('o.nome as revisor,
-            count(o.nome) as quantidade');
+        $this->db->select('o.nome as revisor, ae.valor_total, ae.valor_revisor, ae.percentual_revisor, ae.valor_medico, ae.percentual_medico,ae.quantidade');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('e.situacao', 'FINALIZADO');
+        $this->db->where('al.medico_parecer1', $_POST['medicos']);
+        if ($_POST['convenio'] != "0") {
+            $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        $this->db->where('pt.grupo', 'RM');
+
+
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+//        $this->db->groupby('o.nome');
+        $this->db->orderby('o.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatoriomedicoconveniormrevisorunico() {
+
+        $this->db->select('distinct(o.nome) as revisor,
+            ');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -5632,8 +5671,40 @@ class guia_model extends Model {
 
     function relatoriomedicoconveniormrevisada() {
 
-        $this->db->select('o.nome as revisor,
-            count(o.nome) as quantidade');
+        $this->db->select('o.nome as revisor, ae.valor_total, ae.valor_revisor, ae.percentual_revisor,ae.quantidade
+           ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where('e.situacao', 'FINALIZADO');
+        $this->db->where('al.medico_parecer2', $_POST['medicos']);
+        if ($_POST['convenio'] != "0") {
+            $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        $this->db->where('pt.grupo', 'RM');
+
+
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+//        $this->db->groupby('o.nome, ae.percentual_revisor');
+        $this->db->orderby('o.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatoriomedicoconveniormrevisadaunico() {
+
+        $this->db->select('distinct(o.nome) as revisor,
+           ');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');

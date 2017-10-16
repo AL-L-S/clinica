@@ -14,7 +14,7 @@
                         <select name="__covenio" id="__covenio" class="size4" required disabled="">
                             <option value="">SELECIONE</option>
                             <? foreach ($convenio as $value) : ?>
-                                <option  value="<?= $value->convenio_id; ?>" <?if($value->convenio_id == $convenio_id) echo 'selected'?>>
+                                <option  value="<?= $value->convenio_id; ?>" <? if ($value->convenio_id == $convenio_id) echo 'selected' ?>>
                                     <?php echo $value->nome; ?>
                                 </option>                            
                             <? endforeach; ?>                                                                                             
@@ -38,7 +38,7 @@
                         <label>Procedimento</label>
                     </dt>
                     <dd>
-                        
+
                         <select name="procedimento" id="procedimento" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                             <option value="">Selecione</option>
                         </select>
@@ -71,6 +71,17 @@
                             <option value="0"> NÃO</option>                                   
                         </select>
                     </dd>
+                    <div id="revisordiv">
+                        <dt>
+                            <label>Revisor</label>
+                        </dt>
+                        <dd>
+                            <select name="revisor"  id="revisor" class="size1">  
+                                <option value="0"> NÃO</option>             
+                                <option value="1"> SIM</option>
+                            </select>
+                        </dd>
+                    </div>
                     <dt>
                         <label>Dia Faturamento</label>
                     </dt>
@@ -114,7 +125,7 @@
     $(function () {
         $('#covenio').change(function () {
             if ($(this).val()) {
-                if ( $('#grupo').val() == "TODOS") {
+                if ($('#grupo').val() == "TODOS") {
                     $('.carregando').show();
                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $(this).val(), ajax: true}, function (j) {
                         options = '<option value="">TODOS</option>';
@@ -128,9 +139,8 @@
                         $("#procedimento").trigger("chosen:updated");
                         $('.carregando').hide();
                     });
-                }
-                else{
-                    if ( $('#grupo').val() != "SELECIONE") {
+                } else {
+                    if ($('#grupo').val() != "SELECIONE") {
                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $('#grupo').val(), convenio1: $(this).val()}, function (j) {
                             options = '<option value="">TODOS</option>';
                             for (var c = 0; c < j.length; c++) {
@@ -150,10 +160,29 @@
             }
         });
     });
-    
-    
-    
-    
+
+    $(function () {
+        $('#grupo').change(function () {
+            if ($('#grupo').val() == 'RM') {
+                $('#revisordiv').show();
+            } else {
+                $('#revisordiv').hide();
+            }
+
+
+        });
+    });
+
+    if ($('#grupo').val() == 'RM') {
+        $('#revisordiv').show();
+    } else {
+//        $('#revisordiv').hide();
+        $(document).ready(function () {
+            $('#revisordiv').hide();
+        });
+    }
+
+
     $(function () {
         $('#grupo').change(function () {
             if ($('#covenio').val() != 'SELECIONE' && $('#grupo').val() != 'TODOS') {
@@ -170,11 +199,9 @@
                     $("#procedimento").trigger("chosen:updated");
                     $('.carregando').hide();
                 });
-            }
-            
-            else {
-                
-                if ( $('#grupo').val() == 'TODOS' ) {
+            } else {
+
+                if ($('#grupo').val() == 'TODOS') {
                     $('.carregando').show();
                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $('#covenio').val(), ajax: true}, function (j) {
                         options = '<option value="">TODOS</option>';
@@ -189,7 +216,7 @@
                         $('.carregando').hide();
                     });
                 }
-                
+
             }
         });
     });

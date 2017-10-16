@@ -56,7 +56,7 @@ class Procedimentoplano extends BaseController {
     function procedimentoconveniopercentual($convenio_id) {
         $data['convenio_id']= $convenio_id;
 //        var_dump($_GET);die;
-        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconveniopercentual($convenio_id);
+//        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconveniopercentual($convenio_id);
         $data['grupo']= $this->procedimento->listargrupos(); 
 //        var_dump($data['grupo']);die;
         $this->loadView('ambulatorio/procedimentopercentualmedico-lista', $data);

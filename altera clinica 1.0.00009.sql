@@ -234,3 +234,159 @@ ALTER TABLE ponto.tb_ambulatorio_guia ALTER COLUMN declaracao TYPE text;
 -- VERSÃO 1.0.00009
 INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
     VALUES ('1.0.00009', '1.0.00009');
+
+
+
+-- 16/10/2017
+UPDATE ponto.tb_agenda_exames
+   SET 
+       valor_revisor= mc.valor, percentual_revisor= mc.percentual
+
+
+       
+FROM ponto.tb_procedimento_percentual_medico m , ponto.tb_procedimento_percentual_medico_convenio mc, ponto.tb_exames e, ponto.tb_ambulatorio_laudo al , ponto.tb_procedimento_convenio pc, ponto.tb_procedimento_tuss pt
+
+	WHERE ponto.tb_agenda_exames.procedimento_tuss_id = m.procedimento_tuss_id 
+
+	AND m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+        AND e.agenda_exames_id = ponto.tb_agenda_exames.agenda_exames_id
+        AND e.agenda_exames_id = ponto.tb_agenda_exames.agenda_exames_id
+        AND e.exames_id = al.exame_id
+	AND pc.procedimento_convenio_id = ponto.tb_agenda_exames.procedimento_tuss_id
+	AND pc.procedimento_tuss_id = pt.procedimento_tuss_id
+	AND m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+       
+        AND mc.medico = al.medico_parecer2  
+ 
+       AND ponto.tb_agenda_exames.paciente_id is not null
+
+       AND ponto.tb_agenda_exames.procedimento_tuss_id is not null  
+
+       AND m.ativo = 'true' 
+       
+       AND mc.ativo = 'true'
+       AND mc.revisor = 'true'
+       AND pt.grupo = 'RM';
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+UPDATE ponto.tb_agenda_exames
+   SET 
+       valor_medico= mc.valor, percentual_medico= mc.percentual
+
+
+       
+FROM ponto.tb_procedimento_percentual_medico m , ponto.tb_procedimento_percentual_medico_convenio mc, ponto.tb_procedimento_convenio pc, ponto.tb_procedimento_tuss pt
+
+	WHERE ponto.tb_agenda_exames.procedimento_tuss_id = m.procedimento_tuss_id 
+        AND pc.procedimento_convenio_id = ponto.tb_agenda_exames.procedimento_tuss_id
+	AND pc.procedimento_tuss_id = pt.procedimento_tuss_id
+	AND m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+       
+        AND mc.medico = ponto.tb_agenda_exames.medico_agenda  
+ 
+       AND ponto.tb_agenda_exames.paciente_id is not null
+
+       AND ponto.tb_agenda_exames.procedimento_tuss_id is not null  
+
+       AND m.ativo = 'true' 
+       
+       AND mc.ativo = 'true'
+       AND pt.grupo = 'RM';
+
+
+
+
+-- 16/10/2017
+---------------------- OFTAMOLOGIA -----------------------------
+CREATE TABLE ponto.tb_oftamologia_od_esferico
+(
+  od_esferico_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_od_esferico_pkey PRIMARY KEY (od_esferico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_oe_esferico
+(
+  oe_esferico_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_oe_esferico_pkey PRIMARY KEY (oe_esferico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_od_cilindrico
+(
+  od_cilindrico_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_od_cilindrico_pkey PRIMARY KEY (od_cilindrico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_oe_cilindrico
+(
+  oe_cilindrico_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_oe_cilindrico_pkey PRIMARY KEY (oe_cilindrico_id)
+);
+
+
+CREATE TABLE ponto.tb_oftamologia_oe_eixo
+(
+  oe_eixo_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_oe_eixo_pkey PRIMARY KEY (oe_eixo_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_oe_av
+(
+  oe_av_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_oe_av_pkey PRIMARY KEY (oe_av_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_od_eixo
+(
+  od_eixo_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_od_eixo_pkey PRIMARY KEY (od_eixo_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_od_av
+(
+  od_av_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_od_av_pkey PRIMARY KEY (od_av_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_ad_esferico
+(
+  ad_esferico_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_ad_esferico_pkey PRIMARY KEY (ad_esferico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_ad_cilindrico
+(
+  ad_cilindrico_id integer NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo integer,
+  CONSTRAINT tb_oftamologia_ad_cilindrico_pkey PRIMARY KEY (ad_cilindrico_id)
+);

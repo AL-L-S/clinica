@@ -2768,7 +2768,8 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->orderby('ae.data');
-        $this->db->orderby('ae.ordenador');
+        $this->db->orderby('ae.data_autorizacao');
+        $this->db->orderby('ae.ordenador desc');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.ordenador is not null');

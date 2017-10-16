@@ -3,7 +3,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Honor&aacute;rios M&eacute;dicos</a></h3>
         <div>
-            <form name="form_procedimentonovomedico" id="form_procedimentonovomedico" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarnovomedico/<?= $procedimento_percentual_medico_id ?>/<?= $convenio_id?>" method="post" onSubmit="enviardados();">
+            <form name="form_procedimentonovomedico" id="form_procedimentonovomedico" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarnovomedico/<?= $procedimento_percentual_medico_id ?>/<?= $convenio_id ?>" method="post" onSubmit="enviardados();">
 
                 <dl class="dl_desconto_lista">
                     <dt>
@@ -51,6 +51,21 @@
                             <option value="0"> NÃO</option>                                   
                         </select>
                     </dd>
+                    <?if($dados[0]->grupo == 'RM'){?>
+                    <div id="revisordiv">
+                        <dt>
+                            <label>Revisor</label>
+                        </dt>
+                        <dd>
+                            <select name="revisor"  id="revisor" class="size1">  
+                                <option value="0"> NÃO</option>             
+                                <option value="1"> SIM</option>
+                            </select>
+                        </dd>
+                    </div>
+                    <?}
+                    
+                    ?>
                     <dt>
                         <label>Dia Faturamento</label>
                     </dt>
@@ -76,13 +91,13 @@
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $('#btnVoltar').click(function () {
-        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-    });
+                $('#btnVoltar').click(function () {
+                    $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+                });
 
-    $(function () {
-        $("#accordion").accordion();
-    });
+                $(function () {
+                    $("#accordion").accordion();
+                });
 
 
 //    $(document).ready(function () {

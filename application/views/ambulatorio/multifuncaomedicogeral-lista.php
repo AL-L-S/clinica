@@ -152,10 +152,10 @@
                             $verifica = 0;
 
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            if ($item->realizada == 't' && $item->situacaolaudo != 'FINALIZADO' &&$item->situacaoexame != 'PENDENTE') {
-                                $situacao = "Aguardando";
+                            if ($item->realizada == 't' && $item->situacaoexame == 'EXECUTANDO') {
+                                $situacao = "Atendendo";
                                 $verifica = 2;
-                            } elseif ($item->realizada == 't' && $item->situacaolaudo == 'FINALIZADO') {
+                            } elseif ($item->realizada == 't' && $item->situacaoexame == 'FINALIZADO') {
                                 $situacao = "Finalizado";
                                 $verifica = 4;
                             } elseif ($item->confirmado == 'f') {
@@ -164,8 +164,8 @@
                             } elseif ($item->situacaoexame == 'PENDENTE') {
                                 $situacao = "pendente";
                                 $verifica = 1;
-                                $cor = "color='purple'";
                             } else {
+//                                echo $item->situacaoexame;
                                 $situacao = "espera";
                                 $verifica = 3;
                             }

@@ -155,12 +155,11 @@ class procedimentoplano_model extends Model {
             $this->db->where('pt.grupo ilike', "%" . $_GET['grupo'] . "%");
         }
 
-        $limit = 10;
-        isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
-        $this->db->limit($limit, $pagina);
+//        $limit = 10;
+//        isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+//        $this->db->limit($limit, $pagina);
 
-        $query = $this->db->get();
-        return $query->result();
+        return $this->db;
     }
 
     function listarprocedimentogrupo($args = array()) {
@@ -871,6 +870,11 @@ class procedimentoplano_model extends Model {
         $this->db->from('tb_procedimento_percentual_medico_convenio');
         $this->db->where('medico', $_POST['medico']);
         $this->db->where('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
+        if($_POST['revisor'] == '1'){
+        $this->db->where('revisor', 't');    
+        }else{
+        $this->db->where('revisor', 'f');  
+        }
         $this->db->where('ativo', 'true');
         $return = $this->db->get();
         $result = $return->result();
@@ -892,6 +896,7 @@ class procedimentoplano_model extends Model {
                 if ($_POST['tempo_recebimento'] != '') {
                     $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
                 }
+                $this->db->set('revisor', $_POST['revisor']);
                 $this->db->set('medico', $_POST['medico']);
                 $this->db->set('valor', $_POST['valor']);
                 $this->db->set('percentual', $_POST['percentual']);
@@ -1541,7 +1546,9 @@ class procedimentoplano_model extends Model {
 
     function gravarpercentualmedico() {
         try {
-//            echo "<pre>"; var_dump($_POST);die;
+//            echo "<pre>";
+//            var_dump($_POST);
+//            die;
             $grupo = $_POST['grupo'];
             $convenio = $_POST['covenio'];
             $medico = $_POST['medico'];
@@ -1554,6 +1561,7 @@ class procedimentoplano_model extends Model {
                     $this->db->from('tb_operador');
                     $this->db->where('consulta', 'true');
                     $this->db->where('ativo', 'true');
+                    $this->db->where('solicitante', 'f');
                     $return = $this->db->get();
                     $medicos = $return->result();
                     $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
@@ -1575,6 +1583,9 @@ class procedimentoplano_model extends Model {
                         $this->db->set('procedimento_percentual_medico_id', $procedimento_percentual_medico_id);
                         $this->db->set('medico', $operador);
                         $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                        if ($_POST['revisor'] == '1') {
+                            $this->db->set('revisor', 't');
+                        }
                         if ($_POST['dia_recebimento'] != '') {
                             $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
                         }
@@ -1610,6 +1621,9 @@ class procedimentoplano_model extends Model {
                     if ($_POST['tempo_recebimento'] != '') {
                         $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
                     }
+                    if ($_POST['revisor'] == '1') {
+                        $this->db->set('revisor', 't');
+                    }
                     $percentual = $_POST['percentual'];
                     $this->db->set('percentual', $percentual);
                     $horario = date("Y-m-d H:i:s");
@@ -1634,6 +1648,7 @@ class procedimentoplano_model extends Model {
                         $this->db->from('tb_operador');
                         $this->db->where('consulta', 'true');
                         $this->db->where('ativo', 'true');
+                        $this->db->where('solicitante', 'f');
                         $return = $this->db->get();
                         $medicos = $return->result();
 
@@ -1669,6 +1684,9 @@ class procedimentoplano_model extends Model {
                                 }
                                 $this->db->set('percentual', $percentual);
                                 $horario = date("Y-m-d H:i:s");
+                                if ($_POST['revisor'] == '1') {
+                                    $this->db->set('revisor', 't');
+                                }
                                 $operador_id = $this->session->userdata('operador_id');
                                 $this->db->set('data_cadastro', $horario);
                                 $this->db->set('operador_cadastro', $operador_id);
@@ -1698,6 +1716,9 @@ class procedimentoplano_model extends Model {
                             if ($_POST['tempo_recebimento'] != '') {
                                 $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
                             }
+                            if ($_POST['revisor'] == '1') {
+                                $this->db->set('revisor', 't');
+                            }
                             $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
                             $percentual = $_POST['percentual'];
                             $this->db->set('percentual', $percentual);
@@ -1715,6 +1736,7 @@ class procedimentoplano_model extends Model {
                         $this->db->from('tb_operador');
                         $this->db->where('consulta', 'true');
                         $this->db->where('ativo', 'true');
+                        $this->db->where('solicitante', 'f');
                         $return = $this->db->get();
                         $medicos = $return->result();
                         $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
@@ -1743,6 +1765,9 @@ class procedimentoplano_model extends Model {
                             }
                             if ($_POST['tempo_recebimento'] != '') {
                                 $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                            }
+                            if ($_POST['revisor'] == '1') {
+                                $this->db->set('revisor', 't');
                             }
                             $horario = date("Y-m-d H:i:s");
                             $operador_id = $this->session->userdata('operador_id');
@@ -1774,6 +1799,9 @@ class procedimentoplano_model extends Model {
                         if ($_POST['tempo_recebimento'] != '') {
                             $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
                         }
+                        if ($_POST['revisor'] == '1') {
+                            $this->db->set('revisor', 't');
+                        }
                         $operador_id = $this->session->userdata('operador_id');
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);
@@ -1788,7 +1816,7 @@ class procedimentoplano_model extends Model {
                 $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
                 $this->db->where('pc.convenio_id', $convenio);
                 $this->db->where('pt.grupo', $grupo);
-
+                
                 if ($procediemento != "") {
                     $this->db->where('pc.procedimento_convenio_id', $procediemento);
                 }
@@ -1798,13 +1826,17 @@ class procedimentoplano_model extends Model {
                 $this->db->orderby("pt.nome");
                 $return = $this->db->get();
                 $procedimentos2 = $return->result();
+//                echo '<pre>';
+//                var_dump($grupo);
+//                var_dump($procedimentos2); die;
 
                 if ($medico == "TODOS") { // inicio grupo especifico  medico=todos
                     $this->db->select('operador_id,
                                        nome');
                     $this->db->from('tb_operador');
-                    $this->db->where('ativo', 't');
-                    $this->db->where('medico', 't');
+                    $this->db->where('consulta', 'true');
+                    $this->db->where('ativo', 'true');
+                    $this->db->where('solicitante', 'f');
                     $return = $this->db->get();
                     $medicos = $return->result();
 
@@ -1839,6 +1871,9 @@ class procedimentoplano_model extends Model {
                             if ($_POST['tempo_recebimento'] != '') {
                                 $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
                             }
+                            if ($_POST['revisor'] == '1') {
+                                $this->db->set('revisor', 't');
+                            }
                             $this->db->set('data_cadastro', $horario);
                             $this->db->set('operador_cadastro', $operador_id);
                             $this->db->insert('tb_procedimento_percentual_medico_convenio');
@@ -1870,6 +1905,9 @@ class procedimentoplano_model extends Model {
                         }
                         if ($_POST['tempo_recebimento'] != '') {
                             $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                        }
+                        if ($_POST['revisor'] == '1') {
+                            $this->db->set('revisor', 't');
                         }
                         $operador_id = $this->session->userdata('operador_id');
                         $this->db->set('data_cadastro', $horario);

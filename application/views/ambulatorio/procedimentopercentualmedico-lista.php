@@ -77,16 +77,21 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $total = count($procedimentos);
+                $consulta = $this->procedimentoplano->listarprocedimentoconveniopercentual($convenio_id);
+//                var_dump($consulta); die;
+                $total = $consulta->count_all_results();
+                
                 $limit = 10;
+                $procedimentos;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
+                        $lista = $this->procedimentoplano->listarprocedimentoconveniopercentual($convenio_id)->orderby('c.nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
-                        foreach ($procedimentos as $item) {
+                        foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
