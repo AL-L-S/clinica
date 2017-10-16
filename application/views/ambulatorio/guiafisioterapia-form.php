@@ -427,9 +427,10 @@
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
                                             </a></div>
-                                        <? }
-                                        if ($botao_faturar_proc == 't') { ?>
-                                                
+                                                </th>
+                                            <? }
+                                            if ($botao_faturar_proc == 't') { ?>
+                                            <th>    
                                                 <div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 

@@ -645,7 +645,7 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
-    function excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $grupopagamento_id) {
+    function excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $grupopagamento_id, $convenio_id) {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $sql = "DELETE FROM ponto.tb_procedimento_convenio_pagamento
@@ -656,6 +656,7 @@ class procedimentoplano_model extends Model {
                     WHERE pc.ativo = 't'
                     AND pc.convenio_id = $convenio_id 
                  )";
+        $this->db->query($sql);
         
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
@@ -694,7 +695,9 @@ class procedimentoplano_model extends Model {
                         WHERE pc.ativo = 't'
                         AND pc.convenio_id = $convenio_id 
                      )";
-
+            
+            $this->db->query($sql);
+            
             $this->db->select('grupo_pagamento_id');
             $this->db->from('tb_convenio_grupopagamento');
             $this->db->where('ativo', 't');

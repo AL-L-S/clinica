@@ -288,12 +288,21 @@
                                         <? if ($perfil_id != 11) { ?>
 
                                             <? if ($perfil_id == 1 || $faturado == 0) { 
-                                                if ($botao_faturar_guia == 't') {?>
-                                                <th colspan="2" align="center"><center><div class="bt_linkf">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
+                                                if ($botao_faturar_guia == 't') { ?>
+                                                    <th colspan="2" align="center"><center><div class="bt_linkf">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
 
-                                                </a></div></center></th>
-                                    <? } 
+                                                    </a></div></center></th>
+                                            <? } 
+                                            if ($botao_faturar_proc == 't') { ?>
+                                                <th colspan="2" align="center">    
+                                                    <div class="bt_linkf">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+
+                                                    </a></div></center>
+                                                </th>
+                                                <?
+                                            }
                                     }
                                  } ?>
                                 </tr>
@@ -390,16 +399,26 @@
 
                                     <? if ($perfil_id != 11) { ?>
 
-            <? if ($perfil_id == 1 || $faturado == 0) { 
-                if ($botao_faturar_guia == 't') {?>
-                                            <th colspan="2" align="center"><center><div class="bt_linkf">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
+                                        <? if ($perfil_id == 1 || $faturado == 0) { 
+                                            if ($botao_faturar_guia == 't') {?>
+                                                <th colspan="2" align="center"><center><div class="bt_linkf">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
-                                            </a></div></center></th>
-            <? }
-            }
-        }
-        ?>
+                                                    </a></div></center>
+                                                </th>
+                                            <? }
+                                            if ($botao_faturar_proc == 't') { ?>
+                                                <th colspan="2" align="center">    
+                                                    <div class="bt_linkf">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+
+                                                    </a></div></center>
+                                                </th>
+                                                <?
+                                            }
+                                        }
+                                    }
+                                    ?>
                             </tr>
                             </tfoot>
                         </table> 
