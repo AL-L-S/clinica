@@ -12,9 +12,9 @@
         <tr>
 
             <th class="tabela_header" width="350px;">Paciente</th>
-            <th class="tabela_header" width="450px;">Pocedimento</th>
-            <th class="tabela_header">Convênio</th>
             <th class="tabela_header">Grupo</th>
+            <th class="tabela_header">Convênio</th>
+            <th class="tabela_header" width="450px;">Pocedimento</th>
             <th class="tabela_header">Telefone</th>
 
         </tr>
@@ -62,9 +62,9 @@
                 <tr>
 
                     <td <b><?= $item->paciente; ?></b></td>
-                    <td <b><?= $item->nome; ?></b></td>
-                    <td <b><?= $item->convenio; ?></b></td>
                     <td ><?= $item->grupo; ?></td>
+                    <td <b><?= $item->convenio; ?></b></td>
+                    <td <b><?= $item->nome; ?></b></td>
                     <td ><?= $telefone; ?></td>
                 </tr>
 
