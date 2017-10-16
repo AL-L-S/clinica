@@ -2018,7 +2018,7 @@ class Exame extends BaseController {
 //                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
 //            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
 
-                $this->gravarespecialidade($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
+                $this->gravarespecialidade($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
 
                 if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
 
@@ -2034,8 +2034,11 @@ class Exame extends BaseController {
 //                $b++;
 //            }
             }
-        } else {
-            $this->gravarespecialidade($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);
+        } 
+        else {
+//            var_dump($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);
+//            die('morreu');
+            $this->gravarespecialidade($datainicial, $datafinal, $agenda_id, $medico_id);
         }
         $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
 

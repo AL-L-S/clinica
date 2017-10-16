@@ -122,25 +122,39 @@ class Login extends Controller {
                 'uri' => "http://" . $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/",
                 'trace' => 1
             ));
-
+//            var_dump($dadosEmpresaSms[0]->ip_servidor_sms);die;
             try {
                 $resultado = $cliente->__soapCall("recebemensagens", array(
                     "dados" => $dados
                 ));
+                
+                //Salvando o numero de controle recebido pelo WEBSERVICE no banco 
+                if( count($resultado) > 0 ){
+                    $this->login->atualizandonumerocontrole($resultado);
+                }
+                
             } catch (SoapFault $fault) {
                 die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
             }
-//            var_dump($resultado);die;
-            //Salvando o numero de controle recebido pelo WEBSERVICE no banco            
-            $this->login->atualizandonumerocontrole($resultado);
 
-
+//
 //            try { // CONFIRMANDO CONSULTAS COM AS MENSAGENS DE RETORNO
-//                $resultado = $cliente->__soapCall("recebemensagens");
+//                
+//                /*
+//                 * Certifique-se de ter criado a coluna abaixo no banco IONIC
+//                 * que está no mesmo servidor do webservice
+//                 * 
+//                 * ALTER TABLE sms_retorno ADD COLUMN lido boolean;
+//                 *                   
+//                 */
+//                
+//                $retorno = $cliente->__soapCall("verificamensagensretorno", array($dadosEmpresaSms[0]->numero_indentificacao_sms));
+//                
 //            } catch (SoapFault $fault) {
 //                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
 //            }
         }
+//        die('dfroskfj');
     }
 
     function autenticar() {
