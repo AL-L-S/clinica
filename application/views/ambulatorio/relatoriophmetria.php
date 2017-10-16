@@ -4,10 +4,10 @@
         <div>
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriophmetria">
                 <label>Data inicio</label>
-                <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
+                <input type="text" name="txtdata_inicio" id="txtdata_inicio" required="true" alt="date"/>
                 <input type="hidden" name="grupo" id="grupoo" value="RM"/>
                 <label>Data fim</label>
-                <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
+                <input type="text" name="txtdata_fim" id="txtdata_fim" required="true" alt="date"/>
                 <button type="submit" >Pesquisar</button>
             </form>
 

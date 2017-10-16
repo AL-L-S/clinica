@@ -673,6 +673,32 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function relatorioexamesch() {
+
+        $this->db->select('p.paciente_id,
+                            p.nome as paciente,
+                            p.data_cadastro,
+                            c.nome as convenio,
+                            p.nascimento');
+        $this->db->from('tb_paciente p');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("p.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
+            $this->db->where("p.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['convenio'] == "-1") {
+            $this->db->where("c.dinheiro", "t");
+        }
+        $this->db->orderby('c.convenio_id');
+        $this->db->orderby('p.nome');
+        $this->db->orderby('p.data_cadastro');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function relatorioexamescontador() {
 

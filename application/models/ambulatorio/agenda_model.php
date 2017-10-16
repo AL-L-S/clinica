@@ -2507,7 +2507,7 @@ class agenda_model extends Model {
                 }
             }
         }
-//        var_dump(count($return2)); die;
+//        var_dump($medico_id); die;
 
 
         $this->db->select('e.nome as empresa,
@@ -2533,7 +2533,7 @@ class agenda_model extends Model {
 
         $this->db->orderby('dia');
         $return = $this->db->get();
-//        var_dump($return->result()); die;
+//        var_dump($agenda_id, $return->result()); die;
         return $return->result();
     }
 
@@ -2712,7 +2712,7 @@ class agenda_model extends Model {
             $i = 0;
             /* inicia o mapeamento no banco */
 //            echo '<pre>';
-//            var_dump($_POST); die;
+//            var_dump($agenda_id); die;
             foreach ($_POST['txtDia'] as $dia) {
                 $i++;
                 $horaentrada1 = $_POST['txthoraEntrada'][$i];

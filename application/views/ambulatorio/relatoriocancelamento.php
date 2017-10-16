@@ -21,13 +21,13 @@
                         <label>Data inicio</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
+                        <input type="text" name="txtdata_inicio" id="txtdata_inicio"required="true" alt="date"/>
                     </dd>
                     <dt>
                         <label>Data fim</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
+                        <input type="text" name="txtdata_fim" id="txtdata_fim"required="true" alt="date"/>
                     </dd>
                     <dt>
                         <label>Especialidade</label>

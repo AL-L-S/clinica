@@ -263,7 +263,7 @@ class login_model extends Model {
     function listarempresasmsdados() {
         $empresa_id = $this->session->userdata('empresa_id');
 
-        $this->db->select('ip_servidor_sms, enviar_excedentes');
+        $this->db->select('ip_servidor_sms, enviar_excedentes, numero_indentificacao_sms');
         $this->db->from('tb_empresa_sms');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->where('ativo', 't');

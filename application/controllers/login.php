@@ -13,8 +13,8 @@ class Login extends Controller {
     }
 
     function verificasms() {
-        ini_set('display_errors',1);
-        ini_set('display_startup_erros',1);
+        ini_set('display_errors', 1);
+        ini_set('display_startup_erros', 1);
         error_reporting(E_ALL);
 
         set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
@@ -34,61 +34,59 @@ class Login extends Controller {
         if ($servicosms == 't') {
 //            $verificacoes = $this->login->verificacaosmsdia();
 //            if ($verificacoes[0]->total < 3 && ( date("H") == "08" ) ) {
-                
-                $registro_sms_id = $this->login->criandoregistrosms();
-                
-                $dadosEmpresaSms = $this->login->listarempresasmsdados();
+
+            $registro_sms_id = $this->login->criandoregistrosms();
+
+            $dadosEmpresaSms = $this->login->listarempresasmsdados();
 //                var_dump($dadosEmpresaSms);die;
-                
-                // verificando o total de mensagens utilizadas do pacote
-                $totalUtilizado = (int) $this->login->totalutilizado();
-                $totalPacote = (int) $this->login->listarempresapacote();
+            // verificando o total de mensagens utilizadas do pacote
+            $totalUtilizado = (int) $this->login->totalutilizado();
+            $totalPacote = (int) $this->login->listarempresapacote();
 
-                if ($totalUtilizado < $totalPacote || $dadosEmpresaSms[0]->enviar_excedentes == "t") {
-                    
-                    //calculando total disponivel
-                    $disponivel = $totalPacote - $totalUtilizado;
+            if ($totalUtilizado < $totalPacote || $dadosEmpresaSms[0]->enviar_excedentes == "t") {
 
-                    //INSERINDO EXAMES AGENDADOS PARA O DIA SEGUINTE NA TABELA DE CONTROLE (CONFIRMACAO)
-                    $examesAgendados = $this->login->examesagendados();
-                    $totalInserido = $this->login->atualizandoagendadostabelasms($examesAgendados, $disponivel);
+                //calculando total disponivel
+                $disponivel = $totalPacote - $totalUtilizado;
 
-                    //calculando novo total disponivel
+                //INSERINDO EXAMES AGENDADOS PARA O DIA SEGUINTE NA TABELA DE CONTROLE (CONFIRMACAO)
+                $examesAgendados = $this->login->examesagendados();
+                $totalInserido = $this->login->atualizandoagendadostabelasms($examesAgendados, $disponivel);
+
+                //calculando novo total disponivel
+                $disponivel = $disponivel - $totalInserido;
+
+                if ($disponivel > 0) {
+                    //INSERINDO PACIENTES ATENDIDOS NO DECORRER DO DIA (AGRADECIMENTO)
+                    $pacientesDia = $this->login->atendimentos();
+                    $totalInserido = $this->login->atualizandoatendidostabelasms($pacientesDia, $disponivel);
                     $disponivel = $disponivel - $totalInserido;
+                }
 
+                /* So deve executar esse bloco uma vez ao dia */
+
+                $smsVerificacao = $this->login->verificasms();
+                if (count($smsVerificacao) == 0) {
                     if ($disponivel > 0) {
-                        //INSERINDO PACIENTES ATENDIDOS NO DECORRER DO DIA (AGRADECIMENTO)
-                        $pacientesDia = $this->login->atendimentos();
-                        $totalInserido = $this->login->atualizandoatendidostabelasms($pacientesDia, $disponivel);
+                        //INSERINDO ANIVERSARIANTES NA TABELA DE CONTROLE (ANIVERSARIANTE)
+                        $aniversariantes = $this->login->aniversariantes();
+                        $totalInserido = $this->login->atualizandoaniversariantestabelasms($aniversariantes, $disponivel);
+
+                        //calculando novo total disponivel
                         $disponivel = $disponivel - $totalInserido;
                     }
 
-                    /* So deve executar esse bloco uma vez ao dia */
-
-                    $smsVerificacao = $this->login->verificasms();
-                    if (count($smsVerificacao) == 0) {
-                        if ($disponivel > 0) {
-                            //INSERINDO ANIVERSARIANTES NA TABELA DE CONTROLE (ANIVERSARIANTE)
-                            $aniversariantes = $this->login->aniversariantes();
-                            $totalInserido = $this->login->atualizandoaniversariantestabelasms($aniversariantes, $disponivel);
-
-                            //calculando novo total disponivel
-                            $disponivel = $disponivel - $totalInserido;
-                        }
-
-                        if ($disponivel > 0) {
-                            //INSERINDO REVISÕES NA TABELA DE CONTROLE (REVISAO)
-                            $revisoes = $this->login->revisoes();
-                            $totalInserido = $this->login->atualizandorevisoestabelasms($revisoes, $disponivel);
-                            $disponivel = $disponivel - $totalInserido;
-                        }
+                    if ($disponivel > 0) {
+                        //INSERINDO REVISÕES NA TABELA DE CONTROLE (REVISAO)
+                        $revisoes = $this->login->revisoes();
+                        $totalInserido = $this->login->atualizandorevisoestabelasms($revisoes, $disponivel);
+                        $disponivel = $disponivel - $totalInserido;
                     }
-                    /* Fim do Bloco */
+                }
+                /* Fim do Bloco */
 
-                    $this->login->atualizandoregistro($registro_sms_id);
-                } 
-                else {
-                    //Mandar email para o administrador alertando que o pacote foi excedido
+                $this->login->atualizandoregistro($registro_sms_id);
+            } else {
+                //Mandar email para o administrador alertando que o pacote foi excedido
 //                $config['protocol'] = 'smtp';
 //                $config['smtp_host'] = 'ssl://smtp.gmail.com';
 //                $config['smtp_port'] = '465';
@@ -106,37 +104,57 @@ class Login extends Controller {
 //                $this->email->subject($assunto);
 //                $this->email->message($mensagem);
 //                $this->email->send();
-                }
-                // Buscando mensagens  no banco que deverao ser mandadas para o webservice
-                $dados = $this->login->listarsms();
+            }
+            // Buscando mensagens  no banco que deverao ser mandadas para o webservice
+            $dados = $this->login->listarsms();
 //                var_dump($dados);die;
 
-                /* ENVIANDO PARA O WEBSERVICE */
-                $cliente = new SoapClient(null, array(
-                    /*
-                     * Certifique-se de ter criado a coluna abaixo no banco IONIC
-                     * que está no mesmo servidor do webservice
-                     * 
-                     * ALTER TABLE sms ADD COLUMN sms_associacao_id integer;
-                     *                   
-                     */
-                    'location' => "http://". $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/servidor.php",
-                    'uri' => "http://". $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/",
-                    'trace' => 1
+            /* ENVIANDO PARA O WEBSERVICE */
+            $cliente = new SoapClient(null, array(
+                /*
+                 * Certifique-se de ter criado a coluna abaixo no banco IONIC
+                 * que está no mesmo servidor do webservice
+                 * 
+                 * ALTER TABLE sms ADD COLUMN sms_associacao_id integer;
+                 *                   
+                 */
+                'location' => "http://" . $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/servidor.php",
+                'uri' => "http://" . $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/",
+                'trace' => 1
+            ));
+//            var_dump($dadosEmpresaSms[0]->ip_servidor_sms);die;
+            try {
+                $resultado = $cliente->__soapCall("recebemensagens", array(
+                    "dados" => $dados
                 ));
-
-                try {
-                    $resultado = $cliente->__soapCall("recebemensagens", array(
-                        "dados" => $dados
-                    ));
-                } catch (SoapFault $fault) {
-                    die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
+                
+                //Salvando o numero de controle recebido pelo WEBSERVICE no banco 
+                if( count($resultado) > 0 ){
+                    $this->login->atualizandonumerocontrole($resultado);
                 }
-//            var_dump($resultado);die;
-                //Salvando o numero de controle recebido pelo WEBSERVICE no banco            
-                $this->login->atualizandonumerocontrole($resultado);
+                
+            } catch (SoapFault $fault) {
+                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
+            }
+
+//
+//            try { // CONFIRMANDO CONSULTAS COM AS MENSAGENS DE RETORNO
+//                
+//                /*
+//                 * Certifique-se de ter criado a coluna abaixo no banco IONIC
+//                 * que está no mesmo servidor do webservice
+//                 * 
+//                 * ALTER TABLE sms_retorno ADD COLUMN lido boolean;
+//                 *                   
+//                 */
+//                
+//                $retorno = $cliente->__soapCall("verificamensagensretorno", array($dadosEmpresaSms[0]->numero_indentificacao_sms));
+//                
+//            } catch (SoapFault $fault) {
+//                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
 //            }
         }
+//        die('dfroskfj');
     }
 
     function autenticar() {

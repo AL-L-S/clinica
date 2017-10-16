@@ -314,6 +314,7 @@ class Agenda extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao gravar o Horario.';
         }
+//        die;
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/agenda/listarhorarioagenda/$horariotipo");
     }

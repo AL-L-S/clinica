@@ -125,7 +125,7 @@ class Procedimentoplano extends BaseController {
     }
 
     function excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $convenio_id, $grupopagamento_id) {
-        $this->procedimentoplano->excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $grupopagamento_id);
+        $this->procedimentoplano->excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $grupopagamento_id, $convenio_id);
         redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
     }
     
