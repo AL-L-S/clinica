@@ -231,7 +231,7 @@
                         <option value='' >selecione</option>
                         <?php
                         $forma = $this->convenio->listarforma();
-                        var_dump($forma);
+//                        var_dump($forma);
                         foreach ($forma as $item) {
                             ?>
 
@@ -244,6 +244,19 @@
                                   ?> 
                     </select>
                 </div>
+<!--                <div>
+                    <label>Associar a outro convenio</label>
+
+
+                    <select name="convenio_associacao" id="convenio_associacao" class="size2" >
+                        <option value=''>Selecione</option>
+                        <?php
+                        foreach ($convenio as $item) {
+                            ?>
+                            <option value =<?php echo $item->convenio_id; ?> <?= (@$obj->_convenio_associacao == $item->convenio_id)? 'selected':""; ?>><?php echo $item->nome; ?></option>
+                        <?php } ?> 
+                    </select>
+                </div>-->
             </fieldset>
             <fieldset>
                 <legend>Observa&ccedil;&atilde;o</legend>

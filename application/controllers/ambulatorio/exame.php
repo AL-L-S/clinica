@@ -3138,7 +3138,7 @@ class Exame extends BaseController {
                         <ans:tipoConsulta>1</ans:tipoConsulta>
                         
                       </ans:dadosAtendimento>" .
-                                            ( ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") ? "<ans:procedimentosExecutados>
+                        ( ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") ? "<ans:procedimentosExecutados>
                          <ans:procedimentoExecutado>
                                 <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                 <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
@@ -3164,7 +3164,8 @@ class Exame extends BaseController {
                                     <ans:CBOS>999999</ans:CBOS>
                                 </ans:equipeSadt>
                       </ans:procedimentoExecutado>
-                    </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
+                    </ans:procedimentosExecutados>" 
+                    : "<ans:outrasDespesas>
                              <ans:despesa>
                              
                                 <ans:codigoDespesa>" . $codDespesa . "</ans:codigoDespesa>
@@ -3264,8 +3265,8 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } else {
-
+                } 
+                else {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
        <ans:cabecalho>
@@ -3291,21 +3292,22 @@ class Exame extends BaseController {
                 <ans:guiasTISS>";
                     $contador = count($listarexame);
                     foreach ($listarexame as $value) {
+                        
                         $tabela = '22';
-                        $valorProcedimento = $item->valor_total;
-                        $valorMaterial = 0.00;
-                        $valorMedicamento = 0.00;
+//                        $valorProcedimento = $value->valor;
+//                        $valorMaterial = 0.00;
+//                        $valorMedicamento = 0.00;
 
-                        if ($item->grupo == "MATERIAL") { //caso seja material
+                        if ($value->grupo == "MATERIAL") { //caso seja material
                             $tabela = '19';
                             $codDespesa = '03';
-                            $valorMaterial = $item->valor_total;
-                            $valorProcedimento = 0.00;
-                        } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+//                            $valorMaterial = $value->valor;
+//                            $valorProcedimento = 0.00;
+                        } elseif ($value->grupo == "MEDICAMENTO") { //caso seja medicamento
                             $tabela = '20';
                             $codDespesa = '02';
-                            $valorMedicamento = $item->valor_total;
-                            $valorProcedimento = 0.00;
+//                            $valorMedicamento = $value->valor;
+//                            $valorProcedimento = 0.00;
                         }
 
                         if ($value->convenionumero == '') {
@@ -3801,7 +3803,8 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } else {
+                } 
+                else {
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -3827,23 +3830,25 @@ class Exame extends BaseController {
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
                     $contador = count($listarexame);
-
+                        
+//                    var_dump($listarexame);die;
                     foreach ($listarexame as $value) {
                         $tabela = '22';
-                        $valorProcedimento = $item->valor_total;
-                        $valorMaterial = 0.00;
-                        $valorMedicamento = 0.00;
+//                        $valorProcedimento = $value->valor;
+//                        $valorMaterial = 0.00;
+//                        $valorMedicamento = 0.00;
 
-                        if ($item->grupo == "MATERIAL") { //caso seja material
+                        if ($value->grupo == "MATERIAL") { //caso seja material
                             $tabela = '19';
-                            $valorMaterial = $item->valor_total;
-                            $valorProcedimento = 0.00;
-                        } elseif ($item->grupo == "MEDICAMENTO") { //caso seja medicamento
+                            $codDespesa = '03';
+//                            $valorMaterial = $value->valor;
+//                            $valorProcedimento = 0.00;
+                        } elseif ($value->grupo == "MEDICAMENTO") { //caso seja medicamento
                             $tabela = '20';
-                            $valorMedicamento = $item->valor_total;
-                            $valorProcedimento = 0.00;
+                            $codDespesa = '02';
+//                            $valorMedicamento = $value->valor;
+//                            $valorProcedimento = 0.00;
                         }
-
                         $i++;
                         $totExames++;
                         if ($value->convenionumero == '') {
@@ -3901,7 +3906,6 @@ class Exame extends BaseController {
                         </ans:procedimento>
                     </ans:dadosAtendimento>
                 </ans:guiaConsulta>";
-
                         if (!$limite) {
                             if ($totExames == count($listarexames)) {
                                 $contador = $contador - $i;
@@ -3920,6 +3924,7 @@ class Exame extends BaseController {
                                 $fp = fopen($nome, "w+");
                                 fwrite($fp, $xml . "\n");
                                 fclose($fp);
+//                                var_dump($xml);die;
                                 $corpo = "";
                                 $rodape = "";
                             }
@@ -4812,6 +4817,7 @@ class Exame extends BaseController {
                 }
             }
         }
+        
         $this->exame->gravarlote($b);
         $zip = new ZipArchive;
         $this->load->helper('directory');
@@ -4831,6 +4837,7 @@ class Exame extends BaseController {
                 unlink($arquivonome);
             }
         }
+//        die('morreu');
         $data['mensagem'] = 'Sucesso ao gerar arquivo.';
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/faturamentoexamexml", $data);

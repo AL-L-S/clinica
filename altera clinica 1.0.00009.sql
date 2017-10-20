@@ -390,3 +390,6 @@ CREATE TABLE ponto.tb_oftamologia_ad_cilindrico
   ativo integer,
   CONSTRAINT tb_oftamologia_ad_cilindrico_pkey PRIMARY KEY (ad_cilindrico_id)
 );
+
+-- Dia 19/10/2017
+ALTER TABLE ponto.tb_convenio ADD COLUMN convenio_associacao integer;

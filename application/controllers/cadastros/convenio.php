@@ -40,6 +40,7 @@ class Convenio extends BaseController {
     function carregar($convenio_id) {
         $obj_convenio = new convenio_model($convenio_id);
         $data['obj'] = $obj_convenio;
+        $data['convenio'] = $this->convenio->listardados();
         $this->loadView('cadastros/convenio-form', $data);
     }
 
@@ -48,6 +49,14 @@ class Convenio extends BaseController {
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['convenioid'] = $convenio_id;
         $this->loadView('cadastros/copiarconvenio-form', $data);
+    }
+
+    function ajustargrupo($convenio_id, $convenio_associado) {
+        $data['convenio'] = $this->convenio->listarconveniodesconto($convenio_associado);
+        $data['grupos'] = $this->convenio->listargrupos();
+        $data['convenio_id'] = $convenio_id;
+        $data['convenio_associacao'] = $convenio_associado;
+        $this->loadView('cadastros/convenioassociacaoajustevalores-form', $data);
     }
 
     function desconto($convenio_id) {

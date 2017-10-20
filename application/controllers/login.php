@@ -154,7 +154,6 @@ class Login extends Controller {
 //                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
 //            }
         }
-//        die('dfroskfj');
     }
 
     function autenticar() {

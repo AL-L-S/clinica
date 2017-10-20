@@ -977,7 +977,6 @@ class Guia extends BaseController {
                 }
                 //        $this->gerardicom($ambulatorio_guia);
                 //            $this->session->set_flashdata('message', $data['mensagem']);
-                //        $this->novo($paciente_id, $ambulatorio_guia);
                 if ($_POST['homecare'] == 't') {
                     $messagem = 'Operação Realizada com Sucesso';
                     $this->session->set_flashdata('message', $messagem);

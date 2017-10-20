@@ -45,7 +45,8 @@ class Convenio_model extends Model {
 
     function listar($args = array()) {
         $this->db->select('convenio_id,
-                            nome');
+                            nome,
+                            convenio_associacao');
         $this->db->from('tb_convenio');
         $this->db->where("ativo", 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -81,7 +82,8 @@ class Convenio_model extends Model {
 
     function listarconveniodesconto($convenio_id) {
         $this->db->select('convenio_id,
-                            nome');
+                            nome,
+                            convenio_associacao');
         $this->db->from('tb_convenio');
         $this->db->where("ativo", 't');
         $this->db->where('convenio_id', $convenio_id);
@@ -431,6 +433,12 @@ class Convenio_model extends Model {
             $this->db->set('cnpj', $_POST['txtCNPJ']);
             $this->db->set('registroans', $_POST['txtregistroans']);
             $this->db->set('codigoidentificador', $_POST['txtcodigo']);
+            
+//            var_dump($_POST['convenio_associacao']); die;
+            if ($_POST['convenio_associacao'] != "") {
+                $this->db->set('convenio_associacao', $_POST['convenio_associacao']);
+            }
+            
             if ($_POST['credor_devedor'] != "") {
                 $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
@@ -602,6 +610,7 @@ class Convenio_model extends Model {
                                 co.codigoidentificador,
                                 co.parenteral,
                                 co.credor_devedor_id,
+                                co.convenio_associacao,
                                 co.razao_social');
             $this->db->from('tb_convenio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
@@ -645,6 +654,7 @@ class Convenio_model extends Model {
             $this->_parenteral = $return[0]->parenteral;
             $this->_registroans = $return[0]->registroans;
             $this->_codigoidentificador = $return[0]->codigoidentificador;
+            $this->_convenio_associacao = $return[0]->convenio_associacao;
         } else {
             $this->_convenio_id = null;
         }
