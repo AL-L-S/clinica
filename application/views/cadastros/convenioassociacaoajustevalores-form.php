@@ -18,8 +18,7 @@
                         <label>Associado ao Convenio</label>
                     </dt>
                     <dd>
-                        <!--<input class="hidden" name="convenio_associacao_nome" id="convenio_associacao_nome" class="texto02" value="<?= $convenio[0]->convenio_id; ?>" />-->
-                        <input  value="<?php echo $convenio[0]->nome; ?>" class="texto07" readonly/>
+                        <input  value="<?php echo $convenio_principal[0]->nome; ?>" class="texto07" readonly/>
                     </dd>
                     <dt>
                         <label>Grupo</label>
@@ -36,7 +35,7 @@
                         <label title="Esse valor será o valor percentual que os procedimentos desse convenio ira receber em relação ao convenio original.">Valor Percentual (%)</label>
                     </dt>
                     <dd>
-                        <input type="number" name="ajusteuco" id="ajusteuco" class="number" step=0.01  />
+                        <input type="number" name="valorpercentual" id="valorpercentual" class="number" step=0.01  min="0" value="<?= @$convenio->_associacao_percentual; ?>" /> %
                     </dd>
                     <dt>
                 </dl>    

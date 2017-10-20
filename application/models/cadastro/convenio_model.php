@@ -46,7 +46,8 @@ class Convenio_model extends Model {
     function listar($args = array()) {
         $this->db->select('convenio_id,
                             nome,
-                            convenio_associacao');
+                            associado,
+                            associacao_convenio_id');
         $this->db->from('tb_convenio');
         $this->db->where("ativo", 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -82,8 +83,7 @@ class Convenio_model extends Model {
 
     function listarconveniodesconto($convenio_id) {
         $this->db->select('convenio_id,
-                            nome,
-                            convenio_associacao');
+                            nome');
         $this->db->from('tb_convenio');
         $this->db->where("ativo", 't');
         $this->db->where('convenio_id', $convenio_id);
@@ -295,6 +295,153 @@ class Convenio_model extends Model {
         }
     }
 
+    function gravarvaloresassociacaoantigo($convenio_id) {
+        $operador_id = $this->session->userdata('operador_id');
+        $data = date('Y-m-d H:i:s');
+        try {
+
+            if ($_POST['grupo'] != 'TODOS') {
+
+                $this->db->select('pc.*');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                $this->db->where('pt.grupo', $_POST['grupo']);
+                $this->db->where('pc.convenio_id', $convenio_id);
+                $this->db->where('pc.ativo', 't');
+                $return2 = $this->db->get();
+                $result2 = $return2->result();
+                if(count($result2) > 0){   
+                    foreach ($result2 as $value) {
+
+                        $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                        $this->db->set('convenio_id', $value->convenio_id);
+                        $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                        $this->db->set('qtdech', $value->qtdech);
+                        $this->db->set('valorch', $value->valorch);
+                        $this->db->set('qtdefilme', $value->qtdefilme);
+                        $this->db->set('valorfilme', $value->valorfilme);
+                        $this->db->set('qtdeporte', $value->qtdeporte);
+                        $this->db->set('valorporte', $value->valorporte);
+                        $this->db->set('qtdeuco', $value->qtdeuco);
+                        $this->db->set('valoruco', $value->valoruco);
+                        $this->db->set('valortotal', $value->valortotal);
+                        if ($_POST['valorpercentual'] != '') {
+                            $this->db->set('percentual_ch', $_POST['valorpercentual']);
+                        }
+                        $this->db->set('valortotal', $value->valortotal);
+                        $this->db->set('data_cadastro', $data);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimento_convenio_antigo');
+                    }
+                }
+            } else {
+                $this->db->select('pc.*');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->where('pc.convenio_id', $convenio_id);
+                $this->db->where('pc.ativo', 't');
+                $return2 = $this->db->get();
+                $result2 = $return2->result();
+                if (count($result2) > 0) {
+                    foreach ($result2 as $value) {
+
+                        $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                        $this->db->set('convenio_id', $value->convenio_id);
+                        $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                        $this->db->set('qtdech', $value->qtdech);
+                        $this->db->set('valorch', $value->valorch);
+                        $this->db->set('qtdefilme', $value->qtdefilme);
+                        $this->db->set('valorfilme', $value->valorfilme);
+                        $this->db->set('qtdeporte', $value->qtdeporte);
+                        $this->db->set('valorporte', $value->valorporte);
+                        $this->db->set('qtdeuco', $value->qtdeuco);
+                        $this->db->set('valoruco', $value->valoruco);
+                        $this->db->set('valortotal', $value->valortotal);
+                        if ($_POST['valorpercentual'] != '') {
+                            $this->db->set('percentual_ch', $_POST['valorpercentual']);
+                        }
+                        $this->db->set('valortotal', $value->valortotal);
+                        $this->db->set('data_cadastro', $data);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimento_convenio_antigo');
+                    }
+                }
+            }
+
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    
+    function removerprocedimentosnaopertenceprincipal($convenio_id, $convenio_associacao) {
+        
+        
+        $operador_id = $this->session->userdata('operador_id');
+        $data = date('Y-m-d H:i:s');
+        
+        try {
+
+            $sql = "UPDATE ponto.tb_procedimento_convenio SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
+                    WHERE convenio_id = {$convenio_id} 
+                    AND procedimento_tuss_id NOT IN (
+                        SELECT pc.procedimento_tuss_id FROM ponto.tb_procedimento_convenio pc
+                        WHERE pc.convenio_id = {$convenio_associacao} 
+                        AND pc.ativo = 't')";
+                        
+            $this->db->query($sql);
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravarvaloresassociacao($convenio_id) {
+        
+        
+        $operador_id = $this->session->userdata('operador_id');
+        $data = date('Y-m-d H:i:s');
+        
+        try {
+
+            $this->db->select('pc.*');
+            $this->db->from('tb_procedimento_convenio pc');
+            $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+            if ($_POST['grupo'] != 'TODOS') {
+                $this->db->where('pt.grupo', $_POST['grupo']);
+            }
+            $this->db->where('pc.convenio_id', $_POST['convenio_associacao_id']);
+            $this->db->where('pc.ativo', 't');
+            $return2 = $this->db->get();
+            $result2 = $return2->result();
+            if(count($result2) > 0){   
+                foreach ($result2 as $value) {
+                    $this->db->set('qtdech', $value->qtdech);
+                    $this->db->set('valorch', $value->valorch);
+                    $this->db->set('qtdefilme', $value->qtdefilme);
+                    $this->db->set('valorfilme', $value->valorfilme);
+                    $this->db->set('qtdeporte', $value->qtdeporte);
+                    $this->db->set('valorporte', $value->valorporte);
+                    $this->db->set('qtdeuco', $value->qtdeuco);
+                    $this->db->set('valoruco', $value->valoruco);
+                    $this->db->set('valortotal', ($value->valortotal * (float)$_POST['valorpercentual'] / 100));
+                    $this->db->set('data_atualizacao', $data);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->where('ativo', 't');
+                    $this->db->where('convenio_id', $convenio_id);
+                    $this->db->where('procedimento_tuss_id', $value->procedimento_tuss_id);
+                    $this->db->update('tb_procedimento_convenio');
+                }
+            }
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function gravardescontoantigo() {
 
 
@@ -353,14 +500,14 @@ class Convenio_model extends Model {
 
                         $this->db->set('percentual_filme', $_POST['ajustefilme']);
                     }
-                    if ($_POST['$ajusteporte'] != '') {
-                        $this->db->set('percentual_porte', $_POST['$ajusteporte']);
+                    if ($_POST['ajusteporte'] != '') {
+                        $this->db->set('percentual_porte', $_POST['ajusteporte']);
                     }
-                    if ($_POST['$ajusteuco'] != '') {
-                        $this->db->set('percentual_uco', $_POST['$ajusteuco']);
+                    if ($_POST['ajusteuco'] != '') {
+                        $this->db->set('percentual_uco', $_POST['ajusteuco']);
                     }
-                    if ($_POST['$ajustetotal'] != '') {
-                        $this->db->set('percentual_total', $_POST['$ajustetotal']);
+                    if ($_POST['ajustetotal'] != '') {
+                        $this->db->set('percentual_total', $_POST['ajustetotal']);
                     }
                     $this->db->set('valortotal', $value->valortotal);
                     $this->db->set('data_cadastro', $data);
@@ -424,6 +571,23 @@ class Convenio_model extends Model {
         }
     }
 
+    function gravarpercentualconveniosecundario() {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('associacao_percentual', $_POST['valorpercentual']);
+            $this->db->set('data_percentual_atualizacao', $horario);
+            $this->db->set('operador_percentual_atualizacao', $operador_id);
+            $this->db->where('convenio_id', $_POST['convenio_id']);
+            $this->db->update('tb_convenio');
+            
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function gravar() {
         try {
             /* inicia o mapeamento no banco */
@@ -435,8 +599,15 @@ class Convenio_model extends Model {
             $this->db->set('codigoidentificador', $_POST['txtcodigo']);
             
 //            var_dump($_POST['convenio_associacao']); die;
-            if ($_POST['convenio_associacao'] != "") {
-                $this->db->set('convenio_associacao', $_POST['convenio_associacao']);
+            if (isset($_POST['associaconvenio'])) {
+                $this->db->set('associado', 't');
+//                $this->db->set('associacao_percentual', str_replace(",", ".", $_POST['valorpercentual']));
+                $this->db->set('associacao_convenio_id', $_POST['convenio_associacao']);
+            }
+            else{
+                $this->db->set('associado', 'f');
+                $this->db->set('associacao_percentual', 0);
+                $this->db->set('associacao_convenio_id', null);
             }
             
             if ($_POST['credor_devedor'] != "") {
@@ -573,7 +744,7 @@ class Convenio_model extends Model {
     }
 
     private function instanciar($convenio_id) {
-
+//        die;
         if ($convenio_id != 0) {
             $this->db->select('convenio_id,
                                 co.nome,
@@ -610,7 +781,9 @@ class Convenio_model extends Model {
                                 co.codigoidentificador,
                                 co.parenteral,
                                 co.credor_devedor_id,
-                                co.convenio_associacao,
+                                co.associado,
+                                co.associacao_percentual,
+                                co.associacao_convenio_id,
                                 co.razao_social');
             $this->db->from('tb_convenio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
@@ -654,7 +827,9 @@ class Convenio_model extends Model {
             $this->_parenteral = $return[0]->parenteral;
             $this->_registroans = $return[0]->registroans;
             $this->_codigoidentificador = $return[0]->codigoidentificador;
-            $this->_convenio_associacao = $return[0]->convenio_associacao;
+            $this->_associado = $return[0]->associado;
+            $this->_associacao_percentual = $return[0]->associacao_percentual;
+            $this->_associacao_convenio_id = $return[0]->associacao_convenio_id;
         } else {
             $this->_convenio_id = null;
         }

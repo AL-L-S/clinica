@@ -38,6 +38,7 @@ class Convenio extends BaseController {
     }
 
     function carregar($convenio_id) {
+//        die('morreu');
         $obj_convenio = new convenio_model($convenio_id);
         $data['obj'] = $obj_convenio;
         $data['convenio'] = $this->convenio->listardados();
@@ -52,10 +53,13 @@ class Convenio extends BaseController {
     }
 
     function ajustargrupo($convenio_id, $convenio_associado) {
-        $data['convenio'] = $this->convenio->listarconveniodesconto($convenio_associado);
+        $obj_convenio = new convenio_model($convenio_id);
+        $data['convenio'] = $obj_convenio;
+        $data['convenio_principal'] = $this->convenio->listarconveniodesconto($convenio_associado);
         $data['grupos'] = $this->convenio->listargrupos();
         $data['convenio_id'] = $convenio_id;
         $data['convenio_associacao'] = $convenio_associado;
+//        var_dump($data['convenio']->);die;
         $this->loadView('cadastros/convenioassociacaoajustevalores-form', $data);
     }
 
@@ -66,10 +70,20 @@ class Convenio extends BaseController {
         $this->loadView('cadastros/desconto-convenio', $data);
     }
 
+    function gravarvaloresassociacao() {
+        $convenio_id = $_POST['convenio_id'];
+        $this->convenio->gravarpercentualconveniosecundario();
+        $data['convenio'] = $this->convenio->gravarvaloresassociacaoantigo($convenio_id);
+        $data['convenio'] = $this->convenio->gravarvaloresassociacao($convenio_id);
+        $data['convenioid'] = $convenio_id;
+        redirect(base_url() . "cadastros/convenio");
+    }
+
     function gravardesconto($convenio_id) {
         
-        $data['convenio'] = $this->convenio->gravardescontoantigo($convenio_id);
+        $data['convenio_antigo'] = $this->convenio->gravardescontoantigo($convenio_id);
         $data['convenio'] = $this->convenio->gravardesconto($convenio_id);
+        $this->convenio->gravarajusteconveniosecundario();
         $data['convenioid'] = $convenio_id;
         redirect(base_url() . "cadastros/convenio");
     }
@@ -87,13 +101,27 @@ class Convenio extends BaseController {
 
     function gravar() {
         $convenio_id = $this->convenio->gravar();
+        
         if ($convenio_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar Convenio. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar Convenio.';
         }
+        
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "cadastros/convenio");
+        
+        if (isset($_POST['associaconvenio'])) {
+            
+            $convenio_associacao = $_POST['convenio_associacao'];
+            $convenio_id = $_POST['txtconvenio_id'];
+            
+            $this->convenio->removerprocedimentosnaopertenceprincipal($convenio_id, $convenio_associacao);
+            
+            redirect(base_url() . "cadastros/convenio/ajustargrupo/$convenio_id/$convenio_associacao");
+        }
+        else{
+            redirect(base_url() . "cadastros/convenio");
+        }
     }
 
     function gravarcopia() {

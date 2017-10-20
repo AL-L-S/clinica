@@ -65,7 +65,7 @@
                                         </a>
                                     </div>
                                 </td>
-                                <? if($item->convenio_associacao == ""){ ?>
+                                <? if($item->associado == "f"){ ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
                                             <a href="<?= base_url() ?>cadastros/convenio/desconto/<?= $item->convenio_id ?>">
                                                 Ajuste (%)
@@ -74,7 +74,7 @@
                                     </td>
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
-                                            <a href="<?= base_url() ?>cadastros/convenio/ajustargrupo/<?= $item->convenio_id ?>/<?= $item->convenio_associacao ?>">
+                                            <a href="<?= base_url() ?>cadastros/convenio/ajustargrupo/<?= $item->convenio_id ?>/<?= $item->associacao_convenio_id ?>">
                                                 Ajuste Grupo
                                             </a>
                                         </div>
