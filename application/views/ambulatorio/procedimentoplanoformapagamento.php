@@ -6,7 +6,7 @@
 
     </div>-->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Grupos Cadsatrados</a></h3>
+        <h3 class="singular"><a href="#">Grupos Cadastrados</a></h3>
         <div>
             <form name="form_procedimentoplano" id="form_procedimentoplano" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarformapagamentoplanoconvenio/<?= $convenio_id ?>" method="post">
 
@@ -35,7 +35,7 @@
             </form>
         </div>
         <? if(count($formas) > 0 ) {?>
-            <h3 class="singular"><a href="#">Forma de Pagamentos Cadastrados</a></h3>
+            <h3 class="singular"><a href="#">Grupo de Pagamentos Cadastrados</a></h3>
             <div>
                 <table>
                     <thead>

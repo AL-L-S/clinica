@@ -1008,7 +1008,6 @@ class Guia extends BaseController {
         }
 //        $this->gerardicom($ambulatorio_guia);
         $this->session->set_flashdata('message', $data['mensagem']);
-//        $this->novo($paciente_id, $ambulatorio_guia);
         redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia/$messagem/$i");
     }
 
@@ -1116,6 +1115,7 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['responsavel'] = $this->exametemp->listaresponsavelorcamento($paciente_id);
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
 //        var_dump($data['responsavel']);die;
         $data['exames'] = $this->exametemp->listarorcamentos($paciente_id);
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
@@ -1152,7 +1152,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
-        $data['forma_pagamento'] = $this->guia->formadepagamento();
+//        $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
         $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);

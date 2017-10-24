@@ -83,16 +83,21 @@ class Convenio extends BaseController {
         
         $data['convenio_antigo'] = $this->convenio->gravardescontoantigo($convenio_id);
         $data['convenio'] = $this->convenio->gravardesconto($convenio_id);
-        $this->convenio->gravarajusteconveniosecundario();
+        
+        $this->convenio->gravarajusteconveniosecundario($convenio_id);
+        
         $data['convenioid'] = $convenio_id;
         redirect(base_url() . "cadastros/convenio");
     }
 
     function excluir($convenio_id) {
-        if ($this->convenio->excluir($convenio_id)) {
-            $mensagem = 'Sucesso ao excluir a Convenio';
-        } else {
+        $result = $this->convenio->excluir($convenio_id);
+        if ($result == "-1") {
             $mensagem = 'Erro ao excluir a Convenio. Opera&ccedil;&atilde;o cancelada.';
+        } elseif ($result == "-2") {
+            $mensagem = 'Erro ao excluir a Convenio. Existem outros convenios vinculados a este.';
+        } else {
+            $mensagem = 'Sucesso ao excluir a Convenio';
         }
 
         $this->session->set_flashdata('message', $mensagem);

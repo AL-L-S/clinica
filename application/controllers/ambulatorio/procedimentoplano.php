@@ -240,6 +240,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['grupos'] = $this->procedimento->listargrupos();
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
         $data['exames'] = $this->procedimento->listarorcamentosrecepcao($ambulatorio_orcamento);
         $data['responsavel'] = $this->procedimento->listaresponsavelorcamento($ambulatorio_orcamento);
 //        echo "<pre>";
@@ -532,6 +533,8 @@ class Procedimentoplano extends BaseController {
         $procedimentoplano_tuss_id = $this->procedimentoplano->gravar();
         if ($procedimentoplano_tuss_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Procedimento já cadastrado.';
+        } elseif ($procedimentoplano_tuss_id == "-2") {
+            $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Esse procedimento não pertence ao convenio Primario.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
         }

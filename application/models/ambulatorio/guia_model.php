@@ -5974,14 +5974,17 @@ class guia_model extends Model {
                             pt.descricao_procedimento,
                             pt.codigo,
                             pt.grupo,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            fp.nome as forma_pagamento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
         $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = oi.operador_cadastro', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
         $this->db->where("oi.orcamento_id", $orcamento);
+        $this->db->where("oi.ativo", 't');
         $this->db->orderby('oi.ambulatorio_orcamento_item_id');
         $return = $this->db->get();
         return $return->result();
@@ -9867,7 +9870,11 @@ ORDER BY ae.agenda_exames_id)";
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('orcamento_id', $ambulatorio_orcamento_id);
-
+            
+            if($_POST['formapamento'] != ''){
+                $this->db->set('forma_pagamento', $_POST['formapamento']);
+            }
+            
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             $this->db->set('data', $data);
             $this->db->set('data_cadastro', $horario);
@@ -9891,6 +9898,9 @@ ORDER BY ae.agenda_exames_id)";
             $data = date("Y-m-d");
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
 
+            if($_POST['formapamento'] != ''){
+                $this->db->set('forma_pagamento', $_POST['formapamento']);
+            }
             $this->db->set('valor', $_POST['valor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);

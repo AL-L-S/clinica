@@ -401,3 +401,6 @@ ALTER TABLE ponto.tb_convenio ADD COLUMN associacao_percentual numeric(10,4);
 ALTER TABLE ponto.tb_convenio ADD COLUMN associacao_convenio_id integer;
 ALTER TABLE ponto.tb_convenio ADD COLUMN data_percentual_atualizacao timestamp without time zone;
 ALTER TABLE ponto.tb_convenio ADD COLUMN operador_percentual_atualizacao integer;
+
+-- Dia 23/10/2017
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN forma_pagamento integer;
