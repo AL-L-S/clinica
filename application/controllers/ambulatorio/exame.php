@@ -794,6 +794,7 @@ class Exame extends BaseController {
     function examesala($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
         $data['salas'] = $this->exame->listarsalas();
         $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
+        $data['indicacao_selecionada'] = $this->exame->listarindicacaoagenda($agenda_exames_id);
         $data['agenda_exames_nome_id'] = $this->exame->listarsalaagenda($agenda_exames_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['tecnicos'] = $this->operador_m->listartecnicos();

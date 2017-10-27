@@ -39,6 +39,96 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
 <div class="content">
 
+
+
+    <style>
+        #sidebar-wrapper{
+            z-index: 100;
+            position: fixed;
+            margin-top: 50px;
+            margin-left: 37%;
+            list-style-type: none; /* retira o marcador de listas*/ 
+            overflow-y: scroll;
+            overflow-x: auto;
+            /*height: 900px;*/
+            /*width: 500px;*/
+            max-height: 900px;
+
+        }
+
+        #sidebar-wrapper ul {
+            padding:0px;
+            margin:0px;
+            background-color: #ebf7f9;
+            list-style:none;
+            margin-bottom: 30px;
+
+        }
+        #sidebar-wrapper ul li a {
+            color: #ff004a;
+            border: 20px;
+            text-decoration: none;
+            /*padding: 3px;*/
+            /*border: 2px solid #00BDFF;*/ 
+            margin-bottom: 20px;
+        }
+
+        #botaosalaesconder {
+            border: 1px solid #8399f6
+        }
+        #botaosala {
+            border: 1px solid #8399f6;
+            width: 80pt;   
+        }
+        .vermelho{
+            color: red;
+        }
+
+    </style>
+    <div id="sala-de-espera" style="display: none;">
+
+        <div id="sidebar-wrapper" class="sidebarteste">
+            <div style="margin-left: 35%;">
+                <button id="botaosalaesconder">Esconder</button>
+            </div>
+            <div>
+                <ul class="sidebar-nav">
+
+                    <li class="tabela_content01">
+                        <span> Agenda</span> - <span style="color:#ff004a">Paciente - <span style="color: #5659C9">Procedimento</span> - <span style="color: black"> Tempo de Espera</span>
+
+                    </li>
+                    <?
+                    $listaespera = $this->exame->listarexameagendaconfirmada2especialidade()->get()->result();
+
+                    if (count($listaespera) > 0) {
+                        @$estilo_linha == "tabela_content01";
+                        foreach ($listaespera as $item) {
+                            $dataFuturo = date("Y-m-d H:i:s");
+                            $dataAtual = $item->data_autorizacao;
+                            $date_time = new DateTime($dataAtual);
+                            $diff = $date_time->diff(new DateTime($dataFuturo));
+                            $teste = $diff->format('%H:%I:%S');
+
+                            (@$estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            ?>
+                            <li class="<?= $estilo_linha ?>">
+                                <a href="<?= base_url() ?>ambulatorio/exame/examesala/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>" target="_blank">
+                                    <span style="color: black"><?= $item->inicio; ?></span> -  <span> <?= $item->paciente ?></span> - <span style="color: #5659C9"><?= $item->procedimento ?></span> - <span style="color: black"><?= $teste ?></span> - 
+                                </a>
+                            </li>
+
+
+                            <?
+                        }
+                    }
+                    ?>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
     <style>
 
         body {
@@ -123,7 +213,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
             <table>
                 <thead>
                 <form method="get" action="<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario2">
-                    
+
                     <tr>
                         <th>
                             <div class="panel panel-default">
@@ -150,7 +240,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                         </th>
                         <th>
                             <div style="border: 1pt dotted #444; border-radius: 10pt;">
-                                
+
                                 <table border="1" style="border">
                                     <tr>
                                         <th class="tabela_title">Grupo</th>
@@ -195,7 +285,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
                                     </tr>
                                 </table>
-                            
+
                                 <table border="1">
                                     <tr>
                                         <th class="tabela_title">Sala</th>
@@ -217,9 +307,9 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
                                     </tr>    
                                 </table>
-                                
+
                             </div>
-                            
+
                             <div style="border: 1pt dotted #444; border-radius: 10pt;">
                                 <table border="1">
                                     <tr>
@@ -239,9 +329,9 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                                                     endif;
                                                     ?>>
                                                                 <?
-                //                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
-                //                                                    echo '<script>carregaMedicoEspecialidade();</script>';
-                //                                                endif;
+                                                                //                                                if (@$_GET['especialidade'] == $value->cbo_ocupacao_id):
+                                                                //                                                    echo '<script>carregaMedicoEspecialidade();</script>';
+                                                                //                                                endif;
                                                                 ?>
                                                                 <?php echo $value->descricao; ?>
                                                     </option>
@@ -271,29 +361,40 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                             </div>
                             <table border="1">
                                 <tr>
-                                    
+
                                     <th colspan="2" class="tabela_title">Nome</th>
                                 </tr>
-                                
+
                                 <tr>
-                                    
+
                                     <th colspan="2" class="tabela_title">
                                         <input type="text" name="nome" class="texto08 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                                         <input type="hidden" name="data" id="data" class="texto04 bestupper" value="<?php echo date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))); ?>" />
                                     </th>
                                 </tr>
-                                
+
                                 <tr>
-                                    <th colspan="3" class="tabela_title">
+                                    <th colspan="1" class="tabela_title">
                                         <button type="submit" id="enviar">Pesquisar</button>
+                                    </th>
+<!--                               O FORM FECHA AQUI-->     </form>
+                                    <th colspan="1" class="tabela_title">
+                                        <button id="botaosala">S/ de Espera</button>
                                     </th>
                                 </tr>
                             </table>
-                            
+
                         </th>
+
+
                     </tr>
-                </form>
-                </thead>
+
+                    <!--</form>-->
+                    <tr>
+
+                    </tr>
+                    </thead>
+
             </table> 
             <table>
                 <tr>
@@ -482,12 +583,12 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
                                 <!-- DATA, DIA E AGENDA -->
                                 <? if ($item->ocupado == 't') { ?>
-                                    <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>-->
-                            <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>-->
-                            <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
+                                                                <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>-->
+                                                        <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>-->
+                                    <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
                         <? } else { ?>
-                            <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>-->
-                            <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
+                                    <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>-->
+                                    <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>"><?
@@ -514,17 +615,17 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                         <!-- SALA -->   
                         <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
                             <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala; ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala; ?></b></td>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?=$item->medicoagenda; ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?=$item->medicoagenda ?></b></td>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->medicoagenda; ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->medicoagenda ?></b></td>
                         <? } else { ?>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala ?>"><?=$item->sala ?></td>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?=$item->medicoagenda ?>"><?= $item->medicoagenda; ?></td>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala ?>"><?= $item->sala ?></td>
+                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->medicoagenda ?>"><?= $item->medicoagenda; ?></td>
 
                         <? } ?>  
                         <!-- OBSERVAÇOES -->
-                        <!--<td class="<?php // echo $estilo_linha;            ?>"><?= $item->observacoes; ?></td>-->
+                        <!--<td class="<?php // echo $estilo_linha;                   ?>"><?= $item->observacoes; ?></td>-->
 
                         <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                width=500,height=230');">=><?=$item->observacoes; ?></td>
+                                                                                                                                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
                             <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -638,7 +739,17 @@ if (@$_GET['nome'] != '') {
     $(function () {
         $("#accordion").accordion();
     });
+    $("#botaosala").click(function () {
+        $("#sala-de-espera").toggle("fast", function () {
+            // Animation complete.
+        });
+    });
 
+    $("#botaosalaesconder").click(function () {
+        $("#sala-de-espera").hide("fast", function () {
+            // Animation complete.
+        });
+    });
 
 
 //    function date() {
@@ -669,7 +780,7 @@ if (@$_GET['nome'] != '') {
         dayClick: function (date, cell) {
             var data = date.format();
 //            cell.css("background-color", "#BCD2EE");
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario2?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() +  '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome= ' + paciente + '', '_self');
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario2?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome= ' + paciente + '', '_self');
 
 
 

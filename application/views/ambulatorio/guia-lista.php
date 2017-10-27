@@ -230,12 +230,13 @@
                                                 <a href="<?= base_url() ?>ambulatorio/guia/impressaoetiquetaunica/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Etiq. unica
                                                 </a>
                                             </td>
+                                            <? if ($perfil_id == 1) { ?>
                                             <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                 <a href="<?= base_url() ?>ambulatorio/guia/editarexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Editar
                                                 </a>
                                             </td>
 
-                                            <? if ($perfil_id == 1) { ?>
+                                            
                                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                     <a href="<?= base_url() ?>ambulatorio/guia/valorexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">valor
                                                     </a>

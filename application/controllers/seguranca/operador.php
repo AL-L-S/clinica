@@ -36,7 +36,6 @@ class Operador extends BaseController {
         $data['classe'] = $this->classe->listarclasse();
         $data['listarPerfil'] = $this->operador_m->listarPerfil();
 //        $data['listarempresas'] = $this->operador_m->listarempresas();
-        
 //        echo "<pre>"; var_dump($data);die;
         $this->loadView('seguranca/operador-form', $data);
     }
@@ -64,7 +63,7 @@ class Operador extends BaseController {
     }
 
     function excluirmedicosolicitante($operador_id) {
-        
+
         redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
     }
 
@@ -148,16 +147,40 @@ class Operador extends BaseController {
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "seguranca/operador", $data);
             }
-            if ($this->operador_m->gravar()) {
+            if ($operador_id = $this->operador_m->gravar()) {
                 $data['mensagem'] = 'Operador cadastrado com sucesso.';
             } else {
                 $data['mensagem'] = 'Erro ao cadastrar novo operador . Opera&ccedil;&atilde;o cancelada.';
             }
+//            var_dump($operador_id); die;
             $data['lista'] = $this->operador_m->listar($filtro = null, $maximo = null, $inicio = null);
 
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "seguranca/operador", $data);
         } else {
+           // CRIANDO A PASTA ONDE VAI SALVAR O TIMBRADO CASO NÃO EXISTA
+            if (!is_dir("./upload/operadortimbrado")) {
+                mkdir("./upload/operadortimbrado");
+                $destino = "./upload/operadortimbrado";
+                chmod($destino, 0777);
+            }
+            // ESSA GAMBIARRA RETIRA ALGUMAS PARTES DA STRING PARA PODER ENVIAR NA FUNÇÃO E TIRAR OS CAMPOS DO HTML
+            // QUE ATRAPALHARIAM
+            if($_POST['timbrado'] != ''){
+                
+            $arquivobase64 = str_replace('<img', '', $_POST['timbrado']);
+            $arquivobase64 = str_replace('src="', '', $arquivobase64);
+            $arquivobase64 = explode('alt=""', $arquivobase64);
+            $arquivobase64[1] = str_replace('/>', '', $arquivobase64[1]);
+//            var_dump($arquivobase64[1]); die;
+            $arquivobase64[0] = $arquivobase64[0] . '==';
+            $operador_id = $_POST['operador_id'];
+            // AQUI NESSA FUNÇÃO ELE VAI SALVAR O ARQUIVO. NO CAMINHO ENVIADO ABAIXO
+            $arquivo_salvo = $this->base64_to_jpeg($arquivobase64[0], "upload/operadortimbrado/$operador_id.jpg");
+            
+            }
+//            var_dump($arquivo_salvo);
+//            die;
             if ($this->operador_m->gravar()) {
                 $data['mensagem'] = 'Operador cadastrado com sucesso.';
             } else {
@@ -168,6 +191,24 @@ class Operador extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "seguranca/operador", $data);
         }
+    }
+
+    function base64_to_jpeg($base64_string, $output_file) {
+        // open the output file for writing
+        $ifp = fopen($output_file, 'wb');
+
+        // split the string on commas
+        // $data[ 0 ] == "data:image/png;base64"
+        // $data[ 1 ] == <actual base64 string>
+        $data = explode(',', $base64_string);
+
+        // we could add validation here with ensuring count( $data ) > 1
+        fwrite($ifp, base64_decode($data[1]));
+
+        // clean up the file resource
+        fclose($ifp);
+
+        return $output_file;
     }
 
     function anexarimagem($operador_id) {
@@ -241,10 +282,10 @@ class Operador extends BaseController {
                 $data['mensagem'] = 'Sucesso ao adcionar Logo.';
             }
             $data['operador_id'] = $operador_id;
-        } else{
+        } else {
             $data['mensagem'] = 'Este operador ja possui uma logo associada a ele.';
         }
-        
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/anexarlogo/$operador_id");
     }
@@ -272,9 +313,9 @@ class Operador extends BaseController {
                 $arquivo_existe = false;
             }
         }
-               
-        $arquivoantigo = "./upload/1ASSINATURAS/$nome"; 
-        $arquivonovo = "./upload/1ASSINATURAS/$operador_id.jpg"; 
+
+        $arquivoantigo = "./upload/1ASSINATURAS/$nome";
+        $arquivonovo = "./upload/1ASSINATURAS/$operador_id.jpg";
         if (!$arquivo_existe) {
 //             var_dump($arquivo_existe); die;
             //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
@@ -293,10 +334,10 @@ class Operador extends BaseController {
                 $data = array('upload_data' => $this->upload->data());
             }
             $data['operador_id'] = $operador_id;
-            
+
 
             rename($arquivoantigo, $arquivonovo);
-            
+
 //            var_dump($error);
 //            die;
         }
@@ -323,7 +364,7 @@ class Operador extends BaseController {
         $data['convenios'] = $this->operador_m->listarconveniooperador($operador_id);
         $this->loadView('seguranca/operadorconvenio-form', $data);
     }
-    
+
     function operadorconvenioprocedimento($convenio_id, $operador_id) {
 
         $data['operador'] = $this->operador_m->listarCada($operador_id);

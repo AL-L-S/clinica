@@ -94,6 +94,18 @@
                                         ?>><?= $item->nome; ?></option>
 <? endforeach; ?>
                             </select></dd>
+                        <dt>Recomendação</dt>
+                        <dd><select name="indicacao" id="indicacao" class="size4" >
+                            <option value='' >Selecione</option>
+                            <?php
+                            $indicacao = $this->paciente->listaindicacao($_GET);
+                            foreach ($indicacao as $item) {
+                                ?>
+                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?php if($item->paciente_indicacao_id == $indicacao_selecionada[0]->indicacao ){echo 'selected';} ?>> <?php echo $item->nome; ?></option>
+                                <?php
+                            }
+                            ?> 
+                        </select></dd>
                         <dt>Autorização</dt>
                         <dd><input type="text" name="autorizacao1" id="autorizacao" class="size1" value="<? echo $selecionado[0]->autorizacao ?>"/></dd>
                     </dl>

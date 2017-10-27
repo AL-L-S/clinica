@@ -127,7 +127,7 @@ if(date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-3
 
                     </li>
                     <?
-                    $listaespera = $this->exame->listarexameagendaconfirmada2()->get()->result();
+                    $listaespera = $this->exame->listarexameagendaconfirmada2especialidade()->get()->result();
 
                     if (count($listaespera) > 0) {
                         @$estilo_linha == "tabela_content01";

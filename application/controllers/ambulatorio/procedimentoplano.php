@@ -18,6 +18,7 @@ class Procedimentoplano extends BaseController {
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('ambulatorio/exametemp_model', 'exametemp');
         $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('cadastro/convenio_model', 'convenio');
@@ -205,7 +206,7 @@ class Procedimentoplano extends BaseController {
             redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id");
         } else {
             $retorno = $this->guia->listarorcamentorecepcao();
-            
+            $_POST['txtNomeid'] = $this->exametemp->crianovopacienteorcamento();
             $resultadoorcamento = $retorno['orcamento'];
             $paciente_id = $retorno['paciente_id'];
             

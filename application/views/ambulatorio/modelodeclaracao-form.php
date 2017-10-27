@@ -44,6 +44,177 @@
             </form>
         </div>
     </div>
+    <div>
+            <table border="1">
+                <thead>
+                <tr class="tabela_header">
+                    <th style="text-align: center;">
+                        OPÇÕES DE CONFIGURAÇÃO DO ATESTADO
+                    </th>
+                </tr>
+                 </thead>
+                <tr class="tabela_content01">
+                    <td style="text-align: justify;">
+                        Aqui se encontram as opções que você pode estar utilizando na hora de montar seu padrão de laudo.
+
+                        Formate na caixa acima o texto do laudo como quiser e posicione as opções de acordo com sua necessidade.
+
+                        Por exemplo, você pode estar colocando _paciente_ para informar o nome do paciente e ao lado separado por um espaço, colocar _sexo_ para mostrar o sexo
+
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td style="text-align: justify;">
+                        Segue abaixo a lista com as opções disponíveis de dados.
+
+                        (Copie os traços e a palavra como estão descritos abaixo. Ou seja, o nome do paciente não é paciente e sim _paciente_ )
+
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table>
+                <tr class="tabela_header">
+                    <th >
+                        Descrição
+                    </th>
+                    <th >
+                        Como fazer
+                    </th>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
+                        Nome Do Paciente  -----------
+                    </td>
+                    <td style="text-align: left;">
+                        _paciente_ 
+                    </td>
+                </tr>
+                <tr class="tabela_content02">
+                    <td>
+                        Sexo -----------
+                    </td>
+                    <td style="text-align: left;">
+                        _sexo_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
+                        Nascimento -----------
+                    </td>
+                    <td style="text-align: left;">
+                        _nascimento_
+                    </td>
+                </tr>
+<!--                <tr class="tabela_content02">
+                    <td>
+                        Convênio ----------
+                    </td>
+                    <td style="text-align: left;">
+                        _convenio_
+                    </td>
+                </tr>-->
+                <tr class="tabela_content02">
+                    <td>
+                        CPF -----------
+                    </td>
+                    <td style="text-align: left;"> 
+                        _CPF_
+                    </td>
+                </tr>
+<!--                <tr class="tabela_content02">
+                    <td>
+                        Sala ----------
+                    </td>
+                    <td style="text-align: left;">
+                        _sala_
+                    </td>
+                </tr>-->
+                <tr class="tabela_content01">
+                    <td>
+                        Solicitante -----------
+                    </td>
+                    <td style="text-align: left;">
+                        _solicitante_
+                    </td>
+                </tr>
+                <tr class="tabela_content02">
+                    <td>
+                        Emissão (Data onde foi realizado o exame-----------
+                    </td>
+                    <td style="text-align: left;">
+                        _data_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
+                        Medico (Médico responsável)-----------
+                    </td>
+                    <td style="text-align: left;">
+                        _medico_
+                    </td>
+                </tr>
+<!--                <tr class="tabela_content02">
+                    <td>
+                        Medico Revisor-----------
+                    </td>
+                    <td style="text-align: left;">
+                        _revisor_
+                    </td>
+                </tr>-->
+                <tr class="tabela_content02">
+                    <td>
+                        Procedimento-----------
+                    </td>
+                    <td style="text-align: left;">
+                        _procedimento_ 
+                    </td>
+                </tr>
+
+<!--                <tr class="tabela_content01">
+                    <td>
+                        Cid Primário -----------
+                    </td>
+                    <td style="text-align: left;">
+                        _cid1_
+                    </td>
+                </tr>
+                <tr class="tabela_content02">
+                    <td>
+                        Cid Secundário -----------
+                    </td>
+                    <td style="text-align: left;">
+                        _cid2_
+                    </td>
+                </tr>-->
+<!--                <tr class="tabela_content01">
+                    <td>
+                        Peso-----------
+                    </td>
+                    <td style="text-align: left;">
+                        _peso_
+                    </td>
+                </tr>
+                <tr class="tabela_content02">
+                    <td>
+                        Altura-----------
+                    </td>
+                    <td style="text-align: left;">
+                        _altura_
+                    </td>
+                </tr>-->
+                <tr class="tabela_content01">
+                    <td>
+                        Assinatura do médico (Apenas se quiser no corpo do texto. Também pode ser colocado no rodapé nas configurações de rodapé)
+                    </td>
+                    <td style="text-align: left;">
+                        _assinatura_
+                    </td>
+                </tr>
+            </table>
+
+        </div>
 </div> <!-- Final da DIV content -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <link href="<?= base_url() ?>css/estilo.css" rel="stylesheet" type="text/css" />

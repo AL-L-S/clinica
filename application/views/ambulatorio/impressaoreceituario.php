@@ -3,13 +3,14 @@
 
 <BODY>
     <? if (@$receituario != NULL) { ?>
-    <!--<center><p style="text-align: center; font-weight: bold;">Receita Médica</p></center>-->
+    <center><p style="text-align: center; font-weight: bold;">Receita Médica</p></center>
 <? } ?>
 <br>
-<? //if (isset($atestado) && !$atestado) { ?>
-   <!--<p style="text-align: left;">Paciente: <? // echo $laudo['0']->paciente;                 ?></p>-->
-<? //} ?>
-
+<? if (isset($receituario)) { ?>
+   <p style="text-align: left;">Paciente: <?  echo $laudo['0']->paciente;                 ?></p>
+<? } ?>
+<br>
+<br>
 <?= $laudo['0']->texto; ?><br/>
 
 <? if (@$atestado != NULL) { ?>

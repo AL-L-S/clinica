@@ -19,6 +19,24 @@
     <? if (count($medico) == 0) { ?>
         <h3>MÉDICO: TODOS</h3>
     <? } ?>
+        
+    <? if (count($grupomedico) != 0) { ?>
+        <h3>GRUPO MÉDICO: <?= $grupomedico[0]->nome; ?></h3>
+    <? } ?>    
+    <? if (count($grupomedico) == 0) { ?>
+        <h3>GRUPO MÉDICO: TODOS</h3>
+    <? } ?>
+        
+    
+    <?if ($_POST['grupo'] != '0' && $_POST['grupo'] != '1') { ?>
+        <h3>ESPECIALIDADE: <?= $_POST['grupo']; ?></h3>
+    <? } ?>    
+    <?if ($_POST['grupo'] == '1') { ?>
+        <h3>ESPECIALIDADE: SEM RM</h3>
+    <? } ?>    
+    <? if ($_POST['grupo'] == '0') { ?>
+        <h3>ESPECIALIDADE: TODOS</h3>
+    <? } ?>
     <hr>
     <?
     if (count($relatorio) > 0 || count($relatoriohomecare) > 0) {
@@ -85,7 +103,7 @@
                     $pendentes = 0;
 
                     foreach ($relatorio as $item) {
-
+                        $u = 0;
                         $i++;
                         $b++;
                         if ($item->financeiro == 't') {

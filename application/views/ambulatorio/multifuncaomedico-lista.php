@@ -69,13 +69,13 @@
                             </select>
                         </th>
                         <? if ($perfil_id != 4) { ?>
-                    <!--                            <th class="tabela_title">
-                                                    <select name="especialidade" id="especialidade" class="size1">
-                                                        <option value=""></option>
-                 
-                                                    </select>
-                                                </th>-->
-                        
+                                    <!--                            <th class="tabela_title">
+                                                                    <select name="especialidade" id="especialidade" class="size1">
+                                                                        <option value=""></option>
+                                 
+                                                                    </select>
+                                                                </th>-->
+
 
 
                             <th class="tabela_title">
@@ -144,6 +144,8 @@
                 <tbody>
                     <?php
                     $lista = $this->exame->listarmultifuncao2medico($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
+//                    echo '<pre>';
+//                    var_dump($lista); die;
                     $estilo_linha = "tabela_content01";
                     $operador_id = $this->session->userdata('operador_id');
                     foreach ($lista as $item) {
@@ -214,7 +216,11 @@
                             <? } ?>
                             <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><?if($item->data_autorizacao != ''){echo date("H:i:s", strtotime($item->data_autorizacao)) ;}  ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><?
+                                if ($item->data_autorizacao != '') {
+                                    echo date("H:i:s", strtotime($item->data_autorizacao));
+                                }
+                                ?></td>
                             <td class="<?php echo $estilo_linha; ?>" width="120px;"><?= $item->sala; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . " " . $item->agenda_exames_id; ?></td>
                             <? if ($item->situacaolaudo == 'FINALIZADO' || $item->situacaolaudo == 'REVISAR') { ?>
@@ -223,8 +229,8 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->situacaolaudo; ?></td>
                             <? } ?>
                             <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
-                                                                        <? if ($item->situacaolaudo != '' && $item->situacaoexame != 'PENDENTE') { ?>
+                                                                                                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                <? if ($item->situacaolaudo != '' && $item->situacaoexame != 'PENDENTE') { ?>
                                     <?
                                     if (($item->medico_parecer1 == $operador_id && $item->situacaolaudo == 'FINALIZADO') || ($item->situacaolaudo != 'FINALIZADO' && $item->situacaolaudo != '') || $operador_id == 1) {
                                         if ($item->grupo == 'ECOCARDIOGRAMA') {
@@ -259,15 +265,25 @@
                                             2º via</a></div>
                                 </td>
                             <? } else { ?>
+                                
+
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                     <a></a></font>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                     <a></a></font>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                    <a></a></font>
-                                </td>
+                                <? if ($item->paciente_id == '') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                        <div class="bt_link">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarexame/<?= $item->agenda_exames_id ?>');">Exame
+                                            </a></div></font>
+                                    </td>   
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                        <a></a></font>
+                                    </td>  
+                                <? } ?>
                             <? } ?>
                         </tr>
 
@@ -278,9 +294,9 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="12">
+                        <th class="tabela_footer" colspan="14">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            <!-- Total de registros: <?php // echo $total;     ?> -->
+                            <!-- Total de registros: <?php // echo $total;         ?> -->
                         </th>
                     </tr>
                 </tfoot>

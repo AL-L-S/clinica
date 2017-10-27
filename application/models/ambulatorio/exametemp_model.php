@@ -2456,14 +2456,14 @@ class exametemp_model extends Model {
             return $paciente_id;
         }
     }
-
+    
     function buscartipo($procedimento_id) {
         $this->db->select('ag.tipo');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
         $this->db->where('pc.procedimento_convenio_id', $procedimento_id);
-        $this->db->where('ag.tipo !=', 'ESPECIALIDADE');
+//        $this->db->where('ag.tipo !=', 'ESPECIALIDADE');
         $return = $this->db->get();
 
         return $return->result();
@@ -3412,6 +3412,34 @@ class exametemp_model extends Model {
         return $agrupador;
     }
 
+    function crianovopacienteorcamento() {
+        $_POST['txtNome'] = strtoupper($_POST['txtNome']);
+        if ($_POST['txtNomeid'] == '') {
+            if ($_POST['nascimento'] != '') {
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+            }
+            if ($_POST['idade'] != 0) {
+                $this->db->set('idade', $_POST['idade']);
+            }
+            $this->db->set('celular', $_POST['txtCelular']);
+            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('telefone', $_POST['txtTelefone']);
+//                $this->db->set('numero_sessao', $_POST['sessao']);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->insert('tb_paciente');
+            $paciente_id = $this->db->insert_id();
+        } else {
+            $paciente_id = $_POST['txtNomeid'];
+
+            $this->db->set('celular', $_POST['txtCelular']);
+            $this->db->set('telefone', $_POST['txtTelefone']);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->where('paciente_id', $paciente_id);
+            $this->db->update('tb_paciente');
+        }
+        return $paciente_id;
+    }
+    
     function crianovopacienteespecialidade() {
         $_POST['txtNome'] = strtoupper($_POST['txtNome']);
         if ($_POST['txtNomeid'] == '') {
