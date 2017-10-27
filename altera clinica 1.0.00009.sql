@@ -526,3 +526,13 @@ ALTER TABLE ponto.tb_estoque_entrada ADD COLUMN saida_id_transferencia text;
 ALTER TABLE ponto.tb_operador ADD COLUMN cabecalho text;
 ALTER TABLE ponto.tb_operador ADD COLUMN rodape text;
 ALTER TABLE ponto.tb_operador ADD COLUMN timbrado_tamanho text;
+-- Dia 19/10/2017
+ALTER TABLE ponto.tb_convenio ADD COLUMN convenio_associacao integer;
+
+-- Dia 20/10/2017
+ALTER TABLE ponto.tb_convenio DROP COLUMN convenio_associacao;
+ALTER TABLE ponto.tb_convenio ADD COLUMN associado boolean DEFAULT false;
+ALTER TABLE ponto.tb_convenio ADD COLUMN associacao_percentual numeric(10,4);
+ALTER TABLE ponto.tb_convenio ADD COLUMN associacao_convenio_id integer;
+ALTER TABLE ponto.tb_convenio ADD COLUMN data_percentual_atualizacao timestamp without time zone;
+ALTER TABLE ponto.tb_convenio ADD COLUMN operador_percentual_atualizacao integer;

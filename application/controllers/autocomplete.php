@@ -91,6 +91,24 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function buscarprocedimentoconvenioprincipal() {
+        if (isset($_GET['convenio'])) {
+            $result = $this->procedimentoplano->buscarprocedimentoconvenioprincipal($_GET['convenio']);
+        } else {
+            $result = $this->procedimentoplano->buscarprocedimentoconvenioprincipal();
+        }
+        echo json_encode($result);
+    }
+
+    function buscarconveniosecundario() {
+        if (isset($_GET['convenio'])) {
+            $result = $this->procedimentoplano->buscarconveniosecundario($_GET['convenio']);
+        } else {
+            $result = $this->procedimentoplano->buscarconveniosecundario();
+        }
+        echo json_encode($result);
+    }
+
     function horariosambulatorioconsulta() {
         $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
         if (isset($_GET['exame'])) {

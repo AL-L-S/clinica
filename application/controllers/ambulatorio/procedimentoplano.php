@@ -537,7 +537,7 @@ class Procedimentoplano extends BaseController {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        redirect(base_url() . "ambulatorio/procedimentoplano");
     }
 
     function gravarpercentualmedico() {

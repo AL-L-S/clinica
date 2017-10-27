@@ -206,7 +206,6 @@
                 <div>
                     <label>Credor / Devedor</label>
 
-
                     <select name="credor_devedor" id="credor_devedor" class="size2" >
                         <option value='' >selecione</option>
                         <?php
@@ -231,7 +230,7 @@
                         <option value='' >selecione</option>
                         <?php
                         $forma = $this->convenio->listarforma();
-                        var_dump($forma);
+//                        var_dump($forma);
                         foreach ($forma as $item) {
                             ?>
 
@@ -243,6 +242,30 @@
                                   }
                                   ?> 
                     </select>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Associaçao de Convenio</legend>
+                <div>
+                    <input type="checkbox" name="associaconvenio" id="associaconvenio" <?= (@$obj->_associado == 't')? 'checked':""; ?>/> Associar a outro convenio
+                </div>
+                
+                <div id="div_associacao">
+                    <div>
+                        <label>Convenio Principal</label>
+                        <select name="convenio_associacao" id="convenio_associacao" class="size2" >
+                            <option value=''>Selecione</option>
+                            <?php
+                            foreach ($convenio as $item) {
+                                ?>
+                                <option value =<?php echo $item->convenio_id; ?> <?= (@$obj->_associacao_convenio_id == $item->convenio_id)? 'selected':""; ?>><?php echo $item->nome; ?></option>
+                            <?php } ?> 
+                        </select>
+                    </div>
+<!--                    <div>
+                        <label>Valor Percentual</label>
+                        <input type="number" step="0.01" name="valorpercentual"  id="valorpercentual" class="texto02" value="<?= @$obj->_associacao_percentual; ?>" /> %
+                    </div>-->
                 </div>
             </fieldset>
             <fieldset>
@@ -268,35 +291,21 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-//    $(document).ready(function () {
-//        jQuery('#form_convenio').validate({
-//            rules: {
-//                txtNome: {
-//                    required: true,
-//                    minlength: 2
-//                },
-//                txtrazaosocial: {
-//                    required: true
-//                },
-//                txtCNPJ: {
-//                    required: true
-//                }
-//
-//            },
-//            messages: {
-//                txtNome: {
-//                    required: "*",
-//                    minlength: "*"
-//                },
-//                txtrazaosocial: {
-//                    required: "*"
-//                },
-//                txtCNPJ: {
-//                    required: "*"
-//                }
-//            }
-//        });
-//    });
+    <?if(@$obj->_associado != 't'){?>
+        $("#div_associacao").hide();
+    <?}?>
+    $('#associaconvenio').change(function () {
+        if ($(this).is(":checked")) {
+            $("#div_associacao").show();
+            $("#convenio_associacao").prop('required', true);
+            $("#valorpercentual").prop('required', true);
+            
+        } else {
+            $("#div_associacao").hide();
+            $("#convenio_associacao").prop('required', false);
+            $("#valorpercentual").prop('required', false);
+        }
+    });
     var teste = '<? echo $obj->_tabela; ?>';
     if (teste == 'CBHPM' || teste == 'PROPRIA') {
         $("#procedimento1").prop('required', true);

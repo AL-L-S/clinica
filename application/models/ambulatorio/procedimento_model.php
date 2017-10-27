@@ -618,15 +618,24 @@ class procedimento_model extends Model {
             return -1;
         }
     }
-
+    
     function gravarajustevalores() {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-                      
-            $sql = "UPDATE ponto.tb_procedimento_tuss
-                    SET perc_medico = {$_POST['txtperc_medico']}, percentual = '{$_POST['percentual']}'
-                    WHERE grupo = '{$_POST['grupo']}' ";
+            if(isset($_POST['ajuste'])){
+                $vlr = str_replace(",", ".", $_POST['ajuste_percentual']);
+                $sql = "UPDATE ponto.tb_procedimento_tuss
+                        SET perc_medico = (perc_medico + (perc_medico * ( {$vlr} / 100) ) )
+                        WHERE grupo = '{$_POST['grupo']}' ";
+//                die($sql);
+            }
+            else{
+                $vlr = str_replace(",", ".", $_POST['txtperc_medico']);
+                $sql = "UPDATE ponto.tb_procedimento_tuss
+                        SET perc_medico = {$vlr}, percentual = '{$_POST['percentual']}'
+                        WHERE grupo = '{$_POST['grupo']}' ";
+            }
             
             $this->db->query($sql);
             
@@ -634,7 +643,6 @@ class procedimento_model extends Model {
             return false;
         }
     }
-
     function gravarprocedimentoconveniovalor($procedimento_tuss_id) {
         try {
             $horario = date("Y-m-d H:i:s");

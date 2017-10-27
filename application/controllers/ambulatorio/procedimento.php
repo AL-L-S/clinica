@@ -76,6 +76,14 @@ class Procedimento extends BaseController {
         redirect(base_url() . "ambulatorio/procedimento");
     }
 
+    function carregarexclusaoporgrupo() {
+        $obj_procedimento = new procedimento_model($procedimento_tuss_id);
+        $data['obj'] = $obj_procedimento;
+        $data['grupos'] = $this->procedimento->listargrupos();
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/procedimento-form', $data);
+    }
+
     function carregarprocedimento($procedimento_tuss_id) {
         $obj_procedimento = new procedimento_model($procedimento_tuss_id);
         $data['obj'] = $obj_procedimento;

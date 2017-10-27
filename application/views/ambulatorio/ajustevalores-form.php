@@ -18,22 +18,43 @@
                         </select>
                     </dd>
                     <dt>
-                        <label>Perc./Valor Medico</label>
+                        <label>Ajustar Percentual?</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtperc_medico" id="txtperc_medico" class="texto" value="<?= @$obj->_perc_medico; ?>" />
+                        <input type="checkbox" name="ajuste" id="ajuste" class="texto01" /> 
                     </dd>
-                    <dt>
-                        <label>Percentual</label>
-                    </dt>
-                    <dd>
-                        <select name="percentual" id="percentual" class="size2" required="">
-                            <option value="">Selecione</option>
-                            <option value="t">SIM</option>
-                            <option value="f">N&Atilde;O</option>
-                        </select>
-                    </dd>
+                    
+                    <div id="cadastrarPercentual">
+                        
+                        <dt>
+                            <label>Perc./Valor Medico</label>
+                        </dt>
+                        <dd>
+                            <input type="number" name="txtperc_medico" id="txtperc_medico" step="0.01" style="width: 6em;"/>
+                            <!--<input type="text" name="txtperc_medico" id="txtperc_medico" class="texto" value="<?= @$obj->_perc_medico; ?>" />-->
+                        </dd>
+                        <dt>
+                            <label>Percentual</label>
+                        </dt>
+                        <dd>
+                            <select name="percentual" id="percentual" class="size2" required="">
+                                <option value="">Selecione</option>
+                                <option value="t">SIM</option>
+                                <option value="f">N&Atilde;O</option>
+                            </select>
+                        </dd>
 
+                    </div>
+                    
+                    <div id="editarPercentual">                        
+                        <dt>
+                            <label>Ajuste no valor atual: </label>
+                        </dt>
+                        <dd>
+                            <input type="number" name="ajuste_percentual" id="ajuste_percentual" step="0.01" style="width: 6em;"/> %
+                            <!--<input type="text"  class="texto"/> %-->
+                        </dd>
+                    </div>
                 </dl>    
 
                 <hr/>
@@ -58,19 +79,19 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-$("#grupodiv").hide();
-    $('#brasindice').change(function () {
+    $("#editarPercentual").hide();
+    $('#ajuste').change(function () {
         if ($(this).is(":checked")) {
-            $("#valoresdiv").hide();
-            $("#procedimentodiv").hide();
-            $("#grupodiv").show();
-            $("#grupo").prop('required', true);
+            $("#cadastrarPercentual").hide();
+            $("#editarPercentual").show();
+            $("#ajuste_percentual").prop('required', true);
+            $("#percentual").prop('required', false);
             
         } else {
-            $("#valoresdiv").show();
-            $("#procedimentodiv").show();
-            $("#grupodiv").hide();
-            $("#grupo").prop('required', false);
+            $("#cadastrarPercentual").show();
+            $("#editarPercentual").hide();
+            $("#ajuste_percentual").prop('required', false);
+            $("#percentual").prop('required', true);
 //            $("#procedimento").toggle();
         }
     });
