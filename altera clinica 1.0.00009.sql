@@ -404,3 +404,22 @@ ALTER TABLE ponto.tb_convenio ADD COLUMN operador_percentual_atualizacao integer
 
 -- Dia 23/10/2017
 ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN forma_pagamento integer;
+
+
+-- Dia 27/10/2017
+ALTER TABLE ponto.tb_ambulatorio_atendimentos_cancelamento ADD COLUMN lancou_credito boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento1 integer;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN valor1 numeric(10,2) DEFAULT 0;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento2 integer;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN valor2 numeric(10,2) DEFAULT 0;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento3 integer;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN valor3 numeric(10,2) DEFAULT 0;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento4 integer;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN valor4 numeric(10,2) DEFAULT 0;
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN dias_retorno integer;
+
+-- Dia 28/10/2017
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN encaminhado boolean DEFAULT false;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN medico_encaminhamento_id integer;

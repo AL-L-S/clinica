@@ -1832,6 +1832,21 @@ class laudo_model extends Model {
         }
     }
 
+    function gravarencaminhamentoatendimento() {
+        try {
+            /* inicia o mapeamento no banco */
+//            $horario = date("Y-m-d H:i:s");
+//            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('encaminhado', 't');
+            $this->db->set('medico_encaminhamento_id', $_POST['medico_id']);
+            $this->db->where('ambulatorio_laudo_id', $_POST['ambulatorio_laudo_id']);
+            $this->db->update('tb_ambulatorio_laudo');
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarhistorico($paciente_id) {
         try {
             /* inicia o mapeamento no banco */
@@ -2749,7 +2764,10 @@ class laudo_model extends Model {
                 $this->db->set('hipertensao', $_POST['hipertensao']);
             }
 
-
+            if (isset($_POST['ret'])) {
+                $this->db->set('dias_retorno', $_POST['ret_dias']);
+            }
+            
             if (isset($_POST['assinatura'])) {
                 $this->db->set('assinatura', 't');
             } else {
@@ -3324,6 +3342,8 @@ class laudo_model extends Model {
                             ag.ae_volume,
                             ag.ao_diametro_raiz,
                             ag.ao_relacao_atrio_esquerdo_aorta,
+                            ag.dias_retorno,
+                            ag.medico_encaminhamento_id,
                             c.no_cid,
                             c2.no_cid as no_cid2,
                             ae.exames_id,
@@ -3431,6 +3451,8 @@ class laudo_model extends Model {
             $this->_ad_volume_indexado = $return[0]->ad_volume_indexado;
             $this->_ao_diametro_raiz = $return[0]->ao_diametro_raiz;
             $this->_ao_relacao_atrio_esquerdo_aorta = $return[0]->ao_relacao_atrio_esquerdo_aorta;
+            $this->_dias_retorno = $return[0]->dias_retorno;
+            $this->_medico_encaminhamento_id = $return[0]->medico_encaminhamento_id;
         } else {
             $this->_ambulatorio_laudo_id = null;
         }

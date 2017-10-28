@@ -32,10 +32,12 @@ class procedimentoplano_model extends Model {
                             pt.nome as procedimento,
                             pt.codigo,
                             pc.valortotal,
-                            pt.grupo');
+                            pt.grupo,
+                            e.nome as empresa');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = pc.empresa_id', 'left');
         $this->db->where("pc.ativo", 't');
 //        $empresa_id = $this->session->userdata('empresa_id');
 //        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
@@ -617,18 +619,19 @@ class procedimentoplano_model extends Model {
         $this->db->select(' pc.procedimento_convenio_id,
                             pc.procedimento_tuss_id,
                             pt.codigo,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            pc.empresa_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
 //        $this->db->where("pt.grupo !=", 'CONSULTA');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
-//        $empresa_id = $this->session->userdata('empresa_id');
-//        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
-//        if($procedimento_multiempresa == 't'){
-//        $this->db->where('pc.empresa_id', $empresa_id);    
-//        }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if($procedimento_multiempresa == 't'){
+            $this->db->where('pc.empresa_id', $empresa_id);    
+        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -1678,6 +1681,7 @@ class procedimentoplano_model extends Model {
                         $this->db->where('pc.ativo', 't');
                         $this->db->where("pt.procedimento_tuss_id", $_POST['procedimento']);
                         $this->db->where("pc.convenio_id", $_POST['convenio']);
+                        $this->db->where("pc.empresa_id", $_POST['empresa']);
                         $query = $this->db->get();
                         $return = $query->result();
                         $qtde = count($return);

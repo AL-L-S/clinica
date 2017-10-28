@@ -74,11 +74,25 @@ class Laudo extends BaseController {
         $data['resultado'] = '';
         $this->load->View('ambulatorio/calculadora-form', $data);
     }
+    
+    function encaminharatendimento($ambulatorio_laudo_id) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $this->load->View('ambulatorio/encaminharatendimento-form', $data);
+    }
+
+    function gravarencaminhamentoatendimento() {
+        $this->laudo->gravarencaminhamentoatendimento();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
 
     function limparnomes($exame_id) {
         $data['exame_id'] = $exame_id;
         $this->load->View('ambulatorio/limparnomeimagem-form', $data);
     }
+    
 
     function gravarlimparnomes($exame_id) {
         $this->laudo->deletarnomesimagens($exame_id);

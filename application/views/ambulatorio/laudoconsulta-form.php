@@ -48,13 +48,16 @@
 
                         <tr>
                             <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
-                            <td width="40px;">
+                            <td width="40px;" rowspan="2">
                                 <div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
                                         Chamar</a></div>
                                 <div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
                                         Editar</a></div>
+                                <div class="bt_link_new">
+                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>', '_blank', 'width=500,height=230');" >
+                                        Encaminhar</a></div>
                                 <? if (@$obj->_status != 'FINALIZADO') { ?>
                                     <div class="bt_link_new">
                                         <a href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
@@ -286,9 +289,17 @@
                                 ?> >FINALIZADO</option>
                             </select>
                             <input type="hidden" name="status" id="status" value="<?= @$obj->_status; ?>" class="size2" />
+                            
+                            <label style="margin-left: 10pt" for="ret">Retorno?</label>
+                            <input type="checkbox" name="ret" id="ret" <?= (@$obj->_dias_retorno != '') ? 'checked' : ''; ?>/>
+                            <div class="div_ret_dias" style="display: inline-block">
+                                Dias <input type="text" name="ret_dias" id="ret_dias" style="width:70pt">
+                            </div>
 
                             <label style="margin-left: 10pt" for="rev">Revisão?</label>
                             <input type="checkbox" name="rev" id="rev" />
+                            
+                            
                             <div class="dias" style="display: inline">
 
                             </div>
@@ -585,6 +596,27 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+                                            <? if(@$obj->_dias_retorno != ''){ ?>
+                                                $(".div_ret_dias").show();
+                                                $("#ret_dias").val(<?= (@$obj->_dias_retorno != '') ? @$obj->_dias_retorno : 0; ?>);
+                                                $("#ret_dias").prop('required', true);
+                                            <? } 
+                                            else {?>
+                                                $(".div_ret_dias").hide();
+                                                $("#ret_dias").prop('required', false);
+                                                $("#ret_dias").val(<?= (@$obj->_dias_retorno != '') ? @$obj->_dias_retorno : 0; ?>);
+                                            <?}?>
+                                            jQuery('#ret').change(function () {
+//                                                alert(this.checked);
+                                                if (this.checked) {
+                                                    $(".div_ret_dias").show();
+                                                    $("#ret_dias").prop('required', true);
+                                                } else {
+                                                    $(".div_ret_dias").hide();
+                                                    $("#ret_dias").prop('required', false);
+//                                                    $("#ret_dias").val(<?= (@$obj->_dias_retorno != '') ? @$obj->_dias_retorno : 0; ?>);
+                                                }
+                                            });
                                             jQuery('#rev').change(function () {
                                                 if (this.checked) {
                                                     var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';

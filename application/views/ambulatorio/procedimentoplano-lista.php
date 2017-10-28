@@ -99,6 +99,11 @@
             <table>
                 <thead>
                     <tr>
+                        <?
+                        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                        if ($procedimento_multiempresa == 't') { ?>
+                            <th class="tabela_header">Empresa</th>
+                        <? } ?>
                         <th class="tabela_header">Plano</th>
                         <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Grupo</th>
@@ -128,6 +133,11 @@
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
+                                <?
+                                $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                                if ($procedimento_multiempresa == 't') { ?>
+                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
+                                <?}?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>                               
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
