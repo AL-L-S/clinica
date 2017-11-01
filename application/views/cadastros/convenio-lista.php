@@ -88,7 +88,7 @@
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
                                         <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/<?= $item->convenio_id ?>">
-                                            F. Pagamento
+                                            G. Pagamento
                                         </a>
                                     </div>
                                 </td>

@@ -149,25 +149,35 @@ class Convenio_model extends Model {
     }
 
     function excluir($convenio_id) {
+        $this->db->select('convenio_id');
+        $this->db->from('tb_convenio');
+        $this->db->where("ativo", 't');
+        $this->db->where("associacao_convenio_id", $convenio_id);
+        $return = $this->db->get();
+        $return = $return->result();
+        if(count($return) == 0){
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('convenio_id', $convenio_id);
+            $this->db->update('tb_convenio');
 
-        $horario = date("Y-m-d H:i:s");
-        $operador_id = $this->session->userdata('operador_id');
-        $this->db->set('ativo', 'f');
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('convenio_id', $convenio_id);
-        $this->db->update('tb_convenio');
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('convenio_id', $convenio_id);
+            $this->db->update('tb_procedimento_convenio');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                return $convenio_id;
 
-        $this->db->set('ativo', 'f');
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('convenio_id', $convenio_id);
-        $this->db->update('tb_procedimento_convenio');
-        $erro = $this->db->_error_message();
-        if (trim($erro) != "") // erro de banco
-            return false;
-        else
-            return true;
+        } else {
+            return -2;
+        }
     }
 
     function gravardesconto() {
@@ -288,6 +298,104 @@ class Convenio_model extends Model {
                 }
             }
 
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarajusteconveniosecundario($convenio_id) {
+        $operador_id = $this->session->userdata('operador_id');
+        $data = date('Y-m-d H:i:s');
+        try {
+            /* TRAZENDO CONVENIOS SECUNDARIOS */
+            $this->db->select('convenio_id, associacao_percentual');
+            $this->db->from('tb_convenio c');
+            $this->db->where('c.ativo', 't');
+            $this->db->where('c.associado', 't');
+            $this->db->where('c.associacao_convenio_id', $convenio_id);
+            $conv_sec = $this->db->get();
+            $conv_sec = $conv_sec->result();
+            
+//            var_dump($conv_sec); die;
+            
+            // Verifica se há convenios secundarios associados
+            if (count($conv_sec) > 0) {
+
+                // Traz todos os procedimentos do convenio principal
+                $this->db->select('pc.*');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                if ($_POST['grupo'] != 'TODOS') {
+                    $this->db->where('pt.grupo', $_POST['grupo']);
+                }
+                $this->db->where('pc.convenio_id', $convenio_id);
+                $this->db->where('pc.ativo', 't');
+                $conv_pri = $this->db->get();
+                $conv_pri = $conv_pri->result();
+
+                foreach ($conv_sec as $item) {
+
+                    // Traz todos os procedimentos do convenio secundario
+                    $this->db->select('pc.*');
+                    $this->db->from('tb_procedimento_convenio pc');
+                    $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                    if ($_POST['grupo'] != 'TODOS') {
+                        $this->db->where('pt.grupo', $_POST['grupo']);
+                    }
+                    $this->db->where('pc.convenio_id', $item->convenio_id);
+                    $this->db->where('pc.ativo', 't');
+                    $proc_conv_sec = $this->db->get();
+                    $proc_conv_sec = $proc_conv_sec->result();
+
+                    if (count($proc_conv_sec) > 0) {
+                        foreach ($proc_conv_sec as $value) {
+
+                            // Salvando valore(s) antigo(s) do(s) convenio(s) secundario(s)
+                            $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                            $this->db->set('convenio_id', $value->convenio_id);
+                            $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                            $this->db->set('qtdech', $value->qtdech);
+                            $this->db->set('valorch', $value->valorch);
+                            $this->db->set('qtdefilme', $value->qtdefilme);
+                            $this->db->set('valorfilme', $value->valorfilme);
+                            $this->db->set('qtdeporte', $value->qtdeporte);
+                            $this->db->set('valorporte', $value->valorporte);
+                            $this->db->set('qtdeuco', $value->qtdeuco);
+                            $this->db->set('valoruco', $value->valoruco);
+                            $this->db->set('valortotal', $value->valortotal);
+                            if ($item->associacao_percentual != '') {
+                                $this->db->set('percentual_ch', $item->associacao_percentual);
+                            }
+                            $this->db->set('valortotal', $value->valortotal);
+                            $this->db->set('data_cadastro', $data);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->insert('tb_procedimento_convenio_antigo');
+                        }
+                    }
+
+
+                    // Atualizando o(s) valor(s) do(s) convneios secundarios
+                    foreach ($conv_pri as $cp) {
+                        $this->db->set('qtdech', $cp->qtdech);
+                        $this->db->set('valorch', $cp->valorch);
+                        $this->db->set('qtdefilme', $cp->qtdefilme);
+                        $this->db->set('valorfilme', $cp->valorfilme);
+                        $this->db->set('qtdeporte', $cp->qtdeporte);
+                        $this->db->set('valorporte', $cp->valorporte);
+                        $this->db->set('qtdeuco', $cp->qtdeuco);
+                        $this->db->set('valoruco', $cp->valoruco);
+                        $this->db->set('valortotal', ($cp->valortotal * (float) $item->associacao_percentual / 100));
+                        $this->db->set('data_atualizacao', $data);
+                        $this->db->set('operador_atualizacao', $operador_id);
+                        $this->db->where('procedimento_tuss_id', $value->procedimento_tuss_id);
+                        $this->db->where('convenio_id', $item->convenio_id);
+                        $this->db->where('ativo', 't');
+                        $this->db->update('tb_procedimento_convenio');
+                    }
+                }
+            }
 
             return 1;
         } catch (Exception $exc) {

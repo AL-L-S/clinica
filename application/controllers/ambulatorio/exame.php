@@ -272,12 +272,22 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriomedicoordem', $data);
     }
-     function relatoriopacientetelefone() {
+    
+    function relatoriopacientetelefone() {
         $data['convenio'] = $this->convenio->listardados();
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['procedimento'] = $this->procedimento->listarprocedimento2();
         $this->loadView('ambulatorio/relatoriopacientetelefone', $data);
     }
+    
+    function relatorioencaminhamento() {
+//        $data['convenio'] = $this->convenio->listardados();
+//        $data['grupos'] = $this->procedimento->listargrupos();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+//        $data['procedimento'] = $this->procedimento->listarprocedimento2();
+        $this->loadView('ambulatorio/relatorioencaminhamento', $data);
+    }
+    
     function gerarelatoriorecepcaoagenda() {
         if ($_POST['tipoRelatorio'] == '0') {
             $this->gerarelatoriomedicoagendaconsultas();
@@ -318,6 +328,15 @@ class Exame extends BaseController {
         $data['relatorio'] = $this->exame->listaragendamentoteleoperadora();
         $this->load->View('ambulatorio/impressaorelatorioteleoperadora', $data);
     }
+    
+    function gerarelatorioencaminhamento() {
+        
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['relatorio'] = $this->exame->gerarelatorioencaminhamento();
+        $this->load->View('ambulatorio/impressaorelatorioencaminhamento', $data);
+    }
+    
     function gerarelatoriopacientetelefone() {
         
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
@@ -794,7 +813,6 @@ class Exame extends BaseController {
     function examesala($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
         $data['salas'] = $this->exame->listarsalas();
         $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
-        $data['indicacao_selecionada'] = $this->exame->listarindicacaoagenda($agenda_exames_id);
         $data['agenda_exames_nome_id'] = $this->exame->listarsalaagenda($agenda_exames_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['tecnicos'] = $this->operador_m->listartecnicos();
@@ -987,6 +1005,19 @@ class Exame extends BaseController {
         } else {
             $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
         }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exame/listarsalasespera");
+    }
+
+    function cancelarexamelancarcredito() {
+//        $credito = $this->exame->creditocancelamentoespera();
+        $verificar = $this->exame->cancelarexamelancarcredito();
+        if ($verificar == "-1") {
+            $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+        }
+        
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarsalasespera");
     }
@@ -1186,6 +1217,25 @@ class Exame extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
+    }
+
+    function lancarcreditoexamependente($exames_id, $sala_id, $agenda_exames_id) {
+        $verificar = $this->exame->lancarcreditoexamependente($exames_id, $sala_id, $agenda_exames_id);
+        if ($verificar == -1) {
+            $data['mensagem'] = 'Erro ao finalizar o Exame. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
+    }
+
+    function carregarcancelamentoexamecredito($exames_id, $sala_id, $agenda_exames_id) {
+        $verificar = $this->exame->carregarcancelamentoexamecredito($exames_id, $sala_id, $agenda_exames_id);
+        $data['motivos'] = $this->motivocancelamento->listartodos();
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $this->loadView('ambulatorio/cancelamentoexamecredito-form', $data);
     }
 
     function finalizarexamependente($exames_id, $sala_id, $agenda_exames_id) {

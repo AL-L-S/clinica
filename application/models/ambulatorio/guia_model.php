@@ -5974,14 +5974,15 @@ class guia_model extends Model {
                             pt.descricao_procedimento,
                             pt.codigo,
                             pt.grupo,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            fp.nome as forma_pagamento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
-        $this->db->join('tb_ambulatorio_orcamento orc', 'orc.ambulatorio_orcamento_id = oi.orcamento_id', 'left');
-        $this->db->join('tb_paciente p', 'p.paciente_id = orc.paciente_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = oi.operador_cadastro', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
         $this->db->where("oi.orcamento_id", $orcamento);
         $this->db->where("oi.ativo", 't');
         $this->db->orderby('oi.ambulatorio_orcamento_item_id');
@@ -6336,15 +6337,26 @@ class guia_model extends Model {
     }
 
     function formadepagamentoprocedimento($procedimento_convenio_id) {
-        $this->db->select('forma_pagamento_id,
-                            nome,
-                            parcela_minima');
-        $this->db->from('tb_forma_pagamento');
-        $this->db->where('ativo', 't');
-      //  $this->db->where('forma_pagamento_id !=', 1000);
-        $this->db->orderby('nome');
+        $this->db->select('fp.forma_pagamento_id,
+                            fp.nome as nome');
+        $this->db->from('tb_procedimento_convenio_pagamento pp');
+        $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
+        $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->orderby('fp.nome');
         $return = $this->db->get();
-        return $return->result();
+        $retorno = $return->result();
+
+        if (empty($retorno)) {
+            $this->db->select('fp.forma_pagamento_id,
+                            fp.nome as nome');
+            $this->db->from('tb_forma_pagamento fp');
+            $this->db->orderby('fp.nome');
+            $return = $this->db->get();
+            return $return->result();
+        } else {
+            return $retorno;
+        }
     }
 
     function formadepagamentoguia($guia_id, $financeiro_grupo_id) {
@@ -9155,24 +9167,6 @@ ORDER BY ae.agenda_exames_id)";
 
         $this->db->select('e.empresa_id,
                             ordem_chegada,
-                            cancelar_sala_espera,
-                            ');
-        $this->db->from('tb_empresa e');
-        $this->db->where('e.empresa_id', $empresa_id);
-        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-        $this->db->orderby('e.empresa_id');
-        $return = $this->db->get();
-        return $return->result();
-    }
-    
-    function listarempresasaladepermissao($empresa_id = null) {
-        if ($empresa_id == null) {
-            $empresa_id = $this->session->userdata('empresa_id');
-        }
-
-        $this->db->select('e.empresa_id,
-                            ordem_chegada,
-                            oftamologia,
                             ');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
@@ -9876,8 +9870,12 @@ ORDER BY ae.agenda_exames_id)";
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('orcamento_id', $ambulatorio_orcamento_id);
-
-            $this->db->set('paciente_id', $_POST['txtNomeid']);
+            
+            if($_POST['formapamento'] != ''){
+                $this->db->set('forma_pagamento', $_POST['formapamento']);
+            }
+            
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             $this->db->set('data', $data);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
@@ -9900,6 +9898,9 @@ ORDER BY ae.agenda_exames_id)";
             $data = date("Y-m-d");
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
 
+            if($_POST['formapamento'] != ''){
+                $this->db->set('forma_pagamento', $_POST['formapamento']);
+            }
             $this->db->set('valor', $_POST['valor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
@@ -10468,9 +10469,6 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             if ($_POST['medico'] != '') {
                 $this->db->set('medico_solicitante', $_POST['medico']);
-            }
-            if ($_POST['indicacao'] != '') {
-                $this->db->set('indicacao', $_POST['indicacao']);
             }
             $this->db->set('medico_agenda', $_POST['medico_agenda']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);

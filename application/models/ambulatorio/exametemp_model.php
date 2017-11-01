@@ -1730,12 +1730,14 @@ class exametemp_model extends Model {
                             pt.descricao_procedimento,
                             pt.codigo,
                             pt.grupo,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            fp.nome as forma_pagamento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
         $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
         $this->db->where('oi.empresa_id', $empresa_id);
         $this->db->where("oi.paciente_id", $paciente_id);
         $this->db->where("oi.data", $horario);
@@ -2463,7 +2465,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
         $this->db->where('pc.procedimento_convenio_id', $procedimento_id);
-//        $this->db->where('ag.tipo !=', 'ESPECIALIDADE');
+        $this->db->where('ag.tipo !=', 'ESPECIALIDADE');
         $return = $this->db->get();
 
         return $return->result();
@@ -5678,7 +5680,8 @@ class exametemp_model extends Model {
     function listarautocompleteprocedimentosgrupo($parametro = null, $parametro2 = null) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            pc.empresa_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');

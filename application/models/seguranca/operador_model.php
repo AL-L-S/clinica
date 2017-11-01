@@ -60,16 +60,12 @@ class Operador_model extends BaseModel {
     }
 
     function listar($args = array()) {
-        $operador_id = $this->session->userdata('operador_id');
 
         $this->db->from('tb_operador')
                 ->join('tb_perfil', 'tb_perfil.perfil_id = tb_operador.perfil_id', 'left')
                 ->select('"tb_operador".*, tb_perfil.nome as nomeperfil');
 
         $this->db->where('tb_operador.usuario IS NOT NULL');
-        if ($operador_id != 1) {
-            $this->db->where('tb_operador.operador_id !=', 1);
-        }
 //        $this->db->where('tb_operador.senha IS NOT NULL');
 
         if ($args) {
@@ -80,9 +76,6 @@ class Operador_model extends BaseModel {
             }
             if (@$args['ativo'] != '') {
                 $this->db->where('tb_operador.ativo', $args['ativo']);
-            }
-            if ($operador_id != 1) {
-                $this->db->where('tb_operador.operador_id !=', 1);
             }
         }
         return $this->db;
@@ -230,7 +223,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function listarprocedimentoconveniooperador($operador_id) {
         $this->db->select('cop.convenio_operador_procedimento_id,
                             pt.nome as procedimento,
@@ -260,7 +253,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function listaroperadores() {
         $this->db->select('o.operador_id,
                                o.usuario,
@@ -371,7 +364,6 @@ class Operador_model extends BaseModel {
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
         $this->db->where('consulta', 'false');
         $this->db->where('medico', 'false');
-        $this->db->where('o.ativo', 'true');
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
@@ -515,7 +507,6 @@ class Operador_model extends BaseModel {
                     $this->db->set('municipio_id', $_POST['municipio_id']);
                 }
                 $this->db->set('logradouro', $_POST['endereco']);
-
                 $this->db->set('numero', $_POST['numero']);
                 $this->db->set('bairro', $_POST['bairro']);
                 $this->db->set('complemento', $_POST['complemento']);
@@ -599,13 +590,13 @@ class Operador_model extends BaseModel {
                 $this->db->set('consulta', 'f');
                 $this->db->set('medico', 'f');
             }
-
-            if (isset($_POST['txtsolicitante'])) {
+            
+            if ( isset($_POST['txtsolicitante']) ) {
                 $this->db->set('solicitante', 't');
-            } else {
+            } else{
                 $this->db->set('solicitante', 'f');
             }
-
+            
             if ($_POST['txtcboID'] != "") {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
             }
@@ -616,9 +607,6 @@ class Operador_model extends BaseModel {
             if ($_POST['txtPerfil'] != "") {
                 $this->db->set('perfil_id', $_POST['txtPerfil']);
             }
-            $this->db->set('cabecalho', $_POST['cabecalho']);
-            $this->db->set('rodape', $_POST['rodape']);
-            $this->db->set('timbrado', $_POST['timbrado']);
             $this->db->set('ativo', 't');
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -658,7 +646,6 @@ class Operador_model extends BaseModel {
                     $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
                     $this->db->insert('tb_operador_cbo');
                 }
-                return $operador_id;
             } else { // update
                 $operador_id = $_POST['operador_id'];
                 $this->db->set('data_atualizacao', $horario);
@@ -685,7 +672,7 @@ class Operador_model extends BaseModel {
     function gravarrecepcao() {
         try {
             if ($_POST['criarcredor'] == "on") {
-
+                
                 $this->db->set('razao_social', $_POST['nome']);
                 $this->db->set('cep', $_POST['cep']);
                 if ($_POST['cpf'] != '') {
@@ -711,6 +698,7 @@ class Operador_model extends BaseModel {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $financeiro_credor_devedor_id = $this->db->insert_id();
+                
             }
 
             /* inicia o mapeamento no banco */
@@ -944,9 +932,6 @@ class Operador_model extends BaseModel {
                                 o.taxa_administracao,
                                 o.ir,
                                 o.pis,
-                                o.cabecalho,
-                                o.rodape,
-                                o.timbrado,
                                 o.cofins,
                                 o.csll,
                                 o.iss,
@@ -985,9 +970,6 @@ class Operador_model extends BaseModel {
             $this->_bairro = $return[0]->bairro;
             $this->_complemento = $return[0]->complemento;
             $this->_cidade = $return[0]->municipio_id;
-            $this->_cabecalho = $return[0]->cabecalho;
-            $this->_rodape = $return[0]->rodape;
-            $this->_timbrado = $return[0]->timbrado;
             $this->_cep = $return[0]->cep;
             $this->_consulta = $return[0]->consulta;
             $this->_cidade_nome = $return[0]->cidade_nome;

@@ -42,6 +42,7 @@
                         <? } ?>
                         <th class="tabela_title">Data</th>
                         <th colspan="1" class="tabela_title">Nome</th>
+                        <th colspan="1" class="tabela_title">Procedimento</th>
                         <th colspan="1" class="tabela_title">Cid</th>
 
                     </tr>
@@ -82,7 +83,9 @@
                         </th>
                         <th colspan="1" class="tabela_title">
                             <input type="text" name="nome" class="texto03 bestupper" value="<?php echo @$_GET['nome']; ?>" />
-
+                        </th>
+                        <th colspan="1" class="tabela_title">
+                            <input type="text" name="txtprocedimento" class="texto03 bestupper" value="<?php echo @$_GET['txtprocedimento']; ?>" />
                         </th>
                         <th colspan="1" class="tabela_title">
                             <input type="text" name="txtCICPrimariolabel" id="txtCICPrimariolabel" class="texto03" value="<?php echo @$_GET['txtCICPrimariolabel']; ?>" />

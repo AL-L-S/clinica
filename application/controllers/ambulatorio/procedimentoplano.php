@@ -18,7 +18,6 @@ class Procedimentoplano extends BaseController {
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('ambulatorio/guia_model', 'guia');
-        $this->load->model('ambulatorio/exametemp_model', 'exametemp');
         $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('cadastro/convenio_model', 'convenio');
@@ -206,7 +205,7 @@ class Procedimentoplano extends BaseController {
             redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id");
         } else {
             $retorno = $this->guia->listarorcamentorecepcao();
-            $_POST['txtNomeid'] = $this->exametemp->crianovopacienteorcamento();
+            
             $resultadoorcamento = $retorno['orcamento'];
             $paciente_id = $retorno['paciente_id'];
             
@@ -241,6 +240,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['grupos'] = $this->procedimento->listargrupos();
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
         $data['exames'] = $this->procedimento->listarorcamentosrecepcao($ambulatorio_orcamento);
         $data['responsavel'] = $this->procedimento->listaresponsavelorcamento($ambulatorio_orcamento);
 //        echo "<pre>";
@@ -533,6 +533,8 @@ class Procedimentoplano extends BaseController {
         $procedimentoplano_tuss_id = $this->procedimentoplano->gravar();
         if ($procedimentoplano_tuss_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Procedimento já cadastrado.';
+        } elseif ($procedimentoplano_tuss_id == "-2") {
+            $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Esse procedimento não pertence ao convenio Primario.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
         }

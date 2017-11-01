@@ -139,8 +139,7 @@
                     for (var i = 0; i < j.length; i++) {
                         if (j[i].total < 0)
                             continue;
-                        options += '<option value="' + j[i].descricao + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
-                        $("#quantidade").prop('max', j[0].total);
+                        options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
                     }
                     $('#entrada').html(options).show();
                     $('.carregando').hide();
@@ -151,30 +150,30 @@
         });
     });
 
-//    $(function () {
-//        $('#entrada').change(function () {
-//            if ($(this).val()) {
-//
-////                $('#entrada').hide();
-////                $('.carregando').show();
-//                $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidade', {produto: $(this).val()}, function (j) {
-//                    var options = '<option value=""></option>';
-//                    for (var i = 0; i < j.length; i++) {
-//                        options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
+    $(function () {
+        $('#entrada').change(function () {
+            if ($(this).val()) {
+
+//                $('#entrada').hide();
+//                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidade', {produto: $(this).val()}, function (j) {
+                    var options = '<option value=""></option>';
+                    for (var i = 0; i < j.length; i++) {
+                        options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
+                    }
+                    $("#quantidade").prop('max', j[0].total);
+//                    alert(j[0].total);
+//                    if(){
+//                        
 //                    }
-//                    $("#quantidade").prop('max', j[0].total);
-////                    alert(j[0].total);
-////                    if(){
-////                        
-////                    }
-////                    $('#entrada').html(options).show();
-////                    $('.carregando').hide();
-//                });
-//            } else {
-////                $('#entrada').html('<option value="">ESCOLHA UM ARMAZEM E UM PRODUTO</option>');
-//            }
-//        });
-//    });
+//                    $('#entrada').html(options).show();
+//                    $('.carregando').hide();
+                });
+            } else {
+//                $('#entrada').html('<option value="">ESCOLHA UM ARMAZEM E UM PRODUTO</option>');
+            }
+        });
+    });
 
     $(function () {
         $("#accordion").accordion();

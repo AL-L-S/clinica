@@ -3,7 +3,7 @@
 
     <h4>TODAS AS CLINICAS</h4>
 
-    <h4>Relatorio Paciente Telefone</h4>
+    <h4>Relatorio Encaminhamento Paciente</h4>
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
 </h4>
 <hr>
@@ -14,10 +14,11 @@
             <th class="tabela_header" width="350px;">Paciente</th>
             <th class="tabela_header">Grupo</th>
             <th class="tabela_header">Convênio</th>
-            <th class="tabela_header" width="450px;">Pocedimento</th>
+            <th class="tabela_header" width="250px;">Pocedimento</th>
+            <th class="tabela_header" width="100px;">Médico</th>
             <th class="tabela_header">Telefone</th>
             <th class="tabela_header">Data</th>
-            <th class="tabela_header">Previsão Retorno</th>
+            <th class="tabela_header">Encaminhado Para</th>
 
         </tr>
     </thead>
@@ -39,24 +40,6 @@
 
 
                 $data = $item->data;
-                $dia = strftime("%A", strtotime($data));
-
-                switch ($dia) {
-                    case"Sunday": $dia = "Domingo";
-                        break;
-                    case"Monday": $dia = "Segunda";
-                        break;
-                    case"Tuesday": $dia = "Terça";
-                        break;
-                    case"Wednesday": $dia = "Quarta";
-                        break;
-                    case"Thursday": $dia = "Quinta";
-                        break;
-                    case"Friday": $dia = "Sexta";
-                        break;
-                    case"Saturday": $dia = "Sabado";
-                        break;
-                }
                 ?>
                 <tr>
 
@@ -64,15 +47,10 @@
                     <td><?= $item->grupo; ?></td>
                     <td><?= $item->convenio; ?></td>
                     <td><?= $item->nome; ?></td>
+                    <td><?= $item->medico_responsavel; ?></td>
                     <td ><?= $telefone; ?></td>
                     <td><?= date("d/m/Y", strtotime($item->data)); ?></td>
-                    <td><? 
-                        if( $item->dias_retorno != "" ){
-                            echo date("d/m/Y", strtotime("+" . $item->dias_retorno . ' day', strtotime($item->data))); 
-                        } else {
-                            echo "--";
-                        }?>
-                    </td>
+                    <td><?= $item->medico_encaminhado; ?></td>
                 </tr>
 
             </tbody>

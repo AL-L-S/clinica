@@ -78,6 +78,22 @@
                                             Finalizar
                                         </a></div>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                    <? if($item->faturado == 't') {?>
+                                        <div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/exame/lancarcreditoexamependente/<?= $item->exames_id ?>/<?= $item->sala_id ?>/<?= $item->agenda_exames_id ?> ">
+                                                Credito
+                                            </a>
+                                        </div>
+                                    <? }
+                                    else { ?>
+                                        <div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/exame/carregarcancelamentoexamecredito/<?= $item->exames_id ?>/<?= $item->sala_id ?>/<?= $item->agenda_exames_id ?> ">
+                                                Credito
+                                            </a>
+                                        </div>                                    
+                                    <? } ?>
+                                </td>
                             </tr>
 
                         </tbody>

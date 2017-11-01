@@ -38,6 +38,7 @@
                             <th class="tabela_header">Convenio*</th>
                             <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento*</th>
+                            <th class="tabela_header">Forma de Pagamento</th>
                             <th class="tabela_header">Qtde*</th>
                             <th class="tabela_header">V. Unit</th>
                         </tr>
@@ -79,6 +80,15 @@
                                     <option value="">Selecione</option>
                                 </select>
                             </td>
+                            <td  width="100px;">
+                                
+                                <select name="formapamento" id="formapamento" class="size1" >
+                                    <option value="">Selecione</option>
+                                    <? foreach ($forma_pagamento as $item) : ?>
+                                        <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
                             <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                             <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
                         </tr>
@@ -104,6 +114,7 @@
                                                 <th class="tabela_header">Convenio</th>
                                                 <th class="tabela_header">Grupo</th>
                                                 <th class="tabela_header">Procedimento</th>
+                                                <th class="tabela_header">Forma de Pagamento</th>
                                                 <th class="tabela_header">Descrição</th>
                                                 <th class="tabela_header">V. Unit</th>
                                                 <th class="tabela_header"></th>
@@ -121,6 +132,7 @@
                                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->forma_pagamento; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                                         <td class="<?php echo $estilo_linha; ?>">

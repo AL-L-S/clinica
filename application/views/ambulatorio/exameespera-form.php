@@ -28,10 +28,10 @@
                             <option value="">Selecione</option>
                             <? foreach ($salas as $item) : ?>
                                 <option value="<?= $item->exame_sala_id; ?>" <?
-                                if ($agenda_exames_nome_id[0]->agenda_exames_nome_id == $item->exame_sala_id):echo 'selected';
-                                endif;
-                                ?>><?= $item->nome; ?></option>
-                                    <? endforeach; ?>
+                                        if ($agenda_exames_nome_id[0]->agenda_exames_nome_id == $item->exame_sala_id):echo 'selected';
+                                        endif;
+                                        ?>><?= $item->nome; ?></option>
+<? endforeach; ?>
                         </select>
                     </dd>
                     <dt>
@@ -42,13 +42,12 @@
                             <option value="">Selecione</option>
                             <? foreach ($medicos as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>" <?
-                                if ($medico_id[0]->medico_agenda == $item->operador_id):echo 'selected';
-                                endif;
-                                ?>><?= $item->nome; ?></option>
-                                    <? endforeach; ?>
+                                        if ($medico_id[0]->medico_agenda == $item->operador_id):echo 'selected';
+                                        endif;
+                                        ?>><?= $item->nome; ?></option>
+<? endforeach; ?>
                         </select>
                     </dd>
-
                     <dt>
                         <label>Tecnico</label>
                     </dt>
@@ -57,23 +56,7 @@
                             <option value="">Selecione</option>
                             <? foreach ($tecnicos as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
-                            <? endforeach; ?>
-                        </select>
-                    </dd>
-                    <dt>
-                        <label>Recomendação</label>
-                    </dt>
-                    <dd>
-                        <select name="indicacao" id="indicacao" class="size4" >
-                            <option value='' >Selecione</option>
-                            <?php
-                            $indicacao = $this->paciente->listaindicacao($_GET);
-                            foreach ($indicacao as $item) {
-                                ?>
-                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?php if($item->paciente_indicacao_id == $indicacao_selecionada[0]->indicacao ){echo 'selected';} ?>> <?php echo $item->nome; ?></option>
-                                <?php
-                            }
-                            ?> 
+<? endforeach; ?>
                         </select>
                     </dd>
 
@@ -98,7 +81,7 @@
             $("#accordion").accordion();
         });
 
-
+        
 
         $(document).ready(function () {
             jQuery('#form_exameespera').validate({

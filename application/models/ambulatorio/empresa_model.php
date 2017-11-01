@@ -812,11 +812,6 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('procedimento_excecao', 'f');
                 }
-                if (isset($_POST['cancelar_sala_espera'])) {
-                    $this->db->set('cancelar_sala_espera', 't');
-                } else {
-                    $this->db->set('cancelar_sala_espera', 'f');
-                }
                 if (isset($_POST['ordem_chegada'])) {
                     $this->db->set('ordem_chegada', 't');
                 } else {
@@ -837,11 +832,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('botao_ativar_sala', 'f');
                 }
-                if (isset($_POST['oftamologia'])) {
-                    $this->db->set('oftamologia', 't');
-                } else {
-                    $this->db->set('oftamologia', 'f');
-                }
+                
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_permissoes');
@@ -883,17 +874,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('botao_ativar_sala', 'f');
                 }
-                if (isset($_POST['oftamologia'])) {
-                    $this->db->set('oftamologia', 't');
-                } else {
-                    $this->db->set('oftamologia', 'f');
-                }
                 
-                if (isset($_POST['cancelar_sala_espera'])) {
-                    $this->db->set('cancelar_sala_espera', 't');
-                } else {
-                    $this->db->set('cancelar_sala_espera', 'f');
-                }
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
@@ -953,8 +934,6 @@ class empresa_model extends Model {
                                calendario,
                                servicosms,
                                servicoemail,
-                               oftamologia,
-                               cancelar_sala_espera,
                                chat,
                                procedimento_excecao,
                                ordem_chegada,
@@ -984,7 +963,6 @@ class empresa_model extends Model {
             $this->_bairro = $return[0]->bairro;
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_municipio = $return[0]->municipio;
-            $this->_oftamologia = $return[0]->oftamologia;
             $this->_nome = $return[0]->nome;
             $this->_estado = $return[0]->estado;
             $this->_cep = $return[0]->cep;
@@ -1022,7 +1000,6 @@ class empresa_model extends Model {
             $this->_recibo_config = $return[0]->recibo_config;
             $this->_ficha_config = $return[0]->ficha_config;
             $this->_producao_medica_saida = $return[0]->producao_medica_saida;
-            $this->_cancelar_sala_espera = $return[0]->cancelar_sala_espera;
             $this->_procedimento_excecao = $return[0]->procedimento_excecao;
             $this->_ordem_chegada = $return[0]->ordem_chegada;
             $this->_calendario_layout = $return[0]->calendario_layout;

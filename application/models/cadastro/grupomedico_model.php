@@ -38,7 +38,7 @@ class grupomedico_model extends Model {
         $this->db->select('operador_grupo_id,
                             nome');
         $this->db->from('tb_operador_grupo');
-        $this->db->where('operador_grupo_id', $operador_grupo_id);
+        $this->db->where('exame_grupomedico_id', $operador_grupo_id);
         $return = $this->db->get();
         return $return->result();
     }

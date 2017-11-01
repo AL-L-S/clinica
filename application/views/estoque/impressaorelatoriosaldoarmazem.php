@@ -74,7 +74,7 @@
                     <td class="tabela_teste"><font size="-2">QTDE</th>
                     <td class="tabela_teste"><font size="-2">Fonnecedor</th>
                     <td class="tabela_teste"><font size="-2">Produto</th>
-                    <!--<td class="tabela_teste"><font size="-2">Valor</th>-->
+                    <td class="tabela_teste"><font size="-2">Valor</th>
                     <td class="tabela_teste"><font size="-2">Nota</th>
                 </tr>
             </thead>
@@ -103,7 +103,7 @@
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
-                            <!--<td style='text-align: right;'><font size="-2"><?= number_format($item->valor_compra, 2, ",", "."); ?></td>-->
+                            <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_compra, 2, ",", "."); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>
                         </tr>
 
@@ -130,7 +130,7 @@
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
                             <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
-                            <!--<td style='text-align: right;'><font size="-2"><?= number_format($item->valor_compra, 2, ",", "."); ?></td>-->
+                            <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_compra, 2, ",", "."); ?></td>
                             <td style='text-align: right;'><font size="-2"><?= $item->nota_fiscal; ?></td>
                         </tr>
                         <?

@@ -74,11 +74,25 @@ class Laudo extends BaseController {
         $data['resultado'] = '';
         $this->load->View('ambulatorio/calculadora-form', $data);
     }
+    
+    function encaminharatendimento($ambulatorio_laudo_id) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $this->load->View('ambulatorio/encaminharatendimento-form', $data);
+    }
+
+    function gravarencaminhamentoatendimento() {
+        $this->laudo->gravarencaminhamentoatendimento();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
 
     function limparnomes($exame_id) {
         $data['exame_id'] = $exame_id;
         $this->load->View('ambulatorio/limparnomeimagem-form', $data);
     }
+    
 
     function gravarlimparnomes($exame_id) {
         $this->laudo->deletarnomesimagens($exame_id);
@@ -323,20 +337,6 @@ class Laudo extends BaseController {
         if ($situacaolaudo != 'FINALIZADO') {
             $this->exame->atenderpacienteconsulta($exame_id);
         }
-        $empresa_id = $this->session->userdata('empresa_id');
-        $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
-        $data['listarades'] = $this->laudo->listarades();
-        $data['listaradcl'] = $this->laudo->listaradcl();
-        $data['listarodes'] = $this->laudo->listarodes();
-        $data['listarodcl'] = $this->laudo->listarodcl();
-        $data['listarodeixo'] = $this->laudo->listarodeixo();
-        $data['listarodav'] = $this->laudo->listarodav();
-        $data['listaroees'] = $this->laudo->listaroees();
-        $data['listaroecl'] = $this->laudo->listaroecl();
-        $data['listaroeeixo'] = $this->laudo->listaroeeixo();
-        $data['listaroeav'] = $this->laudo->listaroeav();
-        $data['listaracuidadeod'] = $this->laudo->listaracuidadeod();
-        $data['listaracuidadeoe'] = $this->laudo->listaracuidadeoe();
         $this->load->helper('directory');
         $data['arquivos_anexados'] = directory_map("./upload/consulta/$ambulatorio_laudo_id/");
         //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
@@ -730,7 +730,7 @@ class Laudo extends BaseController {
             } else {
                 $rodape = "";
             }
-            
+
             $html = $this->load->view('ambulatorio/impressaolaudoconfiguravel', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
 //            $this->load->View('ambulatorio/impressaolaudo_1', $data);
@@ -1505,71 +1505,6 @@ class Laudo extends BaseController {
         }
     }
 
-    function impressaoreceitaoculos($ambulatorio_laudo_id) {
-        $this->load->plugin('mpdf');
-//        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
-//        $data['laudo'] = $obj_laudo;
-        $data['laudo'] = $this->laudo->listarreceitaoculosimpressao($ambulatorio_laudo_id);
-        $data['medico'] = $this->operador_m->medicoreceituario($data['laudo'][0]->medico_parecer1);
-//        var_dump($data['laudo']); die;
-        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-        $data['empresa'] = $this->guia->listarempresa();
-        $data['receituario'] = true;
-        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
-        $data['impressaolaudo'] = $this->guia->listarconfiguracaoimpressaolaudo($empresa_id);
-        $cabecalho_config = $data['cabecalho'][0]->cabecalho;
-        $rodape_config = $data['cabecalho'][0]->rodape;
-
-        $dataFuturo = date("Y-m-d");
-        $dataAtual = $data['laudo']['0']->nascimento;
-        $date_time = new DateTime($dataAtual);
-        $diff = $date_time->diff(new DateTime($dataFuturo));
-        $teste = $diff->format('%Ya %mm %dd');
-
-        if ($data['laudo'][0]->assinatura == 't') {
-            $data['operador_assinatura'] = $data['laudo'][0]->medico_parecer1;
-        }
-
-        $base_url = base_url();
-
-
-        if ($data['laudo'][0]->carimbo == 't') {
-            $carimbo = $data['laudo'][0]->medico_carimbo;
-        } elseif (isset($data['laudo'][0]->medico_parecer1)) {
-            $this->load->helper('directory');
-            $arquivo_pasta = directory_map("./upload/1ASSINATURAS/");
-            foreach ($arquivo_pasta as $value) {
-                if ($value == $data['laudo'][0]->medico_parecer1 . ".jpg") {
-                    $carimbo = "<img width='200px;' height='100px;' src='$base_url" . "upload/1ASSINATURAS/$value' />";
-                }
-            }
-        } else {
-            $carimbo = "";
-        }
-
-
-//        echo '<pre>';
-        $data['assinatura'] = $carimbo;
-//        var_dump($data['laudo']);
-//        die;
-
-        $filename = "laudo.pdf";
-        if ($data['empresa'][0]->cabecalho_config == 't') {
-//                $cabecalho = $cabecalho_config;
-            $cabecalho = "<table style='width:100%'><tr><td>$cabecalho_config</td></tr><tr><td></td></tr></table><table style='width:100%;text-align:center;'><tr><td><b>Receita de Óculos</b></td></tr></table>";
-        } else {
-            $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/cabecalho.jpg'></td></tr><tr><td>Receita de Óculos</td></tr></table>";
-        }
-        if ($data['empresa'][0]->rodape_config == 't') {
-            $rodape = $rodape_config;
-        } else {
-            $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
-        }
-        $html = $this->load->view('ambulatorio/impressaoreceitaoculos', $data, true);
-        pdf($html, $filename, $cabecalho, $rodape);
-        $this->load->View('ambulatorio/impressaoreceitaoculos', $data);
-    }
-
     function impressaoreceita($ambulatorio_laudo_id) {
 
         $this->load->plugin('mpdf');
@@ -1627,15 +1562,13 @@ class Laudo extends BaseController {
 
         $texto_rodape = "Fortaleza, " . $dia . " de " . $nomemes . " de " . $ano;
 
-//        var_dump($data['empresa'][0]->ficha_config); die('morreu');
-
+//        var_dump($data['empresa'][0]->impressao_tipo); die('morreu');
         if ($data['empresa'][0]->ficha_config == 't') {
             if ($data['empresa'][0]->cabecalho_config == 't') {
                 $cabecalho = $cabecalho_config;
             } else {
                 $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr></table>";
             }
-            $data['receituario'] = '1';
             $rodape_config = str_replace("_assinatura_", $carimbo, $rodape_config);
             if ($data['empresa'][0]->rodape_config == 't') {
                 $rodape = $texto_rodape . $rodape_config;
@@ -1646,12 +1579,7 @@ class Laudo extends BaseController {
             $filename = "laudo.pdf";
 //            $cabecalho = "<table ><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td><center><b><p style='text-align: center; font-weight: bold;'>Receita Médica</p></b></center></td></tr><tr><td>Para:" . $data['laudo']['0']->paciente . "<br></td></tr></table>";
 //            $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td ></td></tr></table><div>$carimbo</div><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";
-//            var_dump(preg_match('/\_paciente_/', $data['laudo'][0]->texto)); die;
-            if (!preg_match('/\_paciente_/', $data['laudo'][0]->texto)) {
-                $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
-            } else {
-                $html = $this->load->view('ambulatorio/impressaoreceituarioconfiguravel', $data, true);
-            }
+            $html = $this->load->view('ambulatorio/impressaoreceituarioconfiguravel', $data, true);
             pdf($html, $filename, $cabecalho, $rodape);
         }
 

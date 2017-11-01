@@ -128,6 +128,7 @@ class entrada_model extends Model {
             ea.descricao as armazem,
             ef.fantasia,
             sum(es.quantidade) as quantidade,
+            es.valor_compra,
             ep.descricao as produto');
         $this->db->from('tb_estoque_saldo es');
         $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
@@ -146,7 +147,7 @@ class entrada_model extends Model {
 //        if ($_POST['empresa'] != "0") {
 //            $this->db->where('ae.empresa_id', $_POST['empresa']);
 //        }
-        $this->db->groupby('es.nota_fiscal, es.validade, ea.descricao, ef.fantasia, ep.descricao');
+        $this->db->groupby('es.nota_fiscal, es.validade, ea.descricao, ef.fantasia, ep.descricao, es.valor_compra');
         $return = $this->db->get();
         return $return->result();
     }
@@ -249,7 +250,6 @@ class entrada_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
     function relatoriosaldoprodutos() {
         $this->db->select('ea.descricao as armazem,
 
@@ -303,7 +303,6 @@ class entrada_model extends Model {
         $return = $this->db->count_all_results();
         return $return;
     }
-
     function relatoriosaldocontador() {
         $this->db->select('ea.descricao as armazem,
             ef.fantasia,
@@ -396,8 +395,8 @@ class entrada_model extends Model {
     }
 
     function relatorioentradaarmazem() {
-        $datainicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
-        $datafim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -437,8 +436,8 @@ class entrada_model extends Model {
     }
 
     function relatorioentradaarmazemcontador() {
-        $datainicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
-        $datafim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -472,8 +471,8 @@ class entrada_model extends Model {
     }
 
     function relatoriosaidaarmazem() {
-        $datainicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
-        $datafim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -522,10 +521,10 @@ class entrada_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function relatoriosaidaarmazemconsolidado() {
-        $datainicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
-        $datafim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('
@@ -556,7 +555,7 @@ class entrada_model extends Model {
         if ($_POST['txtproduto'] != "0" && $_POST['txtproduto'] != "") {
             $this->db->where("es.produto_id", $_POST['txtproduto']);
         }
-
+        
         $this->db->groupby('es.produto_id ,ep.descricao');
         $this->db->orderby('ep.descricao');
 //        if ($_POST['empresa'] != "0") {
@@ -569,8 +568,8 @@ class entrada_model extends Model {
     }
 
     function relatoriosaidaarmazemcontador() {
-        $datainicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
-        $datafim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $datainicio = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_inicio']) ) );
+        $datafim = date("Y-m-d", strtotime ( str_replace('/','-', $_POST['txtdata_fim']) ) );
         $datahorainicio = $datainicio . ' 00:00:00';
         $datahorafim = $datafim . ' 23:59:59';
         $this->db->select('es.nota_fiscal,
@@ -607,57 +606,30 @@ class entrada_model extends Model {
     }
 
     function excluir($estoque_entrada_id) {
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        
-        
-        $this->db->select('e.saida_id_transferencia');
-        $this->db->from('tb_estoque_entrada e');
-        $this->db->where('estoque_entrada_id', $estoque_entrada_id);
-        $return = $this->db->get()->result();
-//        var_dump($return);
-//        die;
-        // DELETANDO A TRANSFERENCIA
-        if ($return[0]->saida_id_transferencia != '') {
-            $saida_id_transferencia = $return[0]->saida_id_transferencia;
-            
-            $this->db->set('ativo', 'f');
-            $this->db->set('data_atualizacao', $horario);
-            $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where("estoque_saida_id IN ($saida_id_transferencia)");
-            $this->db->update('tb_estoque_saldo');
-
-            //atualizando tabela estoque_saida
-            $this->db->set('ativo', 'f');
-            $this->db->set('data_atualizacao', $horario);
-            $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where("estoque_saida_id IN ($saida_id_transferencia)");
-            $this->db->update('tb_estoque_saida');
-        }
-
-
-        
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('estoque_entrada_id', $estoque_entrada_id);
         $this->db->update('tb_estoque_entrada');
-
+        
         //atualizando tabela estoque_saldo
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('estoque_entrada_id', $estoque_entrada_id);
         $this->db->update('tb_estoque_saldo');
-
+        
         //atualizando tabela estoque_saida
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('estoque_entrada_id', $estoque_entrada_id);
         $this->db->update('tb_estoque_saida');
-
-
+        
+        
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return -1;

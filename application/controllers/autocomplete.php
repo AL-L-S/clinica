@@ -204,6 +204,15 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function buscarprocedimentoconveniosecundario() {
+        if (isset($_GET['convenio'])) {
+            $result = $this->procedimentoplano->buscarprocedimentoconveniosecundario($_GET['convenio']);
+        } else {
+            $result = $this->procedimentoplano->buscarprocedimentoconveniosecundario();
+        }
+        echo json_encode($result);
+    }
+
     function buscarconveniosecundario() {
         if (isset($_GET['convenio'])) {
             $result = $this->procedimentoplano->buscarconveniosecundario($_GET['convenio']);

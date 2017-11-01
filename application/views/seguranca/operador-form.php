@@ -345,20 +345,6 @@
                     <textarea name="curriculo" id="curriculo" rows="5" cols="50"  ><?= @$obj->_curriculo; ?></textarea>
                 </div>
             </fieldset>
-            <fieldset>
-<!--                <div>
-                    <label>Cabeçalho</label>
-                    <textarea name="cabecalho" id="cabecalho" rows="10" cols="100"  ><?= @$obj->_cabecalho; ?></textarea>
-                </div>
-                <div>
-                    <label>Rodapé</label>
-                    <textarea name="rodape" id="rodape" rows="10" cols="100"  ><?= @$obj->_rodape; ?></textarea>
-                </div>-->
-<!--                <div>
-                    <label>Timbrado</label>
-                    <textarea name="timbrado" id="timbrado" rows="10" cols="100"  ><?= @$obj->_timbrado; ?></textarea>
-                </div>-->
-            </fieldset>
             <fieldset style="dislpay:block">
 
                 <button type="submit" name="btnEnviar">Enviar</button>
@@ -502,7 +488,7 @@
         theme: "advanced",
         plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
         // Theme options
-        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,image",
+        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,justifyleft,justifycenter,justifyright,justifyfull",
         theme_advanced_buttons2: "styleselect,formatselect,fontselect,fontsizeselect",
         theme_advanced_toolbar_location: "top",
         theme_advanced_toolbar_align: "left",

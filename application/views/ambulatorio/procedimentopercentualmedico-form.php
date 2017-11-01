@@ -7,7 +7,7 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                        <label>Covênio</label>
+                        <label>Convênio</label>
                     </dt>
                     <dd>
                         <input type="hidden" name="covenio" id="covenio" value="<?= $convenio_id ?>"/>
@@ -188,6 +188,7 @@
             if ($('#covenio').val() != 'SELECIONE' && $('#grupo').val() != 'TODOS') {
                 $('.carregando').show();
                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#covenio').val()}, function (j) {
+//                    alert('teste');
                     options = '<option value="">TODOS</option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';

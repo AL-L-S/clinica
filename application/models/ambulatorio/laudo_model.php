@@ -365,7 +365,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            $this->db->where('ag.data', $args['data']);
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
@@ -420,7 +420,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            $this->db->where('ag.data', $args['data']);
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
@@ -487,7 +487,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            $this->db->where('ag.data', $args['data']);
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
@@ -1340,7 +1340,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            $this->db->where('ag.data', $args['data']);
         }
         if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
             $this->db->where('p.paciente_id', $args['prontuario']);
@@ -1401,7 +1401,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            $this->db->where('ag.data', $args['data']);
         }
         if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
             $this->db->where('p.paciente_id', $args['prontuario']);
@@ -1445,128 +1445,12 @@ class laudo_model extends Model {
             $this->db->where('nomedopaciente ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('emissao', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            $this->db->where('emissao', $args['data']);
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('nrmedicolaudo', $args['medico']);
         }
         return $this->db;
-    }
-
-    function listaradcl($args = array()) {
-        $this->db->select('oad.ad_cilindrico_id,oad.numero, oad.nome ');
-        $this->db->from('tb_oftamologia_ad_cilindrico oad');
-        $this->db->where('oad.ativo ', 't');
-        $this->db->orderby('oad.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listarades($args = array()) {
-        $this->db->select('oad.ad_esferico_id,oad.numero, oad.nome ');
-        $this->db->from('tb_oftamologia_ad_esferico oad');
-        $this->db->where('oad.ativo ', 't');
-        $this->db->orderby('oad.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listarodcl($args = array()) {
-        $this->db->select('ood.od_cilindrico_id,ood.numero, ood.nome ');
-        $this->db->from('tb_oftamologia_od_cilindrico ood');
-        $this->db->where('ood.ativo ', 't');
-        $this->db->orderby('ood.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listarodes($args = array()) {
-        $this->db->select('ood.od_esferico_id,ood.numero, ood.nome ');
-        $this->db->from('tb_oftamologia_od_esferico ood');
-        $this->db->where('ood.ativo ', 't');
-        $this->db->orderby('ood.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listarodeixo($args = array()) {
-        $this->db->select('ood.od_eixo_id,ood.numero, ood.nome ');
-        $this->db->from('tb_oftamologia_od_eixo ood');
-        $this->db->where('ood.ativo ', 't');
-        $this->db->orderby('ood.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listarodav($args = array()) {
-        $this->db->select('ood.od_av_id,ood.numero, ood.nome ');
-        $this->db->from('tb_oftamologia_od_av ood');
-        $this->db->where('ood.ativo ', 't');
-        $this->db->orderby('ood.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listaroecl($args = array()) {
-        $this->db->select('ooe.oe_cilindrico_id,ooe.numero, ooe.nome ');
-        $this->db->from('tb_oftamologia_oe_cilindrico ooe');
-        $this->db->where('ooe.ativo ', 't');
-        $this->db->orderby('ooe.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listaroees($args = array()) {
-        $this->db->select('ooe.oe_esferico_id,ooe.numero, ooe.nome ');
-        $this->db->from('tb_oftamologia_oe_esferico ooe');
-        $this->db->where('ooe.ativo ', 't');
-        $this->db->orderby('ooe.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listaroeeixo($args = array()) {
-        $this->db->select('ooe.oe_eixo_id,ooe.numero, ooe.nome ');
-        $this->db->from('tb_oftamologia_oe_eixo ooe');
-        if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('ooe.numero ilike', "%" . $args['nome'] . "%");
-            $this->db->orwhere('ooe.nome ilike', "%" . $args['nome'] . "%");
-        }
-        $this->db->where('ooe.ativo ', 't');
-        $this->db->orderby('ooe.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listaroeav($args = array()) {
-        $this->db->select('ooe.oe_av_id,ooe.numero, ooe.nome ');
-        $this->db->from('tb_oftamologia_oe_av ooe');
-        if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('ooe.numero ilike', "%" . $args['nome'] . "%");
-            $this->db->orwhere('ooe.nome ilike', "%" . $args['nome'] . "%");
-        }
-        $this->db->where('ooe.ativo ', 't');
-        $this->db->orderby('ooe.nome ');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listaracuidadeod($args = array()) {
-        $this->db->select('oad.od_acuidade_id,oad.numero, oad.nome ');
-        $this->db->from('tb_oftamologia_od_acuidade oad');
-        $this->db->where('oad.ativo ', 't');
-        $this->db->orderby('oad.nome');
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listaracuidadeoe($args = array()) {
-        $this->db->select('oad.oe_acuidade_id,oad.numero, oad.nome ');
-        $this->db->from('tb_oftamologia_oe_acuidade oad');
-        $this->db->where('oad.ativo ', 't');
-        $this->db->orderby('oad.nome ');
-        $return = $this->db->get();
-        return $return->result();
     }
 
     function listarlaudoantigo2($args = array()) {
@@ -1583,7 +1467,7 @@ class laudo_model extends Model {
             $this->db->where('nomedopaciente ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('emissao', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+            $this->db->where('emissao', $args['data']);
         }
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('nrmedicolaudo', $args['medico']);
@@ -1624,7 +1508,6 @@ class laudo_model extends Model {
                             o.nome as medico,
                             o.conselho,
                             o.carimbo,
-                            o.timbrado,
                             op.conselho as conselho2,
                             ag.assinatura,
                             ag.rodape,
@@ -1735,81 +1618,6 @@ class laudo_model extends Model {
         $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("ar.ambulatorio_receituario_id", $ambulatorio_laudo_id);
-        $return = $this->db->get();
-        return $return->result();
-    }
-
-    function listarreceitaoculosimpressao($ambulatorio_laudo_id) {
-
-        $this->db->select('ag.ambulatorio_laudo_id,
-                            ag.paciente_id,
-                            ag.data_cadastro,
-                            ag.exame_id,
-                            ag.peso,
-                            ag.altura,
-                            ag.data_cadastro,
-                            ag.data,
-                            ag.situacao,
-                            ae.agenda_exames_nome_id,
-                            ag.inspecao_geral,
-                            ag.motilidade_ocular,
-                            ag.biomicroscopia,
-                            ag.mapeamento_retinas,
-                            ag.conduta,
-                            ag.acuidade_od,
-                            ag.acuidade_oe,
-                            ag.pressao_ocular_oe,
-                            ag.pressao_ocular_od,
-                            ag.pressao_ocular_hora,
-                            ag.refracao_retinoscopia,
-                            ag.dinamica_estatica,
-                            ag.carregar_refrator,
-                            ag.carregar_oculos,
-                            ag.oftamologia_od_esferico,
-                            ag.oftamologia_oe_esferico,
-                            ag.oftamologia_od_cilindrico,
-                            ag.oftamologia_oe_cilindrico,
-                            ag.oftamologia_oe_eixo,
-                            ag.oftamologia_oe_av,
-                            ag.oftamologia_od_eixo,
-                            ag.oftamologia_od_av,
-                            ag.oftamologia_ad_esferico,
-                            ag.oftamologia_ad_cilindrico,
-                            p.nascimento,
-                            ag.situacao_revisor,
-                            o.nome as medico,
-                            o.conselho,
-                            ag.assinatura,
-                            ag.rodape,
-                            ag.guia_id,
-                            ag.cabecalho,
-                            ag.medico_parecer1,
-                            ag.medico_parecer2,
-                            me.nome as solicitante,
-                            op.nome as medicorevisor,
-                            pt.nome as procedimento,
-                            pt.grupo,
-                            ae.agenda_exames_id,
-                            ag.imagens,
-                            c.nome as convenio,
-                            pc.convenio_id,
-                            p.nome as paciente,
-                            p.cpf,
-                            p.nascimento,
-                            p.sexo,
-                            o.carimbo as medico_carimbo');
-        $this->db->from('tb_ambulatorio_laudo ag');
-//        $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
-        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
-        $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
-        $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
-        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
-        $this->db->join('tb_operador me', 'me.operador_id = ae.medico_solicitante', 'left');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
-        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->where("ag.ambulatorio_laudo_id", $ambulatorio_laudo_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -2019,6 +1827,21 @@ class laudo_model extends Model {
 
 
             return $ambulatorio_laudo_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarencaminhamentoatendimento() {
+        try {
+            /* inicia o mapeamento no banco */
+//            $horario = date("Y-m-d H:i:s");
+//            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('encaminhado', 't');
+            $this->db->set('medico_encaminhamento_id', $_POST['medico_id']);
+            $this->db->where('ambulatorio_laudo_id', $_POST['ambulatorio_laudo_id']);
+            $this->db->update('tb_ambulatorio_laudo');
+            return 0;
         } catch (Exception $exc) {
             return -1;
         }
@@ -2873,20 +2696,6 @@ class laudo_model extends Model {
             $query = $this->db->get();
             $return = $query->result();
 
-            if ($empresa_id == null) {
-                $empresa_id = $this->session->userdata('empresa_id');
-            }
-
-            $this->db->select('e.empresa_id,
-                            ordem_chegada,
-                            oftamologia,
-                            ');
-            $this->db->from('tb_empresa e');
-            $this->db->where('e.empresa_id', $empresa_id);
-            $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->orderby('e.empresa_id');
-            $permissao = $this->db->get()->result();
-//            $permissao;
 
 
             $this->db->select('mc.valor as perc_medico, mc.percentual');
@@ -2936,64 +2745,7 @@ class laudo_model extends Model {
             $this->db->set('medico_consulta_id', $_POST['medico']);
             $this->db->where('agenda_exames_id', $return[0]->agenda_exames_id);
             $this->db->update('tb_agenda_exames');
-            ////////////////////////////// OFTAMOLOGIA ///////////////////////////////////////////////
-            if ($permissao[0]->oftamologia == 't') {
 
-                $this->db->set('inspecao_geral', $_POST['inspecao_geral']);
-                $this->db->set('motilidade_ocular', $_POST['motilidade_ocular']);
-                $this->db->set('biomicroscopia', $_POST['biomicroscopia']);
-                $this->db->set('mapeamento_retinas', $_POST['mapeamento_retinas']);
-                $this->db->set('conduta', $_POST['conduta']);
-                $this->db->set('acuidade_oe', $_POST['acuidade_oe']);
-                $this->db->set('acuidade_od', $_POST['acuidade_od']);
-                if ($_POST['pressao_ocular_oe'] != '') {
-                    $this->db->set('pressao_ocular_oe', str_replace(",", ".", $_POST['pressao_ocular_oe']));
-                }
-                if ($_POST['pressao_ocular_od'] != '') {
-                    $this->db->set('pressao_ocular_od', str_replace(",", ".", $_POST['pressao_ocular_od']));
-                }
-                if ($_POST['pressao_ocular_hora'] != '') {
-                    $this->db->set('pressao_ocular_hora', date('H:i:s', strtotime($_POST['pressao_ocular_hora'])));
-                } else {
-                    $this->db->set('pressao_ocular_hora', null);
-                }
-
-                if ($_POST['refracao_retinoscopia'] != '') {
-                    $this->db->set('refracao_retinoscopia', $_POST['refracao_retinoscopia']);
-                } else {
-                    $this->db->set('refracao_retinoscopia', '');
-                }
-                if ($_POST['dinamica_estatica'] != '') {
-                    $this->db->set('dinamica_estatica', $_POST['dinamica_estatica']);
-                } else {
-                    $this->db->set('dinamica_estatica', '');
-                }
-
-
-                if (isset($_POST['carregar_refrator'])) {
-                    $this->db->set('carregar_refrator', $_POST['carregar_refrator']);
-                } else {
-                    $this->db->set('carregar_refrator', 'f');
-                }
-                if (isset($_POST['carregar_oculos'])) {
-                    $this->db->set('carregar_oculos', $_POST['carregar_oculos']);
-                } else {
-                    $this->db->set('carregar_oculos', 'f');
-                }
-
-//            var_dump($_POST['oftamologia_od_cilindrico']); die;
-                $this->db->set('oftamologia_od_esferico', $_POST['oftamologia_od_esferico']);
-                $this->db->set('oftamologia_oe_esferico', $_POST['oftamologia_oe_esferico']);
-                $this->db->set('oftamologia_od_cilindrico', $_POST['oftamologia_od_cilindrico']);
-                $this->db->set('oftamologia_oe_cilindrico', $_POST['oftamologia_oe_cilindrico']);
-                $this->db->set('oftamologia_oe_eixo', $_POST['oftamologia_oe_eixo']);
-                $this->db->set('oftamologia_oe_av', $_POST['oftamologia_oe_av']);
-                $this->db->set('oftamologia_od_eixo', $_POST['oftamologia_od_eixo']);
-                $this->db->set('oftamologia_od_av', $_POST['oftamologia_od_av']);
-                $this->db->set('oftamologia_ad_esferico', $_POST['oftamologia_ad_esferico']);
-                $this->db->set('oftamologia_ad_cilindrico', $_POST['oftamologia_ad_cilindrico']);
-            }
-            /////////////////////////// FIM DA OFTAMOLOGIA////////////////////////////////////////////
 
             $this->db->set('texto', $_POST['laudo']);
             if ($_POST['txtCICPrimario'] != '') {
@@ -3012,7 +2764,10 @@ class laudo_model extends Model {
                 $this->db->set('hipertensao', $_POST['hipertensao']);
             }
 
-
+            if (isset($_POST['ret'])) {
+                $this->db->set('dias_retorno', $_POST['ret_dias']);
+            }
+            
             if (isset($_POST['assinatura'])) {
                 $this->db->set('assinatura', 't');
             } else {
@@ -3442,7 +3197,6 @@ class laudo_model extends Model {
 //            $this->db->set('data_aterardatafaturamento', $horario);
 //            $this->db->set('data_autorizacao', $dataautorizacao);
             $this->db->set('operador_alteradata', $operador_id);
-            $this->db->set('data', $_POST['data']);
             $this->db->set('data_cadastro', $_POST['data']);
             $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);
             $this->db->update('tb_ambulatorio_laudo');
@@ -3543,33 +3297,6 @@ class laudo_model extends Model {
                             pt.nome as procedimento,
                             p.idade,
                             age.data,
-                            ag.inspecao_geral,
-                            ag.motilidade_ocular,
-                            ag.biomicroscopia,
-                            ag.mapeamento_retinas,
-                            ag.conduta,
-
-                            ag.acuidade_od,
-                            ag.acuidade_oe,
-                            ag.pressao_ocular_oe,
-                            ag.pressao_ocular_od,
-                            ag.pressao_ocular_hora,
-
-                            ag.refracao_retinoscopia,
-                            ag.dinamica_estatica,
-                            ag.carregar_refrator,
-                            ag.carregar_oculos,
-
-                            ag.oftamologia_od_esferico,
-                            ag.oftamologia_oe_esferico,
-                            ag.oftamologia_od_cilindrico,
-                            ag.oftamologia_oe_cilindrico,
-                            ag.oftamologia_oe_eixo,
-                            ag.oftamologia_oe_av,
-                            ag.oftamologia_od_eixo,
-                            ag.oftamologia_od_av,
-                            ag.oftamologia_ad_esferico,
-                            ag.oftamologia_ad_cilindrico,
                             age.agenda_exames_id,
                             age.quantidade,
                             age.agrupador_fisioterapia,
@@ -3615,6 +3342,8 @@ class laudo_model extends Model {
                             ag.ae_volume,
                             ag.ao_diametro_raiz,
                             ag.ao_relacao_atrio_esquerdo_aorta,
+                            ag.dias_retorno,
+                            ag.medico_encaminhamento_id,
                             c.no_cid,
                             c2.no_cid as no_cid2,
                             ae.exames_id,
@@ -3673,32 +3402,6 @@ class laudo_model extends Model {
             $this->_idade = $return[0]->idade;
             $this->_status = $return[0]->situacao;
             $this->_agrupador_fisioterapia = $return[0]->agrupador_fisioterapia;
-            ///////////// OFTAMOLOGIA////////////
-            $this->_oftamologia_od_esferico = $return[0]->oftamologia_od_esferico;
-            $this->_oftamologia_oe_esferico = $return[0]->oftamologia_oe_esferico;
-            $this->_oftamologia_od_cilindrico = $return[0]->oftamologia_od_cilindrico;
-            $this->_oftamologia_oe_cilindrico = $return[0]->oftamologia_oe_cilindrico;
-            $this->_oftamologia_oe_eixo = $return[0]->oftamologia_oe_eixo;
-            $this->_oftamologia_oe_av = $return[0]->oftamologia_oe_av;
-            $this->_oftamologia_od_eixo = $return[0]->oftamologia_od_eixo;
-            $this->_oftamologia_od_av = $return[0]->oftamologia_od_av;
-            $this->_oftamologia_ad_esferico = $return[0]->oftamologia_ad_esferico;
-            $this->_oftamologia_ad_cilindrico = $return[0]->oftamologia_ad_cilindrico;
-            $this->_inspecao_geral = $return[0]->inspecao_geral;
-            $this->_motilidade_ocular = $return[0]->motilidade_ocular;
-            $this->_biomicroscopia = $return[0]->biomicroscopia;
-            $this->_mapeamento_retinas = $return[0]->mapeamento_retinas;
-            $this->_conduta = $return[0]->conduta;
-            $this->_acuidade_od = $return[0]->acuidade_od;
-            $this->_acuidade_oe = $return[0]->acuidade_oe;
-            $this->_pressao_ocular_oe = $return[0]->pressao_ocular_oe;
-            $this->_pressao_ocular_od = $return[0]->pressao_ocular_od;
-            $this->_pressao_ocular_hora = $return[0]->pressao_ocular_hora;
-            $this->_refracao_retinoscopia = $return[0]->refracao_retinoscopia;
-            $this->_dinamica_estatica = $return[0]->dinamica_estatica;
-            $this->_carregar_refrator = $return[0]->carregar_refrator;
-            $this->_carregar_oculos = $return[0]->carregar_oculos;
-            /////////////FIM OFTAMOLOGIA////////////
             $this->_procedimento = $return[0]->procedimento;
             $this->_solicitante = $return[0]->solicitante;
             $this->_nascimento = $return[0]->nascimento;
@@ -3748,6 +3451,8 @@ class laudo_model extends Model {
             $this->_ad_volume_indexado = $return[0]->ad_volume_indexado;
             $this->_ao_diametro_raiz = $return[0]->ao_diametro_raiz;
             $this->_ao_relacao_atrio_esquerdo_aorta = $return[0]->ao_relacao_atrio_esquerdo_aorta;
+            $this->_dias_retorno = $return[0]->dias_retorno;
+            $this->_medico_encaminhamento_id = $return[0]->medico_encaminhamento_id;
         } else {
             $this->_ambulatorio_laudo_id = null;
         }
