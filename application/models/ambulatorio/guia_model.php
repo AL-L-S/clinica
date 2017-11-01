@@ -5983,6 +5983,7 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = oi.operador_cadastro', 'left');
         $this->db->where("oi.orcamento_id", $orcamento);
+        $this->db->where("oi.ativo", 't');
         $this->db->orderby('oi.ambulatorio_orcamento_item_id');
         $return = $this->db->get();
         return $return->result();

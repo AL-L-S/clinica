@@ -536,3 +536,8 @@ ALTER TABLE ponto.tb_convenio ADD COLUMN associacao_percentual numeric(10,4);
 ALTER TABLE ponto.tb_convenio ADD COLUMN associacao_convenio_id integer;
 ALTER TABLE ponto.tb_convenio ADD COLUMN data_percentual_atualizacao timestamp without time zone;
 ALTER TABLE ponto.tb_convenio ADD COLUMN operador_percentual_atualizacao integer;
+
+
+
+ALTER TABLE ponto.tb_convenio ADD COLUMN fidelidade_parceiro_id integer;
+ALTER TABLE ponto.tb_convenio ADD COLUMN fidelidade_endereco_ip text;

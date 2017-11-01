@@ -5,7 +5,7 @@
     }*/
 
 </style>
-<!--<div class="teste" style="height: 100%;width: 100%;background-image: url(<?//=base_url()?>/upload/teste.png);">-->
+<!--<div class="teste" style="background-size: contain;height: 100%;width: 90%;background-image: url(<?=base_url()?>/upload/operadortimbrado/teste.png); no-repeat">-->
 
 
     <?

@@ -613,6 +613,12 @@ class Convenio_model extends Model {
             if ($_POST['credor_devedor'] != "") {
                 $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
+//            if ($_POST['fidadelidade_endereco_ip'] != "") {
+                $this->db->set('fidelidade_endereco_ip', $_POST['fidelidade_endereco_ip']);
+//            }
+            if ($_POST['fidelidade_parceiro_id'] != "") {
+                $this->db->set('fidelidade_parceiro_id', $_POST['fidelidade_parceiro_id']);
+            }
             if ($_POST['conta'] != "") {
                 $this->db->set('conta_id', $_POST['conta']);
             }
@@ -771,6 +777,8 @@ class Convenio_model extends Model {
                                 co.carteira_obrigatoria,
                                 co.logradouro,
                                 co.cnpj,
+                                co.fidelidade_parceiro_id,
+                                co.fidelidade_endereco_ip,
                                 co.dinheiro,
                                 co.procedimento1,
                                 co.procedimento2,
@@ -800,6 +808,8 @@ class Convenio_model extends Model {
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_celular = $return[0]->celular;
             $this->_telefone = $return[0]->telefone;
+            $this->_fidelidade_parceiro_id = $return[0]->fidelidade_parceiro_id;
+            $this->_fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
             $this->_carteira_obrigatoria = $return[0]->carteira_obrigatoria;
             $this->_home_care = $return[0]->home_care;
             $this->_tipo_logradouro_id = $return[0]->tipo_logradouro_id;

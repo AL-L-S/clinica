@@ -105,8 +105,8 @@
 <!--                                    <select  name="procedimento1" id="procedimento1" class="size1" >
                                         <option value="">Selecione</option>
                                     </select>-->
-                                
-                                    <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+
+                                    <select name="procedimento1" id="procedimento1" required class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
@@ -136,7 +136,7 @@
                     <table id="table_agente_toxico" border="0">
                         <thead>
                             <tr>
-                                <th colspan="10"><span style="font-size: 12pt; font-weight: bold;">Operador Responsavel: <?=@$responsavel[0]->nome?></span></th>
+                                <th colspan="10"><span style="font-size: 12pt; font-weight: bold;">Operador Responsavel: <?= @$responsavel[0]->nome ?></span></th>
                             </tr>
                             <tr>
                                 <th class="tabela_header">Convenio</th>
@@ -181,13 +181,13 @@
                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
 
                             </a></div></center></th>
-                            <th colspan="2" align="center">
-                                <center>
-                                <div class="bt_linkf">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/orcamentocadastrofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
-                                </a></div>
-                                </center>
-                            </th>
+                    <th colspan="2" align="center">
+                    <center>
+                        <div class="bt_linkf">
+                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/orcamentocadastrofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
+                            </a></div>
+                    </center>
+                    </th>
                     </tr>
                     </tfoot>
                 </table> 
@@ -229,7 +229,7 @@
                                         for (var c = 0; c < j.length; c++) {
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                         }
-                                        
+
                                         $('#procedimento1 option').remove();
                                         $('#procedimento1').append(options);
                                         $("#procedimento1").trigger("chosen:updated");
@@ -246,7 +246,7 @@
                                             for (var c = 0; c < j.length; c++) {
                                                 options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                             }
-                                            
+
                                             $('#procedimento1 option').remove();
                                             $('#procedimento1').append(options);
                                             $("#procedimento1").trigger("chosen:updated");
@@ -255,7 +255,7 @@
                                         });
                                     });
                                 });
-                                
+
                                 $(function () {
                                     $("#data").datepicker({
                                         autosize: true,
@@ -327,7 +327,7 @@
                                 });
 
 
-                                $(function () {
+                                 $(function () {
                                     $('#procedimento1').change(function () {
                                         if ($(this).val()) {
                                             $('.carregando').show();

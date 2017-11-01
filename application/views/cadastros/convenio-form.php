@@ -269,6 +269,19 @@
                 </div>
             </fieldset>
             <fieldset>
+                <legend>Fidelidade</legend>
+                <div>
+                    <label>Endereço IP</label>
+                    <input type="text" name="fidelidade_endereco_ip" class="texto06 bestupper" value="<?= @$obj->_fidelidade_endereco_ip; ?>" />
+                </div>
+                <div>
+                    <label>Parceiro ID</label>
+                    <input type="number" name="fidelidade_parceiro_id" class="texto02" value="<?= @$obj->_fidelidade_parceiro_id; ?>" />
+                </div>
+                
+               
+            </fieldset>
+            <fieldset>
                 <legend>Observa&ccedil;&atilde;o</legend>
                 <div>
                     <textarea cols="" rows="" name="txtObservacao" class="texto_area"><?= @$obj->_observacao; ?></textarea>

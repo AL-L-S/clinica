@@ -8,6 +8,7 @@ class filaacolhimento extends BaseController {
         parent::__construct();
         $this->load->model('emergencia/solicita_acolhimento_model', 'acolhimento');
         $this->load->model('cadastro/paciente_model', 'paciente');
+        $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->library('utilitario');
     }
 
