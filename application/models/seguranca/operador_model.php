@@ -380,6 +380,21 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
 
+    function medicocabecalhorodape($operador_id) {
+        $this->db->select('o.nome,
+                            o.operador_id,
+                            o.rodape,
+                            o.cabecalho,
+                            c.descricao as ocupacao,
+                            o.conselho
+                            ');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+        $this->db->where('o.operador_id', $operador_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function medicoreceituario($operador_id) {
         $this->db->select('o.nome,
                             o.operador_id,
@@ -646,6 +661,7 @@ class Operador_model extends BaseModel {
                     $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
                     $this->db->insert('tb_operador_cbo');
                 }
+                return $operador_id;
             } else { // update
                 $operador_id = $_POST['operador_id'];
                 $this->db->set('data_atualizacao', $horario);

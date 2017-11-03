@@ -21,6 +21,23 @@
                 </div>
 
             </fieldset>
+            
+            <fieldset>
+                 <legend>Timbrado/Marca d'gua</legend>
+                <textarea style="width: 100%;height: 800px;" name="timbrado" id=""><?= @$impressao[0]->timbrado ?></textarea>
+                <div>
+                    <p>
+                        Obs: O tamanho da imagem do timbrado é padrão: 800px X 600px <br>
+                        Obs²: O formato da imagem do timbrado importada deverá ser .png (Sendo possivel dessa forma, aplicar opacidade na imagem através de edição da mesma por softwares de terceiros)
+                    </p>
+                </div>
+                <div style="width: 100%;">
+                    <hr/>
+                    <button type="submit" name="btnEnviar">Enviar</button>
+                    <button type="reset" name="btnLimpar">Limpar</button>
+                </div>
+
+            </fieldset>
         </form>
     <!--</div>  Final da DIV content -->
 </div> <!-- Final da DIV content -->

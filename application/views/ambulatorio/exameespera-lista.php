@@ -6,7 +6,7 @@
             <?
             $salas = $this->exame->listartodassalas();
             $empresa = $this->guia->listarempresasaladeespera();
-           @$ordem_chegada = @$empresa[0]->ordem_chegada;
+            @$ordem_chegada = @$empresa[0]->ordem_chegada;
             $medicos = $this->operador_m->listarmedicos();
             $situacaocaixa = $this->exame->listarcaixaempresa();
 //            var_dump($situacaocaixa);
@@ -82,7 +82,7 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listarexameagendaconfirmada($_GET);
                 $total = $consulta->count_all_results();
-                
+
                 $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
@@ -102,23 +102,23 @@
                             $diff = $date_time->diff(new DateTime($dataFuturo));
                             $teste = $diff->format('%H:%I:%S');
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            
-                           
-                            if($item->ordenador == 1){
-                               $ordenador = 'Normal'; 
-                               $cor = 'blue';
-                            }elseif($item->ordenador == 2){
-                                $ordenador = 'Prioridade';  
+
+
+                            if ($item->ordenador == 1) {
+                                $ordenador = 'Normal';
+                                $cor = 'blue';
+                            } elseif ($item->ordenador == 2) {
+                                $ordenador = 'Prioridade';
                                 $cor = 'darkorange';
-                            }elseif($item->ordenador == 3){
-                                $ordenador = 'Urgência'; 
-                                 $cor = 'red';
-                            }else{
+                            } elseif ($item->ordenador == 3) {
+                                $ordenador = 'Urgência';
+                                $cor = 'red';
+                            } else {
                                 $ordenador = $item->ordenador;
                             }
                             ?>
                             <tr>
-                                <td style="color: <?=$cor?>" class="<?php echo $estilo_linha; ?>"><?= $ordenador; ?></td>
+                                <td style="color: <?= $cor ?>" class="<?php echo $estilo_linha; ?>"><?= $ordenador; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examepacientedetalhes/<?= $item->paciente_id; ?>/<?= $item->procedimento_tuss_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id; ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $item->paciente; ?></a></td>
                                 <?
                                 $idade = date("Y-m-d") - $item->nascimento;
@@ -174,16 +174,23 @@
                                             </a></div>
                                     </td>
                                 <? } ?>
-<!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente2/<?= $item->ambulatorio_laudo_id ?> ">
-                                            Chamar</a></div>
-                                                                            impressaolaudo 
-                                </td>-->
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
+        <!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente2/<?= $item->ambulatorio_laudo_id ?> ">
+                                        Chamar</a></div>
+                                                                        impressaolaudo 
+                            </td>-->
+                                <? if ($empresa[0]->cancelar_sala_espera == 't') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
 
-                                        </a></div>
-                                </td>
+                                            </a></div>
+                                    </td>   
+
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                    </td>  
+                                <? } ?>
+
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/observacao/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=230');">Obs.
                                         </a></div>
@@ -213,14 +220,14 @@
                                     }
                                     ?>>50 </option>
                                     <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarsalasespera/100');" <?
-                                            if ($limit == 100) {
-                                                echo "selected";
-                                            }
+                                    if ($limit == 100) {
+                                        echo "selected";
+                                    }
                                     ?>> 100 </option>
                                     <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarsalasespera/todos');" <?
-                                            if ($limit == "todos") {
-                                                echo "selected";
-                                            }
+                                    if ($limit == "todos") {
+                                        echo "selected";
+                                    }
                                     ?>> Todos </option>
                                 </select>
                             </div>

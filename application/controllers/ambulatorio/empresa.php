@@ -47,21 +47,21 @@ class Empresa extends BaseController {
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaocabecalho-lista');
     }
-    
+
     function listarlaudoconfig() {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaolaudo-lista');
     }
-    
+
     function configurarcabecalho($empresa_impressao_cabecalho_id) {
         $data['empresa_impressao_cabecalho_id'] = $empresa_impressao_cabecalho_id;
         $data['impressao'] = $this->empresa->listarconfiguracaoimpressaocabecalho($empresa_impressao_cabecalho_id);
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaocabecalho-form', $data);
     }
-    
+
     function configurarlaudo($empresa_impressao_laudo_id) {
         $data['empresa_impressao_laudo_id'] = $empresa_impressao_laudo_id;
         $data['impressao'] = $this->empresa->listarconfiguracaoimpressaolaudoform($empresa_impressao_laudo_id);
@@ -79,6 +79,7 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
     }
+
     function ativarconfiguracaolaudo($impressao_id) {
         if ($this->empresa->ativarconfiguracaolaudo($impressao_id)) {
             $mensagem = 'Laudo ativado com sucesso';
@@ -109,7 +110,7 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
     }
-    
+
     function gravarimpressaocabecalho() {
         $impressao_id = $_POST['impressao_id'];
         if ($this->empresa->gravarconfiguracaoimpressao($impressao_id)) {
@@ -117,11 +118,45 @@ class Empresa extends BaseController {
         } else {
             $mensagem = 'Erro ao gravar cabeçalho e rodapé. Opera&ccedil;&atilde;o cancelada.';
         }
-
+        // CRIANDO A PASTA ONDE VAI SALVAR O TIMBRADO CASO NÃO EXISTA
+        if (!is_dir("./upload/timbrado")) {
+            mkdir("./upload/timbrado");
+            $destino = "./upload/timbrado";
+            chmod($destino, 0777);
+        }
+        // ESSA GAMBIARRA RETIRA ALGUMAS PARTES DA STRING PARA PODER ENVIAR NA FUNÇÃO E TIRAR OS CAMPOS DO HTML QUE ATRAPALHARIAM
+        if ($_POST['timbrado'] != '') {
+            $arquivobase64_img = explode('src="', $_POST['timbrado']);
+            $arquivobase64 = explode('alt=""', $arquivobase64_img[1]);
+            $arquivobase64[1] = str_replace('/>', '', $arquivobase64[1]);
+//            var_dump($arquivobase64[1]); die;
+//            $arquivobase64[0] = $arquivobase64[0] . '==';
+            // AQUI NESSA FUNÇÃO ELE VAI SALVAR O ARQUIVO. NO CAMINHO ENVIADO ABAIXO
+            $arquivo_salvo = $this->base64_to_jpeg($arquivobase64[0], "upload/timbrado/timbrado.png");
+        }
+        
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/listarcabecalho");
     }
-    
+
+    function base64_to_jpeg($base64_string, $output_file) {
+        // open the output file for writing
+        $ifp = fopen($output_file, 'wb');
+
+        // split the string on commas
+        // $data[ 0 ] == "data:image/png;base64"
+        // $data[ 1 ] == <actual base64 string>
+        $data = explode(',', $base64_string);
+
+        // we could add validation here with ensuring count( $data ) > 1
+        fwrite($ifp, base64_decode($data[1]));
+
+        // clean up the file resource
+        fclose($ifp);
+
+        return $output_file;
+    }
+
     function gravarimpressaolaudo() {
         $impressao_id = $_POST['impressao_id'];
         if ($this->empresa->gravarconfiguracaoimpressaolaudo($impressao_id)) {

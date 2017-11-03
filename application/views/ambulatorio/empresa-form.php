@@ -166,6 +166,12 @@
                             <input type="checkbox" id="odontologia" name="odontologia" <? if (@$obj->_odontologia == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
+                            <label title="Ativando essa flag, oftamologia irá aparecer na consulta.">Oftamologia</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="oftamologia" name="oftamologia" <? if (@$obj->_oftamologia == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
                             <label title="Habilitar Laboratorio.">Laboratorio</label>
                         </dt>
                         <dd>
@@ -329,6 +335,12 @@
                         </dt>
                         <dd>
                             <input type="checkbox" id="botao_ativar_sala" name="botao_ativar_sala" <? if (@$obj->_botao_ativar_sala == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o botão de cancelar na sala de espera irá aparecer.">Cancelar Sala de Espera</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="cancelar_sala_espera" name="cancelar_sala_espera" <? if (@$obj->_cancelar_sala_espera == 't') echo "checked"; ?>/> 
                         </dd>
                     <? } ?>
                 </dl>    

@@ -132,7 +132,7 @@ class empresa_model extends Model {
     function listarconfiguracaoimpressaocabecalho($empresa_impressao_cabecalho_id) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('ei.empresa_impressao_cabecalho_id,ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->select('ei.empresa_impressao_cabecalho_id,ei.cabecalho,ei.rodape,ei.timbrado, e.nome as empresa');
         $this->db->from('tb_empresa_impressao_cabecalho ei');
         $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
         $this->db->where('ei.empresa_impressao_cabecalho_id', $empresa_impressao_cabecalho_id);
@@ -410,6 +410,7 @@ class empresa_model extends Model {
             if (count($teste) == 0) {
                 $this->db->set('cabecalho', $_POST['cabecalho']);
                 $this->db->set('rodape', $_POST['rodape']);
+                $this->db->set('timbrado', $_POST['timbrado']);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -417,6 +418,7 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('cabecalho', $_POST['cabecalho']);
                 $this->db->set('rodape', $_POST['rodape']);
+                $this->db->set('timbrado', $_POST['timbrado']);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
@@ -449,7 +451,7 @@ class empresa_model extends Model {
             $teste = $this->db->get()->result();
             $this->db->select('ei.empresa_impressao_laudo_id,');
             $this->db->from('tb_empresa_impressao_laudo ei');
-//            $this->db->where('ei.empresa_impressao_laudo_id', $_POST['impressao_id']);
+            $this->db->where('ei.empresa_id', $empresa_id);
             $teste2 = $this->db->get()->result();
             if (count($teste) > 0) {
                 $impressao_id = $teste[0]->empresa_impressao_laudo_id;
@@ -822,6 +824,16 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('calendario_layout', 'f');
                 }
+                if (isset($_POST['cancelar_sala_espera'])) {
+                    $this->db->set('cancelar_sala_espera', 't');
+                } else {
+                    $this->db->set('cancelar_sala_espera', 'f');
+                }
+                if (isset($_POST['oftamologia'])) {
+                    $this->db->set('oftamologia', 't');
+                } else {
+                    $this->db->set('oftamologia', 'f');
+                }
                 if (isset($_POST['recomendacao_configuravel'])) {
                     $this->db->set('recomendacao_configuravel', 't');
                 } else {
@@ -873,6 +885,16 @@ class empresa_model extends Model {
                     $this->db->set('botao_ativar_sala', 't');
                 } else {
                     $this->db->set('botao_ativar_sala', 'f');
+                }
+                if (isset($_POST['cancelar_sala_espera'])) {
+                    $this->db->set('cancelar_sala_espera', 't');
+                } else {
+                    $this->db->set('cancelar_sala_espera', 'f');
+                }
+                if (isset($_POST['oftamologia'])) {
+                    $this->db->set('oftamologia', 't');
+                } else {
+                    $this->db->set('oftamologia', 'f');
                 }
                 
                 $this->db->set('data_cadastro', $horario);
@@ -931,6 +953,8 @@ class empresa_model extends Model {
                                laudo_config,
                                recibo_config,
                                ficha_config,
+                               oftamologia,
+                               cancelar_sala_espera,
                                calendario,
                                servicosms,
                                servicoemail,
@@ -1005,6 +1029,8 @@ class empresa_model extends Model {
             $this->_calendario_layout = $return[0]->calendario_layout;
             $this->_recomendacao_configuravel = $return[0]->recomendacao_configuravel;
             $this->_botao_ativar_sala = $return[0]->botao_ativar_sala;
+            $this->_oftamologia = $return[0]->oftamologia;
+            $this->_cancelar_sala_espera = $return[0]->cancelar_sala_espera;
         } else {
             $this->_empresa_id = null;
         }

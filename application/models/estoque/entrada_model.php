@@ -609,6 +609,32 @@ class entrada_model extends Model {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
+        
+        $this->db->select('e.saida_id_transferencia');
+        $this->db->from('tb_estoque_entrada e');
+        $this->db->where('estoque_entrada_id', $estoque_entrada_id);
+        $return = $this->db->get()->result();
+//        var_dump($return);
+//        die;
+        // DELETANDO A TRANSFERENCIA
+        if ($return[0]->saida_id_transferencia != '') {
+            $saida_id_transferencia = $return[0]->saida_id_transferencia;
+            
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where("estoque_saida_id IN ($saida_id_transferencia)");
+            $this->db->update('tb_estoque_saldo');
+
+            //atualizando tabela estoque_saida
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where("estoque_saida_id IN ($saida_id_transferencia)");
+            $this->db->update('tb_estoque_saida');
+        }
+
+        
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);

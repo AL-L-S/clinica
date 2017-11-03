@@ -40,6 +40,23 @@ class guia_model extends Model {
         $this->db->update('tb_agenda_exames');
         return 1;
     }
+    
+    function listarempresasaladepermissao($empresa_id = null) {
+        if ($empresa_id == null) {
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
+
+        $this->db->select('e.empresa_id,
+                            ordem_chegada,
+                            oftamologia,
+                            ');
+        $this->db->from('tb_empresa e');
+        $this->db->where('e.empresa_id', $empresa_id);
+        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+        $this->db->orderby('e.empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarpacientes($parametro = null) {
 
@@ -9167,6 +9184,7 @@ ORDER BY ae.agenda_exames_id)";
 
         $this->db->select('e.empresa_id,
                             ordem_chegada,
+                            cancelar_sala_espera,
                             ');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
@@ -10469,6 +10487,9 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             if ($_POST['medico'] != '') {
                 $this->db->set('medico_solicitante', $_POST['medico']);
+            }
+            if ($_POST['indicacao'] != '') {
+                $this->db->set('indicacao', $_POST['indicacao']);
             }
             $this->db->set('medico_agenda', $_POST['medico_agenda']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);

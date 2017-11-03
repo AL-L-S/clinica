@@ -298,98 +298,7 @@ FROM ponto.tb_procedimento_percentual_medico m , ponto.tb_procedimento_percentua
 
 
 
--- 16/10/2017
----------------------- OFTAMOLOGIA -----------------------------
-CREATE TABLE ponto.tb_oftamologia_od_esferico
-(
-  od_esferico_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_od_esferico_pkey PRIMARY KEY (od_esferico_id)
-);
 
-CREATE TABLE ponto.tb_oftamologia_oe_esferico
-(
-  oe_esferico_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_oe_esferico_pkey PRIMARY KEY (oe_esferico_id)
-);
-
-CREATE TABLE ponto.tb_oftamologia_od_cilindrico
-(
-  od_cilindrico_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_od_cilindrico_pkey PRIMARY KEY (od_cilindrico_id)
-);
-
-CREATE TABLE ponto.tb_oftamologia_oe_cilindrico
-(
-  oe_cilindrico_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_oe_cilindrico_pkey PRIMARY KEY (oe_cilindrico_id)
-);
-
-
-CREATE TABLE ponto.tb_oftamologia_oe_eixo
-(
-  oe_eixo_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_oe_eixo_pkey PRIMARY KEY (oe_eixo_id)
-);
-
-CREATE TABLE ponto.tb_oftamologia_oe_av
-(
-  oe_av_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_oe_av_pkey PRIMARY KEY (oe_av_id)
-);
-
-CREATE TABLE ponto.tb_oftamologia_od_eixo
-(
-  od_eixo_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_od_eixo_pkey PRIMARY KEY (od_eixo_id)
-);
-
-CREATE TABLE ponto.tb_oftamologia_od_av
-(
-  od_av_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_od_av_pkey PRIMARY KEY (od_av_id)
-);
-
-CREATE TABLE ponto.tb_oftamologia_ad_esferico
-(
-  ad_esferico_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_ad_esferico_pkey PRIMARY KEY (ad_esferico_id)
-);
-
-CREATE TABLE ponto.tb_oftamologia_ad_cilindrico
-(
-  ad_cilindrico_id integer NOT NULL,
-  nome character varying(20),
-  numero numeric (10,2),
-  ativo integer,
-  CONSTRAINT tb_oftamologia_ad_cilindrico_pkey PRIMARY KEY (ad_cilindrico_id)
-);
 
 -- Dia 19/10/2017
 ALTER TABLE ponto.tb_convenio ADD COLUMN convenio_associacao integer;
@@ -427,3 +336,236 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN dias_retorno integer;
 -- Dia 28/10/2017
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN encaminhado boolean DEFAULT false;
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN medico_encaminhamento_id integer;
+
+-- Dia 01/11/2017
+ALTER TABLE ponto.tb_empresa_impressao_cabecalho ADD COLUMN timbrado text;
+ALTER TABLE ponto.tb_empresa_impressao_cabecalho ADD COLUMN timbrado_tamanho text;
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'ODONTOLOGIA');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+        VALUES ('ODONTOLOGIA', 'ODONTOLOGIA');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();
+
+
+
+-- 16/10/2017
+---------------------- OFTAMOLOGIA -----------------------------
+
+-- APARENTEMENTE O GIT EXCLUIU CERTAS COISAS DESSE ARQUIVO QUANDO CLICARAM EM REVERTER MODIFICAÇÕES
+-- ADICIONANDO ABAIXO AS COLUNAS
+UPDATE ponto.tb_operador
+   SET perfil_id=1
+ WHERE operador_id = 1;
+
+
+CREATE TABLE ponto.tb_oftamologia_od_esferico
+(
+  od_esferico_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_od_esferico_pkey PRIMARY KEY (od_esferico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_oe_esferico
+(
+  oe_esferico_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_oe_esferico_pkey PRIMARY KEY (oe_esferico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_od_cilindrico
+(
+  od_cilindrico_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_od_cilindrico_pkey PRIMARY KEY (od_cilindrico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_oe_cilindrico
+(
+  oe_cilindrico_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_oe_cilindrico_pkey PRIMARY KEY (oe_cilindrico_id)
+);
+
+
+CREATE TABLE ponto.tb_oftamologia_oe_eixo
+(
+  oe_eixo_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_oe_eixo_pkey PRIMARY KEY (oe_eixo_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_oe_av
+(
+  oe_av_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_oe_av_pkey PRIMARY KEY (oe_av_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_od_eixo
+(
+  od_eixo_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_od_eixo_pkey PRIMARY KEY (od_eixo_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_od_av
+(
+  od_av_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_od_av_pkey PRIMARY KEY (od_av_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_ad_esferico
+(
+  ad_esferico_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_ad_esferico_pkey PRIMARY KEY (ad_esferico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_ad_cilindrico
+(
+  ad_cilindrico_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_ad_cilindrico_pkey PRIMARY KEY (ad_cilindrico_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_od_acuidade
+(
+  od_acuidade_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_od_acuidade_pkey PRIMARY KEY (od_acuidade_id)
+);
+
+CREATE TABLE ponto.tb_oftamologia_oe_acuidade
+(
+  oe_acuidade_id serial NOT NULL,
+  nome character varying(20),
+  numero numeric (10,2),
+  ativo boolean DEFAULT TRUE,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_oftamologia_oe_acuidade_pkey PRIMARY KEY (oe_acuidade_id)
+);
+
+
+ALTER TABLE ponto.tb_agenda_exames_valor ADD COLUMN data_cadastro timestamp without time zone;
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN inspecao_geral text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN motilidade_ocular  text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN biomicroscopia text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN mapeamento_retinas  text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN conduta  text;
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN acuidade_od text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN acuidade_oe text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN pressao_ocular_oe numeric(10,2);
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN pressao_ocular_od numeric(10,2);
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN pressao_ocular_hora time without time zone;
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN refracao_retinoscopia text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN dinamica_estatica text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN carregar_refrator boolean default false;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN carregar_oculos boolean default false;
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_od_esferico text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_oe_esferico text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_od_cilindrico text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_oe_cilindrico text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_oe_eixo text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_oe_av text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_od_eixo text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_od_av text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_ad_esferico text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN oftamologia_ad_cilindrico text;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN oftamologia boolean DEFAULT false;
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN cancelar_sala_espera boolean DEFAULT true;
+
+ALTER TABLE ponto.tb_estoque_entrada ADD COLUMN saida_id_transferencia text;
+
+ALTER TABLE ponto.tb_operador ADD COLUMN cabecalho text;
+ALTER TABLE ponto.tb_operador ADD COLUMN rodape text;
+ALTER TABLE ponto.tb_operador ADD COLUMN timbrado text;
+ALTER TABLE ponto.tb_operador ADD COLUMN timbrado_tamanho text;
