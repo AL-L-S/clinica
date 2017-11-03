@@ -1290,7 +1290,7 @@
             </table>
         </div>
         <div style="display: inline-block; margin-left: 10pt">
-    <? if (count($creditos) > 0) { ?>
+        <? if (count($creditos) > 0) { ?>
                 <table border="1" cellpadding="5" cellspacing="5" style="magin-right: 50pt;">
                     <thead>
                         <tr>

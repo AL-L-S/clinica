@@ -2540,6 +2540,62 @@ class exame_model extends Model {
         return $return->result();
     }
     
+    function gravarencaminhamentoatendimento($agenda_exames_id) {
+        
+        try {
+    //        $data = date("Y-m-d");
+
+            $this->db->select(' ae.paciente_id,
+                                ae.procedimento_tuss_id,
+                                al.medico_encaminhamento_id,
+                                ae.tipo');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id');
+            $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id'); 
+    //        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+    //        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');    
+    //        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');    
+            $this->db->where('al.medico_encaminhamento_id is not null');
+            $this->db->where('ae.agenda_exames_id', $agenda_exames_id);
+            $return = $this->db->get();
+            $return = $return->result();
+
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('tipo', $return[0]->tipo);
+            $this->db->set('ativo', 'f');
+            $this->db->set('cancelada', 'f');
+            $this->db->set('confirmado', 'f');
+            $this->db->set('situacao', 'OK');
+            $data = date("Y-m-d");
+            $hora = date("H:i:s");
+            $this->db->set('medico_consulta_id', $return[0]->medico_encaminhamento_id);
+            $this->db->set('medico_agenda', $return[0]->medico_encaminhamento_id);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('paciente_id', $return[0]->paciente_id);
+            $this->db->set('data_inicio', $data);
+            $this->db->set('procedimento_tuss_id', $return[0]->procedimento_tuss_id);
+            $this->db->set('inicio', $hora);
+            $this->db->set('fim', $hora);
+            $this->db->set('encaixe', 't');
+            $this->db->set('data_fim', $data);
+            $this->db->set('data', $data);
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_agenda_exames');
+            
+            return $return[0]->paciente_id;
+            
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function gerarelatorioencaminhamento() {
 //        $data = date("Y-m-d");
        
@@ -2551,10 +2607,12 @@ class exame_model extends Model {
                             pt.grupo,
                             c.nome as convenio,
                             p.telefone,
+                            ae.paciente_id,
                             pc.valortotal,
                             pt.nome,
                             o.nome as medico_responsavel,
-                            op.nome as medico_encaminhado');
+                            op.nome as medico_encaminhado,
+                            al.medico_encaminhamento_id');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id');
@@ -6998,46 +7056,41 @@ class exame_model extends Model {
             $query = $this->db->get();
             $return = $query->result();
             
-            if ($return[0]->forma_pagamento4 != 1000 || $return[0]->forma_pagamento != 1000 || $return[0]->forma_pagamento2 != 1000 || $return[0]->forma_pagamento3 != 1000) {
-                
-                $this->db->set('procedimento_convenio_id', $return[0]->procedimento_tuss_id);
-                $this->db->set('paciente_id', $return[0]->paciente_id);
-                $this->db->set('data', date("Y-m-d"));
+            $this->db->set('procedimento_convenio_id', $return[0]->procedimento_tuss_id);
+            $this->db->set('paciente_id', $return[0]->paciente_id);
+            $this->db->set('data', date("Y-m-d"));
 
-                if ($return[0]->forma_pagamento != 1000){
-                    $formapagamento = $return[0]->forma_pagamento;
-                    $this->db->set('valor1', $return[0]->valor1);
-                    $this->db->set('forma_pagamento1', $formapagamento);
-                }
-                if ($return[0]->forma_pagamento2 != 1000){
-                    $formapagamento = $return[0]->forma_pagamento2;
-                    $this->db->set('valor2', $return[0]->valor2);
-                    $this->db->set('forma_pagamento2', $formapagamento);
-                }
-                if ($return[0]->forma_pagamento3 != 1000){
-                    $formapagamento = $return[0]->forma_pagamento3;
-                    $this->db->set('valor3', $return[0]->valor3);
-                    $this->db->set('forma_pagamento3', $formapagamento);
-                }
-                if ($return[0]->forma_pagamento4 != 1000){
-                    $formapagamento = $return[0]->forma_pagamento4;
-                    $this->db->set('valor4', $return[0]->valor4);
-                    $this->db->set('forma_pagamento4', $formapagamento);
-                }
-
-                $this->db->set('valor', $return[0]->valor);
+            if ($return[0]->forma_pagamento != ''){
+                $formapagamento = $return[0]->forma_pagamento;
+                $this->db->set('valor1', $return[0]->valor1);
                 $this->db->set('forma_pagamento_id', $formapagamento);
-
-                $horario = date("Y-m-d H:i:s");
-                $operador_id = $this->session->userdata('operador_id');
-                $empresa_id = $this->session->userdata('empresa_id');
-
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->set('empresa_id', $empresa_id);
-
-                $this->db->insert('tb_paciente_credito');
             }
+            if ($return[0]->forma_pagamento2 != ''){
+                $formapagamento = $return[0]->forma_pagamento2;
+                $this->db->set('valor2', $return[0]->valor2);
+                $this->db->set('forma_pagamento2', $formapagamento);
+            }
+            if ($return[0]->forma_pagamento3 != ''){
+                $formapagamento = $return[0]->forma_pagamento3;
+                $this->db->set('valor3', $return[0]->valor3);
+                $this->db->set('forma_pagamento3', $formapagamento);
+            }
+            if ($return[0]->forma_pagamento4 != ''){
+                $formapagamento = $return[0]->forma_pagamento4;
+                $this->db->set('valor4', $return[0]->valor4);
+                $this->db->set('forma_pagamento4', $formapagamento);
+            }
+
+            $this->db->set('valor', $return[0]->valor);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->insert('tb_paciente_credito');
             
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
