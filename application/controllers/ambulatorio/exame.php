@@ -329,6 +329,19 @@ class Exame extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioteleoperadora', $data);
     }
     
+    function autorizarencaminhamento($agenda_exames_id) {
+        $paciente_id = $this->exame->gravarencaminhamentoatendimento($agenda_exames_id);
+        if($paciente_id == '-1'){
+            $mensagem = 'Erro ao excluir o Agenda. Opera&ccedil;&atilde;o cancelada.';
+            $this->session->set_flashdata('message', $mensagem);
+//            redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        }
+        else{
+            redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
+        }
+//        die('Criar o exame/consulta e redirecionar pra tela de "autorizar atendimento');
+    }
+    
     function gerarelatorioencaminhamento() {
         
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));

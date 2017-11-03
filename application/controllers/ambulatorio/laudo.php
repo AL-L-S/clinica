@@ -325,6 +325,12 @@ class Laudo extends BaseController {
         echo "<script>window.location.href = 'https://www.google.com';</script>";
     }
 
+    function caregarodontograma($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $this->load->View('ambulatorio/odontograma-form', $data);
+    }
+
     function carregaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;

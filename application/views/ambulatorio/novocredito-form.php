@@ -8,7 +8,7 @@
                     <div>
                         <label>Nome</label>                      
                         <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
-                        <input type="hiden" id="txtpaciente_id" name="txtpaciente_id"  value="<?= $paciente_id; ?>"/>
+                        <input type="hidden" id="txtpaciente_id" name="txtpaciente_id"  value="<?= $paciente_id; ?>"/>
                     </div>
                     <div>
                         <label>Sexo</label>

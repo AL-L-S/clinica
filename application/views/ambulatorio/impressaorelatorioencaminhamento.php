@@ -19,6 +19,7 @@
             <th class="tabela_header">Telefone</th>
             <th class="tabela_header">Data</th>
             <th class="tabela_header">Encaminhado Para</th>
+            <th class="tabela_header">&nbsp;</th>
 
         </tr>
     </thead>
@@ -51,6 +52,7 @@
                     <td ><?= $telefone; ?></td>
                     <td><?= date("d/m/Y", strtotime($item->data)); ?></td>
                     <td><?= $item->medico_encaminhado; ?></td>
+                    <td><a href="<?= base_url() ?>ambulatorio/exame/autorizarencaminhamento/<?= $item->agenda_exames_id ?>" target="_blank">Autorizar</a></td>
                 </tr>
 
             </tbody>
