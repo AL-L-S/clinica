@@ -50,23 +50,127 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function gravarhorarioagendawebconvenio() {
+        header('Access-Control-Allow-Origin: *');
+        $paciente_id = $this->exametemp->crianovopacientefidelidade();
+        $result = $this->exametemp->gravarpacienteconsultasweb($paciente_id);
+//        var_dump($result); die;
+        $retorno['data'] = $result[0]->data;
+        $retorno['paciente_id'] = $result[0]->paciente_id;
+        $var[] = $retorno;
+
+        echo json_encode($var);
+    }
+
+    function listarhorarioagendawebconvenio() {
+        header('Access-Control-Allow-Origin: *');
+//        var_dump($_GET); die;
+        $convenio = $this->procedimentoplano->listarconveniointegracaofidelidade($_GET['parceiro_id']);
+        echo json_encode($convenio);
+    }
+
+    function autorizaragendaweb() {
+        header('Access-Control-Allow-Origin: *');
+
+        $parceiro = $this->parceiro->listarparceiroendereco($parceiro_id);
+        @$endereco = $parceiro[0]->endereco_ip;
+        @$parceiro_gravar_id = $parceiro[0]->financeiro_parceiro_id;
+        $cpf = $cpf_array[0]->cpf;
+        // BUSCANDO O GRUPO DO PROCEDIMENTO NA CLINICA
+
+        $grupo_busca = file_get_contents("http://{$endereco}/autocomplete/listargrupoagendamentoweb?procedimento_convenio_id={$_POST['procedimento']}");
+        $grupo = json_decode($grupo_busca);
+
+        //LISTANDO AS INFORMAÇÕES DE CARÊNCIA E PARCELAS PAGAS PELO PACIENTE
+
+        $parcelas = $this->guia->listarparcelaspaciente($_POST['txtNomeid']);
+        $carencia = $this->guia->listarparcelaspacientecarencia($_POST['txtNomeid']);
+
+        $listaratendimento = $this->guia->listaratendimentoparceiro($paciente_id);
+        $carencia_exame = $carencia[0]->carencia_exame;
+        $carencia_consulta = $carencia[0]->carencia_consulta;
+        $carencia_especialidade = $carencia[0]->carencia_especialidade;
+
+        // COMPARANDO O GRUPO E ESCOLHENDO O VALOR DE CARÊNCIA PARA O GRUPO DESEJADO
+        if ($grupo == 'EXAME') {
+            $carencia = (int) $carencia_exame;
+        } elseif ($grupo == 'CONSULTA') {
+            $carencia = (int) $carencia_consulta;
+        } elseif ($grupo == 'FISIOTERAPIA') {
+            $carencia = (int) $carencia_especialidade;
+        }
+        // 
+
+        $dias_parcela = 30 * count($parcelas);
+        $dias_atendimento = $carencia * count($listaratendimento);
+        
+        
+        if (($dias_parcela - $dias_atendimento) >= $carencia) {
+            return json_encode(true);
+        }else{
+            return json_encode(false);
+        }
+        die;
+    }
+
+    function listarmedicoweb() {
+        header('Access-Control-Allow-Origin: *');
+//        var_dump($_GET); die;
+        $medicos = $this->operador_m->listarmedicos();
+        echo json_encode($medicos);
+    }
+
+    function listarhorarioagendaweb() {
+        header('Access-Control-Allow-Origin: *');
+        $agenda_exames_id = $_GET['agenda_exames_id'];
+        $consultas = $this->exametemp->listaragendasconsultapaciente($agenda_exames_id);
+        echo json_encode($consultas);
+    }
+
+    function listarexameagendamentoweb() {
+        header('Access-Control-Allow-Origin: *');
+
+        $result = $this->exame->listaragendamentoweb()->limit($_GET['limit'], $_GET['pagina'])->get()->result();
+        echo json_encode($result);
+    }
+
+    function listargrupoagendamentoweb() {
+//        var_dump($_GET); die;
+        header('Access-Control-Allow-Origin: *');
+
+        if (isset($_GET['procedimento_convenio_id'])) {
+            $result = $this->exametemp->listarautocompletegrupoweb(@$_GET['procedimento_convenio_id']);
+        } else {
+            $result = $this->exametemp->listarautocompletegrupoweb(@$_GET['procedimento_convenio_id']);
+        }
+
+        echo json_encode($result[0]->tipo);
+    }
+
+    function excluirconsultaweb() {
+        $agenda_exames_id = $_GET['agenda_exames_id'];
+//        var_dump($agenda_exames_id); die;
+        $this->exametemp->excluirexametemp($agenda_exames_id);
+        echo json_encode(true);
+    }
+
     function buscaexamesanteriores() {
         $result = array();
-        
+
         if (isset($_GET['paciente_id']) && isset($_GET['procedimento_id'])) {
             $result = $this->exametemp->buscaexamesanteriores($_GET['paciente_id'], $_GET['procedimento_id']);
-        } 
-        
+        }
+
         echo json_encode($result);
     }
 
     function buscaconsultasanteriores() {
         $result = array();
-        
+
         if (isset($_GET['paciente_id']) && isset($_GET['procedimento_id'])) {
             $result = $this->exametemp->buscaconsultasanteriores($_GET['paciente_id'], $_GET['procedimento_id']);
-        } 
-        
+        }
+
         echo json_encode($result);
     }
 
@@ -354,7 +458,7 @@ class Autocomplete extends Controller {
     function listarhorarioscalendario() {
 //            echo $_POST['custom_param1'];
         if (isset($_POST['medico']) || isset($_POST['tipoagenda']) || isset($_POST['empresa'])) {
-            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], null, $_POST['empresa'], $_POST['sala'], $_POST['grupo'],$_POST['tipoagenda'] );
+            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], null, $_POST['empresa'], $_POST['sala'], $_POST['grupo'], $_POST['tipoagenda']);
             $algo = 'asd';
         } else {
             $result = $this->exametemp->listarhorarioscalendariovago();
@@ -406,10 +510,9 @@ class Autocomplete extends Controller {
             $ano = date("Y", strtotime($item->data));
 
 //            $medico = $item->medico;
-            if($this->session->userdata('calendario_layout') == 't'){
+            if ($this->session->userdata('calendario_layout') == 't') {
                 $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario2?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome";
-            }
-            else{
+            } else {
                 $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome";
             }
 
@@ -698,25 +801,23 @@ class Autocomplete extends Controller {
 
     function buscarsaldopacientefaturar() {
         if (isset($_GET['paciente_id'])) {
-            
+
             $paciente_id = $_GET['paciente_id'];
-            
+
             $saldoCredito = $this->exametemp->listarsaldocreditopaciente($paciente_id);
-            
         }
-        
+
         echo json_encode(array("saldo" => $saldoCredito[0]->saldo, "paciente_id" => $paciente_id));
     }
 
     function buscarsaldopaciente() {
         if (isset($_GET['guia_id'])) {
-            
+
             $paciente_id = $this->exametemp->listarpacienteporguia($_GET['guia_id']);
-            
+
             $saldoCredito = $this->exametemp->listarsaldocreditopaciente($paciente_id);
-            
         }
-        
+
         echo json_encode(array("saldo" => $saldoCredito[0]->saldo, "paciente_id" => $paciente_id));
     }
 
@@ -935,6 +1036,16 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function procedimentoconveniofidelidadeweb() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['convenio1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentosfidelidadeweb($_GET['convenio1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentosfidelidadeweb();
+        }
+        echo json_encode($result);
+    }
 
     function procedimentoconveniofaturar() {
 
@@ -945,7 +1056,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentoconveniofaturarmatmed() {
 
         if (isset($_GET['convenio1'])) {
@@ -1000,8 +1111,8 @@ class Autocomplete extends Controller {
 //        var_dump($_GET);die;
         if (isset($_GET['convenio1']) && isset($_GET['grupo1']) && isset($_GET['teste'])) {
             $result = $this->exametemp->listarautocompleteprocedimentosgrupomedico($_GET['convenio1'], $_GET['grupo1'], $_GET['teste']);
-        } 
-        
+        }
+
         echo json_encode($result);
     }
 
@@ -2010,6 +2121,7 @@ class Autocomplete extends Controller {
 
         echo json_encode($result);
     }
+
     function grupoempresasalatodos() {
 //        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtgrupo'])) {
@@ -2150,7 +2262,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
+
     function procedimentotusspesquisa() {
 
         if (isset($_GET['term'])) {

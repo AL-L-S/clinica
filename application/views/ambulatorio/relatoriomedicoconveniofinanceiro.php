@@ -96,7 +96,7 @@
                     </dd>
 
                     <dt>
-                        <label>Situaçãoooo</label>
+                        <label>Situação</label>
                     </dt>
                     <dd>
                         <select name="situacao" id="situacao" class="size1" >

@@ -76,7 +76,7 @@
 
                             <td  width="50px;">
                                 
-                                <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                <select name="procedimento1" id="procedimento1" required class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                     <option value="">Selecione</option>
                                 </select>
                             </td>
@@ -282,6 +282,21 @@
                                 });
                             });
                         });
+                        
+                        if ($('#grupo1').val() != '') {
+                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
+                                            options = '<option value=""></option>';
+                                            for (var c = 0; c < j.length; c++) {
+                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                            }
+//                                            $('#procedimento1').html(options).show();
+                                            
+                                            $('#procedimento1 option').remove();
+                                            $('#procedimento1').append(options);
+                                            $("#procedimento1").trigger("chosen:updated");
+                                            $('.carregando').hide();
+                                        });
+                                    }
 
                         $(function () {
                             $("#medico1").autocomplete({

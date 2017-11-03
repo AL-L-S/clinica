@@ -3298,6 +3298,44 @@ class exametemp_model extends Model {
         }
     }
 
+    function gravarpacienteconsultasweb($paciente_id) {
+        try {
+            $data_atual = date("Y-m-d");
+            $nome_paciente = str_replace('|||', ' ', $_GET['txtNome']);
+//            $cpf = $_GET;
+            $procedimento_convenio_id = $_GET['procedimento'];
+
+
+
+
+
+            $grupo = $this->listarautocompletegrupoweb($procedimento_convenio_id);
+//            var_dump($grupo); die;
+            $horario = date("Y-m-d H:i:s");
+            $this->db->set('procedimento_tuss_id', $_GET['procedimento']);
+            $this->db->set('tipo', $grupo[0]->tipo);
+            $this->db->set('ativo', 'f');
+            $this->db->set('cancelada', 'f');
+            $this->db->set('confirmado', 'f');
+            $this->db->set('situacao', 'OK');
+            $this->db->set('observacoes', $_GET['observacoes']);
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('data_atualizacao', $horario);
+//                $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('agenda_exames_id', $_GET['agenda_exames_id']);
+            $this->db->update('tb_agenda_exames');
+
+            $this->db->select('data, paciente_id');
+            $this->db->from('tb_agenda_exames');
+            $this->db->where("agenda_exames_id", $_GET['agenda_exames_id']);
+//            $this->db->where("paciente_id is null");
+            $retorno_data = $this->db->get()->result();
+            return $retorno_data;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
     function gravarpacientefisioterapia($agenda_exames_id, $sessao_total, $contador_sessao, $agrupador) {
         try {
 
@@ -3414,6 +3452,34 @@ class exametemp_model extends Model {
         return $agrupador;
     }
 
+    function crianovopacienteorcamento() {
+        $_POST['txtNome'] = strtoupper($_POST['txtNome']);
+        if ($_POST['txtNomeid'] == '') {
+            if ($_POST['nascimento'] != '') {
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+            }
+            if ($_POST['idade'] != 0) {
+                $this->db->set('idade', $_POST['idade']);
+            }
+            $this->db->set('celular', $_POST['txtCelular']);
+            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('telefone', $_POST['txtTelefone']);
+//                $this->db->set('numero_sessao', $_POST['sessao']);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->insert('tb_paciente');
+            $paciente_id = $this->db->insert_id();
+        } else {
+            $paciente_id = $_POST['txtNomeid'];
+
+            $this->db->set('celular', $_POST['txtCelular']);
+            $this->db->set('telefone', $_POST['txtTelefone']);
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->where('paciente_id', $paciente_id);
+            $this->db->update('tb_paciente');
+        }
+        return $paciente_id;
+    }
+
     function crianovopacienteespecialidade() {
         $_POST['txtNome'] = strtoupper($_POST['txtNome']);
         if ($_POST['txtNomeid'] == '') {
@@ -3438,6 +3504,40 @@ class exametemp_model extends Model {
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->where('paciente_id', $paciente_id);
             $this->db->update('tb_paciente');
+        }
+        return $paciente_id;
+    }
+
+    function crianovopacientefidelidade() {
+
+        $this->db->select('paciente_id');
+        $this->db->from('tb_paciente');
+        $this->db->where("ativo", 't');
+        $this->db->where("cpf", $_GET['cpf']);
+        $query = $this->db->get();
+        $return = $query->result();
+//        $paciente_id = $return[0]->paciente_id;
+        $_GET['txtNome'] = strtoupper($_GET['txtNome']);
+        $paciente_nome = str_replace("|||", " ", $_GET['txtNome']);
+//        var_dump($_GET['nascimento']); die;
+        if (count($return) == 0) {
+            if ($_GET['nascimento'] != '') {
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_GET['nascimento']))));
+            }
+            $this->db->set('celular', $_GET['celular']);
+            $this->db->set('telefone', $_GET['telefone']);
+            $this->db->set('cpf', $_GET['cpf']);
+            $this->db->set('nome', $paciente_nome);
+            $this->db->insert('tb_paciente');
+            $paciente_id = $this->db->insert_id();
+        } else {
+            $paciente_id = $return[0]->paciente_id;
+
+//            $this->db->set('celular', $_GET['txtCelular']);
+//            $this->db->set('telefone', $_GET['txtTelefone']);
+//            $this->db->set('nome', $_GET['txtNome']);
+//            $this->db->where('paciente_id', $paciente_id);
+//            $this->db->update('tb_paciente');
         }
         return $paciente_id;
     }
@@ -5418,6 +5518,30 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompleteprocedimentosfidelidadeweb($parametro) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+//        $this->db->where("ag.tipo !=", 'CONSULTA');
+        $this->db->where("ag.tipo !=", 'MEDICAMENTO');
+        $this->db->where("ag.tipo !=", 'MATERIAL');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarautocompleteprocedimentosfaturar($parametro) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
@@ -5578,6 +5702,26 @@ class exametemp_model extends Model {
         if ($procedimento_multiempresa == 't') {
             $this->db->where('pc.empresa_id', $empresa_id);
         }
+
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletegrupoweb($parametro = null) {
+        $this->db->select('ag.tipo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+//        $this->db->where("ag.tipo !=", 'CONSULTA');
+//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+//        $this->db->where("ag.tipo !=", 'CIRURGICO');
+//        $this->db->where("pc.ativo", 't');
+        if ($parametro != null) {
+            $this->db->where('pc.procedimento_convenio_id', $parametro);
+        }
+
 
         $this->db->orderby("pt.nome");
         $return = $this->db->get();

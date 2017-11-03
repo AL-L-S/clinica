@@ -1,9 +1,20 @@
-<?
-if(file_exists("./upload/1ASSINATURAS/".$laudo['0']->medico_parecer1. ".jpg")){
-$assinatura = "<img   width='200px' height='100px' src='". base_url()."./upload/1ASSINATURAS/".$laudo['0']->medico_parecer1. ".jpg'>";
-}else{
-$assinatura = "";
-}
+<style>
+/*    .teste {
+        
+
+    }*/
+
+</style>
+<!--<div class="teste" style="background-size: contain;height: 100%;width: 90%;background-image: url(<?=base_url()?>/upload/operadortimbrado/teste.png); no-repeat">-->
+
+
+    <?
+    if (file_exists("./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg")) {
+        $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg'>";
+    } else {
+        $assinatura = "";
+    }
+
 //echo $assinatura;
 $corpo = $impressaolaudo[0]->texto;
 $corpo = str_replace("_paciente_", $laudo['0']->paciente, $corpo);
@@ -27,3 +38,5 @@ $corpo = str_replace("_cid2_", $laudo['0']->cid2, $corpo);
 $corpo = str_replace("_assinatura_", $assinatura, $corpo);
 echo $corpo;
 ?>
+
+<!--</div>-->
