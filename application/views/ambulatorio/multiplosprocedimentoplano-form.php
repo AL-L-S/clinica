@@ -139,7 +139,7 @@
                         for (var i = 0; i < p.length; i++) {
                             tableProcConvSec += '<tr class="linhaTabela" id="' + p[i].grupo + '">';
                             tableProcConvSec += '<td><input type="hidden" name="procedimento_id['+ i +']" value="'+ p[i].procedimento_tuss_id +'"/>' + p[i].codigo + ' - ' + p[i].nome + '</td>';
-                            tableProcConvSec += '<td>' + p[i].grupo + '</td>';
+                            tableProcConvSec += '<td><input type="hidden" name="grupoTxt['+ i +']" value="'+ p[i].grupo +'"/>' + p[i].grupo + '</td>';
                             tableProcConvSec += '<td class="add_conv_sec"><input type="checkbox" name="add_conv_sec['+ i +']"  id="add_conv_sec'+ i +'" class="checkbox" colspan="2"/></td></tr>';
                         }
                         tableProcConvSec += '</tbody></table>';

@@ -325,6 +325,43 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function validaretornoprocedimento($paciente_id, $procedimento_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('pt.retorno_dias, pt.associacao_procedimento_tuss_id, pt.grupo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.procedimento_convenio_id", $procedimento_id);
+        $return = $this->db->get();
+        $return = $return->result();
+//        var_dump($return[0]->associacao_procedimento_tuss_id); die;
+        
+        $data = date('Y-m-d', strtotime("-" . $return[0]->retorno_dias ." day", strtotime(date('Y-m-d'))));
+        $this->db->select('a.agenda_exames_id');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_agenda', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
+        $this->db->where("a.cancelada", 'false');
+        $this->db->where('a.ativo', 'false');
+        $this->db->where("a.realizada", 't');
+        $this->db->where('a.data <=', date('Y-m-d'));
+        $this->db->where('a.data >=', $data);
+        $this->db->where("a.empresa_id", $empresa_id);
+        $this->db->where("a.paciente_id", $paciente_id);
+        $this->db->where("pc.procedimento_tuss_id", $return[0]->associacao_procedimento_tuss_id);
+        $retorno = $this->db->get();
+        
+//        echo "<pre>";
+//        var_dump($retorno->result()); die;
+        
+        return array(
+            "grupo" => $return[0]->grupo,
+            "qtdeConsultas" => count($retorno->result()),
+            "diasRetorno" => $return[0]->retorno_dias);
+    }
+
     function buscaconsultasanteriores($paciente_id, $procedimento_id) {
         $data = date('Y-m-d', strtotime("-30 day", strtotime(date('Y-m-d'))));
         $empresa_id = $this->session->userdata('empresa_id');

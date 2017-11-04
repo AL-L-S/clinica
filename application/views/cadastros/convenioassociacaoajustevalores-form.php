@@ -9,36 +9,50 @@
         <h3 class="singular"><a href="#">Ajuste Valor Convenio</a></h3>
         <div>
             <form name="form_desconto" id="form_desconto" action="<?= base_url() ?>cadastros/convenio/gravarvaloresassociacao" method="post">
-
-                <dl class="dl_desconto_lista">
-                    <input type="hidden" name="convenio_id" value="<?= @$convenio_id; ?>" />
-                    <input type="hidden" name="convenio_associacao_id" value="<?= @$convenio_associacao; ?>" />
-
-                    <dt>
-                        <label>Associado ao Convenio</label>
-                    </dt>
-                    <dd>
-                        <input  value="<?php echo $convenio_principal[0]->nome; ?>" class="texto07" readonly/>
-                    </dd>
-                    <dt>
-                        <label>Grupo</label>
-                    </dt>
-                    <dd>
-                        <select name="grupo" id="grupo" >
-                            <option value="TODOS">TODOS</option>
-                            <? foreach ($grupos as $value) { ?>
-                                <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
-                            <? } ?>                           
-                        </select>
-                    </dd>
-                    <dt>
-                        <label title="Esse valor será o valor percentual que os procedimentos desse convenio ira receber em relação ao convenio original.">Valor Percentual (%)</label>
-                    </dt>
-                    <dd>
-                        <input type="number" name="valorpercentual" id="valorpercentual" class="number" step=0.01  min="0" value="<?= @$convenio->_associacao_percentual; ?>" /> %
-                    </dd>
-                    <dt>
-                </dl>    
+                <input type="hidden" name="convenio_secundario_id" value="<?php echo $convenio_id; ?>"/>
+                <table>
+                    <tr>
+                        <td style="font-weight: bold">GRUPO</td>
+                        <td style="font-weight: bold">CONVENIO</td>
+                        <td style="font-weight: bold">VALOR (%)</td>
+                    </tr>
+                    <? 
+                    $i = 0;
+                    foreach($grupos as $value){ 
+                        $cv = '';
+                        $vl = '';
+                        $c_id = '';
+                        foreach ($associacoes as $assoc) {
+                            if($value->nome == $assoc->grupo) {
+                                $cv = $assoc->convenio_primario_id;
+                                $vl = $assoc->valor_percentual;
+                                $c_id = $assoc->convenio_secudario_associacao_id;
+                                break;   
+                            }
+                            
+                        } ?>
+                        <tr>
+                            <td>
+                                <input type="text" name="grupo[<?= $i; ?>]" value="<?php echo $value->nome; ?>" readonly="" style="width: 250pt"/>
+                                <input type="hidden" name="convenio_associacao_id[<?= $i; ?>]" value="<?= $c_id; ?>"/>
+                            </td>
+                            <td>
+                                <select name="convenio[<?= $i; ?>]">
+                                    <option value="">Selecione</option>
+                                    <? foreach($convenios as $item){ 
+                                        if($item->convenio_id == $convenio_id) continue; ?>
+                                        <option value="<?= $item->convenio_id; ?>" <?= $item->convenio_id == @$cv ? "selected" : ""?>>
+                                            <?php echo $item->nome; ?>
+                                        </option>
+                                    <? } ?>
+                                </select>
+                            </td>
+                            <td><input type="number" name="valor[<?= $i; ?>]" id="valor" step="0.01" value="<?= @$vl?>"/></td>
+                        </tr>
+                        <? 
+                        $i++;
+                    } ?>
+                </table> 
 
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

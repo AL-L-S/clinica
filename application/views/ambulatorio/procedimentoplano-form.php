@@ -234,7 +234,7 @@
                         $("tr#grupodiv").hide();
                         $("tr#valoresdiv").hide();
                         $("tr#procedimentodiv").show();
-                        $.getJSON('<?= base_url() ?>autocomplete/buscarprocedimentoconvenioprincipal', {convenio: j[0].associacao_convenio_id, ajax: true}, function (p) {
+//                        $.getJSON('<?= base_url() ?>autocomplete/buscarprocedimentoconvenioprincipal', {convenio: j[0].associacao_convenio_id, ajax: true}, function (p) {
 //                            options = '<option value=""></option>';
 //                            for (var c = 0; c < p.length; c++) {
 //                                options += '<option value="' + p[c].procedimento_tuss_id + '">' + p[c].codigo + ' - ' + p[c].nome + '</option>';
@@ -244,7 +244,7 @@
 //                            $("#procedimento_chosen .chosen-drop .chosen-results li").trigger('destroy');  
 //                            $('select#procedimento').chosen_reset({width:'369px'});
 //                            $('.chosen-').chosen("destroy").chosen();
-                        });
+//                        });
                     }
                     else{                        
                         $("#conv_secundario").val('f');

@@ -164,6 +164,16 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function validaretornoprocedimento() {
+        $result = array();
+
+        if (isset($_GET['paciente_id']) && isset($_GET['procedimento_id'])) {
+            $result = $this->exametemp->validaretornoprocedimento($_GET['paciente_id'], $_GET['procedimento_id']);
+        }
+
+        echo json_encode($result);
+    }
+
     function buscaconsultasanteriores() {
         $result = array();
 
