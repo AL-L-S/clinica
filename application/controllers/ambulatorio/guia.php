@@ -1050,6 +1050,7 @@ class Guia extends BaseController {
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
         $data['operadores'] = $this->operador_m->listaroperadores();
+        $data['indicacao_selecionada'] = $this->exame->listarindicacaoagenda($ambulatorio_guia_id);
         $data['medico'] = $this->exametemp->listarmedicoconsulta();
         $data['salas'] = $this->guia->listarsalas();
         $data['forma_pagamento'] = $this->guia->formadepagamento();

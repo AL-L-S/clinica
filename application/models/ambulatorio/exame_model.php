@@ -410,11 +410,19 @@ class exame_model extends Model {
     }
 
     function listarsalaagenda($agenda_exames_id) {
-        $this->db->select('ae.agenda_exames_nome_id, ag.tipo');
+        $this->db->select('ae.agenda_exames_nome_id, ag.tipo, ae.indicacao');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+     function listarindicacaoagenda($agenda_exames_id) {
+        $this->db->select('indicacao');
+        $this->db->from('tb_agenda_exames');
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $return = $this->db->get();
         return $return->result();
@@ -6007,6 +6015,9 @@ class exame_model extends Model {
                 $this->db->set('senha', md5($exame_id));
                 $this->db->set('data_realizacao', $horario);
                 $this->db->set('operador_realizacao', $operador_id);
+                if ($_POST['indicacao'] != "") {
+                    $this->db->set('indicacao', $_POST['indicacao']);
+                }
                 $this->db->set('agenda_exames_nome_id', $_POST['txtsalas']);
                 $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
                 $this->db->update('tb_agenda_exames');
@@ -6067,6 +6078,9 @@ class exame_model extends Model {
                 $this->db->set('realizada', 'true');
                 $this->db->set('senha', md5($exame_id));
                 $this->db->set('data_realizacao', $horario);
+                if ($_POST['indicacao'] != "") {
+                    $this->db->set('indicacao', $_POST['indicacao']);
+                }
                 $this->db->set('operador_realizacao', $operador_id);
                 $this->db->set('agenda_exames_nome_id', $_POST['txtsalas']);
                 $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
@@ -6125,6 +6139,9 @@ class exame_model extends Model {
                     $this->db->set('medico_agenda', $_POST['txtmedico']);
                     $this->db->set('valor_medico', $percentual[0]->perc_medico);
                     $this->db->set('percentual_medico', $percentual[0]->percentual);
+                }
+                if ($_POST['indicacao'] != "") {
+                    $this->db->set('indicacao', $_POST['indicacao']);
                 }
                 $this->db->set('realizada', 'true');
                 $this->db->set('senha', md5($exame_id));

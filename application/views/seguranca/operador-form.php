@@ -65,8 +65,8 @@
                         <?php
                     }
                     ?>
-                    
-                    <input type="checkbox" name="txtsolicitante" <?if (@$obj->_solicitante == "t") echo 'checked'?> />Médico Solicitante
+
+                    <input type="checkbox" name="txtsolicitante" <? if (@$obj->_solicitante == "t") echo 'checked' ?> />Médico Solicitante
                 </div>
             </fieldset>
             <fieldset>
@@ -136,16 +136,16 @@
                     } else {
                         $telefone = "(" . substr(@$obj->_telefone, 0, 2) . ")" . substr(@$obj->_telefone, 2, strlen(@$obj->_telefone) - 2);
                     }
-                }else{
+                } else {
                     $telefone = '';
                 }
                 if (@$obj->_celular != '' && strlen(@$obj->_celular) > 3) {
-                    if (preg_match('/\(/', @$obj->_celular) ) {
+                    if (preg_match('/\(/', @$obj->_celular)) {
                         $celular = @$obj->_celular;
                     } else {
                         $celular = "(" . substr(@$obj->_celular, 0, 2) . ")" . substr(@$obj->_celular, 2, strlen(@$obj->_celular) - 2);
                     }
-                }else{
+                } else {
                     $celular = '';
                 }
                 ?>
@@ -154,13 +154,13 @@
                     <label>Telefone</label>
 
 
-                    <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?=$telefone ?>" />
+                    <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= $telefone ?>" />
                 </div>
                 <div>
                     <label>Celular *</label>
 
 
-                    <input type="text" id="txtCelular" class="texto02" name="celular" value="<?=$celular; ?>" required="true"/>
+                    <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= $celular; ?>" required="true"/>
                 </div>
                 <div>
                     <label>E-mail *</label>
@@ -301,7 +301,7 @@
                                 <? endforeach; ?>
                     </select>
                 </div>
-                
+
                 <fieldset>
                     <legend>Impostos e Taxas</legend>
                     <div>
@@ -332,7 +332,7 @@
                         <label>Valor Base para Imposto</label>
                         <input type="text" id="valor_base" class="texto02" name="valor_base" alt="decimal" value="<?= @$obj->_valor_base; ?>" />
                     </div>
-                    
+
                 </fieldset>
             </fieldset>
             <fieldset>
@@ -343,6 +343,26 @@
                 <div>
                     <label>Mini-Curriculo</label>
                     <textarea name="curriculo" id="curriculo" rows="5" cols="50"  ><?= @$obj->_curriculo; ?></textarea>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div>
+                    <label>Cabeçalho</label>
+                    <textarea name="cabecalho" id="cabecalho" rows="10" cols="100"  ><?= @$obj->_cabecalho; ?></textarea>
+                </div>
+                <div>
+                    <label>Rodapé</label>
+                    <textarea name="rodape" id="rodape" rows="10" cols="100"  ><?= @$obj->_rodape; ?></textarea>
+                </div>
+                <div>
+                    <label>Timbrado</label>
+                    <textarea name="timbrado" id="timbrado" rows="10" cols="100"  ><?= @$obj->_timbrado; ?></textarea>
+                </div>
+                <div>
+                    <p>
+                        Obs: O tamanho da imagem é padrão: 800px X 600px <br>
+                        Obs²: O formato da imagem importada deverá ser .png (Sendo possivel dessa forma, aplicar opacidade na imagem através de edição da mesma por softwares de terceiros)
+                    </p>
                 </div>
             </fieldset>
             <fieldset style="dislpay:block">
@@ -488,7 +508,7 @@
         theme: "advanced",
         plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
         // Theme options
-        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,justifyleft,justifycenter,justifyright,justifyfull",
+        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,image",
         theme_advanced_buttons2: "styleselect,formatselect,fontselect,fontsizeselect",
         theme_advanced_toolbar_location: "top",
         theme_advanced_toolbar_align: "left",
