@@ -508,6 +508,11 @@ class Exametemp extends BaseController {
         $this->exametemp->excluirexametemp($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
+    
+    function excluirconsultatempmedico($agenda_exames_id) {
+        $this->exametemp->excluirexametemp($agenda_exames_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
 
     function excluirconsultatempencaixe($agenda_exames_id, $pacientetemp_id) {
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);

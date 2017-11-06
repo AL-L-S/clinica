@@ -283,7 +283,7 @@
                                 <? } elseif($item->paciente_id != '' && $item->confirmado == 'f') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                         <div class="bt_link">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarexame/<?= $item->agenda_exames_id ?>');">Cancelar
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/excluirconsultatempmedico/<?= $item->agenda_exames_id ?>');">Cancelar
                                             </a></div></font>
                                     </td>  
                                 <? }else{?>
