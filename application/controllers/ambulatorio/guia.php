@@ -340,6 +340,18 @@ class Guia extends BaseController {
                 }
             }
         }
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 21) {// CLINICAS NOSSA SENHORA AUXILIADORA
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsultacnsa', $data);
+            } else {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaofichageralparticularcnsa', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaofichageralcnsa', $data);
+                }
+            }
+        }
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 20) { // CLINICAS SANTA IMAGEM
             if ($grupo == "CONSULTA") {
@@ -388,7 +400,7 @@ class Guia extends BaseController {
             $this->load->View('ambulatorio/impressaofichageralparticular', $data);
         }
 //            
-        if ($data['empresa'][0]->impressao_tipo == 10) {//      CLINICA MED
+        elseif ($data['empresa'][0]->impressao_tipo == 10) {//      CLINICA MED
             $this->load->View('ambulatorio/impressaofichageral', $data);
         }
 
@@ -516,6 +528,19 @@ class Guia extends BaseController {
                     $this->load->View('ambulatorio/impressaoficharonaldoparticular', $data);
                 } else {
                     $this->load->View('ambulatorio/impressaoficharonaldo', $data);
+                }
+            }
+        }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 21) {// CLINICAS NOSSA SENHORA AUXILIADORA
+            if ($grupo == "CONSULTA") {
+                $this->load->View('ambulatorio/impressaofichaconsultacnsa', $data);
+            } else {
+                if ($dinheiro == "t") {
+                    $this->load->View('ambulatorio/impressaofichageralparticularcnsa', $data);
+                } else {
+                    $this->load->View('ambulatorio/impressaofichageralcnsa', $data);
                 }
             }
         }
@@ -2953,17 +2978,16 @@ class Guia extends BaseController {
         foreach ($exames as $item) :
             if ($dinheiro == "t") {
                 $valor_total = $valor_total + ($item->valor_total);
-                
             }
         endforeach;
 
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
-        if($dinheiro == "t"){
-        
-        $valor = number_format($data['guiavalor'][0]->valor_guia, 2, ',', '.');
-        }else{
-         $valor = '0,00';  
+        if ($dinheiro == "t") {
+
+            $valor = number_format($data['guiavalor'][0]->valor_guia, 2, ',', '.');
+        } else {
+            $valor = '0,00';
         }
 //        var_dump($data['exames'][0]->valor_guia); die;
 
@@ -3197,7 +3221,7 @@ class Guia extends BaseController {
         $data['guia_id'] = $this->guia->verificaobservacao($guia_id);
         $this->load->View('ambulatorio/guiaobservacao-form', $data);
     }
-    
+
     function guiavalor($guia_id) {
         $data['guia_id'] = $this->guia->verificavalor($guia_id);
         $this->load->View('ambulatorio/guiavalor-form', $data);
@@ -3245,12 +3269,12 @@ class Guia extends BaseController {
         $this->guia->gravarobservacaoguia($guia_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-    
+
     function gravarvalorguia($guia_id) {
         $this->guia->gravarvalorguia($guia_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-    
+
     function gravarguiaconvenio($guia_id) {
         $this->guia->gravarguiaconvenio($guia_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");

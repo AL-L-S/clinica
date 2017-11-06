@@ -2331,7 +2331,8 @@ class Exame extends BaseController {
     }
 
     function gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id) {
-
+        var_dump($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
+//        die;
 //        $agenda_id = $_POST['txthorario'];
 //        $sala_id = $_POST['txtsala'];
 //        $medico_id = $_POST['txtmedico'];
@@ -2341,7 +2342,7 @@ class Exame extends BaseController {
 
         $tipo = $this->agenda->listartiposala($sala_id);
         $tipo = $tipo[0]->tipo;
-        $horarioagenda = $this->agenda->listarhorarioagendacriacao($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
+        $horarioagenda = $this->agenda->listarhorarioagendacriacaogeral($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
 //        var_dump($horarioagenda); die;
         $id = 0;
 
