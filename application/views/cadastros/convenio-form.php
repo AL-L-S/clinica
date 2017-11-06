@@ -250,7 +250,7 @@
                     <input type="checkbox" name="associaconvenio" id="associaconvenio" <?= (@$obj->_associado == 't')? 'checked':""; ?>/> Associar a outro convenio
                 </div>
                 
-                <div id="div_associacao">
+<!--                <div id="div_associacao">
                     <div>
                         <label>Convenio Principal</label>
                         <select name="convenio_associacao" id="convenio_associacao" class="size2" >
@@ -262,11 +262,11 @@
                             <?php } ?> 
                         </select>
                     </div>
-<!--                    <div>
+                    <div>
                         <label>Valor Percentual</label>
                         <input type="number" step="0.01" name="valorpercentual"  id="valorpercentual" class="texto02" value="<?= @$obj->_associacao_percentual; ?>" /> %
-                    </div>-->
-                </div>
+                    </div>
+                </div>-->
             </fieldset>
             <fieldset>
                 <legend>Fidelidade</legend>

@@ -8,7 +8,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Procedimento</a></h3>
         <div>
-            <form name="form_procedimento" id="form_procedimento" action="<?= base_url() ?>ambulatorio/procedimento/gravar" method="post">
+            <form name="form_procedimento" id="form_procedimento" style="height: 450pt;" action="<?= base_url() ?>ambulatorio/procedimento/gravar" method="post">
 
                 <dl class="dl_cadastro_teto dt">
                     <dt>
@@ -42,76 +42,33 @@
                                     <? } ?>
                         </select>
                     </dd>
-                    <!--                    <dd>
-                                            <select name="grupo" id="grupo" class="size1" >
-                                                <option value='' >Selecione</option>
-                                                <option value='AUDIOMETRIA' <?
-                    if (@$obj->_grupo == 'AUDIOMETRIA'):echo 'selected';
-                    endif;
-                    ?>>AUDIOMETRIA</option>
-                                                <option value='CONSULTA' <?
-                    if (@$obj->_grupo == 'CONSULTA'):echo 'selected';
-                    endif;
-                    ?>>CONSULTA</option>
-                                                <option value='DENSITOMETRIA' <?
-                    if (@$obj->_grupo == 'DENSITOMETRIA'):echo 'selected';
-                    endif;
-                    ?>>DENSITOMETRIA</option>
-                                                <option value='ECOCARDIOGRAMA' <?
-                    if (@$obj->_grupo == 'ECOCARDIOGRAMA'):echo 'selected';
-                    endif;
-                    ?>>ECOCARDIOGRAMA</option>
-                                                <option value='ELETROCARDIOGRAMA' <?
-                    if (@$obj->_grupo == 'ELETROCARDIOGRAMA'):echo 'selected';
-                    endif;
-                    ?>>ELETROCARDIOGRAMA</option>
-                                                <option value='ELETROENCEFALOGRAMA' <?
-                    if (@$obj->_grupo == 'ELETROENCEFALOGRAMA'):echo 'selected';
-                    endif;
-                    ?>>ELETROENCEFALOGRAMA</option>
-                                                <option value='ESPIROMETRIA' <?
-                    if (@$obj->_grupo == 'ESPIROMETRIA'):echo 'selected';
-                    endif;
-                    ?>>ESPIROMETRIA</option>
-                                                <option value='FISIOTERAPIA' <?
-                    if (@$obj->_grupo == 'FISIOTERAPIA'):echo 'selected';
-                    endif;
-                    ?>>FISIOTERAPIA</option>
-                                                <option value='LABORATORIAL' <?
-                    if (@$obj->_grupo == 'LABORATORIAL'):echo 'selected';
-                    endif;
-                    ?>>LABORATORIAL</option>
-                                                <option value='MAMOGRAFIA' <?
-                    if (@$obj->_grupo == 'MAMOGRAFIA'):echo 'selected';
-                    endif;
-                    ?>>MAMOGRAFIA</option>
-                                                <option value='MEDICAMENTO' <?
-                    if (@$obj->_grupo == 'MEDICAMENTO'):echo 'selected';
-                    endif;
-                    ?>>MEDICAMENTO</option>
-                                                <option value='PSICOLOGIA' <?
-                    if (@$obj->_grupo == 'PSICOLOGIA'):echo 'selected';
-                    endif;
-                    ?>>PSICOLOGIA</option>
-                                                <option value='RM' <?
-                    if (@$obj->_grupo == 'RM'):echo 'selected';
-                    endif;
-                    ?>>RM</option>
-                                                <option value='RX' <?
-                    if (@$obj->_grupo == 'RX'):echo 'selected';
-                    endif;
-                    ?>>RAIOX</option>
-                                                <option value='US'<?
-                    if (@$obj->_grupo == 'US'):echo 'selected';
-                    endif;
-                    ?> >US</option>
-                                                <option value='TOMOGRAFIA'<?
-                    if (@$obj->_grupo == 'TOMOGRAFIA'):echo 'selected';
-                    endif;
-                    ?> >TOMOGRAFIA</option>
                     
-                                            </select>
-                                        </dd>-->
+                    
+                    <div id="divRetorno">
+                        <dt>
+                            <label>Procedimento *</label>
+                        </dt>
+                        <dd>
+                            <select name="procedimento_associacao" id="procedimento_associacao" class="size4 chosen-select" tabindex="1" required="">
+                                <option value="">Selecione</option>
+                                <? foreach ($procedimento as $value) : ?>
+                                    <option value="<?= $value->procedimento_tuss_id; ?>"<?
+                                    if (@$obj->_associacao_procedimento_tuss_id == $value->procedimento_tuss_id):echo'selected';
+                                    endif;
+                                    ?>><?php echo $value->codigo . " - " . $value->nome; ?></option>
+                                <? endforeach; ?>
+                            </select>
+                        </dd>
+                        
+                        <dt>
+                            <label>Dias p/ Retorno</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="diasRetorno" id="diasRetorno" alt="integer" value="<?= @$obj->_retorno_dias ?>" required=""/>
+                        </dd>
+                    </div>
+                    
+                    
                     <dt>
                         <label>Perc./Valor Medico</label>
                     </dt>
@@ -247,7 +204,7 @@
                         <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1" ><?= @$obj->_descricao_procedimento; ?> </textarea>
                     </dd>
                     
-                     <dt>
+                    <dt>
                         <label>Revisão?</label>
                     </dt>
                     <dd>
@@ -259,12 +216,13 @@
                         </div>
                     </dd>
                     
-                     <dt>
+                    <dt>
                         <label>Sala de Preparo?</label>
                     </dt>
                     <dd>
                         <input type="checkbox" name="salaPreparo" id="salaPreparo" <?if(@$obj->_sala_preparo == 't'){ echo "checked"; }?>/>
                     </dd>
+                    
 
                 </dl>    
 
@@ -278,6 +236,14 @@
 </div> <!-- Final da DIV content -->
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
     $('#rev').change(function () {
         if(this.checked){
@@ -289,10 +255,34 @@
             $(".dias input").remove();
         }
     });
-
+    
+    $('#grupo').change(function () {
+        if( $(this).val() == 'RETORNO'){
+            $('#divRetorno').show();
+            $("#procedimento_associacao").prop('required', true);
+            $("#diasRetorno").prop('required', true);
+            $("#diasRetorno").val('<?= @$obj->_retorno_dias ?>');
+        }
+        else{;
+            $('#divRetorno').hide();
+            $("#procedimento_associacao").prop('required', false);
+            $("#diasRetorno").prop('required', false);
+            $("#diasRetorno").val('');
+        }
+    });
+    
 
     $(function () {
         $("#accordion").accordion();
+        <? if(@$obj->_grupo == 'RETORNO'){?>
+            $('#divRetorno').show();
+            $("#procedimento_associacao").prop('required', true);
+            $("#diasRetorno").prop('required', true);
+        <? } else { ?>
+            $('#divRetorno').hide();
+            $("#procedimento_associacao").prop('required', false);
+            $("#diasRetorno").prop('required', false);
+        <? } ?>
     });
 
     $(function () {

@@ -569,3 +569,23 @@ ALTER TABLE ponto.tb_operador ADD COLUMN cabecalho text;
 ALTER TABLE ponto.tb_operador ADD COLUMN rodape text;
 ALTER TABLE ponto.tb_operador ADD COLUMN timbrado text;
 ALTER TABLE ponto.tb_operador ADD COLUMN timbrado_tamanho text;
+
+-- Dia 03/11/2017
+
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN retorno_dias integer;
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN associacao_procedimento_tuss_id integer;
+
+CREATE TABLE ponto.tb_convenio_secudario_associacao
+(
+  convenio_secudario_associacao_id serial NOT NULL,
+  convenio_secundario_id integer,
+  grupo character varying(50),
+  convenio_primario_id integer,
+  valor_percentual numeric(10,2),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_convenio_secudario_associacao_pkey PRIMARY KEY (convenio_secudario_associacao_id)
+);

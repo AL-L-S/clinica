@@ -52,14 +52,11 @@ class Convenio extends BaseController {
         $this->loadView('cadastros/copiarconvenio-form', $data);
     }
 
-    function ajustargrupo($convenio_id, $convenio_associado) {
-        $obj_convenio = new convenio_model($convenio_id);
-        $data['convenio'] = $obj_convenio;
-        $data['convenio_principal'] = $this->convenio->listarconveniodesconto($convenio_associado);
+    function ajustargrupo($convenio_id) {
+        $data['convenios'] = $this->convenio->listardados();
         $data['grupos'] = $this->convenio->listargrupos();
+        $data['associacoes'] = $this->convenio->listarassociacoesconvenio($convenio_id);
         $data['convenio_id'] = $convenio_id;
-        $data['convenio_associacao'] = $convenio_associado;
-//        var_dump($data['convenio']->);die;
         $this->loadView('cadastros/convenioassociacaoajustevalores-form', $data);
     }
 
@@ -71,8 +68,7 @@ class Convenio extends BaseController {
     }
 
     function gravarvaloresassociacao() {
-        $convenio_id = $_POST['convenio_id'];
-        $this->convenio->gravarpercentualconveniosecundario();
+        $convenio_id = $_POST['convenio_secundario_id'];
         $data['convenio'] = $this->convenio->gravarvaloresassociacaoantigo($convenio_id);
         $data['convenio'] = $this->convenio->gravarvaloresassociacao($convenio_id);
         $data['convenioid'] = $convenio_id;
@@ -117,12 +113,12 @@ class Convenio extends BaseController {
         
         if (isset($_POST['associaconvenio'])) {
             
-            $convenio_associacao = $_POST['convenio_associacao'];
+//            $convenio_associacao = $_POST['convenio_associacao'];
             $convenio_id = $_POST['txtconvenio_id'];
             
-            $this->convenio->removerprocedimentosnaopertenceprincipal($convenio_id, $convenio_associacao);
+            $this->convenio->removerprocedimentosnaopertenceprincipal($convenio_id);
             
-            redirect(base_url() . "cadastros/convenio/ajustargrupo/$convenio_id/$convenio_associacao");
+            redirect(base_url() . "cadastros/convenio/ajustargrupo/$convenio_id");
         }
         else{
             redirect(base_url() . "cadastros/convenio");

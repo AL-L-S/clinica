@@ -16,6 +16,7 @@ class Procedimento extends BaseController {
     function Procedimento() {
         parent::Controller();
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
+        $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('ponto/Competencia_model', 'competencia');
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('ambulatorio/guia_model', 'guia');
@@ -87,6 +88,7 @@ class Procedimento extends BaseController {
     function carregarprocedimento($procedimento_tuss_id) {
         $obj_procedimento = new procedimento_model($procedimento_tuss_id);
         $data['obj'] = $obj_procedimento;
+        $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
         $data['grupos'] = $this->procedimento->listargrupos();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimento-form', $data);

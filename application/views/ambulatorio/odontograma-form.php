@@ -104,7 +104,7 @@ $teste = $diff->format('%Ya %mm %dd');
     }
 
     odontograma = new visaoOdontograma();
-    console.log(odontograma);
+    // console.log(odontograma);
 
 
 </script>

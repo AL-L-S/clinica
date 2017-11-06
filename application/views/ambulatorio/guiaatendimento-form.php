@@ -609,6 +609,8 @@
                                                 document.getElementById("qtde").value = qtde;
                                                 $('.carregando').hide();
                                             });
+                                            
+                                            
                                         } else {
                                             $('#valor1').html('value=""');
                                         }
@@ -628,6 +630,14 @@
                                                 }
                                                 $('#formapamento').html(options).show();
                                                 $('.carregando').hide();
+                                            });
+                                            
+                                            $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+//                                                console.log(r);
+                                                if( r.qtdeConsultas == 0 && r.grupo == "RETORNO" ){
+                                                    alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+                                                    $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val());
+                                                }
                                             });
                                         } else {
                                             $('#formapamento').html('<option value="0">Selecione</option>');

@@ -496,7 +496,16 @@ class procedimento_model extends Model {
             } else {
                 $this->db->set('revisao', 'f');
             }
-
+            
+            
+            if ($_POST['procedimento_associacao'] != "" && $_POST['grupo'] == "RETORNO") {
+                $this->db->set('associacao_procedimento_tuss_id', $_POST['procedimento_associacao']);
+                $this->db->set('retorno_dias', $_POST['diasRetorno']);
+            } else {
+                $this->db->set('associacao_procedimento_tuss_id', null);
+                $this->db->set('retorno_dias', null);
+            }
+            
             if (isset($_POST['salaPreparo'])) {
                 $this->db->set('sala_preparo', 't');
             } else {
@@ -512,7 +521,7 @@ class procedimento_model extends Model {
                 $this->db->set('valor_revisor', str_replace(",", ".", $_POST['txtperc_revisor']));
             }
             if ($_POST['percentual_revisor'] != '') {
-            $this->db->set('percentual_revisor', $_POST['percentual_revisor']);
+                $this->db->set('percentual_revisor', $_POST['percentual_revisor']);
             }
 //
 //            if ($_POST['txtperc_promotor'] != '') {
@@ -700,7 +709,8 @@ class procedimento_model extends Model {
                                pt.valor_revisor,  pt.percentual_revisor, 
                                pt.qtde, pt.dencidade_calorica, pt.proteinas, 
                                pt.carboidratos, pt.lipidios, pt.kcal,
-                               pt.revisao, pt.sala_preparo, pt.revisao_dias');
+                               pt.revisao, pt.sala_preparo, pt.revisao_dias,
+                               pt.associacao_procedimento_tuss_id, pt.retorno_dias');
             $this->db->from('tb_procedimento_tuss pt');
             $this->db->join('tb_tuss t', 't.tuss_id = pt.tuss_id', 'left');
             $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
@@ -732,6 +742,8 @@ class procedimento_model extends Model {
             $this->_percentual_promotor = $return[0]->percentual_promotor;
             $this->_valor_revisor = $return[0]->valor_revisor;
             $this->_percentual_revisor = $return[0]->percentual_revisor;
+            $this->_associacao_procedimento_tuss_id = $return[0]->associacao_procedimento_tuss_id;
+            $this->_retorno_dias = $return[0]->retorno_dias;
         } else {
             $this->_procedimento_tuss_id = null;
         }
