@@ -665,3 +665,20 @@ CREATE TABLE ponto.tb_odontograma_dente_procedimento
   operador_atualizacao integer,
   CONSTRAINT tb_odontograma_dente_procedimento_pkey PRIMARY KEY (odontograma_dente_procedimento_id)
 );
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'RETORNO');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+        VALUES ('RETORNO', 'CONSULTA');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();

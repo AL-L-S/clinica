@@ -19,7 +19,7 @@
             <th class="tabela_header">Telefone</th>
             <th class="tabela_header">Data</th>
             <th class="tabela_header">Encaminhado Para</th>
-            <th class="tabela_header">&nbsp;</th>
+            <th class="tabela_header">Ação</th>
 
         </tr>
     </thead>

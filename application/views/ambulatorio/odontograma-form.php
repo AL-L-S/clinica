@@ -130,6 +130,7 @@ $teste = $diff->format('%Ya %mm %dd');
                     
                     // Atualizando o formulario quando clicar no dente
                     selecionaFace(faceSelecionada);
+                    
                 });
             });
             
@@ -164,6 +165,9 @@ $teste = $diff->format('%Ya %mm %dd');
                                 jQuery("#odontograma #denteCompleto." + retorno.dente + " i").attr('class', classe + " procAdd");
                                 
                                 atualizalistaprocedimentosodontograma();
+                                
+                                jQuery("#observacao").val('');
+                                jQuery("#procedimento").val('');
                             }
                         });
                     }
@@ -171,7 +175,8 @@ $teste = $diff->format('%Ya %mm %dd');
             });
             
             function selecionaFace(face, numFace = '-1') {
-                faceSelecionada = face;
+                faceSelecionada = (numFace != '-1') ? face : '';
+                
                 jQuery('#adcionarProcedimento #txtDente').val(denteSelecionado);
                 jQuery('#adcionarProcedimento #txtFace').val(faceSelecionada);
                 

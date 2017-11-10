@@ -1,4 +1,7 @@
 
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
 <div class="content"> <!-- Inicio da DIV content -->
     <table>
         <tr>
@@ -17,13 +20,6 @@
                     </a>
                 </div>
             </td>
-<!--            <td>
-                <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoexcluirgrupo">
-                        Excluir Proc. Grupo
-                    </a>
-                </div>
-            </td>-->
         </tr>
     </table>
 
@@ -82,7 +78,15 @@
                             <input type="text" name="grupo" class="texto04" value="<?php echo @$_GET['grupo']; ?>" />
                         </th>-->
                         <th class="tabela_title">
-                            <input type="text" name="procedimento" id="procedimento" class="texto04" value="<?php echo @$_GET['procedimento']; ?>" />
+                            <select name="procedimento" id="procedimento" class="size4 chosen-select" tabindex="1">
+                                <option value="">Selecione</option>
+                                <? foreach ($procedimento as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"<?
+                                    if (@$_GET['procedimento'] == $value->nome):echo'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
+                                <? endforeach; ?>
+                            </select>
                         </th>
                         <th class="tabela_title">
                             <input type="text" name="codigo" class="texto04" value="<?php echo @$_GET['codigo']; ?>" />
@@ -219,25 +223,32 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<style>
+    /*.chosen-single span{ width: 130px; }*/
+    /*#procedimento_chosen a { width: 130px; }*/
+</style>
 <script type="text/javascript">
 
     $(function () {
         $("#accordion").accordion();
-    });
-    
-    $(function() {
-        $("#procedimento").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=listarprocedimentoautocomplete",
-            minLength: 3,
-            focus: function( event, ui ) {
-                $( "#procedimento" ).val( ui.item.label );
-                return false;
-            },
-            select: function( event, ui ) {
-                $( "#procedimento" ).val( ui.item.value );
-                return false;
-            }
+        $("#procedimento").chosen({
+            width: '20%'
         });
     });
+    
+//    $(function() {
+//        $("#procedimento").autocomplete({
+//            source: "<?= base_url() ?>index.php?c=autocomplete&m=listarprocedimentoautocomplete",
+//            minLength: 3,
+//            focus: function( event, ui ) {
+//                $( "#procedimento" ).val( ui.item.label );
+//                return false;
+//            },
+//            select: function( event, ui ) {
+//                $( "#procedimento" ).val( ui.item.value );
+//                return false;
+//            }
+//        });
+//    });
 
 </script>
