@@ -24,6 +24,7 @@ class Laudo extends BaseController {
         $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('cadastro/convenio_model', 'convenio');
+        $this->load->model('ambulatorio/odontograma_model', 'odontograma');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
@@ -327,6 +328,16 @@ class Laudo extends BaseController {
     function caregarodontograma($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['paciente_id'] = $paciente_id;
+        
+        $data['primeiroQuadrante'] = $this->odontograma->instanciarprimeiroquadrantepacienteodontograma($ambulatorio_laudo_id);
+        $data['segundoQuadrante'] = $this->odontograma->instanciarsegundoquadrantepacienteodontograma($ambulatorio_laudo_id);
+        $data['terceiroQuadrante'] = $this->odontograma->instanciarterceiroquadrantepacienteodontograma($ambulatorio_laudo_id);
+        $data['quartoQuadrante'] = $this->odontograma->instanciarquartoquadrantepacienteodontograma($ambulatorio_laudo_id);
+        
+        $data['procedimentos'] = $this->convenio->listarprocedimentoconvenioodontograma(@$data['obj']->_convenio_id);
+        
         $this->load->View('ambulatorio/odontograma-form', $data);
     }
 

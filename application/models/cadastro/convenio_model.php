@@ -149,6 +149,30 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    
+
+    function listarprocedimentoconvenioodontograma($convenio_id) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+//        $this->db->where("pt.grupo", 'ODONTOLOGIA');
+        $this->db->where("ag.tipo", 'ESPECIALIDADE');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where('pc.convenio_id', $convenio_id);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarconvenionaodinheiro() {
         $this->db->select('convenio_id,

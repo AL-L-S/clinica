@@ -80,6 +80,16 @@ class Operador_model extends BaseModel {
         }
         return $this->db;
     }
+    
+    function listargrupo() {
+        $this->db->distinct();
+        $this->db->select('ambulatorio_grupo_id, 
+                            nome');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarmedicosolicitante($args = array()) {
         $this->db->select('operador_id, nome, conselho');

@@ -3572,6 +3572,8 @@ class laudo_model extends Model {
                             ae.sala_id,
                             pt.grupo,
                             p.nascimento,
+                            pc.convenio_id,
+                            
                             ag.cid,
                             ag.cid2,
                             agi.peso,
@@ -3770,6 +3772,7 @@ class laudo_model extends Model {
             $this->_ao_relacao_atrio_esquerdo_aorta = $return[0]->ao_relacao_atrio_esquerdo_aorta;
             $this->_dias_retorno = $return[0]->dias_retorno;
             $this->_medico_encaminhamento_id = $return[0]->medico_encaminhamento_id;
+            $this->_convenio_id = $return[0]->convenio_id;
         } else {
             $this->_ambulatorio_laudo_id = null;
         }

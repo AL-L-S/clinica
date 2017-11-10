@@ -49,7 +49,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-
+    
     function gravarhorarioagendawebconvenio() {
         header('Access-Control-Allow-Origin: *');
         $paciente_id = $this->exametemp->crianovopacientefidelidade();

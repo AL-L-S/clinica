@@ -350,7 +350,7 @@ BEGIN
     resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'ODONTOLOGIA');
     IF resultado = 0 THEN 
 	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
-        VALUES ('ODONTOLOGIA', 'ODONTOLOGIA');
+        VALUES ('ODONTOLOGIA', 'ESPECIALIDADE');
     END IF;
     RETURN 'SUCESSO';
 END;
@@ -588,4 +588,49 @@ CREATE TABLE ponto.tb_convenio_secudario_associacao
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
   CONSTRAINT tb_convenio_secudario_associacao_pkey PRIMARY KEY (convenio_secudario_associacao_id)
+);
+
+-- Dia 07/11/2017
+
+CREATE TABLE ponto.tb_odontograma
+(
+  odontograma_id serial NOT NULL,
+  paciente_id integer,
+  ambulatorio_laudo_id integer,
+  observacao text,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_odontograma_pkey PRIMARY KEY (odontograma_id)
+);
+
+CREATE TABLE ponto.tb_odontograma_dente
+(
+  odontograma_dente_id serial NOT NULL,
+  odontograma_id integer,
+  numero_dente integer,
+  observacao text,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_odontograma_dente_pkey PRIMARY KEY (odontograma_dente_id)
+);
+
+CREATE TABLE ponto.tb_odontograma_dente_procedimento
+(
+  odontograma_dente_procedimento_id serial NOT NULL,
+  odontograma_dente_id integer,
+  procedimento_convenio_id integer,
+  face character varying(5),
+  observacao text,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_odontograma_dente_procedimento_pkey PRIMARY KEY (odontograma_dente_procedimento_id)
 );

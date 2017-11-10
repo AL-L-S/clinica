@@ -9,20 +9,24 @@
                 <input type="text" name="txtNome" class="texto10 bestupper" value="<?= $operador[0]->operador; ?>"  readonly />
             </div>
             <div>
-                <label>Nome</label>
+                <label>Convênio</label>
                 <input type="hidden" name="txtconvenio_id" value="<?= $convenio[0]->convenio_id; ?>" />
                 <input type="text" name="txtconvenio" class="texto10 bestupper" value="<?= $convenio[0]->convenio; ?>"  readonly />
             </div>
         </fieldset>
         <fieldset>
             <legend>Cadastrar procedimento</legend>
+<!--            <div>
+                <label>Grupo</label>
+                <select name="procedimento" id="procedimento" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1" required="">
+                    <option value='0' >TODOS</option>
+                    <? foreach ($convenio as $value) : ?>
+                        <option value="<?= $value->procedimento_convenio_id; ?>" ><?php echo $value->procedimento; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>-->
             <div>
                 <label>Procedimento</label>
-<!--                <select name="procedimento" id="procedimento" class="size4">
-                    <? foreach ($convenio as $value) : ?>
-                        <option value="<?= $value->procedimento_convenio_id; ?>"><?php echo $value->procedimento; ?></option>
-                    <? endforeach; ?>
-                </select>-->
                 <select name="procedimento" id="procedimento" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1" required="">
                     <option value='0' >TODOS</option>
                     <? foreach ($convenio as $value) : ?>
