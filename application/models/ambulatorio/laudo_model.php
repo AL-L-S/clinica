@@ -656,8 +656,10 @@ class laudo_model extends Model {
         $this->db->orderby('ag.data_cadastro desc');
         $this->db->orderby('ag.situacao');
         $this->db->orderby('ag.data_cadastro');
-        $return = $this->db->get();
-        return $return->result();
+        $return = $this->db->get()->result();
+//        echo '<pre>';
+//        var_dump($return); die;
+        return $return;
     }
 
     function listarxmllaudo($args = array()) {

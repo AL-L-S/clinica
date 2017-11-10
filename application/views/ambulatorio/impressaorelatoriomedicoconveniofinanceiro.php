@@ -85,7 +85,8 @@ switch ($MES) {
                     <th class="tabela_header"><font size="-1">Convenio</th>
                     <th class="tabela_header"><font size="-1">Nome</th>
                     <th class="tabela_header"><font size="-1">Medico</th>
-                    <th class="tabela_header" width="100px;"><font size="-1">Data</th>
+                    <th class="tabela_header" width="100px;" title="Data do agendamtno. Data onde o paciente foi agendado"><font size="-1">Data Agend.</th>
+                    <th class="tabela_header" width="100px;" title="Data do atendimento. Data pelo qual o relatório pesquisa"><font size="-1">Data Atend.</th>
                     <th class="tabela_header"><font size="-1">Qtde</th>
                     <th class="tabela_header" width="220px;"><font size="-1">Procedimento</th>
                     <? if ($clinica == 'SIM') { ?>
@@ -166,7 +167,9 @@ switch ($MES) {
                                 $modificado;
                                 ?>
                             </td>
+                            <td ><font size="-2"><?= date('d/m/Y', strtotime($item->data_laudo)); ?></td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
+
                             <td><font size="-2"><?= $item->procedimento; ?></td>
                             <? if ($clinica == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>
@@ -177,40 +180,98 @@ switch ($MES) {
                                 <td style='text-align: right;'><font size="-2"><?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
                                 <?
                             }
+                            // EM CASO DE A CONDIÇÃO ABAIXO SER VERDADEIRA. O VALOR DO PROMOTOR VAI SER DESCONTADO DO MÉDICO
+                            // NÃO DÁ CLINICA
 
-                            if ($item->percentual_medico == "t") {
-                                $simbolopercebtual = " %";
+                            if (@$empresa_permissao[0]->promotor_medico == 't' && $_POST['promotor'] == 'SIM') {
+                                // MESMAS REGRAS ABAIXO PARA O PROMOTOR ABAIXO
+//                                var_dump(@$empresa_permissao[0]->promotor_medico);
+//                                die;
+                                if ($item->percentual_promotor == "t") {
+                                    $simbolopercebtualpromotor = " %";
+                                    $valorpercentualpromotor = $item->valor_promotor/* - ((float) $item->valor_promotor * ((float) $item->taxa_administracao / 100)) */;
 
-                                $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
+                                    $percpromotor = $valor_total * ($valorpercentualpromotor / 100);
+                                } else {
+                                    $simbolopercebtualpromotor = "";
+                                    $valorpercentualpromotor = $item->valor_promotor/* - ((float) $item->valor_promotor * ((float) $item->taxa_administracao / 100)) */;
 
-                                $perc = $valor_total * ($valorpercentualmedico / 100);
+                                    $percpromotor = $valorpercentualpromotor * $item->quantidade;
+                                }
+
+                                // SE FOR PERCENTUAL, ELE CALCULA O TOTAL PELO PERCENTUAL
+                                if ($item->percentual_medico == "t") {
+                                    $simbolopercebtual = " %";
+
+                                    $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
+
+                                    $perc = $valor_total * ($valorpercentualmedico / 100);
+                                    if ($item->valor_promotor != null) {
+//                                        echo '<pre>';
+                                        $perc = $perc - $percpromotor;
+                                    }
+                                } else {
+                                    // SE FOR VALOR, É O VALOR * A QUANTIDADE
+                                    $simbolopercebtual = "";
+                                    $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
+
+//                                    $perc = $valorpercentualmedico;
+
+                                    $perc = $valorpercentualmedico * $item->quantidade;
+                                    if ($item->valor_promotor != null) {
+//                                        echo '<pre>';
+                                        $perc = $perc - $percpromotor;
+                                    }
+                                }
+//                                var_dump($item->valor_promotor);
+//                                var_dump($perc);
+//                                var_dump($percpromotor);
+//                                die;
+
+                                $totalperc = $totalperc + $perc;
+                                $totalgeral = $totalgeral + $valor_total;
+
+
+                                $totalpercpromotor = $totalpercpromotor + $percpromotor;
+                                $totalgeralpromotor = $totalgeralpromotor + $valor_total;
                             } else {
-                                $simbolopercebtual = "";
-                                $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
+                                // SENÃO, VAI CONTINUAR DA FORMA QUE ERA ANTES
+                                if ($item->percentual_medico == "t") {
+                                    $simbolopercebtual = " %";
 
-                                $perc = $valorpercentualmedico;
-                                $perc = $perc * $item->quantidade;
+                                    $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
+
+                                    $perc = $valor_total * ($valorpercentualmedico / 100);
+                                } else {
+                                    $simbolopercebtual = "";
+                                    $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
+
+//                                    $perc = $valorpercentualmedico;
+                                    $perc = $valorpercentualmedico * $item->quantidade;
+                                }
+
+                                $totalperc = $totalperc + $perc;
+                                $totalgeral = $totalgeral + $valor_total;
+
+                                if ($item->percentual_promotor == "t") {
+                                    $simbolopercebtualpromotor = " %";
+
+                                    $valorpercentualpromotor = $item->valor_promotor/* - ((float) $item->valor_promotor * ((float) $item->taxa_administracao / 100)) */;
+
+                                    $percpromotor = $valor_total * ($valorpercentualpromotor / 100);
+                                } else {
+                                    $simbolopercebtualpromotor = "";
+                                    $valorpercentualpromotor = $item->valor_promotor/* - ((float) $item->valor_promotor * ((float) $item->taxa_administracao / 100)) */;
+
+//                                    $percpromotor = $valorpercentualpromotor;
+                                    $percpromotor = $valorpercentualpromotor * $item->quantidade;
+                                }
+
+                                $totalpercpromotor = $totalpercpromotor + $percpromotor;
+                                $totalgeralpromotor = $totalgeralpromotor + $valor_total;
                             }
 
-                            $totalperc = $totalperc + $perc;
-                            $totalgeral = $totalgeral + $valor_total;
 
-                            if ($item->percentual_promotor == "t") {
-                                $simbolopercebtualpromotor = " %";
-
-                                $valorpercentualpromotor = $item->valor_promotor/* - ((float) $item->valor_promotor * ((float) $item->taxa_administracao / 100)) */;
-
-                                $percpromotor = $valor_total * ($valorpercentualpromotor / 100);
-                            } else {
-                                $simbolopercebtualpromotor = "";
-                                $valorpercentualpromotor = $item->valor_promotor/* - ((float) $item->valor_promotor * ((float) $item->taxa_administracao / 100)) */;
-
-                                $percpromotor = $valorpercentualpromotor;
-                                $percpromotor = $percpromotor * $item->quantidade;
-                            }
-
-                            $totalpercpromotor = $totalpercpromotor + $percpromotor;
-                            $totalgeralpromotor = $totalgeralpromotor + $valor_total;
 
                             if ($item->dia_recebimento != "" && $item->tempo_recebimento != "") {
                                 $valor_recebimento = $valor_recebimento + $perc;
@@ -253,7 +314,12 @@ switch ($MES) {
                         $qtdetotal = $qtdetotal + $item->quantidade;
                     endforeach;
                     if ($_POST['promotor'] == 'SIM') {
-                        $resultadototalgeral = $totalgeral - $totalperc - $totalpercpromotor;
+//                        if (@$empresa_permissao[0]->promotor_medico == 't') {
+                            $resultadototalgeral = $totalgeral - $totalperc - $totalpercpromotor;
+//                            $totalperc = $totalperc - $totalpercpromotor;
+//                        } else {
+//                        $resultadototalgeral = $totalgeral - $totalperc - $totalpercpromotor;
+//                        }
                     } else {
                         $resultadototalgeral = $totalgeral - $totalperc;
                     }
@@ -413,9 +479,9 @@ switch ($MES) {
                         $qtdetotal = $qtdetotal + $item->quantidade;
                     endforeach;
                     if ($_POST['promotor'] == 'SIM') {
-                       $resultadototalgeralhome = $totalgeralhome - $totalperchome - $totalpercpromotor;
+                        $resultadototalgeralhome = $totalgeralhome - $totalperchome - $totalpercpromotor;
                     } else {
-                       $resultadototalgeralhome = $totalgeralhome - $totalperchome;
+                        $resultadototalgeralhome = $totalgeralhome - $totalperchome;
                     }
                     ?>
                     <tr>
@@ -574,10 +640,10 @@ switch ($MES) {
                             $resultado = $resultado - $pis - $csll - $cofins;
                             ?>
 
-                                                                                                                                                                <!--                            <tr>
-                                                                                                                                                                                                <td>TAXA ADMINISTRAÇÃO</td>
-                                                                                                                                                                                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
-                                                                                                                                                                                            </tr>-->
+                                                                                                                                                                                                                                                                <!--                            <tr>
+                                                                                                                                                                                                                                                                                                <td>TAXA ADMINISTRAÇÃO</td>
+                                                                                                                                                                                                                                                                                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
+                                                                                                                                                                                                                                                                                            </tr>-->
                             <tr>
                                 <td>PIS</td>
                                 <td style='text-align: right;'><?= number_format($pis, 2, ",", "."); ?></td>

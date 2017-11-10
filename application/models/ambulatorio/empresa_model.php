@@ -675,6 +675,11 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('imagem', 'f');
             }
+            if (isset($_POST['fila_caixa'])) {
+                $this->db->set('caixa', 't');
+            } else {
+                $this->db->set('caixa', 'f');
+            }
             if (isset($_POST['data_contaspagar'])) {
                 $this->db->set('data_contaspagar', 't');
             } else {
@@ -819,6 +824,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
+
                 if (isset($_POST['calendario_layout'])) {
                     $this->db->set('calendario_layout', 't');
                 } else {
@@ -844,7 +850,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('botao_ativar_sala', 'f');
                 }
-                
+                if (isset($_POST['promotor_medico'])) {
+                    $this->db->set('promotor_medico', 't');
+                } else {
+                    $this->db->set('promotor_medico', 'f');
+                }
+
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_permissoes');
@@ -896,7 +907,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('oftamologia', 'f');
                 }
-                
+                if (isset($_POST['promotor_medico'])) {
+                    $this->db->set('promotor_medico', 't');
+                } else {
+                    $this->db->set('promotor_medico', 'f');
+                }
+
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
@@ -954,7 +970,9 @@ class empresa_model extends Model {
                                recibo_config,
                                ficha_config,
                                oftamologia,
+                               caixa,
                                cancelar_sala_espera,
+                               promotor_medico,
                                calendario,
                                servicosms,
                                servicoemail,
@@ -986,6 +1004,8 @@ class empresa_model extends Model {
             $this->_numero = $return[0]->numero;
             $this->_bairro = $return[0]->bairro;
             $this->_municipio_id = $return[0]->municipio_id;
+            $this->_caixa = $return[0]->caixa;
+            $this->_promotor_medico = $return[0]->promotor_medico;
             $this->_municipio = $return[0]->municipio;
             $this->_nome = $return[0]->nome;
             $this->_estado = $return[0]->estado;

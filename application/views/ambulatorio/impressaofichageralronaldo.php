@@ -36,12 +36,20 @@ $agenda = $exame[0]->agenda;
 <table>
     <tbody>
         <tr>
+            <td colspan="2" ><font size = -1>RG: <?= $exame[0]->rg ?></font></td>
+            <!--<td ><font size = -1>FONE:<?= $paciente['0']->telefone; ?> </font></td>-->
+            <!--<td><font size = -2></font></td>-->
+            <!--<td >&nbsp;</td>-->
+            <!--<td ><b>clinicaronaldobarreira.com.br/</b></td>-->
+        </tr>
+        <tr>
             <td colspan="2"  ><font size = -1><?= utf8_decode($paciente['0']->nome); ?> - <?= $paciente['0']->paciente_id; ?></font></td>
             <td ><font size = -1>Idade: <?= $teste; ?>&nbsp; </font></td>
             <td width="280px"><font size = -1><center></center></font></td>
 <td width="30px">&nbsp;</td>
 <td ><font size = -1><u><?= $empresa[0]->razao_social ?></u></font></td>
 </tr>
+
 <tr>
     <td colspan="2" ><font size = -1><?= utf8_decode($exame[0]->convenio); ?>&nbsp;&nbsp; - &nbsp;&nbsp;<?= $exame[0]->guia_id ?></font></td>
     <td ><font size = -1>SEXO: <?= $sexopaciente ?></font></td>
@@ -55,14 +63,14 @@ $agenda = $exame[0]->agenda;
     <td ><font size = -1>FONE:<?= $paciente['0']->telefone; ?> </font></td>
     <td><font size = -2></font></td>
     <td >&nbsp;</td>
-     <td ><b>clinicaronaldobarreira.com.br/</b></td>
+    <td ><b>clinicaronaldobarreira.com.br/</b></td>
 </tr>
 <tr>
     <td colspan="2" ><font size = -1>
         <?
         foreach ($exames as $item) :
             if ($item->dinheiro == 'f') {
-                echo utf8_decode($item->procedimento)."<br>";
+                echo utf8_decode($item->procedimento) . "<br>";
             }
             ?><? endforeach; ?>
         </font></td>
@@ -70,9 +78,9 @@ $agenda = $exame[0]->agenda;
     <td><font size = -2></font></td>
     <td >&nbsp;</td> 
     <td ><font size = -1><?
-       foreach ($exames as $item) :
+        foreach ($exames as $item) :
             if ($item->dinheiro == 'f') {
-                echo utf8_decode($item->procedimento)."<br>";
+                echo utf8_decode($item->procedimento) . "<br>";
             }
             ?><? endforeach; ?></font></td>
 </tr>
@@ -154,7 +162,7 @@ $agenda = $exame[0]->agenda;
     <td >&nbsp;</td>
 
     <?
-    $DT_ENTREGA = substr($exame[0]->data_entrega, 8,2) . "/" . substr($exame[0]->data_entrega, 5,2) .  "/" . substr($exame[0]->data_entrega, 0,4);
+    $DT_ENTREGA = substr($exame[0]->data_entrega, 8, 2) . "/" . substr($exame[0]->data_entrega, 5, 2) . "/" . substr($exame[0]->data_entrega, 0, 4);
 //    $b = 0;
 //    foreach ($exames as $item) :
 //    $b++;
@@ -162,10 +170,10 @@ $agenda = $exame[0]->agenda;
     $data = $exame[0]->data_autorizacao;
     $dia = strftime("%A", strtotime($data));
 
-    if ($dia == "Saturday") {    
-    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($exame[0]->data_autorizacao)));
-    }elseif($dia == "Sunday") {
-    $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($exame[0]->data_autorizacao)));
+    if ($dia == "Saturday") {
+        $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($exame[0]->data_autorizacao)));
+    } elseif ($dia == "Sunday") {
+        $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($exame[0]->data_autorizacao)));
     }
 //    if ($dia == "Saturday") {    
 //    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($item->data_autorizacao)));

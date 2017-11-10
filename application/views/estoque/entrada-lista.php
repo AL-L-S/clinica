@@ -45,6 +45,7 @@
             <table>
                 <tr>
                     <th class="tabela_header">Produto</th>
+                    <th class="tabela_header">Data</th>
                     <th class="tabela_header">Fornecedor</th>
                     <th class="tabela_header">Armazem</th>
                     <th class="tabela_header">Armazem de Saida</th>
@@ -74,7 +75,9 @@
                                     echo "<span style='color:red;'>(Transferência)</span>";
                                     
                                 }?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y",strtotime($item->data_cadastro)); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->fantasia; ?></td>
+                                
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->armazem; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->armazem_transferencia; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>

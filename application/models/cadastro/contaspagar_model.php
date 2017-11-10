@@ -84,6 +84,16 @@ class contaspagar_model extends Model {
     }
 
     function relatoriocontaspagar() {
+        if ($_POST['tipo'] > 0) {
+            $this->db->select('
+                            tes.descricao
+                            ');
+            $this->db->from('tb_tipo_entradas_saida tes');
+            $this->db->where('tes.ativo', 'true');
+            $this->db->where('tes.tipo_entradas_saida_id', $_POST['tipo']);
+            $return = $this->db->get()->result();
+        }
+
         $this->db->select('fc.financeiro_contaspagar_id,
                             fc.valor,
                             fc.credor,
@@ -104,11 +114,12 @@ class contaspagar_model extends Model {
         if ($_POST['empresa'] != "") {
             $this->db->where('fc.empresa_id', $_POST['empresa']);
         }
-        if ($_POST['tipo'] != 0) {
-            $this->db->where('tipo_id', $_POST['tipo']);
+        if ($_POST['tipo'] > 0) {
+//            var_dump($args['nome']); die;
+            $this->db->where('tipo', @$return[0]->descricao);
         }
         if ($_POST['classe'] != '') {
-            $this->db->where('classe', $_POST['classe']);
+            $this->db->where('s.classe', $_POST['classe']);
         }
         if ($_POST['conta'] != 0) {
             $this->db->where('fc.conta', $_POST['conta']);

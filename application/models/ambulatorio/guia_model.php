@@ -57,6 +57,24 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarempresapermissoes($empresa_id = null) {
+        if ($empresa_id == null) {
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
+
+        $this->db->select('e.empresa_id,
+                            ordem_chegada,
+                            promotor_medico,
+                            oftamologia,
+                            ');
+        $this->db->from('tb_empresa e');
+        $this->db->where('e.empresa_id', $empresa_id);
+        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+        $this->db->orderby('e.empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarpacientes($parametro = null) {
 
@@ -3786,6 +3804,7 @@ class guia_model extends Model {
                             ae.desconto_ajuste3,
                             ae.desconto_ajuste4,
                             ae.data,
+                            al.data as data_laudo,
                             ae.data_antiga,
                             ae.sala_pendente,
                             e.situacao,
@@ -6151,6 +6170,7 @@ class guia_model extends Model {
                             p.complemento as complemento_paciente,
                             p.bairro as bairro_paciente,
                             p.raca_cor,
+                            p.rg,
                             piae.nome as promotor,
                             cid.no_cid,
                             c.convenio_id,

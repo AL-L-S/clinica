@@ -2455,6 +2455,59 @@ class agenda_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
+    function listarhorarioagendacriacaogeral($agenda_id = null, $medico_id = null, $datainicial, $datafinal, $tipo) {
+
+        $this->db->select('distinct(horario_id)');
+        $this->db->from('tb_agenda_exames ae');
+//        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->where('horarioagenda_id', $agenda_id);
+        $this->db->where('medico_agenda', $medico_id);
+        $this->db->where('data >=', $datainicial);
+        $this->db->where('data <=', $datafinal);
+        $this->db->where('tipo', $tipo);
+        $this->db->where('horario_id is not null');
+        $this->db->groupby('horario_id');
+        $return2 = $this->db->get()->result();
+        if (count($return2) > 0) {
+            $horario_id = '';
+//            $horario_id = $return2
+            foreach ($return2 as $item) {
+                if ($horario_id == '') {
+                    $horario_id = $horario_id . "$item->horario_id";
+                } else {
+                    $horario_id = $horario_id . ",$item->horario_id";
+                }
+            }
+        }
+//        var_dump(count($return2)); die;
+
+
+        $this->db->select('e.nome as empresa,
+                           h.dia,
+                           h.horaentrada1,
+                           h.horasaida1,
+                           h.intervaloinicio,
+                           h.intervalofim,
+                           h.tempoconsulta,
+                           h.agenda_id,
+                           h.qtdeconsulta,
+                           h.empresa_id,
+                           h.observacoes,
+                           h.horarioagenda_id');
+        $this->db->from('tb_horarioagenda h');
+        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->where('agenda_id', $agenda_id);
+
+        if (count($return2) > 0) {
+
+            $this->db->where("horarioagenda_id NOT IN ($horario_id)");
+        }
+
+        $this->db->orderby('dia');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
 
     function listarnovoshorarioseditaragendacriada() {
 
