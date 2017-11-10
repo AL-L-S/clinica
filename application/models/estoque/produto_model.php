@@ -103,7 +103,7 @@ class produto_model extends Model {
             $this->db->set('estoque_minimo', $_POST['minimo']);
             $this->db->set('unidade_id', $_POST['unidade']);
             $this->db->set('sub_classe_id', $_POST['sub']);
-            if($_POST['procedimentoID'] != '' && $_POST['procedimento'] != ''){
+            if($_POST['procedimentoID'] != ''){
                 $this->db->set('procedimento_id', $_POST['procedimentoID']);
             }
             $horario = date("Y-m-d H:i:s");
@@ -137,6 +137,7 @@ class produto_model extends Model {
                             p.descricao,
                             p.unidade_id,
                             pt.nome as procedimento,
+                            pt.procedimento_tuss_id,
                             u.descricao as unidade,
                             p.sub_classe_id,
                             sc.descricao as sub_classe,
@@ -155,6 +156,7 @@ class produto_model extends Model {
             $this->_unidade_id = $return[0]->unidade_id;
             $this->_unidade = $return[0]->unidade;
             $this->_procedimento = $return[0]->procedimento;
+            $this->_procedimento_tuss_id = $return[0]->procedimento_tuss_id;
             $this->_sub_classe_id = $return[0]->sub_classe_id;
             $this->_sub_classe = $return[0]->sub_classe;
             $this->_valor_compra = $return[0]->valor_compra;

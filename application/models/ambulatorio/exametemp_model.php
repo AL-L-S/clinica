@@ -6012,6 +6012,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
 //        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = cp.forma_pagamento_id', 'left');
         $this->db->where('cp.procedimento_convenio_id', $parametro);
+        $this->db->where('fp.forma_pagamento_id !=', 1000);
         $return = $this->db->get();
         $result = $return->result();
 

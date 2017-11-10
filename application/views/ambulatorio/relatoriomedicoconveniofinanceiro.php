@@ -90,8 +90,8 @@
                     </dt>
                     <dd>
                         <select name="promotor" id="promotor" class="size1" >
-                            <option value='SIM' >SIM</option>
                             <option value='NAO' >NAO</option>
+                            <option value='SIM' >SIM</option>
                         </select>
                     </dd>
 

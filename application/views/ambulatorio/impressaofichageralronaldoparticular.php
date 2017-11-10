@@ -36,12 +36,20 @@ $agenda = $exame[0]->agenda;
 <table>
     <tbody>
         <tr>
+            <td colspan="2" ><font size = -1>RG: <?= $exame[0]->rg ?></font></td>
+            <!--<td ><font size = -1>FONE:<?= $paciente['0']->telefone; ?> </font></td>-->
+            <!--<td><font size = -2></font></td>-->
+            <!--<td >&nbsp;</td>-->
+            <!--<td ><b>clinicaronaldobarreira.com.br/</b></td>-->
+        </tr>
+        <tr>
             <td colspan="2"  ><font size = -1><?= utf8_decode($paciente['0']->nome); ?> - <?= $paciente['0']->paciente_id; ?></font></td>
             <td ><font size = -1>Idade: <?= $teste; ?>&nbsp; </font></td>
             <td width="280px"><font size = -1><center></center></font></td>
 <td width="30px">&nbsp;</td>
 <td ><font size = -1><u><?= $empresa[0]->razao_social ?></u></font></td>
 </tr>
+
 <tr>
     <td colspan="2" ><font size = -1><?= utf8_decode($exame[0]->convenio); ?>&nbsp;&nbsp; - &nbsp;&nbsp;<?= $exame[0]->guia_id ?></font></td>
     <td ><font size = -1>SEXO: <?= $sexopaciente ?></font></td>
@@ -57,12 +65,13 @@ $agenda = $exame[0]->agenda;
     <td >&nbsp;</td>
     <td ><b>clinicaronaldobarreira.com.br/</b></td>
 </tr>
+
 <tr>
     <td colspan="2" ><font size = -1>
         <?
         foreach ($exames as $item) :
             if ($item->dinheiro == 't') {
-                echo utf8_decode($item->procedimento)."<br>";
+                echo utf8_decode($item->procedimento) . "<br>";
             }
             ?><? endforeach; ?>
         </font></td>
@@ -72,7 +81,7 @@ $agenda = $exame[0]->agenda;
     <td ><font size = -1><?
         foreach ($exames as $item) :
             if ($item->dinheiro == 't') {
-                echo utf8_decode($item->procedimento)."<br>";
+                echo utf8_decode($item->procedimento) . "<br>";
             }
             ?><? endforeach; ?></font></td>
 </tr>
@@ -300,7 +309,7 @@ $agenda = $exame[0]->agenda;
     $teste4 = "";
     foreach ($exames as $item) :
         if ($item->dinheiro == 't') {
-            echo utf8_decode($item->procedimento)."<br>";
+            echo utf8_decode($item->procedimento) . "<br>";
             ?><?
             if ($item->forma_pagamento != null && $item->formadepagamento != $teste && $item->formadepagamento != $teste2 && $item->formadepagamento != $teste3 && $item->formadepagamento != $teste4) {
                 $teste = $item->formadepagamento;

@@ -69,6 +69,58 @@ class Autocomplete extends Controller {
         echo json_encode($convenio);
     }
 
+    function enviaremailstg() {
+        header('Access-Control-Allow-Origin: *');
+//        var_dump($_POST);
+//        die;
+        if($_POST['human'] == '4'){
+            
+        
+        $this->load->library('email');
+
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'ssl://smtp.gmail.com';
+        $config['smtp_port'] = '465';
+        $config['smtp_user'] = 'equipe2016gcjh@gmail.com';
+        $config['smtp_pass'] = 'DUCOCOFRUTOPCE';
+        $config['validate'] = TRUE;
+        $config['mailtype'] = 'html';
+        $config['charset'] = 'utf-8';
+        $config['newline'] = "\r\n";
+        $email = $_POST['message'] . "<br>  "
+                . "<br> Nome: {$_POST['name']}"
+                . "<br> Telefone: {$_POST['telefone']}"
+                . "<br> Email: {$_POST['email']}";
+
+        $this->email->initialize($config);
+        $this->email->from('equipe2016gcjh@gmail.com', $_POST['name']);
+        $this->email->to('contato@stgsaude.com.br');
+        $this->email->subject($_POST['subject']);
+        $this->email->message($email);
+        if ($this->email->send()) {
+            $mensagem = "Email enviado com sucesso.";
+        } else {
+            $mensagem = "Envio de Email malsucedido.";
+        }
+        echo "<html>
+            <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        alert('$mensagem');
+        window.location.href = 'http://stgsaude.com.br';
+            </script>
+            </html>";
+//        redirect("http://stgsaude.com.br");
+        }else{
+          echo "<html>
+            <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        alert('Você respondeu o anti-spam errado');
+        window.location.href = 'http://stgsaude.com.br';
+            </script>
+            </html>";  
+        }
+    }
+
     function autorizaragendaweb() {
         header('Access-Control-Allow-Origin: *');
 
@@ -103,11 +155,11 @@ class Autocomplete extends Controller {
 
         $dias_parcela = 30 * count($parcelas);
         $dias_atendimento = $carencia * count($listaratendimento);
-        
-        
+
+
         if (($dias_parcela - $dias_atendimento) >= $carencia) {
             return json_encode(true);
-        }else{
+        } else {
             return json_encode(false);
         }
         die;
@@ -1046,7 +1098,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentoconveniofidelidadeweb() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['convenio1'])) {

@@ -206,8 +206,8 @@
                                 <? if ($item->situacaolaudo != '') { ?>
                                     <?
                                     if (($item->medico_parecer1 == $operador_id && $item->situacaolaudo == 'FINALIZADO') || ($item->realizada == 't' && $item->situacaolaudo != 'FINALIZADO') || $operador_id == 1) {
-                                        if (substr($item->classificacao, 0, 5) == 'EXAME') {
-                                            if ($item->grupo == 'ECOCARDIOGRAMA') {
+                                        if ($item->tipo == 'EXAME') {
+                                            if ($item->tipo == 'ECOCARDIOGRAMA') {
                                                 ?>
                                                 <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarlaudoeco/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');" >
@@ -222,7 +222,7 @@
                                                 </td>
                                                 <?
                                             }
-                                        } else {
+                                        } elseif($item->tipo == 'CONSULTA') {
                                             ?>        
 
                                             <td class="<?php echo $estilo_linha; ?>" width="40px;">
@@ -235,7 +235,13 @@
                                             <?
                                                 }
                                             
-                                        }
+                                        }else{?>
+                                          <td class="<?php echo $estilo_linha; ?>" width="40px;">
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaranaminese/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->situacaoexame == 'f'?>');" >
+                                                        Atender</a></div>
+                                            </td>  
+                                        <?}
                                     } else {
                                         
                                         ?>

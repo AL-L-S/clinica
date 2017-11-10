@@ -419,8 +419,8 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-     function listarindicacaoagenda($agenda_exames_id) {
+
+    function listarindicacaoagenda($agenda_exames_id) {
         $this->db->select('indicacao');
         $this->db->from('tb_agenda_exames');
         $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -536,6 +536,48 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         return $this->db;
+    }
+
+    function listarexamesficha($args = array()) {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('e.exames_id,
+                            e.agenda_exames_id,
+                            e.paciente_id,
+                            p.nome as paciente,
+                            e.agenda_exames_id,
+                            e.sala_id,
+                            ae.inicio,
+                            e.guia_id,
+                            e.procedimento_tuss_id,
+                            e.data_cadastro,
+                            es.nome as sala,
+                            o.nome as tecnico,
+                            pt.grupo,
+                            pt.nome as procedimento,
+                            ag.ambulatorio_laudo_id');
+        $this->db->from('tb_exames e');
+        $this->db->join('tb_paciente p', 'p.paciente_id = e.paciente_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo ag', 'e.exames_id = ag.exame_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = e.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = e.sala_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = e.tecnico_realizador', 'left');
+        $this->db->where('e.situacao', 'EXECUTANDO');
+        $this->db->where('pt.grupo !=', 'CONSULTA');
+        $this->db->where('ae.empresa_id', $empresa_id);
+        $this->db->where('ae.sala_preparo', 'f');
+        $this->db->where('e.cancelada', 'false');
+        if (isset($args['sala']) && strlen($args['sala']) > 0) {
+            $this->db->where('e.sala_id', $args['sala']);
+        }
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
+        }
+        $this->db->orderby('e.data_cadastro');
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function gerarelatoriotempoesperaexame() {
@@ -887,7 +929,7 @@ class exame_model extends Model {
         }
         return $this->db;
     }
-    
+
     function listarexameagendaconfirmada2geral($args = array()) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -1010,7 +1052,7 @@ class exame_model extends Model {
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        if ($grupo_pagamento_id != 0) {
+        if ($grupo_pagamento_id != 0 && $grupo_pagamento_id != null) {
             $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
             $this->db->where("cp.grupo_pagamento_id", $grupo_pagamento_id);
         }
@@ -1020,7 +1062,7 @@ class exame_model extends Model {
         $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where('ae.faturado', 'false');
+        $this->db->where('ae.faturado', 'f');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
@@ -2537,7 +2579,6 @@ class exame_model extends Model {
         return $this->db;
     }
 
-
     function gerarelatoriomedicoagendaexamefaltou($args = array()) {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
@@ -2603,11 +2644,11 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function gravarencaminhamentoatendimento($agenda_exames_id) {
-        
+
         try {
-    //        $data = date("Y-m-d");
+            //        $data = date("Y-m-d");
 
             $this->db->select(' ae.paciente_id,
                                 ae.procedimento_tuss_id,
@@ -2615,10 +2656,10 @@ class exame_model extends Model {
                                 ae.tipo');
             $this->db->from('tb_agenda_exames ae');
             $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id');
-            $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id'); 
-    //        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
-    //        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');    
-    //        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');    
+            $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id');
+            //        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+            //        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');    
+            //        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');    
             $this->db->where('al.medico_encaminhamento_id is not null');
             $this->db->where('ae.agenda_exames_id', $agenda_exames_id);
             $return = $this->db->get();
@@ -2652,17 +2693,16 @@ class exame_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_agenda_exames');
-            
+
             return $return[0]->paciente_id;
-            
         } catch (Exception $exc) {
             return -1;
         }
     }
-    
+
     function gerarelatorioencaminhamento() {
 //        $data = date("Y-m-d");
-       
+
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
                             ae.data,
@@ -2686,20 +2726,20 @@ class exame_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = al.medico_encaminhamento_id', 'left');
-        
+
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-     
+
         $this->db->where('al.medico_encaminhamento_id is not null');
-    
+
         $this->db->orderby('ae.data');
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function gerarelatoriopacientetelefone() {
 //        $data = date("Y-m-d");
-       
+
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
                             ae.data,
@@ -2719,29 +2759,29 @@ class exame_model extends Model {
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        
+
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-     
+
         $this->db->where('ae.procedimento_tuss_id is not null');
-       
+
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
         }
-        
+
         if ($_POST['procedimento'] != "") {
             $this->db->where("pt.procedimento_tuss_id", $_POST['procedimento']);
         }
-       
-        if ($_POST['grupo'] != "" ) {
+
+        if ($_POST['grupo'] != "") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-    
+
         $this->db->orderby('ae.data');
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listaragendamentoteleoperadora($args = array()) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -2987,7 +3027,7 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listaragendaordemprioridade($args = array()) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -4161,7 +4201,6 @@ class exame_model extends Model {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
-           
         }
         return $this->db;
     }
@@ -4199,6 +4238,7 @@ class exame_model extends Model {
                             ae.confirmado,
                             e.exames_id,
                             e.sala_id,
+                            ag.tipo,
                             pt.grupo,
                             c.nome as convenio,
                             co.nome as convenio_paciente,
@@ -4211,6 +4251,7 @@ class exame_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio co', 'co.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
@@ -4622,7 +4663,7 @@ class exame_model extends Model {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
-            
+
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 if ($args['situacao'] == "BLOQUEADO") {
                     $this->db->where('ae.bloqueado', 't');
@@ -4822,7 +4863,7 @@ class exame_model extends Model {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
-            
+
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
                 if ($args['situacao'] == "BLOQUEADO") {
                     $this->db->where('ae.bloqueado', 't');
@@ -5586,22 +5627,22 @@ class exame_model extends Model {
 
 
 // ESTOQUE SAIDA E SALDO
-        //   SELECIONA
+//   SELECIONA
 
 
         $this->db->select('ea.descricao as armazem,
-            ef.fantasia,
+ 
             sum(es.quantidade) as total,
             ep.descricao as produto');
         $this->db->from('tb_estoque_saldo es');
         $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
-        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
+//        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = es.produto_id', 'left');
         $this->db->where('es.ativo', 'true');
         $this->db->where('es.armazem_id', $_POST['armazem_id']);
         $this->db->where('es.produto_id', $_POST['produto_id']);
-        $this->db->groupby('ea.descricao, ef.fantasia, ep.descricao');
-        $this->db->orderby('ea.descricao, ef.fantasia, ep.descricao');
+        $this->db->groupby('ea.descricao, ep.descricao');
+        $this->db->orderby('ea.descricao, ep.descricao');
         $saldo = $this->db->get()->result();
 
         $this->db->select('e.estoque_entrada_id,
@@ -5617,6 +5658,7 @@ class exame_model extends Model {
         $this->db->where('e.produto_id', $_POST['produto_id']);
         $this->db->where('e.armazem_id', $_POST['armazem_id']);
         $this->db->where('e.ativo', 't');
+        $this->db->where('s.ativo', 't');
 //        $this->db->where('quantidade >', '0');
         $this->db->groupby("e.estoque_entrada_id,
                             e.produto_id,
@@ -6954,12 +6996,13 @@ class exame_model extends Model {
 
             $this->db->where('exame_id', $exame_id);
             $this->db->delete('tb_ambulatorio_laudo');
-            
+
             return 0;
         } catch (Exception $exc) {
             return -1;
         }
     }
+
     function finalizarexamependente($exame_id, $sala_id, $agenda_exames_id) {
         try {
             // Voltando exame
@@ -7098,7 +7141,7 @@ class exame_model extends Model {
             return -1;
         }
     }
-    
+
     function lancarcreditoexamependente($exames_id, $sala_id, $agenda_exames_id) {
         try {
 
@@ -7121,27 +7164,27 @@ class exame_model extends Model {
             $this->db->where("ae.agenda_exames_id", $agenda_exames_id);
             $query = $this->db->get();
             $return = $query->result();
-            
+
             $this->db->set('procedimento_convenio_id', $return[0]->procedimento_tuss_id);
             $this->db->set('paciente_id', $return[0]->paciente_id);
             $this->db->set('data', date("Y-m-d"));
 
-            if ($return[0]->forma_pagamento != ''){
+            if ($return[0]->forma_pagamento != '') {
                 $formapagamento = $return[0]->forma_pagamento;
                 $this->db->set('valor1', $return[0]->valor1);
                 $this->db->set('forma_pagamento_id', $formapagamento);
             }
-            if ($return[0]->forma_pagamento2 != ''){
+            if ($return[0]->forma_pagamento2 != '') {
                 $formapagamento = $return[0]->forma_pagamento2;
                 $this->db->set('valor2', $return[0]->valor2);
                 $this->db->set('forma_pagamento2', $formapagamento);
             }
-            if ($return[0]->forma_pagamento3 != ''){
+            if ($return[0]->forma_pagamento3 != '') {
                 $formapagamento = $return[0]->forma_pagamento3;
                 $this->db->set('valor3', $return[0]->valor3);
                 $this->db->set('forma_pagamento3', $formapagamento);
             }
-            if ($return[0]->forma_pagamento4 != ''){
+            if ($return[0]->forma_pagamento4 != '') {
                 $formapagamento = $return[0]->forma_pagamento4;
                 $this->db->set('valor4', $return[0]->valor4);
                 $this->db->set('forma_pagamento4', $formapagamento);
@@ -7157,7 +7200,7 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->insert('tb_paciente_credito');
-            
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('paciente_id', null);
@@ -7187,10 +7230,9 @@ class exame_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_ambulatorio_atendimentos_cancelamento');
-            
-            
+
+
             return 0;
-            
         } catch (Exception $exc) {
             return -1;
         }
@@ -7698,7 +7740,7 @@ class exame_model extends Model {
         if ($conta_id == "" || $credor_devedor_id == "" || $pagamento == "" || $pagamentodata == "") {
             $financeiro = -1;
         } else {
-
+            $financeiro =  1;
 
             if ($dineiro >= $valor_base) {
                 $dineirodescontado = $dineirodescontado - ($dineiro * $ir);
@@ -7761,6 +7803,7 @@ ORDER BY ae.agenda_exames_id)";
 
 
 //        die;
+        return $financeiro;
     }
 
     private

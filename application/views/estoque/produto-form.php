@@ -47,9 +47,14 @@
                         <select name="procedimentoID" id="procedimentoID" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                             <option value="">Selecione</option>
                             <? foreach($procedimentos as $value){ ?>
-                                <option value="<?= $value->procedimento_tuss_id ?>"><?= $value->nome ?></option>
+                                <option value="<?= $value->procedimento_tuss_id ?>" <?if(@$obj->_procedimento_tuss_id == $value->procedimento_tuss_id){
+                                   echo 'selected'; 
+                                }?>><?= $value->nome ?></option>
                             <? } ?>
                         </select>
+                        <?
+//var_dump($obj->_procedimento); die;
+                        ?>
 <!--                        <input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2" value="" />
                         <input type="text" name="procedimento" id="procedimento" class="texto10" value="<?=@$obj->_procedimento?>" />-->
                     </dd>

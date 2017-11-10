@@ -15,6 +15,7 @@
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header" width="250px;">Convenio</th>
                         <th class="tabela_header" width="250px;">Sessao</th>
+                        <th class="tabela_header" width="250px;">Data</th>
                         <th class="tabela_header" width="120px;" colspan="2"><center>A&ccedil;&otilde;es<div class="bt_link_new">
                                     <a href="<?= base_url() ?>ambulatorio/exame/cancelartodosfisioterapia/<?= $paciente_id ?>">Cancelar todos
 
@@ -31,10 +32,12 @@
                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                         ?>
                         <tr>
+                            
                             <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->numero_sessao; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><b><?=date("d/m/Y",strtotime($item->data));?></b></td>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
                                     <a href="<?= base_url() ?>ambulatorio/exame/autorizarsessao/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->guia_id ?>">Encaminhar p/ Espera
                                     </a></div>

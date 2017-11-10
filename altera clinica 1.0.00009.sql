@@ -589,3 +589,35 @@ CREATE TABLE ponto.tb_convenio_secudario_associacao
   operador_atualizacao integer,
   CONSTRAINT tb_convenio_secudario_associacao_pkey PRIMARY KEY (convenio_secudario_associacao_id)
 );
+
+
+-- Dia 09/11/2017
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN promotor_medico boolean DEFAULT false;
+
+-- Dia 10/11/2017
+
+
+
+ /* 
+UPDATE ponto.tb_agenda_exames
+   SET 
+       valor_promotor= mc.valor, percentual_promotor= mc.percentual
+     
+FROM ponto.tb_procedimento_percentual_promotor m , ponto.tb_procedimento_percentual_promotor_convenio mc, ponto.tb_paciente p
+
+       WHERE ponto.tb_agenda_exames.procedimento_tuss_id = m.procedimento_tuss_id 
+
+       AND m.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id
+   
+       AND mc.promotor = ponto.tb_agenda_exames.indicacao  
+ 
+       AND ponto.tb_agenda_exames.paciente_id is not null
+
+       AND ponto.tb_agenda_exames.valor_promotor is null
+
+       AND ponto.tb_agenda_exames.procedimento_tuss_id is not null
+
+       AND m.ativo = 'true' 
+       
+       AND mc.ativo = 'true';*/

@@ -254,9 +254,10 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['exame'] = $this->guia->listarexame($exames_id);
         $grupo = $data['exame'][0]->grupo;
+        $data['ordem_atendimento'] = $this->exame->listarexamesficha();
         $data['grupos'] = $this->guia->listargrupoficha($guia_id, $grupo);
 //        echo '<pre>';
-//        var_dump($data['grupos']); die;
+//        var_dump($data['lista']); die;
 //        $grupo = $data['exame'][0]->grupo;
         $dinheiro = $data['exame'][0]->dinheiro;
 
@@ -629,7 +630,12 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
-        $this->load->View('ambulatorio/impressaoetiquetaunica', $data);
+        if ($data['empresa'][0]->impressao_tipo == 1) { //HUMANA 
+            $this->load->View('ambulatorio/impressaoetiquetaunicahumana', $data);
+        }else{
+            $this->load->View('ambulatorio/impressaoetiquetaunica', $data);
+        }
+        
     }
 
     function teste() {
@@ -3101,6 +3107,7 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['empresa_permissao'] = $this->guia->listarempresapermissoes($_POST['empresa']);
         $data['empresamunicipio'] = $this->guia->listarempresamunicipio($_POST['empresa']);
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();

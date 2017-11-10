@@ -54,7 +54,7 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valortotal, 2, ',', '.') ?></td>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_linkf">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguiacaixa/" . $guia_id . '/' . $grupo->financeiro_grupo_id; ?> ');">Faturar Guia
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia_id . '/' . $grupo->financeiro_grupo_id; ?> ');">Faturar Guia
 
                                             </a></div>
                                     </td>

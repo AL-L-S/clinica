@@ -1295,7 +1295,7 @@ class Exame extends BaseController {
         $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
         $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']);
         $data['laudo'] = $this->exame->mostrarlaudogastodesala($exames_id);
-//        echo '<pre>'; var_dump($data['laudo']);
+//        echo '<pre>'; var_dump($data['produtos']); die;
         $data['exames_id'] = $exames_id;
         $this->load->View('ambulatorio/gastosdesala', $data);
     }

@@ -107,7 +107,7 @@ class caixa_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->where("empresa_id", $empresa_id);
         $this->db->where('empresa_id', $empresa_id);
-        
+
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('s.nome', $args['empresa']);
         }
@@ -212,7 +212,7 @@ class caixa_model extends Model {
         if ($_POST['empresa'] != "") {
             $this->db->where('s.empresa_id', $_POST['empresa']);
         }
-        
+
         if ($_POST['tipo'] > 0) {
 //            var_dump($args['nome']); die;
             $this->db->where('tipo', @$return[0]->descricao);
@@ -279,7 +279,7 @@ class caixa_model extends Model {
     }
 
     function relatoriosaidagrupo() {
-         if ($_POST['tipo'] > 0) {
+        if ($_POST['tipo'] > 0) {
             $this->db->select('
                             tes.descricao,
                             tipo_entradas_saida_id
@@ -389,7 +389,7 @@ class caixa_model extends Model {
     }
 
     function relatoriosaidacontador() {
-                 if ($_POST['tipo'] > 0) {
+        if ($_POST['tipo'] > 0) {
             $this->db->select('
                             tes.descricao,
                             tipo_entradas_saida_id
@@ -560,6 +560,15 @@ class caixa_model extends Model {
     }
 
     function relatoriomovimento() {
+        if ($_POST['tipo'] > 0) {
+            $this->db->select('
+                            tes.descricao
+                            ');
+            $this->db->from('tb_tipo_entradas_saida tes');
+            $this->db->where('tes.ativo', 'true');
+            $this->db->where('tes.tipo_entradas_saida_id', $_POST['tipo']);
+            $return = $this->db->get()->result();
+        }
         $this->db->select('s.valor,
                             s.data,
                             s.data_cadastro,
@@ -578,9 +587,9 @@ class caixa_model extends Model {
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = sa.classe AND fc.descricao = e.classe', 'left');
-        if (($_POST['tipo'] != 0) && ($_POST['classe'] == '')) {
-            $this->db->where('tipo_id', $_POST['tipo']);
-//            $this->db->orwhere('e.tipo', $_POST['tipo']);
+        if ($_POST['tipo'] > 0) {
+//            var_dump($args['nome']); die;
+            $this->db->where("(sa.tipo = '{$return[0]->descricao}' OR e.tipo = '{$return[0]->descricao}')");
         }
         if ($_POST['classe'] != '') {
             $this->db->where('e.classe', $_POST['classe']);
@@ -602,6 +611,15 @@ class caixa_model extends Model {
     }
 
     function relatoriomovimentosaldoantigo() {
+        if ($_POST['tipo'] > 0) {
+            $this->db->select('
+                            tes.descricao
+                            ');
+            $this->db->from('tb_tipo_entradas_saida tes');
+            $this->db->where('tes.ativo', 'true');
+            $this->db->where('tes.tipo_entradas_saida_id', $_POST['tipo']);
+            $return = $this->db->get()->result();
+        }
         $this->db->select('sum(s.valor) as total');
         $this->db->from('tb_saldo s');
         $this->db->join('tb_saidas sa', 'sa.saidas_id = s.saida_id', 'left');
@@ -613,8 +631,9 @@ class caixa_model extends Model {
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
         }
-        if ($_POST['tipo'] != 0) {
-            $this->db->where('tipo_id', $_POST['tipo']);
+        if ($_POST['tipo'] > 0) {
+//            var_dump($args['nome']); die;
+            $this->db->where("(sa.tipo = '{$return[0]->descricao}' OR e.tipo = '{$return[0]->descricao}')");
         }
         if ($_POST['conta'] != 0) {
             $this->db->where('s.conta', $_POST['conta']);
@@ -692,7 +711,7 @@ class caixa_model extends Model {
     function gravarentrada() {
         try {
             $empresa_id = $this->session->userdata('empresa_id');
-            
+
             $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
             //busca tipo
             $this->db->select('t.descricao');

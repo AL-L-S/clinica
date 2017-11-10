@@ -73,6 +73,23 @@ $agenda = $exame[0]->agenda;
             echo $item->procedimento;
             ?><br><? endforeach; ?></font></td>
 </tr>
+<?
+$ordem = 1;
+foreach($ordem_atendimento as $item){
+    if($item->guia_id == $exame[0]->guia_id){
+        break;
+    }
+   $ordem++; 
+}
+
+
+?>
+<tr>
+    <td ><font size = -1>Ordem: <?=$ordem?></td> 
+ 
+    
+    
+</tr>
 <tr>
     <td colspan="2" ><font size = -1>Atendente: <?= substr($exame[0]->atendente, 0, 13); ?></font></td>
     <td ><font size = -1> &nbsp;<?= $exame[0]->agenda_exames_id; ?></font></td>
@@ -192,7 +209,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1>DE 16:00 AS 17:00 HS</font></td>
+    <td ><font size = -1>DE 10:00 AS 15:00 HS</font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )PNEUMONIA</font></td>
@@ -222,7 +239,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1>Seg a Sex de 07:30 as 17:00 hs</font></td>
+    <td ><font size = -1>Seg a Sex de 06:30 as 16:00 hs</font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )HIPERTENS&Atilde;O</font></td>
@@ -232,7 +249,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1>Sab de 07:30 as 11:30 hs</font></td>
+    <!--<td ><font size = -1>Sab de 07:30 as 11:30 hs</font></td>-->
 </tr>
 <tr>
     <td ><font size = -1>INDICA&Ccedil;&Atilde;O: <?= $exame[0]->indicacao; ?></font></td>
