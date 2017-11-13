@@ -354,6 +354,12 @@
                         <dd>
                             <input type="checkbox" id="promotor_medico" name="promotor_medico" <? if (@$obj->_promotor_medico == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o valor do promotor vai ser descontado do médico.">Excluir Transferência (Financeiro)</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="promotor_medico" name="excluir_transferencia" <? if (@$obj->_excluir_transferencia == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

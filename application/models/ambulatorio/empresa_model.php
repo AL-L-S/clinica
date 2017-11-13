@@ -824,6 +824,11 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
+                if (isset($_POST['excluir_transferencia'])) {
+                    $this->db->set('excluir_transferencia', 't');
+                } else {
+                    $this->db->set('excluir_transferencia', 'f');
+                }
 
                 if (isset($_POST['calendario_layout'])) {
                     $this->db->set('calendario_layout', 't');
@@ -886,6 +891,11 @@ class empresa_model extends Model {
                     $this->db->set('calendario_layout', 't');
                 } else {
                     $this->db->set('calendario_layout', 'f');
+                }
+                if (isset($_POST['excluir_transferencia'])) {
+                    $this->db->set('excluir_transferencia', 't');
+                } else {
+                    $this->db->set('excluir_transferencia', 'f');
                 }
                 if (isset($_POST['recomendacao_configuravel'])) {
                     $this->db->set('recomendacao_configuravel', 't');
@@ -976,6 +986,7 @@ class empresa_model extends Model {
                                calendario,
                                servicosms,
                                servicoemail,
+                               excluir_transferencia,
                                chat,
                                procedimento_excecao,
                                ordem_chegada,
@@ -1024,6 +1035,7 @@ class empresa_model extends Model {
             $this->_estoque = $return[0]->estoque;
             $this->_financeiro = $return[0]->financeiro;
             $this->_marketing = $return[0]->marketing;
+            $this->_excluir_transferencia = $return[0]->excluir_transferencia;
             $this->_imagem = $return[0]->imagem;
             $this->_laboratorio = $return[0]->laboratorio;
             $this->_ponto = $return[0]->ponto;

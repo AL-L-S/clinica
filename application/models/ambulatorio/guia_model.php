@@ -66,6 +66,7 @@ class guia_model extends Model {
         $this->db->select('e.empresa_id,
                             ordem_chegada,
                             promotor_medico,
+                            excluir_transferencia,
                             oftamologia,
                             ');
         $this->db->from('tb_empresa e');

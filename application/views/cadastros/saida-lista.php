@@ -27,6 +27,7 @@
     $saldo = $this->caixa->saldo();
     $credores = $this->caixa->empresa();
     $empresas = $this->exame->listarempresas();
+     $empresa_permissao = $this->guia->listarempresapermissoes();
     $conta = $this->forma->listarforma();
     $tipo = $this->tipo->listartipo();
     
@@ -187,7 +188,7 @@
                                    <?if($item->tipo != 'TRANSFERENCIA'){?>   <a href="<?= base_url() ?>cadastros/caixa/carregar/<?= $item->saidas_id ?>">Editar</a><?}?></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                                    <?if($item->tipo != 'TRANSFERENCIA'){?>    <a onclick="javascript: return confirm('Deseja realmente excluir a saida?');" href="<?= base_url() ?>cadastros/caixa/excluirsaida/<?= $item->saidas_id ?>">Excluir</a><?}?></div>
+                                    <?if(($item->tipo == 'TRANSFERENCIA' && @$empresa_permissao[0]->excluir_transferencia == 't') || $item->tipo != 'TRANSFERENCIA'){?>    <a onclick="javascript: return confirm('Deseja realmente excluir a saida?');" href="<?= base_url() ?>cadastros/caixa/excluirsaida/<?= $item->saidas_id ?>">Excluir</a><?}?></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/caixa/anexarimagemsaida/<?= $item->saidas_id ?>">Arquivos</a></div>

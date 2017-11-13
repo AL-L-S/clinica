@@ -107,6 +107,7 @@
                             $dataFuturo = date("Y-m-d H:i:s");
                             $dataAtual = $item->data_cadastro;
                             $operador_id = $this->session->userdata('operador_id');
+                            $perfil_id = $this->session->userdata('perfil_id');
                             $date_time = new DateTime($dataAtual);
                             $diff = $date_time->diff(new DateTime($dataFuturo));
                             $teste = $diff->format('%d');
