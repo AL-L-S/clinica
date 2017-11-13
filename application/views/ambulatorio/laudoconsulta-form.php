@@ -73,23 +73,7 @@
 
                         <tr>
                             <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
-                            <td width="40px;">
-                                <div class="bt_link_new">
-                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
-                                        Chamar</a></div>
-                                <div class="bt_link_new">
-                                    <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
-                                        Editar</a></div>
-                                <? if (@$obj->_status != 'FINALIZADO') { ?>
-                                    <div class="bt_link_new">
-                                        <a href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
-                                            Pendente
-                                        </a>
-                                    </div>
-                                <? } ?>
-                                <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
-                                <!--                                        impressaolaudo -->
-                            </td>
+                            
                             <!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
                         </tr>
                         <tr>
@@ -97,6 +81,47 @@
                         </tr>
                     </table>
                 </fieldset>
+                <table>
+                    <tr>
+                    <td >
+                        <div class="bt_link_new">
+                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
+                                Chamar</a>
+                        </div>
+                    </td>
+                    
+                    <td>
+                        <div class="bt_link_new">
+                            <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
+                                Editar</a></div>
+                    </td>
+                    
+                        <? if (@$obj->_status != 'FINALIZADO') { ?>
+                        <td>
+                            <div class="bt_link_new">
+                                <a href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
+                                    Pendente
+                                </a>
+                            </div>
+                        </td>
+                        <? } ?>
+                        
+                        <td>
+                            <div class="bt_link_new">
+                                <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
+                                    Encaminhar
+                                </a>
+                            </div>
+                        </td>
+                    <td>
+                        <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
+                        <!--                                        impressaolaudo -->
+                    
+                    </td>
+                    
+                        
+                    </tr>
+                </table>
                 <div>
 
                     <fieldset>

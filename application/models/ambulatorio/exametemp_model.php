@@ -5714,6 +5714,37 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompletecadastroexcecaoprocedimentosgrupo($parametro = null, $parametro2 = null) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
+                            pt.nome as procedimento,
+                            pc.empresa_id');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+//        $this->db->where("ag.tipo !=", 'CONSULTA');
+//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+
+        if ($parametro != null) {
+            $this->db->where('pc.convenio_id', $parametro);
+        }
+        if ($parametro2 != null) {
+            $this->db->where('pt.grupo', $parametro2);
+        }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
+
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompleteprocedimentosgrupo($parametro = null, $parametro2 = null) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,

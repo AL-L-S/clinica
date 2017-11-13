@@ -694,3 +694,19 @@ CREATE TABLE ponto.tb_transferencia
 ALTER TABLE ponto.tb_saldo ADD COLUMN transferencia_id integer;
 ALTER TABLE ponto.tb_saidas ADD COLUMN transferencia_id integer;
 ALTER TABLE ponto.tb_entradas ADD COLUMN transferencia_id integer;
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'RETORNO');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+        VALUES ('RETORNO', 'CONSULTA');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();

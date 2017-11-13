@@ -73,26 +73,36 @@ if (count($pacs) > 0) {
                             <td>Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
                             <td>Sala:<?= @$obj->_sala ?></td>
                         </tr>
-                        <tr>
-
-
-                            <td width="40px;"><div class="bt_link_new">
-                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
-                                        chamar</a></div>
-                                <!--                                        impressaolaudo -->
-                            </td>
-
-                            <td>
-                                <div class="bt_link_new">
-                                    <a href="<?= base_url() ?>ambulatorio/laudo/pendenteexamemultifuncao/<?= $exame_id ?>" >
-                                        Pendente
-                                    </a>
-                                </div>
-                            </td>
-
-                        </tr>
                     </table>
                 </fieldset>
+                <table>
+                    <tr>
+
+
+                        <td width="40px;"><div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
+                                    chamar</a></div>
+                        </td>
+
+                        <td>
+                            <div class="bt_link_new">
+                                <a href="<?= base_url() ?>ambulatorio/laudo/pendenteexamemultifuncao/<?= $exame_id ?>" >
+                                    Pendente
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="bt_link_new">
+                                <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
+                                    Encaminhar
+                                </a>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                </table>
+                
                 <?
                 $i = 0;
                 if ($arquivo_pasta != false):

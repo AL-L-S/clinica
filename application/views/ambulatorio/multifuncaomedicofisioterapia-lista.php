@@ -34,6 +34,7 @@
             @$ordem_chegada = @$empresa[0]->ordem_chegada;
             $medicos = $this->operador_m->listarmedicos();
             $perfil_id = $this->session->userdata('perfil_id');
+            $procedimento = $this->procedimento->listarprocedimento2();
             ?>
             <table>
                 <thead>
@@ -114,7 +115,15 @@
                             <input type="text" name="nome" class="texto03 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
                         <th colspan="1" class="tabela_title">
-                            <input type="text" name="txtprocedimento" class="texto03 bestupper" value="<?php echo @$_GET['txtprocedimento']; ?>" />
+                            <select name="txtprocedimento" id="procedimento" class="size2 chosen-select" tabindex="1">
+                                <option value="">Selecione</option>
+                                <? foreach ($procedimento as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"<?
+                                    if (@$_GET['txtprocedimento'] == $value->nome):echo'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
+                                <? endforeach; ?>
+                            </select>
                         </th>
                         <th colspan="1" class="tabela_title">
                             <input type="text" name="txtCICPrimariolabel" id="txtCICPrimariolabel" class="texto03" value="<?php echo @$_GET['txtCICPrimariolabel']; ?>" />
@@ -373,6 +382,9 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<style>
+    #procedimento_chosen a { width: 130px; }
+</style>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>-->
@@ -380,6 +392,10 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
 <script type="text/javascript">
                             $(document).ready(function () {
 //alert('teste_parada');
@@ -487,6 +503,9 @@
 
                                 $(function () {
                                     $("#accordion").accordion();
+                                    $("#procedimento").chosen({
+                                        width: '200%'
+                                    });
                                 });
 
 //                                        setTimeout('delayReload()', 20000);

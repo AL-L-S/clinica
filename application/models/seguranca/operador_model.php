@@ -130,19 +130,62 @@ class Operador_model extends BaseModel {
     function gravaroperadorconvenioprocedimento() {
         try {
             /* inicia o mapeamento no banco */
-            $this->db->set('operador', $_POST['txtoperador_id']);
-            $this->db->set('convenio_id', $_POST['txtconvenio_id']);
-            $this->db->set('procedimento_convenio_id', $_POST['procedimento']);
-            $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_convenio_operador_procedimento');
-            $erro = $this->db->_error_message();
-            if (trim($erro) != "") // erro de banco
-                return -1;
-            else
-                $estoque_menu_produtos_id = $this->db->insert_id();
+            
+            if ( $_POST['procedimento'] == '' ){
+                $this->db->select('pc.procedimento_convenio_id,');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+                $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+                $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+                $this->db->where("ag.tipo !=", 'CIRURGICO');
+                $this->db->where("pc.ativo", 't');
+                $this->db->where('pc.convenio_id', $_POST['txtconvenio_id']);
+                if($_POST['grupo'] != ''){
+                    $this->db->where('pt.grupo', $_POST['grupo']);
+                }
+                
+                $empresa_id = $this->session->userdata('empresa_id');
+                $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                if ($procedimento_multiempresa == 't') {
+                    $this->db->where('pc.empresa_id', $empresa_id);
+                }
+                $return = $this->db->get();
+                $return = $return->result();
+                
+                foreach ($return as $value) {
+                    $this->db->set('operador', $_POST['txtoperador_id']);
+                    $this->db->set('convenio_id', $_POST['txtconvenio_id']);
+                    $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_convenio_operador_procedimento');
+                    $erro = $this->db->_error_message();
+                    if (trim($erro) != "") // erro de banco
+                        return -1;
+                    else
+                        $estoque_menu_produtos_id = $this->db->insert_id();   
+                }
+            }
+            
+            else{
+                
+                $this->db->set('operador', $_POST['txtoperador_id']);
+                $this->db->set('convenio_id', $_POST['txtconvenio_id']);
+                $this->db->set('procedimento_convenio_id', $_POST['procedimento']);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_convenio_operador_procedimento');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $estoque_menu_produtos_id = $this->db->insert_id();
+
+            }
 
             return $estoque_menu_produtos_id;
         } catch (Exception $exc) {
