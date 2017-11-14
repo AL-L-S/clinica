@@ -7691,10 +7691,10 @@ class exame_model extends Model {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         if ($_POST['empresa'] != '0') {
-            $this->db->select('exame_empresa_id,
-                            nome, tipo');
-            $this->db->from('tb_exame_empresa');
-            $this->db->where('exame_empresa_id', $empresa_id);
+            $this->db->select('empresa_id,
+                            nome');
+            $this->db->from('tb_empresa');
+//            $this->db->where('empresa_id', $empresa_id);
             $this->db->where('empresa_id', $_POST['empresa']);
             $empresa_array = $this->db->get()->result();
             $empresa_id = $_POST['empresa'];

@@ -375,7 +375,7 @@
                                 </div>
                             </div>
                             <div <?
-                            if ($empresapermissao[0]->oftamologia != 't' && @$obj->_grupo == 'OFTALMOLOGIA') {
+                            if ($empresapermissao[0]->oftamologia == 't' && @$obj->_grupo == 'OFTALMOLOGIA') {
                                 echo "style='display:inline;'";
                             }else{
                                 echo "style='display:none;'";

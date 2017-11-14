@@ -867,12 +867,24 @@ class caixa_model extends Model {
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $inicio = $_POST['inicio'];
             $dia = substr($inicio, 0, 2);
             $mes = substr($inicio, 3, 2);
             $ano = substr($inicio, 6, 4);
             $datainicio = $ano . '-' . $mes . '-' . $dia;
+            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
+            $this->db->set('data', $datainicio);
+            $this->db->set('tipo', 'TRANSFERENCIA');
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('observacao', $_POST['Observacao']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_transferencia');
+            $transferencia_id = $this->db->insert_id();
+
+            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
+            $this->db->set('transferencia_id', $transferencia_id);
             $this->db->set('data', $datainicio);
             $this->db->set('tipo', 'TRANSFERENCIA');
             $this->db->set('conta', $_POST['conta']);
@@ -884,6 +896,7 @@ class caixa_model extends Model {
             $saida_id = $this->db->insert_id();
 
             $valor = str_replace(",", ".", str_replace(".", "", $_POST['valor']));
+            $this->db->set('transferencia_id', $transferencia_id);
             $this->db->set('valor', -$valor);
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('saida_id', $saida_id);
@@ -901,6 +914,7 @@ class caixa_model extends Model {
             $mes = substr($inicio, 3, 2);
             $ano = substr($inicio, 6, 4);
             $datainicio = $ano . '-' . $mes . '-' . $dia;
+            $this->db->set('transferencia_id', $transferencia_id);
             $this->db->set('data', $datainicio);
             $this->db->set('tipo', 'TRANSFERENCIA');
             $this->db->set('empresa_id', $empresa_id);
@@ -912,6 +926,7 @@ class caixa_model extends Model {
             $entrada_id = $this->db->insert_id();
 
             $valorentrada = str_replace(",", ".", str_replace(".", "", $_POST['valor']));
+            $this->db->set('transferencia_id', $transferencia_id);
             $this->db->set('valor', $valorentrada);
             $this->db->set('data', $datainicio);
             $this->db->set('conta', $_POST['contaentrada']);
@@ -1052,7 +1067,12 @@ class caixa_model extends Model {
 
     function excluirentrada($entrada) {
 
-//        var_dump($entrada); die;
+        $this->db->select('transferencia_id');
+        $this->db->from('tb_entradas');
+        $this->db->where('entradas_id', $entrada);
+        $return = $this->db->get()->result();
+//        var_dump($return); die;
+        
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
 //        var_dump($horario); die;
@@ -1067,9 +1087,35 @@ class caixa_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('entradas_id', $entrada);
         $this->db->update('tb_entradas');
+         if ($return[0]->transferencia_id != '') {
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('transferencia_id', $return[0]->transferencia_id);
+            $this->db->update('tb_saldo');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('transferencia_id', $return[0]->transferencia_id);
+            $this->db->update('tb_saidas');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('transferencia_id', $return[0]->transferencia_id);
+            $this->db->update('tb_entradas');
+        }
     }
 
     function excluirsaida($saida) {
+
+        $this->db->select('transferencia_id');
+        $this->db->from('tb_saidas');
+        $this->db->where('saidas_id', $saida);
+        $return = $this->db->get()->result();
+//        var_dump($return); die;
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
@@ -1085,11 +1131,27 @@ class caixa_model extends Model {
         $this->db->where('saidas_id', $saida);
         $this->db->update('tb_saidas');
 
-        $this->db->set('ativo', 'f');
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('saidas_id', $saida);
-        $this->db->update('tb_saidas');
+
+        if ($return[0]->transferencia_id != '') {
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('transferencia_id', $return[0]->transferencia_id);
+            $this->db->update('tb_saldo');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('transferencia_id', $return[0]->transferencia_id);
+            $this->db->update('tb_saidas');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('transferencia_id', $return[0]->transferencia_id);
+            $this->db->update('tb_entradas');
+        }
     }
 
     function excluirsangria($saida) {

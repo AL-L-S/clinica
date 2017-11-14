@@ -2877,8 +2877,8 @@ class Guia extends BaseController {
         $data['modelo'] = $this->modelodeclaracao->buscarmodelo($_POST['modelo']);
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['impressaolaudo'] = $this->guia->listarconfiguracaoimpressaolaudo($empresa_id);
-        $cabecalho_config = $data['cabecalho'][0]->cabecalho;
-        $rodape_config = $data['cabecalho'][0]->rodape;
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
         $exames = $data['exames'];
         $valor_total = 0;
 
@@ -2914,17 +2914,17 @@ class Guia extends BaseController {
         $data['exame'] = $this->guia->listarexamesguia($guia_id);
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['impressaolaudo'] = $this->guia->listarconfiguracaoimpressaolaudo($empresa_id);
-        $cabecalho_config = $data['cabecalho'][0]->cabecalho;
-        $rodape_config = $data['cabecalho'][0]->rodape;
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
         $filename = "declaracao.pdf";
         if ($data['empresa'][0]->cabecalho_config == 't') {
-            $cabecalho = $cabecalho_config;
+            $cabecalho = @$cabecalho_config;
         } else {
             $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr></table>";
         }
-        $rodape_config = str_replace("_assinatura_", '', $rodape_config);
+        @$rodape_config = str_replace("_assinatura_", '', @$rodape_config);
         if ($data['empresa'][0]->rodape_config == 't') {
-            $rodape = $rodape_config;
+            $rodape = @$rodape_config;
         } else {
             $rodape = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
         }

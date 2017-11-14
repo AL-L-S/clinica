@@ -810,6 +810,7 @@ class empresa_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
 
             if ($_POST['txtempresaid'] == "") {// insert
+                $this->db->set('endereco_externo', $_POST['endereco_externo']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa');
@@ -824,7 +825,16 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
-
+                if (isset($_POST['excluir_transferencia'])) {
+                    $this->db->set('excluir_transferencia', 't');
+                } else {
+                    $this->db->set('excluir_transferencia', 'f');
+                }
+                if (isset($_POST['login_paciente'])) {
+                    $this->db->set('login_paciente', 't');
+                } else {
+                    $this->db->set('login_paciente', 'f');
+                }
                 if (isset($_POST['calendario_layout'])) {
                     $this->db->set('calendario_layout', 't');
                 } else {
@@ -868,6 +878,7 @@ class empresa_model extends Model {
             else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->set('endereco_externo', $_POST['endereco_externo']);
                 $empresa_id = $_POST['txtempresaid'];
                 $this->db->where('empresa_id', $empresa_id);
                 $this->db->update('tb_empresa');
@@ -882,10 +893,22 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
+                if (isset($_POST['login_paciente'])) {
+                    $this->db->set('login_paciente', 't');
+                } else {
+                    $this->db->set('login_paciente', 'f');
+                }
+
+                
                 if (isset($_POST['calendario_layout'])) {
                     $this->db->set('calendario_layout', 't');
                 } else {
                     $this->db->set('calendario_layout', 'f');
+                }
+                if (isset($_POST['excluir_transferencia'])) {
+                    $this->db->set('excluir_transferencia', 't');
+                } else {
+                    $this->db->set('excluir_transferencia', 'f');
                 }
                 if (isset($_POST['recomendacao_configuravel'])) {
                     $this->db->set('recomendacao_configuravel', 't');
@@ -974,8 +997,11 @@ class empresa_model extends Model {
                                cancelar_sala_espera,
                                promotor_medico,
                                calendario,
+                               login_paciente,
                                servicosms,
                                servicoemail,
+                               endereco_externo,
+                               excluir_transferencia,
                                chat,
                                procedimento_excecao,
                                ordem_chegada,
@@ -1024,6 +1050,7 @@ class empresa_model extends Model {
             $this->_estoque = $return[0]->estoque;
             $this->_financeiro = $return[0]->financeiro;
             $this->_marketing = $return[0]->marketing;
+            $this->_excluir_transferencia = $return[0]->excluir_transferencia;
             $this->_imagem = $return[0]->imagem;
             $this->_laboratorio = $return[0]->laboratorio;
             $this->_ponto = $return[0]->ponto;
@@ -1034,6 +1061,8 @@ class empresa_model extends Model {
             $this->_calendario = $return[0]->calendario;
             $this->_botao_faturar_guia = $return[0]->botao_faturar_guia;
             $this->_data_contaspagar = $return[0]->data_contaspagar;
+            $this->_login_paciente = $return[0]->login_paciente;
+            $this->_endereco_externo = $return[0]->endereco_externo;
             $this->_medico_laudodigitador = $return[0]->medico_laudodigitador;
             $this->_botao_faturar_proc = $return[0]->botao_faturar_procedimento;
             $this->_chamar_consulta = $return[0]->chamar_consulta;

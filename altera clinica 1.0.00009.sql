@@ -591,36 +591,7 @@ CREATE TABLE ponto.tb_convenio_secudario_associacao
 );
 
 
--- Dia 09/11/2017
 
-ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN promotor_medico boolean DEFAULT false;
-
--- Dia 10/11/2017
-
-
-
- /* 
-UPDATE ponto.tb_agenda_exames
-   SET 
-       valor_promotor= mc.valor, percentual_promotor= mc.percentual
-     
-FROM ponto.tb_procedimento_percentual_promotor m , ponto.tb_procedimento_percentual_promotor_convenio mc, ponto.tb_paciente p
-
-       WHERE ponto.tb_agenda_exames.procedimento_tuss_id = m.procedimento_tuss_id 
-
-       AND m.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id
-   
-       AND mc.promotor = ponto.tb_agenda_exames.indicacao  
- 
-       AND ponto.tb_agenda_exames.paciente_id is not null
-
-       AND ponto.tb_agenda_exames.valor_promotor is null
-
-       AND ponto.tb_agenda_exames.procedimento_tuss_id is not null
-
-       AND m.ativo = 'true' 
-       
-       AND mc.ativo = 'true';*/
 -- Dia 07/11/2017
 
 CREATE TABLE ponto.tb_odontograma
@@ -666,6 +637,63 @@ CREATE TABLE ponto.tb_odontograma_dente_procedimento
   CONSTRAINT tb_odontograma_dente_procedimento_pkey PRIMARY KEY (odontograma_dente_procedimento_id)
 );
 
+-- Dia 09/11/2017
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN promotor_medico boolean DEFAULT false;
+
+-- Dia 10/11/2017
+
+
+
+ /* 
+UPDATE ponto.tb_agenda_exames
+   SET 
+       valor_promotor= mc.valor, percentual_promotor= mc.percentual
+     
+FROM ponto.tb_procedimento_percentual_promotor m , ponto.tb_procedimento_percentual_promotor_convenio mc, ponto.tb_paciente p
+
+       WHERE ponto.tb_agenda_exames.procedimento_tuss_id = m.procedimento_tuss_id 
+
+       AND m.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id
+   
+       AND mc.promotor = ponto.tb_agenda_exames.indicacao  
+ 
+       AND ponto.tb_agenda_exames.paciente_id is not null
+
+       AND ponto.tb_agenda_exames.valor_promotor is null
+
+       AND ponto.tb_agenda_exames.procedimento_tuss_id is not null
+
+       AND m.ativo = 'true' 
+       
+       AND mc.ativo = 'true';*/
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN excluir_transferencia boolean DEFAULT false;
+
+
+CREATE TABLE ponto.tb_transferencia
+(
+  transferencia_id serial NOT NULL,
+  valor numeric(10,2),
+  observacao character varying(2000),
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  data date,
+  tipo character varying(60),
+  contas_pagar_id integer,
+  conta integer,
+  ativo boolean DEFAULT true,
+  nome integer,
+  classe character varying(60),
+  empresa_id integer,
+  CONSTRAINT tb_transferencia_pkey PRIMARY KEY (transferencia_id)
+);
+
+ALTER TABLE ponto.tb_saldo ADD COLUMN transferencia_id integer;
+ALTER TABLE ponto.tb_saidas ADD COLUMN transferencia_id integer;
+ALTER TABLE ponto.tb_entradas ADD COLUMN transferencia_id integer;
 
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
@@ -682,3 +710,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
+
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN login_paciente boolean DEFAULT true;
+
+--14/11/2017
+ALTER TABLE ponto.tb_empresa ADD COLUMN endereco_externo character varying(100);
