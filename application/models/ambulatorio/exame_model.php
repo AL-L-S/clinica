@@ -1440,8 +1440,8 @@ class exame_model extends Model {
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
-//        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
-//        $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
         $this->db->orderby('ae.data');
@@ -6070,7 +6070,7 @@ class exame_model extends Model {
 //            var_dump($_POST['txtagenda_exames_id']);
 //            var_dump($_POST['txttipo']);
 //            die;
-
+            
             if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO' || $_POST['txttipo'] == 'MATERIAL') {
 
 //                $this->db->set('ativo', 'f');

@@ -118,7 +118,7 @@
                             }
                             ?>
                             <tr>
-                                <td style="color: <?= $cor ?>" class="<?php echo $estilo_linha; ?>"><?= $ordenador; ?></td>
+                                <td style="color: <?= @$cor ?>" class="<?php echo $estilo_linha; ?>"><?= $ordenador; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examepacientedetalhes/<?= $item->paciente_id; ?>/<?= $item->procedimento_tuss_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id; ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $item->paciente; ?></a></td>
                                 <?
                                 $idade = date("Y-m-d") - $item->nascimento;
