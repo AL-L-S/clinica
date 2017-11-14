@@ -142,6 +142,12 @@
                             <input type="text" id="impressao_declaracao" class="texto01" name="impressao_declaracao" value="<?= @$obj->_impressao_declaracao; ?>" />
                         </dd>
                         <dt>
+                            <label>Endereço Externo Cadastro</label>
+                        </dt>
+                        <dd>
+                            <input type="text" id="endereco_externo" class="texto08" name="endereco_externo" value="<?= @$obj->_endereco_externo; ?>" />
+                        </dd>
+                        <dt>
                             <label title="Habilitar Modulo de Imagem.">Imagem</label>
                         </dt>
                         <dd>
@@ -358,7 +364,13 @@
                             <label title="Ativando essa flag, o valor do promotor vai ser descontado do médico.">Excluir Transferência (Financeiro)</label>
                         </dt>
                         <dd>
-                            <input type="checkbox" id="promotor_medico" name="excluir_transferencia" <? if (@$obj->_excluir_transferencia == 't') echo "checked"; ?>/> 
+                            <input type="checkbox" id="excluir_transferencia" name="excluir_transferencia" <? if (@$obj->_excluir_transferencia == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o login será obrigatório no Sistema de Pacientes.">Login no Sistema de Paciente</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="login_paciente" name="login_paciente" <? if (@$obj->_login_paciente == 't') echo "checked"; ?>/> 
                         </dd>
                     <? } ?>
                 </dl>    

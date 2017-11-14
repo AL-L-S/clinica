@@ -34,7 +34,6 @@
             @$ordem_chegada = @$empresa[0]->ordem_chegada;
             $medicos = $this->operador_m->listarmedicos();
             $perfil_id = $this->session->userdata('perfil_id');
-            $procedimento = $this->procedimento->listarprocedimento2();
             ?>
             <table>
                 <thead>
@@ -115,15 +114,7 @@
                             <input type="text" name="nome" class="texto03 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
                         <th colspan="1" class="tabela_title">
-                            <select name="txtprocedimento" id="procedimento" class="size2 chosen-select" tabindex="1">
-                                <option value="">Selecione</option>
-                                <? foreach ($procedimento as $value) : ?>
-                                    <option value="<?= $value->nome; ?>"<?
-                                    if (@$_GET['txtprocedimento'] == $value->nome):echo'selected';
-                                    endif;
-                                    ?>><?php echo $value->nome; ?></option>
-                                <? endforeach; ?>
-                            </select>
+                            <input type="text" name="txtprocedimento" class="texto03 bestupper" value="<?php echo @$_GET['txtprocedimento']; ?>" />
                         </th>
                         <th colspan="1" class="tabela_title">
                             <input type="text" name="txtCICPrimariolabel" id="txtCICPrimariolabel" class="texto03" value="<?php echo @$_GET['txtCICPrimariolabel']; ?>" />
@@ -334,9 +325,9 @@
                                         </a></div>
                                 </td>
                             <? } else { ?>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+<!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                     <a></a></font>
-                                </td>
+                                </td>-->
                                 <!--<td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">-->
 
                                 <?
@@ -347,7 +338,7 @@
                                                 <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
                                                     Cancelar</a></div>
                                         </td>
-                                    <? } elseif (($operador_id == 3 || $perfil_id == 1) && $verifica != 3) { ?>
+                                    <? } elseif (($operador_id == 3 || $perfil_id == 1 || $perfil_id == 4) && $verifica != 3) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                             <div class="bt_link">
                                                 <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>">
@@ -382,9 +373,6 @@
     </div>
 
 </div> <!-- Final da DIV content -->
-<style>
-    #procedimento_chosen a { width: 130px; }
-</style>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>-->
@@ -392,10 +380,6 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
-<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
-<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
-<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
-<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
 <script type="text/javascript">
                             $(document).ready(function () {
 //alert('teste_parada');
@@ -503,9 +487,6 @@
 
                                 $(function () {
                                     $("#accordion").accordion();
-                                    $("#procedimento").chosen({
-                                        width: '200%'
-                                    });
                                 });
 
 //                                        setTimeout('delayReload()', 20000);

@@ -710,3 +710,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
+
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN login_paciente boolean DEFAULT true;
+
+--14/11/2017
+ALTER TABLE ponto.tb_empresa ADD COLUMN endereco_externo character varying(100);
