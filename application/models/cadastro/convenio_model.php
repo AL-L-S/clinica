@@ -556,6 +556,17 @@ class Convenio_model extends Model {
                     $return2 = $this->db->get();
                     $result2 = $return2->result();
                     
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->where('ativo', 'f');
+                    $this->db->where('convenio_id', $convenio_id);
+                    $grupo = $_POST['grupo'][$key];
+                    $this->db->where("procedimento_tuss_id IN ( SELECT procedimento_tuss_id 
+                                                                FROM ponto.tb_procedimento_tuss 
+                                                                WHERE grupo = '{$grupo}')");
+                    $this->db->update('tb_procedimento_convenio');
+                    
+                    
                     if(count($result2) > 0){   
                         foreach ($result2 as $value) {
                             $this->db->set('qtdech', $value->qtdech);
@@ -567,12 +578,11 @@ class Convenio_model extends Model {
                             $this->db->set('qtdeuco', $value->qtdeuco);
                             $this->db->set('valoruco', $value->valoruco);
                             $this->db->set('valortotal', ($value->valortotal * (float) $_POST['valor'][$key] / 100));
-                            $this->db->set('data_atualizacao', $horario);
-                            $this->db->set('operador_atualizacao', $operador_id);
-                            $this->db->where('ativo', 't');
-                            $this->db->where('convenio_id', $convenio_id);
-                            $this->db->where('procedimento_tuss_id', $value->procedimento_tuss_id);
-                            $this->db->update('tb_procedimento_convenio');
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->set('convenio_id', $convenio_id);
+                            $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                            $this->db->insert('tb_procedimento_convenio');
                         }
                     }
                 }

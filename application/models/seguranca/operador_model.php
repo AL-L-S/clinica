@@ -277,7 +277,7 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
     
-    function listarprocedimentoconveniooperador($operador_id) {
+    function listarprocedimentoconveniooperador($operador_id, $convenio_id) {
         $this->db->select('cop.convenio_operador_procedimento_id,
                             pt.nome as procedimento,
                             c.nome as convenio');
@@ -286,6 +286,7 @@ class Operador_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('cop.operador', $operador_id);
+        $this->db->where('pc.convenio_id', $convenio_id);
         $this->db->where('cop.ativo', 't');
         $this->db->orderby("c.nome");
         $this->db->orderby("pt.nome");
