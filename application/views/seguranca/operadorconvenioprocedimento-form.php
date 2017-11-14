@@ -105,7 +105,7 @@
         $('#grupo').change(function () {
             $('.carregando').show();
             $.getJSON('<?= base_url() ?>autocomplete/cadastroexcecaoprocedimentoconveniogrupo', { grupo1: $(this).val(), convenio1: <?= @$convenio[0]->convenio_id; ?> }, function (j) {
-                options = '<option value="0">TODOS</option>';
+                options = '<option value="">TODOS</option>';
                 for (var c = 0; c < j.length; c++) {
                     options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                 }

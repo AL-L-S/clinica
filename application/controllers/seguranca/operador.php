@@ -392,7 +392,7 @@ class Operador extends BaseController {
         $data['grupo'] = $this->operador_m->listargrupo();
         $data['operador'] = $this->operador_m->listarCada($operador_id);
         $data['convenio'] = $this->operador_m->listarprocedimentoconvenio($convenio_id);
-        $data['procedimentos'] = $this->operador_m->listarprocedimentoconveniooperador($operador_id);
+        $data['procedimentos'] = $this->operador_m->listarprocedimentoconveniooperador($operador_id, $convenio_id);
         $this->loadView('seguranca/operadorconvenioprocedimento-form', $data);
     }
 
