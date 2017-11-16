@@ -4927,9 +4927,7 @@ class exametemp_model extends Model {
 
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
-//            $testemedico = $_POST['medico_id'];
-//            var_dump($_POST['indicacao']); die;
-//            die;
+            
             $i = 0;
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
@@ -5043,10 +5041,10 @@ class exametemp_model extends Model {
 
                     $valor_convenio = $valor / $qtde;
 
-                    $this->db->select('pc.procedimento_convenio_id, 
-                            pcs.procedimento_convenio_sessao_id,
-                            pcs.sessao,
-                            pcs.valor_sessao');
+                    $this->db->select(' pc.procedimento_convenio_id, 
+                                        pcs.procedimento_convenio_sessao_id,
+                                        pcs.sessao,
+                                        pcs.valor_sessao');
                     $this->db->from('tb_procedimento_convenio_sessao pcs');
                     $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcs.procedimento_convenio_id', 'left');
                     $this->db->where('pcs.ativo', 't');

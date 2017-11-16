@@ -2645,6 +2645,59 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function gravarautorizacaoorcamento($ambulatorio_orcamento_id) {
+
+        try {
+            $this->db->select(' aoi.ambulatorio_orcamento_item_id,
+                                aoi.paciente_id,
+                                aoi.empresa_id,
+                                aoi.procedimento_tuss_id');
+            $this->db->from('tb_ambulatorio_orcamento_item aoi');
+//            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = aoi.procedimento_tuss_id', 'left');
+            $this->db->where('aoi.orcamento_id', $ambulatorio_orcamento_id);
+            $this->db->where('aoi.ativo', 't');
+            $return = $this->db->get();
+            $return = $return->result();
+            
+            if( count($return) > 0 ){
+                
+                foreach ($return as $value) {
+                    
+                    $data = date("Y-m-d");
+                    $hora = date("H:i:s");
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+
+                    
+                    $this->db->set('ativo', 'f');
+                    $this->db->set('cancelada', 'f');
+                    $this->db->set('confirmado', 'f');
+                    $this->db->set('situacao', 'OK');
+                    
+                    $this->db->set('empresa_id', $value->empresa_id);
+                    $this->db->set('paciente_id', $value->paciente_id);
+                    $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                    $this->db->set('data_inicio', $data);
+                    $this->db->set('fim', $hora);
+                    $this->db->set('inicio', $hora);
+                    $this->db->set('data_fim', $data);
+                    $this->db->set('data', $data);
+                    $this->db->set('encaixe', 't');
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_agenda_exames');   
+                    
+                }
+                
+            }
+            return count($return);
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarencaminhamentoatendimento($agenda_exames_id) {
 
         try {

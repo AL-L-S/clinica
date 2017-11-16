@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_voltar">
-        <a href="<?= base_url() ?>ponto/horariostipo">
+        <a href="<?= base_url() ?>ambulatorio/procedimento">
             Voltar
         </a>
 
@@ -258,6 +258,12 @@
     
     $('#grupo').change(function () {
         if( $(this).val() == 'RETORNO'){
+            $('#divRetorno').show();
+            $("#procedimento_associacao").prop('required', true);
+            $("#diasRetorno").prop('required', true);
+            $("#diasRetorno").val('<?= @$obj->_retorno_dias ?>');
+        }
+        else if( $(this).val() == 'AGRUPADOR'){
             $('#divRetorno').show();
             $("#procedimento_associacao").prop('required', true);
             $("#diasRetorno").prop('required', true);

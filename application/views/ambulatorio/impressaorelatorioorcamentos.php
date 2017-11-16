@@ -17,6 +17,7 @@
                 <th class="tabela_header" width="150px;">Data</th>
                 <th class="tabela_header" width="150px;">Valor (R$)</th>
                 <th class="tabela_header" width="300px;">Empresa</th>
+                <th class="tabela_header" width="150px;">Ação</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,7 @@
                                 </a>
                         </td>
                         <td><b><?= $item->empresa_nome; ?></b></td>
+                        <td><a href="<?= base_url() ?>ambulatorio/exame/autorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a></td>
                     </tr>
 
                 </tbody>
