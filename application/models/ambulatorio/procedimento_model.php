@@ -130,6 +130,89 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarprocedimento3() {
+        $this->db->select('procedimento_tuss_id,
+                            nome,
+                            grupo,
+                            codigo');
+        $this->db->from('tb_procedimento_tuss');
+        $this->db->orderby('nome');
+        $this->db->where("ativo", 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarprocedimentoagrupados($procedimento_agrupador_id) {
+        $this->db->select('procedimentos_agrupados_ambulatorial_id as procedimento_agrupador_id,
+                            pt.nome,
+                            pt.grupo,
+                            pt.codigo');
+        $this->db->from('tb_procedimentos_agrupados_ambulatorial pa');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pa.procedimento_tuss_id', 'left');
+        $this->db->where("pa.ativo", 't');
+        $this->db->where("pa.procedimento_agrupador_id", $procedimento_agrupador_id);
+        $this->db->orderby('pt.grupo');
+        $this->db->orderby('pt.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    
+    function gravaragrupadorprocedimento() {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->set('codigo', '');
+            $this->db->set('grupo', 'AGRUPADOR');
+            $this->db->set('agrupador', 't');
+            
+            if( $_POST['txtprocedimentotussid'] == '0' || $_POST['txtprocedimentotussid'] == ''){
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_procedimento_tuss');
+                $procedimento_agrupador_id = $this->db->insert_id();
+            }
+            else{
+                $procedimento_agrupador_id = $_POST['txtprocedimentotussid'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('procedimento_tuss_id', $procedimento_agrupador_id );
+                $this->db->update('tb_procedimento_tuss');
+            }
+            
+            foreach ($_POST['add_agrupador'] as $key => $value) {
+
+                if ($_POST['add_agrupador'][$key] != "" ) { // insert
+                    $this->db->select('procedimentos_agrupados_ambulatorial_id');
+                    $this->db->from('tb_procedimentos_agrupados_ambulatorial');
+                    $this->db->where('procedimento_agrupador_id', $procedimento_agrupador_id);
+                    $this->db->where('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                    $this->db->where("ativo", 't');
+                    $return = $this->db->get()->result();
+                    
+                    if( count($return) == 0 ){
+                        
+                        $this->db->set('procedimento_agrupador_id', $procedimento_agrupador_id);
+                        $this->db->set('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimentos_agrupados_ambulatorial');
+                    }
+                    
+                } else{
+                    continue;
+                }
+            }
+
+            
+            return $procedimento_agrupador_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     function listarprocedimentoprodutovalor($procedimento_tuss_id) {
         $this->db->select('procedimento_tuss_id,
@@ -173,8 +256,7 @@ class procedimento_model extends Model {
 
     function listargruposatendimento() {
         $this->db->select('ambulatorio_grupo_id,
-                            nome,
-                            ');
+                            nome');
         $this->db->from('tb_ambulatorio_grupo');
 //        $this->db->where("tipo", 'CONSULTA');
         $this->db->orderby("nome");
@@ -209,6 +291,7 @@ class procedimento_model extends Model {
                             nome,
                             ');
         $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where("tipo !=", 'AGRUPADOR');
         $this->db->orderby("nome");
         $return = $this->db->get();
         return $return->result();
@@ -414,6 +497,23 @@ class procedimento_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('procedimento_tuss_id', $procedimento_tuss_id);
         $this->db->update('tb_procedimento_tuss');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
+    function excluirprocedimentoagrupado($procedimento_agrupador_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('procedimentos_agrupados_ambulatorial_id', $procedimento_agrupador_id);
+        $this->db->update('tb_procedimentos_agrupados_ambulatorial');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;

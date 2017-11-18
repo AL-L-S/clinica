@@ -142,11 +142,21 @@ class Procedimentoplano extends BaseController {
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento3();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
-//        var_dump($data['grupos']);die;
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
         
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/multiplosprocedimentoplano-form', $data);
+    }
+
+    function carregarprocedimentoplanoagrupador($procedimentoplano_tuss_id) {
+        $obj_procedimentoplano = new procedimentoplano_model($procedimentoplano_tuss_id);
+        $data['obj'] = $obj_procedimentoplano;
+        $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['grupos'] = $this->procedimento->listargruposmatmed();
+        $data['empresa'] = $this->empresa->listarempresasprocedimento();
+        
+        $this->loadView('ambulatorio/procedimentoplanoagrupador-form', $data);
     }
 
     function carregarprocedimentoplano($procedimentoplano_tuss_id) {
@@ -155,10 +165,8 @@ class Procedimentoplano extends BaseController {
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimento->listargruposmatmed();
-//        var_dump($data['grupos']); die;
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
         
-        //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimentoplano-form', $data);
     }
 

@@ -4913,6 +4913,38 @@ class exametemp_model extends Model {
         }
     }
 
+    function gerarecibocredito($paciente_credito_id) {
+
+        $this->db->select('pcr.valor,
+                           p.nome as paciente,
+                           pt.nome as procedimento,
+                           pcr.data_cadastro,
+                           fp.nome as forma_pagamento,
+                           m.nome as municipio');
+        $this->db->from('tb_paciente_credito pcr');
+        $this->db->join('tb_paciente p', 'p.paciente_id = pcr.paciente_id');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcr.procedimento_convenio_id');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pcr.forma_pagamento_id');
+        $this->db->join('tb_empresa e', 'e.empresa_id = pcr.empresa_id');
+        $this->db->join('tb_municipio m', 'm.municipio_id = e.municipio_id');
+        $this->db->where("pcr.paciente_credito_id", $paciente_credito_id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function buscarvalorprocedimentoagrupados($convenio_id, $procedimento_agrupador_id) {
+
+        $this->db->select('pa.procedimento_convenio_id');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_procedimentos_agrupados_ambulatorial pa', 'ag.nome = pt.grupo');
+        $this->db->where("pc.procedimento_convenio_id", $procedimento_convenio_id);
+        $query = $this->db->get();
+        $tipo = $query->result();
+        return $tipo[0]->tipo;
+    }
+
     function verificaexamemedicamento($procedimento_convenio_id) {
 
         $this->db->select('ag.tipo');
@@ -4927,7 +4959,9 @@ class exametemp_model extends Model {
 
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
-            
+//            $testemedico = $_POST['medico_id'];
+//            var_dump($_POST['indicacao']); die;
+//            die;
             $i = 0;
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
@@ -5041,10 +5075,10 @@ class exametemp_model extends Model {
 
                     $valor_convenio = $valor / $qtde;
 
-                    $this->db->select(' pc.procedimento_convenio_id, 
-                                        pcs.procedimento_convenio_sessao_id,
-                                        pcs.sessao,
-                                        pcs.valor_sessao');
+                    $this->db->select('pc.procedimento_convenio_id, 
+                            pcs.procedimento_convenio_sessao_id,
+                            pcs.sessao,
+                            pcs.valor_sessao');
                     $this->db->from('tb_procedimento_convenio_sessao pcs');
                     $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcs.procedimento_convenio_id', 'left');
                     $this->db->where('pcs.ativo', 't');

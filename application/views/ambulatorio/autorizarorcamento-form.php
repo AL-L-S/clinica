@@ -1,12 +1,12 @@
 <meta charset="UTF-8">
 <body bgcolor="#C0C0C0">
     <div class="content"> <!-- Inicio da DIV content -->
-        <h3 class="singular">Encaminhar Atendimento</h3>
+        <h3 class="singular">Autorizar Orçamento</h3>
         <div>
-            <form name="form_faturar" id="form_faturar" action="<?= base_url() ?>ambulatorio/laudo/gravarencaminhamentoatendimento" method="post">
+            <form name="form_faturar" id="form_faturar" action="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamento/<?= $ambulatorio_orcamento_id; ?>" method="post">
                 <fieldset>
 
-                    <input type="hidden" name="ambulatorio_laudo_id" id="ambulatorio_laudo_id" value="<?= $ambulatorio_laudo_id; ?>" onblur="history.go(0)" />
+                    <input type="hidden" name="ambulatorio_orcamento_id" id="ambulatorio_orcamento_id" value="<?= $ambulatorio_orcamento_id; ?>" onblur="history.go(0)" />
                     <table>
                         <tr>                            
                             <td>

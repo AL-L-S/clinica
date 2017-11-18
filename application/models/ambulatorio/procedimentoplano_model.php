@@ -384,7 +384,8 @@ class procedimentoplano_model extends Model {
                         grupo,
                         codigo
                 FROM ponto.tb_procedimento_tuss
-                WHERE ativo = 't' AND ";
+                WHERE ativo = 't' AND
+                WHERE grupo != 'AGRUPADOR' AND ";
         $i = 0;
         foreach($query as $item){
             $sql .= " (procedimento_tuss_id IN (SELECT procedimento_tuss_id FROM ponto.tb_procedimento_convenio WHERE ativo = 't' AND convenio_id = {$item->convenio_primario_id} ) AND grupo = '{$item->grupo}')";
@@ -575,6 +576,7 @@ class procedimentoplano_model extends Model {
         $this->db->from('tb_procedimento_tuss');
         $this->db->orderby('nome');
         $this->db->where("ativo", 't');
+        $this->db->where("grupo !=", 'AGRUPADOR');
         $return = $this->db->get();
         return $return->result();
     }
@@ -588,6 +590,7 @@ class procedimentoplano_model extends Model {
         $this->db->orderby('grupo');
         $this->db->orderby('nome');
         $this->db->where("ativo", 't');
+        $this->db->where("grupo !=", 'AGRUPADOR');
         $return = $this->db->get();
         return $return->result();
     }

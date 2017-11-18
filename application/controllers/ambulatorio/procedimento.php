@@ -85,6 +85,15 @@ class Procedimento extends BaseController {
         $this->loadView('ambulatorio/procedimento-form', $data);
     }
 
+    function carregaragrupadorprocedimento($procedimento_tuss_id) {
+        $obj_procedimento = new procedimento_model($procedimento_tuss_id);
+        $data['obj'] = $obj_procedimento;
+        $data['procedimento'] = $this->procedimento->listarprocedimento3();
+        $data['procedimentoagrupados'] = $this->procedimento->listarprocedimentoagrupados($procedimento_tuss_id);
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $this->loadView('ambulatorio/agrupadorprocedimento-form', $data);
+    }
+
     function carregarprocedimento($procedimento_tuss_id) {
         $obj_procedimento = new procedimento_model($procedimento_tuss_id);
         $data['obj'] = $obj_procedimento;
@@ -148,6 +157,17 @@ class Procedimento extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioprocedimentotuss', $data);
     }
 
+    function excluirprocedimentoagrupado( $procedimento_agrupador_id, $procedimento_id ) {
+        if ($this->procedimento->excluirprocedimentoagrupado($procedimento_agrupador_id)) {
+            $mensagem = 'Sucesso ao excluir desagrupar o Procedimento';
+        } else {
+            $mensagem = 'Erro ao desagrupar o Procedimento. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimento/carregaragrupadorprocedimento/$procedimento_id");
+    }
+
     function excluir($procedimento_tuss_id) {
         if ($this->procedimento->excluir($procedimento_tuss_id)) {
             $mensagem = 'Sucesso ao excluir o Procedimento';
@@ -168,6 +188,15 @@ class Procedimento extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimento/pesquisartuss");
+    }
+
+    function gravaragrupadorprocedimento() {
+        $procedimento_tuss_id = $this->procedimento->gravaragrupadorprocedimento();
+        
+        $data['mensagem'] = 'Sucesso ao gravar o Agrupador.';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        
+        redirect(base_url() . "ambulatorio/procedimento");
     }
 
     function gravar() {

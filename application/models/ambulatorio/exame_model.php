@@ -2649,15 +2649,22 @@ class exame_model extends Model {
 
         try {
             $this->db->select(' aoi.ambulatorio_orcamento_item_id,
-                                aoi.paciente_id,
+                                ao.paciente_id,
                                 aoi.empresa_id,
-                                aoi.procedimento_tuss_id');
+                                aoi.procedimento_tuss_id,
+                                ag.tipo');
             $this->db->from('tb_ambulatorio_orcamento_item aoi');
-//            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = aoi.procedimento_tuss_id', 'left');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = aoi.procedimento_tuss_id', 'left');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+            $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left');
             $this->db->where('aoi.orcamento_id', $ambulatorio_orcamento_id);
+            $this->db->where('ao.paciente_id IS NOT NULL');
             $this->db->where('aoi.ativo', 't');
             $return = $this->db->get();
             $return = $return->result();
+            
+//            echo "<pre>"; var_dump($_POST); die;
             
             if( count($return) > 0 ){
                 
@@ -2674,6 +2681,10 @@ class exame_model extends Model {
                     $this->db->set('confirmado', 'f');
                     $this->db->set('situacao', 'OK');
                     
+                    $this->db->set('medico_consulta_id', $_POST['medico_id']);
+                    $this->db->set('medico_agenda', $_POST['medico_id']);
+
+                    $this->db->set('tipo', $value->tipo);
                     $this->db->set('empresa_id', $value->empresa_id);
                     $this->db->set('paciente_id', $value->paciente_id);
                     $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
@@ -2692,7 +2703,7 @@ class exame_model extends Model {
                 }
                 
             }
-            return count($return);
+            return (isset($return[0]->paciente_id) ? @$return[0]->paciente_id : '');
         } catch (Exception $exc) {
             return -1;
         }

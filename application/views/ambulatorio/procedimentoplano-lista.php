@@ -12,7 +12,16 @@
                     </a>
                 </div>
             </td>
-            
+            <? // $geral = $this->session->userdata('geral'); 
+//            if ($geral == 't') {?>
+<!--                <td>
+                    <div class="bt_link_new">
+                        <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarprocedimentoplanoagrupador/0">
+                            Novo Agrupador
+                        </a>
+                    </div>
+                </td>-->
+            <? // } ?>
             <td>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarmultiplosprocedimentoplano" target="_blank">

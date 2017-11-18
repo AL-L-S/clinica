@@ -5,7 +5,7 @@
     <? } else { ?>
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
-    <h4>Relatorio Orçamentos</h4>
+    <h4>Relatorio Orcamentos</h4>
     <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> até <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     
     <hr>
@@ -43,7 +43,7 @@
                                 </a>
                         </td>
                         <td><b><?= $item->empresa_nome; ?></b></td>
-                        <td><a href="<?= base_url() ?>ambulatorio/exame/autorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a></td>
+                        <td align="center"><a href="<?= base_url() ?>ambulatorio/exame/autorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a></td>
                     </tr>
 
                 </tbody>

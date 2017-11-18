@@ -187,21 +187,29 @@
                     ?>
                     <tfoot>
                         <tr>
-                            <th class="tabela_footer" colspan="3">
+                            <th class="tabela_footer" colspan="2">
                                 Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                             </th>
-                            <th colspan="2" align="center"><center><div class="bt_linkf">
-                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
+                            <th colspan="1" align="center"><center><div class="bt_linkf">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
 
-                            </a></div></center></th>
-                    <th colspan="2" align="center">
-                    <center>
-                        <div class="bt_linkf">
-                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/orcamentocadastrofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
-                            </a></div>
-                    </center>
-                    </th>
-                    </tr>
+                                </a></div></center>
+                            </th>
+                            <th colspan="2" align="center">
+                                <center>
+                                    <div class="bt_linkf">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/orcamentocadastrofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão</a>
+                                    </div>
+                                </center>
+                            </th>
+                            <th colspan="2" align="center">
+                                <center>
+                                    <div class="bt_linkf">
+                                        <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
+                                    </div>
+                                </center>
+                            </th>
+                        </tr>
                     </tfoot>
                 </table> 
 

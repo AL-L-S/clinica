@@ -148,7 +148,7 @@
             ?>
                                 <tfoot>
                                     <tr>
-                                        <th class="tabela_footer" colspan="3">
+                                        <th class="tabela_footer" colspan="2">
                                             Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                         </th>
                                         <th colspan="" align="center">
@@ -163,6 +163,13 @@
                                             <div class="bt_linkf">
                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/orcamentorecepcaofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
                                             </a></div>
+                                            </center>
+                                        </th>
+                                        <th colspan="2" align="center">
+                                            <center>
+                                            <div class="bt_linkf">
+                                                <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
+                                            </div>
                                             </center>
                                         </th>
                                     </tr>

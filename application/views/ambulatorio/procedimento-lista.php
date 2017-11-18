@@ -1,4 +1,5 @@
 
+
 <div class="content"> <!-- Inicio da DIV content -->
     <table border="0">
         <tr>
@@ -9,7 +10,16 @@
                     </a>
                 </div>
             </td>
-                
+            <? // $geral = $this->session->userdata('geral'); 
+//            if ($geral == 't') {?>
+<!--                <td>
+                    <div class="bt_link_new">
+                        <a href="////<?php echo base_url() ?>ambulatorio/procedimento/carregaragrupadorprocedimento/0">
+                            Novo Agrupador
+                        </a>
+                    </div>
+                </td>-->
+            <? // } ?>
             <td>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarajustevalores">
@@ -71,44 +81,57 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
 
+                                <? if ($item->grupo != "AGRUPADOR") { ?>
+                                    <? if ($perfil_id != 10) { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                                <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente excluir o procedimento');" href="<?= base_url() . "ambulatorio/procedimento/excluir/$item->procedimento_tuss_id"; ?>"
+                                                   >Excluir
+                                                </a>
+                                            </div>
+                <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                                <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/carregarprocedimento/$item->procedimento_tuss_id"; ?> ', '_blank');">Editar
+                                                </a></div>
+                    <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                                <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$item->procedimento_tuss_id"; ?> ', '_blank');">Convênio
+                                                </a></div>
+                    <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
+                                        </td>
 
-
-                                <? if ($perfil_id != 10) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
-                                            <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente excluir o procedimento');" href="<?= base_url() . "ambulatorio/procedimento/excluir/$item->procedimento_tuss_id"; ?>"
-                                               >Excluir
-                                            </a>
-                                        </div>
-            <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
-                                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/carregarprocedimento/$item->procedimento_tuss_id"; ?> ', '_blank');">Editar
-                                            </a></div>
+                                    <? } else { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                                Excluir
+                                            </div>
+                <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                                Editar
+                                            </div>
                 <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
-                                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$item->procedimento_tuss_id"; ?> ', '_blank');">Convênio
-                                            </a></div>
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
+                                                Convênio
+                                            </div>
                 <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
-                                    </td>
+                                        </td>
 
-                                <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
-                                            Excluir
+                                    <? } ?>
+                                <? }
+                                else {?>
+                                    <td class="<?php echo $estilo_linha; ?>" ></td>
+                                    <td class="<?php echo $estilo_linha; ?>" >
+                                        <div class="bt_link">
+                                            <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente excluir esse agrupador?');" href="<?= base_url() . "ambulatorio/procedimento/excluir/$item->procedimento_tuss_id"; ?>">Excluir</a>
                                         </div>
-            <!--                                    href="<?= base_url() ?>seguranca/operador/excluirOperador/<?= $item->operador_id; ?>"-->
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
-                                            Editar
+                                    <td class="<?php echo $estilo_linha; ?>" >
+                                        <div class="bt_link">
+                                            <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregaragrupadorprocedimento/<?= $item->procedimento_tuss_id ?>">Editar</a>
                                         </div>
-            <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
-                                            Convênio
-                                        </div>
-            <!--                                        href="<?= base_url() ?>seguranca/operador/alterar/<?= $item->operador_id ?>"-->
-                                    </td>
-
                                 <? } ?>
                             </tr>
 

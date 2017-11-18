@@ -23,6 +23,7 @@ class Exametemp extends BaseController {
         $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('cadastro/convenio_model', 'convenio');
+        $this->load->model('ambulatorio/GExtenso', 'GExtenso');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -284,6 +285,23 @@ class Exametemp extends BaseController {
 
 
         $this->load->view('ambulatorio/mostrarpendencias', $data);
+    }
+
+    function gerarecibocredito($paciente_credito_id) {
+        $data['paciente_credito_id'] = $paciente_credito_id;
+        
+        $credito = $this->exametemp->gerarecibocredito($paciente_credito_id);
+        
+        if ($credito[0]->valor == '0,00') {
+            $data['extenso'] = 'ZERO';
+        } else {
+            $valoreditado = str_replace(",", "", str_replace(".", "", $credito[0]->valor));
+            $data['extenso'] = GExtenso::moeda($valoreditado);
+        }
+        
+        $data['credito'] = $credito;
+        
+        $this->load->view('ambulatorio/reciboprocedimentocredito', $data);
     }
 
     function enviarpendenteatendimento($exames_id, $sala_id, $agenda_exames_id) {

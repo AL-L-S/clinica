@@ -206,6 +206,16 @@ class Autocomplete extends Controller {
         echo json_encode(true);
     }
 
+    function buscarvalorprocedimentoagrupados() {
+        $result = array();
+
+        if (isset($_GET['convenio']) && isset($_GET['procedimento_id'])) {
+            $result = $this->exametemp->buscarvalorprocedimentoagrupados($_GET['convenio'], $_GET['procedimento_id']);
+        }
+
+        echo json_encode($result);
+    }
+
     function buscaexamesanteriores() {
         $result = array();
 

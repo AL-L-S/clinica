@@ -329,10 +329,10 @@ class Exame extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioteleoperadora', $data);
     }
     
-    function autorizarorcamento($ambulatorio_orcamento_id) {
+    function gravarautorizarorcamento($ambulatorio_orcamento_id) {
         $paciente_id = $this->exame->gravarautorizacaoorcamento($ambulatorio_orcamento_id);
         if($paciente_id == '-1'){
-            $mensagem = 'Erro ao excluir o Agenda. Opera&ccedil;&atilde;o cancelada.';
+            $mensagem = 'Erro ao autorizar o Orçamento. Opera&ccedil;&atilde;o cancelada.';
             $this->session->set_flashdata('message', $mensagem);
             redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
         }
@@ -341,10 +341,16 @@ class Exame extends BaseController {
         }
     }
     
+    function autorizarorcamento($ambulatorio_orcamento_id) {
+        $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $this->load->View('ambulatorio/autorizarorcamento-form', $data);
+    }
+    
     function autorizarencaminhamento($agenda_exames_id) {
         $paciente_id = $this->exame->gravarencaminhamentoatendimento($agenda_exames_id);
         if($paciente_id == '-1'){
-            $mensagem = 'Erro ao excluir o Agenda. Opera&ccedil;&atilde;o cancelada.';
+            $mensagem = 'Erro ao autorizar o Encaminhamento. Opera&ccedil;&atilde;o cancelada.';
             $this->session->set_flashdata('message', $mensagem);
             redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
         }

@@ -38,7 +38,7 @@
                     <th class="tabela_header">Procedimento</th>
                     <th class="tabela_header">Convênio</th>
                     <th class="tabela_header">Valor (R$)</th>
-                    <!--<th class="tabela_header" width="70px;" colspan="3"><center>Detalhes</center></th>-->
+                    <th class="tabela_header" width="70px;" colspan="3"><center>Detalhes</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -65,16 +65,19 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", ""); ?></td>
                                 
+                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/exametemp/gerarecibocredito/<?= $item->paciente_credito_id ?>">Recibo</a></div>
+                                </td>
 <!--                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                     <a href="<?= base_url() ?>ambulatorio/exametemp/editarcredito/<?= $item->paciente_credito_id ?>">Editar</a></div>
                                 </td>-->
                             </tr>
                         <?}?>
                         <tr id="tot">
-                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="3">
+                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="4">
                                 <span id="spantotal"> Saldo:</span> 
                             </td>
-                            <td class="<?php echo $estilo_linha; ?>" colspan="2">
+                            <td class="<?php echo $estilo_linha; ?>" colspan="5">
                                 <span id="spantotal">
                                     R$ <?= number_format($valortotal[0]->saldo, 2, ',', '') ?>
                                 </span>
