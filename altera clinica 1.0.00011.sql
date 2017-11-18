@@ -35,6 +35,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
+
 -- Dia 17/11/2017
 
 CREATE OR REPLACE FUNCTION insereValor()
@@ -67,3 +68,8 @@ CREATE TABLE ponto.tb_procedimentos_agrupados_ambulatorial
 );
 
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN agrupador boolean DEFAULT false;
+
+-- Dia 18/11/2017
+ALTER TABLE ponto.tb_procedimento_convenio ADD COLUMN agrupador boolean DEFAULT false;
+ALTER TABLE ponto.tb_procedimento_convenio ADD COLUMN valor_pacote_diferenciado boolean DEFAULT false;
+

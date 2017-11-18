@@ -151,7 +151,7 @@ class Procedimentoplano extends BaseController {
     function carregarprocedimentoplanoagrupador($procedimentoplano_tuss_id) {
         $obj_procedimentoplano = new procedimentoplano_model($procedimentoplano_tuss_id);
         $data['obj'] = $obj_procedimentoplano;
-        $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
+        $data['procedimento'] = $this->procedimentoplano->listaragrupadoresprocedimento();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimento->listargruposmatmed();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
@@ -533,6 +533,25 @@ class Procedimentoplano extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function gravaragrupador() {
+        
+        $verifica = $this->procedimentoplano->verificaagrupadorconvenio($_POST['convenio'], $_POST['procedimento']);
+        if ($verifica == "-1") {
+            $data['mensagem'] = 'Erro ao gravar o Agrupador. Alguns procedimentos do pacote não estão cadastrados nesse convenio.';
+        } else {
+            $procedimento_id = $this->procedimentoplano->gravaragrupador();
+            if ($procedimento_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar o Agrupador. Operação cancelada.';
+            } elseif ($procedimento_id == "-2") {
+                $data['mensagem'] = 'Erro ao gravar. Esse Agrupador ja está cadastrado.';
+            } else{
+                $data['mensagem'] = 'Sucesso ao gravar Agrupador.';  
+            }
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/procedimentoplano");
     }
 
     function gravar() {

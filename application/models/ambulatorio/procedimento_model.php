@@ -286,6 +286,16 @@ class procedimento_model extends Model {
         return $return->result();
     }
 
+    function listargruposprocedimentoplano() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome,
+                            ');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listargrupos() {
         $this->db->select('ambulatorio_grupo_id,
                             nome,

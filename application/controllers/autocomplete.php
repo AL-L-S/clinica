@@ -213,7 +213,7 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->buscarvalorprocedimentoagrupados($_GET['convenio'], $_GET['procedimento_id']);
         }
 
-        echo json_encode($result);
+        die(json_encode($result));
     }
 
     function buscaexamesanteriores() {

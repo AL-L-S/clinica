@@ -902,7 +902,9 @@ class Guia extends BaseController {
                     $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
                     $this->session->set_flashdata('message', $data['mensagem']);
                 } else {
-                    $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual);
+                    if($tipo != 'AGRUPADOR'){
+                        $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual);
+                    }
                 }
             }
 //            die('morreu');

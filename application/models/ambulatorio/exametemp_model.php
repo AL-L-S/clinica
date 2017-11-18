@@ -4922,10 +4922,10 @@ class exametemp_model extends Model {
                            fp.nome as forma_pagamento,
                            m.nome as municipio');
         $this->db->from('tb_paciente_credito pcr');
-        $this->db->join('tb_paciente p', 'p.paciente_id = pcr.paciente_id');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcr.procedimento_convenio_id');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
-        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pcr.forma_pagamento_id');
+        $this->db->join('tb_paciente p', 'p.paciente_id = pcr.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcr.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pcr.forma_pagamento_id', 'left');
         $this->db->join('tb_empresa e', 'e.empresa_id = pcr.empresa_id');
         $this->db->join('tb_municipio m', 'm.municipio_id = e.municipio_id');
         $this->db->where("pcr.paciente_credito_id", $paciente_credito_id);
@@ -4935,14 +4935,43 @@ class exametemp_model extends Model {
 
     function buscarvalorprocedimentoagrupados($convenio_id, $procedimento_agrupador_id) {
 
-        $this->db->select('pa.procedimento_convenio_id');
-        $this->db->from('tb_procedimento_convenio pc');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
-        $this->db->join('tb_procedimentos_agrupados_ambulatorial pa', 'ag.nome = pt.grupo');
-        $this->db->where("pc.procedimento_convenio_id", $procedimento_convenio_id);
+        $this->db->select('pa.procedimento_tuss_id');
+        $this->db->from('tb_procedimentos_agrupados_ambulatorial pa');
+        $this->db->where("pa.procedimento_agrupador_id", $procedimento_agrupador_id);
+        $this->db->where("pa.ativo", 't');
         $query = $this->db->get();
-        $tipo = $query->result();
-        return $tipo[0]->tipo;
+        $agrupados = $query->result();
+//        
+        $this->db->select('procedimento_convenio_id');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->where("procedimento_tuss_id IN (SELECT procedimento_tuss_id 
+                                                   FROM ponto.tb_procedimentos_agrupados_ambulatorial
+                                                   WHERE ativo = 't' AND procedimento_agrupador_id = $procedimento_agrupador_id)");
+        $this->db->where("convenio_id", $convenio_id);
+        $this->db->where("ativo", 't');
+        $query = $this->db->get();
+        $procedimentos = $query->result();
+        
+        $string = '';
+        for($i = 0; $i < count($procedimentos); $i++){
+            $string .= $procedimentos[$i]->procedimento_convenio_id . (($i != count($procedimentos) - 1) ? ',' : '');
+        }
+        
+//        echo "<pre>";var_dump($string); die;
+        
+        if( count($agrupados) == count($procedimentos) ){
+            $this->db->select('SUM(valortotal) AS valor_pacote');
+            $this->db->from('tb_procedimento_convenio pc');
+            $this->db->where("procedimento_convenio_id IN ($string)");
+            $this->db->where("ativo", 't');
+            $query = $this->db->get();
+            $procedimentos = $query->result();
+            
+            return $procedimentos[0]->valor_pacote;
+        } 
+        else{
+            return -1;
+        }
     }
 
     function verificaexamemedicamento($procedimento_convenio_id) {
