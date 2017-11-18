@@ -64,6 +64,25 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarautocompletepacientecpf($parametro = null) {
+        $this->db->select('paciente_id,
+                            nome,
+                            telefone,
+                            celular,
+                            nome_mae,
+                            nascimento,
+                            cpf,
+                            logradouro,
+                            numero');
+        $this->db->from('tb_paciente');
+        $this->db->where('ativo', 'true');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function excluiragenda($agenda_id) {
 

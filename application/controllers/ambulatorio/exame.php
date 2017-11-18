@@ -2331,7 +2331,7 @@ class Exame extends BaseController {
     }
 
     function gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id) {
-        var_dump($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
+//        var_dump($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
 //        die;
 //        $agenda_id = $_POST['txthorario'];
 //        $sala_id = $_POST['txtsala'];
