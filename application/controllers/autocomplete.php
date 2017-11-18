@@ -49,7 +49,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function gravarhorarioagendawebconvenio() {
         header('Access-Control-Allow-Origin: *');
         $paciente_id = $this->exametemp->crianovopacientefidelidade();
@@ -73,36 +73,36 @@ class Autocomplete extends Controller {
         header('Access-Control-Allow-Origin: *');
 //        var_dump($_POST);
 //        die;
-        if($_POST['human'] == '4'){
-            
-        
-        $this->load->library('email');
+        if ($_POST['human'] == '4') {
 
-        $config['protocol'] = 'smtp';
-        $config['smtp_host'] = 'ssl://smtp.gmail.com';
-        $config['smtp_port'] = '465';
-        $config['smtp_user'] = 'equipe2016gcjh@gmail.com';
-        $config['smtp_pass'] = 'DUCOCOFRUTOPCE';
-        $config['validate'] = TRUE;
-        $config['mailtype'] = 'html';
-        $config['charset'] = 'utf-8';
-        $config['newline'] = "\r\n";
-        $email = $_POST['message'] . "<br>  "
-                . "<br> Nome: {$_POST['name']}"
-                . "<br> Telefone: {$_POST['telefone']}"
-                . "<br> Email: {$_POST['email']}";
 
-        $this->email->initialize($config);
-        $this->email->from('equipe2016gcjh@gmail.com', $_POST['name']);
-        $this->email->to('contato@stgsaude.com.br');
-        $this->email->subject($_POST['subject']);
-        $this->email->message($email);
-        if ($this->email->send()) {
-            $mensagem = "Email enviado com sucesso.";
-        } else {
-            $mensagem = "Envio de Email malsucedido.";
-        }
-        echo "<html>
+            $this->load->library('email');
+
+            $config['protocol'] = 'smtp';
+            $config['smtp_host'] = 'ssl://smtp.gmail.com';
+            $config['smtp_port'] = '465';
+            $config['smtp_user'] = 'equipe2016gcjh@gmail.com';
+            $config['smtp_pass'] = 'DUCOCOFRUTOPCE';
+            $config['validate'] = TRUE;
+            $config['mailtype'] = 'html';
+            $config['charset'] = 'utf-8';
+            $config['newline'] = "\r\n";
+            $email = $_POST['message'] . "<br>  "
+                    . "<br> Nome: {$_POST['name']}"
+                    . "<br> Telefone: {$_POST['telefone']}"
+                    . "<br> Email: {$_POST['email']}";
+
+            $this->email->initialize($config);
+            $this->email->from('equipe2016gcjh@gmail.com', $_POST['name']);
+            $this->email->to('contato@stgsaude.com.br');
+            $this->email->subject($_POST['subject']);
+            $this->email->message($email);
+            if ($this->email->send()) {
+                $mensagem = "Email enviado com sucesso.";
+            } else {
+                $mensagem = "Envio de Email malsucedido.";
+            }
+            echo "<html>
             <meta charset='UTF-8'>
         <script type='text/javascript'>
         alert('$mensagem');
@@ -110,14 +110,14 @@ class Autocomplete extends Controller {
             </script>
             </html>";
 //        redirect("http://stgsaude.com.br");
-        }else{
-          echo "<html>
+        } else {
+            echo "<html>
             <meta charset='UTF-8'>
         <script type='text/javascript'>
         alert('Você respondeu o anti-spam errado');
         window.location.href = 'http://stgsaude.com.br';
             </script>
-            </html>";  
+            </html>";
         }
     }
 
@@ -1170,24 +1170,24 @@ class Autocomplete extends Controller {
     }
 
     function cadastroexcecaoprocedimentoconveniogrupo() {
-        
+
         if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {
             $result = $this->exametemp->listarautocompletecadastroexcecaoprocedimentosgrupo($_GET['convenio1'], $_GET['grupo1']);
         } else {
             $result = $this->exametemp->listarautocompletecadastroexcecaoprocedimentosgrupo(@$_GET['convenio1'], @$_GET['grupo1']);
         }
-        
+
         echo json_encode($result);
     }
 
     function procedimentoconveniogrupo() {
-        
+
         if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {
             $result = $this->exametemp->listarautocompleteprocedimentosgrupo($_GET['convenio1'], $_GET['grupo1']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentosgrupo(@$_GET['convenio1'], @$_GET['grupo1']);
         }
-        
+
         echo json_encode($result);
     }
 
@@ -2586,6 +2586,25 @@ class Autocomplete extends Controller {
             $result = $this->exame->listarautocompletepaciente($_GET['term']);
         } else {
             $result = $this->exame->listarautocompletepaciente();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nome;
+            $retorno['itens'] = $item->telefone;
+            $retorno['celular'] = $item->celular;
+            $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
+            $retorno['id'] = $item->paciente_id;
+            $retorno['endereco'] = $item->logradouro . " - " . $item->numero;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function pacientecpf() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['term'])) {
+            $result = $this->exame->listarautocompletepacientecpf($_GET['term']);
+        } else {
+            $result = $this->exame->listarautocompletepacientecpf();
         }
         foreach ($result as $item) {
             $retorno['value'] = $item->nome;
