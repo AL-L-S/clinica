@@ -1253,12 +1253,12 @@ class Exame extends BaseController {
     function lancarcreditoexamependente($exames_id, $sala_id, $agenda_exames_id) {
         $verificar = $this->exame->lancarcreditoexamependente($exames_id, $sala_id, $agenda_exames_id);
         if ($verificar == -1) {
-            $data['mensagem'] = 'Erro ao finalizar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            $data['mensagem'] = 'Erro ao lançar credito. Opera&ccedil;&atilde;o cancelada.';
         } else {
-            $data['mensagem'] = 'Sucesso ao finalizar o Exame.';
+            $data['mensagem'] = 'Sucesso ao lançar credito.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/exame/listarexamerealizando", $data);
+        redirect(base_url() . "ambulatorio/exame/listarexamependente", $data);
     }
 
     function carregarcancelamentoexamecredito($exames_id, $sala_id, $agenda_exames_id) {

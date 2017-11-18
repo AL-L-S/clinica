@@ -7303,7 +7303,15 @@ class exame_model extends Model {
             $this->db->set('situacao', 'CANCELADO');
             $this->db->where('agenda_exames_id', $agenda_exames_id);
             $this->db->update('tb_agenda_exames');
-
+            
+            
+            $this->db->set('data_cancelamento', $horario);
+            $this->db->set('operador_cancelamento', $operador_id);
+            $this->db->set('cancelada', 't');
+            $this->db->set('situacao', 'CANCELADO');
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_exames');
+        
             $this->db->set('agenda_exames_id', $agenda_exames_id);
             $this->db->set('paciente_id', $return[0]->paciente_id);
             $this->db->set('procedimento_tuss_id', $return[0]->procedimento_tuss_id);
@@ -7313,7 +7321,6 @@ class exame_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_ambulatorio_atendimentos_cancelamento');
-
 
             return 0;
         } catch (Exception $exc) {
