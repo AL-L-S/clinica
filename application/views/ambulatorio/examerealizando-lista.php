@@ -106,13 +106,22 @@
                                     <!--                                        impressaolaudo -->
                                 </td>
                                 
-                                <? if ($perfil_id == 1) { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                <? if ($perfil_id == 1) { 
+                                    if($item->agrupador_pacote_id == ''){?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                             <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
                                                 Cancelar
                                             </a></div>
-                                    </td>
-                                <? } ?>
+                                        </td>
+                                    <?} else { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link_new">
+                                                <a target="_blank" href="<?= base_url() ?>ambulatorio/exame/pacotecancelamento/<?= $item->sala_id ?>/<?= $item->guia_id ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?> ">
+                                                Cancelar Pacote
+                                            </a></div>
+                                        </td>
+                                <? } 
+                                
+                                    }?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/voltarexame/<?= $item->exames_id ?>/<?= $item->sala_id ?>/<?= $item->agenda_exames_id ?> ">
                                             Voltar

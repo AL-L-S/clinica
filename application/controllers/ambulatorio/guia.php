@@ -905,9 +905,41 @@ class Guia extends BaseController {
                     if($tipo != 'AGRUPADOR'){
                         $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual);
                     }
+                    
+                    else{
+                        // Cria um agrupador para o pacote
+                        $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
+                        
+                        // Traz os procedimentos desse pacote bem como o valor
+                        $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
+                        
+                        /* Caso a pessoa tenha dado um valor diferenciado para o pacote, para descobrir o valor unitario,
+                         * ele vai pegar o valor total do pacote e dividir pela quantidade de procedimentos do pacote */
+                        if( $pacoteProc[0]->valor_pacote_diferenciado != 't' ){
+                            $valorTotal = 0;
+                            foreach ($pacoteProc as $value) {
+                                $valorTotal += $value->valortotal;
+                            }
+                            
+                        }
+                        
+                        foreach ($pacoteProc as $value) {
+                            
+                            if($value->valor_pacote_diferenciado != 't'){
+                                // Caso seja um valor diferenciado, ele vai descobrir o valor unitário
+                                $valor = $valorTotal / count($pacoteProc);
+                            }
+                            else{
+                                $valor = $value->valortotal;
+                            }
+                            
+                            $this->guia->gravaratendimentoagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado);
+                            
+                        }
+                    }
                 }
             }
-//            die('morreu');
+            
             redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
         }
     }
@@ -1275,6 +1307,7 @@ class Guia extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+            $data['exames_pacote'] = $this->exametemp->listarpacoteexamespaciente($ambulatorio_guia_id);
         } else {
             $data['exames'] = array();
         }

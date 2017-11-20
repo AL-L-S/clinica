@@ -179,12 +179,20 @@
                                         Chamar</a></div>
                                                                         impressaolaudo 
                             </td>-->
-                                <? if ($empresa[0]->cancelar_sala_espera == 't') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                            <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
+                                <? if ($empresa[0]->cancelar_sala_espera == 't') { 
+                                    if($item->agrupador_pacote_id == ''){?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
 
-                                            </a></div>
-                                    </td>   
+                                                </a></div>
+                                        </td>
+                                    <?} else {?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
+                                                <a target="_blank" href="<?= base_url() ?>ambulatorio/exame/esperacancelamentopacote/<?= $item->guia_id ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>">Cancelar Pacote
+
+                                                </a></div>
+                                        </td>
+                                    <? } ?>
 
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">
