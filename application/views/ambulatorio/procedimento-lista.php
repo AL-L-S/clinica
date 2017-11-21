@@ -10,16 +10,16 @@
                     </a>
                 </div>
             </td>
-            <? // $geral = $this->session->userdata('geral'); 
-//            if ($geral == 't') {?>
-<!--                <td>
+            <? $geral = $this->session->userdata('geral'); 
+            if ($geral == 't') {?>
+                <td>
                     <div class="bt_link_new">
-                        <a href="////<?php echo base_url() ?>ambulatorio/procedimento/carregaragrupadorprocedimento/0">
+                        <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregaragrupadorprocedimento/0">
                             Novo Agrupador
                         </a>
                     </div>
-                </td>-->
-            <? // } ?>
+                </td>
+            <? } ?>
             <td>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarajustevalores">

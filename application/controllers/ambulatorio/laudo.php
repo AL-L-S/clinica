@@ -341,6 +341,64 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/odontograma-form', $data);
     }
 
+    function carregaranamineseodontologia($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $situacaolaudo = @$obj_laudo->_situacaolaudo;
+        $agenda_exames_id = @$obj_laudo->_agenda_exames_id;
+        $atendimento = @$obj_laudo->_atendimento;
+        if ($atendimento != 't') {
+            $this->exame->atendimentohora($agenda_exames_id);
+        }
+        if ($situacaolaudo != 'FINALIZADO') {
+            $this->exame->atenderpacienteconsulta($exame_id);
+        }
+        $this->load->helper('directory');
+        $data['arquivos_anexados'] = directory_map("./upload/consulta/$ambulatorio_laudo_id/");
+        //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
+        if ($data['arquivos_anexados'] != false) {
+            sort($data['arquivos_anexados']);
+        }
+        $data['arquivos_paciente'] = directory_map("./upload/paciente/$paciente_id/");
+        //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
+        if ($data['arquivos_paciente'] != false) {
+            sort($data['arquivos_paciente']);
+        }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
+        $data['listarades'] = $this->laudo->listarades();
+        $data['listaradcl'] = $this->laudo->listaradcl();
+        $data['listarodes'] = $this->laudo->listarodes();
+        $data['listarodcl'] = $this->laudo->listarodcl();
+        $data['listarodeixo'] = $this->laudo->listarodeixo();
+        $data['listarodav'] = $this->laudo->listarodav();
+        $data['listaroees'] = $this->laudo->listaroees();
+        $data['listaroecl'] = $this->laudo->listaroecl();
+        $data['listaroeeixo'] = $this->laudo->listaroeeixo();
+//        var_dump($data['listaroeeixo']); die;
+        $data['listaroeav'] = $this->laudo->listaroeav();
+        $data['listaracuidadeod'] = $this->laudo->listaracuidadeod();
+        $data['listaracuidadeoe'] = $this->laudo->listaracuidadeoe();
+
+        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
+        $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
+        $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
+        $data['laudo_peso'] = $this->laudo->listarlaudospesoaltura($paciente_id, $ambulatorio_laudo_id);
+//        echo '<pre>';
+//        var_dump($data['laudo_peso']); die;
+        $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
+        $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
+        $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
+        $data['operadores'] = $this->operador_m->listarmedicos();
+        $data['mensagem'] = $messagem;
+        $data['paciente_id'] = $paciente_id;
+        $data['exame_id'] = $exame_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['procedimento_tuss_id'] = $procedimento_tuss_id;
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/laudoodontologia-form', $data);
+    }
     function carregaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
@@ -2914,6 +2972,66 @@ class Laudo extends BaseController {
         $data['procedimento_tuss_id'] = $procedimento_tuss_id;
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/laudo/carregarlaudoeco/$ambulatorio_laudo_id/$exame_id/$paciente_id/$procedimento_tuss_id/$messagem");
+    }
+
+    function gravaranamineseodontologia($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id) {
+
+        $this->laudo->gravaranamineseodontologia($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
+
+        $servicoemail = $this->session->userdata('servicoemail');
+        if ($servicoemail == 't') {
+
+            $dados = $this->laudo->listardadoservicoemail($ambulatorio_laudo_id, $exame_id);
+            if ($dados['enviado'] != 't') {
+                $this->load->library('My_phpmailer');
+                $mail = new PHPMailer(true);
+
+                $config['protocol'] = 'smtp';
+                $config['smtp_host'] = 'ssl://smtp.gmail.com';
+                $config['smtp_port'] = '465';
+                $config['smtp_user'] = 'stgsaude@gmail.com';
+                $config['smtp_pass'] = 'saude123';
+                $config['validate'] = TRUE;
+                $config['mailtype'] = 'html';
+                $config['charset'] = 'utf-8';
+                $config['newline'] = "\r\n";
+
+                $mail->setLanguage('br');                             // Habilita as saídas de erro em Português
+                $mail->CharSet = 'UTF-8';                             // Habilita o envio do email como 'UTF-8'
+                $mail->SMTPDebug = 3;                               // Habilita a saída do tipo "verbose"
+                $mail->isSMTP();                                      // Configura o disparo como SMTP
+                $mail->Host = 'smtp.gmail.com';                       // Especifica o enderço do servidor SMTP da Locaweb
+                $mail->SMTPAuth = true;                               // Habilita a autenticação SMTP
+                $mail->Username = 'stgsaude@gmail.com';                    // Usuário do SMTP
+                $mail->Password = 'saude123';                   // Senha do SMTP
+                $mail->SMTPSecure = 'ssl';                            // Habilita criptografia TLS | 'ssl' também é possível
+                $mail->Port = 465;                                    // Porta TCP para a conexão
+                $mail->From = $dados['empresaEmail'];             // Endereço previamente verificado no painel do SMTP
+                $mail->FromName = $dados['razaoSocial'];                        // Nome no remetente
+                $mail->addAddress($dados['pacienteEmail']);                            // Acrescente um destinatário
+                $mail->isHTML(true);                                  // Configura o formato do email como HTML
+                $mail->Subject = $dados['razaoSocial'] . " agradece sua presença.";
+                $mail->Body = $dados['mensagem'];
+
+                //                $mail->AddAttachment("./upload/nfe/$solicitacao_cliente_id/validada/" . $notafiscal[0]->chave_nfe . '-danfe.pdf', $notafiscal[0]->chave_nfe . '-danfe.pdf');
+
+                if (!$mail->Send()) {
+                    $mensagem = "Erro: " . $mail->ErrorInfo;
+                } else {
+                    $mensagem = "Email enviado com sucesso!";
+                }
+
+                $this->laudo->setaemailparaenviado($ambulatorio_laudo_id);
+            }
+        }
+
+        $data['exame_id'] = $exame_id;
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_tuss_id'] = $procedimento_tuss_id;
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id) {

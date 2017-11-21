@@ -165,9 +165,10 @@ class procedimento_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             
             $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('codigo', '');
             $this->db->set('grupo', 'AGRUPADOR');
             $this->db->set('agrupador', 't');
+            $this->db->set('codigo', '');
+            $this->db->set('qtde', 1);
             
             if( $_POST['txtprocedimentotussid'] == '0' || $_POST['txtprocedimentotussid'] == ''){
                 $this->db->set('data_cadastro', $horario);
@@ -281,6 +282,16 @@ class procedimento_model extends Model {
                             ');
         $this->db->from('tb_ambulatorio_grupo');
         $this->db->where("tipo", 'ESPECIALIDADE');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listargruposprocedimentoplano() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome,
+                            ');
+        $this->db->from('tb_ambulatorio_grupo');
         $this->db->orderby("nome");
         $return = $this->db->get();
         return $return->result();

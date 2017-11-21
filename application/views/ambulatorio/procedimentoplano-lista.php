@@ -12,16 +12,16 @@
                     </a>
                 </div>
             </td>
-            <? // $geral = $this->session->userdata('geral'); 
-//            if ($geral == 't') {?>
-<!--                <td>
+            <? $geral = $this->session->userdata('geral'); 
+            if ($geral == 't') {?>
+                <td>
                     <div class="bt_link_new">
-                        <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarprocedimentoplanoagrupador/0">
+                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoagrupador/0">
                             Novo Agrupador
                         </a>
                     </div>
-                </td>-->
-            <? // } ?>
+                </td>
+            <? } ?>
             <td>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarmultiplosprocedimentoplano" target="_blank">
@@ -38,7 +38,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento Convenio</a></h3>
         <div>
-            <? $grupo = $this->procedimento->listargrupos(); 
+            <? $grupo = $this->procedimento->listargruposprocedimentoplano(); 
                $convenio = $this->convenio->listardados(); ?>
             <table>
                 <thead>
@@ -159,29 +159,45 @@
 
 
                                 <? if ($perfil_id != 10) { ?>
-
-                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                        <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');"
-                                           href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
-                                            Excluir
-                                        </a>
-            <!--                                    href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id; ?>"-->
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"> 
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/<?= $item->procedimento_convenio_id ?>');">
-                                            Editar
-                                        </a>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoformapagamento/<?= $item->procedimento_convenio_id ?>');">
-                                            Pagamento
-                                        </a>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanosessao/<?= $item->procedimento_convenio_id ?>');">
-                                            Sessão
-                                        </a>
-                                    </td>
+                                    <? if ($item->agrupador != 't') { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                            <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');"
+                                               href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
+                                                Excluir
+                                            </a>
+                <!--                                    href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id; ?>"-->
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"> 
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/<?= $item->procedimento_convenio_id ?>');">
+                                                Editar
+                                            </a>
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoformapagamento/<?= $item->procedimento_convenio_id ?>');">
+                                                Pagamento
+                                            </a>
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanosessao/<?= $item->procedimento_convenio_id ?>');">
+                                                Sessão
+                                            </a>
+                                        </td>
+                                        
+                                    <? } 
+                                    else { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="80px;"> </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="80px;"> </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                            <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
+                                                Excluir
+                                            </a>
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"> 
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoagrupador/<?= $item->procedimento_convenio_id ?>');">
+                                                Editar
+                                            </a>
+                                        </td>
+                                    <? } ?>
 
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">
@@ -241,7 +257,7 @@
     $(function () {
         $("#accordion").accordion();
         $("#procedimento").chosen({
-            width: '20%'
+            width: '100%'
         });
     });
     

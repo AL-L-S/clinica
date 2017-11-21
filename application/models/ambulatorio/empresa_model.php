@@ -855,6 +855,13 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('recomendacao_configuravel', 'f');
                 }
+                
+                if (isset($_POST['recomendacao_obrigatorio'])) {
+                    $this->db->set('recomendacao_obrigatorio', 't');
+                } else {
+                    $this->db->set('recomendacao_obrigatorio', 'f');
+                }
+                
                 if (isset($_POST['botao_ativar_sala'])) {
                     $this->db->set('botao_ativar_sala', 't');
                 } else {
@@ -914,6 +921,11 @@ class empresa_model extends Model {
                     $this->db->set('recomendacao_configuravel', 't');
                 } else {
                     $this->db->set('recomendacao_configuravel', 'f');
+                }
+                if (isset($_POST['recomendacao_obrigatorio'])) {
+                    $this->db->set('recomendacao_obrigatorio', 't');
+                } else {
+                    $this->db->set('recomendacao_obrigatorio', 'f');
                 }
                 if (isset($_POST['botao_ativar_sala'])) {
                     $this->db->set('botao_ativar_sala', 't');
@@ -1011,7 +1023,8 @@ class empresa_model extends Model {
                                ep.procedimento_excecao,
                                ep.calendario_layout,
                                ep.botao_ativar_sala,
-                               ep.recomendacao_configuravel');
+                               ep.recomendacao_configuravel,
+                               ep.recomendacao_obrigatorio');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -1077,6 +1090,7 @@ class empresa_model extends Model {
             $this->_ordem_chegada = $return[0]->ordem_chegada;
             $this->_calendario_layout = $return[0]->calendario_layout;
             $this->_recomendacao_configuravel = $return[0]->recomendacao_configuravel;
+            $this->_recomendacao_obrigatorio = $return[0]->recomendacao_obrigatorio;
             $this->_botao_ativar_sala = $return[0]->botao_ativar_sala;
             $this->_oftamologia = $return[0]->oftamologia;
             $this->_cancelar_sala_espera = $return[0]->cancelar_sala_espera;

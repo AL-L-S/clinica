@@ -49,7 +49,7 @@
     ?>
 
     <div >
-        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravaranaminese/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>" method="post">
+        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravaranamineseodontologia/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>" method="post">
             <div >
                 <input type="hidden" name="guia_id" id="guia_id" class="texto01"  value="<?= @$obj->_guia_id; ?>"/>
                 <fieldset>
@@ -115,8 +115,15 @@
                         </td>
                     <td>
                         <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
-                        <!--                                        impressaolaudo -->
                     
+                    </td>
+                    
+                    <td>
+                        <div class="bt_link_new">
+                            <a href="<?= base_url() ?>ambulatorio/laudo/caregarodontograma/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>">
+                                Odontograma
+                            </a>
+                        </div>
                     </td>
                     
                         
@@ -1500,14 +1507,6 @@
     });
     //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
     $('.jqte-test').jqte();
-
-
-
-
-
-
-
-
 
 </script>
 

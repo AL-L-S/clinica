@@ -527,6 +527,7 @@ class exame_model extends Model {
                             e.agenda_exames_id,
                             e.sala_id,
                             ae.inicio,
+                            ae.agrupador_pacote_id,
                             e.guia_id,
                             e.procedimento_tuss_id,
                             e.data_cadastro,
@@ -907,6 +908,7 @@ class exame_model extends Model {
                             ae.observacoes,
                             an.nome as sala,
                             ae.faturado,
+                            ae.agrupador_pacote_id,
                             c.dinheiro,
                             p.nome as paciente,
                             p.nascimento,
@@ -6592,6 +6594,168 @@ class exame_model extends Model {
         }
     }
 
+    function cancelarpacoterealizando() {
+        try {
+            $this->db->set('ativo', 't');
+            $this->db->where('exame_sala_id', $_POST['txtsala_id']);
+            $this->db->update('tb_exame_sala');
+            
+            $this->db->select('ae.agenda_exames_id, ae.procedimento_tuss_id');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('ae.agrupador_pacote_id', $_POST['txtagrupador_id']);
+            $proc = $this->db->get()->result();
+            
+            foreach ($proc as $value) {
+                
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                
+                $this->db->set('paciente_id', null);
+                $this->db->set('procedimento_tuss_id', null);
+                $this->db->set('guia_id', null);
+                $this->db->set('situacao', "LIVRE");
+                $this->db->set('observacoes', "");
+                $this->db->set('valor', NULL);
+                $this->db->set('ativo', 't');
+                $this->db->set('convenio_id', null);
+                $this->db->set('autorizacao', null);
+                $this->db->set('operador_atualizacao', null);
+                $this->db->set('confirmado', 'f');
+                $this->db->set('data_cancelamento', $horario);
+                $this->db->set('operador_cancelamento', $operador_id);
+                $this->db->set('cancelada', 't');
+                $this->db->set('situacao', 'CANCELADO');
+                $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
+                $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+                $this->db->where('agenda_exames_id', $value->agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
+
+
+                $this->db->set('agenda_exames_id', $value->agenda_exames_id);
+                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+                $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
+                $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+                $empresa_id = $this->session->userdata('empresa_id');
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_ambulatorio_atendimentos_cancelamento');
+                
+            }
+
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function esperacancelarpacote() {
+        try {
+            
+            $this->db->select('ae.agenda_exames_id, ae.procedimento_tuss_id');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('ae.agrupador_pacote_id', $_POST['txtagrupador_id']);
+            $proc = $this->db->get()->result();
+            
+            foreach ($proc as $value) {
+                
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                
+                $this->db->set('paciente_id', null);
+                $this->db->set('procedimento_tuss_id', null);
+                $this->db->set('guia_id', null);
+                $this->db->set('situacao', "LIVRE");
+                $this->db->set('observacoes', "");
+                $this->db->set('valor', NULL);
+                $this->db->set('ativo', 't');
+                $this->db->set('convenio_id', null);
+                $this->db->set('autorizacao', null);
+                $this->db->set('operador_atualizacao', null);
+                $this->db->set('confirmado', 'f');
+                $this->db->set('data_cancelamento', $horario);
+                $this->db->set('operador_cancelamento', $operador_id);
+                $this->db->set('cancelada', 't');
+                $this->db->set('situacao', 'CANCELADO');
+                $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
+                $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+                $this->db->where('agenda_exames_id', $value->agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
+
+
+                $this->db->set('agenda_exames_id', $value->agenda_exames_id);
+                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+                $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
+                $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+                $empresa_id = $this->session->userdata('empresa_id');
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_ambulatorio_atendimentos_cancelamento');
+                
+            }
+
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function cancelarpacote() {
+        try {
+            
+            $this->db->select('ae.agenda_exames_id, ae.procedimento_tuss_id');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('ae.agrupador_pacote_id', $_POST['txtagrupador_id']);
+            $proc = $this->db->get()->result();
+            
+            foreach ($proc as $value) {
+                
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                
+                $this->db->set('paciente_id', null);
+                $this->db->set('procedimento_tuss_id', null);
+                $this->db->set('guia_id', null);
+                $this->db->set('situacao', "LIVRE");
+                $this->db->set('observacoes', "");
+                $this->db->set('valor', NULL);
+                $this->db->set('ativo', 't');
+                $this->db->set('convenio_id', null);
+                $this->db->set('autorizacao', null);
+                $this->db->set('operador_atualizacao', null);
+                $this->db->set('confirmado', 'f');
+                $this->db->set('data_cancelamento', $horario);
+                $this->db->set('operador_cancelamento', $operador_id);
+                $this->db->set('cancelada', 't');
+                $this->db->set('situacao', 'CANCELADO');
+                $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
+                $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+                $this->db->where('agenda_exames_id', $value->agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
+
+
+                $this->db->set('agenda_exames_id', $value->agenda_exames_id);
+                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+                $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
+                $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+                $empresa_id = $this->session->userdata('empresa_id');
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_ambulatorio_atendimentos_cancelamento');
+                
+            }
+
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function cancelarespera() {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -6900,6 +7064,66 @@ class exame_model extends Model {
 //            echo '<pre>';
 //            var_dump($valor_credito);
 //            die;
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function creditocancelamentopacote() {
+        try {
+
+            $this->db->select('ae.agenda_exames_id');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('ae.agrupador_pacote_id', $_POST['txtagrupador_id']);
+            $proc = $this->db->get()->result();
+            
+            foreach( $proc as $item ){
+                $this->db->select('ae.agenda_exames_id, 
+                                   ae.paciente_id,
+                                   ae.procedimento_tuss_id,
+                                   ae.valor1,
+                                   ae.valor2,
+                                   ae.valor3,
+                                   ae.valor4,
+                                   ae.forma_pagamento,
+                                   ae.forma_pagamento2,
+                                   ae.forma_pagamento3,
+                                   ae.forma_pagamento4');
+                $this->db->from('tb_agenda_exames ae');
+                $this->db->where('ae.agenda_exames_id', $item->agenda_exames_id);
+                $this->db->where('(ae.forma_pagamento = 1000 OR ae.forma_pagamento2 = 1000 OR ae.forma_pagamento3 = 1000 OR ae.forma_pagamento4 = 1000)');
+                $credito = $this->db->get()->result();
+                
+                if (count($credito) > 0) {
+
+                    if ($credito[0]->forma_pagamento == 1000) {
+                        $valor_credito = $credito[0]->valor1;
+                    } elseif ($credito[0]->forma_pagamento2 == 1000) {
+                        $valor_credito = $credito[0]->valor2;
+                    } elseif ($credito[0]->forma_pagamento3 == 1000) {
+                        $valor_credito = $credito[0]->valor3;
+                    } else {
+                        $valor_credito = $credito[0]->valor4;
+                    }
+
+                    $this->db->set('valor', $valor_credito);
+                    $this->db->set('procedimento_convenio_id', $credito[0]->procedimento_tuss_id);
+                    $this->db->set('paciente_id', $credito[0]->paciente_id);
+                    $this->db->set('forma_pagamento_id', 1000);
+                    $this->db->set('data', date("Y-m-d"));
+
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+                    $empresa_id = $this->session->userdata('empresa_id');
+
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->set('empresa_id', $empresa_id);
+
+                    $this->db->insert('tb_paciente_credito');
+                }
             }
             return 0;
         } catch (Exception $exc) {

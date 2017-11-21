@@ -26,7 +26,12 @@ class login_model extends Model {
         $this->db->where('p.ativo = true');
         $return = $this->db->get()->result();
 
-        $this->db->select('e.*, ep.procedimento_excecao, ep.calendario_layout, ep.recomendacao_configuravel, ep.botao_ativar_sala');
+        $this->db->select('e.*, 
+                           ep.procedimento_excecao, 
+                           ep.calendario_layout, 
+                           ep.recomendacao_configuravel, 
+                           ep.recomendacao_obrigatorio, 
+                           ep.botao_ativar_sala');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
 //        
@@ -60,6 +65,7 @@ class login_model extends Model {
             $procedimento_excecao = $retorno[0]->procedimento_excecao;
             $calendario_layout = $retorno[0]->calendario_layout;
             $recomendacao_configuravel = $retorno[0]->recomendacao_configuravel;
+            $recomendacao_obrigatorio = $retorno[0]->recomendacao_obrigatorio;
             $botao_ativar_sala = $retorno[0]->botao_ativar_sala;
         } else {
             $empresanome = "";
@@ -115,6 +121,7 @@ class login_model extends Model {
                 'procedimento_excecao' => $procedimento_excecao,
                 'calendario_layout' => $calendario_layout,
                 'recomendacao_configuravel' => $recomendacao_configuravel,
+                'recomendacao_obrigatorio' => $recomendacao_obrigatorio,
                 'botao_ativar_sala' => $botao_ativar_sala,
                 'empresa' => $empresanome
             );

@@ -1,8 +1,5 @@
 --16/11/2017
 
-
-
-
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
 DECLARE
@@ -35,6 +32,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
+
 -- Dia 17/11/2017
 
 CREATE OR REPLACE FUNCTION insereValor()
@@ -68,6 +66,29 @@ CREATE TABLE ponto.tb_procedimentos_agrupados_ambulatorial
 
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN agrupador boolean DEFAULT false;
 
+-- Dia 18/11/2017
+ALTER TABLE ponto.tb_procedimento_convenio ADD COLUMN agrupador boolean DEFAULT false;
+ALTER TABLE ponto.tb_procedimento_convenio ADD COLUMN valor_pacote_diferenciado boolean DEFAULT false;
+
+-- Dia 20/11/2017
+CREATE TABLE ponto.tb_agrupador_pacote_temp
+(
+  agrupador_pacote_temp_id serial NOT NULL,
+  qtde_procedimentos integer,
+  valor_pacote numeric(10,2),
+  valor_diferenciado boolean,
+  procedimento_agrupador_id integer,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  CONSTRAINT tb_agrupador_pacote_temp_id_pkey PRIMARY KEY (agrupador_pacote_temp_id)
+);
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN agrupador_pacote_id integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN pacote_diferenciado boolean;
+
+-- Dia 21/11/2017
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN recomendacao_obrigatorio boolean DEFAULT false;
 
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$

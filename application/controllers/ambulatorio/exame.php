@@ -952,6 +952,31 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/matmedcancelamento-form', $data);
     }
 
+    function pacotecancelamento($sala_id, $guia_id, $paciente_id, $procedimento_agrupador_id) {
+        $data['motivos'] = $this->motivocancelamento->listartodos();
+        $data['guia_id'] = $guia_id;
+        $data['sala_id'] = $sala_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_agrupador_id'] = $procedimento_agrupador_id;
+        $this->loadView('ambulatorio/cancelamentopacote-form', $data);
+    }
+
+    function esperacancelamentopacote($guia_id, $paciente_id, $procedimento_agrupador_id) {
+        $data['motivos'] = $this->motivocancelamento->listartodos();
+        $data['guia_id'] = $guia_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_agrupador_id'] = $procedimento_agrupador_id;
+        $this->loadView('ambulatorio/esperacancelamentopacote-form', $data);
+    }
+
+    function atendimentocancelamentopacote($guia_id, $paciente_id, $procedimento_agrupador_id) {
+        $data['motivos'] = $this->motivocancelamento->listartodos();
+        $data['guia_id'] = $guia_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_agrupador_id'] = $procedimento_agrupador_id;
+        $this->loadView('ambulatorio/atendimentocancelamentopacote-form', $data);
+    }
+    
     function guiacancelamento($agenda_exames_id, $paciente_id, $procedimento_tuss_id) {
         $data['motivos'] = $this->motivocancelamento->listartodos();
         $data['agenda_exames_id'] = $agenda_exames_id;
@@ -1079,6 +1104,54 @@ class Exame extends BaseController {
             }
         } else {
             $data['mensagem'] = 'Erro ao cancelar o Exame. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function cancelarpacoterealizando() {
+        if ($this->session->userdata('perfil_id') != 12) {
+            $credito = $this->exame->creditocancelamentopacote();
+            $verificar = $this->exame->cancelarpacoterealizando();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Pacote. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Pacote.';
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao cancelar o Pacote. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function esperacancelarpacote() {
+        if ($this->session->userdata('perfil_id') != 12) {
+            $credito = $this->exame->creditocancelamentopacote();
+            $verificar = $this->exame->esperacancelarpacote();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Pacote. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Pacote.';
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao cancelar o Pacote. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function cancelarpacote() {
+        if ($this->session->userdata('perfil_id') != 12) {
+            $credito = $this->exame->creditocancelamentopacote();
+            $verificar = $this->exame->cancelarpacote();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Pacote. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Pacote.';
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao cancelar o Pacote. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
