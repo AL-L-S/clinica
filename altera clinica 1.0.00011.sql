@@ -87,3 +87,5 @@ CREATE TABLE ponto.tb_agrupador_pacote_temp
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN agrupador_pacote_id integer;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN pacote_diferenciado boolean;
 
+-- Dia 21/11/2017
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN recomendacao_obrigatorio boolean DEFAULT false;

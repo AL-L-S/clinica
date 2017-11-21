@@ -337,6 +337,12 @@
                             <input type="checkbox" id="recomendacao_configuravel" name="recomendacao_configuravel" <? if (@$obj->_recomendacao_configuravel == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
+                            <label title="Ativando essa flag, ao adcionar ou autorizar um(a) novo(a) exame/consulta o campo recomendação é obrigatorio.">Tornar a recomendação Obrigatorio.</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="recomendacao_obrigatorio" name="recomendacao_obrigatorio" <? if (@$obj->_recomendacao_obrigatorio == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
                             <label title="Ativando essa flag, o manter indicação irá aparecer nas configurações.">Botão de reativar sala.</label>
                         </dt>
                         <dd>

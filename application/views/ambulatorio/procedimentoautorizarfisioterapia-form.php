@@ -1,3 +1,4 @@
+<? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
     <div class="bt_link_new" style="width: 150pt">
@@ -166,7 +167,7 @@
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select name="indicacao[<?= $i; ?>]" id="indicacao" class="size1" >
+                                    <select name="indicacao[<?= $i; ?>]" id="indicacao<?= $i ?>" class="size1" >
                                         <option value=''>Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
@@ -280,11 +281,19 @@
                                                                     $("#sala<?= $b; ?>").prop('required', true);
                                                                     $("#convenio<?= $b; ?>").prop('required', true);
                                                                     $("#procedimento<?= $b; ?>").prop('required', true);
+                                                                    
+                                                                    <? if ( $recomendacao_obrigatorio == 't' ){ ?>
+                                                                        $("#indicacao<?= $b; ?>").prop('required', true);
+                                                                    <? } ?>
                                                                 } else {
                                                                     $("#medico<?= $b; ?>").prop('required', false);
                                                                     $("#sala<?= $b; ?>").prop('required', false);
                                                                     $("#convenio<?= $b; ?>").prop('required', false);
                                                                     $("#procedimento<?= $b; ?>").prop('required', false);
+                                                                    
+                                                                    <? if ( $recomendacao_obrigatorio == 't' ){ ?>
+                                                                        $("#indicacao<?= $b; ?>").prop('required', false);
+                                                                    <? } ?>
                                                                 }
                                                             });
 

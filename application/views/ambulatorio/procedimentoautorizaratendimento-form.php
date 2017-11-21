@@ -1,3 +1,4 @@
+<? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
     <div class="bt_link_new" style="width: 150pt">
@@ -164,7 +165,7 @@
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select name="indicacao[<?= $i; ?>]" id="indicacao" class="size1" >
+                                    <select name="indicacao[<?= $i; ?>]" id="indicacao<?= $i; ?>" class="size1" >
                                         <option value=''>Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
@@ -178,7 +179,14 @@
                                         ?> 
                                     </select>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" ><input type="text" name="ordenador" class="texto01"/></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                    <select name="ordenador" id="ordenador" class="size1" >
+                                        <option value='1' >Normal</option>
+                                        <option value='2' >Prioridade</option>
+                                        <option value='3' >Urgência</option>
+
+                                    </select>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" ><input type="checkbox" name="confimado[<?= $i; ?>]" id="checkbox<?= $i; ?>"/> <input type="hidden" name="agenda_exames_id[<?= $i; ?>]" value="<?= $agenda_exame_id; ?>" /></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= substr(@$item->medico, 0, 12); ?> <br><?= substr(@$item->procedimento, 0, 12); ?></td>
                             </tr>
@@ -309,12 +317,18 @@
                                         $("#convenio<?= $b; ?>").prop('required', true);
                                         $("#qtde<?= $b; ?>").prop('required', true);
                                         $("#procedimento<?= $b; ?>").prop('required', true);
+                                        <? if ( $recomendacao_obrigatorio == 't' ){ ?>
+                                            $("#indicacao<?= $b; ?>").prop('required', true);
+                                        <? } ?>
                                     } else {
                                         $("#medico_id<?= $b; ?>").prop('required', false);
                                         $("#sala<?= $b; ?>").prop('required', false);
                                         $("#convenio<?= $b; ?>").prop('required', false);
                                         $("#qtde<?= $b; ?>").prop('required', false);
                                         $("#procedimento<?= $b; ?>").prop('required', false);
+                                        <? if ( $recomendacao_obrigatorio == 't' ){ ?>
+                                            $("#indicacao<?= $b; ?>").prop('required', false);
+                                        <? } ?>
                                     }
                                 });
 

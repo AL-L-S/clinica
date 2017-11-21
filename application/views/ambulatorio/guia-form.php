@@ -178,7 +178,8 @@
                                     </select>
                                 </td>
                                 <td  width="50px;">
-                                    <select name="indicacao" id="indicacao" class="size1" >
+                                    <? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
+                                    <select name="indicacao" id="indicacao" class="size1" <?= $recomendacao_obrigatorio == 't' ? 'required' : ''?>>
                                         <option value='' >Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
