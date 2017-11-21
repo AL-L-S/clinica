@@ -347,7 +347,7 @@ RETURNS text AS $$
 DECLARE
     resultado integer;
 BEGIN
-    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'ODONTOLOGIA');
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'ODONTOLOGIA' AND tipo = 'ESPECIALIDADE');
     IF resultado = 0 THEN 
 	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
         VALUES ('ODONTOLOGIA', 'ESPECIALIDADE');

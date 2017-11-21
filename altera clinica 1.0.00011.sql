@@ -67,3 +67,20 @@ CREATE TABLE ponto.tb_procedimentos_agrupados_ambulatorial
 );
 
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN agrupador boolean DEFAULT false;
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'ODONTOLOGIA' AND tipo = 'ESPECIALIDADE');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+        VALUES ('ODONTOLOGIA', 'ESPECIALIDADE');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();
