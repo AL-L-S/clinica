@@ -6156,6 +6156,27 @@ class exame_model extends Model {
 //            var_dump($_POST['txttipo']);
 //            die;
             
+            $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
+            $this->db->from('tb_procedimento_percentual_medico ppm');
+            $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
+            $this->db->where("ppm.procedimento_tuss_id", $_POST['txtprocedimento_tuss_id']);
+            $this->db->where("ppmc.medico", $_POST['txtmedico']);
+            $retorno = $this->db->get()->result();
+            
+            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento ){
+                if( date("d") > $retorno[0]->dia_recebimento ) {
+                    $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                }
+                else{
+                    $d = date( "Y-m-" ) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                }
+            }
+            else {
+                $dataProducao = $data;
+            }
+            
             if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO' || $_POST['txttipo'] == 'MATERIAL') {
 
 //                $this->db->set('ativo', 'f');
@@ -6183,7 +6204,7 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $data);
+                $this->db->set('data', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6247,7 +6268,7 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $data);
+                $this->db->set('data', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6312,7 +6333,7 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $data);
+                $this->db->set('data', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6376,7 +6397,7 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $data);
+                $this->db->set('data', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);

@@ -91,7 +91,7 @@
 
     $(function() {
         $( "#txtDirecao" ).autocomplete({
-            source: "<?=  base_url()?>index?c=autocomplete&m=uoteto",
+            source: "<?=  base_url()?>index.php?c=autocomplete&m=uoteto",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtDirecao" ).val( ui.item.label );

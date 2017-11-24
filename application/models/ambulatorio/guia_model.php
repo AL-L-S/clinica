@@ -3806,6 +3806,7 @@ class guia_model extends Model {
                             ae.desconto_ajuste4,
                             ae.data,
                             al.data as data_laudo,
+                            al.data_producao,
                             ae.data_antiga,
                             ae.sala_pendente,
                             e.situacao,
@@ -3852,7 +3853,23 @@ class guia_model extends Model {
                             pi.nome as indicacao,
                             ops.nome as medicosolicitante,
                             c.nome as convenio,
-                            c.iss");
+                            c.iss,
+                            ae.valor1,
+                            ae.forma_pagamento2,
+                            ae.valor2,
+                            ae.forma_pagamento3,
+                            ae.valor3,
+                            ae.numero_sessao,
+                            ae.forma_pagamento4,
+                            ae.valor4,
+                            f.nome as forma_pagamento_1,
+                            f.cartao as cartao1,
+                            f2.nome as forma_pagamento_2,
+                            f2.cartao as cartao2,
+                            f3.nome as forma_pagamento_3,
+                            f3.cartao as cartao3,
+                            f4.nome as forma_pagamento_4,
+                            f4.cartao as cartao4");
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = ae.indicacao', 'left');
@@ -3866,6 +3883,10 @@ class guia_model extends Model {
         $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = ae.forma_pagamento', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = ae.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = ae.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
         $this->db->where('e.cancelada', 'false');
 //        $this->db->where('ae.valor_medico is not null');
         $this->db->where('ae.paciente_id is not null');
@@ -3905,8 +3926,8 @@ class guia_model extends Model {
 
 
 
-        $this->db->where("al.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("al.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("al.data_producao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("al.data_producao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
 
         $this->db->orderby('al.medico_parecer1');
@@ -9031,32 +9052,9 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_financeiro_contaspagar');
-
-            for ($i = 0; $i < count($_POST['valor_recebimento']); $i++) {
-
-                $tempoRecebimento = $_POST['tempo_recebimento'][$i];
-
-                if (date('d') <= $_POST['dia_faturamento'][$i]) {
-                    $data_pagamento = date("Y-m-") . $_POST['dia_faturamento'][$i];
-                } else {
-                    $data_pagamento = date("Y-m-", strtotime("+1 month")) . $_POST['dia_faturamento'][$i];
-                }
-
-                $data_pagamento = date("Y-m-d", strtotime("+{$tempoRecebimento} days", strtotime($data_pagamento)));
-
-                $this->db->set('data', $data_pagamento);
-                $this->db->set('valor', $_POST['valor_recebimento'][$i]);
-                $this->db->set('tipo', $_POST['tipo']);
-                $this->db->set('credor', $_POST['nome']);
-                $this->db->set('conta', $_POST['conta']);
-                $this->db->set('classe', $_POST['classe']);
-                $this->db->set('observacao', $_POST['observacao']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_financeiro_contaspagar');
-            }
-        } else {
+            
+        } 
+        else {
             if ($data_contaspagar == 't') {
                 $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
             } else {
@@ -9073,31 +9071,6 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saidas');
-
-            for ($i = 0; $i < count($_POST['valor_recebimento']); $i++) {
-
-                $tempoRecebimento = $_POST['tempo_recebimento'][$i];
-
-                if (date('d') <= $_POST['dia_faturamento'][$i]) {
-                    $data_pagamento = date("Y-m-") . $_POST['dia_faturamento'][$i];
-                } else {
-                    $data_pagamento = date("Y-m-", strtotime("+1 month")) . $_POST['dia_faturamento'][$i];
-                }
-
-                $data_pagamento = date("Y-m-d", strtotime("+{$tempoRecebimento} days", strtotime($data_pagamento)));
-
-                $this->db->set('data', $data_pagamento);
-                $this->db->set('valor', $_POST['valor_recebimento'][$i]);
-                $this->db->set('tipo', $_POST['tipo']);
-                $this->db->set('nome', $_POST['nome']);
-                $this->db->set('conta', $_POST['conta']);
-                $this->db->set('classe', $_POST['classe']);
-                $this->db->set('observacao', $_POST['observacao']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_saidas');
-            }
         }
     }
 

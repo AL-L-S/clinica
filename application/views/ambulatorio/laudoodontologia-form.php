@@ -83,48 +83,48 @@
                 </fieldset>
                 <table>
                     <tr>
-                    <td >
-                        <div class="bt_link_new">
-                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
-                                Chamar</a>
-                        </div>
-                    </td>
-                    
-                    <td>
-                        <div class="bt_link_new">
-                            <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
-                                Editar</a></div>
-                    </td>
-                    
-                        <? if (@$obj->_status != 'FINALIZADO') { ?>
+                        <td >
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
+                                    Chamar</a>
+                            </div>
+                        </td>
+
                         <td>
                             <div class="bt_link_new">
-                                <a href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
-                                    Pendente
+                                <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
+                                    Editar</a></div>
+                        </td>
+
+                            <? if (@$obj->_status != 'FINALIZADO') { ?>
+                            <td>
+                                <div class="bt_link_new">
+                                    <a href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
+                                        Pendente
+                                    </a>
+                                </div>
+                            </td>
+                            <? } ?>
+
+                            <td>
+                                <div class="bt_link_new">
+                                    <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
+                                        Encaminhar
+                                    </a>
+                                </div>
+                            </td>
+                        <td>
+                            <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
+
+                        </td>
+
+                        <td>
+                            <div class="bt_link_new">
+                                <a href="<?= base_url() ?>ambulatorio/laudo/caregarodontograma/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>">
+                                    Odontograma
                                 </a>
                             </div>
                         </td>
-                        <? } ?>
-                        
-                        <td>
-                            <div class="bt_link_new">
-                                <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
-                                    Encaminhar
-                                </a>
-                            </div>
-                        </td>
-                    <td>
-                        <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
-                    
-                    </td>
-                    
-                    <td>
-                        <div class="bt_link_new">
-                            <a href="<?= base_url() ?>ambulatorio/laudo/caregarodontograma/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>">
-                                Odontograma
-                            </a>
-                        </div>
-                    </td>
                     
                         
                     </tr>

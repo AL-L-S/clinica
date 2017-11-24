@@ -116,7 +116,7 @@
                         <th class="tabela_header" width="60px;">Agenda</th>
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">OBS</th>
-                        <th class="tabela_header" colspan="5"><center>A&ccedil;&otilde;es</center></th>
+                        <th class="tabela_header" colspan="8"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -260,7 +260,15 @@
                                                 Arquivos</a></div>
                                             <?} ?>
                                     </td>
-                                    
+                                    <? if ($perfil_id == 1) { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
+                                                    Cancelar
+                                                </a></div>
+                                        </td>
+                                    <? } else { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
+                                    <? } ?>
                                             
         
 <!--                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
@@ -274,9 +282,8 @@
 <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                         <a></a></font>
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                        <a></a></font>
-                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
 <? } ?>
                             </tr>
 
@@ -287,7 +294,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="11">
+                        <th class="tabela_footer" colspan="15">
 <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

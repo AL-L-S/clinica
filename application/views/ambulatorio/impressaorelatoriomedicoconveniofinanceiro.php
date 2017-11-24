@@ -94,14 +94,17 @@ switch ($MES) {
                         <th class="tabela_header" ><font size="-1">ISS</th>
                         <th class="tabela_header" ><font size="-1">Valor Liquido</th>
                     <? } ?>
+                    <? if ($_POST['forma_pagamento'] == 'SIM') { ?>
+                        <th class="tabela_header" ><font size="-1">F. Pagamento Dinheiro</th>
+                        <th class="tabela_header" ><font size="-1">F. Pagamento Cartao</th>
+                    <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
                     <? if ($_POST['promotor'] == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor Promotor</th>
                         <th class="tabela_header" width="80px;"><font size="-1">Valor Promotor</th>   
                         <th class="tabela_header" width="80px;"><font size="-1">Promotor</th>   
-                    <? }
-                    ?>
+                    <? } ?>
 
                     <? if ($mostrar_taxa == 'SIM') { ?>
                         <th class="tabela_header" ><font size="-1">Taxa Administração</th>
@@ -116,6 +119,8 @@ switch ($MES) {
                 <tbody>
                     <?php
                     $dados = array();
+                    $vlrTotalDinheiro = 0;
+                    $vlrTotalCartao = 0;
                     $i = 0;
                     $valor = 0;
                     $valortotal = 0;
@@ -179,7 +184,32 @@ switch ($MES) {
                                 ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
                                 <?
-                            }
+                            } 
+                            if ($_POST['forma_pagamento'] == 'SIM') { 
+                                $vlrDinheiro = 0;
+                                $vlrCartao = 0;
+                                
+                                if ($item->cartao1 != 'f'){ $vlrDinheiro += $item->valor1; }
+                                else { $vlrCartao += $item->valor1; }
+                                
+                                if ($item->cartao2 != 'f'){ $vlrDinheiro += $item->valor2; }
+                                else { $vlrCartao += $item->valor2; }
+                                
+                                if ($item->cartao3 != 'f'){ $vlrDinheiro += $item->valor3; }
+                                else { $vlrCartao += $item->valor3; }
+                                
+                                if ($item->cartao4 != 'f'){ $vlrDinheiro += $item->valor4; }
+                                else { $vlrCartao += $item->valor4; }
+                                
+                                
+                                $vlrTotalDinheiro += $vlrDinheiro;
+                                $vlrTotalCartao += $vlrCartao;
+                                
+                                ?>
+                                <td style='text-align: right;'><font size="-2"><?= number_format($vlrDinheiro, 2, ",", "."); ?></td>
+                                <td style='text-align: right;'><font size="-2"><?= number_format($vlrCartao, 2, ",", "."); ?></td>
+                            <? }
+                            
                             // EM CASO DE A CONDIÇÃO ABAIXO SER VERDADEIRA. O VALOR DO PROMOTOR VAI SER DESCONTADO DO MÉDICO
                             // NÃO DÁ CLINICA
 
@@ -272,15 +302,13 @@ switch ($MES) {
                             }
 
 
-
-                            if ($item->dia_recebimento != "" && $item->tempo_recebimento != "") {
-                                $valor_recebimento = $valor_recebimento + $perc;
-                                $tempoRecebimento[] = array(
-                                    "valor_recebimento" => $perc,
-                                    "dia_faturamento" => $item->dia_recebimento,
-                                    "tempo_recebimento" => $item->tempo_recebimento
-                                );
-                            }
+                            
+                            @$tempoRecebimento[@$item->medico_parecer1] = array(
+                                "medico" => @$item->medico,
+                                "valor_recebimento" => @$tempoRecebimento[@$item->medico_parecer1]["valor_recebimento"] + $perc,
+                                "data_recebimento" => $item->data_producao,
+                            );
+                            
                             ?>
 
                             <td style='text-align: right;'><font size="-2"><?= number_format($valorpercentualmedico, 2, ",", "") . $simbolopercebtual ?></td>
@@ -328,16 +356,19 @@ switch ($MES) {
                         <td ><font size="-1">TOTAL</td>
                         <td  colspan="2" style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
                         <? if ($clinica == 'SIM') { ?>
-                            <td colspan="5" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
+                            <td colspan="2" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
                         <? } else { ?>
-                            <td colspan="4" style='text-align: right;'><font size="-1">&nbsp;</td>
+                            <td colspan="2" style='text-align: right;'><font size="-1">&nbsp;</td>
                         <? } ?>
+                        <td colspan="2" style='text-align: right;'><font size="-1">T. DINHEIRO: <?= number_format($vlrTotalDinheiro, 2, ",", "."); ?></td>
+                        <td colspan="3" style='text-align: right;'><font size="-1">T. CARTÃO: <?= number_format($vlrTotalCartao, 2, ",", "."); ?></td>
                         <? if ($_POST['promotor'] == 'SIM') { ?>
-                            <td colspan="3" style='text-align: right;'><font size="-1">TOTAL PROMOTOR: <?= number_format($totalpercpromotor, 2, ",", "."); ?></td>
-
+                            <td colspan="2" style='text-align: right;'><font size="-1">TOTAL PROMOTOR: <?= number_format($totalpercpromotor, 2, ",", "."); ?></td>
+                            <td colspan="2" style='text-align: right;'
+                                title="Diferença entre o valor do médico e o valor do promotor."><font size="-1">DIFERENÇA: <?= number_format($totalperc - $totalpercpromotor, 2, ",", "."); ?></td>
                         <? }
                         ?>
-                        <td colspan="3" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
+                        <td colspan="2" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -399,6 +430,7 @@ switch ($MES) {
                     $percpromotorhome = 0;
                     $totalpercpromotor = 0;
                     $totalgeralpromotor = 0;
+                    
                     foreach ($relatoriohomecare as $item) :
                         $i++;
                         $procedimentopercentual = $item->procedimento_convenio_id;
@@ -684,19 +716,19 @@ switch ($MES) {
                         <input type="hidden" class="texto3" name="classe" value="<?= $medico[0]->classe; ?>" readonly/>
                         <input type="hidden" class="texto3" name="observacao" value="<?= "Período " . substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) . " até " . substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4) . " médico: " . $medico[0]->operador; ?>" readonly/>
                         <input type="hidden" class="texto3" name="data" value="<?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) ?>" readonly/>
-                        <input type="hidden" class="texto3" name="valor" value="<?= $resultado - $valor_recebimento; ?>" readonly/>
+                        <input type="hidden" class="texto3" name="valor" value="<?= $resultado; ?>" readonly/>
                         <?
                         $j = 0;
-                        if (count(@$tempoRecebimento) > 0) {
-                            foreach ($tempoRecebimento as $value) {
-                                foreach ($value as $key => $item) {
-                                    ?>
-                                    <input type="hidden" name="<?= $key; ?>[<?= $j; ?>]" value="<?= $item; ?>"/>  
+//                        if (count(@$tempoRecebimento) > 0) {
+//                            foreach ($tempoRecebimento as $value) {
+//                                foreach ($value as $key => $item) {
+//                                    ?>
+                                    <!--<input type="hidden" name="//<?= $key; ?>[<?= $j; ?>]" value="<?= $item; ?>"/>-->  
                                     <?
-                                }
-                                $j++;
-                            }
-                        }
+//                                }
+//                                $j++;
+//                            }
+//                        }
                         if ($medico != 0 && $recibo == 'NAO') {
                             ?> 
                             <br>
@@ -712,8 +744,7 @@ switch ($MES) {
                                 <input type="text" class="texto3" name="data_escolhida" id="data_escolhida" value=""/>
                                 <br>
                                 <br>  
-                            <? }
-                            ?>
+                            <? } ?>
 
                             <!--<br>-->
                             <button type="submit" name="btnEnviar">Producao medica</button>
@@ -824,32 +855,22 @@ switch ($MES) {
             <? if ($tabela_recebimento == "SIM") { ?>
                 <table border="1">
                     <tr>
-                        <td colspan="2">PREVISÃO DE RECEBIMENTO</td>
+                        <td colspan="3" align="center">PREVISÃO DE RECEBIMENTO</td>
                     </tr>
                     <tr>
+                        <td>Médico</td>
                         <td>Valor</td>
                         <td>Data Prevista</td>
-                    </tr>
-                    <tr>
-                        <td><?= ($resultado - $valor_recebimento) ?></td>
-                        <td><?= date("d/m/Y") ?></td>
                     </tr>
                     <?
 //                    var_dump($tempoRecebimento);die;
                     foreach ($tempoRecebimento as $value) {
                         $vlr = $value['valor_recebimento'];
-                        $tmpRecebimento = $value['tempo_recebimento'];
-
-                        if (date('d') <= $value['dia_faturamento']) {
-                            $dt_recebimento = date("Y-m-") . $value['dia_faturamento'];
-                        } else {
-                            $dt_recebimento = date("Y-m-", strtotime("+1 month")) . $value['dia_faturamento'];
-                        }
-
-                        $dt_recebimento = date("d/m/Y", strtotime("+{$tmpRecebimento} days", strtotime($dt_recebimento)));
+                        $dt_recebimento = date("d/m/Y", strtotime($value['data_recebimento']));
                         ?>
                         <tr>
-                            <td><?= $vlr ?></td>
+                            <td><?= $value['medico'] ?></td>
+                            <td><?= number_format($vlr, 2, ",", "."); ?></td>
                             <td><?= $dt_recebimento ?></td>
                         </tr> 
                     <? } ?>

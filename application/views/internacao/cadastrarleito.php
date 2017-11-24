@@ -86,7 +86,7 @@
 
     $(function() {
         $( "#txtEnfermaria" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=enfermaria",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=enfermaria",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtEnfermaria" ).val( ui.item.label );

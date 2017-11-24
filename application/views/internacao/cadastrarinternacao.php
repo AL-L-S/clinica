@@ -226,7 +226,7 @@ endif;
 
     $(function() {
         $( "#txtoperador" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=operador",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=operador",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtoperador" ).val( ui.item.label );
@@ -242,7 +242,7 @@ endif;
 
     $(function() {
         $( "#txtprocedimento" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=procedimentotuss",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotuss",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtprocedimento" ).val( ui.item.label );
@@ -258,7 +258,7 @@ endif;
 
     $(function() {
         $( "#txtcid1" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cid1",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtcid1" ).val( ui.item.label );
@@ -274,7 +274,7 @@ endif;
 
     $(function() {
         $( "#txtcid2" ).autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=cid2",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid2",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtcid2" ).val( ui.item.label );

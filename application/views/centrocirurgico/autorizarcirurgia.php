@@ -86,7 +86,7 @@
 
     $(function () {
         $("#medicoagendado").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=operador",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=operador",
             minLength: 2,
             focus: function (event, ui) {
                 $("#medicoagendado").val(ui.item.label);

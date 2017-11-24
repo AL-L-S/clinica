@@ -89,3 +89,9 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN pacote_diferenciado boolean;
 
 -- Dia 21/11/2017
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN recomendacao_obrigatorio boolean DEFAULT false;
+
+-- Dia 23/11/2017
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_producao date;
+
+-- QUERY PARA ATUALIZAR O VALOR DA DATA_PRODUÇÃO NO REL. PROD MÉDICO
+-- UPDATE ponto.tb_ambulatorio_laudo SET data_producao=data WHERE data_producao IS NULL;
