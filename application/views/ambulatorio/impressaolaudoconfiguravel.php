@@ -23,7 +23,7 @@ if (file_exists("./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg"
 }
 
 //echo $assinatura;
-$corpo = $impressaolaudo[0]->texto;
+@$corpo = $impressaolaudo[0]->texto;
 $corpo = str_replace("_paciente_", $laudo['0']->paciente, $corpo);
 $corpo = str_replace("_sexo_", $laudo['0']->sexo, $corpo);
 $corpo = str_replace("_nascimento_", date("d/m/Y", strtotime($laudo['0']->nascimento)), $corpo);

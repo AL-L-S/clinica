@@ -1175,7 +1175,9 @@ class procedimentoplano_model extends Model {
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->set('valor', $_POST['valor']);
             $this->db->set('percentual', $_POST['percentual']);
+            if($_POST['revisor'] != ''){
             $this->db->set('revisor', $_POST['revisor']);
+            }
             if ($_POST['dia_recebimento'] != '') {
                 $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
             }

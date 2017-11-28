@@ -90,7 +90,10 @@ class laudo_model extends Model {
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
         $this->db->join('tb_acesso a', 'a.perfil_id = o.perfil_id', 'left');
         $this->db->where('o.operador_id', $medico);
-        $this->db->where('o.senha', md5($senha));
+        $perfil_id = $this->session->userdata('perfil_id');
+        if ($perfil_id != 1) {
+            $this->db->where('o.senha', md5($senha));
+        }
         $this->db->where('o.ativo = true');
         $this->db->where('p.ativo = true');
         $return = $this->db->get()->result();
@@ -115,12 +118,15 @@ class laudo_model extends Model {
         $this->db->from('tb_operador o');
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
         $this->db->join('tb_acesso a', 'a.perfil_id = o.perfil_id', 'left');
-        $this->db->where('o.operador_id', $medico);
-        $this->db->where('o.senha', md5($senha));
+        $perfil_id = $this->session->userdata('perfil_id');
+        if ($perfil_id != 1) {
+//        $this->db->where('o.senha', md5($senha));
+//        $this->db->where('o.operador_id', $medico);
+        }
         $this->db->where('o.ativo = true');
         $this->db->where('p.ativo = true');
         $return = $this->db->get()->result();
-
+//        var_dump($return); die;
         if (isset($return) && count($return) > 0) {
             return 1;
         } else {
@@ -2073,6 +2079,8 @@ class laudo_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->where('il.exame_id', $agenda_exames_id);
         $this->db->where('il.laudo_status', 'PUBLICADO');
+        $this->db->where('o.ativo', 't');
+        $this->db->where('op.ativo', 't');
         $this->db->orderby('il.integracao_laudo_id');
         $query = $this->db->get();
         $return = $query->result();
@@ -2935,7 +2943,7 @@ class laudo_model extends Model {
                 $this->db->set('oftamologia_ad_cilindrico', $_POST['oftamologia_ad_cilindrico']);
             }
             /////////////////////////// FIM DA OFTAMOLOGIA////////////////////////////////////////////
-            
+
             $this->db->set('texto', $_POST['laudo']);
             if ($_POST['txtCICPrimario'] != '') {
                 $this->db->set('cid', $_POST['txtCICPrimario']);
@@ -3131,7 +3139,7 @@ class laudo_model extends Model {
                 $this->db->set('oftamologia_ad_cilindrico', $_POST['oftamologia_ad_cilindrico']);
             }
             /////////////////////////// FIM DA OFTAMOLOGIA////////////////////////////////////////////
-            
+
             $this->db->set('texto', $_POST['laudo']);
             if ($_POST['txtCICPrimario'] != '') {
                 $this->db->set('cid', $_POST['txtCICPrimario']);
@@ -3193,10 +3201,10 @@ class laudo_model extends Model {
             return -1;
         }
     }
-    
+
     function listarreceitaoculosimpressao($ambulatorio_laudo_id) {
 
-      $this->db->select('ag.ambulatorio_laudo_id,
+        $this->db->select('ag.ambulatorio_laudo_id,
                           ag.paciente_id,
                           ag.data_cadastro,
                           ag.exame_id,
@@ -3253,21 +3261,21 @@ class laudo_model extends Model {
                           p.nascimento,
                           p.sexo,
                           o.carimbo as medico_carimbo');
-      $this->db->from('tb_ambulatorio_laudo ag');
-  //        $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
-      $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
-      $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
-      $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
-      $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
-      $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
-      $this->db->join('tb_operador me', 'me.operador_id = ae.medico_solicitante', 'left');
-      $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
-      $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
-      $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-      $this->db->where("ag.ambulatorio_laudo_id", $ambulatorio_laudo_id);
-      $return = $this->db->get();
-      return $return->result();
-  }
+        $this->db->from('tb_ambulatorio_laudo ag');
+        //        $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
+        $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_operador me', 'me.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("ag.ambulatorio_laudo_id", $ambulatorio_laudo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function gravarreceituario() {
         try {

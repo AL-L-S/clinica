@@ -105,3 +105,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
+
+
+DELETE FROM ponto.tb_ambulatorio_grupo
+ WHERE nome = 'ODONTOLOGIA' AND tipo = 'ODONTOLOGIA';
+

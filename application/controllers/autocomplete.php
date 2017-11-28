@@ -185,6 +185,14 @@ class Autocomplete extends Controller {
         $result = $this->exame->listaragendamentoweb()->limit($_GET['limit'], $_GET['pagina'])->get()->result();
         echo json_encode($result);
     }
+    
+    function listarexameagendamentowebcpf() {
+        header('Access-Control-Allow-Origin: *');
+//        var_dump($_GET); die;
+        $result = $this->exame->listaragendamentowebcpf()->limit($_GET['limit'], $_GET['pagina'])->get()->result();
+//        var_dump($result); die;
+        echo json_encode($result);
+    }
 
     function listargrupoagendamentoweb() {
 //        var_dump($_GET); die;
