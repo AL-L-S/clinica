@@ -6402,6 +6402,7 @@ class guia_model extends Model {
         $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
         $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->where('fp.ativo', 't');
         $this->db->orderby('fp.nome');
         $return = $this->db->get();
         $retorno = $return->result();
@@ -6410,6 +6411,7 @@ class guia_model extends Model {
             $this->db->select('fp.forma_pagamento_id,
                             fp.nome as nome');
             $this->db->from('tb_forma_pagamento fp');
+            $this->db->where('ativo', 't');
             $this->db->orderby('fp.nome');
             $return = $this->db->get();
             return $return->result();

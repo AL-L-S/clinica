@@ -11,7 +11,7 @@ if (file_exists("./upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".
 
     <div class="teste" style="background-size: contain;height: 100%;width: 90%;background-image: url(<?= $caminho_background ?>);">
         <? if (@$receituario != NULL) { ?>
-                <center><p style="text-align: center; font-weight: bold;">Receita Médica</p></center>
+                <center><p style="text-align: center; font-weight: bold;"></p></center>
         <? } ?>
         <br>
         <? //if (isset($atestado) && !$atestado) { ?>

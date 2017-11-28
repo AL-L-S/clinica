@@ -184,7 +184,7 @@
                         </table>
                     </fieldset>
                 </div>
-                <? if ($empresapermissao[0]->oftamologia == 't'&& @$obj->_grupo == 'OFTALMOLOGIA') { ?>
+                <? if ($empresapermissao[0]->oftamologia == 't' && @$obj->_grupo == 'OFTALMOLOGIA') { ?>
                     <script>
                         $(function () {
                             $("#tabs").tabs();

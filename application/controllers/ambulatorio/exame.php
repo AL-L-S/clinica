@@ -1029,7 +1029,7 @@ class Exame extends BaseController {
                     $data['mensagem'] = 'Sucesso ao gravar o Exame.';
                 }
 //                $this->gerarcr($agenda_exames_id); //clinica humana
-                $this->gerardicom($laudo_id); //clinica ronaldo
+                //$this->gerardicom($laudo_id); //clinica ronaldo
                 $empresa_id = $this->session->userdata('empresa_id');
                 $empresa = $this->guia->listarempresa($empresa_id);
                 if ($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA') {

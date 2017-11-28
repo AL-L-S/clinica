@@ -139,6 +139,10 @@
                                     </td>
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
+                                            Imprimir</a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $item->ambulatorio_laudo_id ?>');">
                                             Arquivos</a></div>
                                 </td>
@@ -172,7 +176,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
 //alert('teste_parada');
- if ($('#especialidade').val() != '') {
+        if ($('#especialidade').val() != '') {
             $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
                 var options = '<option value=""></option>';
                 var slt = '';

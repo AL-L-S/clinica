@@ -1,4 +1,5 @@
 <?
+//var_dump(@$obj->_ambulatorio_laudo_id); die;
 $pacs = $this->empresa->listarpacs();
 if (count($pacs) > 0) {
 

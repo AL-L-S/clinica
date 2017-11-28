@@ -2899,6 +2899,7 @@ class Laudo extends BaseController {
         if ($_POST['situacao'] == 'FINALIZADO') {
             $validar = $this->laudo->validar();
             //$validar = $this->laudo->validar();
+//            var_dump($validar); die;
 
             if ($validar == '1') {
                 $gravar = $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id, $procedimento_tuss_id);

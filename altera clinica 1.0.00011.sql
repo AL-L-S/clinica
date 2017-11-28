@@ -90,6 +90,26 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN pacote_diferenciado boolean;
 -- Dia 21/11/2017
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN recomendacao_obrigatorio boolean DEFAULT false;
 
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'ODONTOLOGIA' AND tipo = 'ESPECIALIDADE');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+        VALUES ('ODONTOLOGIA', 'ESPECIALIDADE');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();
+
+
+DELETE FROM ponto.tb_ambulatorio_grupo
+ WHERE nome = 'ODONTOLOGIA' AND tipo = 'ODONTOLOGIA';
+
 -- Dia 23/11/2017
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_producao date;
 
