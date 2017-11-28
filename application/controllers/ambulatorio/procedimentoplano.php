@@ -94,8 +94,7 @@ class Procedimentoplano extends BaseController {
 
     function agrupadoradicionar($agrupador_id) {
         $data['agrupador'] = $this->procedimentoplano->buscaragrupador($agrupador_id);
-        $data['procedimentos'] = $this->procedimentoplano->listarprocedimento();
-//        die;
+        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconvenioagrupadorcirurgico(@$data['agrupador'][0]->convenio_id);
         $data['relatorio'] = $this->procedimentoplano->listarprocedimentosagrupador($agrupador_id);
         $this->loadView('ambulatorio/agrupador-adicionar', $data);
     }

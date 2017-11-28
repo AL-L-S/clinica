@@ -427,8 +427,8 @@ class procedimentoplano_model extends Model {
 
     function buscaragrupador($agrupador_id) {
         $this->db->select('agrupador_id,
-                           nome                            
-                            ');
+                           nome,
+                           convenio_id');
         $this->db->from('tb_agrupador_procedimento_nome');
         $this->db->where("ativo", 't');
         $this->db->where('agrupador_id', $agrupador_id);
@@ -589,8 +589,14 @@ class procedimentoplano_model extends Model {
                 $this->db->where('agrupador_id', $agrupador_id);
                 $this->db->update('tb_agrupador_procedimento_nome');
             }
-
             $erro = $this->db->_error_message();
+            
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('agrupador_id', $agrupador_id);
+            $this->db->update('tb_procedimentos_agrupados');
+
             if (trim($erro) != "") // erro de banco
                 return 0;
             else
@@ -602,22 +608,33 @@ class procedimentoplano_model extends Model {
 
     function gravaragrupadoradicionar() {
         try {
-
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
-            $this->db->set('agrupador_id', $_POST['agrupador_id']);
-            $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_procedimentos_agrupados');
-
-
-            $erro = $this->db->_error_message();
-            if (trim($erro) != "") // erro de banco
+            
+            $this->db->select();
+            $this->db->from('tb_procedimentos_agrupados');
+            $this->db->where('agrupador_id', $_POST['agrupador_id']);
+            $this->db->where('procedimento_tuss_id', $_POST['procedimento']);
+            $this->db->where("ativo", 't');
+            $query = $this->db->get()->result();
+            
+            if( count($query) == 0 ){
+                $this->db->set('agrupador_id', $_POST['agrupador_id']);
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_procedimentos_agrupados');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return false;
+                else
+                    return true;
+            }
+            else{
                 return false;
-            else
-                return true;
+            }
+
         } catch (Exception $exc) {
             return false;
         }
@@ -667,6 +684,20 @@ class procedimentoplano_model extends Model {
         } catch (Exception $exc) {
             return 0;
         }
+    }
+
+    function listarprocedimentoconvenioagrupadorcirurgico($convenio_id) {
+        $this->db->select('pc.procedimento_convenio_id,
+                            pt.nome as procedimento,
+                            pt.codigo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pc.convenio_id", $convenio_id);
+        $this->db->where("pt.grupo", "CIRURGICO");
+        $this->db->orderby('pt.nome');
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listarprocedimento() {

@@ -641,7 +641,7 @@ switch ($MES) {
                         </tr>
                         <tr>
                             <td>TOTAL</td>
-                            <td style='text-align: right;'><?= number_format($totalperc + $taxaAdministracao, 2, ",", "."); ?></td>
+                            <td style='text-align: right;'><?= number_format(@$totalperc + @$taxaAdministracao, 2, ",", "."); ?></td>
                         </tr>
 
                         <tr>
@@ -655,7 +655,7 @@ switch ($MES) {
                             </tr>
                             <?
                         }
-                        $resultado = $totalperc - $irpf - $taxaAdministracao;
+                        $resultado = @$totalperc - @$irpf - @$taxaAdministracao;
                     } else {
                         ?>
                         <hr>

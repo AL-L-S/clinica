@@ -94,4 +94,58 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN recomendacao_obrigatorio bool
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_producao date;
 
 -- QUERY PARA ATUALIZAR O VALOR DA DATA_PRODUÇÃO NO REL. PROD MÉDICO
--- UPDATE ponto.tb_ambulatorio_laudo SET data_producao=data WHERE data_producao IS NULL;
+UPDATE ponto.tb_ambulatorio_laudo SET data_producao=data WHERE data_producao IS NULL;
+
+-- Dia 24/11/2017
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN hospital_id integer;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN guia_id integer;
+
+-- Dia 25/11/2017
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN data_atualizacao timestamp without time zone;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN operador_atualizacao integer;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN leito character varying(100);
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN via character varying(100);
+
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN hospital_id integer;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN equipe_montada boolean DEFAULT false;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN orcamento_completo boolean DEFAULT false;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN liberada boolean DEFAULT false;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN data_liberacao timestamp without time zone;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN operador_liberacao integer;
+ALTER TABLE ponto.tb_solicitacao_cirurgia_procedimento ADD COLUMN horario_especial boolean DEFAULT false;
+ALTER TABLE ponto.tb_solicitacao_cirurgia_procedimento ADD COLUMN valor numeric(10,2);
+
+DROP TABLE ponto.tb_solicitacao_cirurgia_orcamento;
+
+CREATE TABLE ponto.tb_solicitacao_orcamento
+(
+  solicitacao_orcamento_id serial NOT NULL,
+  solicitacao_cirurgia_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_solicitacao_orcamento_pkey PRIMARY KEY (solicitacao_orcamento_id)
+);
+
+CREATE TABLE ponto.tb_solicitacao_orcamento_equipe
+(
+  solicitacao_orcamento_equipe_id serial NOT NULL,
+  solicitacao_orcamento_id integer,
+  solicitacao_cirurgia_procedimento_id integer,
+  operador_responsavel integer,
+  funcao integer,
+  valor numeric(10,2),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_solicitacao_orcamento_equipe_pkey PRIMARY KEY (solicitacao_orcamento_equipe_id)
+);
+
+-- Dia 27/11/2017
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia_procedimento ADD COLUMN desconto numeric(10,2);
+ALTER TABLE ponto.tb_hospital ADD COLUMN valor_taxa numeric(10,2);

@@ -1,123 +1,118 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->      
-    <fieldset >
-        <legend>Fazer Orçamento</legend>
-        <div>
-            <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaorcamento" method="post">
-                <div style="padding-bottom: 50px;">
-                    <input type="hidden" name="solicitacao_id" id="solicitacao_id" value="<?= @$solicitacao_id; ?>"/>
-                    <input type="hidden" name="convenio_id" id="convenio_id" value="<?= @$convenio_id; ?>"/>
-<!--                    <div>
-                        <label>Função</label>
-                        <select name="funcao" id="funcao" class="texto03" required>
-                            <option value="">SELECIONE</option>
-                            <? foreach ($funcoes as $value) { ?>
-                                <option value="<?= $value->funcao_cirurgia_id ?>"><?= $value->nome ?></option>
-                            <? } ?>
-                        </select>
-                    </div>-->
-                    <div>
-                        <!--                        <label>Médico</label>
-                                                <select name="cirurgiao1" id="cirurgiao1" class="texto04" required>
-                                                    <option value="">SELECIONE</option>
-                        <? foreach ($medicos as $value) { ?>
-                                                                <option value="<?= $value->operador_id ?>"
-                            <?
-                            if (isset($cirurgiao->operador_responsavel) && $cirurgiao->operador_responsavel == $value->operador_id) :
-                                echo 'selected';
-                            endif;
-                            ?>><?= $value->nome ?></option>
-                        <? } ?>
-                                                </select>-->
-                        <input type="hidden" name="cirurgiao1_id"  value="<?= @$cirurgiao->solicitacao_cirurgia_orcamento_id ?>"/>
-                    </div>
-                    <div>
-                        <label>Procedimento</label>
-                        <select name="procedimento1" id="procedimento1" class="texto04" required>
-                            <option value="">SELECIONE</option>
-                            <? foreach ($procedimentos as $value) { ?>
-                                <option value="<?= $value->procedimento_tuss_id ?>"<?
-                                if (isset($cirurgiao->procedimento_tuss_id) && $cirurgiao->procedimento_tuss_id == $value->procedimento_tuss_id) :
-                                    echo 'selected';
-                                endif;
-                                ?>
-                                        ><?= $value->codigo ?> - <?= $value->nome ?> - <?= $value->convenio ?></option>
-                                    <? } ?>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Valor(R$)</label>
-                        <input name="valor1" id="valor1" class="texto02" alt="decimal" value="<?= @$cirurgiao->valor ?>"/>
-                    </div>
-                    <br/>
-                    <div style="margin-top: 10px;">
-                        <textarea rows="3" cols="60" placeholder="obs..." name="obs"></textarea>
-                    </div>
-                </div> 
-                <hr/>
-                <div>
-                    <button type="submit" name="btnEnviar">Adicionar</button>
-                </div>
+    <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaorcamento" method="post">
+        <fieldset >
+            <legend>Dados da Solicitacao</legend>
 
-            </form>
-        </div>
-    </fieldset>
-    
-    <div class="bt_link" style="width: 250px; ">
-        <a style="width: 200px;" onclick="javascript: return confirm('Deseja realmente FINALIZAR O ORÇAMENTO? Após esta ação não será possível editar o orçamento.');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/finalizarorcamento/<?= $solicitacao_id; ?>" style="width: 100px;">Finalizar Orçamento</a>
-    </div>      
-    <div class="bt_link">
-        <a href="#">Faturar</a>
-    </div>
-    <br>
-    <?php
-    $valor_total = 0.00;
-    if (count($procedimentos_orcamentados) > 0) {
-        ?>
+            <div>
+                <label>Paciente</label>
+                <input type="hidden" id="txtsolcitacao_id" class="texto_id" name="txtsolcitacao_id" readonly="true" value="<?= @$solicitacao_id; ?>" />
+                <input type="hidden" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" value="<?= @$solicitacao[0]->paciente_id; ?>" />
+                <input type="text" id="txtNome" required name="txtNome" class="texto10" value="<?= @$solicitacao[0]->paciente; ?>" readonly="true"/>
+            </div>
+
+            <div>
+                <label>Telefone</label>
+                <input type="text" id="telefone" class="texto02" name="telefone" value="<?= @$solicitacao[0]->telefone; ?>" readonly="true"/>
+            </div>
+            
+            <div>
+                <label>Solicitante</label>
+                <input type="text"  id="solicitante" class="texto02" name="solicitante" value="<?= @$solicitacao[0]->solicitante; ?>" readonly="true"/>
+            </div>
+            
+            <div>
+                <label>Convenio</label>
+                <input type="text"  id="convenio" class="texto02" name="convenio" value="<?= @$solicitacao[0]->convenio; ?>" readonly="true"/>
+            </div>
+            
+            <div>
+                <label>Hospital</label>
+                <input type="text"  id="hospital" class="texto02" name="hospital" value="<?= @$solicitacao[0]->hospital; ?>" readonly="true"/>
+            </div>
+
+        </fieldset>
+        
         <fieldset>
+            <legend>Criar Orçamento</legend>
+            
+<!--            <fieldset>
+                <legend>Desconto (%)</legend>
+                <div>
+                    <input type="number" id="desconto" name="desconto" value="0" step="0.01" min="0" required=""/>
+                </div>
+            </fieldset>-->
+            
+            <fieldset>
+                <legend>Via</legend>
+                <div id="via">
+                    <input type="radio" name="via" id="m" value="M" required/> <label for="m">Mesma Via</label>
+                    <input type="radio" name="via" id="d" value="D" required/> <label for="d">Via Diferente</label>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Procedimentos</legend>
+                <table id="table_agente_toxico" border="0">
+                    <thead>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th class="tabela_header">Procedimento</th>
-                        <th class="tabela_header">Valor</th>
-                        <th class="tabela_header">Obs</th>
-                        <th class="tabela_header" width="30px;" colspan="4"><center></center></th>
-                </tr>
-                </thead>
-                <tbody>
-                    <?php
+                        <tr>
+                            <th class="tabela_header">Procedimento</th>
+                            <th class="tabela_header">Valor</th>
+                            <th class="tabela_header">Quantidade</th>
+                            <th class="tabela_header">Horario Especial</th>
+                            <th class="tabela_header"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?
                     $estilo_linha = "tabela_content01";
-                    foreach ($procedimentos_orcamentados as $item) {
-                        $valor_total += $item->valor;
+                    $i = 0;
+                    foreach ($procedimentos as $item) {
                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                         ?>
-                        <tr>
-                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->procedimento; ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><?php echo number_format($item->valor, 2, ",", "."); ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><?php echo $item->observacao; ?></td>
-                            <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemorcamento/<?= $item->solicitacao_cirurgia_orcamento_id; ?>/<?= $solicitacao_id; ?>/<?= $convenio_id; ?>" class="delete">
-                                    </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="hidden" name="procedimento_convenio_id[<?= $i; ?>]" value="<?= $item->procedimento_convenio_id; ?>" />
+                                    <input type="hidden" name="cirurgia_procedimento_id[<?= $i; ?>]" value="<?= $item->solicitacao_cirurgia_procedimento_id; ?>" />
+                                    <?= $item->procedimento; ?>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="number" id="valor" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
+                                </td> 
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="text" name="qtde[<?= $i; ?>]" id="qtde" alt="integer" class="texto01" value="1" required=""/>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="checkbox" name="horEspecial[<?= $i; ?>]">
+                                </td>                            
+
+                            </tr>
+                            <?
+                            $i++;
+                        }
+                    ?>
                     </tbody>
-                <?php }
-                ?>
-                <tfoot>
-                    <tr>
-                        <th class="tabela_footer" colspan="8">
-                            TOTAL GERAL = R$ <? echo number_format($valor_total, 2, ",", "."); ?>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
+                    <tfoot>
+                        <tr>
+                            <th class="tabela_footer" colspan="4">
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table> 
+            </fieldset>
+            
+            <hr/>
+            
+            <button type="submit" name="btnEnviar">Enviar</button>
+            <button type="reset" name="btnLimpar">Limpar</button>
         </fieldset>
-    <? }
-    ?>
-
-
-
+        
+    </form>
 </div> <!-- Final da DIV content -->
+<style>
+    div#via label { color: black; font-weight: bolder; font-size: 12pt; }
+    div#via label, div#via input{ display: inline-block; }
+</style>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
@@ -131,7 +126,6 @@
                         $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
                             options = "";
                             options += j[0].valortotal;
-//                    b = options.toPrecision(2);
                             document.getElementById("valor1").value = options.replace(".", ",");
                             $('.carregando').hide();
                         });

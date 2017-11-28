@@ -204,35 +204,26 @@ class solicita_cirurgia_model extends BaseModel {
     }
 
     function carregarsolicitacaoprocedimento($convenio_id) {
-
-
-//        $this->db->select(' pt.procedimento_tuss_id,
-//                            pt.descricao');
-//        $this->db->from('tb_procedimento_tuss pt');
-//        $this->db->where('pt.ativo', 't');
-//        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
-//        $this->db->where('ag.tipo', 'EXAME');
-//
-//        $return = $this->db->get();
-//        return $return->result();
-//        
+        
         $this->db->select('pc.procedimento_convenio_id,
                            pc.valortotal,
                            pt.codigo,
                            pt.nome');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('pt.grupo', 'CIRURGICO');
         $this->db->where('pc.ativo', 'true');
         $this->db->where('pc.convenio_id', $convenio_id);
         $return = $this->db->get();
         return $return->result();
     }
 
-    function carregarsolicitacaoagrupador() {
+    function carregarsolicitacaoagrupador($convenio_id) {
 
 
         $this->db->select('an.agrupador_id, an.nome');
         $this->db->from('tb_agrupador_procedimento_nome an');
+        $this->db->where('convenio_id', $convenio_id);
         $this->db->where('an.ativo', 't');
 
         $return = $this->db->get();
@@ -394,21 +385,78 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
-    function listarprocedimentos_orcamentados($solicitacao_id) {
+    function listardadossolicitacaoautorizar($solicitacao_id) {
+        $this->db->select('sc.paciente_id,
+                           p.nome as paciente,
+                           p.celular,
+                           p.telefone,
+                           h.nome as hospital,
+                           h.valor_taxa,
+                           c.nome as convenio,
+                           o.nome as solicitante');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id', 'left');
+        $this->db->join('tb_hospital h', 'h.hospital_id = sc.hospital_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
+        $this->db->join('tb_solicitacao_orcamento so', 'so.solicitacao_cirurgia_id = sc.solicitacao_cirurgia_id', 'left');
+        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listardadossolicitacaoorcamentoimpressao($solicitacao_id) {
+        $this->db->select('sc.paciente_id,
+                           p.nome as paciente,
+                           p.celular,
+                           p.telefone,
+                           h.nome as hospital,
+                           h.valor_taxa,
+                           c.nome as convenio,
+                           o.nome as solicitante');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id', 'left');
+        $this->db->join('tb_hospital h', 'h.hospital_id = sc.hospital_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
+        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listardadossolicitacaoorcamento($solicitacao_id) {
+        $this->db->select('sc.paciente_id,
+                           p.nome as paciente,
+                           p.celular,
+                           p.telefone,
+                           h.nome as hospital,
+                           c.nome as convenio,
+                           o.nome as solicitante');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id', 'left');
+        $this->db->join('tb_hospital h', 'h.hospital_id = sc.hospital_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
+        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentosolicitacaocirurgica($solicitacao_id) {
         $this->db->select('pt.nome as procedimento,
-                           pt.procedimento_tuss_id,
                            pt.codigo,
-                           fc.nome as grau_participacao,
-                           o.nome as medico,
-                           co.valor,
-                           co.observacao,
-                           co.solicitacao_cirurgia_orcamento_id');
-        $this->db->from('tb_solicitacao_cirurgia_orcamento co');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = co.procedimento_tuss_id', 'left');
-        $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = co.grau_participacao', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = co.operador_responsavel', 'left');
-        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
-        $this->db->where('co.ativo', 't');
+                           pc.valortotal,
+                           pc.procedimento_convenio_id,
+                           scp.solicitacao_cirurgia_procedimento_id');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->join('tb_solicitacao_cirurgia_procedimento scp', 'scp.solicitacao_cirurgia_id = sc.solicitacao_cirurgia_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->where('scp.ativo', 't');
 
         $return = $this->db->get();
         return $return->result();
@@ -442,46 +490,31 @@ class solicita_cirurgia_model extends BaseModel {
     function gravarnovasolicitacao() {
 
         try {
-
+            
             $horario = date("Y-m-d H:i:s");
+            $data = date("Y-m-d");
             $operador_id = $this->session->userdata('operador_id');
-
-            //mapeando banco
+            $empresa_id = $this->session->userdata('empresa_id');
+            
+            $this->db->set('leito', $_POST['leito']);
             $this->db->set('paciente_id', $_POST['txtNomeid']);
-//            $this->db->set('procedimento_id', $_POST['procedimentoID']);
-//            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
-//            $this->db->set('procedimento_id', $_POST['procedimentoID']);
-//            $this->db->set('data_prevista', $_POST['txtdata_prevista']);
-            $this->db->set('medico_agendado', $_POST['medicoagenda']);
+            $this->db->set('medico_solicitante', $_POST['medicoagenda']);
             $this->db->set('convenio', $_POST['convenio']);
-
+            $this->db->set('hospital_id', $_POST['hospital_id']);
             if (isset($_POST['orcamento'])) {
                 $this->db->set('orcamento', 'true');
             } else {
                 $this->db->set('orcamento', 'false');
-//                $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
             }
-
-            if ($_POST['solicitacao_cirurgia_id'] == "0" || $_POST['solicitacao_cirurgia_id'] == "") {// insert
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_solicitacao_cirurgia');
-                $erro = $this->db->_error_message();
-                if (trim($erro) != "") { // erro de banco
-                    return -1;
-                }
-                $solicitacao_id = $this->db->insert_id();
-            } else { // update
-                $solicitacao_id = $_POST['solicitacao_cirurgia_id'];
-                $this->db->set('data_atualizacao', $horario);
-                $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
-                $this->db->update('tb_solicitacao_cirurgia');
-                if (trim($erro) != "") { // erro de banco
-                    return -1;
-                }
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_solicitacao_cirurgia');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return -1;
             }
-
+            
+            $solicitacao_id = $this->db->insert_id();
             return $solicitacao_id;
         } catch (Exception $exc) {
             return -1;
@@ -586,76 +619,485 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
-    function impressaoorcamento($solicitacao_id, $grau_participacao = null) {
-        $this->db->select('fc.nome as grau_participacao,
-                           sco.procedimento_tuss_id,
-                           sco.operador_responsavel,
-                           sco.valor,
-                           sco.observacao,
-                           sco.solicitacao_cirurgia_id,
-                           pt.nome as procedimento,
-                           pt.codigo,
-                           c.nome as convenio,
-                           o.nome as medico');
-        $this->db->from('tb_solicitacao_cirurgia_orcamento sco');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = sco.procedimento_tuss_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = sco.convenio_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = sco.operador_responsavel', 'left');
-        $this->db->join('tb_funcoes_cirurgia fc', 'fc.funcao_cirurgia_id = sco.grau_participacao', 'left');
-        $this->db->where('sco.ativo', 'true');
-        $this->db->where('sco.solicitacao_cirurgia_id', $solicitacao_id);
-        if (isset($grau_participacao)) {
-            $this->db->where('sco.grau_participacao', $grau_participacao);
+    function listarprocedimentoorcamentofuncao($cirurgia_procedimento_id) {
+        $this->db->select('o.nome as medico,
+                           soe.valor,
+                           gp.codigo,
+                           gp.descricao');
+        $this->db->from('tb_solicitacao_orcamento_equipe soe');
+        $this->db->join('tb_operador o', 'o.operador_id = soe.operador_responsavel', 'left');
+        $this->db->join('tb_grau_participacao gp', 'gp.grau_participacao_id = soe.funcao', 'left');
+        $this->db->where('soe.solicitacao_cirurgia_procedimento_id', $cirurgia_procedimento_id);
+        $this->db->where('soe.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function impressaoorcamento($solicitacao_id) {
+        $this->db->select('pt.nome as procedimento,
+                           scp.solicitacao_cirurgia_procedimento_id as cirurgia_procedimento_id,
+                           scp.valor');
+        $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('scp.ativo', 'true');
+        $this->db->where('scp.solicitacao_cirurgia_id', $solicitacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gravarsolicitacaorcamentoitens($orcamento_id) {
+
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            // Trazendo os procedimentos
+            $this->db->select(' horario_especial,
+                                valor,
+                                solicitacao_cirurgia_procedimento_id');
+            $this->db->from('tb_solicitacao_cirurgia_procedimento');
+            $this->db->where("ativo", 't');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
+            $this->db->orderby('valor DESC');
+            $procedimentos = $this->db->get()->result();
+            
+//            echo "<pre>";
+            
+            // Trazendo a lista com todos os integrantes da equipe cirurgica
+            $this->db->select('leito');
+            $this->db->from('tb_solicitacao_cirurgia');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
+            $solicitacao = $this->db->get()->result();
+            
+            // Trazendo a lista com todos os integrantes da equipe cirurgica
+            $this->db->select('funcao, gp.descricao, operador_responsavel');
+            $this->db->from('tb_equipe_cirurgia_operadores eco');
+            $this->db->join('tb_grau_participacao gp', 'gp.grau_participacao_id = eco.funcao', 'left');
+            $this->db->where('eco.ativo', 't');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
+            $equipe = $this->db->get()->result();
+            
+            // Trazendo o valor dos percentuais configurados
+            $this->db->select(' leito_enfermaria,
+                                leito_apartamento,
+                                mesma_via,
+                                via_diferente,
+                                horario_especial,
+                                valor,
+                                valor_base');
+            $this->db->from('tb_centrocirurgico_percentual_outros cpo');
+            $this->db->where("ativo", 't');
+            $query = $this->db->get();
+            $return = $query->result();
+            
+            foreach ($return as $value) {
+
+                if ($value->horario_especial == 't') {
+                    $horario_especial = ($value->valor / 100);
+                    continue;
+                }
+
+                if ($value->leito_enfermaria == 't') {
+                    if ($value->mesma_via == 't') {
+                        $enfermaria_mesma_via['maior'] = (float) $value->valor / 100;
+                        $enfermaria_mesma_via['base'] = (float) $value->valor_base / 100;
+                    } else {
+                        $enfermaria_via_diferente['maior'] = (float) $value->valor / 100;
+                        $enfermaria_via_diferente['base'] = (float) $value->valor_base / 100;
+                    }
+                } else {
+                    if ($value->mesma_via == 't') {
+                        $apartamento_mesma_via['maior'] = (float) $value->valor / 100;
+                        $apartamento_mesma_via['base'] = (float) $value->valor_base / 100;
+                    } else {
+                        $apartamento_via_diferente['maior'] = (float) $value->valor / 100;
+                        $apartamento_via_diferente['base'] = (float) $value->valor_base / 100;
+                    }
+                }
+            }
+            
+            $valMedico = 0;
+            
+            foreach($equipe as $value){
+                $i = 0;
+                
+                foreach ($procedimentos as $item){
+                    $valor = (float) $item->valor;
+                    $valProcedimento = ( $item->horario_especial == 't' ) ? ($valor) + ($valor * $horario_especial) : $valor;
+
+                    if ($solicitacao[0]->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
+                        if ($_POST['via'] == 'D') {// VIA DIFERENTE
+                            if ($i == 0) {
+                                $valMedicoProc = $valProcedimento * $enfermaria_via_diferente['maior'];
+                            } else {
+                                $valMedicoProc = ($valProcedimento * $enfermaria_via_diferente['base']);
+                            }
+                        } elseif ($_POST['via'] == 'M') {// MESMA VIA
+                            if ($i == 0) {
+                                $valMedicoProc = $valProcedimento * $enfermaria_mesma_via['maior'];
+                            } else {
+                                $valMedicoProc = ($valProcedimento * $enfermaria_mesma_via['base']);
+                            }
+                        }
+                    } else { //APARTAMENTO
+                        if ($_POST['via'] == 'D') {// VIA DIFERENTE
+                            if ($i == 0) {
+                                $valMedicoProc = $valProcedimento * $apartamento_via_diferente['maior'];
+                            } else {
+                                $valMedicoProc = ($valProcedimento * $apartamento_via_diferente['base']);
+                            }
+                        } elseif ($_POST['via'] == 'M') {// MESMA VIA
+                            if ($i == 0) {
+                                $valMedicoProc = $valProcedimento * $apartamento_mesma_via['maior'];
+                            } else {
+                                $valMedicoProc = $valProcedimento * $apartamento_mesma_via['base'];
+                            }
+                        }
+                    }
+
+                    //VALOR DO CIRURGIAO/ANESTESISTA
+                    $valMedico = $valMedicoProc;
+
+                    if ((int) $value->descricao != 0) {
+                        $this->db->select('valor');
+                        $this->db->from('tb_centrocirurgico_percentual_funcao');
+                        $this->db->where("funcao", $value->descricao);
+                        $query = $this->db->get();
+                        $return2 = $query->result();
+                        
+                        //DEFININDO OS VALORES
+                        $val = $valMedico * ($return2[0]->valor / 100);
+                    } else {
+                        $val = $valMedico;
+                    }
+
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+
+                    $this->db->set('operador_responsavel', $value->operador_responsavel);
+                    $this->db->set('solicitacao_orcamento_id', $orcamento_id);
+                    $this->db->set('solicitacao_cirurgia_procedimento_id', $item->solicitacao_cirurgia_procedimento_id);
+                    $this->db->set('valor', $val);
+                    $this->db->set('funcao', $value->funcao);
+                    
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_solicitacao_orcamento_equipe');
+                    
+                    $i++;
+                }
+                
+            }
+//            die;
+            return true;
+        } catch (Exception $exc) {
+            return false;
         }
-        $this->db->orderby('fc.nome');
-        $return = $this->db->get();
-        return $return->result();
     }
 
-    function listarfuncoes() {
-        $this->db->select('*');
-        $this->db->from('tb_funcoes_cirurgia');
-        $this->db->orderby('nome');
-        $return = $this->db->get();
-        return $return->result();
+    function gravarprocedimentosolicitacaocirurgica($guia_id) {
+
+        try {
+            
+            $horario = date("Y-m-d H:i:s");
+            $data = date("Y-m-d");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+            
+            $this->db->select('ag.via, ag.leito');
+            $this->db->from('tb_ambulatorio_guia ag');
+            $this->db->where("ag.ambulatorio_guia_id", $guia_id);
+            $query = $this->db->get()->result();
+            $guia = $query[0];
+            
+            // Trazendo a lista com todos os integrantes da equipe cirurgica
+            $this->db->select('funcao, gp.codigo, operador_responsavel');
+            $this->db->from('tb_equipe_cirurgia_operadores eco');
+            $this->db->join('tb_grau_participacao gp', 'gp.grau_participacao_id = eco.funcao', 'left');
+            $this->db->where('eco.ativo', 't');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
+            $equipe = $this->db->get()->result();
+            
+            // Trazendo o valor dos percentuais configurados
+            $this->db->select(' leito_enfermaria,
+                                leito_apartamento,
+                                mesma_via,
+                                via_diferente,
+                                horario_especial,
+                                valor,
+                                valor_base');
+            $this->db->from('tb_centrocirurgico_percentual_outros cpo');
+            $this->db->where("ativo", 't');
+            $query = $this->db->get();
+            $return = $query->result();
+            foreach ($return as $value) {
+
+                if ($value->horario_especial == 't') {
+                    $horario_especial = ($value->valor / 100);
+                    continue;
+                }
+
+                if ($value->leito_enfermaria == 't') {
+                    if ($value->mesma_via == 't') {
+                        $enfermaria_mesma_via['maior'] = (float) $value->valor / 100;
+                        $enfermaria_mesma_via['base'] = (float) $value->valor_base / 100;
+                    } else {
+                        $enfermaria_via_diferente['maior'] = (float) $value->valor / 100;
+                        $enfermaria_via_diferente['base'] = (float) $value->valor_base / 100;
+                    }
+                } else {
+                    if ($value->mesma_via == 't') {
+                        $apartamento_mesma_via['maior'] = (float) $value->valor / 100;
+                        $apartamento_mesma_via['base'] = (float) $value->valor_base / 100;
+                    } else {
+                        $apartamento_via_diferente['maior'] = (float) $value->valor / 100;
+                        $apartamento_via_diferente['base'] = (float) $value->valor_base / 100;
+                    }
+                }
+            }
+
+            $this->db->select('a.agenda_exames_id,
+                                a.data,
+                                a.tipo,
+                                a.horario_especial,
+                                a.procedimento_tuss_id,
+                                a.valor_total,
+                                pt.nome as procedimento,
+                                c.nome as convenio,
+                                a.observacoes');
+            $this->db->from('tb_agenda_exames a');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+            $this->db->where("a.guia_id", $guia_id);
+            $this->db->orderby("a.valor_total DESC");
+            $procedimentos = $this->db->get()->result();
+            
+            $valMedico = 0;
+            foreach($equipe as $item){
+                for ($i = 0; $i < count($procedimentos); $i++) {
+                    $valor = (float) $procedimentos[$i]->valor_total;
+                    $valProcedimento = ($procedimentos[$i]->horario_especial == 't') ? ($valor) + ($valor * $horario_especial) : $valor;
+
+                    if ($guia->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
+                        if ($guia->via == 'D') {// VIA DIFERENTE
+                            if ($i == 0) {
+                                $valMedicoProc = $valProcedimento * $enfermaria_via_diferente['maior'];
+                            } else {
+                                $valMedicoProc = ($valProcedimento * $enfermaria_via_diferente['base']);
+                            }
+                        } elseif ($guia->via == 'M') {// MESMA VIA
+                            if ($i == 0) {
+                                $valMedicoProc = $valProcedimento * $enfermaria_mesma_via['maior'];
+                            } else {
+                                $valMedicoProc = ($valProcedimento * $enfermaria_mesma_via['base']);
+                            }
+                        }
+                    } else { //APARTAMENTO
+                        if ($guia->via == 'D') {// VIA DIFERENTE
+                            if ($i == 0) {
+                                $valMedicoProc = $valProcedimento * $apartamento_via_diferente['maior'];
+                            } else {
+                                $valMedicoProc = ($valProcedimento * $apartamento_via_diferente['base']);
+                            }
+                        } elseif ($guia->via == 'M') {// MESMA VIA
+                            if ($i == 0) {
+                                $valMedicoProc = $valProcedimento * $apartamento_mesma_via['maior'];
+                            } else {
+                                $valMedicoProc = $valProcedimento * $apartamento_mesma_via['base'];
+                            }
+                        }
+                    }
+
+                    //VALOR DO CIRURGIAO/ANESTESISTA
+                    $valMedico = $valMedicoProc;
+
+                    if ((int) $item->codigo != 0) {
+                        $this->db->select('valor');
+                        $this->db->from('tb_centrocirurgico_percentual_funcao');
+                        $this->db->where("funcao", $item->codigo);
+                        $query = $this->db->get();
+                        $return2 = $query->result();
+
+                        //DEFININDO OS VALORES
+                        $val = number_format($valMedico * ($return2[0]->valor / 100), 2, '.', '');
+                    } else {
+                        $val = number_format($valMedico, 2, '.', '');
+                    }
+
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->set('operador_responsavel', $item->operador_responsavel);
+                    $this->db->set('agenda_exames_id', $procedimentos[$i]->agenda_exames_id);
+                    $this->db->set('valor', $val);
+                    $this->db->set('funcao', $item->codigo);
+                    $this->db->insert('tb_agenda_exame_equipe');
+                }
+            }
+            
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+
     }
 
+    function gravarguiasolicitacaocirurgica() {
+
+        try {
+            
+            $horario = date("Y-m-d H:i:s");
+            $data = date("Y-m-d");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+            
+            // Trazendo os procedimentos
+            $this->db->select(' horario_especial,
+                                valor,
+                                desconto,
+                                solicitacao_cirurgia_procedimento_id,
+                                procedimento_tuss_id');
+            $this->db->from('tb_solicitacao_cirurgia_procedimento');
+            $this->db->where("ativo", 't');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
+            $this->db->orderby('valor DESC');
+            $procedimentos = $this->db->get()->result();
+            
+            // Trazendo a lista com todos os integrantes da equipe cirurgica
+            $this->db->select('leito, convenio, paciente_id');
+            $this->db->from('tb_solicitacao_cirurgia');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
+            $solicitacao = $this->db->get()->result();         
+            
+            /* GRAVANDO OS PROCEDIMENTOS NA GUIA */
+            $this->db->set('via', $_POST['via']);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('equipe', 't');
+            $this->db->set('tipo', 'CIRURGICO');
+            $this->db->set('data_criacao', $data);
+            $this->db->set('leito', $solicitacao[0]->leito);
+            $this->db->set('convenio_id', $solicitacao[0]->convenio);
+            $this->db->set('paciente_id', $solicitacao[0]->paciente_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_ambulatorio_guia');            
+            $ambulatorio_guia_id = $this->db->insert_id();
+            
+            foreach ($procedimentos as $item) {
+                $this->db->set('operador_autorizacao', $operador_id);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('tipo', 'CIRURGICO');
+                $this->db->set('ativo', 'f');
+                $this->db->set('cancelada', 'f');
+                $this->db->set('confirmado', 't');
+                $this->db->set('valor', $item->valor);
+                $this->db->set('valor_total', ( $item->valor - ($item->valor * $item->desconto)/100 ) );
+                
+                if($_POST['formapamento'] != ''){
+                    $this->db->set('valor1', ( $item->valor - ($item->valor * $item->desconto)/100 ) );
+                    $this->db->set('forma_pagamento', $_POST['formapamento']);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('data_faturamento', $horario);
+                }
+                
+                $this->db->set('situacao', 'OK');
+                $this->db->set('quantidade', 1);
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
+                $this->db->set('inicio', $_POST['hora']);
+                $this->db->set('procedimento_tuss_id', $item->procedimento_tuss_id);
+                $this->db->set('guia_id', $ambulatorio_guia_id);
+                
+                if ($item->horario_especial == 't') { $this->db->set('horario_especial', 't'); }
+                else { $this->db->set('horario_especial', 'f'); }
+                
+                $this->db->set('data_autorizacao', $horario);
+                $this->db->set('paciente_id', $solicitacao[0]->paciente_id);
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_agenda_exames');
+            }
+            
+            return $ambulatorio_guia_id;
+            
+        } catch (Exception $exc) {
+            return false;
+        }
+
+    }
+
+    function autorizarsolicitacaocirurgica() {
+
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('autorizado', 't');
+            $this->db->set('via', $_POST['via']);
+            $this->db->set('data_prevista', $_POST['txtdata']);
+            $this->db->set('situacao', 'FATURAMENTO_PENDENTE');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
+            $this->db->update('tb_solicitacao_cirurgia');
+            
+            $_POST['desconto'] = (float)$_POST['desconto'];
+            
+            foreach($_POST['cirurgia_procedimento_id'] as $key => $item){
+                
+                $valor = (float) $_POST['valor'][$key];
+                $valor = $valor - ($valor * $_POST['desconto'] / 100);
+                
+                $this->db->set('horario_especial', (isset($_POST['horEspecial'][$key]) ? 't' : 'f') );
+                $this->db->set('valor', $valor);
+                $this->db->set('desconto', $_POST['desconto']);
+                $this->db->where('solicitacao_cirurgia_procedimento_id', $_POST['cirurgia_procedimento_id'][$key]);
+                $this->db->update('tb_solicitacao_cirurgia_procedimento');
+                
+            }
+            
+            return $_POST['txtsolcitacao_id'];
+        } catch (Exception $exc) {
+            return false;
+        }
+
+    }
+    
     function gravarsolicitacaorcamento() {
 
         try {
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
-            $valor1 = str_replace(".", "", $_POST['valor1']);
-            $valor1 = str_replace(",", ".", $valor1);
-//            $this->db->set('operador_responsavel', $_POST['cirurgiao1']);
-            $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
-//            $this->db->set('grau_participacao', $_POST['funcao']);
-            $this->db->set('valor', $valor1);
-            $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-            $this->db->set('observacao', $_POST['obs']);
-            $this->db->set('convenio_id', $_POST['convenio']);
+            
+            $this->db->set('via', $_POST['via']);
+            $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
+            $this->db->set('orcamento_completo', 't');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
+            $this->db->update('tb_solicitacao_cirurgia');
+            
+            $_POST['desconto'] = (float)$_POST['desconto'];
+            
+            $this->db->set('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_solicitacao_cirurgia_orcamento');
-
-            $solicitacao_cirurgia_orcamento = $this->db->insert_id();
-
-            if (isset($solicitacao_cirurgia_orcamento)) {
-                $this->db->set('data_atualizacao', $horario);
-                $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->set('situacao', 'ORCAMENTO_INCOMPLETO');
-                $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
-                $this->db->update('tb_solicitacao_cirurgia');
+            $this->db->insert('tb_solicitacao_orcamento');
+            $orcamento_id = $this->db->insert_id();
+            
+            foreach($_POST['cirurgia_procedimento_id'] as $key => $item){
+                $valor = (float) $_POST['valor'][$key];
+                
+                $this->db->set('horario_especial', (isset($_POST['horEspecial'][$key]) ? 't' : 'f') );
+                $this->db->set('valor', $valor);
+                $this->db->where('solicitacao_cirurgia_procedimento_id', $_POST['cirurgia_procedimento_id'][$key]);
+                $this->db->update('tb_solicitacao_cirurgia_procedimento');
             }
-
-
-            if (trim($erro) != "") { // erro de banco
-                return false;
-            }
-
-            return true;
+                        
+            return $orcamento_id;
         } catch (Exception $exc) {
             return false;
         }

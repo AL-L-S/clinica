@@ -1,102 +1,168 @@
-<div class="content ficha_ceatox">
-    <div>
-        <form name="form_autorizar" id="form_autorizar" action="<?= base_url() ?>centrocirurgico/centrocirurgico/autorizarcirurgia" method="post">
-            <fieldset>
-                <legend>Dados da Solicitacao</legend>
-                <div>
-                    <label>Paciente</label>                      
-                    <input type="text" id="paciente" name="paciente"  class="texto09" value="<?= $solicitacao[0]->nome; ?>" readonly/>
-                </div>
-                <div style="display: none;">                     
-                    <input type="text" id="idpaciente" name="idpaciente"  class="texto09" value="<?= $solicitacao[0]->paciente_id; ?>" readonly/>
-                    <input type="text" id="idsolicitacaocirurgia" name="idsolicitacaocirurgia"  class="texto09" value="<?= $solicitacao[0]->solicitacao_cirurgia_id; ?>" readonly/>
-                </div>
-            </fieldset>                
+<div class="content ficha_ceatox"> <!-- Inicio da DIV content -->      
+    <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/autorizarsolicitacaocirurgica" method="post">
+        <fieldset >
+            <legend>Dados da Solicitacao</legend>
 
+            <div>
+                <label>Paciente</label>
+                <input type="hidden" id="txtsolcitacao_id" class="texto_id" name="txtsolcitacao_id" readonly="true" value="<?= @$solicitacao_id; ?>" />
+                <input type="hidden" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" value="<?= @$solicitacao[0]->paciente_id; ?>" />
+                <input type="text" id="txtNome" required name="txtNome" class="texto10" value="<?= @$solicitacao[0]->paciente; ?>" readonly="true"/>
+            </div>
+
+            <div>
+                <label>Telefone</label>
+                <input type="text" id="telefone" class="texto02" name="telefone" value="<?= @$solicitacao[0]->telefone; ?>" readonly="true"/>
+            </div>
+            
+            <div>
+                <label>Solicitante</label>
+                <input type="text"  id="solicitante" class="texto02" name="solicitante" value="<?= @$solicitacao[0]->solicitante; ?>" readonly="true"/>
+            </div>
+            
+            <div>
+                <label>Convenio</label>
+                <input type="text"  id="convenio" class="texto02" name="convenio" value="<?= @$solicitacao[0]->convenio; ?>" readonly="true"/>
+            </div>
+            
+            <div>
+                <label>Hospital</label>
+                <input type="text"  id="hospital" class="texto02" name="hospital" value="<?= @$solicitacao[0]->hospital; ?>" readonly="true"/>
+            </div>
+
+        </fieldset>
+        
+        <fieldset>
+            <legend>Autorizar Procedimentos</legend>
+            
             <fieldset>
-                <legend></legend>
                 <div>
-                    <label>Medico Agendado</label>                      
-                    <select  name="medicoagendadoid" id="medicoagendadoid" class="size04" required="true">
+                    <label>Data Cirurgia</label>
+                    <input type="text" name="txtdata" id="txtdata" alt="date" class="texto02" required/>
+                </div>
+                <div>
+                    <label>Hora</label>
+                    <input type="text" name="hora" id="hora" alt="99:99" class="texto02" required/>
+                </div>
+                <div>
+                    <label>Desconto (%)</label>
+                    <input type="number" id="desconto" name="desconto" value="0" step="0.01" min="0" required=""/>
+                </div>
+                <div>
+                    <label>Forma Pagamento</label>
+                    <select name="formapamento" id="formapamento" class="size2">
                         <option value="">Selecione</option>
-                        <? foreach ($medicos as $item) : ?>
-                            <option value="<?= $item->operador_id; ?>"
-                                    <?if($solicitacao[0]->medico_agendado == $item->operador_id): echo 'selected'; endif;?>>
-                                <?= $item->nome; ?>
-                            </option>
+                        <? foreach ($forma_pagamento as $item) : 
+                            if($item->forma_pagamento_id == 1000) continue; ?>
+                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                         <? endforeach; ?>
                     </select>
                 </div>
-                <div>
-                    <label>Sala Agendada</label>                      
-                    <select name="salaagendada" id="salaagendada" required>
-                        <option value="">Selecione</option>
-                        <? foreach ($salas as $item) { ?>
-                            <option value="<?= $item->exame_sala_id ?>"><? echo $item->nome; ?></option>    
-                        <? } ?>                    
-                    </select>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Via</legend>
+                <div id="via">
+                    <input type="radio" name="via" id="m" value="M" required/> <label for="m">Mesma Via</label>
+                    <input type="radio" name="via" id="d" value="D" required/> <label for="d">Via Diferente</label>
                 </div>
-                <div>
-                    <label>Data/hora Prevista ex.( 20/01/2017 14:30)</label>
-                    <input type="text" id="dataprevista" class="texto08" name="dataprevista" alt="39/19/9999 24:59" />
-                </div>
-            </fieldset>   
-            <button type="submit">Enviar</button>
-            <button type="reset">Limpar</button>
-        </form>    
-    </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Procedimentos</legend>
+                <table id="table_agente_toxico" border="0">
+                    <thead>
 
-    <div class="clear"></div>
-</div>
-<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+                        <tr>
+                            <th class="tabela_header">Procedimento</th>
+                            <th class="tabela_header">Valor</th>
+                            <th class="tabela_header">Quantidade</th>
+                            <th class="tabela_header">Horario Especial</th>
+                            <th class="tabela_header"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?
+                    $estilo_linha = "tabela_content01";
+                    $i = 0;
+                    foreach ($procedimentos as $item) {
+                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        ?>
+                            <tr>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="hidden" name="procedimento_convenio_id[<?= $i; ?>]" value="<?= $item->procedimento_convenio_id; ?>" />
+                                    <input type="hidden" name="cirurgia_procedimento_id[<?= $i; ?>]" value="<?= $item->solicitacao_cirurgia_procedimento_id; ?>" />
+                                    <?= $item->procedimento; ?>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="number" id="valor" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
+                                </td> 
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="text" name="qtde[<?= $i; ?>]" id="qtde" alt="integer" class="texto01" value="1" required=""/>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="checkbox" name="horEspecial[<?= $i; ?>]">
+                                </td>                            
+
+                            </tr>
+                            <?
+                            $i++;
+                        }
+                    ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="tabela_footer" colspan="4">
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table> 
+            </fieldset>
+            
+            <hr/>
+            
+            <button type="submit" name="btnEnviar">Enviar</button>
+            <button type="reset" name="btnLimpar">Limpar</button>
+        </fieldset>
+        
+    </form>
+</div> <!-- Final da DIV content -->
+<style>
+    div#via label { color: black; font-weight: bolder; font-size: 12pt; }
+    div#via label, div#via input{ display: inline-block; }
+</style>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/funcoes.js"></script>
-<script>
-    $(document).ready(function () {
-        jQuery('#form_autorizar').validate({
-            rules: {
-                medicoagendado: {
-                    required: true,
-                    minlength: 3
-                },
-                salaagendada: {
-                    required: true
-                },
-                dataprevista: {
-                    required: true
-                }
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+<script type="text/javascript">
+            $(function() {
+                $("#txtdata").datepicker({
+                    autosize: true,
+                    changeYear: true,
+                    changeMonth: true,
+                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+            
+            $(function () {
+                $('#procedimento1').change(function () {
+                    if ($(this).val()) {
+                        $('.carregando').show();
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
+                            options = "";
+                            options += j[0].valortotal;
+                            document.getElementById("valor1").value = options.replace(".", ",");
+                            $('.carregando').hide();
+                        });
+                    } else {
+                        $('#valor1').html('value=""');
+                    }
+                });
+            });
 
-            },
-            messages: {
-                medicoagendado: {
-                    required: "*",
-                    minlength: 3
-                },
-                salaagendada: {
-                    required: "*"
-                },
-                dataprevista: {
-                    required: "*"
-                }
-            }
-        });
-    });
 
-
-    $(function () {
-        $("#medicoagendado").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=operador",
-            minLength: 2,
-            focus: function (event, ui) {
-                $("#medicoagendado").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#medicoagendado").val(ui.item.value);
-                $("#medicoagendadoid").val(ui.item.id);
-                return false;
-            }
-        });
-    });
 </script>
