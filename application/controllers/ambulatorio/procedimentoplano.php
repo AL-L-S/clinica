@@ -545,6 +545,8 @@ class Procedimentoplano extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar o Agrupador. Operação cancelada.';
             } elseif ($procedimento_id == "-2") {
                 $data['mensagem'] = 'Erro ao gravar. Esse Agrupador ja está cadastrado.';
+            } elseif ($procedimento_id == "-3") {
+                $data['mensagem'] = 'Erro ao gravar. Algum(ns) convenio(s) associado(s) a esse, não estão vinculados através dos grupos contidos no agrupador.';
             } else{
                 $data['mensagem'] = 'Sucesso ao gravar Agrupador.';  
             }
