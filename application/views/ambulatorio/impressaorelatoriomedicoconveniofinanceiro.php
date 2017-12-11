@@ -95,8 +95,8 @@ switch ($MES) {
                         <th class="tabela_header" ><font size="-1">Valor Liquido</th>
                     <? } ?>
                     <? if ($_POST['forma_pagamento'] == 'SIM') { ?>
+                        <th class="tabela_header" ><font size="-1">F. Pagamento Cartão</th>
                         <th class="tabela_header" ><font size="-1">F. Pagamento Dinheiro</th>
-                        <th class="tabela_header" ><font size="-1">F. Pagamento Cartao</th>
                     <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>

@@ -9,6 +9,20 @@
                     <table>
                         <tr>
                             <td style="text-align: left">
+                                Valor da Guia
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <input style="width: 150px;" type="integer" name="txtvalorguia_carregado" id="txtvalorguia_carregado" value="<?= number_format($exame[0]->total, 2, ",", ".") ?>" readonly/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left">
                                 Nota Fiscal<?php
                                 if ($guia_id[0]->nota_fiscal == "t") {
                                     ?>
@@ -35,34 +49,34 @@
                                     <?php
                                 }
                                 ?>
-                                    <br>
-                        <br>
+                                <br>
+                                <br>
                             </td>
                         </tr>
-                        
+
                         <tr>
                             <td style="text-align: left">
-                                Valor
-                                   
+                                Valor Do Recibo
+
                             </td>
-                          
+
                         </tr>
-                        
+
                         <tr>
-                            
+
                             <td>
-                                <input type="integer" name="txtvalorguia" id="txtvalorguia" value="<?=$guia_id[0]->valor_guia?>" alt="decimal"/>
+                                <input type="integer" style="width: 150px;" name="txtvalorguia" id="txtvalorguia" value="<?= number_format($guia_id[0]->valor_guia, 2, ",", ".") ?>" alt="decimal"/>
                             </td>
                         </tr>
-                        
+
 
 
 
                     </table>
                     <dl class="dl_desconto_lista">
 
-                        
-                        
+
+
                     </dl>    
 
                     <hr/>
@@ -72,9 +86,15 @@
         </div>
     </div> <!-- Final da DIV content -->
 </body>
-<script type="text/javascript" src="<?= base_url() ?>js/scripts.js" ></script>
-<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/fullcalendar/lib/jquery.min.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.8.5.custom.min.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-cookie.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-treeview.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.bestupper.min.js"  ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
 <script type="text/javascript">
     /* Máscaras ER */
     function mascara(telefone) {
@@ -87,4 +107,12 @@
             telefone.value = telefone.value + '-'; //quando o campo já tiver 8 caracteres, o script irá inserir um tracinho, para melhor visualização do telefone.
 
     }
+
+
+    (function ($) {
+        $(function () {
+            $('input:text').setMask();
+        });
+    })(jQuery);
+
 </script>

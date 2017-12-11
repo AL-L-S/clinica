@@ -259,11 +259,23 @@ class Procedimentoplano extends BaseController {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
-        $html = $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data, true);
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+        $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);
+        $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['cabecalho'] =  @$data['cabecalhoconfig'][0]->cabecalho;
+        $data['rodape'] =  @$data['cabecalhoconfig'][0]->rodape;
+        $paciente = $data['exames'][0]->paciente; 
+        $paciente_id = $data['exames'][0]->paciente_id; 
+//        var_dump($paciente); die;
         
+        if($data['permissoes'][0]->orcamento_config == 't'){
+           $html = $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data, true);
+        }else{
+           $html = $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data, true);  
+        }
         $html = utf8_decode($html);
         $tipo = 'ORÇAMENTO';
-        $this->guia->gravarfiladeimpressao($html, $tipo);
+        $this->guia->gravarfiladeimpressao($html, $tipo, $paciente, $paciente_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
     
@@ -271,8 +283,23 @@ class Procedimentoplano extends BaseController {
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+        $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);
+        $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['cabecalho'] =  @$data['cabecalhoconfig'][0]->cabecalho;
+        $data['rodape'] =  @$data['cabecalhoconfig'][0]->rodape;
         $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
-        $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data);
+//        var_dump($data['exames']); die;
+        
+        if($data['permissoes'][0]->orcamento_config == 't'){
+           $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);    
+        }elseif($data['empresa'][0]->impressao_orcamento == 1){// MODELO SOLICITADO PELA AME
+           $this->load->View('ambulatorio/impressaoorcamentorecepcao1', $data);    
+        }else{
+           $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data);    
+        }
+        
+        
     }
 
     function replicarpercentualmedico() {

@@ -1,3 +1,11 @@
+<? 
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
+$empresa = $this->guia->listarempresapermissoes(); 
+$odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
+$retorno_alterar = $empresa[0]->selecionar_retorno;
+//var_dump($retorno_alterar); die;
+
+?>
 <div class="content ficha_ceatox">
     <div class="bt_link_new" style="width: 150pt">
         <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
@@ -589,11 +597,16 @@
                                                 } else {
                                                     $('#homecare').val("");
                                                 }
+                                                <?if($odontologia_alterar == 't'){?>
                                                 if(j[0].grupo == 'ODONTOLOGIA'){
                                                     $("#valor1").prop('readonly', false);
                                                 }else{
                                                     $("#valor1").prop('readonly', true);
-                                                }
+                                                }    
+                                                <?}?>
+                                                
+                                                
+                                                
 
                                                 options = "";
                                                 options += j[0].valortotal;

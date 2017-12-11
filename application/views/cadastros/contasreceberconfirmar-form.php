@@ -48,11 +48,18 @@
                         <input type="text" name="tiponumero" id="tiponumero" class="texto04" value="<?= @$obj->_tipo_numero; ?>" readonly="true"/>
                     </dd>
                     <dt>
-                        <label>Conta </label>
+                        <label>Conta *</label>
                     </dt>
                     <dd>
-                        <input type="text" name="conta" class="texto02" value="<?= @$obj->_conta; ?>" readonly="true"/>
-                        <input type="hidden" name="conta_id" class="texto02" value="<?= @$obj->_conta_id; ?>"/>
+                        <select name="conta_id" id="conta_id" class="size4" required="">
+                            <option value="">Selecione</option>
+                            <? foreach ($conta as $value) : ?>
+                                <option value="<?= $value->forma_entradas_saida_id; ?>"<?
+                                if (@$obj->_conta_id == $value->forma_entradas_saida_id):echo'selected';
+                                endif;
+                                ?>><?php echo $value->descricao; ?></option>
+                                    <? endforeach; ?>
+                        </select>
                     </dd>
                     <dt>
                         <label>Repetir </label>

@@ -54,6 +54,13 @@ class Empresa extends BaseController {
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaolaudo-lista');
     }
+    
+    function listarorcamentoconfig() {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaoorcamento-lista');
+    }
 
     function configurarcabecalho($empresa_impressao_cabecalho_id) {
         $data['empresa_impressao_cabecalho_id'] = $empresa_impressao_cabecalho_id;
@@ -62,6 +69,89 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/configurarimpressaocabecalho-form', $data);
     }
 
+    function anexarimagemlogo($empresa_id) {
+
+        $this->load->helper('directory');
+
+        if (!is_dir("./upload/logosistema")) {
+            mkdir("./upload/logosistema");
+            $destino = "./upload/logosistema";
+            chmod($destino, 0777);
+        }
+
+        if (!is_dir("./upload/logosistema/$empresa_id")) {
+            mkdir("./upload/logosistema/$empresa_id");
+            $destino = "./upload/logosistema/$empresa_id";
+            chmod($destino, 0777);
+        }
+        $data['arquivo_pasta'] = directory_map("./upload/logosistema/$empresa_id/");
+//        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
+        if ($data['arquivo_pasta'] != false) {
+            natcasesort($data['arquivo_pasta']);
+        }
+//        $data['arquivos_deletados'] = directory_map("./uploadopm/$empresa_id/");
+//        $data['arquivos_deletados'] = directory_map("/home/hamilton/projetos/clinica/uploadopm/$exame_id/");
+        $data['empresa_id'] = $empresa_id;
+//        $data['sala_id'] = $sala_id;
+        $this->loadView('ambulatorio/logo_clinica', $data);
+    }
+
+    function importarimagemlogo() {
+        $empresa_id = $_POST['empresa_id'];
+        $data = $_FILES['userfile'];
+        $nome = $_FILES['userfile']['name'];
+//        var_dump($data);
+//        die;
+        if (!is_dir("./upload/logosistema")) {
+            mkdir("./upload/logosistema");
+            $destino = "./upload/logosistema";
+            chmod($destino, 0777);
+        }
+
+        if (!is_dir("./upload/logosistema/$empresa_id")) {
+            mkdir("./upload/logosistema/$empresa_id");
+            $destino = "./upload/logosistema/$empresa_id";
+            chmod($destino, 0777);
+        }
+
+        $arquivoantigo = "./upload/logosistema/$empresa_id/$nome";
+        $arquivonovo = "./upload/logosistema/$empresa_id/$empresa_id.jpg";
+
+//             var_dump($arquivo_existe); die;
+        //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
+        $config['upload_path'] = "./upload/logosistema/$empresa_id/";
+        $config['allowed_types'] = 'gif|jpg|JPG|png|jpeg|JPEG|pdf|doc|docx|xls|xlsx|ppt|zip|rar|bmp|BMP';
+        $config['max_size'] = '0';
+        $config['overwrite'] = FALSE;
+        $config['encrypt_name'] = FALSE;
+        $config['name'] = FALSE;
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload()) {
+            $error = array('error' => $this->upload->display_errors());
+        } else {
+            $error = null;
+            $data = array('upload_data' => $this->upload->data());
+        }
+        $data['empresa_id'] = $empresa_id;
+
+
+        rename($arquivoantigo, $arquivonovo);
+
+//            var_dump($error);
+//            die;
+
+        redirect(base_url() . "ambulatorio/empresa/anexarimagemlogo/$empresa_id");
+//        $this->anexarimagem($empresa_id);
+    }
+
+    function configurarorcamento($empresa_impressao_orcamento_id) {
+        $data['empresa_impressao_orcamento_id'] = $empresa_impressao_orcamento_id;
+        $data['impressao'] = $this->empresa->listarconfiguracaoimpressaoorcamentoform($empresa_impressao_orcamento_id);
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaoorcamento-form', $data);
+    }
+    
     function configurarlaudo($empresa_impressao_laudo_id) {
         $data['empresa_impressao_laudo_id'] = $empresa_impressao_laudo_id;
         $data['impressao'] = $this->empresa->listarconfiguracaoimpressaolaudoform($empresa_impressao_laudo_id);
@@ -89,6 +179,17 @@ class Empresa extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/listarlaudoconfig");
+    }
+    
+    function ativarconfiguracaoorcamento($impressao_id) {
+        if ($this->empresa->ativarconfiguracaoorcamento($impressao_id)) {
+            $mensagem = 'Orçamento ativado com sucesso';
+        } else {
+            $mensagem = 'Erro ao ativar orcamento. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/listarorcamentoconfig");
     }
 
     function checandolembrete() {
@@ -134,7 +235,7 @@ class Empresa extends BaseController {
             // AQUI NESSA FUNÇÃO ELE VAI SALVAR O ARQUIVO. NO CAMINHO ENVIADO ABAIXO
             $arquivo_salvo = $this->base64_to_jpeg($arquivobase64[0], "upload/timbrado/timbrado.png");
         }
-        
+
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/listarcabecalho");
     }
@@ -167,6 +268,19 @@ class Empresa extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/listarlaudoconfig");
+    }
+    
+    function gravarimpressaoorcamento() {
+//        var_dump($_POST); die;
+        $impressao_id = $_POST['impressao_id'];
+        if ($this->empresa->gravarconfiguracaoimpressaoorcamento($impressao_id)) {
+            $mensagem = 'Sucesso ao gravar cabeçalho e rodapé';
+        } else {
+            $mensagem = 'Erro ao gravar cabeçalho e rodapé. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/listarorcamentoconfig");
     }
 
     function carregarempresa($exame_empresa_id) {

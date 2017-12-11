@@ -1220,7 +1220,8 @@ class exame_model extends Model {
 
     function gravarexamesfaturamentomanual($ambulatorio_guia, $percentual) {
         try {
-
+//            echo '<pre>';
+//            var_dump($_POST); die;
             $this->db->select('ag.tipo');
             $this->db->from('tb_procedimento_convenio pc');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -1259,6 +1260,10 @@ class exame_model extends Model {
             }
             if ($_POST['crm1'] != "") {
                 $this->db->set('medico_solicitante', $_POST['crm1']);
+            }
+
+            if ($_POST['sala1'] != "") {
+                $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
             }
             $this->db->set('faturado', 't');
             $this->db->set('situacao', 'OK');
@@ -1464,7 +1469,7 @@ class exame_model extends Model {
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
@@ -1668,15 +1673,13 @@ class exame_model extends Model {
     function trocarmedico() {
 
         try {
-            if ($_POST['tipo'] == 1) {
-                $this->db->set('medico_agenda', $_POST['medico2']);
-                $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
-                $this->db->update('tb_agenda_exames');
-            } elseif ($_POST['tipo'] == 2) {
-                $this->db->set('medico_consulta_id', $_POST['medico2']);
-                $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
-                $this->db->update('tb_agenda_exames');
-            }
+//            var_dump($_POST);
+//            die;
+
+            $this->db->set('medico_agenda', $_POST['medico2']);
+            $this->db->set('medico_consulta_id', $_POST['medico2']);
+            $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
+            $this->db->update('tb_agenda_exames');
             $erro = $this->db->_error_message();
 
             $this->db->select('exames_id');
@@ -2679,7 +2682,7 @@ class exame_model extends Model {
         if (isset($_GET['medico']) && strlen($_GET['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $_GET['medico']);
         }
-        
+
         return $this->db;
     }
 

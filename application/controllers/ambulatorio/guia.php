@@ -772,7 +772,12 @@ class Guia extends BaseController {
     }
 
     function fecharcaixa() {
+//        echo '<pre>';
+//        var_dump($_POST); die;
         $caixa = $this->guia->fecharcaixa();
+        $this->guia->fecharcaixacredito();
+//        echo 'mostre algo';
+//        die;
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
         } elseif ($caixa == 10) {
@@ -2915,7 +2920,7 @@ class Guia extends BaseController {
 
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
-
+        @$paciente = $data['paciente'][0]->nome;
         $dataFuturo = date("Y-m-d");
         // 1 é a impressão com logo e rodapé pequenos
         // JOGO TODA A PAGINA EM UM HTML PARA PODER SALVAR NO BANCO E JOGAR NA FILA DE IMPRESSÃO
@@ -2923,7 +2928,7 @@ class Guia extends BaseController {
         if ($_POST['solicitacao_impressao'] == 'SIM') {
             $html = utf8_decode($html);
             $tipo = 'DECLARAÇÃO';
-            $this->guia->gravarfiladeimpressao($html, $tipo);
+            $this->guia->gravarfiladeimpressao($html, $tipo, $paciente, $paciente_id);
         }
 
 //        var_dump($html); 
@@ -3002,6 +3007,7 @@ class Guia extends BaseController {
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes($empresa_id);
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['exame'] = $this->guia->listarexame($exames_id);
         $grupo = $data['exame'][0]->grupo;
@@ -3009,6 +3015,8 @@ class Guia extends BaseController {
         $dinheiro = $data['exame'][0]->dinheiro;
         $data['exames'] = $this->guia->listarexamesguiaconvenio($guia_id, $convenioid);
         $data['guiavalor'] = $this->guia->guiavalor($guia_id, $convenioid);
+//        echo '<pre>';
+//        var_dump($data['guiavalor']); die;
         $exames = $data['exames'];
         $valor_total = 0;
 
@@ -3017,12 +3025,17 @@ class Guia extends BaseController {
                 $valor_total = $valor_total + ($item->valor_total);
             }
         endforeach;
-
+        $data['valor_total'] = $valor_total;
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         if ($dinheiro == "t") {
-
-            $valor = number_format($data['guiavalor'][0]->valor_guia, 2, ',', '.');
+            if($data['empresapermissoes'][0]->valor_recibo_guia == 't'){
+//            $data['guiavalor'][0]->valor_guia = $valor_total; 
+            $valor = number_format($valor_total, 2, ',', '.');    
+            }else{
+            $valor = number_format($data['guiavalor'][0]->valor_guia, 2, ',', '.');    
+            }
+            
         } else {
             $valor = '0,00';
         }
@@ -3264,6 +3277,10 @@ class Guia extends BaseController {
     }
 
     function guiavalor($guia_id) {
+        $data['exame'][0] = new stdClass();
+        $data['exame1'] = $this->guia->listarexameguia($guia_id);
+        $data['exame2'] = $this->guia->listarexameguiaforma($guia_id, null);
+        $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
         $data['guia_id'] = $this->guia->verificavalor($guia_id);
         $this->load->View('ambulatorio/guiavalor-form', $data);
     }

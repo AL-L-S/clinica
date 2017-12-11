@@ -1,5 +1,12 @@
 <!--<body onload="alert('blablab');">-->
-<? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
+<? 
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
+$empresa = $this->guia->listarempresapermissoes(); 
+$odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
+$retorno_alterar = $empresa[0]->selecionar_retorno;
+//var_dump($retorno_alterar); die;
+
+?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
     <div class="bt_link_new" style="width: 150pt">
@@ -156,7 +163,7 @@
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select name="indicacao[<?= $i; ?>]" id="indicacao<?= $i ?>" class="size1" <?= $recomendacao_obrigatorio == 't' ? 'required' : ''?>>
+                                    <select name="indicacao[<?= $i; ?>]" id="indicacao<?= $i ?>" class="size1" <?= $recomendacao_obrigatorio == 't' ? 'required' : '' ?>>
                                         <option value=''>Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
@@ -208,1171 +215,1277 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-
-                        $(document).ready(function () {
-                            var convenio_agendado = new Array();
-                            var proc_agendado = new Array();
+// alert('asdasd');
+//                        $(document).ready(function () {
+                        var convenio_agendado = new Array();
+                        var proc_agendado = new Array();
 
 <? for ($b = 1; $b <= $i; $b++) { ?>
     <? $it = ($b == 1) ? '' : $b; ?>
     <? $it = ($b == 1) ? '' : $b; ?>
     <? if (@$exames[$b - 1]->convenio_agenda != '') { ?>
-                                    convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
+                                convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
     <? } else { ?>
-                                    convenio_agendado[<?= $b - 1 ?>] = '';
+                                convenio_agendado[<?= $b - 1 ?>] = '';
     <? } ?>
 
     <? if (@$exames[$b - 1]->procedimento_tuss_id != '') { ?>
-                                    proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
+                                proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
     <? } else { ?>
-                                    proc_agendado[<?= $b - 1 ?>] = '';
+                                proc_agendado[<?= $b - 1 ?>] = '';
     <? } ?>
 
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta<?= $it ?>', {convenio<?= $b ?>: convenio_agendado[<?= $b - 1 ?>], ajax: true}, function (t) {
+                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta<?= $it ?>', {convenio<?= $b ?>: convenio_agendado[<?= $b - 1 ?>], ajax: true}, function (t) {
 
-                                            var opt = '<option value=""></option>';
-                                            var slt = '';
-                                            for (var c = 0; c < t.length; c++) {
-                                                if (proc_agendado[<?= $b - 1 ?>] == t[c].procedimento_convenio_id) {
-                                                    slt = "selected='true'";
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
-                                                                            var valor = a[0].valortotal;
-                                                                            var qtde = a[0].qtde;
-                                                                            document.getElementById("valor<?= $b ?>").value = valor;
-                                                                            document.getElementById("qtde<?= $b ?>").value = qtde;
-                                                                            $('.carregando').hide();
-                                                    });
-                                                    
-                                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
-                                                                var options = '<option value="0">Selecione</option>';
-                                                                for (var c = 0; c < j.length; c++) {
-                                                                    if (j[c].forma_pagamento_id != null) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                    }
-                                                                }
-                                                                $('#formapamento<?= $b ?>').html(options).show();
+                                    var opt = '<option value=""></option>';
+                                    var slt = '';
+                                    for (var c = 0; c < t.length; c++) {
+                                        if (proc_agendado[<?= $b - 1 ?>] == t[c].procedimento_convenio_id) {
+                                            slt = "selected='true'";
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
+                                                                var valor = a[0].valortotal;
+                                                                var qtde = a[0].qtde;
+                                                                document.getElementById("valor<?= $b ?>").value = valor;
+                                                                document.getElementById("qtde<?= $b ?>").value = qtde;
                                                                 $('.carregando').hide();
                                                             });
-                                                                
-                                                }
-                                                opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
-                                                slt = '';
-                                            }
-                                            $('#procedimento<?= $b ?>').html(opt).show();
-                                            $('.carregando').hide();
-                                        });
+
+                                                            $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
+                                                                                var options = '<option value="0">Selecione</option>';
+                                                                                for (var c = 0; c < j.length; c++) {
+                                                                                    if (j[c].forma_pagamento_id != null) {
+                                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                    }
+                                                                                }
+                                                                                $('#formapamento<?= $b ?>').html(options).show();
+                                                                                $('.carregando').hide();
+                                                                            });
+
+                                                                        }
+                                                                        opt += '<option value="' + t[c].procedimento_convenio_id + '"' + slt + '>' + t[c].procedimento + '</option>';
+                                                                        slt = '';
+                                                                    }
+                                                                    $('#procedimento<?= $b ?>').html(opt).show();
+                                                                    $('.carregando').hide();
+                                                                });
 
 
 
-                                                            $('#checkbox<?= $b ?>').change(function () {
-                                                                if ($(this).is(":checked")) {
-                                                                    $("#medico_id<?= $b; ?>").prop('required', true);
-                                                                    $("#sala<?= $b; ?>").prop('required', true);
-                                                                    $("#convenio<?= $b; ?>").prop('required', true);
-                                                                    $("#procedimento<?= $b; ?>").prop('required', true);
-                                                                    
-                                                                    <? if ( $recomendacao_obrigatorio == 't' ){ ?>
-                                                                        $("#indicacao<?= $b; ?>").prop('required', true);
-                                                                    <? } ?>
-                                                                } else {
-                                                                    $("#medico_id<?= $b; ?>").prop('required', false);
-                                                                    $("#sala<?= $b; ?>").prop('required', false);
-                                                                    $("#convenio<?= $b; ?>").prop('required', false);
-                                                                    $("#procedimento<?= $b; ?>").prop('required', false);
-                                                                    
-                                                                    <? if ( $recomendacao_obrigatorio == 't' ){ ?>
-                                                                        $("#indicacao<?= $b; ?>").prop('required', false);
-                                                                    <? } ?>
-                                                                }
-                                                            });
+                                                                $('#checkbox<?= $b ?>').change(function () {
+                                                                    if ($(this).is(":checked")) {
+                                                                        
+                                                                        $("#medico_id<?= $b; ?>").prop('required', true);
+                                                                        $("#sala<?= $b; ?>").prop('required', true);
+                                                                        $("#convenio<?= $b; ?>").prop('required', true);
+                                                                        $("#procedimento<?= $b; ?>").prop('required', true);
+
+                                                                        <? if ($recomendacao_obrigatorio == 't') { ?>
+                                                                            $("#indicacao<?= $b; ?>").prop('required', true);
+                                                                         <? } ?>
+                                                                        if ($("#procedimento<?= $b; ?>").val() != '') {
+                                                                           
+                                                                            $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $("#procedimento<?= $b; ?>").val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+    //                                                        console.log(r); 
+//                                                            alert('dddd');
+                                                                                if (r.qtdeConsultas == 0 && r.grupo == "RETORNO") {
+                                                                                    alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+                                                                                    $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
+                                                                                } else if (r.qtdeConsultas > 0 && r.grupo == "RETORNO" && r.retorno_realizado > 0) {
+                                                                                    alert("Erro ao selecionar retorno. Esse paciente já realizou o retorno associado a esse procedimento no tempo cadastrado");
+                                                                                    $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
+                                                                                }
+                                                                            });
+
+                                                                            $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $("#procedimento<?= $b; ?>").val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+
+    //                                                        console.log(r);
+
+                                                                                if (r.qtdeConsultas > 0 && r.retorno_realizado == 0) {
+    //                                                            alert('asdasd'); 
+    //                                                            alert("Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+//                                                                alert(r.procedimento_retorno);
+                                                                               if('<?=$retorno_alterar?>' == 'f'){
+                                                                                  if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
+    //                                                                alert('asdas');
+                                                                                        $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                                                                        //                                                            $('#valor1').val('0.00');
+                                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                                            options = "";
+                                                                                            options += j[0].valortotal;
+                                                                                            document.getElementById("valor<?= $b; ?>").value = options;
+                                                                                            $('.carregando').hide();
+                                                                                        });
+                                                                                    } else {
+
+                                                                                    }    
+                                                                                  }else{
+                                                                                  alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
+                                                                                  $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);    
+                                                                                  }
+                                                                                  
+                                                                                    
+
+                                                                                }
+                                                                            });
+                                                                        }
+
+                                                                    } else {
+                                                                        $("#medico_id<?= $b; ?>").prop('required', false);
+                                                                        $("#sala<?= $b; ?>").prop('required', false);
+                                                                        $("#convenio<?= $b; ?>").prop('required', false);
+                                                                        $("#procedimento<?= $b; ?>").prop('required', false);
+
+    <? if ($recomendacao_obrigatorio == 't') { ?>
+                                                                            $("#indicacao<?= $b; ?>").prop('required', false);
+    <? } ?>
+                                                                    }
+                                                                });
+
+
+                                                                $(function () {
+                                                                    $('#procedimento<?= $b; ?>').change(function () {
+    //                                                alert('asd');
+                                                                        if ($(this).val()) {
+                                                                            $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+    //                                                        console.log(r);
+                                                                                if (r.qtdeConsultas == 0 && r.grupo == "RETORNO") {
+                                                                                    alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+                                                                                    $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
+                                                                                } else if (r.qtdeConsultas > 0 && r.grupo == "RETORNO" && r.retorno_realizado > 0) {
+                                                                                    alert("Erro ao selecionar retorno. Esse paciente já realizou o retorno associado a esse procedimento no tempo cadastrado");
+                                                                                    $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
+                                                                                }
+                                                                            });
+
+                                                                            $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+
+    //                                                        console.log(r);
+
+                                                                                if (r.qtdeConsultas > 0 && r.retorno_realizado == 0) {
+    //                                                            alert('asdasd'); 
+    //                                                            alert("Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+    //                                                            alert(r.procedimento_retorno);
+                                                                                    if('<?=$retorno_alterar?>' == 'f'){
+                                                                                  if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
+    //                                                                alert('asdas');
+                                                                                        $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                                                                        //                                                            $('#valor1').val('0.00');
+                                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                                            options = "";
+                                                                                            options += j[0].valortotal;
+                                                                                            document.getElementById("valor<?= $b; ?>").value = options;
+                                                                                            $('.carregando').hide();
+                                                                                        });
+                                                                                    } else {
+
+                                                                                    }    
+                                                                                  }else{
+                                                                                  alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
+                                                                                  $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);   
+                                                                                  $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                                            options = "";
+                                                                                            options += j[0].valortotal;
+                                                                                            document.getElementById("valor<?= $b; ?>").value = options;
+                                                                                            $('.carregando').hide();
+                                                                                        });
+                                                                                  }
+
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                });
+
+
 
 <? }
 ?>
 
-                                                    });
+//                                                    });
 
 
 
 
-                                                    $(function () {
-                                                        $("#data1").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data1").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data2").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data2").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data3").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data3").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data4").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data4").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data5").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data5").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data6").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data6").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data7").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data7").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data8").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data8").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data9").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data9").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
-                                                    $(function () {
-                                                        $("#data10").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
-
-
-
-                                                    $(function () {
-                                                        $("#medico1").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico1").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico1").val(ui.item.value);
-                                                                $("#crm1").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico2").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico2").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico2").val(ui.item.value);
-                                                                $("#crm2").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico3").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico3").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico3").val(ui.item.value);
-                                                                $("#crm3").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico4").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico4").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico4").val(ui.item.value);
-                                                                $("#crm4").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico5").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico5").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico5").val(ui.item.value);
-                                                                $("#crm5").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico6").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico6").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico6").val(ui.item.value);
-                                                                $("#crm6").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico7").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico7").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico7").val(ui.item.value);
-                                                                $("#crm7").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico8").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico8").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico8").val(ui.item.value);
-                                                                $("#crm8").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico9").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico9").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico9").val(ui.item.value);
-                                                                $("#crm9").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $("#medico10").autocomplete({
-                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                                            minLength: 3,
-                                                            focus: function (event, ui) {
-                                                                $("#medico10").val(ui.item.label);
-                                                                return false;
-                                                            },
-                                                            select: function (event, ui) {
-                                                                $("#medico10").val(ui.item.value);
-                                                                $("#crm10").val(ui.item.id);
-                                                                return false;
-                                                            }
-                                                        });
-                                                    });
+                                                            $(function () {
+                                                                $("#data10").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
 
 
-                                                    $(function () {
-                                                        $("#data_ficha").datepicker({
-                                                            autosize: true,
-                                                            changeYear: true,
-                                                            changeMonth: true,
-                                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                            dateFormat: 'dd/mm/yy'
-                                                        });
-                                                    });
 
-                                                    $(function () {
-                                                        $('#convenio1').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
+                                                            $(function () {
+                                                                $("#medico1").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico1").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico1").val(ui.item.value);
+                                                                        $("#crm1").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico2").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico2").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico2").val(ui.item.value);
+                                                                        $("#crm2").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico3").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico3").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico3").val(ui.item.value);
+                                                                        $("#crm3").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico4").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico4").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico4").val(ui.item.value);
+                                                                        $("#crm4").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico5").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico5").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico5").val(ui.item.value);
+                                                                        $("#crm5").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico6").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico6").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico6").val(ui.item.value);
+                                                                        $("#crm6").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico7").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico7").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico7").val(ui.item.value);
+                                                                        $("#crm7").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico8").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico8").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico8").val(ui.item.value);
+                                                                        $("#crm8").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico9").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico9").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico9").val(ui.item.value);
+                                                                        $("#crm9").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $("#medico10").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                                    minLength: 3,
+                                                                    focus: function (event, ui) {
+                                                                        $("#medico10").val(ui.item.label);
+                                                                        return false;
+                                                                    },
+                                                                    select: function (event, ui) {
+                                                                        $("#medico10").val(ui.item.value);
+                                                                        $("#crm10").val(ui.item.id);
+                                                                        return false;
+                                                                    }
+                                                                });
+                                                            });
+
+
+                                                            $(function () {
+                                                                $("#data_ficha").datepicker({
+                                                                    autosize: true,
+                                                                    changeYear: true,
+                                                                    changeMonth: true,
+                                                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                                    dateFormat: 'dd/mm/yy'
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#convenio1').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
 //                                    alert('oi');
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento1').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento1').html('<option value="">-- Escolha um Procedimento --</option>');
                                                                     }
-                                                                    $('#procedimento1').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento1').html('<option value="">-- Escolha um Procedimento --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento1').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor1').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio2').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta2', {convenio2: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento1').change(function () {
+//                                                            alert('asds');
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor1").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor1').html('value=""');
                                                                     }
-                                                                    $('#procedimento2').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento2').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento2').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor2', {procedimento2: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor2").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor2').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio3').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta3', {convenio3: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#convenio2').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta2', {convenio2: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento2').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento2').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#procedimento3').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento3').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento3').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor3', {procedimento3: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor3").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor3').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio4').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta4', {convenio4: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento2').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor2', {procedimento2: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor2").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor2').html('value=""');
                                                                     }
-                                                                    $('#procedimento4').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento4').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento4').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor4', {procedimento4: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor4").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor4').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio5').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta5', {convenio5: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#convenio3').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta3', {convenio3: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento3').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento3').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#procedimento5').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento5').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento5').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor5', {procedimento5: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor5").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor5').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio6').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta6', {convenio6: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento3').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor3', {procedimento3: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor3").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor3').html('value=""');
                                                                     }
-                                                                    $('#procedimento6').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento6').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento6').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor6', {procedimento6: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor6").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor6').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio7').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta7', {convenio7: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#convenio4').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta4', {convenio4: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento4').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento4').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#procedimento7').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento7').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento7').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor7', {procedimento7: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor7").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor7').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio8').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta8', {convenio8: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento4').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor4', {procedimento4: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor4").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor4').html('value=""');
                                                                     }
-                                                                    $('#procedimento8').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento8').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento8').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor8', {procedimento8: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor8").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor8').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio9').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta9', {convenio9: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#convenio5').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta5', {convenio5: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento5').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento5').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#procedimento9').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento9').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento9').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor9', {procedimento9: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor9").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor9').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#convenio10').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta10', {convenio10: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value=""></option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento5').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor5', {procedimento5: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor5").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor5').html('value=""');
                                                                     }
-                                                                    $('#procedimento10').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#procedimento10').html('<option value="">-- Escolha um exame --</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento10').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor10', {procedimento10: $(this).val(), ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor10").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#valor10').html('value=""');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento1').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#convenio6').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta6', {convenio6: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento6').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento6').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#formapamento1').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento1').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento2').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento2', {procedimento2: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento6').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor6', {procedimento6: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor6").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor6').html('value=""');
                                                                     }
-                                                                    $('#formapamento2').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento2').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento3').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento3', {procedimento3: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#convenio7').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta7', {convenio7: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento7').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento7').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#formapamento3').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento3').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento4').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento4', {procedimento4: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento7').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor7', {procedimento7: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor7").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor7').html('value=""');
                                                                     }
-                                                                    $('#formapamento4').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento4').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento5').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento5', {procedimento5: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#convenio8').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta8', {convenio8: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento8').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento8').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#formapamento5').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento5').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento6').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento6', {procedimento6: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento8').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor8', {procedimento8: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor8").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor8').html('value=""');
                                                                     }
-                                                                    $('#formapamento6').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento6').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento7').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento7', {procedimento7: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#convenio9').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta9', {convenio9: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento9').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento9').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#formapamento7').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento7').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento8').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento8', {procedimento8: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento9').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor9', {procedimento9: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor9").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor9').html('value=""');
                                                                     }
-                                                                    $('#formapamento8').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento8').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento9').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento9', {procedimento9: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#convenio10').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta10', {convenio10: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value=""></option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                                            }
+                                                                            $('#procedimento10').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#procedimento10').html('<option value="">-- Escolha um exame --</option>');
                                                                     }
-                                                                    $('#formapamento9').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento9').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento10').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento10', {procedimento10: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento10').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor10', {procedimento10: $(this).val(), ajax: true}, function (j) {
+                                                                            options = "";
+                                                                            options += j[0].valortotal;
+                                                                            document.getElementById("valor10").value = options
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#valor10').html('value=""');
                                                                     }
-                                                                    $('#formapamento10').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento10').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
+                                                            });
 
-                                                    $(function () {
-                                                        $('#procedimento1').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                            $(function () {
+                                                                $('#procedimento1').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento1').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento1').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento2').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento2', {procedimento2: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento2').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento2').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento3').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento3', {procedimento3: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento3').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento3').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento4').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento4', {procedimento4: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento4').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento4').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento5').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento5', {procedimento5: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento5').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento5').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento6').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento6', {procedimento6: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento6').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento6').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento7').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento7', {procedimento7: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento7').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento7').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento8').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento8', {procedimento8: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento8').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento8').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento9').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento9', {procedimento9: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento9').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento9').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento10').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento10', {procedimento10: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                            }
+                                                                            $('#formapamento10').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento10').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento1').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento1').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento1').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento2').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento2', {procedimento2: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento2').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento2').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento3').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento3', {procedimento3: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento3').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento3').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento4').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento4', {procedimento4: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento4').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento4').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento5').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento5', {procedimento5: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento5').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento5').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento6').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento6', {procedimento6: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento6').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento6').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento7').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento7', {procedimento7: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento7').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento7').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento8').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento8', {procedimento8: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento8').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento8').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento9').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento9', {procedimento9: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento9').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento9').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            $(function () {
+                                                                $('#procedimento10').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento10', {procedimento10: $(this).val(), ajax: true}, function (j) {
+                                                                            var options = '<option value="0">Selecione</option>';
+                                                                            for (var c = 0; c < j.length; c++) {
+                                                                                if (j[c].forma_pagamento_id != null) {
+                                                                                    options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                                }
+                                                                            }
+                                                                            $('#formapamento10').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    } else {
+                                                                        $('#formapamento10').html('<option value="0">Selecione</option>');
+                                                                    }
+                                                                });
+                                                            });
+
+                                                            //$(function(){     
+                                                            //    $('#exame').change(function(){
+                                                            //        exame = $(this).val();
+                                                            //        if ( exame === '')
+                                                            //            return false;
+                                                            //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
+                                                            //            var option = new Array();
+                                                            //            $.each(data, function(i, obj){
+                                                            //                console.log(obl);
+                                                            //                option[i] = document.createElement('option');
+                                                            //                $( option[i] ).attr( {value : obj.id} );
+                                                            //                $( option[i] ).append( obj.nome );
+                                                            //                $("select[name='horarios']").append( option[i] );
+                                                            //            });
+                                                            //        });
+                                                            //    });
+                                                            //});
+
+
+
+
+
+                                                            $(function () {
+                                                                $("#accordion").accordion();
+                                                            });
+
+
+                                                            $(document).ready(function () {
+                                                                jQuery('#form_exametemp').validate({
+                                                                    rules: {
+                                                                        txtNome: {
+                                                                            required: true,
+                                                                            minlength: 3
+                                                                        },
+                                                                        nascimento: {
+                                                                            required: true
+                                                                        },
+                                                                        idade: {
+                                                                            required: true
+                                                                        }
+                                                                    },
+                                                                    messages: {
+                                                                        txtNome: {
+                                                                            required: "*",
+                                                                            minlength: "!"
+                                                                        },
+                                                                        nascimento: {
+                                                                            required: "*"
+                                                                        },
+                                                                        idade: {
+                                                                            required: "*"
                                                                         }
                                                                     }
-                                                                    $('#formapamento1').html(options).show();
-                                                                    $('.carregando').hide();
                                                                 });
-                                                            } else {
-                                                                $('#formapamento1').html('<option value="0">Selecione</option>');
+                                                            });
+
+                                                            function calculoIdade() {
+                                                                var data = document.getElementById("txtNascimento").value;
+                                                                var ano = data.substring(6, 12);
+                                                                var idade = new Date().getFullYear() - ano;
+                                                                document.getElementById("txtIdade").value = idade;
                                                             }
-                                                        });
-                                                    });
 
-                                                    $(function () {
-                                                        $('#procedimento2').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento2', {procedimento2: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento2').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento2').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento3').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento3', {procedimento3: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento3').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento3').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento4').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento4', {procedimento4: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento4').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento4').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento5').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento5', {procedimento5: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento5').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento5').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento6').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento6', {procedimento6: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento6').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento6').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento7').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento7', {procedimento7: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento7').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento7').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento8').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento8', {procedimento8: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento8').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento8').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento9').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento9', {procedimento9: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento9').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento9').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    $(function () {
-                                                        $('#procedimento10').change(function () {
-                                                            if ($(this).val()) {
-                                                                $('.carregando').show();
-                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento10', {procedimento10: $(this).val(), ajax: true}, function (j) {
-                                                                    var options = '<option value="0">Selecione</option>';
-                                                                    for (var c = 0; c < j.length; c++) {
-                                                                        if (j[c].forma_pagamento_id != null) {
-                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
-                                                                        }
-                                                                    }
-                                                                    $('#formapamento10').html(options).show();
-                                                                    $('.carregando').hide();
-                                                                });
-                                                            } else {
-                                                                $('#formapamento10').html('<option value="0">Selecione</option>');
-                                                            }
-                                                        });
-                                                    });
-
-                                                    //$(function(){     
-                                                    //    $('#exame').change(function(){
-                                                    //        exame = $(this).val();
-                                                    //        if ( exame === '')
-                                                    //            return false;
-                                                    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-                                                    //            var option = new Array();
-                                                    //            $.each(data, function(i, obj){
-                                                    //                console.log(obl);
-                                                    //                option[i] = document.createElement('option');
-                                                    //                $( option[i] ).attr( {value : obj.id} );
-                                                    //                $( option[i] ).append( obj.nome );
-                                                    //                $("select[name='horarios']").append( option[i] );
-                                                    //            });
-                                                    //        });
-                                                    //    });
-                                                    //});
-
-
-
-
-
-                                                    $(function () {
-                                                        $("#accordion").accordion();
-                                                    });
-
-
-                                                    $(document).ready(function () {
-                                                        jQuery('#form_exametemp').validate({
-                                                            rules: {
-                                                                txtNome: {
-                                                                    required: true,
-                                                                    minlength: 3
-                                                                },
-                                                                nascimento: {
-                                                                    required: true
-                                                                },
-                                                                idade: {
-                                                                    required: true
-                                                                }
-                                                            },
-                                                            messages: {
-                                                                txtNome: {
-                                                                    required: "*",
-                                                                    minlength: "!"
-                                                                },
-                                                                nascimento: {
-                                                                    required: "*"
-                                                                },
-                                                                idade: {
-                                                                    required: "*"
-                                                                }
-                                                            }
-                                                        });
-                                                    });
-
-                                                    function calculoIdade() {
-                                                        var data = document.getElementById("txtNascimento").value;
-                                                        var ano = data.substring(6, 12);
-                                                        var idade = new Date().getFullYear() - ano;
-                                                        document.getElementById("txtIdade").value = idade;
-                                                    }
-
-                                                    calculoIdade();
+                                                            calculoIdade();
 
 </script>

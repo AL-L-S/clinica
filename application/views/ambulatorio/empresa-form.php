@@ -136,6 +136,12 @@
                             <input type="text" id="impressao_recibo" class="texto01" name="impressao_recibo" value="<?= @$obj->_impressao_recibo; ?>" />
                         </dd>
                         <dt>
+                            <label>Impressão Orçamento</label>
+                        </dt>
+                        <dd>
+                            <input type="text" id="impressao_orcamento" class="texto01" name="impressao_orcamento" value="<?= @$obj->_impressao_orcamento; ?>" />
+                        </dd>
+                        <dt>
                             <label>Impressão Declaração</label>
                         </dt>
                         <dd>
@@ -377,6 +383,43 @@
                         </dt>
                         <dd>
                             <input type="checkbox" id="login_paciente" name="login_paciente" <? if (@$obj->_login_paciente == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o crédito irá aparecer no sistema.">Aparecer Crédito</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="credito" name="credito" <? if (@$obj->_credito == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o valor do recibo sera o da Guia.">Valor do Recibo é o da guia</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="valor_recibo_guia" name="valor_recibo_guia" <? if (@$obj->_valor_recibo_guia == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o orçamento será configurável.">Orçamento Configurável</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="orcamento_config" name="orcamento_config" <? if (@$obj->_orcamento_config == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, valor da odontologia poderá ser alterado ao lançar.">Valor da Odontologia Alterável</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="odontologia_valor_alterar" name="odontologia_valor_alterar" <? if (@$obj->_odontologia_valor_alterar == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, quando o sistema encontrar um procedimento com retorno no sistema, ele irá perguntar se a pessoa deseja associar, se sim, ele irá automáticamente selecionar o procedimento
+                                   Caso isso não esteja ativado, o sistema vai tirar a seleção do procedimento.">Selecionar Retorno Automaticamente</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="selecionar_retorno" name="selecionar_retorno" <? if (@$obj->_selecionar_retorno == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o administrador TOTAL pode cancelar na sala de espera.">Administrador cancelar na sala de espera</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="administrador_cancelar" name="administrador_cancelar" <? if (@$obj->_administrador_cancelar == 't') echo "checked"; ?>/> 
                         </dd>
                     <? } ?>
                 </dl>    

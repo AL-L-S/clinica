@@ -29,6 +29,19 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarcreditofaturar($credito_id) {
+
+        $this->db->select('pcr.valor');
+        $this->db->from('tb_paciente_credito pcr');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->where('pcr.empresa_id', $empresa_id);
+        $this->db->where('pcr.ativo', 'true');
+        $this->db->where('pcr.paciente_credito_id', $credito_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarpacienteporguia($guia_id) {
         $this->db->select('paciente_id');
         $this->db->from('tb_ambulatorio_guia');
@@ -47,6 +60,7 @@ class exametemp_model extends Model {
                            pcr.procedimento_convenio_id,
                            pcr.valor,
                            pcr.data,
+                           pcr.faturado,
                            c.nome as convenio,
                            p.nome as paciente,
                            pt.nome as procedimento');
@@ -328,16 +342,16 @@ class exametemp_model extends Model {
     function validaretornoprocedimento($paciente_id, $procedimento_id) {
         $empresa_id = $this->session->userdata('empresa_id');
 
-        $this->db->select('pt.retorno_dias, pt.associacao_procedimento_tuss_id, pt.grupo');
+        $this->db->select('pt.retorno_dias, pt.associacao_procedimento_tuss_id, pt.grupo, pt.procedimento_tuss_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("pc.procedimento_convenio_id", $procedimento_id);
         $return = $this->db->get();
         $return = $return->result();
 //        var_dump($return[0]->associacao_procedimento_tuss_id); die;
-        
-        $data = date('Y-m-d', strtotime("-" . $return[0]->retorno_dias ." day", strtotime(date('Y-m-d'))));
-        $this->db->select('a.agenda_exames_id');
+
+        $data = date('Y-m-d', strtotime("-" . $return[0]->retorno_dias . " day", strtotime(date('Y-m-d'))));
+        $this->db->select('a.agenda_exames_id, a.data');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
@@ -351,14 +365,112 @@ class exametemp_model extends Model {
         $this->db->where("a.empresa_id", $empresa_id);
         $this->db->where("a.paciente_id", $paciente_id);
         $this->db->where("pc.procedimento_tuss_id", $return[0]->associacao_procedimento_tuss_id);
+        $this->db->orderby("a.data desc");
         $retorno = $this->db->get();
-        
+
+        if (count($retorno->result()) > 0) {
+            $resultado = $retorno->result();
+            $data_atendimento = $resultado[0]->data;
+        } else {
+            $data_atendimento = date('Y-m-d');
+        }
+
+
+        $this->db->select('a.agenda_exames_id');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
+        $this->db->where("a.cancelada", 'false');
+        $this->db->where('a.ativo', 'false');
+//        $this->db->where('a.retorno', 'true');
+        $this->db->where("a.realizada", 't');
+        $this->db->where('a.data <=', date('Y-m-d'));
+        $this->db->where('a.data >=', $data_atendimento);
+        $this->db->where("a.empresa_id", $empresa_id);
+        $this->db->where("a.paciente_id", $paciente_id);
+        $this->db->where("pc.procedimento_tuss_id", $return[0]->procedimento_tuss_id);
+
+        $retorno_realizado = $this->db->get();
+
+
 //        echo "<pre>";
 //        var_dump($retorno->result()); die;
-        
+
         return array(
             "grupo" => $return[0]->grupo,
             "qtdeConsultas" => count($retorno->result()),
+            "retorno_realizado" => count($retorno_realizado->result()),
+            "diasRetorno" => $return[0]->retorno_dias);
+    }
+
+    function validaretornoprocedimentoinverso($paciente_id, $procedimento_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('pt.retorno_dias, pt.procedimento_tuss_id, pt.associacao_procedimento_tuss_id, pt.grupo, pc.convenio_id, pt.nome as procedimento_nome');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.associacao_procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.procedimento_convenio_id", $procedimento_id);
+        $this->db->where("pt.ativo", 't');
+        $return = $this->db->get();
+        $return = $return->result();
+//        var_dump($return[0]->associacao_procedimento_tuss_id); die;
+
+        $data = date('Y-m-d', strtotime("-" . $return[0]->retorno_dias . " day", strtotime(date('Y-m-d'))));
+        $this->db->select('a.agenda_exames_id, a.data');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
+        $this->db->where("a.cancelada", 'false');
+        $this->db->where('a.ativo', 'false');
+        $this->db->where("a.realizada", 't');
+        $this->db->where('a.data <=', date('Y-m-d'));
+        $this->db->where('a.data >=', $data);
+        $this->db->where("a.empresa_id", $empresa_id);
+        $this->db->where("a.paciente_id", $paciente_id);
+        $this->db->where("pc.procedimento_tuss_id", $return[0]->associacao_procedimento_tuss_id);
+        $this->db->orderby("a.data desc");
+
+        $retorno = $this->db->get();
+        if (count($retorno->result()) > 0) {
+            $resultado = $retorno->result();
+            $data_atendimento = $resultado[0]->data;
+        } else {
+            $data_atendimento = date('Y-m-d');
+        }
+//        var_dump($retorno->result()); die;
+
+        $this->db->select('a.agenda_exames_id');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = a.paciente_id', 'left');
+        $this->db->where("a.cancelada", 'false');
+        $this->db->where('a.ativo', 'false');
+//        $this->db->where('a.retorno', 'true');
+        $this->db->where("a.realizada", 't');
+        $this->db->where('a.data <=', date('Y-m-d'));
+        $this->db->where('a.data >=', $data_atendimento);
+        $this->db->where("a.empresa_id", $empresa_id);
+        $this->db->where("a.paciente_id", $paciente_id);
+        $this->db->where("pc.procedimento_tuss_id", $return[0]->procedimento_tuss_id);
+        $retorno_realizado = $this->db->get()->result();
+
+
+
+        $this->db->select('pc.procedimento_convenio_id, pc.convenio_id');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->where("pc.convenio_id", $return[0]->convenio_id);
+        $this->db->where("pc.procedimento_tuss_id", $return[0]->procedimento_tuss_id);
+        $procedimento_retorno = $this->db->get()->result();
+//        echo "<pre>";
+//        var_dump($retorno_realizado); die;           
+
+
+        return array(
+            "procedimento_retorno" => $procedimento_retorno[0]->procedimento_convenio_id,
+            "grupo" => $return[0]->grupo,
+            "procedimento_nome" => $return[0]->procedimento_nome,
+            "qtdeConsultas" => count($retorno->result()),
+            "retorno_realizado" => count($retorno_realizado),
             "diasRetorno" => $return[0]->retorno_dias);
     }
 
@@ -2199,7 +2311,7 @@ class exametemp_model extends Model {
             $this->db->set('valor', $_POST['valor1']);
             $this->db->set('procedimento_convenio_id', $_POST['procedimento1']);
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-            $this->db->set('forma_pagamento_id', $_POST['forma_pagamento']);
+//            $this->db->set('forma_pagamento_id', $_POST['forma_pagamento']);
             $this->db->set('data', date("Y-m-d"));
 
             $horario = date("Y-m-d H:i:s");
@@ -2215,6 +2327,18 @@ class exametemp_model extends Model {
             $paciente_credito_id = $this->db->insert_id();
 
             return $paciente_credito_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function excluircredito($credito_id) {
+        try {
+            $this->db->set('ativo', 'f');
+            $this->db->where('paciente_credito_id', $credito_id);
+            $this->db->update('tb_paciente_credito');
+
+            return $credito_id;
         } catch (Exception $exc) {
             return -1;
         }
@@ -4861,6 +4985,8 @@ class exametemp_model extends Model {
                             } else {
                                 $valor = 0;
                             }
+                            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                            $this->db->set('percentual_medico', $percentual[0]->percentual);
 //                            var_dump($sessao2_valor); die;
                             if ($dinheiro == "t") {
                                 $this->db->set('valor', $valor);
@@ -4919,6 +5045,8 @@ class exametemp_model extends Model {
                             } else {
                                 $valor = 0;
                             }
+                            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                            $this->db->set('percentual_medico', $percentual[0]->percentual);
 //                            var_dump($sessao2_valor); die;
                             if ($dinheiro == "t") {
                                 $this->db->set('valor', $valor);
@@ -5001,25 +5129,24 @@ class exametemp_model extends Model {
         $this->db->where("ativo", 't');
         $query = $this->db->get();
         $procedimentos = $query->result();
-        
+
         $string = '';
-        for($i = 0; $i < count($procedimentos); $i++){
+        for ($i = 0; $i < count($procedimentos); $i++) {
             $string .= $procedimentos[$i]->procedimento_convenio_id . (($i != count($procedimentos) - 1) ? ',' : '');
         }
-        
+
 //        echo "<pre>";var_dump($string); die;
-        
-        if( count($agrupados) == count($procedimentos) ){
+
+        if (count($agrupados) == count($procedimentos)) {
             $this->db->select('SUM(valortotal) AS valor_pacote');
             $this->db->from('tb_procedimento_convenio pc');
             $this->db->where("procedimento_convenio_id IN ($string)");
             $this->db->where("ativo", 't');
             $query = $this->db->get();
             $procedimentos = $query->result();
-            
+
             return $procedimentos[0]->valor_pacote;
-        } 
-        else{
+        } else {
             return -1;
         }
     }
@@ -5735,7 +5862,7 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarautocompleteprocedimentosfaturar($parametro) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,

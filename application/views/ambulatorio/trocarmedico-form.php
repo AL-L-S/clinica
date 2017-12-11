@@ -9,7 +9,7 @@
                 <fieldset>
 
                     <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" value="<?= $agenda_exames_id ?>"/>
-                    <input type="hidden" name="tipo" id="agenda_exames_id" value="<?= $tipo ?>"/>
+                    <!--<input type="hidden" name="tipo" id="agenda_exames_id" value="<?= $tipo ?>"/>-->
                     <dt>
                         <label>Médico atual</label>
                     </dt>
@@ -29,7 +29,7 @@
                     </dd>
                     <hr>
                     <dd>                    
-                        <button type="submit" id="enviar" onclick="javascrip:window.close();">Enviar</button>
+                        <button type="submit" id="enviar" >Enviar</button>
                     </dd>
 
             </form>

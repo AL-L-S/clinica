@@ -305,6 +305,7 @@ class agenda_model extends Model {
                         $operador_id = $this->session->userdata('operador_id');
 
                         $this->db->set('medico_agenda', $_POST['medico']);
+                        $this->db->set('medico_consulta_id', $_POST['medico']);
                         $this->db->set('data_medico_agenda', $horario);
                         if ($_POST['txtobservacao'] != '') {
                             $this->db->set('observacoes', $_POST['txtobservacao']);

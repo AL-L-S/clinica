@@ -1,40 +1,40 @@
 <script>
-    function consultasAnteriores() {
-        if( $("#txtNomeid").val() != "" && $("#convenio").val() != "" && $("#procedimento").val() != ""){
-            jQuery.ajax({
-                url: "<?= base_url(); ?>autocomplete/buscaconsultasanteriores",
-                type: "GET",
-                data: 'paciente_id=' + $("#txtNomeid").val() + '&convenio_id=' + $("#convenio").val() + '&procedimento_id=' + $("#procedimento").val(),
-                dataType: 'json',
-                async: false,
-                success: function (retorno) {
-                    if(retorno.length > 0){
-                        var mensagem = "Este paciente ja fez ";
-                        
-                        if (retorno[0].tipo = "EXAME") { mensagem += "esse exame"; }
-                        else { mensagem += "essa consulta"; }
-                        
-                        mensagem += " nos ultimos 30 dias. Deseja prosseguir?";
-                        var escolha = confirm(mensagem);
-                        
-                        if(escolha) document.form_exametemp.submit(); 
-                    }
-                    else{
-                        document.form_exametemp.submit(); 
-                    }
-                },
-                error: function(erro){
-                    return true;
-                }
-            });
-            
-            return false;
-        }
-        else{
-            return true;
-        }
-        
-    }
+//    function consultasAnteriores() {
+//        if( $("#txtNomeid").val() != "" && $("#convenio").val() != "" && $("#procedimento").val() != ""){
+//            jQuery.ajax({
+//                url: "<?= base_url(); ?>autocomplete/buscaconsultasanteriores",
+//                type: "GET",
+//                data: 'paciente_id=' + $("#txtNomeid").val() + '&convenio_id=' + $("#convenio").val() + '&procedimento_id=' + $("#procedimento").val(),
+//                dataType: 'json',
+//                async: false,
+//                success: function (retorno) {
+//                    if(retorno.length > 0){
+//                        var mensagem = "Este paciente ja fez ";
+//                        
+//                        if (retorno[0].tipo = "EXAME") { mensagem += "esse exame"; }
+//                        else { mensagem += "essa consulta"; }
+//                        
+//                        mensagem += " nos ultimos 30 dias. Deseja prosseguir?";
+//                        var escolha = confirm(mensagem);
+//                        
+//                        if(escolha) document.form_exametemp.submit(); 
+//                    }
+//                    else{
+//                        document.form_exametemp.submit(); 
+//                    }
+//                },
+//                error: function(erro){
+//                    return true;
+//                }
+//            });
+//            
+//            return false;
+//        }
+//        else{
+//            return true;
+//        }
+//        
+//    }
 </script>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
@@ -161,51 +161,51 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <style>
-/*    .chosen-container{ margin-top: 5pt;}
+    /*    .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 130px; }*/
 </style>
 <script>
-    function mascaraTelefone(campo) {
+                    function mascaraTelefone(campo) {
 
-        function trata(valor, isOnBlur) {
+                        function trata(valor, isOnBlur) {
 
-            valor = valor.replace(/\D/g, "");
-            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                            valor = valor.replace(/\D/g, "");
+                            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-            if (isOnBlur) {
+                            if (isOnBlur) {
 
-                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-            } else {
+                                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                            } else {
 
-                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
-            }
-            return valor;
-        }
+                                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                            }
+                            return valor;
+                        }
 
-        campo.onkeypress = function (evt) {
+                        campo.onkeypress = function (evt) {
 
-            var code = (window.event) ? window.event.keyCode : evt.which;
-            var valor = this.value
+                            var code = (window.event) ? window.event.keyCode : evt.which;
+                            var valor = this.value
 
-            if (code > 57 || (code < 48 && code != 8)) {
-                return false;
-            } else {
-                this.value = trata(valor, false);
-            }
-        }
+                            if (code > 57 || (code < 48 && code != 8)) {
+                                return false;
+                            } else {
+                                this.value = trata(valor, false);
+                            }
+                        }
 
-        campo.onblur = function () {
+                        campo.onblur = function () {
 
-            var valor = this.value;
-            if (valor.length < 13) {
-                this.value = ""
-            } else {
-                this.value = trata(this.value, true);
-            }
-        }
+                            var valor = this.value;
+                            if (valor.length < 13) {
+                                this.value = ""
+                            } else {
+                                this.value = trata(this.value, true);
+                            }
+                        }
 
-        campo.maxLength = 14;
-    }
+                        campo.maxLength = 14;
+                    }
 
 
 </script>
@@ -213,112 +213,112 @@
     mascaraTelefone(form_exametemp.txtTelefone);
     mascaraTelefone(form_exametemp.txtCelular);
 
-                    $(function () {
-                        $("#data_ficha").datepicker({
-                            autosize: true,
-                            changeYear: true,
-                            changeMonth: true,
-                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                            dateFormat: 'dd/mm/yy'
-                        });
-                    });
+    $(function () {
+        $("#data_ficha").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
 
-                    $(function () {
-                        $('#exame').change(function () {
-                            if ($(this).val()) {
-                                $('#horarios').hide();
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorio', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
-                                    var options = '<option value=""></option>';
-                                    for (var i = 0; i < j.length; i++) {
-                                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '-' + j[i].nome + '-' + j[i].medico_agenda + '</option>';
-                                    }
-                                    $('#horarios').html(options).show();
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#horarios').html('<option value="">-- Escolha um exame --</option>');
-                            }
-                        });
-                    });
-
-                    $(function () {
-                        $('#convenio').change(function () {
-                            if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                    options = '<option value=""></option>';
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                    }
-//                                    $('#procedimento').html(options).show();
-                                    $('#procedimento option').remove();
-                                    $('#procedimento').append(options);
-                                    $("#procedimento").trigger("chosen:updated");
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#procedimento option').remove();
-                                $('#procedimento').append('');
-                                $("#procedimento").trigger("chosen:updated");
-                            }
-                        });
-                    });
-
-                    $(function () {
-                        $("#txtNome").autocomplete({
-                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                            minLength: 5,
-                            focus: function (event, ui) {
-                                $("#txtNome").val(ui.item.label);
-                                return false;
-                            },
-                            select: function (event, ui) {
-                                $("#txtNome").val(ui.item.value);
-                                $("#txtNomeid").val(ui.item.id);
-                                $("#txtTelefone").val(ui.item.itens);
-                                $("#txtCelular").val(ui.item.celular);
-                                $("#nascimento").val(ui.item.valor);
-                                return false;
-                            }
-                        });
-                    });
-
-
-
-
-
-                    $(function () {
-                        $("#accordion").accordion();
-                    });
-
-
-                    $(document).ready(function () {
-                        jQuery('#form_exametemp').validate({
-                            rules: {
-                                txtNome: {
-                                    required: true,
-                                    minlength: 3
-                                }
-                            },
-                            messages: {
-                                txtNome: {
-                                    required: "*",
-                                    minlength: "!"
-                                }
-                            }
-                        });
-                    });
-
-                    function calculoIdade() {
-                        var data = document.getElementById("nascimento").value;
-                        var ano = data.substring(6, 12);
-                        var idade = new Date().getFullYear() - ano;
-                        document.getElementById("idade2").value = idade;
+    $(function () {
+        $('#exame').change(function () {
+            if ($(this).val()) {
+                $('#horarios').hide();
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorio', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
+                    var options = '<option value=""></option>';
+                    for (var i = 0; i < j.length; i++) {
+                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '-' + j[i].nome + '-' + j[i].medico_agenda + '</option>';
                     }
+                    $('#horarios').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#horarios').html('<option value="">-- Escolha um exame --</option>');
+            }
+        });
+    });
 
-                    jQuery("#nascimento").mask("99/99/9999");
+    $(function () {
+        $('#convenio').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioconsulta', {convenio1: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    }
+//                                    $('#procedimento').html(options).show();
+                    $('#procedimento option').remove();
+                    $('#procedimento').append(options);
+                    $("#procedimento").trigger("chosen:updated");
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#procedimento option').remove();
+                $('#procedimento').append('');
+                $("#procedimento").trigger("chosen:updated");
+            }
+        });
+    });
+
+    $(function () {
+        $("#txtNome").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+            minLength: 5,
+            focus: function (event, ui) {
+                $("#txtNome").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtNome").val(ui.item.value);
+                $("#txtNomeid").val(ui.item.id);
+                $("#txtTelefone").val(ui.item.itens);
+                $("#txtCelular").val(ui.item.celular);
+                $("#nascimento").val(ui.item.valor);
+                return false;
+            }
+        });
+    });
+
+
+
+
+
+    $(function () {
+        $("#accordion").accordion();
+    });
+
+
+    $(document).ready(function () {
+        jQuery('#form_exametemp').validate({
+            rules: {
+                txtNome: {
+                    required: true,
+                    minlength: 3
+                }
+            },
+            messages: {
+                txtNome: {
+                    required: "*",
+                    minlength: "!"
+                }
+            }
+        });
+    });
+
+    function calculoIdade() {
+        var data = document.getElementById("nascimento").value;
+        var ano = data.substring(6, 12);
+        var idade = new Date().getFullYear() - ano;
+        document.getElementById("idade2").value = idade;
+    }
+
+    jQuery("#nascimento").mask("99/99/9999");
 
 </script>
