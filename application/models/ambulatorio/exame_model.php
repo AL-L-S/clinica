@@ -6244,7 +6244,8 @@ class exame_model extends Model {
             $this->db->where("ppmc.medico", $_POST['txtmedico']);
             $retorno = $this->db->get()->result();
             
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento ){
+//            echo "<pre>"; var_dump($retorno); die;
+            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
                 if( date("d") > $retorno[0]->dia_recebimento ) {
                     $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
@@ -6285,7 +6286,8 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $dataProducao);
+                $this->db->set('data', $data);
+                $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6349,7 +6351,8 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $dataProducao);
+                $this->db->set('data', $data);
+                $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6414,7 +6417,8 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $dataProducao);
+                $this->db->set('data', $data);
+                $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6478,7 +6482,8 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $dataProducao);
+                $this->db->set('data', $data);
+                $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);

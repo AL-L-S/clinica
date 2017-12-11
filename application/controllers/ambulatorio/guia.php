@@ -3143,6 +3143,9 @@ class Guia extends BaseController {
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
 
+
+//        $this->db->where("al.data_producao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+//        $this->db->where("al.data_producao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 //        echo "<pre>";
 //        var_dump($data['relatorio']);die;
 

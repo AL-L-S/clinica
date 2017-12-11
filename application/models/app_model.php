@@ -7,6 +7,17 @@ class app_model extends Model {
 //        $this->load->library('utilitario');
     }
 
+    function buscarAtendimentosMarcados() {
+        $this->db->select('operador_id');
+        $this->db->from('tb_operador');
+        $this->db->where('usuario', $_GET['usuario']);
+        $this->db->where('senha', md5($_GET['pw']));
+        $this->db->where('ativo', 'true');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function validaUsuario() {
         $this->db->select('operador_id');
         $this->db->from('tb_operador');
@@ -129,7 +140,7 @@ class app_model extends Model {
         }
 
         if(@$_GET['data'] != ""){
-            $this->db->where('ae.data', $_GET['data']);
+            $this->db->where('ae.data', date("Y-m-d", strtotime($_GET['data'])) );
         }
         else{
             $this->db->where('ae.data', date("Y-m-d"));
@@ -148,71 +159,6 @@ class app_model extends Model {
         
         $return = $this->db->get();
         return $return->result();
-    }
-    
-    function listaProcedimentosMedHGF(){
-        $this->db->select('pc.*, pt.nome as procedimento, c.nome as convenio');
-        $this->db->from('tb_procedimento_convenio pc');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
-        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id');
-        $this->db->where('pc.ativo', 't');
-        $this->db->where('pc.convenio_id IN ( 111, 106 ) ');
-        $return = $this->db->get();
-        return $return->result_array();
-    }
-    
-    function verificaProcedimentoJaExiste($registro){
-        $config['hostname'] = "localhost";
-        $config['username'] = "postgres";
-        $config['password'] = "123456";
-        $config['database'] = "med02";
-        $config['dbdriver'] = "postgre";
-        $config['dbprefix'] = "ponto.";
-        $config['pconnect'] = FALSE;
-        $config['db_debug'] = TRUE;
-        $config['active_r'] = TRUE;
-        $config['cachedir'] = "";
-        $config['char_set'] = "utf8";
-        $config['dbcollat'] = "utf8_general_ci";
-        $DB1 = $this->load->database($config, TRUE);
-        
-        $sql = "SELECT procedimento_convenio_id FROM ponto.tb_procedimento_convenio pc "
-                . "INNER JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id "
-                . "INNER JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id "
-                . "WHERE pc.ativo = 't' AND ";
-        
-        $primeiro = true;
-        
-        foreach ($registro as $key => $value) {
- 
-            if($key != 'procedimento' && $key != 'convenio'){
-                continue;
-            } 
-            
-            if($key == 'convenio'){
-                $sql .= "c.nome = '" . $value . "'";
-            } else {
-                $sql .= "pt.nome = '" . $value . "'";
-            }
-  
-            if ($primeiro){
-                $sql .= " AND ";
-                $primeiro = false;
-            }
-        }
-        
-        
-        $result = $DB1->query($sql);
-        
-        $result = $result->result();
-        
-        if(count($result) > 0){            
-            return $result[0]->procedimento_convenio_id;
-        }
-        else{
-            return -1;
-        }
-//        var_dump($result->result());die;
     }
 }
 
