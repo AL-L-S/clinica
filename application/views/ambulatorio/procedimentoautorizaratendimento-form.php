@@ -1,4 +1,11 @@
-<? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
+<? 
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
+$empresa = $this->guia->listarempresapermissoes(); 
+$odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
+$retorno_alterar = $empresa[0]->selecionar_retorno;
+//var_dump($retorno_alterar); die;
+
+?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
     <div class="bt_link_new" style="width: 150pt">
@@ -211,7 +218,7 @@
 </div> <!-- Final da DIV content -->
 
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
@@ -256,11 +263,13 @@
                                                                 if(qtde == 0){
                                                                     qtde = 1;
                                                                 }
-                                                if(a[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor<?= $b ?>").prop('readonly', false);
-                                                }else{
-                                                    $("#valor<?= $b ?>").prop('readonly', true);
-                                                }
+                                                        <?if($odontologia_alterar == 't'){?>
+                                                        if(a[0].grupo == 'ODONTOLOGIA'){
+                                                            $("#valor<?=$b?>").prop('readonly', false);
+                                                        }else{
+                                                            $("#valor<?=$b?>").prop('readonly', true);
+                                                        }    
+                                                        <?}?>   
                                                                 document.getElementById("valor<?= $b ?>").value = valor;
                                                                 document.getElementById("qtde<?= $b ?>").value = qtde;
                                                                 $('.carregando').hide();
@@ -309,6 +318,60 @@
                                             });
                                         }
                                     });
+                                    
+                                $(function () {
+                                $('#procedimento<?= $b; ?>').change(function () {
+    //                         asd');lert('asd');
+                                          if ($(this).val()) {
+                                              $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+    //                          console.log(r);
+                                                  if (r.qtdeConsultas == 0 && r.grupo == "RETORNO") {
+                                                      alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+                                                      $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
+                                                  } else if (r.qtdeConsultas > 0 && r.grupo == "RETORNO" && r.retorno_realizado > 0) {
+                                                      alert("Erro ao selecionar retorno. Esse paciente já realizou o retorno associado a esse procedimento no tempo cadastrado");
+                                                      $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
+                                                  }
+                                              });
+
+                                              $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+
+    //                          console.log(r);
+
+                                                  if (r.qtdeConsultas > 0 && r.retorno_realizado == 0) {
+    //                              alert('asdasd'); 
+    //                              alert("Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+    //                              alert(r.procedimento_retorno);
+                                                      if('<?=$retorno_alterar?>' == 'f'){
+                                                    if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
+    //                                  alert('asdas');
+                                                          $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                                          //                                                            $('#valor1').val('0.00');
+                                                          $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                              options = "";
+                                                              options += j[0].valortotal;
+                                                              document.getElementById("valor<?= $b; ?>").value = options;
+                                                              $('.carregando').hide();
+                                                          });
+                                                      } else {
+
+                                                      }    
+                                                    }else{
+                                                    alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
+                                                    $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);    
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                 options = "";
+                                                                 options += j[0].valortotal;
+                                                                 document.getElementById("valor<?= $b; ?>").value = options;
+                                                                 $('.carregando').hide();
+                                                             });
+                                                    }
+
+                                                  }
+                                              });
+                                          }
+                                      });
+                                  });     
                                 
                                 $('#checkbox<?= $b ?>').change(function () {
                                     if ($(this).is(":checked")) {
@@ -320,6 +383,55 @@
                                         <? if ( $recomendacao_obrigatorio == 't' ){ ?>
                                             $("#indicacao<?= $b; ?>").prop('required', true);
                                         <? } ?>
+                                         if ($("#procedimento<?= $b; ?>").val() != '') {
+                                             
+                                              $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $("#procedimento<?= $b; ?>").val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+    //                                    g(r); 
+//                                        d');
+                                                  if (r.qtdeConsultas == 0 && r.grupo == "RETORNO") {
+                                                      alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+                                                      $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
+                                                  } else if (r.qtdeConsultas > 0 && r.grupo == "RETORNO" && r.retorno_realizado > 0) {
+                                                      alert("Erro ao selecionar retorno. Esse paciente já realizou o retorno associado a esse procedimento no tempo cadastrado");
+                                                      $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
+                                                  }
+                                              });
+
+                                              $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $("#procedimento<?= $b; ?>").val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+
+    //                                    g(r);
+   
+                                                  if (r.qtdeConsultas > 0 && r.retorno_realizado == 0) {
+    //                                    'asdasd'); 
+    //                                    "Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+    //                                    r.procedimento_retorno);
+                                                   if('<?=$retorno_alterar?>' == 'f'){
+                                                       if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
+    //                                               cutou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");    alert('asdas');
+                                                             $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+
+                                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                 options = "";
+                                                                 options += j[0].valortotal;
+                                                                 document.getElementById("valor<?= $b; ?>").value = options;
+                                                                 $('.carregando').hide();
+                                                             });
+                                                         } else {
+
+                                                         }    
+                                                       }else{
+                                                       alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
+                                                       $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);    
+                                                       $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                 options = "";
+                                                                 options += j[0].valortotal;
+                                                                 document.getElementById("valor<?= $b; ?>").value = options;
+                                                                 $('.carregando').hide();
+                                                             });
+                                                       }
+                                                  }
+                                              });
+                                          }   
                                     } else {
                                         $("#medico_id<?= $b; ?>").prop('required', false);
                                         $("#sala<?= $b; ?>").prop('required', false);
@@ -331,6 +443,10 @@
                                         <? } ?>
                                     }
                                 });
+                                
+//                                
+                                
+                               
 
 <? }
 ?>
@@ -546,11 +662,13 @@
                                         }else{
                                            qtde = 1; 
                                         }
-                                                                                        if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }
+                                                <?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor1").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor1").prop('readonly', true);
+                                                 }    
+                                                 <?}?>
                                         document.getElementById("valor1").value = options;
                                         document.getElementById("qtde1").value = qtde;
                                         $('.carregando').hide();
@@ -609,11 +727,14 @@
                                            qtde += j[0].qtde; 
                                         }else{
                                            qtde = 1; 
-                                        }                                                if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }
+                                        }       
+                                            <?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor2").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor2").prop('readonly', true);
+                                                 }    
+                                                 <?}?>
                                         document.getElementById("valor2").value = options;
                                         document.getElementById("qtde2").value = qtde;
                                         $('.carregando').hide();
@@ -671,12 +792,13 @@
                                            qtde += j[0].qtde; 
                                         }else{
                                            qtde = 1; 
-                                        }
-                                                                                        if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }
+                                        }<?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor3").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor3").prop('readonly', true);
+                                                 }    
+                                                 <?}?>
                                         document.getElementById("valor3").value = options;
                                         document.getElementById("qtde3").value = qtde;
                                         $('.carregando').hide();
@@ -736,11 +858,13 @@
                                         }else{
                                            qtde = 1; 
                                         }
-                                                if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }
+                                                <?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor4").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor4").prop('readonly', true);
+                                                 }    
+                                                 <?}?>
                                         document.getElementById("valor4").value = options;
                                         document.getElementById("qtde4").value = qtde;
                                         $('.carregando').hide();
@@ -800,11 +924,13 @@
                                         }else{
                                            qtde = 1; 
                                         }
-                                                                                        if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }
+                                                 <?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor5").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor5").prop('readonly', true);
+                                                 }    
+                                                 <?}?>
                                         document.getElementById("valor5").value = options;
                                         document.getElementById("qtde5").value = qtde;
                                         $('.carregando').hide();
@@ -864,11 +990,13 @@
                                         }else{
                                            qtde = 1; 
                                         }
+                                                <?if($odontologia_alterar == 't'){?>
                                                  if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }
+                                                     $("#valor6").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor6").prop('readonly', true);
+                                                 }    
+                                                 <?}?>
                                         document.getElementById("valor6").value = options;
                                         document.getElementById("qtde6").value = qtde;
                                         $('.carregando').hide();
@@ -928,11 +1056,13 @@
                                         }else{
                                            qtde = 1; 
                                         }
-                                                if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }
+                                                <?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor7").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor7").prop('readonly', true);
+                                                 }    
+                                                 <?}?>
                                         document.getElementById("valor7").value = options;
                                         document.getElementById("qtde7").value = qtde;
                                         $('.carregando').hide();
@@ -992,11 +1122,13 @@
                                         }else{
                                            qtde = 1; 
                                         }
-                                                if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }                                        
+                                                <?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor8").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor8").prop('readonly', true);
+                                                 }    
+                                                 <?}?>                                     
                                         document.getElementById("valor8").value = options;
                                         document.getElementById("qtde8").value = qtde;
                                         $('.carregando').hide();
@@ -1056,11 +1188,13 @@
                                         }else{
                                            qtde = 1; 
                                         }
-                                                if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }                                        
+                                                 <?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor9").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor9").prop('readonly', true);
+                                                 }    
+                                                 <?}?>                                    
                                         document.getElementById("valor9").value = options;
                                         document.getElementById("qtde9").value = qtde;
                                         $('.carregando').hide();
@@ -1120,11 +1254,13 @@
                                         }else{
                                            qtde = 1; 
                                         }
-                                                if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }                                        
+                                                 <?if($odontologia_alterar == 't'){?>
+                                                 if(j[0].grupo == 'ODONTOLOGIA'){
+                                                     $("#valor10").prop('readonly', false);
+                                                 }else{
+                                                     $("#valor10").prop('readonly', true);
+                                                 }    
+                                                 <?}?>                                        
                                         document.getElementById("valor10").value = options;
                                         document.getElementById("qtde10").value = qtde;
                                         $('.carregando').hide();

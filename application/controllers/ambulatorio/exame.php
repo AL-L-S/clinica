@@ -906,7 +906,9 @@ class Exame extends BaseController {
     }
 
     function gravartrocarmedico() {
+        
         $this->exame->trocarmedico();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravarpacientedetalhes() {
@@ -1221,6 +1223,7 @@ class Exame extends BaseController {
     }
 
     function observacaogravar($agenda_exame_id) {
+//        var_dump($agenda_exame_id); die;
         $verificar = $this->exame->observacao($agenda_exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }

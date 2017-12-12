@@ -289,18 +289,18 @@ class Exametemp extends BaseController {
 
     function gerarecibocredito($paciente_credito_id) {
         $data['paciente_credito_id'] = $paciente_credito_id;
-        
+
         $credito = $this->exametemp->gerarecibocredito($paciente_credito_id);
-        
+
         if ($credito[0]->valor == '0,00') {
             $data['extenso'] = 'ZERO';
         } else {
             $valoreditado = str_replace(",", "", str_replace(".", "", $credito[0]->valor));
             $data['extenso'] = GExtenso::moeda($valoreditado);
         }
-        
+
         $data['credito'] = $credito;
-        
+
         $this->load->view('ambulatorio/reciboprocedimentocredito', $data);
     }
 
@@ -333,7 +333,46 @@ class Exametemp extends BaseController {
     function gravarcredito() {
         $paciente_id = $_POST['txtpaciente_id'];
 
-        $data['paciente'] = $this->exametemp->gravarcredito();
+        $credito_id = $this->exametemp->gravarcredito();
+//        var_dump($credito_id); die;
+        redirect(base_url() . "ambulatorio/exametemp/faturarcreditos/$credito_id/$paciente_id");
+    }
+
+    function faturarcreditos($credito_id, $paciente_id) {
+        $data['forma_pagamento'] = $this->guia->formadepagamentofaturarcredito();
+        $data['valor_credito'] = $this->exametemp->listarcreditofaturar($credito_id);
+
+//        echo '<pre>';
+//        var_dump($data['valor']); die;
+
+//        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
+        $data['paciente_id'] = $paciente_id;
+//        var_dump($paciente_id); die;
+        $data['credito_id'] = $credito_id;
+        $data['valor'] = 0.00;
+
+        $this->load->View('ambulatorio/faturarcredito-form', $data);
+    }
+    
+    function gravarfaturarcredito() {
+        $this->guia->gravarfaturamentocredito();
+//        var_dump($_POST['paciente_teste_id']);
+//        die;
+        $credito_id = $_POST['credito_id'];
+        $paciente_id = $_POST['paciente_teste_id'];
+//        $data['agenda_exames_id'] = $agenda_exames_id;
+//        $this->load->View('ambulatorio/faturar-form', $data);
+        redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
+    }
+    
+    function excluircredito($credito_id, $paciente_id) {
+        $this->exametemp->excluircredito($credito_id);
+//        var_dump($paciente_id);
+//        die;
+//        $credito_id = $_POST['credito_id'];
+//        $paciente_id = $_POST['paciente_teste_id'];
+//        $data['agenda_exames_id'] = $agenda_exames_id;
+//        $this->load->View('ambulatorio/faturar-form', $data);
         redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
     }
 
@@ -526,7 +565,7 @@ class Exametemp extends BaseController {
         $this->exametemp->excluirexametemp($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
-    
+
     function excluirconsultatempmedico($agenda_exames_id) {
         $this->exametemp->excluirexametemp($agenda_exames_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
@@ -694,6 +733,7 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteconsultatemp($agenda_exames_id) {
+//        var_dump($_POST); die;
         if (trim($_POST['txtNome']) == "" && trim($_POST['txtNomeid']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';
             $this->session->set_flashdata('message', $data['mensagem']);

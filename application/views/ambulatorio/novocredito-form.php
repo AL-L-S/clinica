@@ -58,7 +58,7 @@
                         </tr>
                         <tr>
                         
-                        <td>Forma de Pagamento</td>
+<!--                        <td>Forma de Pagamento</td>
                         <td>
                             <select name="forma_pagamento" id="forma_pagamento" class="size2" required>
                                 <option value="">Selecione</option>
@@ -67,7 +67,7 @@
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
-                        </td>
+                        </td>-->
                         </tr>
                         <tr>
                         

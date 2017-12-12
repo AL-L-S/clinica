@@ -50,6 +50,7 @@ class Contasreceber extends BaseController {
     function carregarconfirmacao($financeiro_contasreceber_id) {
         $obj_contasreceber = new contasreceber_model($financeiro_contasreceber_id);
         $data['obj'] = $obj_contasreceber;
+        $data['conta'] = $this->forma->listarforma();
         $data['tipo'] = $this->tipo->listartipo();
         $this->loadView('cadastros/contasreceberconfirmar-form', $data);
     }

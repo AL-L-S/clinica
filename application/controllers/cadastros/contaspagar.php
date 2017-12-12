@@ -359,7 +359,7 @@ class Contaspagar extends BaseController {
     function confirmar($financeiro_contaspagar_id) {
 //        var_dump($_POST['conta']);
 //        die;
-        if ($_POST['conta'] == '') {
+        if ($_POST['conta_id'] == '') {
             $data['mensagem'] = 'Associe uma conta a este pagamento';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "cadastros/contaspagar/carregarconfirmacao/$financeiro_contaspagar_id", $data);

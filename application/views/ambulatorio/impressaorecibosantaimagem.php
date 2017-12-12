@@ -43,7 +43,7 @@ $idade = $diff->format('%Y');
         <td ><font >DATA: <?= substr($exame[0]->data, 8, 2) . "/" . substr($exame[0]->data, 5, 2) . "/" . substr($exame[0]->data, 0, 4); ?> HORA: <?= substr($dataatualizacao, 10, 6); ?></font></td>
     </tr>-->
     <tr>
-        <!--<td ><font >Paciente: <?= $paciente['0']->nome; ?></font></td>-->
+        <td ><font >Paciente: <?= $paciente['0']->nome; ?></font></td>
     </tr>
     <tr>
         <td >D/N: <?= date("d/m/Y", strtotime(str_replace("/", "-", $paciente['0']->nascimento))); ?></td>
@@ -146,7 +146,7 @@ $idade = $diff->format('%Y');
 //            die;
         ?>
     </tr>
-    </table>
+</table>
 <table>
 <!--    <td>
     <?= $item->valor_total ?>
@@ -154,9 +154,16 @@ $idade = $diff->format('%Y');
     <tr>
         <td ><font >-------------------------------------------------------------</font></td>
     </tr>
-    <tr>
-        <td ><font ><b>TOTAL R$ <?= number_format($guia[0]->valor_guia, 2, ',', '.') ?> <?= @$formas; ?></b></font></td>
-    </tr>
+    <? if ($empresapermissoes[0]->valor_recibo_guia == 't') { ?>
+        <tr>
+            <td ><font ><b>TOTAL R$ <?= number_format($valor_total, 2, ',', '.') ?> <?= @$formas; ?></b></font></td>
+        </tr>
+    <? } else { ?>
+        <tr>
+            <td ><font ><b>TOTAL R$ <?= number_format($guiavalor[0]->valor_guia, 2, ',', '.') ?> <?= @$formas; ?></b></font></td>
+        </tr>
+    <? }
+    ?>
     <tr>
         <td ><font >-------------------------------------------------------------</font></td>
     </tr>

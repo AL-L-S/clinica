@@ -1,6 +1,10 @@
 <? // var_dump($obj->_paciente_id); die; ?>
 <div class="content ficha_ceatox"  >
+<?
+        $empresa_id = $this->session->userdata('empresa_id');
+        $empresa = $this->guia->listarempresa($empresa_id);
 
+?>
     <div>
         <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarorcamentorecepcao" method="post">  
             <fieldset>
@@ -38,7 +42,7 @@
                             <th class="tabela_header">Convenio*</th>
                             <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento*</th>
-                            <th class="tabela_header">Forma de Pagamento</th>
+                            <th class="tabela_header">F. de Pagamento</th>
                             <th class="tabela_header">Qtde*</th>
                             <th class="tabela_header">V. Unit</th>
                         </tr>
@@ -92,6 +96,20 @@
                             <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                             <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
                         </tr>
+                        <?if($empresa[0]->impressao_orcamento == 1){?>
+                         <tr>
+                            <th colspan="6" class="tabela_header">Observação</th>
+                            
+                        </tr>
+                        <tr>
+                            <td colspan="6" ><textarea  type="text" name="observacao" id="observacao" class="textarea" cols="60" rows="4" > </textarea></td>
+                            
+                        </tr>    
+                            
+                        <?}
+                        
+                        ?>
+                        
 
                     </tbody>
                 </table> 
@@ -325,7 +343,7 @@
                             $('#convenio1').change(function () {
                                 if ($(this).val()) {
                                     $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioorcamento', {convenio1: $(this).val(), ajax: true}, function (j) {
                                         options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';

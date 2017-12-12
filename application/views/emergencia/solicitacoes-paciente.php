@@ -19,6 +19,7 @@
     $laboratorio = $this->session->userdata('laboratorio');
     $ponto = $this->session->userdata('ponto');
     $calendario = $this->session->userdata('calendario');
+    $credito = $this->guia->creditoempresa();
     ?>
 
     <fieldset>
@@ -119,7 +120,12 @@
 
                         <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $paciente_id ?>">Consultas</a></div></td>
                     <? } ?>
-                    <td width="100px;"><div class="bt_link_new"><a  href="<?= base_url() ?>ambulatorio/exametemp/listarcredito/<?= $paciente_id ?>">Credito</a></div></td>
+                    <?if($credito == 't' && ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 10)){?>
+                    <td width="100px;"><div class="bt_link_new"><a  href="<?= base_url() ?>ambulatorio/exametemp/listarcredito/<?= $paciente_id ?>">Credito</a></div></td>    
+                    <?}?> 
+                    
+                       
+                    
                     <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>cadastros/pacientes/cancelamento/<?= $paciente_id ?>" target="_blank">Cancelamentos</a></div></td>
 
 

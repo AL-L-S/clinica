@@ -293,6 +293,7 @@ FROM ponto.tb_procedimento_percentual_medico m , ponto.tb_procedimento_percentua
        AND m.ativo = 'true' 
        
        AND mc.ativo = 'true'
+       AND mc.revisor = 'false'
        AND pt.grupo = 'RM';
 
 

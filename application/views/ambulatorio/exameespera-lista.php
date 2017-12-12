@@ -7,6 +7,7 @@
             $salas = $this->exame->listartodassalas();
             $empresa = $this->guia->listarempresasaladeespera();
             @$ordem_chegada = @$empresa[0]->ordem_chegada;
+            @$administrador_cancelar = @$empresa[0]->administrador_cancelar;
             $medicos = $this->operador_m->listarmedicos();
             $situacaocaixa = $this->exame->listarcaixaempresa();
 //            var_dump($situacaocaixa);
@@ -179,8 +180,8 @@
                                         Chamar</a></div>
                                                                         impressaolaudo 
                             </td>-->
-                                <? if ($empresa[0]->cancelar_sala_espera == 't') { 
-                                    if($item->agrupador_pacote_id == ''){?>
+                                <? if ($empresa[0]->cancelar_sala_espera == 't') { ?>
+                                    <?if($item->agrupador_pacote_id == ''){?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
 
@@ -194,10 +195,24 @@
                                         </td>
                                     <? } ?>
 
-                                <? } else { ?>
+                                <? } elseif( @$administrador_cancelar == 't' && $perfil_id == 1) { ?>
+                                     <?if($item->agrupador_pacote_id == ''){?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
+
+                                                </a></div>
+                                        </td>
+                                    <?} else {?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
+                                                <a target="_blank" href="<?= base_url() ?>ambulatorio/exame/esperacancelamentopacote/<?= $item->guia_id ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>">Cancelar Pacote
+
+                                                </a></div>
+                                        </td>
+                                    <? } ?>
+                                <? }else{?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                    </td>  
-                                <? } ?>
+                                    </td> 
+                                <?} ?>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/observacao/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=230');">Obs.

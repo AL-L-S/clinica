@@ -128,6 +128,31 @@ class empresa_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarconfiguracaoimpressaoorcamento() {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_orcamento_id,ei.nome as nome_orcamento, ei.cabecalho,ei.ativo,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_orcamento ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_id', $empresa_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        return $this->db;
+    }
+
+    function listarconfiguracaoimpressaoorcamentoform($empresa_impressao_cabecalho_id) {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_orcamento_id, ei.nome as nome_orcamento,ei.texto, ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_orcamento ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_impressao_orcamento_id', $empresa_impressao_cabecalho_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarconfiguracaoimpressaocabecalho($empresa_impressao_cabecalho_id) {
         $data = date("Y-m-d");
@@ -269,7 +294,9 @@ class empresa_model extends Model {
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_empresa_id,
-                            nome, tipo');
+                            nome,
+                            impressao_orcamento,
+                            tipo');
         $this->db->from('tb_exame_empresa');
         $this->db->where('exame_empresa_id', $empresa_id);
         $this->db->where('empresa_id', $empresa_id);
@@ -309,6 +336,29 @@ class empresa_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('empresa_impressao_laudo_id !=', $impressao_id);
         $this->db->update('tb_empresa_impressao_laudo');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+    
+    function ativarconfiguracaoorcamento($impressao_id) {
+//        var_dump($impressao_id); die;
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 't');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('empresa_impressao_orcamento_id', $impressao_id);
+        $this->db->update('tb_empresa_impressao_orcamento');
+
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('empresa_impressao_orcamento_id !=', $impressao_id);
+        $this->db->update('tb_empresa_impressao_orcamento');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;
@@ -437,6 +487,61 @@ class empresa_model extends Model {
         }
     }
 
+    function gravarconfiguracaoimpressaoorcamento() {
+        try {
+//            var_dump($_POST['impressao_id']); die;
+            /* inicia o mapeamento no banco */
+            $empresa_id = $this->session->userdata('empresa_id');
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->select('ei.empresa_impressao_orcamento_id,');
+            $this->db->from('tb_empresa_impressao_orcamento ei');
+            $this->db->where('ei.empresa_impressao_orcamento_id', $_POST['impressao_id']);
+            $teste = $this->db->get()->result();
+            $this->db->select('ei.empresa_impressao_orcamento_id,');
+            $this->db->from('tb_empresa_impressao_orcamento ei');
+            $this->db->where('ei.empresa_id', $empresa_id);
+            $teste2 = $this->db->get()->result();
+            if (count($teste) > 0) {
+                $impressao_id = $teste[0]->empresa_impressao_orcamento_id;
+            }
+
+            if (count($teste) == 0) {
+                $this->db->set('nome', $_POST['nome']);
+                $this->db->set('cabecalho', $_POST['cabecalho']);
+                $this->db->set('rodape', $_POST['rodape']);
+                $this->db->set('texto', $_POST['texto']);
+                $this->db->set('empresa_id', $empresa_id);
+                if (count($teste2) > 0) {
+                    $this->db->set('ativo', 'f');
+                }
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_empresa_impressao_orcamento');
+            } else {
+                $this->db->set('nome', $_POST['nome']);
+                $this->db->set('cabecalho', $_POST['cabecalho']);
+                $this->db->set('rodape', $_POST['rodape']);
+                $this->db->set('texto', $_POST['texto']);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('empresa_impressao_orcamento_id', $impressao_id);
+                $this->db->update('tb_empresa_impressao_orcamento');
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+//                $ambulatorio_guia_id = $this->db->insert_id();
+                return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+    
     function gravarconfiguracaoimpressaolaudo() {
         try {
 //            var_dump($_POST['impressao_id']); die;
@@ -629,6 +734,9 @@ class empresa_model extends Model {
 
             if ($_POST['impressao_tipo'] != "") {
                 $this->db->set('impressao_tipo', $_POST['impressao_tipo']);
+            }
+            if ($_POST['impressao_orcamento'] != "") {
+                $this->db->set('impressao_orcamento', $_POST['impressao_orcamento']);
             }
             if ($_POST['impressao_laudo'] != "") {
                 $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
@@ -825,6 +933,28 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
+                if (isset($_POST['valor_recibo_guia'])) {
+                    $this->db->set('valor_recibo_guia', 't');
+                } else {
+                    $this->db->set('valor_recibo_guia', 'f');
+                }
+                if (isset($_POST['orcamento_config'])) {
+                    $this->db->set('orcamento_config', 't');
+                } else {
+                    $this->db->set('orcamento_config', 'f');
+                }
+                
+                if (isset($_POST['odontologia_valor_alterar'])) {
+                    $this->db->set('odontologia_valor_alterar', 't');
+                } else {
+                    $this->db->set('odontologia_valor_alterar', 'f');
+                }
+                if (isset($_POST['selecionar_retorno'])) {
+                    $this->db->set('selecionar_retorno', 't');
+                } else {
+                    $this->db->set('selecionar_retorno', 'f');
+                }
+                
                 if (isset($_POST['excluir_transferencia'])) {
                     $this->db->set('excluir_transferencia', 't');
                 } else {
@@ -834,6 +964,16 @@ class empresa_model extends Model {
                     $this->db->set('login_paciente', 't');
                 } else {
                     $this->db->set('login_paciente', 'f');
+                }
+                if (isset($_POST['credito'])) {
+                    $this->db->set('credito', 't');
+                } else {
+                    $this->db->set('credito', 'f');
+                }
+                if (isset($_POST['administrador_cancelar'])) {
+                    $this->db->set('administrador_cancelar', 't');
+                } else {
+                    $this->db->set('administrador_cancelar', 'f');
                 }
                 if (isset($_POST['calendario_layout'])) {
                     $this->db->set('calendario_layout', 't');
@@ -855,13 +995,13 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('recomendacao_configuravel', 'f');
                 }
-                
+
                 if (isset($_POST['recomendacao_obrigatorio'])) {
                     $this->db->set('recomendacao_obrigatorio', 't');
                 } else {
                     $this->db->set('recomendacao_obrigatorio', 'f');
                 }
-                
+
                 if (isset($_POST['botao_ativar_sala'])) {
                     $this->db->set('botao_ativar_sala', 't');
                 } else {
@@ -906,7 +1046,38 @@ class empresa_model extends Model {
                     $this->db->set('login_paciente', 'f');
                 }
 
+                if (isset($_POST['credito'])) {
+                    $this->db->set('credito', 't');
+                } else {
+                    $this->db->set('credito', 'f');
+                }
                 
+                if (isset($_POST['orcamento_config'])) {
+                    $this->db->set('orcamento_config', 't');
+                } else {
+                    $this->db->set('orcamento_config', 'f');
+                }
+                
+                 if (isset($_POST['odontologia_valor_alterar'])) {
+                    $this->db->set('odontologia_valor_alterar', 't');
+                } else {
+                    $this->db->set('odontologia_valor_alterar', 'f');
+                }
+                if (isset($_POST['selecionar_retorno'])) {
+                    $this->db->set('selecionar_retorno', 't');
+                } else {
+                    $this->db->set('selecionar_retorno', 'f');
+                }
+                if (isset($_POST['administrador_cancelar'])) {
+                    $this->db->set('administrador_cancelar', 't');
+                } else {
+                    $this->db->set('administrador_cancelar', 'f');
+                }
+                if (isset($_POST['valor_recibo_guia'])) {
+                    $this->db->set('valor_recibo_guia', 't');
+                } else {
+                    $this->db->set('valor_recibo_guia', 'f');
+                }
                 if (isset($_POST['calendario_layout'])) {
                     $this->db->set('calendario_layout', 't');
                 } else {
@@ -1011,6 +1182,13 @@ class empresa_model extends Model {
                                calendario,
                                login_paciente,
                                servicosms,
+                               orcamento_config,
+                               credito,
+                               valor_recibo_guia,
+                               impressao_orcamento,
+                               odontologia_valor_alterar,
+                               selecionar_retorno,
+                               administrador_cancelar,
                                servicoemail,
                                endereco_externo,
                                excluir_transferencia,
@@ -1047,6 +1225,11 @@ class empresa_model extends Model {
             $this->_promotor_medico = $return[0]->promotor_medico;
             $this->_municipio = $return[0]->municipio;
             $this->_nome = $return[0]->nome;
+            $this->_orcamento_config = $return[0]->orcamento_config;
+            $this->_odontologia_valor_alterar = $return[0]->odontologia_valor_alterar;
+            $this->_selecionar_retorno = $return[0]->selecionar_retorno;
+            $this->_impressao_orcamento = $return[0]->impressao_orcamento;
+            $this->_administrador_cancelar = $return[0]->administrador_cancelar;
             $this->_estado = $return[0]->estado;
             $this->_cep = $return[0]->cep;
             $this->_chat = $return[0]->chat;
@@ -1090,6 +1273,8 @@ class empresa_model extends Model {
             $this->_ordem_chegada = $return[0]->ordem_chegada;
             $this->_calendario_layout = $return[0]->calendario_layout;
             $this->_recomendacao_configuravel = $return[0]->recomendacao_configuravel;
+            $this->_credito = $return[0]->credito;
+            $this->_valor_recibo_guia = $return[0]->valor_recibo_guia;
             $this->_recomendacao_obrigatorio = $return[0]->recomendacao_obrigatorio;
             $this->_botao_ativar_sala = $return[0]->botao_ativar_sala;
             $this->_oftamologia = $return[0]->oftamologia;

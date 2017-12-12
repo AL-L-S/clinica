@@ -305,6 +305,7 @@
                                             $('#formapamento3').change(function () {
                                                 
                                                 if(this.value == 1000){
+//                                                    $('#valor3').val("");
                                                     var selecionado = false;
 
                                                     for (var i = 1; i < 5; i++) {

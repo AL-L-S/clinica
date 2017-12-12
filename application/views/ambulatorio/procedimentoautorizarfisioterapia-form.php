@@ -1,4 +1,11 @@
-<? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
+<? 
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
+$empresa = $this->guia->listarempresapermissoes(); 
+$odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
+$retorno_alterar = $empresa[0]->selecionar_retorno;
+//var_dump($retorno_alterar); die;
+
+?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
     <div class="bt_link_new" style="width: 150pt">
@@ -244,11 +251,13 @@
                                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
                                                             var valor = a[0].valortotal;
                                                             var qtde = a[0].qtde;
+                                                        <?if($odontologia_alterar == 't'){?>
                                                         if(a[0].grupo == 'ODONTOLOGIA'){
-                                                            $("#valor<?= $b?>").prop('readonly', false);
+                                                            $("#valor<?=$b?>").prop('readonly', false);
                                                         }else{
-                                                            $("#valor<?= $b?>").prop('readonly', true);
-                                                        }
+                                                            $("#valor<?=$b?>").prop('readonly', true);
+                                                        }    
+                                                        <?}?>
 //                                                        console.log(valor);
                                                             document.getElementById("valor<?=$b?>").value = valor;
                                                             document.getElementById("qtde<?=$b?>").value = qtde;
@@ -343,11 +352,13 @@
                                                                         options += j[0].valortotal;
                                                                         qtde = "";
                                                                         qtde += j[0].qtde;
-                                                                         if(j[0].grupo == 'ODONTOLOGIA'){
-                                                                         $("#valor<?= $b ?>").prop('readonly', false);
-                                                                          }else{
-                                                                         $("#valor<?= $b ?>").prop('readonly', true);
-                                                                         }
+                                                                         <?if($odontologia_alterar == 't'){?>
+                                                                            if(j[0].grupo == 'ODONTOLOGIA'){
+                                                                                $("#valor<?= $b ?>").prop('readonly', false);
+                                                                            }else{
+                                                                                $("#valor<?= $b ?>").prop('readonly', true);
+                                                                            }    
+                                                                         <?}?>  
                                                                         document.getElementById("valor<?= $b ?>").value = options;
                                                                         document.getElementById("qtde<?= $b ?>").value = qtde;
                                                                         $('.carregando').hide();

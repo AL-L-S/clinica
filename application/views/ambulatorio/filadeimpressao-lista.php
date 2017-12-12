@@ -17,6 +17,7 @@
                     <tr>
                         <th class="tabela_header">Data</th>
                         <th class="tabela_header">Tipo</th>
+                        <th class="tabela_header">Paciente</th>
                         <th class="tabela_header">Solicitante</th>
                         <th class="tabela_header" style="text-align: center;" colspan="2">Detalhes</th>
                     </tr>
@@ -40,6 +41,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y H:i:s", strtotime(str_replace('/', '-', $item->data_cadastro))) ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->solicitante; ?></td>
                                 <td colspan="1" class="<?php echo $estilo_linha; ?>"  width="60px">
                                     <div class="bt_link" >

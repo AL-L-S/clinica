@@ -994,6 +994,7 @@ function debug($object) {
             <!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->
                                         <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarcabecalho">Config.Ficha</a></span></ul>-->
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarlaudoconfig">Config.Laudo</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarorcamentoconfig">Config.Orçamento</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Config.Cabeçalho</a></span></ul>-->
 
                                        

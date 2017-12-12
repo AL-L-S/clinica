@@ -5,6 +5,9 @@ class Autocomplete extends Controller {
     function Autocomplete() {
 
         parent::Controller();
+//        if ($this->session->userdata('autenticado') != true) {
+//            redirect(base_url() . "login/index/login004", "refresh");
+//        }
         $this->load->model('ponto/funcao_model', 'funcao');
         $this->load->model('ponto/funcionario_model', 'funcionario');
         $this->load->model('ponto/ocorrenciatipo_model', 'ocorrenciatipo');
@@ -185,7 +188,7 @@ class Autocomplete extends Controller {
         $result = $this->exame->listaragendamentoweb()->limit($_GET['limit'], $_GET['pagina'])->get()->result();
         echo json_encode($result);
     }
-    
+
     function listarexameagendamentowebcpf() {
         header('Access-Control-Allow-Origin: *');
 //        var_dump($_GET); die;
@@ -239,6 +242,17 @@ class Autocomplete extends Controller {
 
         if (isset($_GET['paciente_id']) && isset($_GET['procedimento_id'])) {
             $result = $this->exametemp->validaretornoprocedimento($_GET['paciente_id'], $_GET['procedimento_id']);
+        }
+
+        echo json_encode($result);
+    }
+
+    function validaretornoprocedimentoinverso() {
+        $result = array();
+
+        
+        if (isset($_GET['paciente_id']) && isset($_GET['procedimento_id'])) {
+            $result = $this->exametemp->validaretornoprocedimentoinverso($_GET['paciente_id'], $_GET['procedimento_id']);
         }
 
         echo json_encode($result);

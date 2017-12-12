@@ -12,6 +12,7 @@
     $perfil_id = $this->session->userdata('perfil_id');
     $botao_faturar_guia = $this->session->userdata('botao_faturar_guia');
     $botao_faturar_proc = $this->session->userdata('botao_faturar_proc');
+    $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
     ?>
     <div>
         <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos" method="post">
@@ -77,7 +78,8 @@
                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'width=1000,height=600');">F. Guia
 
                                                 </a></div></th> 
-                                    <? }
+                                        <?
+                                    }
                                     if ($botao_faturar_proc == 't') {
                                         ?>
                                         <th class="tabela_header"><div class="bt_link">
@@ -104,12 +106,12 @@
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiavalor/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Valor
 
                                             </a></div></th>
-                                    
-                                <? } ?>
-                                            <th class="tabela_header"><div class="bt_link">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaobservacao/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Observa&ccedil;&atilde;o
 
-                                            </a></div></th>
+                                <? } ?>
+                                <th class="tabela_header"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaobservacao/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Observa&ccedil;&atilde;o
+
+                                        </a></div></th>
 
                                 <th class="tabela_header"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenio/" . $guia_id; ?> ', '_blank', 'width=800,height=250');">N. Guia
@@ -165,18 +167,29 @@
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/escolherdeclaracao/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Declaracao
                                             </a>
                                         </td>
-                                        <? if ($test->valor_guia == '') { ?>
-                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiavalor/" . $guia_id; ?> ', '_blank', 'width=800,height=600');"> Valor Recibo
-
-                                                </a>
-                                            </td>  
-                                        <? } else { ?>
+                                        <? if ($empresapermissoes[0]->valor_recibo_guia == 't') { ?>
                                             <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/reciboounota/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Recibo
                                                 </a>
-                                            </td>
+                                            </td> 
+                                        <? } else { ?>
+                                            <? if ($test->valor_guia == '') { ?>
+                                                <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiavalor/" . $guia_id; ?> ', '_blank', 'width=800,height=600');"> Valor Recibo
+
+                                                    </a>
+                                                </td>  
+                                            <? } else { ?>
+                                                <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/reciboounota/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Recibo
+                                                    </a>
+                                                </td>
+                                            <? } ?> 
+
                                         <? } ?>
+
+
+
 
                                         <td class="<?php echo $estilo_linha; ?>" >
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
@@ -212,10 +225,10 @@
                                             </td>
                                         <? } ?>
 
-                                                                                                                                                                                                                                                                                                                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                                                                                                                                                                                                                                                                                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
-                                                                                                                                                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                                                                                                                                                        </td>-->
+                                                                                                                                                                                                                                                                                                                                                                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                                                                                                                                                                                                                                                                                                                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
+                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                        </td>-->
                                         <? if ($item->grupo != 'MEDICAMENTO' && $item->grupo != 'MATERIAL') { ?>
 
 

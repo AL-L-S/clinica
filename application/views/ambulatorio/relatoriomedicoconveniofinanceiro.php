@@ -94,6 +94,15 @@
                             <option value='SIM' >SIM</option>
                         </select>
                     </dd>
+                    <dt>
+                        <label>Forma de Pagamento</label>
+                    </dt>
+                    <dd>
+                        <select name="forma_pagamento" id="forma_pagamento" class="size1" >
+                            <option value='NAO' >NAO</option>
+                            <option value='SIM' >SIM</option>
+                        </select>
+                    </dd>
 
                     <dt>
                         <label>Situação</label>
@@ -111,7 +120,7 @@
                     <dd>
                         <select name="solicitante" id="solicitante" class="size1" >
                             <option value='SIM' >SIM</option>
-                            <option value='NAO' >NAO</option>
+                            <option value='NAO' selected="">NAO</option>
                         </select>
                     </dd>
 

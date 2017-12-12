@@ -21,11 +21,12 @@ $MES = substr($exame[0]->data, 5, 2);
 //if(count()){
 //    
 //}
-if(@$empresa[0]->cabecalho_config == 't'){
+if (@$empresa[0]->cabecalho_config == 't') {
     echo @$cabecalho[0]->cabecalho;
-}else{?>
-<p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>   
-<?}
+} else {
+    ?>
+    <p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>   
+<? }
 ?>
 <p><center><u><?= $exame[0]->razao_social; ?></u></center></p>
 <p><center><?= $exame[0]->logradouro; ?> - <?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?></center></p>
@@ -33,17 +34,31 @@ if(@$empresa[0]->cabecalho_config == 't'){
 <p>
 <p><center>Recibo</center></p>
 <p>
+    <? if ($empresapermissoes[0]->valor_recibo_guia == 't') { ?>
+<p><center>N&SmallCircle; PEDIDO:<?= $exame[0]->agenda_exames_id; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALOR:# <?= $valor_total; ?> &nbsp;#</center></p>
+    <? } else { ?>
 <p><center>N&SmallCircle; PEDIDO:<?= $exame[0]->agenda_exames_id; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALOR:# <?= $valor; ?> &nbsp;#</center></p>
+    <? }
+    ?>
+
 <p>
-<p>Recebi de <?= utf8_decode($paciente['0']->nome); ?>, a importancia de <?= $guia[0]->valor_guia; ?> (<?= $extenso; ?>)  referente
-    a   <?
+    <? if ($empresapermissoes[0]->valor_recibo_guia == 't') { ?>
+    <p>Recebi de <?= utf8_decode($paciente['0']->nome); ?>, a importancia de <?= $valor_total; ?> (<?= $extenso; ?>)  referente
+        a 
+    <? } else { ?>
+    <p>Recebi de <?= utf8_decode($paciente['0']->nome); ?>, a importancia de <?= $guiavalor[0]->valor_guia; ?> (<?= $extenso; ?>)  referente
+        a 
+    <? }
+    ?>
+    <?
+//    var_dump($guia[0]->valor_guia); die;
     $formapagamento = "";
     $teste = "";
     $teste2 = "";
     $teste3 = "";
     $teste4 = "";
     foreach ($exames as $item) :
-            echo utf8_decode($item->procedimento);
+        echo utf8_decode($item->procedimento);
         ?><br><?
         if ($item->forma_pagamento != null && $item->formadepagamento != $teste && $item->formadepagamento != $teste2 && $item->formadepagamento != $teste3 && $item->formadepagamento != $teste4) {
             $teste = $item->formadepagamento;
@@ -72,13 +87,13 @@ if(@$empresa[0]->cabecalho_config == 't'){
 <?
 @$cabecalho = @$cabecalho[0]->rodape;
 @$cabecalho = str_replace("_assinatura_", '', @$cabecalho);
-if(@$empresa[0]->rodape_config == 't'){
-    
+if (@$empresa[0]->rodape_config == 't') {
+
     echo @$cabecalho;
-    
-}else{?>
-<p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p>
-<?}
+} else {
+    ?>
+    <p><center><img align = 'center'  width='1000px' height='300px' src="<?= base_url() . "img/rodape.jpg" ?>"></center></p>
+<? }
 ?>
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
