@@ -720,7 +720,7 @@
                         <hr>
                         <button type="submit" name="btnEnviar">Salvar</button>
                         <div class="bt_link_new" style="display: inline-block">
-                            <a onclick="javascript:window.open('<?= base_url() ?>centrocirurgico/centrocirurgico/novasolicitacaoconsulta/<?= $exame_id ?>');" >
+                            <a onclick="javascript:window.open('<?= base_url() ?>centrocirurgico/centrocirurgico/novasolicitacao/0/<?= $ambulatorio_laudo_id ?>');" >
                                 Solicitar Cirurgia
                             </a>
                         </div>

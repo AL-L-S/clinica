@@ -66,7 +66,6 @@ function debug($object) {
         <script type="text/javascript">
 //            var jQuery = jQuery.noConflict();
 
-
             (function ($) {
                 $(function () {
                     $('input:text').setMask();

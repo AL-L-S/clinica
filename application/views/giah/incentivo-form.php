@@ -137,7 +137,7 @@
 
     $(function() {
         $( "#txtServidor" ).autocomplete({
-            source: "<?=  base_url()?>index?c=autocomplete&m=servidorteto",
+            source: "<?=  base_url()?>index.php?c=autocomplete&m=servidorteto",
             minLength: 2,
             focus: function( event, ui ) {
                 $( "#txtServidor" ).val( ui.item.label );

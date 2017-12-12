@@ -73,6 +73,12 @@
                         <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$hospital[0]->municipio_id; ?>" readonly="true" />
                         <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$hospital[0]->municipio; ?>" />
                     </dd>
+                    <dt>
+                    <label>Valor Taxa</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="valor_taxa" class="texto02" name="valor_taxa" alt="decimal" value="<?= @$hospital[0]->valor_taxa; ?>" />
+                    </dd>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

@@ -27,7 +27,7 @@
     $saldo = $this->caixa->saldo();
     $credores = $this->caixa->empresa();
     $empresas = $this->exame->listarempresas();
-     $empresa_permissao = $this->guia->listarempresapermissoes();
+    $empresa_permissao = $this->guia->listarempresapermissoes();
     $conta = $this->forma->listarforma();
     $tipo = $this->tipo->listartipo();
     

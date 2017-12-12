@@ -6,7 +6,7 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                        <label>Convenio</label>
+                        <label>Convenio *</label>
                     </dt>
                     <dd>
                         <select name="convenio" id="convenio" class="texto04" required>
@@ -17,35 +17,49 @@
                         </select>
                     </dd>
                     <dt>
-                        <label>Paciente</label>
+                        <label>Paciente *</label>
                     </dt>
                     <dd>
-                        <input type="hidden" name="solicitacao_cirurgia_id" class="texto10" value="<?= @$solicitacao_id; ?>" />
-                        <input type="hidden" name="txtNomeid" id="txtNomeid" class="texto02" value="<?= @$paciente[0]->paciente_id; ?>"/>
-                        <input type="text" name="txtNome" id="txtNome" class="texto10" <?
-                        if (isset($paciente[0]->paciente)) {
-                            echo "value='" . $paciente[0]->paciente . "' readonly";
-                        }
-                        ?>/>
-<!--                        <input type="text" id="txtNomeid" class="texto_id" name="txtNomeid" readonly="true" />
-                <input type="text" id="txtNome" name="txtNome" class="texto10"/>-->
-
+                        <input type="hidden" name="txtNomeid" id="txtNomeid" class="texto02" value="<?= @$laudo[0]->paciente_id; ?>"/>
+                        <input type="text" name="txtNome" id="txtNome" class="texto10" value="<?= @$laudo[0]->nome; ?>"/>
                     </dd>
 
                     <dt>
-                        <label>Médico Solicitante</label>
+                        <label>Médico Solicitante *</label>
                     </dt>
                     <dd>
                         <select  name="medicoagenda" id="medicoagenda" class="size4" required="true">
                             <option value="">Selecione</option>
                                 <? foreach ($medicos as $item) : ?>
-                                <option value="<?= $item->operador_id; ?>">
-                                <?= $item->nome; ?>
-                                </option>
-<? endforeach; ?>
+                                    <option value="<?= $item->operador_id; ?>" <?= ( @$laudo[0]->medico_parecer1 == $item->operador_id ) ? 'selected' : ''?>>
+                                    <?= $item->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
                         </select>
                     </dd>
+                    
+                    <dt>
+                        <label>Hospital *</label>
+                    </dt>
+                    <dd>
+                        <select name="hospital_id" id="hospital_id" class="size2"  required="">
+                            <option value="">Selecione</option>
+                            <? foreach (@$hospitais as $item) : ?>
+                                <option value="<?= $item->hospital_id; ?>"><?= $item->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
                     </dd>
+
+                    <dt>
+                        <label>Leito *</label>
+                    </dt>
+                    <dd>
+                        <div>
+                            <input type="radio" name="leito" id="enf" value="ENFERMARIA" required/> <label for="enf">Enfermaria</label>
+                            <input type="radio" name="leito" id="apt" value="APARTAMENTO" required/> <label for="apt">Apartamento</label>
+                        </div>
+                    </dd>
+                    
 
                     
                     <dt>

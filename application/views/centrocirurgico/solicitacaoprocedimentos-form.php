@@ -95,17 +95,17 @@
     }
 </style>
 
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
 <link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
 <!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
 <link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
 <!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>-->
 <script type="text/javascript">
                     function legend() {
                         var leg = "<legend>Cadastrar procedimento</legend>";
@@ -121,9 +121,9 @@
                         tags += '<select name="agrupador_id" id="agrupador_id" class="size4" required="true">';
                         tags += '<option value="">SELECIONE</option>';
 
-<? foreach ($agrupador as $value) : ?>
+                        <? foreach ($agrupador as $value) : ?>
                             tags += "<option value='<?= $value->agrupador_id; ?>'><?php echo $value->nome; ?></option>";
-<? endforeach; ?>
+                        <? endforeach; ?>
 
                         tags += '</select></div>';
 
@@ -142,48 +142,20 @@
                         var tags = '<div id="div_procedimento"><label for="procedimento">Procedimento</label>';
                         tags += '<select style="width: 400pt" name="procedimentoID" id="procedimento" class="chosen-select" tabindex="1" required="true" >';
                         tags += '<option value="">Selecione</option>';
-                    <? foreach (@$procedimento as $item3) : ?>
-                        tags += '<option value="<? echo $item3->procedimento_convenio_id; ?>"><? echo $item3->codigo . " - " . $item3->nome; ?></option>';
-                    <? endforeach; ?>
+                        <? foreach (@$procedimento as $item3) : ?>
+                            tags += '<option value="<? echo $item3->procedimento_convenio_id; ?>"><? echo $item3->codigo . " - " . $item3->nome; ?></option>';
+                        <? endforeach; ?>
                         tags += '</select></div>';
-//                        tags += '<input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2" value="" />';
-//                        tags += '<input type="text" name="procedimento" id="procedimento" class="texto10" value="" />';
-//                        tags += '';
-
                         var verifica = jQuery("#cadastro #div_procedimento").length;
                         if (verifica == 0) {
                             jQuery("#cadastro div").remove();
                             jQuery("#cadastro").append(tags);
                             adicionarbtn();
                         }
-
-                        //autocomplete dos procedimentos
-//                        $(function () {
-//                            $("#procedimento").autocomplete({
-//                                source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentoproduto",
-//                                minLength: 3,
-//                                focus: function (event, ui) {
-//                                    $("#procedimento").val(ui.item.label);
-//                                    return false;
-//                                },
-//                                select: function (event, ui) {
-//                                    $("#procedimento").val(ui.item.value);
-//                                    $("#procedimentoID").val(ui.item.id);
-//                                    return false;
-//                                }
-//                            });
-//                        });
+//                        $(".chosen-select").chosen(); 
 
                     }
                     
-//                    var procedimentosAutocomplete = function(){ 
-//                        jQuery.ajax({
-//                            url: "<?= base_url(); ?>" + "autocomplete/procedimentoproduto?convenio=<?= $dados[0]->convenio ?>,
-//                            type: "GET",
-//                            dataType: 'json'
-//                        });
-//                    }
-
                     function adicionarbtn() {
                         var btn = '<div id="btnEnviar"><label>&nbsp;</label>';
                         btn += '<button type="submit" name="btnEnviar">Adicionar</button></div>';

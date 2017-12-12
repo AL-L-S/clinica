@@ -105,7 +105,7 @@ class caixa_model extends Model {
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->where("empresa_id", $empresa_id);
+//        $this->db->where("empresa_id", $empresa_id);
         $this->db->where('empresa_id', $empresa_id);
 
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {

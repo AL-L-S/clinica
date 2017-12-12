@@ -17,11 +17,13 @@
                         <label>Procedimento</label>
                     </dt>
                     <dd>
-                        <select name="procedimento" id="procedimento" class="texto03" required>
-                            <option value="">SELECIONE</option>
-                            <? foreach ($procedimentos as $value) { ?>
-                                <option value="<?= $value->procedimento_convenio_id ?>"><?= $value->procedimento ?> - <?= $value->convenio ?></option>
-                            <? } ?>                            
+                        <select name="procedimento" id="procedimento" class="size4 chosen-select" tabindex="1" required="">
+                            <option value="">Selecione</option>
+                            <? foreach ($procedimentos as $value) : ?>
+                                <option value="<?= $value->procedimento_convenio_id; ?>">
+                                    <?php echo $value->codigo . " - " . $value->procedimento; ?>
+                                </option>
+                            <? endforeach; ?>
                         </select>
                     </dd>
                 </dl>    
@@ -53,7 +55,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
-                                    <a onclick="javascript: return confirm('Deseja realmente exlcuir esse Forma?');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirprocedimentoagrupador/<?= $item->procedimento_agrupado_id ?>/<?= $item->agrupador_id ?>">Excluir</a>
+                                    <a onclick="javascript: return confirm('Deseja realmente exlcuir esse procedimento?');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirprocedimentoagrupador/<?= $item->procedimento_agrupado_id ?>/<?= $item->agrupador_id ?>">Excluir</a>
                                 </td>
                             </tr>
 
@@ -74,35 +76,22 @@
     </div>
 </div> <!-- Final da DIV content -->
 
+
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-
-                                        $(function () {
-                                            $('#convenio1').change(function () {
-                                                if ($(this).val()) {
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val()}, function (j) {
-                                                        options = '<option value=""></option>';
-                                                        for (var c = 0; c < j.length; c++) {
-                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                        }
-                                                        $('#procedimento1').html(options).show();
-                                                        $('.carregando').hide();
-                                                    });
-                                                } else {
-                                                    $('#procedimento1').html('<option value="">Selecione</option>');
-                                                }
-                                            });
-                                        });
-                                        
-                                        $('#btnVoltar').click(function () {
-                                            $(location).attr('href', '<?= base_url(); ?>cadastros/formapagamento/grupospagamento');
-                                        });
-
-                                        $(function () {
-                                            $("#accordion").accordion();
-                                        });
-
+    $(function () {
+        $("#accordion").accordion();
+    });
+    
 </script>
 

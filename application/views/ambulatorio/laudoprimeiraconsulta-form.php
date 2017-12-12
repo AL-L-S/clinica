@@ -499,7 +499,7 @@
 
                                     $(function() {
                                         $("#txtCICPrimariolabel").autocomplete({
-                                            source: "<?= base_url() ?>index?c=autocomplete&m=cid1",
+                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
                                             minLength: 3,
                                             focus: function(event, ui) {
                                                 $("#txtCICPrimariolabel").val(ui.item.label);
@@ -600,7 +600,7 @@
 
                                     $(function() {
                                         $("#linha2").autocomplete({
-                                            source: "<?= base_url() ?>index?c=autocomplete&m=linhas",
+                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
                                             minLength: 1,
                                             focus: function(event, ui) {
                                                 $("#linha2").val(ui.item.label);

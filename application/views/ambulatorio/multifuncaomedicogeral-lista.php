@@ -116,7 +116,7 @@
                         <th class="tabela_header" width="60px;">Agenda</th>
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">OBS</th>
-                        <th class="tabela_header" colspan="5"><center>A&ccedil;&otilde;es</center></th>
+                        <th class="tabela_header" colspan="8"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -261,11 +261,31 @@
                                                 Imprimir</a></div>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;">
-                                        <?
-                                        if ($verifica != 1) {
-//                                                
-                                            ?>
-                                            <div class="bt_link">
+                                            <? if ($verifica != 1){
+//                                                ?>
+                                        <div class="bt_link">
+                                            
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $item->ambulatorio_laudo_id ?>');">
+                                                Arquivos</a></div>
+                                            <?} ?>
+                                    </td>
+                                    <? if ($perfil_id == 1) { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
+                                                    Cancelar
+                                                </a></div>
+                                        </td>
+                                    <? } else { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
+                                    <? } ?>
+                                            
+        
+<!--                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                        <a></a></font>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                        <a></a></font>
+                                    </td>-->
 
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $item->ambulatorio_laudo_id ?>');">
                                                     Arquivos</a></div>
@@ -285,13 +305,9 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                         <a></a></font>
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                        <a></a></font>
-                                    </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                        <a></a></font>
-                                    </td>
-                                <? } ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
+<? } ?>
                             </tr>
 
                         </tbody>
@@ -301,8 +317,6 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="11">
-                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>
@@ -439,3 +453,5 @@
 
                                     });
 </script>
+                        <th class="tabela_footer" colspan="15">
+<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>

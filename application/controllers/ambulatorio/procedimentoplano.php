@@ -94,8 +94,7 @@ class Procedimentoplano extends BaseController {
 
     function agrupadoradicionar($agrupador_id) {
         $data['agrupador'] = $this->procedimentoplano->buscaragrupador($agrupador_id);
-        $data['procedimentos'] = $this->procedimentoplano->listarprocedimento();
-//        die;
+        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconvenioagrupadorcirurgico(@$data['agrupador'][0]->convenio_id);
         $data['relatorio'] = $this->procedimentoplano->listarprocedimentosagrupador($agrupador_id);
         $this->loadView('ambulatorio/agrupador-adicionar', $data);
     }
@@ -573,6 +572,8 @@ class Procedimentoplano extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar o Agrupador. Operação cancelada.';
             } elseif ($procedimento_id == "-2") {
                 $data['mensagem'] = 'Erro ao gravar. Esse Agrupador ja está cadastrado.';
+            } elseif ($procedimento_id == "-3") {
+                $data['mensagem'] = 'Erro ao gravar. Algum(ns) convenio(s) associado(s) a esse, não estão vinculados através dos grupos contidos no agrupador.';
             } else{
                 $data['mensagem'] = 'Sucesso ao gravar Agrupador.';  
             }

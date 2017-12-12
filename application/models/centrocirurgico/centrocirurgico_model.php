@@ -112,6 +112,27 @@ class centrocirurgico_model extends BaseModel {
         return $this->db;
     }
 
+    function listarlaudosolicitacaocirurgica($laudo_id) {
+        $this->db->select('medico_parecer1, 
+                           p.nome,
+                           p.paciente_id');
+        $this->db->from('tb_ambulatorio_laudo al');
+        $this->db->join('tb_paciente p', 'p.paciente_id = al.paciente_id', 'left');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+
+    function listarhospitaissolicitacao() {
+        $this->db->select('hospital_id, 
+                               f.nome');
+        $this->db->from('tb_hospital f');
+        $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
+        $this->db->where('f.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function relatoriomedicoprocedimentosguiacirurgica() {
         $data = date("Y-m-d");
         $this->db->select('a.agenda_exames_id,
@@ -289,6 +310,7 @@ class centrocirurgico_model extends BaseModel {
                                f.municipio_id,
                                c.nome as municipio,
                                c.estado,
+                               f.valor_taxa,
                                cep');
         $this->db->from('tb_hospital f');
         $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -304,6 +326,9 @@ class centrocirurgico_model extends BaseModel {
                             sc.solicitacao_cirurgia_id,
                             sc.data_prevista,
                             sc.orcamento,
+                            sc.equipe_montada,
+                            sc.liberada,
+                            sc.orcamento_completo,
                             c.nome as convenio,
                             c.convenio_id,
                             o.nome as medico,
@@ -315,11 +340,13 @@ class centrocirurgico_model extends BaseModel {
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = sc.medico_agendado', 'left');
+        
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
             }
         }
+        
         return $this->db;
     }
 
@@ -454,6 +481,17 @@ class centrocirurgico_model extends BaseModel {
         }
     }
 
+    function finalizarequipecirurgica($solicitacaocirurgia_id) {
+        try {
+
+            $this->db->set('equipe_montada', 't');
+            $this->db->where('solicitacao_cirurgia_id', $solicitacaocirurgia_id);
+            $this->db->update('tb_solicitacao_cirurgia');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarequipeoperadores() {
         try {
             /* inicia o mapeamento no banco */
@@ -500,9 +538,7 @@ class centrocirurgico_model extends BaseModel {
         try {
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['txtNome']);
-//            $this->db->set('razao_social', $_POST['txtrazaosocial']);
-//            $this->db->set('cep', $_POST['CEP']);
-//            $this->db->set('cnes', $_POST['txtCNES']);
+            
             if ($_POST['txtCNPJ'] != '') {
                 $this->db->set('cnpj', str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ']))));
             }
@@ -516,6 +552,7 @@ class centrocirurgico_model extends BaseModel {
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
 
+            $this->db->set('valor_taxa', str_replace(",", ".", str_replace(".", "", $_POST['valor_taxa'])));
 
 
             $horario = date("Y-m-d H:i:s");
@@ -620,32 +657,20 @@ class centrocirurgico_model extends BaseModel {
         $this->db->insert('tb_grau_participacao');
     }
 
-    function pegasolicitacaoinformacoes($solicitacao_id) {
-        $this->db->select(' p.paciente_id,
-                            p.nome,
-                            sc.solicitacao_cirurgia_id,
-                            sc.medico_agendado');
-        $this->db->from('tb_solicitacao_cirurgia sc');
-        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ');
-        $this->db->where('sc.ativo', 't');
-        $this->db->where('sc.excluido', 'f');
-        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
-        $return = $this->db->get();
-        return $return->result();
-    }
-
     function liberarsolicitacao($solicitacao_id, $orcamento) {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-//        var_dump($orcamento);die;
-
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        if ($orcamento != 'f') {
-            $this->db->set('situacao', 'LIBERADA');
-        } else {
-            $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
+        $this->db->set('liberada', 't');
+        $this->db->set('data_liberacao', $horario);
+        $this->db->set('operador_liberacao', $operador_id);
+        
+        if($orcamento == 't'){
+            $this->db->set('situacao', 'ORCAMENTO_INCOMPLETO');
         }
+        else{
+            $this->db->set('situacao', 'LIBERADA');
+        }
+        
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->update('tb_solicitacao_cirurgia');
 

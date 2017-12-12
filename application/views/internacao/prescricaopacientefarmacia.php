@@ -71,7 +71,7 @@
 
     $(function () {
         $("#txtMedicamento").autocomplete({
-            source: "<?= base_url() ?>index?c=autocomplete&m=prescricaomedicamento",
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=prescricaomedicamento",
             minLength: 2,
             focus: function (event, ui) {
                 $("#txtMedicamento").val(ui.item.label);

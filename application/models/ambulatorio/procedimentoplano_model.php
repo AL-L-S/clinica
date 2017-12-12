@@ -427,8 +427,8 @@ class procedimentoplano_model extends Model {
 
     function buscaragrupador($agrupador_id) {
         $this->db->select('agrupador_id,
-                           nome                            
-                            ');
+                           nome,
+                           convenio_id');
         $this->db->from('tb_agrupador_procedimento_nome');
         $this->db->where("ativo", 't');
         $this->db->where('agrupador_id', $agrupador_id);
@@ -460,11 +460,47 @@ class procedimentoplano_model extends Model {
     }
 
     function gravaragrupador() {
+        
+        $this->db->select('DISTINCT(convenio_secundario_id)');
+        $this->db->from('tb_convenio_secudario_associacao');
+        $this->db->where('convenio_primario_id', $_POST['convenio']);
+        $this->db->where('ativo', 't');
+        $conv_sec = $this->db->get()->result();
+        
+        if( count($conv_sec) > 0 ){
+            
+            $convPrimario = true;
+        
+            $this->db->select('DISTINCT(pt.grupo)');
+            $this->db->from('tb_procedimentos_agrupados_ambulatorial paa');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = paa.procedimento_tuss_id', 'left');
+            $this->db->where('paa.procedimento_agrupador_id', $_POST['procedimento']);
+            $this->db->where('paa.ativo', 't');
+            $grupos = $this->db->get()->result();
+            
+            $gp = array();
+            foreach ($grupos as $value) { $gp[] = (string)$value->grupo; }
+            $gp = implode(',', $gp);
+            
+            foreach ($conv_sec as $item) {
+                $this->db->select('convenio_secundario_id, valor_percentual');
+                $this->db->from('tb_convenio_secudario_associacao');
+                $this->db->where('convenio_secundario_id', $item->convenio_secundario_id);
+                $this->db->where("grupo IN ('{$gp}')");
+                $this->db->where('ativo', 't');
+                $verificador = $this->db->get()->result(); 
+                
+                if ( count($verificador) != count($grupos) ){
+                    return -3;
+                    break;
+                }
+            }
+        }
+        
         $procedimento_agrupador_id = $_POST['procedimento'];
         $convenio_id = $_POST['convenio'];
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-
 
         $this->db->select('convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
@@ -480,7 +516,7 @@ class procedimentoplano_model extends Model {
         $query = $this->db->get();
         $return = $query->result();
         $qtde = count($return);
-
+        $qtde = 0;
         if ($qtde == 0) {
 
             $this->db->select('grupo_pagamento_id');
@@ -536,9 +572,68 @@ class procedimentoplano_model extends Model {
                 $this->db->update('tb_procedimento_convenio');
                 
             }
+            
+            if($convPrimario){ // Caso seja um convenio primario, adiciona nos secundarios
+                foreach ($conv_sec as $item) {
+                    $valorPacote = 0;
+                    
+                    // Traz os dados desse convenio secundario
+                    $this->db->select('convenio_secundario_id, valor_percentual, grupo');
+                    $this->db->from('tb_convenio_secudario_associacao');
+                    $this->db->where('convenio_secundario_id', $item->convenio_secundario_id);
+                    $this->db->where("grupo IN ('{$gp}')");
+                    $this->db->where('ativo', 't');
+                    $cv = $this->db->get()->result();
+                    
+                    foreach ( $cv as $value ){
+                        // Somando o valor de todos os procedimentos desse grupo                        
+                        $this->db->select('SUM(pc.valortotal) as valor');
+                        $this->db->from('tb_procedimento_convenio pc');
+                        $this->db->where('pc.ativo', 't');
+                        $this->db->where('pc.convenio_id', $convenio_id);
+                        $this->db->where("pc.procedimento_tuss_id IN (
+                            SELECT paa.procedimento_tuss_id FROM ponto.tb_procedimentos_agrupados_ambulatorial paa
+                            INNER JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = paa.procedimento_tuss_id
+                            WHERE paa.procedimento_agrupador_id = {$procedimento_agrupador_id} AND paa.ativo = 't'
+                            AND pt.grupo = '{$value->grupo}'
+                        )");
+                        $valor = $this->db->get()->result();
+                        
+                        // Aplica o percentual cadastrado a todos os procedimentos desse grupo
+                        $v = ($valor[0]->valor * $value->valor_percentual / 100);
+                        
+                        // Soma o valor total desse grupo, ao valor total do pacote
+                        $valorPacote += $v;
+                    }
+                    
+                    $this->db->set('procedimento_tuss_id', $procedimento_agrupador_id);
+                    $this->db->set('convenio_id', $item->convenio_secundario_id);
+                    $this->db->set('empresa_id', $_POST['empresa']);
+                    $this->db->set('qtdech', 0);
+                    $this->db->set('valorch', 0);
+                    $this->db->set('qtdefilme', 0);
+                    $this->db->set('valorfilme', 0);
+                    $this->db->set('qtdeporte', 0);
+                    $this->db->set('valorporte', 0);
+                    $this->db->set('qtdeuco', 0);
+                    $this->db->set('valoruco', 0);
+                    $this->db->set('valortotal', $valorPacote);
+                    $this->db->set('agrupador', 't');
+                    if (isset($_POST['valor_diferenciado'])) {
+                        $this->db->set('valor_pacote_diferenciado', 't');
+                    } else {
+                        $this->db->set('valor_pacote_diferenciado', 'f');
+                    }
+
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_procedimento_convenio');
+                }
+            }
 
             return $procedimento_convenio_id;
-        } else {
+        } 
+        else {
             return -2;
         }
     }
@@ -589,8 +684,14 @@ class procedimentoplano_model extends Model {
                 $this->db->where('agrupador_id', $agrupador_id);
                 $this->db->update('tb_agrupador_procedimento_nome');
             }
-
             $erro = $this->db->_error_message();
+            
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('agrupador_id', $agrupador_id);
+            $this->db->update('tb_procedimentos_agrupados');
+
             if (trim($erro) != "") // erro de banco
                 return 0;
             else
@@ -602,22 +703,33 @@ class procedimentoplano_model extends Model {
 
     function gravaragrupadoradicionar() {
         try {
-
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
-            $this->db->set('agrupador_id', $_POST['agrupador_id']);
-            $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_procedimentos_agrupados');
-
-
-            $erro = $this->db->_error_message();
-            if (trim($erro) != "") // erro de banco
+            
+            $this->db->select();
+            $this->db->from('tb_procedimentos_agrupados');
+            $this->db->where('agrupador_id', $_POST['agrupador_id']);
+            $this->db->where('procedimento_tuss_id', $_POST['procedimento']);
+            $this->db->where("ativo", 't');
+            $query = $this->db->get()->result();
+            
+            if( count($query) == 0 ){
+                $this->db->set('agrupador_id', $_POST['agrupador_id']);
+                $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_procedimentos_agrupados');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return false;
+                else
+                    return true;
+            }
+            else{
                 return false;
-            else
-                return true;
+            }
+
         } catch (Exception $exc) {
             return false;
         }
@@ -667,6 +779,20 @@ class procedimentoplano_model extends Model {
         } catch (Exception $exc) {
             return 0;
         }
+    }
+
+    function listarprocedimentoconvenioagrupadorcirurgico($convenio_id) {
+        $this->db->select('pc.procedimento_convenio_id,
+                            pt.nome as procedimento,
+                            pt.codigo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pc.convenio_id", $convenio_id);
+        $this->db->where("pt.grupo", "CIRURGICO");
+        $this->db->orderby('pt.nome');
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listarprocedimento() {
