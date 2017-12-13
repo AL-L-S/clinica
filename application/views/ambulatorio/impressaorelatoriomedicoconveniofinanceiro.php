@@ -85,8 +85,9 @@ switch ($MES) {
                     <th class="tabela_header"><font size="-1">Convenio</th>
                     <th class="tabela_header"><font size="-1">Nome</th>
                     <th class="tabela_header"><font size="-1">Medico</th>
-                    <th class="tabela_header" width="100px;" title="Data do agendamtno. Data onde o paciente foi agendado"><font size="-1">Data Agend.</th>
-                    <th class="tabela_header" width="100px;" title="Data do atendimento. Data pelo qual o relatório pesquisa"><font size="-1">Data Atend.</th>
+                    <th class="tabela_header" width="100px;" title="Data do agendamento. Data onde o paciente foi agendado"><font size="-1">Data Agend.</th>
+                    <th class="tabela_header" width="100px;" title="Data do atendimento. Data em que foi enviado da sala de espera"><font size="-1">Data Atend.</th>
+                    <th class="tabela_header" width="100px;" title="Data de recebimento. Data em que o relatorio se baseia"><font size="-1">Data Receb.</th>
                     <th class="tabela_header"><font size="-1">Qtde</th>
                     <th class="tabela_header" width="220px;"><font size="-1">Procedimento</th>
                     <? if ($clinica == 'SIM') { ?>
@@ -173,6 +174,7 @@ switch ($MES) {
                                 ?>
                             </td>
                             <td ><font size="-2"><?= date('d/m/Y', strtotime($item->data_laudo)); ?></td>
+                            <td ><font size="-2"><?= date('d/m/Y', strtotime($item->data_producao)); ?></td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
 
                             <td><font size="-2"><?= $item->procedimento; ?></td>
@@ -300,13 +302,11 @@ switch ($MES) {
                                 $totalpercpromotor = $totalpercpromotor + $percpromotor;
                                 $totalgeralpromotor = $totalgeralpromotor + $valor_total;
                             }
-
-
                             
-                            @$tempoRecebimento[@$item->medico_parecer1] = array(
-                                "medico" => @$item->medico,
-                                "valor_recebimento" => @$tempoRecebimento[@$item->medico_parecer1]["valor_recebimento"] + $perc,
-                                "data_recebimento" => $item->data_producao,
+                            @$tempoRecebimento[str_replace("-", "", $item->data_producao)][$item->medico_parecer1] = array(
+                                "medico_nome" => @$item->medico,
+                                "valor_recebimento" => @$tempoRecebimento[str_replace("-", "", $item->data_producao)]["medicos"][@$item->medico_parecer1] + $perc,
+                                "data_recebimento" => $item->data_producao
                             );
                             
                             ?>
@@ -719,16 +719,6 @@ switch ($MES) {
                         <input type="hidden" class="texto3" name="valor" value="<?= $resultado; ?>" readonly/>
                         <?
                         $j = 0;
-//                        if (count(@$tempoRecebimento) > 0) {
-//                            foreach ($tempoRecebimento as $value) {
-//                                foreach ($value as $key => $item) {
-//                                    ?>
-                                    <!--<input type="hidden" name="//<?= $key; ?>[<?= $j; ?>]" value="<?= $item; ?>"/>-->  
-                                    <?
-//                                }
-//                                $j++;
-//                            }
-//                        }
                         if ($medico != 0 && $recibo == 'NAO') {
                             ?> 
                             <br>
@@ -862,18 +852,24 @@ switch ($MES) {
                         <td>Valor</td>
                         <td>Data Prevista</td>
                     </tr>
+                    <pre>
                     <?
-//                    var_dump($tempoRecebimento);die;
                     foreach ($tempoRecebimento as $value) {
-                        $vlr = $value['valor_recebimento'];
-                        $dt_recebimento = date("d/m/Y", strtotime($value['data_recebimento']));
-                        ?>
-                        <tr>
-                            <td><?= $value['medico'] ?></td>
-                            <td><?= number_format($vlr, 2, ",", "."); ?></td>
-                            <td><?= $dt_recebimento ?></td>
-                        </tr> 
-                    <? } ?>
+                        foreach($value as $item){
+                            $vlr = $item['valor_recebimento'];
+                            
+                            if ($vlr == 0) { continue; }
+
+                            $dt_recebimento = date("d/m/Y", strtotime($item['data_recebimento']));
+                            ?>
+                            <tr>
+                                <td><?= $item['medico_nome'] ?></td>
+                                <td><?= number_format($vlr, 2, ",", "."); ?></td>
+                                <td><?= $dt_recebimento ?></td>
+                            </tr> 
+                    <?  } 
+                    }
+                    ?>
                 </table>
                 <hr>
             <? } ?>

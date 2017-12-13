@@ -5091,6 +5091,18 @@ class exametemp_model extends Model {
         }
     }
 
+    function gerasaldocredito($paciente_credito_id) {
+        $this->db->select('SUM(pcr.valor) AS valor_total,
+                           p.nome as paciente');
+        $this->db->from('tb_paciente_credito pcr');
+        $this->db->join('tb_paciente p', 'p.paciente_id = pcr.paciente_id', 'left');
+        $this->db->where("pcr.paciente_id", $paciente_credito_id);
+        $this->db->where("pcr.ativo", 't');
+        $this->db->groupby("p.nome");
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     function gerarecibocredito($paciente_credito_id) {
 
         $this->db->select('pcr.valor,

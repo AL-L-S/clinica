@@ -3030,10 +3030,9 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         if ($dinheiro == "t") {
             if($data['empresapermissoes'][0]->valor_recibo_guia == 't'){
-//            $data['guiavalor'][0]->valor_guia = $valor_total; 
-            $valor = number_format($valor_total, 2, ',', '.');    
+                $valor = number_format($valor_total, 2, ',', '.');    
             }else{
-            $valor = number_format($data['guiavalor'][0]->valor_guia, 2, ',', '.');    
+                $valor = number_format($data['guiavalor'][0]->valor_guia, 2, ',', '.');    
             }
             
         } else {
