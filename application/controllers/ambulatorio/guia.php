@@ -1585,22 +1585,22 @@ class Guia extends BaseController {
         if ($resulta == "0.00") {
 
             $erro = false;
-            if ($_POST['valorMinimo1'] != '' && ( ((float) $_POST['valorMinimo1']) > ((float) $_POST['valor1']) / $_POST['parcela1'] )) {
+            if ($_POST['valorMinimo1'] != '' && ( ((float) $_POST['valorMinimo1']) > ((float) $_POST['valor1']) / $_POST['parcela1'] ) && $_POST['parcela1'] != 1) {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 1 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
 //                echo "<script>alert('something');</script>";
             }
-            if ($_POST['valorMinimo2'] != '' && ( ((float) $_POST['valorMinimo2']) > ((float) $_POST['valor2']) / $_POST['parcela2'] )) {
+            if ($_POST['valorMinimo2'] != '' && ( ((float) $_POST['valorMinimo2']) > ((float) $_POST['valor2']) / $_POST['parcela2'] ) && $_POST['parcela2'] != 1) {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 2 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
 //                echo "<script>alert('something');</script>";
             }
-            if ($_POST['valorMinimo3'] != '' && ( ((float) $_POST['valorMinimo3']) > ((float) $_POST['valor3']) / $_POST['parcela3'] )) {
+            if ($_POST['valorMinimo3'] != '' && ( ((float) $_POST['valorMinimo3']) > ((float) $_POST['valor3']) / $_POST['parcela3'] ) && $_POST['parcela3'] != 1) {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 3 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
 //                echo "<script>alert('something');</script>";
             }
-            if ($_POST['valorMinimo4'] != '' && ( ((float) $_POST['valorMinimo4']) > ((float) $_POST['valor4']) / $_POST['parcela4'] )) {
+            if ($_POST['valorMinimo4'] != '' && ( ((float) $_POST['valorMinimo4']) > ((float) $_POST['valor4']) / $_POST['parcela4'] ) && $_POST['parcela4'] != 1) {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
 //                echo "<script>alert('something');</script>";
@@ -1658,22 +1658,22 @@ class Guia extends BaseController {
         if ($resulta == "0.00") {
 
             $erro = false;
-            if ($_POST['valorMinimo1'] != '' && ( ((float) $_POST['valorMinimo1']) > ((float) $_POST['valor1']) / $_POST['parcela1'] )) {
+            if ($_POST['valorMinimo1'] != '' && ( ((float) $_POST['valorMinimo1']) > ((float) $_POST['valor1']) / $_POST['parcela1'] ) && $_POST['parcela1'] != 1) {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 1 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
 //                echo "<script>alert('something');</script>";
             }
-            if ($_POST['valorMinimo2'] != '' && ( ((float) $_POST['valorMinimo2']) > ((float) $_POST['valor2']) / $_POST['parcela2'] )) {
+            if ($_POST['valorMinimo2'] != '' && ( ((float) $_POST['valorMinimo2']) > ((float) $_POST['valor2']) / $_POST['parcela2'] ) && $_POST['parcela2'] != 1) {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 2 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
 //                echo "<script>alert('something');</script>";
             }
-            if ($_POST['valorMinimo3'] != '' && ( ((float) $_POST['valorMinimo3']) > ((float) $_POST['valor3']) / $_POST['parcela3'] )) {
+            if ($_POST['valorMinimo3'] != '' && ( ((float) $_POST['valorMinimo3']) > ((float) $_POST['valor3']) / $_POST['parcela3'] ) && $_POST['parcela3'] != 1) {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 3 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
 //                echo "<script>alert('something');</script>";
             }
-            if ($_POST['valorMinimo4'] != '' && ( ((float) $_POST['valorMinimo4']) > ((float) $_POST['valor4']) / $_POST['parcela4'] )) {
+            if ($_POST['valorMinimo4'] != '' && ( ((float) $_POST['valorMinimo4']) > ((float) $_POST['valor4']) / $_POST['parcela4'] ) && $_POST['parcela4'] != 1) {
                 $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
                 $erro = true;
 //                echo "<script>alert('something');</script>";

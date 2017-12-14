@@ -6280,7 +6280,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
 //        $this->db->where('faturado', 'f');
         $this->db->where('confirmado', 't');
-//        $this->db->where('c.dinheiro', 't');
+        $this->db->where('c.dinheiro', 't');
         $this->db->where("guia_id", $guia_id);
         $return = $this->db->get();
         return $return->result();
@@ -6323,6 +6323,7 @@ class guia_model extends Model {
             $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
         }
         $return = $this->db->get();
+//        var_dump($return->result()); die;
         return $return->result();
     }
 
