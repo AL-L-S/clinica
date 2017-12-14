@@ -31,7 +31,29 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
+    function listargruposrelatorioretorno() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where('nome !=', "AGRUPADOR");
+        $this->db->where('nome !=', "RETORNO");
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listargruposrelatorioorcamento() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where('nome !=', "AGRUPADOR");
+        $this->db->where('nome !=', "RETORNO");
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function gravarprocedimentocirurgicovalor($agenda_exames_id) {
 //        var_dump($_POST['valor']); die;
         $this->db->set('valor', str_replace(',', '.', $_POST['valor']));

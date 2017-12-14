@@ -449,6 +449,8 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioaniversariante">Relatorio Aniversariantes</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriopacientetelefone">Relatorio Paciente Telefone</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioencaminhamento">Relatorio Encaminhamentos</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioretorno">Relatorio Retorno</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriorevisao">Relatorio Revisão</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioteleoperadora">Relatorio Teleoperadora</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioorcamentos">Relatorio Orçamentos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteduplicado">Relatorio Pacientes Duplicados</a></span></ul>
