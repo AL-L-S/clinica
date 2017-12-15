@@ -1,5 +1,5 @@
 <meta charset="UTF-8">
-<div style="border: solid 1px;" class="content ficha_ceatox">
+<div style="border: solid 1px;min-height: 800px;" class="content ficha_ceatox">
 
 
 

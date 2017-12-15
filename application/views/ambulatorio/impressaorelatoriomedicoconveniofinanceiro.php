@@ -360,8 +360,9 @@ switch ($MES) {
                         <? } else { ?>
                             <td colspan="2" style='text-align: right;'><font size="-1">&nbsp;</td>
                         <? } ?>
-                        <td colspan="2" style='text-align: right;'><font size="-1">T. DINHEIRO: <?= number_format($vlrTotalDinheiro, 2, ",", "."); ?></td>
-                        <td colspan="3" style='text-align: right;'><font size="-1">T. CARTÃO: <?= number_format($vlrTotalCartao, 2, ",", "."); ?></td>
+<!--                            As váriaveis estão invertidas-->
+                        <td colspan="2" style='text-align: right;'><font size="-1">T. CARTÃO: <?= number_format($vlrTotalDinheiro, 2, ",", "."); ?></td>
+                        <td colspan="3" style='text-align: right;'><font size="-1">T. DINHEIRO: <?= number_format($vlrTotalCartao, 2, ",", "."); ?></td>
                         <? if ($_POST['promotor'] == 'SIM') { ?>
                             <td colspan="2" style='text-align: right;'><font size="-1">TOTAL PROMOTOR: <?= number_format($totalpercpromotor, 2, ",", "."); ?></td>
                             <td colspan="2" style='text-align: right;'
