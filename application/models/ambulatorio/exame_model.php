@@ -2767,6 +2767,8 @@ class exame_model extends Model {
             $this->db->select(' aoi.ambulatorio_orcamento_item_id,
                                 ao.paciente_id,
                                 aoi.empresa_id,
+                                aoi.valor,
+                                aoi.quantidade,
                                 aoi.procedimento_tuss_id,
                                 ag.tipo');
             $this->db->from('tb_ambulatorio_orcamento_item aoi');
@@ -2780,12 +2782,15 @@ class exame_model extends Model {
             $return = $this->db->get();
             $return = $return->result();
 
-//            echo "<pre>"; var_dump($_POST); die;
+//            echo "<pre>"; 
+//            var_dump($return); 
+//            var_dump($return[1]->valor * $return[1]->quantidade); 
+//            die;
 
             if (count($return) > 0) {
 
                 foreach ($return as $value) {
-
+                    
                     $data = date("Y-m-d");
                     $hora = date("H:i:s");
                     $horario = date("Y-m-d H:i:s");
@@ -2804,6 +2809,9 @@ class exame_model extends Model {
                     $this->db->set('empresa_id', $value->empresa_id);
                     $this->db->set('paciente_id', $value->paciente_id);
                     $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                    $this->db->set('valor_total', $value->valor * $value->quantidade);
+                    $this->db->set('valor', $value->valor);
+                    $this->db->set('quantidade', $value->quantidade);
                     $this->db->set('data_inicio', $data);
                     $this->db->set('fim', $hora);
                     $this->db->set('inicio', $hora);

@@ -270,8 +270,15 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                             $("#valor<?=$b?>").prop('readonly', true);
                                                         }    
                                                         <?}?>   
+                                                               <?if(@$exames[$b - 1]->valor != ''){?>
+//                                                                   alert('asd');
+                                                                document.getElementById("valor<?= $b ?>").value = <?=@$exames[$b - 1]->valor?>;
+                                                                document.getElementById("qtde<?= $b ?>").value =  <?=@$exames[$b - 1]->quantidade?>;
+                                                               <?}else{?>
                                                                 document.getElementById("valor<?= $b ?>").value = valor;
-                                                                document.getElementById("qtde<?= $b ?>").value = qtde;
+                                                                document.getElementById("qtde<?= $b ?>").value = qtde;  
+                                                               <?}?>
+                                                                
                                                                 $('.carregando').hide();
                                                             });
                                                             $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
