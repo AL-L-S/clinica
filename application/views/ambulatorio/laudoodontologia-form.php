@@ -125,6 +125,13 @@
                                 </a>
                             </div>
                         </td>
+                        <td>
+                            <div class="bt_link_new">
+                                <a target="_blank" href="<?= base_url() ?>ambulatorio/guia/orcamento/<?= $paciente_id ?>">
+                                    Orçamento
+                                </a>
+                            </div>
+                        </td>
                     
                         
                     </tr>
