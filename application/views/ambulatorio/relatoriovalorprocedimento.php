@@ -8,14 +8,14 @@
                     <label>Convenio</label>
                     </dt>
                     <dd>
-                        <select  name="convenio1" id="convenio1" class="size1">
+                        <select  name="convenio1" id="convenio1" class="size2">
                             <option value="-1">Selecione</option>
                             <? foreach ($convenio as $item) : ?>
                                 <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
                             <? endforeach; ?>
                         </select>
                     <dt>
-                    <label>Procedimento</label>
+                        <label>Procedimento</label>
                     </dt>
                     <dd style="margin-bottom: 5pt;">
 <!--                        <select  name="procedimento1" id="procedimento1" class="size1" required="true">
@@ -71,7 +71,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <style>
     .chosen-container{ margin-top: 5pt;}
-    #procedimento1_chosen a { width: 130px; }
+    #procedimento1_chosen a { width: 330px; }
 </style>
 
 <script type="text/javascript">
@@ -109,7 +109,10 @@
                             for (var c = 0; c < j.length; c++) {
                                 options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                             }
-                            $('#procedimento1').html(options).show();
+//                            $('#procedimento1').html(options).show();
+                            $('#procedimento1 option').remove();
+                            $('#procedimento1').append(options);
+                            $("#procedimento1").trigger("chosen:updated");
                             $('.carregando').hide();
                         });
                     } else {

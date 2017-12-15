@@ -305,7 +305,7 @@ switch ($MES) {
                             
                             @$tempoRecebimento[str_replace("-", "", $item->data_producao)][$item->medico_parecer1] = array(
                                 "medico_nome" => @$item->medico,
-                                "valor_recebimento" => @$tempoRecebimento[str_replace("-", "", $item->data_producao)]["medicos"][@$item->medico_parecer1] + $perc,
+                                "valor_recebimento" => @$tempoRecebimento[str_replace("-", "", $item->data_producao)][@$item->medico_parecer1]["valor_recebimento"] + $perc,
                                 "data_recebimento" => $item->data_producao
                             );
                             

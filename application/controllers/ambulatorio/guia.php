@@ -2201,6 +2201,7 @@ class Guia extends BaseController {
         $data['txtNome'] = $_POST['txtNome'];
 
         $data['relatoriocredito'] = $this->guia->relatoriocredito();
+        $data['pacientes'] = $this->guia->relatoriocreditopacientes();
 //        var_dump($data['relatoriocredito']); die;
         $this->load->View('ambulatorio/impressaorelatoriocredito', $data);
     }
