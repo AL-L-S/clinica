@@ -275,7 +275,6 @@ class Exametemp extends BaseController {
         $data['paciente_id'] = $paciente_id;
         $data['valortotal'] = $this->exametemp->listarsaldocreditopaciente($paciente_id);
 
-//        var_dump($data['valortotal']);die;
         $this->loadView('ambulatorio/carregarcredito-lista', $data);
     }
 
@@ -285,6 +284,25 @@ class Exametemp extends BaseController {
 
 
         $this->load->view('ambulatorio/mostrarpendencias', $data);
+    }
+
+    function gerasaldocredito ($paciente_id) {
+        $data['paciente_id'] = $paciente_id;
+
+        $credito = $this->exametemp->gerasaldocredito($paciente_id);
+        
+        if (@$credito[0]->valor_total == '0,00') {
+            $data['extenso'] = 'ZERO';
+        } else {
+            $valoreditado = str_replace(",", "", str_replace(".", "", @$credito[0]->valor_total));
+            $data['extenso'] = GExtenso::moeda($valoreditado);
+        }
+
+        $data['credito'] = $credito;
+        $data['empresa'] = $this->guia->listarempresa();
+
+//        var_dump($credito); die;
+        $this->load->view('ambulatorio/impressaosaldopacientecredito', $data);
     }
 
     function gerarecibocredito($paciente_credito_id) {

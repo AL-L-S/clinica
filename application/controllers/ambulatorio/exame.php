@@ -238,6 +238,7 @@ class Exame extends BaseController {
 
     function relatorioorcamentos() {
         $data['empresa'] = $this->guia->listarempresas();
+        $data["grupos"] = $this->guia->listargruposrelatorioorcamento(); 
         $this->loadView('ambulatorio/relatorioorcamentos', $data);
     }
 
@@ -280,6 +281,18 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/relatoriopacientetelefone', $data);
     }
     
+    function relatoriorevisao() {
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data["grupos"] = $this->guia->listargruposrelatorioretorno(); 
+        $this->loadView('ambulatorio/relatoriorevisao', $data);
+    }
+    
+    function relatorioretorno() {
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data["grupos"] = $this->guia->listargruposrelatorioretorno(); 
+        $this->loadView('ambulatorio/relatorioretorno', $data);
+    }
+    
     function relatorioencaminhamento() {
 //        $data['convenio'] = $this->convenio->listardados();
 //        $data['grupos'] = $this->procedimento->listargrupos();
@@ -305,11 +318,8 @@ class Exame extends BaseController {
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['empresa_id'] = $_POST['empresa'];
+        $data['grupo'] = $_POST['grupo'];
         $data['relatorio'] = $this->exame->gerarelatorioorcamentos();
-
-//        echo "<pre>";
-//        var_dump($data['relatorio']);
-//        die;
 
         $this->load->View('ambulatorio/impressaorelatorioorcamentos', $data);
     }
@@ -358,6 +368,25 @@ class Exame extends BaseController {
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
         }
 //        die('Criar o exame/consulta e redirecionar pra tela de "autorizar atendimento');
+    }
+    
+    function gerarelatoriorevisao() {
+        
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['relatorio'] = $this->exame->gerarelatoriorevisao();
+        $data['grupo'] = $_POST['grupo'];
+        $this->load->View('ambulatorio/impressaorelatoriorevisao', $data);
+    }
+    
+    
+    function gerarelatorioretorno() {
+        
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['relatorio'] = $this->exame->gerarelatorioretorno();
+        $data['grupo'] = $_POST['grupo'];
+        $this->load->View('ambulatorio/impressaorelatorioretorno', $data);
     }
     
     function gerarelatorioencaminhamento() {

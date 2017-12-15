@@ -202,7 +202,7 @@
                         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>">
                             <div class="bt_link_new" width="140">
-                                <a  onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterardata/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=450');">Alterar Data Atendi.
+                                <a  onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/alterardata/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=450');">Alterar Data Agend.
                                 </a>
                             </div>
                             <div class="bt_link_new"  width="140">

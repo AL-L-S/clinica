@@ -301,20 +301,16 @@
                                                                                 <a></a></font>
                                                                             </td>-->
 
-                                <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                <? } ?>
+<!--                                    <td class="<?php // echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                         <a></a></font>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>-->
 <? } ?>
                             </tr>
 
                         </tbody>
-                        <?php
-                    }
-                }
-                ?>
                 <tfoot>
                     <tr>
                             Total de registros: <?php echo $total; ?>

@@ -2743,6 +2743,15 @@ class exame_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ao.empresa_id', $_POST['empresa']);
         }
+        if ($_POST['grupo'] != "") {
+            $this->db->where("ao.ambulatorio_orcamento_id IN (
+                SELECT orcamento_id FROM ponto.tb_ambulatorio_orcamento_item aoi
+                INNER JOIN ponto.tb_procedimento_convenio pc ON aoi.procedimento_tuss_id = pc.procedimento_convenio_id
+                INNER JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id
+                WHERE aoi.ativo = 't'
+                AND pt.grupo = '{$_POST['grupo']}'
+            )");
+        }
         $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
@@ -2867,6 +2876,89 @@ class exame_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function gerarelatoriorevisao() {
+//        $data = date("Y-m-d");
+
+        $this->db->select(' ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.data_revisao,
+                            p.nome as paciente,
+                            p.celular,
+                            pt.grupo,
+                            c.nome as convenio,
+                            p.telefone,
+                            ae.paciente_id,
+                            pc.valortotal,
+                            pt.nome as procedimento,
+                            o.nome as medico');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        
+        if($_POST['medico_id'] != ''){
+            $this->db->where('ae.medico_agenda', $_POST['medico_id']); 
+        }        
+
+        if ( $_POST['grupo'] != '' ){ 
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+
+
+        $this->db->where("ae.data_revisao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.data_revisao <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+
+        $this->db->orderby('ae.data_revisao');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gerarelatorioretorno() {
+//        $data = date("Y-m-d");
+
+        $this->db->select(' ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            p.nome as paciente,
+                            p.celular,
+                            pt.grupo,
+                            c.nome as convenio,
+                            p.telefone,
+                            ae.paciente_id,
+                            pc.valortotal,
+                            pt.nome as procedimento,
+                            o.nome as medico');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt2', 'pt2.procedimento_tuss_id = pt.associacao_procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        
+        if($_POST['medico_id'] != ''){
+            $this->db->where('ae.medico_agenda', $_POST['medico_id']); 
+        }
+        
+        $this->db->where('pt.grupo', "RETORNO"); // Trazendo apenas os atendimentos que são retornos
+
+        if ( $_POST['grupo'] != '' ){ // Filtrando pelo grupo do procedimento no qual o procedimento de retorno esta associado
+            $this->db->where('pt2.grupo', $_POST['grupo']); 
+        }
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+
+        $this->db->orderby('ae.data');
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function gerarelatorioencaminhamento() {
@@ -6247,7 +6339,8 @@ class exame_model extends Model {
             $this->db->where("ppmc.medico", $_POST['txtmedico']);
             $retorno = $this->db->get()->result();
             
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento ){
+//            echo "<pre>"; var_dump($retorno); die;
+            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
                 if( date("d") > $retorno[0]->dia_recebimento ) {
                     $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
@@ -6288,7 +6381,8 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $dataProducao);
+                $this->db->set('data', $data);
+                $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6352,7 +6446,8 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $dataProducao);
+                $this->db->set('data', $data);
+                $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6417,7 +6512,8 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $dataProducao);
+                $this->db->set('data', $data);
+                $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);
@@ -6481,7 +6577,8 @@ class exame_model extends Model {
                 $exames_id = $this->db->insert_id();
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $dataProducao);
+                $this->db->set('data', $data);
+                $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
                 $this->db->set('exame_id', $exames_id);

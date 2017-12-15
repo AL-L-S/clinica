@@ -94,7 +94,12 @@ $perfil_id = $this->session->userdata('perfil_id');
                             </tr>
                         <? } ?>
                         <tr id="tot">
-                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="4">
+                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="3">
+                                <div class="bt_link" style="float: right">
+                                    <a href="<?= base_url() ?>ambulatorio/exametemp/gerasaldocredito/<?= $paciente_id ?>">Saldo</a>
+                                </div>
+                            </td>
+                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="">
                                 <span id="spantotal"> Saldo:</span> 
                             </td>
                             <td class="<?php echo $estilo_linha; ?>" colspan="5">

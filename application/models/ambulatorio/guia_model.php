@@ -31,7 +31,29 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
+    function listargruposrelatorioretorno() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where('nome !=', "AGRUPADOR");
+        $this->db->where('nome !=', "RETORNO");
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listargruposrelatorioorcamento() {
+        $this->db->select('ambulatorio_grupo_id,
+                            nome');
+        $this->db->from('tb_ambulatorio_grupo');
+        $this->db->where('nome !=', "AGRUPADOR");
+        $this->db->where('nome !=', "RETORNO");
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function gravarprocedimentocirurgicovalor($agenda_exames_id) {
 //        var_dump($_POST['valor']); die;
         $this->db->set('valor', str_replace(',', '.', $_POST['valor']));
@@ -4630,11 +4652,8 @@ class guia_model extends Model {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-
-
-
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("al.data_producao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("al.data_producao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $return = $this->db->count_all_results();
         return $return;
@@ -6283,7 +6302,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
 //        $this->db->where('faturado', 'f');
         $this->db->where('confirmado', 't');
-//        $this->db->where('c.dinheiro', 't');
+        $this->db->where('c.dinheiro', 't');
         $this->db->where("guia_id", $guia_id);
         $return = $this->db->get();
         return $return->result();
@@ -6326,6 +6345,7 @@ class guia_model extends Model {
             $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
         }
         $return = $this->db->get();
+//        var_dump($return->result()); die;
         return $return->result();
     }
 

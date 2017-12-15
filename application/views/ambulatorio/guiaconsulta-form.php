@@ -532,13 +532,13 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     });
                                                     $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
 //                                                        console.log(r);
-                                                        if(r.qtdeConsultas == 0 && r.grupo == "RETORNO"){
-                                                            alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
-                                                            $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val(''));
-                                                        }else if(r.qtdeConsultas > 0 && r.grupo == "RETORNO" && r.retorno_realizado > 0){
-                                                            alert("Erro ao selecionar retorno. Esse paciente já realizou o retorno associado a esse procedimento no tempo cadastrado");
-                                                            $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val(''));
-                                                        }
+//                                                        if(r.qtdeConsultas == 0 && r.grupo == "RETORNO"){
+//                                                            alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+//                                                            $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val(''));
+//                                                        }else if(r.qtdeConsultas > 0 && r.grupo == "RETORNO" && r.retorno_realizado > 0){
+//                                                            alert("Erro ao selecionar retorno. Esse paciente já realizou o retorno associado a esse procedimento no tempo cadastrado");
+//                                                            $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val(''));
+//                                                        }
                                                     });
                                                     
                                                     $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
