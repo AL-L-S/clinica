@@ -2900,7 +2900,8 @@ class exame_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
-        
+        $this->db->set('ativo', 'f');
+        $this->db->set('cancelada', 'f');
         if($_POST['medico_id'] != ''){
             $this->db->where('ae.medico_agenda', $_POST['medico_id']); 
         }        
@@ -2941,7 +2942,8 @@ class exame_model extends Model {
         $this->db->join('tb_procedimento_tuss pt2', 'pt2.procedimento_tuss_id = pt.associacao_procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
-        
+        $this->db->set('ativo', 'f');
+        $this->db->set('cancelada', 'f');
         if($_POST['medico_id'] != ''){
             $this->db->where('ae.medico_agenda', $_POST['medico_id']); 
         }

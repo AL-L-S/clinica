@@ -3,6 +3,8 @@
 <?
         $empresa_id = $this->session->userdata('empresa_id');
         $empresa = $this->guia->listarempresa($empresa_id);
+        $empresaPermissoes = $this->guia->listarempresapermissoes(); 
+        $odontologia_alterar = $empresaPermissoes[0]->odontologia_valor_alterar;
 
 ?>
     <div>
@@ -382,6 +384,13 @@
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                         options = "";
                                         options += j[0].valortotal;
+                                        <? if ($odontologia_alterar == 't'){ ?>
+                                            if (j[0].grupo == 'ODONTOLOGIA'){
+                                                $("#valor1").prop('readonly', false);
+                                            }else{
+                                                $("#valor1").prop('readonly', true);
+                                            }    
+                                        <? } ?>
                                         document.getElementById("valor1").value = options
                                         $('.carregando').hide();
                                     });

@@ -10,6 +10,8 @@
         $medico_solicitante = "";
         $medico_solicitante_id = "";
         $convenio_paciente = "";
+        $empresa = $this->guia->listarempresapermissoes(); 
+        $odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
         ?>
         <h3 class="singular"><a href="#">Or&ccedil;amento exames</a></h3>
         <div>
@@ -356,6 +358,13 @@
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                 options = "";
                                                 options += j[0].valortotal;
+                                                <? if($odontologia_alterar == 't'){?>
+                                                    if(j[0].grupo == 'ODONTOLOGIA'){
+                                                        $("#valor1").prop('readonly', false);
+                                                    }else{
+                                                        $("#valor1").prop('readonly', true);
+                                                    }    
+                                                <? } ?>
                                                 document.getElementById("valor1").value = options
                                                 $('.carregando').hide();
                                             });
