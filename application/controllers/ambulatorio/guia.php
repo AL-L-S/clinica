@@ -2189,6 +2189,19 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioresumogeral', $data);
     }
 
+    function relatoriocreditosaldo() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriocreditosaldo', $data);
+    }
+
+    function gerarelatoriocreditosaldo() {
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['txtNome'] = $_POST['txtNome'];
+        $data['pacientes'] = $this->guia->relatoriocreditopacientes();
+//        echo "<pre>"; var_dump($data['pacientes']); die;
+        $this->load->View('ambulatorio/impressaorelatoriocreditosaldo', $data);
+    }
+
     function relatoriocredito() {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriocreditopaciente', $data);
@@ -2201,7 +2214,7 @@ class Guia extends BaseController {
         $data['txtNome'] = $_POST['txtNome'];
 
         $data['relatoriocredito'] = $this->guia->relatoriocredito();
-        $data['pacientes'] = $this->guia->relatoriocreditopacientes();
+//        $data['pacientes'] = $this->guia->relatoriocreditopacientes();
 //        var_dump($data['relatoriocredito']); die;
         $this->load->View('ambulatorio/impressaorelatoriocredito', $data);
     }
@@ -3428,6 +3441,7 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['empresa_id'] = $_POST['empresa'];
         $data['relatorio'] = $this->guia->relatoriovalorprocedimento();
         $data['contador'] = $this->guia->relatoriovalorprocedimentocontador();
         $this->loadView('ambulatorio/ajustarvalorprocedimento', $data);

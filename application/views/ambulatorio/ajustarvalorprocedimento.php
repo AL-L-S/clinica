@@ -44,6 +44,7 @@
                 <input type="hidden" class="texto3" name="txtdata_inicio" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="txtdata_fim" value="<?= $txtdata_fim; ?>" />
                 <input type="hidden" class="texto3" name="procedimento" value="<?= $procedimento; ?>"/>
+                <input type="hidden" class="texto3" name="empresa_id" value="<?= $empresa_id; ?>"/>
                 <input type="text" class="texto3" name="valor" alt="decimal"/>
                <button type="submit" name="btnEnviar">Atualizar</button>
 

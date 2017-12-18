@@ -215,7 +215,7 @@
                         </tfoot>
                     </table> 
                     <hr/>
-                    <button type="submit" name="btnEnviar">Adicionar</button>
+                    <button type="submit" name="btnEnviar" id="submitButton">Adicionar</button>
                 </fieldset>
             </form>
             <fieldset>
@@ -454,6 +454,15 @@
 </style>
 
 <script type="text/javascript">
+                                // Fazendo com que ao clicar no botão de submit, este passe a ficar desabilitado
+                                var formID = document.getElementById("form_guia");
+                                var send = $("#submitButton");
+                                $(formID).submit(function(event){
+                                    if (formID.checkValidity()) {
+                                        send.attr('disabled', 'disabled');
+                                    }
+                                });
+                                
                                 if ($("#convenio1").val() != "-1") {
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $("#convenio1").val()}, function (j) {
                                         options = '<option value=""></option>';
