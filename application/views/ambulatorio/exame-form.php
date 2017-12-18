@@ -69,7 +69,7 @@
                 </dl>    
 
                 <hr/>
-                <button type="submit" name="btnEnviar">Enviar</button>
+                <button type="submit" name="btnEnviar" id="submitButton">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>
                 <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
             </form>
@@ -79,6 +79,15 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+    // Fazendo com que ao clicar no botão de submit, este passe a ficar desabilitado
+    var formID = document.getElementById("form_exame");
+    var send = $("#submitButton");
+    $(formID).submit(function(event){ 
+        if (formID.checkValidity()) {
+            send.attr('disabled', 'disabled');
+        }
+    });
+    
     $(function () {
         $("#txtdatainicial").datepicker({
             autosize: true,

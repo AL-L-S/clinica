@@ -4534,9 +4534,43 @@ class guia_model extends Model {
 
     function relatoriocreditopacientes() {
 
-        $this->db->select('pac.paciente_id');
+        $this->db->select('pac.paciente_id, 
+                           p.nome as paciente, 
+                           p.telefone, 
+                           p.celular, 
+                           SUM(pac.valor) AS saldo');
         $this->db->from('tb_paciente_credito pac');
         $this->db->join('tb_paciente p', 'p.paciente_id = pac.paciente_id', 'left');
+        $this->db->where("pac.ativo = 't'");
+        if ($_POST['txtNome'] != "") {
+            $this->db->where("p.nome ilike", "%" . $_POST['txtNome'] . "%");
+        }
+        $this->db->groupby("pac.paciente_id, 
+                            p.telefone, 
+                            p.celular,
+                            p.nome 
+                            HAVING SUM(pac.valor) > 0"); 
+        
+        $this->db->orderby("p.nome");
+
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriocreditosaldo($paciente_id) {
+
+        $this->db->select('pac.data_cadastro,
+                           p.nome as paciente,
+                           pac.valor,
+                           pt.perc_medico,
+                           pt.procedimento_tuss_id,
+                           pt.nome as procedimento,
+                           pt.percentual');
+        $this->db->from('tb_paciente_credito pac');
+        $this->db->join('tb_paciente p', 'p.paciente_id = pac.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pac.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
 
         $this->db->where("pac.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
         $this->db->where("pac.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
@@ -4546,7 +4580,9 @@ class guia_model extends Model {
             $this->db->where("p.nome ilike", "%" . $_POST['txtNome'] . "%");
         }
         
-        $this->db->orderby("p.nome");
+//        $this->db->orderby("p.nome");
+        $this->db->orderby("pac.data_cadastro");
+//        $this->db->orderby("pt.nome");
 
 
         $return = $this->db->get();
@@ -4575,9 +4611,9 @@ class guia_model extends Model {
             $this->db->where("p.nome ilike", "%" . $_POST['txtNome'] . "%");
         }
         
-        $this->db->orderby("p.nome");
+//        $this->db->orderby("p.nome");
         $this->db->orderby("pac.data_cadastro");
-        $this->db->orderby("pt.nome");
+//        $this->db->orderby("pt.nome");
 
 
         $return = $this->db->get();
@@ -6658,6 +6694,7 @@ class guia_model extends Model {
 
     function gravarnovovalorprocedimento() {
         $procedimento = $_POST['procedimento'];
+        $empresa_id = $_POST['empresa_id'];
 
         $data_inicio = date("Y-m-d", strtotime($_POST['txtdata_inicio']));
         $data_fim = date("Y-m-d", strtotime($_POST['txtdata_fim']));
@@ -6670,13 +6707,14 @@ class guia_model extends Model {
         $operador_id = $this->session->userdata('operador_id');
 
         $sql = "UPDATE ponto.tb_agenda_exames 
-SET data_atualizacao = '$horario', 
-operador_atualizacao = $operador_id, 
-valor = $valor, 
-valor_total = quantidade * $valor 
-WHERE procedimento_tuss_id = $procedimento 
-AND data >= '$data_inicio' 
-AND data <= '$data_fim'";
+                SET data_atualizacao = '$horario', 
+                operador_atualizacao = $operador_id, 
+                valor = $valor, 
+                valor_total = quantidade * $valor 
+                WHERE procedimento_tuss_id = $procedimento 
+                AND empresa_id >= $empresa_id 
+                AND data >= '$data_inicio' 
+                AND data <= '$data_fim'";
         $this->db->query($sql);
         return 0;
     }

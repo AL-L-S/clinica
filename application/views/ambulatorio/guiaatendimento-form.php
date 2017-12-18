@@ -213,7 +213,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                         </tfoot>
                     </table> 
                     <hr/>
-                    <button type="submit" name="btnEnviar">Adicionar</button>
+                    <button type="submit" name="btnEnviar" id="submitButton">Adicionar</button>
                 </fieldset>
             </form>
             <fieldset>
@@ -555,12 +555,14 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 
 <script type="text/javascript">
-
-
-<?php // if ($this->session->flashdata('message') != ''):  ?>
-//                                    alert("<? // echo $this->session->flashdata('message')  ?>");
-<? // endif;  ?>
-
+                                // Fazendo com que ao clicar no botão de submit, este passe a ficar desabilitado
+                                var formID = document.getElementById("form_guia");
+                                var send = $("#submitButton");
+                                $(formID).submit(function(event){ 
+                                    if (formID.checkValidity()) {
+                                        send.attr('disabled', 'disabled');
+                                    }
+                                });
                                 $(function () {
                                     $("#data").datepicker({
                                         autosize: true,
