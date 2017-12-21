@@ -53,13 +53,15 @@
             <tr>
                 <td width="350px;"><font size="-1"><B>Paciente</B></td>
                 <td style='text-align: right;'width="120px;"><font size="-1"><B>Data</B></td>
-                <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor</B></td>
+                <td style='text-align: right; 'width="120px;"><font size="-1"><B>Valor</B></td>
+                <td style='text-align: center;'width="120px;"><font size="-1"><B>Operador</B></td>
             </tr>
             <? foreach ($creditos as $item) { ?>
                 <tr>
                     <td><?= $item->paciente ?></td>
                     <td style='text-align: right;'><?= date("d/m/Y", strtotime($item->data)) ?></td>
                     <td style='text-align: right;'><?= number_format($item->valor, 2, ',', '') ?></td>
+                    <td style='text-align: right;'><?= $item->operador?></td>
                 </tr>
             <? } ?>
             <tr>

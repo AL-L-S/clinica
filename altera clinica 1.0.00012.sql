@@ -59,6 +59,13 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN selecionar_retorno boolean DE
 -- 11/12/2017
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN administrador_cancelar boolean DEFAULT true;
 
+-- 18/12/2017
+ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN numero_nota_fiscal character varying(50);
+
+-- Dia 19/12/2017
+ALTER TABLE ponto.tb_empresa ADD COLUMN declaracao_config boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa ADD COLUMN atestado_config boolean DEFAULT true;
+
 --20/12/2017
 ALTER TABLE ponto.tb_sangria ADD COLUMN empresa_id integer;
 

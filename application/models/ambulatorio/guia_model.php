@@ -7393,13 +7393,15 @@ class guia_model extends Model {
     }
 
     function relatorioresumocreditoslancados() {
-        $this->db->select(" SUM(pc.valor) AS valor,
+        $this->db->select("SUM(pc.valor) AS valor,
                             p.nome as paciente,
                             pc.data,
+                            o.nome as operador,
                             f.forma_pagamento_id,
                             f.nome as formapagamento");
         $this->db->from('tb_paciente_credito pc');
         $this->db->join('tb_paciente p', 'p.paciente_id = pc.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = pc.operador_cadastro', 'left');
         $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento_id', 'left');
         $this->db->where("pc.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("pc.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
@@ -7407,7 +7409,7 @@ class guia_model extends Model {
             $this->db->where('pc.empresa_id', $_POST['empresa']);
         }
         $this->db->where("pc.ativo", 't');
-        $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome");
+        $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome,o.nome");
         $query = $this->db->get();
         $return = $query->result();
         return $return;
