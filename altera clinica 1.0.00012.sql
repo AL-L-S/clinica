@@ -50,13 +50,13 @@ ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN observacao text;
 
 ALTER TABLE ponto.tb_empresa ADD COLUMN impressao_orcamento integer;
 
---07/12/2017
+-- 07/12/2017
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN retorno boolean DEFAULT false;
---09/12/2017
+-- 09/12/2017
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN odontologia_valor_alterar boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN selecionar_retorno boolean DEFAULT true;
 
---11/12/2017
+-- 11/12/2017
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN administrador_cancelar boolean DEFAULT true;
 
 --20/12/2017

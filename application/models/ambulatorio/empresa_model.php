@@ -908,10 +908,20 @@ class empresa_model extends Model {
             } else {
                 $this->db->set('recibo_config', 'f');
             }
-            if (isset($_POST['ficha_config'])) {
+            if (isset($_POST['ficha_config'])) { // Ficha
                 $this->db->set('ficha_config', 't');
             } else {
                 $this->db->set('ficha_config', 'f');
+            }
+            if (isset($_POST['declaracao_config'])) { // Declaracao
+                $this->db->set('declaracao_config', 't');
+            } else {
+                $this->db->set('declaracao_config', 'f');
+            }
+            if (isset($_POST['atestado_config'])) { // Atestado
+                $this->db->set('atestado_config', 't');
+            } else {
+                $this->db->set('atestado_config', 'f');
             }
 
             $horario = date("Y-m-d H:i:s");
@@ -1176,6 +1186,8 @@ class empresa_model extends Model {
                                laudo_config,
                                recibo_config,
                                ficha_config,
+                               declaracao_config,
+                               atestado_config,
                                oftamologia,
                                caixa,
                                cancelar_sala_espera,
@@ -1269,6 +1281,8 @@ class empresa_model extends Model {
             $this->_laudo_config = $return[0]->laudo_config;
             $this->_recibo_config = $return[0]->recibo_config;
             $this->_ficha_config = $return[0]->ficha_config;
+            $this->_declaracao_config = $return[0]->declaracao_config;
+            $this->_atestado_config = $return[0]->atestado_config;
             $this->_producao_medica_saida = $return[0]->producao_medica_saida;
             $this->_procedimento_excecao = $return[0]->procedimento_excecao;
             $this->_ordem_chegada = $return[0]->ordem_chegada;

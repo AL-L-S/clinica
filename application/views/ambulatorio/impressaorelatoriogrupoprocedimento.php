@@ -33,15 +33,6 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $grupo; ?></th>
                 </tr>
             <? } ?>
-            <? if ($medico == "0") { ?>
-                <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MEDICO: TODOS</th>
-                </tr>
-            <? } else { ?>
-                <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MEDICO: <?= utf8_decode($medico[0]->operador); ?></th>
-                </tr>
-            <? } ?>
             <? if ($conveniotipo == "0") { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODOS OS CONVENIOS</th>

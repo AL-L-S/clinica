@@ -23,9 +23,9 @@ class modelodeclaracao_model extends Model {
         $this->db->from('tb_ambulatorio_modelo_declaracao amd');
         $this->db->join('tb_operador o', 'o.operador_id = amd.medico_id', 'left');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('amd.nome ilike', "%" . $args['nome'] . "%");
-            $this->db->orwhere('o.nome ilike', "%" . $args['nome'] . "%");
+            $this->db->where("(amd.nome ilike '%'".  $args['nome'] . "'%' OR o.nome ilike '%'".  $args['nome'] . "'%')");
         }
+        $this->db->where("amd.ativo", 't');
         return $this->db;
     }
 
@@ -37,6 +37,7 @@ class modelodeclaracao_model extends Model {
                             texto');
         $this->db->from('tb_ambulatorio_modelo_declaracao amd');
         $this->db->join('tb_operador o', 'o.operador_id = amd.medico_id', 'left');
+        $this->db->where("amd.ativo", 't');
         $this->db->orderby('nome');
         $return = $this->db->get();
 
@@ -50,6 +51,22 @@ class modelodeclaracao_model extends Model {
         $return = $this->db->get();
 
         return $return->result();
+    }
+
+    function excluirmodelodeclaracao($ambulatorio_modelo_laudo_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('ambulatorio_modelo_declaracao_id', $ambulatorio_modelo_laudo_id);
+        $this->db->update('tb_ambulatorio_modelo_declaracao');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
     }
 
     function excluir($ambulatorio_modelo_laudo_id) {

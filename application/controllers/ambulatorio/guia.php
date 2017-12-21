@@ -2950,7 +2950,7 @@ class Guia extends BaseController {
 //        var_dump($html); 
 //        die;
         // AQUI A PAGINA DA VIEW É REALMENTE CARREGADA
-        if ($data['empresa'][0]->ficha_config == 't') {
+        if ($data['empresa'][0]->declaracao_config == 't') {
             $this->load->View('ambulatorio/impressaodeclaracaoconfiguravel', $data);
         } else {
             $this->load->View('ambulatorio/impressaodeclaracaopequena', $data);
@@ -2983,7 +2983,7 @@ class Guia extends BaseController {
 //        $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr></table>";
 //        $rodape = "";
 
-        if ($data['empresa'][0]->ficha_config == 't') {
+        if ($data['empresa'][0]->declaracao_config == 't') {
             $html = $this->load->view('ambulatorio/impressaodeclaracaoguiaconfiguravel', $data, true);
         } else {
             $html = $this->load->view('ambulatorio/impressaodeclaracaoguia', $data, true);

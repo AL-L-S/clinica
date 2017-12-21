@@ -57,7 +57,9 @@
                         <tr>
                             <td style="text-align: left">
                                 Valor Do Recibo
-
+                            </td>
+                            <td style="text-align: left">
+                                Numero Nota Fiscal
                             </td>
 
                         </tr>
@@ -65,7 +67,11 @@
                         <tr>
 
                             <td>
-                                <input type="integer" style="width: 150px;" name="txtvalorguia" id="txtvalorguia" value="<?= number_format($guia_id[0]->valor_guia, 2, ",", ".") ?>" alt="decimal"/>
+                                <input type="hidden" />
+                                <input type="integer" style="width: 150px;" name="txtvalorguia" id="txtvalorguiainput" value="<?= number_format($exame[0]->total, 2, ",", ".") ?>" alt="decimal"/>
+                            </td>
+                            <td>
+                                <input type="text" style="width: 150px;" name="numero_nota_fiscal" id="numero_nota_fiscal"/>
                             </td>
                         </tr>
 

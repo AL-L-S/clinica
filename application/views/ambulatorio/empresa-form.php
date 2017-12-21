@@ -313,10 +313,22 @@
                             <input type="checkbox" id="recibo_config" name="recibo_config" <? if (@$obj->_recibo_config == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Impressao .">Ficha/Declaração/Atestado Configurável.</label>
+                            <label title="Impressao .">Ficha Configurável</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="ficha_config" name="ficha_config" <? if (@$obj->_ficha_config == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Impressao .">Declaração Configurável</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="declaracao_config" name="declaracao_config" <? if (@$obj->_declaracao_config == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Impressao .">Atestado Configurável</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="atestado_config" name="atestado_config" <? if (@$obj->_atestado_config == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
                             <label title="Ao fechar a produção médica, os valores ja irão cair como saida no Financeiro.">Produção Médica ir direto para Saida</label>

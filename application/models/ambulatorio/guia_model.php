@@ -2262,9 +2262,6 @@ class guia_model extends Model {
             $this->db->where("p.convenio_id", $_POST['plano']);
         }
 
-//        $this->db->where("ae.cancelada", 'f');
-//        var_dump(date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))), 
-//                 date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));die;
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('p.nascimento desc');
@@ -2384,6 +2381,7 @@ class guia_model extends Model {
                             data_criacao,
                             g.valor_guia,
                             g.checado,
+                            g.numero_nota_fiscal,
                             sum(ae.valor_total) as total,
                             p.nome as paciente,
                             p.paciente_id,
@@ -3849,6 +3847,7 @@ class guia_model extends Model {
                             ae.valor_total,
                             pc.procedimento_tuss_id,
                             al.medico_parecer1,
+                            pt.grupo,
                             pt.perc_medico,
                             (
                                 SELECT dia_recebimento 
@@ -6986,8 +6985,8 @@ class guia_model extends Model {
     function gravarvalorguia($guia_id) {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-//        $this->db->set('observacoes', $_POST['observacoes']);
         $this->db->set('nota_fiscal', $_POST['nota_fiscal']);
+        $this->db->set('numero_nota_fiscal', $_POST['numero_nota_fiscal']);
         if ($_POST['txtvalorguia'] != '') {
 
             $this->db->set('valor_guia', str_replace(",", ".", str_replace(",", ".", str_replace(".", "", $_POST['txtvalorguia']))));
@@ -9836,6 +9835,8 @@ ORDER BY ae.agenda_exames_id)";
                             laudo_config,
                             recibo_config,
                             ficha_config,
+                            declaracao_config,
+                            atestado_config,
                             celular,
                             bairro,
                             impressao_tipo');
