@@ -6220,6 +6220,29 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarexamealterarvalor($exames_id) {
+
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.inicio,
+                            ae.fim,
+                            pc.convenio_id,
+                            pc.procedimento_convenio_id,
+                            ae.data_entregue,
+                            (ae.valor * ae.quantidade) as valor,
+                            ae.valor_total,
+                            ae.ativo,
+                            ae.situacao
+                           ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->where("ae.agenda_exames_id", $exames_id);
+        $this->db->where("ae.cancelada", "f");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarexame($exames_id) {
 
         $this->db->select('ae.agenda_exames_id,
@@ -6293,7 +6316,7 @@ class guia_model extends Model {
                             c.convenio_id,
                             c.nome as convenio,
                             ag.data_cadastro as data_guia,
-                            ag.guiaconvenio,
+                            ae.guiaconvenio,
                             ag.ambulatorio_guia_id,
                             p.nascimento,
                             p.celular,
@@ -7343,7 +7366,7 @@ class guia_model extends Model {
             if ($_POST['autorizacao'] != '') {
                 $this->db->set('autorizacao', $_POST['autorizacao']);
             }
-
+            $this->db->set('guiaconvenio', $_POST['guiaconvenio']);
             $this->db->set('agenda_exames_nome_id', $_POST['sala']);
             $this->db->set('medico_agenda', $_POST['medico']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);

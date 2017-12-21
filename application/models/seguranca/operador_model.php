@@ -80,7 +80,7 @@ class Operador_model extends BaseModel {
         }
         return $this->db;
     }
-    
+
     function listargrupo() {
         $this->db->distinct();
         $this->db->select('ambulatorio_grupo_id, 
@@ -130,8 +130,8 @@ class Operador_model extends BaseModel {
     function gravaroperadorconvenioprocedimento() {
         try {
             /* inicia o mapeamento no banco */
-            
-            if ( $_POST['procedimento'] == '' ){
+
+            if ($_POST['procedimento'] == '') {
                 $this->db->select('pc.procedimento_convenio_id,');
                 $this->db->from('tb_procedimento_convenio pc');
                 $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
@@ -140,10 +140,10 @@ class Operador_model extends BaseModel {
                 $this->db->where("ag.tipo !=", 'CIRURGICO');
                 $this->db->where("pc.ativo", 't');
                 $this->db->where('pc.convenio_id', $_POST['txtconvenio_id']);
-                if($_POST['grupo'] != ''){
+                if ($_POST['grupo'] != '') {
                     $this->db->where('pt.grupo', $_POST['grupo']);
                 }
-                
+
                 $empresa_id = $this->session->userdata('empresa_id');
                 $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
                 if ($procedimento_multiempresa == 't') {
@@ -151,7 +151,7 @@ class Operador_model extends BaseModel {
                 }
                 $return = $this->db->get();
                 $return = $return->result();
-                
+
                 foreach ($return as $value) {
                     $this->db->set('operador', $_POST['txtoperador_id']);
                     $this->db->set('convenio_id', $_POST['txtconvenio_id']);
@@ -165,12 +165,12 @@ class Operador_model extends BaseModel {
                     if (trim($erro) != "") // erro de banco
                         return -1;
                     else
-                        $estoque_menu_produtos_id = $this->db->insert_id();   
+                        $estoque_menu_produtos_id = $this->db->insert_id();
                 }
             }
-            
-            else{
-                
+
+            else {
+
                 $this->db->set('operador', $_POST['txtoperador_id']);
                 $this->db->set('convenio_id', $_POST['txtconvenio_id']);
                 $this->db->set('procedimento_convenio_id', $_POST['procedimento']);
@@ -184,7 +184,6 @@ class Operador_model extends BaseModel {
                     return -1;
                 else
                     $estoque_menu_produtos_id = $this->db->insert_id();
-
             }
 
             return $estoque_menu_produtos_id;
@@ -276,7 +275,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimentoconveniooperador($operador_id, $convenio_id) {
         $this->db->select('cop.convenio_operador_procedimento_id,
                             pt.nome as procedimento,
@@ -307,7 +306,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listaroperadores() {
         $this->db->select('o.operador_id,
                                o.usuario,
@@ -342,6 +341,7 @@ class Operador_model extends BaseModel {
         $this->db->from('tb_operador o');
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id', 'left');
         $this->db->where('p.perfil_id', 1);
+        $this->db->where('o.ativo', 'true');
         $return = $this->db->get();
         return $return->result();
     }
@@ -418,6 +418,7 @@ class Operador_model extends BaseModel {
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
         $this->db->where('consulta', 'false');
         $this->db->where('medico', 'false');
+        $this->db->where('o.ativo', 'true');
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
@@ -448,7 +449,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function medicoreceituario($operador_id) {
         $this->db->select('o.nome,
                             o.operador_id,
@@ -659,13 +660,13 @@ class Operador_model extends BaseModel {
                 $this->db->set('consulta', 'f');
                 $this->db->set('medico', 'f');
             }
-            
-            if ( isset($_POST['txtsolicitante']) ) {
+
+            if (isset($_POST['txtsolicitante'])) {
                 $this->db->set('solicitante', 't');
-            } else{
+            } else {
                 $this->db->set('solicitante', 'f');
             }
-            
+
             if ($_POST['txtcboID'] != "") {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
             }
@@ -718,6 +719,7 @@ class Operador_model extends BaseModel {
                 return $operador_id;
             } else { // update
                 $operador_id = $_POST['operador_id'];
+//                var_dump($horario); die;
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('operador_id', $operador_id);
@@ -742,7 +744,7 @@ class Operador_model extends BaseModel {
     function gravarrecepcao() {
         try {
             if ($_POST['criarcredor'] == "on") {
-                
+
                 $this->db->set('razao_social', $_POST['nome']);
                 $this->db->set('cep', $_POST['cep']);
                 if ($_POST['cpf'] != '') {
@@ -768,7 +770,6 @@ class Operador_model extends BaseModel {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $financeiro_credor_devedor_id = $this->db->insert_id();
-                
             }
 
             /* inicia o mapeamento no banco */
@@ -898,9 +899,12 @@ class Operador_model extends BaseModel {
     }
 
     function excluirOperador($operador_id) {
-
+        $horario = date("Y-m-d H:i:s");
+        $operador_exclusao_id = $this->session->userdata('operador_id');
 
         $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_exclusao_id);
         $this->db->where('operador_id', $operador_id);
         $this->db->update('tb_operador');
     }

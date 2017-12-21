@@ -33,7 +33,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Senha</label>
+                    <label>Senha do Operador</label>
                     </dt>
                     <dd>
                         <input type="password" name="senha" id="senha" class="texto04"/>

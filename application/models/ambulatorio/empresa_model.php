@@ -922,7 +922,7 @@ class empresa_model extends Model {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa');
-
+                $empresa_id = $this->db->insert_id();
                 if (isset($_POST['procedimento_excecao'])) {
                     $this->db->set('procedimento_excecao', 't');
                 } else {
@@ -1013,6 +1013,7 @@ class empresa_model extends Model {
                     $this->db->set('promotor_medico', 'f');
                 }
 
+                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_permissoes');

@@ -1166,9 +1166,11 @@ class Guia extends BaseController {
     }
 
     function valorexame($paciente_id, $guia_id, $ambulatorio_guia_id) {
+        $agenda_exames_id = $ambulatorio_guia_id;
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
         $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
+        $data['exame'] = $this->guia->listarexamealterarvalor($agenda_exames_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $data['guia_id'] = $guia_id;
