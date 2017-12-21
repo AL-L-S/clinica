@@ -23,7 +23,7 @@
                     <tr>
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">Medico</th>
-                        <th class="tabela_header">Detalhes</th>
+                        <th class="tabela_header" colspan="5"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
@@ -48,7 +48,13 @@
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
 
                                     <a href="<?= base_url() ?>ambulatorio/modelodeclaracao/carregarmodelodeclaracao/<?= $item->ambulatorio_modelo_declaracao_id ?>">
-                                        editar
+                                        Editar
+                                    </a>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;">
+
+                                    <a href="<?= base_url() ?>ambulatorio/modelodeclaracao/excluirmodelodeclaracao/<?= $item->ambulatorio_modelo_declaracao_id ?>">
+                                        Excluir
                                     </a>
                                 </td>
                             </tr>
@@ -60,7 +66,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="6">
+                        <th class="tabela_footer" colspan="10">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

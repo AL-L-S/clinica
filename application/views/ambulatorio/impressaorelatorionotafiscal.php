@@ -48,6 +48,7 @@
                     <td class="tabela_teste">CPF</td>
                     <td class="tabela_teste">RG</td>
                     <td class="tabela_teste">Telefone</td>
+                    <td class="tabela_teste">Numero da Nota</td>
                     <td class="tabela_teste">Valor da Nota</td>
                     <td class="tabela_teste">Valor da Guia</td>
                     <td class="tabela_teste">Data da Guia</td>
@@ -102,6 +103,7 @@
                             ?>
                         </td>
                         <td><?= utf8_decode($item->telefone); ?></td>
+                        <td><?= $item->numero_nota_fiscal; ?></td>
                         <? $cor = ((float)$item->valor_guia < (float)$item->total)?'green':'blue';?>
                         <td style="text-align: right">
                             <a style="cursor: pointer; color: <?=$cor; ?>" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/procedimentoguianotaform/$item->ambulatorio_guia_id/$item->total/$item->valor_guia"; ?> ', '_blank', 'width=400,height=300');">

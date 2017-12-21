@@ -145,10 +145,10 @@ switch ($MES) {
                         $procedimentopercentual = $item->procedimento_convenio_id;
 //            $medicopercentual = $item->medico_parecer1;
                         $medicopercentual = $item->operador_id;
-                        if ($item->classificacao == 1) {
+                        if ($item->grupo != "RETORNO") {
                             $totalconsulta++;
                         }
-                        if ($item->classificacao == 2) {
+                        else {
                             $totalretorno++;
                         }
 //                        $valor_total_formas = $item->valor1 + $item->valor2 + $item->valor3 + $item->valor4;

@@ -42,6 +42,17 @@ class Modelodeclaracao extends BaseController {
         $this->load->View('ambulatorio/modelodeclaracao-form', $data);
     }
 
+    function excluirmodelodeclaracao($exame_modelolaudo_id) {
+        if ($this->modelodeclaracao->excluirmodelodeclaracao($exame_modelolaudo_id)) {
+            $mensagem = 'Sucesso ao excluir a Modelo Declaração';
+        } else {
+            $mensagem = 'Erro ao excluir a Modelo Declaração. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/modelodeclaracao");
+    }
+
     function excluir($exame_modelolaudo_id) {
         if ($this->procedimento->excluir($exame_modelolaudo_id)) {
             $mensagem = 'Sucesso ao excluir a Modelolaudo';

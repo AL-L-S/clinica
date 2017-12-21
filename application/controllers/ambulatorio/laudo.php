@@ -2015,6 +2015,7 @@ class Laudo extends BaseController {
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
+        
         if ($data['empresa'][0]->ficha_config == 't') {
             if ($arquivo_existe) {
                 $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';
@@ -2028,7 +2029,7 @@ class Laudo extends BaseController {
                 $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='{$src}'></td></tr></table>";
             }
             $rodape_config = str_replace("_assinatura_", $carimbo, $rodape_config);
-            if ($data['empresa'][0]->rodape_config == 't') {
+            if ($data['empresa'][0]->atestado_config == 't') {
                 $rodape = $texto_rodape . $rodape_config;
             } else {
                 $rodape = "<table><tr><td>$texto_rodape</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td  >$carimbo</td></tr></table><table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'></td></tr></table>";

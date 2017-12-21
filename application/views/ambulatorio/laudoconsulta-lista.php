@@ -87,7 +87,7 @@
                         <th class="tabela_header" width="300px;">Procedimento</th>
 <!--                            <th class="tabela_header">M&eacute;dico Revisor</th>
                         <th class="tabela_header">Status Revisor</th>-->
-                        <th class="tabela_header" colspan="3" width="140px;"><center>A&ccedil;&otilde;es</center></th>
+                        <th class="tabela_header" colspan="5" width="140px;"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
