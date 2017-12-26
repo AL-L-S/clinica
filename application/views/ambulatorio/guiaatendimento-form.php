@@ -223,113 +223,6 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                 <?
                 if ($contador > 0) {
 
-                    foreach ($grupo_pagamento as $grupo) { //buscar exames com forma de pagamento pre-definida (inicio)
-                        $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id, $grupo->financeiro_grupo_id);
-
-//                        var_dump($exame);
-//                            die;
-                        if ($exame != 0) {
-                            ?>
-                            <table id="table_agente_toxico" border="0">
-                                <thead>
-                                    <tr>
-                                        <th class="tabela_header">Data</th>
-                                        <th class="tabela_header">Hora</th>
-                                        <th class="tabela_header">Sala</th>
-                                        <th class="tabela_header">Valor</th>
-                                        <th class="tabela_header">Exame</th>
-                                        <th class="tabela_header" colspan="2">Descricao</th>
-                                        <th colspan="4" class="tabela_header">&nbsp;</th>
-                                    </tr>
-                                </thead>
-
-                                <?
-                                $total = 0;
-                                $guia = 0;
-                                $faturado = 0;
-                                foreach ($exame as $item) {
-                                    ?>
-                                    <?
-                                    $estilo_linha = "tabela_content01";
-                                    ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                                    $total = $total + $item->valor_total;
-                                    $guia = $item->guia_id;
-                                    ?>
-                                    <tbody>
-                                        <tr>
-                                            <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
-                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
-                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
-                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
-                                            <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
-                                            <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
-
-                                                    </a></div>
-                                                <!--                                            </td>
-                                                                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
-                                                <div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
-                                                    </a></div>
-                                            </td>
-                                            <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
-                                                    </a></div>
-                                                <!--</td>-->
-                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-                    <? if ($perfil_id != 11) { ?>
-                                                                <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
-                                                        <div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
-
-                                                            </a></div>
-                                                        <!--</td>-->
-                                                    <? } ?>
-                <? } ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <?
-                                }
-                                ?>
-                                <tfoot>
-                                    <tr>
-                                        <th class="tabela_footer" colspan="6">
-                                            Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
-                                        </th>
-                                        <? if ($perfil_id != 11) { ?>
-
-                                            <? if ($perfil_id == 1 || $faturado == 0) {
-                                                if ($botao_faturar_guia == 't') {
-                                                    ?>
-                                                    <th colspan="2" align="center"><center><div class="bt_linkf">
-                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
-
-                                                    </a></div></center></th>
-                    <? }
-                    if ($botao_faturar_proc == 't') {
-                        ?>
-                                            <th colspan="2" align="center">    
-                                                <div class="bt_linkf">
-                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
-
-                                                    </a></div></center>
-                                            </th>
-                                            <?
-                                        }
-                                    }
-                                }
-                                ?>
-                                </tr>
-                                </tfoot>
-                            </table> 
-                            <br/>
-                            <?
-                        }
-                    }//buscar exames com forma de pagamento pre-definida (fim)
-
-                    if ($x > 0) {
                         ?>
                         <table id="table_agente_toxico" border="0">
                             <thead>
@@ -348,65 +241,56 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                             $total = 0;
                             $guia = 0;
                             $faturado = 0;
-                            foreach ($exames as $value) {
+                            foreach ($exames_lista as $item) {
 
-                                $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
-                                if (empty($teste)) {
-//                                    die;
-                                    $exames_sem_formapagamento = $this->exametemp->listarprocedimentosemformapagamentogeral($ambulatorio_guia_id, $value->procedimento_tuss_id);
-                                    foreach ($exames_sem_formapagamento as $item) {
+                                $estilo_linha = "tabela_content01";
+                                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                                $total = $total + $item->valor_total;
+                                $guia = $item->guia_id;
+                                ?>
+                                <tbody>
+                                    <tr>
+                                        <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
+                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
+                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
+                                        <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarpreparoconvenio/" . $item->convenio_id; ?> ', '_blank', 'width=900,height=400');"><?= $item->convenio; ?></a></td>
+                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                        <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
 
-                                        $estilo_linha = "tabela_content01";
-                                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                                        $total = $total + $item->valor_total;
-                                        $guia = $item->guia_id;
-                                        ?>
-                                        <tbody>
-                                            <tr>
-                                                <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
-                                                <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                                <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
-                                                <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
-                                                <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarpreparoconvenio/" . $item->convenio_id; ?> ', '_blank', 'width=900,height=400');"><?= $item->convenio; ?></a></td>
-                                                <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
-                                                <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
-                                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
+                                                </a></div>
+                                            <!--                                                </td>
+                                                                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                            <div class="bt_link">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
+                                                </a></div>
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                            <div class="bt_link_new">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
+                                                </a></div>
+                                            <!--</td>-->
+            <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+                                                    <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
-                                                        </a></div>
-                                                    <!--                                                </td>
-                                                                                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
-                                                    <div class="bt_link">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
-                                                        </a></div>
-                                                </td>
-                                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                                    <div class="bt_link_new">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
-                                                        </a></div>
-                                                    <!--</td>-->
-                    <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-                                                            <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
-                                                        <div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+                                                    </a></div>
+                                                <?
+                                            } else {
+                                                $faturado++;
+                                            }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <?
+                            }
+                            ?>
 
-                                                            </a></div>
-                                                        <?
-                                                    } else {
-                                                        $faturado++;
-                                                    }
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <?
-                                    }
-                                    ?>
-
-                <?
-            }
-        }
-        ?>
+                
                             <tfoot>
                                 <tr>
                                     <th class="tabela_footer" colspan="6">
@@ -442,12 +326,12 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                         </table> 
                         <br/>
                     <?
-                }
+
             }
             ?>
 
             </fieldset>
-<? if (count(@$exames_pacote) > 0) { ?>
+            <? if (count(@$exames_pacote) > 0) { ?>
                 <fieldset>
                     <table id="table_agente_toxico" border="0">
                         <thead>
@@ -544,7 +428,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                         </tfoot>
                     </table> 
                 </fieldset>
-<? } ?>
+            <? } ?>
 
         </div> 
     </div> 
@@ -590,8 +474,10 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 });
 
                                 if ($("#exame").val()) {
-
+                                    
+//                                    alert(select, $('#grupo1').val());
                                     var convenio = <?= (@$exames[count(@$exames) - 1]->convenio_id != "") ? @$exames[count(@$exames) - 1]->convenio_id : 0; ?>;
+                                    
                                     $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $("#exame").val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
@@ -600,17 +486,17 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         }
                                         $('#convenio1').html(options).show();
                                         $('.carregando').hide();
-
-                                        if ($('#grupo1').val() && select != "") {
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $('#grupo1').val(), convenio1: convenio, teste: $('#exame').val()}, function (j) {
-                                                options = '<option value=""></option>';
+                                        
+                                        if ($('#grupo1').val() && convenio != '') {
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $('#grupo1').val(), convenio1: convenio, teste: $('#exame').val()}, function (p) {
+                                                opt = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
-                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                    opt += '<option value="' + p[c].procedimento_convenio_id + '">' + p[c].procedimento + ' - ' + p[c].codigo + '</option>';
                                                 }
-                                                $('#procedimento1 option').remove();
-                                                $('#procedimento1').append(options);
-                                                $("#procedimento1").trigger("chosen:updated");
-//                                                $('#procedimento1').html(options).show();
+//                                                $('#procedimento1 option').remove();
+//                                                $('#procedimento1').append(options);
+//                                                $("#procedimento1").trigger("chosen:updated");
+                                                $('#procedimento1').html(opt).show();
                                                 $('.carregando').hide();
                                             });
                                         }

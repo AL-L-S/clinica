@@ -482,6 +482,18 @@
                         <dd>
                             <input type="checkbox" id="valor_autorizar" name="valor_autorizar" <? if (@$obj->_valor_autorizar == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa flag, os botões para imprimir a ficha não serão mostrados.">Retirar botões de Ficha</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="retirar_botao_ficha" name="retirar_botao_ficha" <? if (@$obj->_retirar_botao_ficha == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, as opçoes de impressao, tais como assinatura e carimbo, deixaram de aparecer na tela do médico.">Desativar personalização da impressao dos medicos</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="desativar_personalizacao_impressao" name="desativar_personalizacao_impressao" <? if (@$obj->_desativar_personalizacao_impressao == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

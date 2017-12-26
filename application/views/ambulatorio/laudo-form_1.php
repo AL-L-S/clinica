@@ -87,7 +87,7 @@ if (count($pacs) > 0) {
 
                         <td>
                             <div class="bt_link_new">
-                                <a href="<?= base_url() ?>ambulatorio/laudo/pendenteexamemultifuncao/<?= $exame_id ?>" >
+                                <a onclick="javascript: return confirm('Deseja realmente deixar o atendimento pendente?');" href="<?= base_url() ?>ambulatorio/laudo/pendenteexamemultifuncao/<?= $exame_id ?>" >
                                     Pendente
                                 </a>
                             </div>
@@ -287,30 +287,31 @@ if (count($pacs) > 0) {
                                                 ?>><?= $valor->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
-                                        <?php
-                                        if (@$obj->_assinatura == "t") {
-                                            ?>
-                                            <input type="checkbox" name="assinatura" checked ="true" /><label>Assinatura</label>
+                                        <? if($empresapermissao[0]->desativar_personalizacao_impressao != 't') { ?>
                                             <?php
-                                        } else {
+                                            if (@$obj->_assinatura == "t") {
+                                                ?>
+                                                <input type="checkbox" name="assinatura" checked ="true" /><label>Assinatura</label>
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <input type="checkbox" name="assinatura"  /><label>Assinatura</label>
+                                                <?php
+                                            }
                                             ?>
-                                            <input type="checkbox" name="assinatura"  /><label>Assinatura</label>
-                                            <?php
-                                        }
-                                        ?>
 
-                                        <?php
-                                        if (@$obj->_indicado == "t") {
-                                            ?>
-                                            <input type="checkbox" name="indicado" checked ="true" /><label>Indicado</label>
                                             <?php
-                                        } else {
+                                            if (@$obj->_indicado == "t") {
+                                                ?>
+                                                <input type="checkbox" name="indicado" checked ="true" /><label>Indicado</label>
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <input type="checkbox" name="indicado"  /><label>Indicado</label>
+                                                <?php
+                                            }
                                             ?>
-                                            <input type="checkbox" name="indicado"  /><label>Indicado</label>
-                                            <?php
-                                        }
-                                        ?>
-
+                                        <? } ?>
 
                                         <label>situa&ccedil;&atilde;o</label>
                                         <select name="situacao" id="situacao" class="size2" onChange="muda(this)">

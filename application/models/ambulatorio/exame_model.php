@@ -7855,6 +7855,37 @@ class exame_model extends Model {
         }
     }
 
+    function pendenteodontologia($exames_id) {
+        try {
+            $this->db->select('e.sala_id');
+            $this->db->from('tb_exames e');
+            $this->db->where("exames_id", $exames_id);
+            $query = $this->db->get();
+            $return = $query->result();
+
+            if (@$return[0]->sala_id != '') {
+                $this->db->set('ativo', 't');
+                $this->db->where('exame_sala_id', $return[0]->sala_id);
+                $this->db->update('tb_exame_sala');
+            }
+
+            $this->db->set('situacao', 'PENDENTE');
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('data_pendente', $horario);
+            $this->db->set('operador_pendente', $operador_id);
+            $this->db->where('exames_id', $exames_id);
+            $this->db->update('tb_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function pendenteespecialidade($exames_id) {
         try {
             $this->db->select('e.sala_id');

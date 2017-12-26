@@ -237,7 +237,7 @@
                                     Chamar
                                 </a></div>
                         </td>-->
-                        <? if ($item->confirmado == 't' && $item->situacaoexame != 'PENDENTE') { ?>
+                        <? if ($item->confirmado == 't' && $item->situacaoexame != 'PENDENTE' && $verifica != 3) { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="70px;">
                             </td>
                             <? if (($item->medico_parecer1 == $operador_id && $item->situacao == 'FINALIZADO') || $item->situacao != 'FINALIZADO' && $item->realizada == 't' || $operador_id == 1) { ?>

@@ -191,19 +191,21 @@
 
 
 
-                                        <td class="<?php echo $estilo_linha; ?>" >
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
-                                            </a>
-
-                                            <?
-                                            $teste = $this->guia->listarfichatexto($item->agenda_exames_id);
-                                            if (isset($teste[0]->agenda_exames_id)) {
-                                                ?>
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>/<?= $item->agenda_exames_id ?>');"> //  Editar F. RM
+                                        <? if ($empresapermissoes[0]->retirar_botao_ficha == 'f') { ?>
+                                            <td class="<?php echo $estilo_linha; ?>" >
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                                 </a>
-                                            <? } ?>
 
-                                        </td>
+                                                <?
+                                                $teste = $this->guia->listarfichatexto($item->agenda_exames_id);
+                                                if (isset($teste[0]->agenda_exames_id)) {
+                                                    ?>
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>/<?= $item->agenda_exames_id ?>');"> //  Editar F. RM
+                                                    </a>
+                                                <? } ?>
+
+                                            </td>
+                                        <? } ?>
                                         <?
                                         $data_atual = date('Y-m-d');
                                         $data1 = new DateTime($data_atual);
@@ -231,11 +233,12 @@
                                                                                                                                                                                                                                                                                                                                                                                                                         </td>-->
                                         <? if ($item->grupo != 'MEDICAMENTO' && $item->grupo != 'MATERIAL') { ?>
 
-
-                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
-                                                </a>
-                                            </td>
+                                            <? if ($empresapermissoes[0]->retirar_botao_ficha == 'f') { ?>
+                                                <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
+                                                    </a>
+                                                </td>
+                                            <? } ?>
                                             <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                 <a href="<?= base_url() ?>ambulatorio/guia/impressaoetiiqueta/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Etiqueta</a></div>
                                             </td>
