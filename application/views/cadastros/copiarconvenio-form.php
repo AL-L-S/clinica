@@ -7,7 +7,14 @@
                 <dl class="dl_desconto_lista">
 
                     <dt>
-                    <label>Copiar Convenio</label>
+                    <label>Convênio Selecionado</label>
+                    </dt>
+                    <dd>
+                        
+                        <input type="text" name="convenio_selecionado" value="<?= $convenio_selecionado[0]->nome; ?>" readonly="" />
+                    </dd>
+                    <dt>
+                    <label>Copiar Procedimentos De:</label>
                     </dt>
                     <dd>
                         <select name="txtconvenio" id="txtconvenio" class="size4">

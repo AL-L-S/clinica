@@ -119,7 +119,7 @@ class contaspagar_model extends Model {
             $this->db->where('tipo', @$return[0]->descricao);
         }
         if ($_POST['classe'] != '') {
-            $this->db->where('s.classe', $_POST['classe']);
+            $this->db->where('fc.classe', $_POST['classe']);
         }
         if ($_POST['conta'] != 0) {
             $this->db->where('fc.conta', $_POST['conta']);

@@ -433,6 +433,55 @@
                         <dd>
                             <input type="checkbox" id="administrador_cancelar" name="administrador_cancelar" <? if (@$obj->_administrador_cancelar == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa flag, a gerente de recepção consegue lançar despesas no contas a pagar">Gerente de Recepção Contas a Pagar</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="gerente_contasapagar" name="gerente_contasapagar" <? if (@$obj->_gerente_contasapagar == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o cpf fica obrigatório no cadastro">CPF Obrigatório (Paciente)</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="cpf_obrigatorio" name="cpf_obrigatorio" <? if (@$obj->_cpf_obrigatorio == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o preço procedimento aparece para a Recepção">Perfis da recepção Preço Procedimento</label>
+                        </dt>
+                        
+                        <dd>
+                            <input type="checkbox" id="orcamento_recepcao" name="orcamento_recepcao" <? if (@$obj->_orcamento_recepcao == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o relatório de ordem de atendimento aparece">Relatório Ordem de Atendimento</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="relatorio_ordem" name="relatorio_ordem" <? if (@$obj->_relatorio_ordem == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o relatório de produção nas telas de atendimento aparece">Relatório Produção (Nas telas do médico)</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="relatorio_producao" name="relatorio_producao" <? if (@$obj->_relatorio_producao == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, os relatórios aparecem para recepção e recepção agendamento">Relatórios para recepção</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="relatorios_recepcao" name="relatorios_recepcao" <? if (@$obj->_relatorios_recepcao == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o financeiro tem acesso ao Fila Caixa e ao cadastro de pacientes">Financeiro Cadastro Paciente (Faturar)</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="financeiro_cadastro" name="financeiro_cadastro" <? if (@$obj->_financeiro_cadastro == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o valor aparece ao autorizar procedimentos aparece">Valor aparece ao autorizar procedimentos</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="valor_autorizar" name="valor_autorizar" <? if (@$obj->_valor_autorizar == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

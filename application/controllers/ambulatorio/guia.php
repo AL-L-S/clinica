@@ -424,11 +424,20 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichageral', $data);
             }
         }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 49) {//CITYCOR COM INFORMACOES DA HUMANA
+            if ($dinheiro == "t") {
+                $this->load->View('ambulatorio/impressaofichageralparticularcitycor', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaofichageralcitycor', $data);
+            }
+        }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 9) { // CLINICA SAO PAULO
             $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
-        } elseif ($data['empresa'][0]->impressao_tipo == '') { //GERAL
+        } else { //GERAL
             if ($dinheiro == "t") {
                 $this->load->View('ambulatorio/impressaofichageralparticular', $data);
             } else {
@@ -1166,9 +1175,11 @@ class Guia extends BaseController {
     }
 
     function valorexame($paciente_id, $guia_id, $ambulatorio_guia_id) {
+        $agenda_exames_id = $ambulatorio_guia_id;
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
         $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
+        $data['exame'] = $this->guia->listarexamealterarvalor($agenda_exames_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $data['guia_id'] = $guia_id;

@@ -248,7 +248,7 @@
                                                 </a>
                                             </td>
 
-                                            <? if ($perfil_id == 1) { ?>
+                                            <? if ($perfil_id == 1 || $perfil_id == 6) { ?>
                                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                     <a href="<?= base_url() ?>ambulatorio/guia/valorexame/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">valor
                                                     </a>
@@ -264,7 +264,7 @@
                                             </td>
 
 
-                                            <? if (($item->faturado == "f" || $perfil_id == 1) && ($item->dinheiro == "t")) { ?>
+                                            <? if (($item->faturado == "f" || $perfil_id == 1 || $perfil_id == 13) && ($item->dinheiro == "t")) { ?>
                                                 <? if ($perfil_id != 12) { ?>
                                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');">Faturar

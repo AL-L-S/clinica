@@ -59,25 +59,43 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN selecionar_retorno boolean DE
 -- 11/12/2017
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN administrador_cancelar boolean DEFAULT true;
 
-CREATE OR REPLACE FUNCTION insereValor()
-RETURNS text AS $$
-DECLARE
-    resultado integer;
-BEGIN
-    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000013');
-    IF resultado = 0 THEN 
-	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
-        VALUES ('1.0.000013', '1.0.000013');
-    END IF;
-    RETURN 'SUCESSO';
-END;
-$$ LANGUAGE plpgsql;
-
-SELECT insereValor();
-
 -- 18/12/2017
 ALTER TABLE ponto.tb_ambulatorio_guia ADD COLUMN numero_nota_fiscal character varying(50);
 
 -- Dia 19/12/2017
 ALTER TABLE ponto.tb_empresa ADD COLUMN declaracao_config boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa ADD COLUMN atestado_config boolean DEFAULT true;
+
+--20/12/2017
+ALTER TABLE ponto.tb_sangria ADD COLUMN empresa_id integer;
+
+UPDATE ponto.tb_sangria e 
+   SET  empresa_id=empresa.empresa_id
+   FROM (SELECT empresa_id
+  FROM ponto.tb_empresa
+  ORDER BY empresa_id ASC
+  LIMIT 1
+) as empresa
+WHERE e.empresa_id is null;
+
+
+UPDATE ponto.tb_perfil
+   SET  nome= 'GERENTE RECEP. GERAL'
+ WHERE perfil_id = 6;
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000012');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000012', '1.0.000012');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();

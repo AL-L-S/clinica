@@ -13,10 +13,13 @@
     <div >
         <?
         $perfil_id = $this->session->userdata('perfil_id');
-        
+
         $botao_faturar_guia = $this->session->userdata('botao_faturar_guia');
         $botao_faturar_proc = $this->session->userdata('botao_faturar_proc');
-        
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
+
         $sala = "";
         $ordenador1 = "";
         $sala_id = "";
@@ -96,7 +99,7 @@
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
                                 <th class="tabela_header">Guia Convênio</th>
-                                <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Recomendação</th>
                                 <th class="tabela_header">Entrega</th>
@@ -167,19 +170,21 @@
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
                                 <td  width="50px;"><input type="text" name="guiaconvenio" id="guiaconvenio" class="size1"/></td>
-                                <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
                                 <td  width="50px;">
                                     <select  name="formapamento" id="formapamento" class="size1" >
                                         <option value="0">Selecione</option>
-                                        <? foreach ($forma_pagamento as $item) : 
-                                            if($item->forma_pagamento_id == 1000) continue; ?>
+                                        <? foreach ($forma_pagamento as $item) :
+                                            if ($item->forma_pagamento_id == 1000)
+                                                continue;
+                                            ?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                        <? endforeach; ?>
+<? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="50px;">
-                                    <? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
-                                    <select name="indicacao" id="indicacao" class="size1" <?= $recomendacao_obrigatorio == 't' ? 'required' : ''?>>
+                                        <? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); ?>
+                                    <select name="indicacao" id="indicacao" class="size1" <?= $recomendacao_obrigatorio == 't' ? 'required' : '' ?>>
                                         <option value='' >Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
@@ -193,7 +198,7 @@
                                 </td>
 
                                 <td  width="70px;"><input type="text" id="data" name="data" class="size1"/></td>
-                                <? // var_dump($ordenador1); die; ?>
+<? // var_dump($ordenador1); die;  ?>
                                 <td  width="70px;">
                                     <select name="ordenador" id="ordenador" class="size1" >
                                         <option value='1' >Normal</option>
@@ -265,8 +270,8 @@
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
 
                                                     </a></div>
-<!--                                            </td>
-                                            <td class="<?php echo $estilo_linha; ?>">-->
+                                                <!--                                            </td>
+                                                                                            <td class="<?php echo $estilo_linha; ?>">-->
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                                     </a></div>
@@ -274,20 +279,20 @@
                                             <td class="<?php echo $estilo_linha; ?>"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                                     </a></div>
-                                            <!--</td>-->
-                                            <?
-                                            if ($item->faturado == "f" && $item->dinheiro == "t") {
-                                                $faturado++;
-                                                if ($perfil_id != 11) {
-                                                    ?>
-                                                    <!--<td class="<?php echo $estilo_linha; ?>">-->
+                                                <!--</td>-->
+                                                <?
+                                                if ($item->faturado == "f" && $item->dinheiro == "t") {
+                                                    $faturado++;
+                                                    if ($perfil_id != 11) {
+                                                        ?>
+                                                                <!--<td class="<?php echo $estilo_linha; ?>">-->
                                                         <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
 
                                                             </a></div>
-                                                <? } ?>
-                                            <? } ?>
-                                                        
+                    <? } ?>
+                <? } ?>
+
                                             </td>
                                         </tr>
                                     </tbody>
@@ -302,15 +307,17 @@
                                         <?
                                         if ($perfil_id != 11) {
                                             if ($perfil_id == 1 || $faturado == 0) {
-                                                if ($botao_faturar_guia == 't') { ?>
-                                                <th colspan="2" align="center">
-                                                    <center><div class="bt_linkf">
-                                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
+                                                if ($botao_faturar_guia == 't') {
+                                                    ?>
+                                                    <th colspan="2" align="center">
+                                            <center><div class="bt_linkf">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar Guia
 
-                                                                    </a></div>
-                                                    </center>
-                                                </th>
-                                                <?}
+                                                    </a></div>
+                                            </center>
+                                            </th>
+                                        <?
+                                        }
                                     }
                                 }
                                 ?>
@@ -372,17 +379,17 @@
                                                     <div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');"><b>Ficha-convenio</b>
                                                         </a></div>
-                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+                                                    <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
                                                         <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');"><b>Faturar</b>
 
                                                             </a></div>
-                                                    <?
-                                                } else { ?>
-                                                    <?
-                                                    $faturado++;
-                                                }
-                                                ?>
+                                                        <? } else {
+                                                        ?>
+                        <?
+                        $faturado++;
+                    }
+                    ?>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -390,47 +397,50 @@
                                     }
                                     ?>
 
-                                    <?
-                                }
-                            }
-                            ?>
+                <?
+            }
+        }
+        ?>
                             <tfoot>
                                 <tr>
                                     <th class="tabela_footer" colspan="6">
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
-                                    <? if ($perfil_id == 1 || $faturado == 0) { 
-                                        if ($botao_faturar_guia == 't') { ?>
-                                            
-                                    <th colspan="" align="center">
-                                            <center>
-                                                <div class="bt_linkf">
+        <? if ($perfil_id == 1 || $faturado == 0) {
+            if ($botao_faturar_guia == 't') {
+                ?>
+
+                                            <th colspan="" align="center">
+                                    <center>
+                                        <div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">
                                                 Faturar Guia
                                             </a></div>
-                                            </center>
-                                            </th>
-                                        <? }
-                                        if ($botao_faturar_proc == 't') { ?>
-                                            <th colspan="2" align="center">
-                                            <center>
-                                                <div class="bt_linkf">
+                                    </center>
+                                    </th>
+            <? }
+            if ($botao_faturar_proc == 't') {
+                ?>
+                                    <th colspan="2" align="center">
+                                    <center>
+                                        <div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 
                                             </a></div>
-                                        </center>
-                                            </th>
-                                        <?}
-                                    } ?>
-                                            
+                                    </center>
+                                    </th>
+                            <? }
+                        }
+                        ?>
+
                             </tr>
                             </tfoot>
                         </table> 
                         <br/>
-                        <?
-                    }
-                }
-                ?>
+        <?
+    }
+}
+?>
 
             </fieldset>
 
@@ -457,12 +467,12 @@
                                 // Fazendo com que ao clicar no botão de submit, este passe a ficar desabilitado
                                 var formID = document.getElementById("form_guia");
                                 var send = $("#submitButton");
-                                $(formID).submit(function(event){
+                                $(formID).submit(function (event) {
                                     if (formID.checkValidity()) {
                                         send.attr('disabled', 'disabled');
                                     }
                                 });
-                                
+
                                 if ($("#convenio1").val() != "-1") {
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $("#convenio1").val()}, function (j) {
                                         options = '<option value=""></option>';
@@ -482,7 +492,7 @@
                                             options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                         }
 //                                        $('#procedimento1').html(options).show();
-                                        
+
                                         $('#procedimento1 option').remove();
                                         $('#procedimento1').append(options);
                                         $("#procedimento1").trigger("chosen:updated");
@@ -519,12 +529,12 @@
                                         }
                                     });
                                 });
-                                
+
                                 $(function () {
                                     $('#convenio1').change(function () {
                                         if ($(this).val()) {
                                             $('.carregando').show();
-                                            if($("#grupo1").val() == ""){
+                                            if ($("#grupo1").val() == "") {
                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val()}, function (j) {
                                                     options = '<option value=""></option>';
                                                     for (var c = 0; c < j.length; c++) {
@@ -537,9 +547,8 @@
                                                     $("#procedimento1").trigger("chosen:updated");
                                                     $('.carregando').hide();
                                                 });
-                                            }
-                                            else{ // Caso esteja selecionado algum grupo, ele ja faz o filtro por grupo
-                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $(this).val()}, function (j) {
+                                            } else { // Caso esteja selecionado algum grupo, ele ja faz o filtro por grupo
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $(this).val()}, function (j) {
                                                     options = '<option value=""></option>';
                                                     for (var c = 0; c < j.length; c++) {
                                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';

@@ -167,7 +167,7 @@
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", "."); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacao; ?></td>
-                                <?if($perfil_id != 10){?>
+                                <?if($perfil_id != 10 && $perfil_id != 5){?>
                                 <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/contaspagar/carregar/<?= $item->financeiro_contaspagar_id ?>">Editar</a></div>
                                 </td>

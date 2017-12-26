@@ -218,6 +218,7 @@ class Laudo extends BaseController {
         $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
         $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
+//        var_dump($data['historicoexame']); die;
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $this->load->helper('directory');

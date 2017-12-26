@@ -136,6 +136,7 @@ class caixa_model extends Model {
     }
 
     function listarsangria($args = array()) {
+        $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('s.valor,
                             s.sangria_id,
                             s.observacao,
@@ -146,6 +147,7 @@ class caixa_model extends Model {
         $this->db->from('tb_sangria s');
         $this->db->join('tb_operador o', 'o.operador_id = s.operador_cadastro', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = s.operador_caixa', 'left');
+        $this->db->where('s.empresa_id', $empresa_id);
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('s.operador_cadastro', $args['nome']);
         }
@@ -162,6 +164,7 @@ class caixa_model extends Model {
     }
 
     function listarsangriacaixa() {
+        $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('s.valor,
                             s.sangria_id,
                             s.observacao,
@@ -173,6 +176,10 @@ class caixa_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = s.operador_cadastro', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = s.operador_caixa', 'left');
         $this->db->where('s.ativo', 't');
+        if($_POST['empresa'] > 0){
+        $this->db->where('s.empresa_id', $_POST['empresa']);    
+        }
+        
         $this->db->where('s.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where('s.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $return = $this->db->get();
@@ -948,7 +955,7 @@ class caixa_model extends Model {
     function gravarsangria() {
         try {
             /* inicia o mapeamento no banco */
-
+            $empresa_id = $this->session->userdata('empresa_id');
 
             $this->db->select(' o.operador_id,
                                 o.perfil_id');
@@ -965,6 +972,7 @@ class caixa_model extends Model {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $_POST['operador']);
                 $this->db->set('operador_caixa', $_POST['caixa']);
+                $this->db->set('empresa_id', $empresa_id);
                 $this->db->insert('tb_sangria');
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") // erro de banco

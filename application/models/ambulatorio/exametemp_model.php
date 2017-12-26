@@ -879,6 +879,8 @@ class exametemp_model extends Model {
                             a.data,
                             a.nome,
                             a.data,
+                            a.valor,
+                            a.quantidade,
                             a.medico_consulta_id,
                             a.agenda_exames_nome_id,
                             es.nome as sala,
@@ -5393,11 +5395,11 @@ class exametemp_model extends Model {
                     }
                     $this->db->set('autorizacao', $autorizacao);
                     $this->db->set('guia_id', $ambulatorio_guia_id);
-                    $this->db->set('quantidade', '1');
+                    $this->db->set('quantidade', $qtde);
                     $this->db->set('agenda_exames_nome_id', $sala);
                     if ($dinheiro == "t") {
                         $this->db->set('valor', $valor);
-                        $this->db->set('valor_total', $valor);
+                        $this->db->set('valor_total', $valor * $qtde);
                         $this->db->set('confirmado', 't');
                     } else {
                         $this->db->set('valor', $valor_convenio);

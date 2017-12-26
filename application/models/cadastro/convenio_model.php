@@ -67,6 +67,32 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarconvenioscopiar($convenio_id) {
+        $this->db->select('convenio_id,
+                            nome,
+                            dinheiro,
+                            conta_id');
+        $this->db->from('tb_convenio');
+        $this->db->where("ativo", 't');
+        $this->db->where("convenio_id !=", $convenio_id);
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarconvenioselecionado($convenio_id) {
+        $this->db->select('convenio_id,
+                            nome,
+                            dinheiro,
+                            conta_id');
+        $this->db->from('tb_convenio');
+//        $this->db->where("ativo", 't');
+        $this->db->where("convenio_id", $convenio_id);
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listardadoscbhpm() {
         $this->db->select('convenio_id,

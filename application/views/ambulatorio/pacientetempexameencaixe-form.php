@@ -1,5 +1,5 @@
 
-	<? $empresa_logada = $this->session->userdata('empresa_id'); ?>
+<? $empresa_logada = $this->session->userdata('empresa_id'); ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacienteexameencaixe" method="post">
@@ -156,108 +156,135 @@
 
 </script>
 <script type="text/javascript">
-    mascaraTelefone(form_exametemp.telefone);
-    mascaraTelefone(form_exametemp.txtCelular);
+    jQuery("#telefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+    jQuery("#txtCelular")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
 
 
-                    $(function () {
-                        $("#data_ficha").datepicker({
-                            autosize: true,
-                            changeYear: true,
-                            changeMonth: true,
-                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                            dateFormat: 'dd/mm/yy'
-                        });
-                    });
+    $(function () {
+        $("#data_ficha").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
 
-                    $(function () {
-                        $('#convenio1').change(function () {
-                            if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                    options = '<option value=""></option>';
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                    }
-                                    $('#procedimento1').html(options).show();
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#procedimento1').html('<option value="">Selecione</option>');
-                            }
-                        });
-                    });
+    $(function () {
+        $('#convenio1').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    }
+                    $('#procedimento1').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#procedimento1').html('<option value="">Selecione</option>');
+            }
+        });
+    });
 
-                    $(function () {
-                        $("#txtNome").autocomplete({
-                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                            minLength: 3,
-                            focus: function (event, ui) {
-                                $("#txtNome").val(ui.item.label);
-                                return false;
-                            },
-                            select: function (event, ui) {
-                                $("#txtNome").val(ui.item.value);
-                                $("#txtNomeid").val(ui.item.id);
-                                $("#telefone").val(ui.item.itens);
-                                $("#txtCelular").val(ui.item.celular);
-                                $("#nascimento").val(ui.item.valor);
-                                return false;
-                            }
-                        });
-                    });
-
-
-                    $(function () {
-                        $("#accordion").accordion();
-                    });
+    $(function () {
+        $("#txtNome").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+            minLength: 3,
+            focus: function (event, ui) {
+                $("#txtNome").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtNome").val(ui.item.value);
+                $("#txtNomeid").val(ui.item.id);
+                $("#telefone").val(ui.item.itens);
+                $("#txtCelular").val(ui.item.celular);
+                $("#nascimento").val(ui.item.valor);
+                return false;
+            }
+        });
+    });
 
 
-                    $(document).ready(function () {
-                        jQuery('#form_exametemp').validate({
-                            rules: {
-                                data_ficha: {
-                                    required: true
-                                },
-                                sala: {
-                                    required: true
-                                },
-                                medico: {
-                                    required: true
-                                },
-                                txtNome: {
-                                    required: true
-                                },
-                                horarios: {
-                                    required: true,
-                                    minlength: 5
-                                }
-                            },
-                            messages: {
-                                data_ficha: {
-                                    required: "*"
-                                },
-                                sala: {
-                                    required: "*"
-                                },
-                                medico: {
-                                    required: "*"
-                                },
-                                txtNome: {
-                                    required: "*"
-                                },
-                                horarios: {
-                                    required: "*",
-                                    minlength: "!"
-                                }
-                            }
-                        });
-                    });
+    $(function () {
+        $("#accordion").accordion();
+    });
 
 
-                    jQuery("#nascimento").mask("99/99/9999");
-                    jQuery("#horarios").mask("99:99");
+    $(document).ready(function () {
+        jQuery('#form_exametemp').validate({
+            rules: {
+                data_ficha: {
+                    required: true
+                },
+                sala: {
+                    required: true
+                },
+                medico: {
+                    required: true
+                },
+                txtNome: {
+                    required: true
+                },
+                horarios: {
+                    required: true,
+                    minlength: 5
+                }
+            },
+            messages: {
+                data_ficha: {
+                    required: "*"
+                },
+                sala: {
+                    required: "*"
+                },
+                medico: {
+                    required: "*"
+                },
+                txtNome: {
+                    required: "*"
+                },
+                horarios: {
+                    required: "*",
+                    minlength: "!"
+                }
+            }
+        });
+    });
+
+
+    jQuery("#nascimento").mask("99/99/9999");
+    jQuery("#horarios").mask("99:99");
 
 </script>
