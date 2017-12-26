@@ -4579,9 +4579,7 @@ class guia_model extends Model {
             $this->db->where("p.nome ilike", "%" . $_POST['txtNome'] . "%");
         }
         
-//        $this->db->orderby("p.nome");
         $this->db->orderby("pac.data_cadastro");
-//        $this->db->orderby("pt.nome");
 
 
         $return = $this->db->get();
