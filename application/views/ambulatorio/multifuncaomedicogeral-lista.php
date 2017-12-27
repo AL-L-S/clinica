@@ -297,8 +297,23 @@
                                     <!--</td>-->
 
 
-
-                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                        <? if($verifica == 3) { ?>
+                                            <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpacientesalaespera/<?= $item->agenda_exames_id ?>');" >Chamar</a>
+                                                </div>
+                                            </td>
+                                            <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
+                                                <div class="bt_link">
+                                                    <a target="_blank" onclick="javascript: return confirm('Deseja realmente enviar o paciente?');" href="<?= base_url() ?>ambulatorio/exame/enviarsalaesperamedico/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>/<?= $item->medico_consulta_id ?>">Enviar</a>
+                                                </div>
+                                            </td>
+                                        <? } else { ?>
+                                            <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="8"><font size="-2">
+                                                <a></a></font>
+                                            </td>                                            
+                                        <? } ?>
+<!--                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                                 <a></a></font>
                                             </td>
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
@@ -309,18 +324,15 @@
                                             </td>
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
                                                 <a></a></font>
-                                            </td>
-                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                                <a></a></font>
-                                            </td>
+                                            </td>-->
 
                                 <? }
                             } ?>
-                            <td class="<?php // echo $estilo_linha;     ?>" width="70px;"><font size="-2">
+<!--                            <td class="<?php // echo $estilo_linha;     ?>" width="70px;"><font size="-2">
                                 <a></a></font>
                             </td>
                             <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
-                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
+                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>-->
                         <? } ?>
                     </tr>
 

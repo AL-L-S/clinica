@@ -1036,6 +1036,186 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/examecancelamento-form', $data);
     }
 
+    function enviarsalaesperamedicolaboratorial($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
+        $total = $this->exame->contadorexamesmedico($agenda_exames_id);
+        if ($total == 0) {
+            $procedimentopercentual = $procedimento_tuss_id;
+            $medicopercentual = $medico_id;
+            $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+            if (count($percentual) == 0) {
+                $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            }
+
+            $laudo_id = $this->exame->enviarsalaesperamedicolaboratorial($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id);
+            if ($laudo_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                // $this->gerarcr($agenda_exames_id); //clinica humana
+                // $this->gerardicom($laudo_id); //clinica ronaldo
+                $empresa_id = $this->session->userdata('empresa_id');
+                $empresa = $this->guia->listarempresa($empresa_id);
+                if ($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA') {
+                    $this->laudo->chamadaconsulta($laudo_id);
+                }
+//                $this->laudo->chamada($laudo_id);
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+        }
+//        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function enviarsalaesperamedicoodontologia($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
+        $total = $this->exame->contadorexamesmedico($agenda_exames_id);
+        if ($total == 0) {
+            $procedimentopercentual = $procedimento_tuss_id;
+            $medicopercentual = $medico_id;
+            $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+            if (count($percentual) == 0) {
+                $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            }
+
+            $laudo_id = $this->exame->enviarsalaesperamedicoodontologia($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id);
+            if ($laudo_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                // $this->gerarcr($agenda_exames_id); //clinica humana
+                // $this->gerardicom($laudo_id); //clinica ronaldo
+                $empresa_id = $this->session->userdata('empresa_id');
+                $empresa = $this->guia->listarempresa($empresa_id);
+                if ($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA') {
+                    $this->laudo->chamadaconsulta($laudo_id);
+                }
+//                $this->laudo->chamada($laudo_id);
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+        }
+//        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function enviarsalaesperamedicoespecialidade($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
+        $total = $this->exame->contadorexamesmedico($agenda_exames_id);
+        if ($total == 0) {
+            $procedimentopercentual = $procedimento_tuss_id;
+            $medicopercentual = $medico_id;
+            $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+            if (count($percentual) == 0) {
+                $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            }
+
+            $laudo_id = $this->exame->enviarsalaesperamedicoespecialidade($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id);
+            if ($laudo_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                // $this->gerarcr($agenda_exames_id); //clinica humana
+                // $this->gerardicom($laudo_id); //clinica ronaldo
+                $empresa_id = $this->session->userdata('empresa_id');
+                $empresa = $this->guia->listarempresa($empresa_id);
+                if ($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA') {
+                    $this->laudo->chamadaconsulta($laudo_id);
+                }
+//                $this->laudo->chamada($laudo_id);
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+        }
+//        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function enviarsalaesperamedicoconsulta($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
+        $total = $this->exame->contadorexamesmedico($agenda_exames_id);
+        if ($total == 0) {
+            $procedimentopercentual = $procedimento_tuss_id;
+            $medicopercentual = $medico_id;
+            $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+            if (count($percentual) == 0) {
+                $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            }
+
+            $laudo_id = $this->exame->enviarsalaesperamedicoconsulta($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id);
+            if ($laudo_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                // $this->gerarcr($agenda_exames_id); //clinica humana
+                // $this->gerardicom($laudo_id); //clinica ronaldo
+                $empresa_id = $this->session->userdata('empresa_id');
+                $empresa = $this->guia->listarempresa($empresa_id);
+                if ($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA') {
+                    $this->laudo->chamadaconsulta($laudo_id);
+                }
+//                $this->laudo->chamada($laudo_id);
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+        }
+//        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function enviarsalaesperamedicoexame($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
+        $total = $this->exame->contadorexamesmedico($agenda_exames_id);
+        if ($total == 0) {
+            $procedimentopercentual = $procedimento_tuss_id;
+            $medicopercentual = $medico_id;
+            $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+            if (count($percentual) == 0) {
+                $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            }
+
+            $laudo_id = $this->exame->enviarsalaesperamedicoexame($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id);
+            if ($laudo_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                // $this->gerarcr($agenda_exames_id); //clinica humana
+                // $this->gerardicom($laudo_id); //clinica ronaldo
+                $empresa_id = $this->session->userdata('empresa_id');
+                $empresa = $this->guia->listarempresa($empresa_id);
+                if ($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA') {
+                    $this->laudo->chamadaconsulta($laudo_id);
+                }
+//                $this->laudo->chamada($laudo_id);
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+        }
+//        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function enviarsalaesperamedico($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
+        $total = $this->exame->contadorexamesmedico($agenda_exames_id);
+        if ($total == 0) {
+            $procedimentopercentual = $procedimento_tuss_id;
+            $medicopercentual = $medico_id;
+            $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+            if (count($percentual) == 0) {
+                $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            }
+
+            $laudo_id = $this->exame->enviarsalaesperamedico($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id);
+            if ($laudo_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                // $this->gerarcr($agenda_exames_id); //clinica humana
+                // $this->gerardicom($laudo_id); //clinica ronaldo
+                $empresa_id = $this->session->userdata('empresa_id');
+                $empresa = $this->guia->listarempresa($empresa_id);
+                if ($empresa[0]->chamar_consulta == 't' && $_POST['txttipo'] == 'CONSULTA') {
+                    $this->laudo->chamadaconsulta($laudo_id);
+                }
+//                $this->laudo->chamada($laudo_id);
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+        }
+//        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function gravarexame() {
         $total = $this->exame->contadorexames();
 //        var_dump($total);die('morreu');

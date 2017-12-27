@@ -99,6 +99,11 @@ class Laudo extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
+    function chamarpacientesalaespera($ambulatorio_laudo_id) {
+        $this->laudo->chamarpacientesalaespera($ambulatorio_laudo_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function chamarpaciente($ambulatorio_laudo_id) {
         $this->laudo->chamada($ambulatorio_laudo_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
@@ -237,6 +242,8 @@ class Laudo extends BaseController {
         if ($data['arquivo_pasta'] != false) {
             natcasesort($data['arquivo_pasta']);
         }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
         $data['obj'] = $obj_laudo;
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
@@ -527,6 +534,18 @@ class Laudo extends BaseController {
     function pendenteexamemultifuncao($exames_id) {
 //        $sala_id = $exames_id;
         $verificar = $this->exame->pendenteexamemultifuncao($exames_id);
+        if ($verificar == "-1") {
+            $data['mensagem'] = 'Erro ao encaminhar para sala de pendentes. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao encaminhar para sala de pendentes.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function pendenteodontologia($exames_id) {
+//        $sala_id = $exames_id;
+        $verificar = $this->exame->pendenteodontologia($exames_id);
         if ($verificar == "-1") {
             $data['mensagem'] = 'Erro ao encaminhar para sala de pendentes. Opera&ccedil;&atilde;o cancelada.';
         } else {

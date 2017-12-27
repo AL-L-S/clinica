@@ -27,4 +27,8 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN relatorio_producao boolean DE
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN relatorios_recepcao boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN financeiro_cadastro boolean DEFAULT false;
 
+-- Dia 26/12/2017
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN retirar_botao_ficha boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN desativar_personalizacao_impressao boolean DEFAULT false;
+
 

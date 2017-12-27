@@ -1062,6 +1062,18 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('promotor_medico', 'f');
                 }
+                
+                if (isset($_POST['retirar_botao_ficha'])) {
+                    $this->db->set('retirar_botao_ficha', 't');
+                } else {
+                    $this->db->set('retirar_botao_ficha', 'f');
+                }
+                
+                if (isset($_POST['desativar_personalizacao_impressao'])) {
+                    $this->db->set('desativar_personalizacao_impressao', 't');
+                } else {
+                    $this->db->set('desativar_personalizacao_impressao', 'f');
+                }
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
@@ -1209,8 +1221,19 @@ class empresa_model extends Model {
                     $this->db->set('promotor_medico', 't');
                 } else {
                     $this->db->set('promotor_medico', 'f');
+                }                
+                
+                if (isset($_POST['retirar_botao_ficha'])) {
+                    $this->db->set('retirar_botao_ficha', 't');
+                } else {
+                    $this->db->set('retirar_botao_ficha', 'f');
                 }
-
+                
+                if (isset($_POST['desativar_personalizacao_impressao'])) {
+                    $this->db->set('desativar_personalizacao_impressao', 't');
+                } else {
+                    $this->db->set('desativar_personalizacao_impressao', 'f');
+                }
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
@@ -1303,6 +1326,8 @@ class empresa_model extends Model {
                                ep.procedimento_excecao,
                                ep.calendario_layout,
                                ep.botao_ativar_sala,
+                               ep.retirar_botao_ficha,
+                               ep.desativar_personalizacao_impressao,
                                ep.recomendacao_configuravel,
                                ep.recomendacao_obrigatorio');
             $this->db->from('tb_empresa f');
@@ -1391,6 +1416,8 @@ class empresa_model extends Model {
             $this->_relatorio_producao = $return[0]->relatorio_producao;
             $this->_relatorios_recepcao = $return[0]->relatorios_recepcao;
             $this->_financeiro_cadastro = $return[0]->financeiro_cadastro;
+            $this->_retirar_botao_ficha = $return[0]->retirar_botao_ficha;
+            $this->_desativar_personalizacao_impressao = $return[0]->desativar_personalizacao_impressao;
         } else {
             $this->_empresa_id = null;
         }

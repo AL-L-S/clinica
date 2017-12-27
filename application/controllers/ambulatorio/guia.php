@@ -43,6 +43,7 @@ class Guia extends BaseController {
     }
 
     function pesquisar($paciente_id) {
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
         $data['exames'] = $this->guia->listarexames($paciente_id);
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
@@ -1319,9 +1320,12 @@ class Guia extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
+            $data['exames_lista'] = $this->exametemp->listarexamespacienteatendimento($ambulatorio_guia_id);
             $data['exames_pacote'] = $this->exametemp->listarpacoteexamespaciente($ambulatorio_guia_id);
         } else {
             $data['exames'] = array();
+            $data['exames_lista'] = array();
+            $data['exames_pacote'] = array();
         }
         $data['grupos'] = $this->procedimento->listargruposatendimento();
 

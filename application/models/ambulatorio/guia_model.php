@@ -71,7 +71,7 @@ class guia_model extends Model {
         $this->db->select('e.empresa_id,
                             ordem_chegada,
                             oftamologia,
-                            ');
+                            desativar_personalizacao_impressao');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -104,7 +104,7 @@ class guia_model extends Model {
                             odontologia_valor_alterar,
                             selecionar_retorno,
                             oftamologia,
-                            ');
+                            retirar_botao_ficha');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -4596,7 +4596,6 @@ class guia_model extends Model {
 
 //        $this->db->orderby("p.nome");
         $this->db->orderby("pac.data_cadastro");
-//        $this->db->orderby("pt.nome");
 
 
         $return = $this->db->get();

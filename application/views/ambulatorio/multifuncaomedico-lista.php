@@ -143,7 +143,7 @@
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">laudo</th>
                         <th class="tabela_header">Observações</th>
-                        <th class="tabela_header" colspan="3"><center>A&ccedil;&otilde;es</center></th>
+                        <th class="tabela_header" colspan="5"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -295,12 +295,21 @@
                                             </a></div></font>
                                     </td>  
                                 <? }else{?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="70px;">
-                                        <!--<font size="-2">-->
-<!--                                        <div class="bt_link">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarexame/<?= $item->agenda_exames_id ?>');">Cancelar
-                                            </a></div></font>-->
-                                    </td> 
+                                    <? if($verifica == 3) { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
+                                            <div class="bt_link">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpacientesalaespera/<?= $item->agenda_exames_id ?>');" >Chamar</a>
+                                            </div>
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
+                                            <div class="bt_link">
+                                                <a target="_blank" onclick="javascript: return confirm('Deseja realmente enviar o paciente?');" href="<?= base_url() ?>ambulatorio/exame/enviarsalaesperamedicoexame/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>/<?= $item->medico_consulta_id ?>">Enviar</a>
+                                            </div>
+                                        </td>
+                                    <? } else { ?>
+                                        <td colspan="10" class="<?php echo $estilo_linha; ?>" width="70px;"></td> 
+                                    <? } ?>
+                                        
                                <? }
                                 ?>
 
