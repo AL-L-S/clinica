@@ -31,7 +31,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listargruposrelatorioretorno() {
         $this->db->select('ambulatorio_grupo_id,
                             nome');
@@ -42,7 +42,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listargruposrelatorioorcamento() {
         $this->db->select('ambulatorio_grupo_id,
                             nome');
@@ -53,7 +53,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function gravarprocedimentocirurgicovalor($agenda_exames_id) {
 //        var_dump($_POST['valor']); die;
         $this->db->set('valor', str_replace(',', '.', $_POST['valor']));
@@ -93,6 +93,14 @@ class guia_model extends Model {
                             rodape_config,
                             cabecalho_config,
                             valor_recibo_guia,
+                            valor_autorizar,
+                            gerente_contasapagar,
+                            cpf_obrigatorio,
+                            orcamento_recepcao,
+                            relatorio_ordem,
+                            relatorio_producao,
+                            relatorios_recepcao,
+                            financeiro_cadastro,
                             odontologia_valor_alterar,
                             selecionar_retorno,
                             oftamologia,
@@ -3958,11 +3966,18 @@ class guia_model extends Model {
         $this->db->where("al.data_producao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("al.data_producao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
+        if ($_POST['ordem'] == '1') {
+            $this->db->orderby('ae.data');
+            $this->db->orderby('ae.data_autorizacao');
+            $this->db->orderby('ae.ordenador desc');
+//            $this->db->orderby('ae.paciente_id');
+        } else {
+            $this->db->orderby('al.medico_parecer1');
+            $this->db->orderby('pc.convenio_id');
+            $this->db->orderby('ae.data');
+            $this->db->orderby('ae.paciente_id');
+        }
 
-        $this->db->orderby('al.medico_parecer1');
-        $this->db->orderby('pc.convenio_id');
-        $this->db->orderby('ae.data');
-        $this->db->orderby('ae.paciente_id');
         $return = $this->db->get();
         return $return->result();
     }
@@ -4548,8 +4563,8 @@ class guia_model extends Model {
                             p.telefone, 
                             p.celular,
                             p.nome 
-                            HAVING SUM(pac.valor) > 0"); 
-        
+                            HAVING SUM(pac.valor) > 0");
+
         $this->db->orderby("p.nome");
 
 
@@ -4574,11 +4589,11 @@ class guia_model extends Model {
         $this->db->where("pac.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
         $this->db->where("pac.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
         $this->db->where("pac.valor > 0");
-        
+
         if ($_POST['txtNome'] != "") {
             $this->db->where("p.nome ilike", "%" . $_POST['txtNome'] . "%");
         }
-        
+
 //        $this->db->orderby("p.nome");
         $this->db->orderby("pac.data_cadastro");
 //        $this->db->orderby("pt.nome");
@@ -4605,11 +4620,11 @@ class guia_model extends Model {
         $this->db->where("pac.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
         $this->db->where("pac.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
         $this->db->where("pac.valor > 0");
-        
+
         if ($_POST['txtNome'] != "") {
             $this->db->where("p.nome ilike", "%" . $_POST['txtNome'] . "%");
         }
-        
+
 //        $this->db->orderby("p.nome");
         $this->db->orderby("pac.data_cadastro");
 //        $this->db->orderby("pt.nome");
@@ -6241,7 +6256,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarexame($exames_id) {
 
         $this->db->select('ae.agenda_exames_id,
@@ -9727,9 +9742,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_financeiro_contaspagar');
-            
-        } 
-        else {
+        } else {
             if ($data_contaspagar == 't') {
                 $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
             } else {
@@ -9912,7 +9925,7 @@ ORDER BY ae.agenda_exames_id)";
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarconfiguracaoimpressaoorcamento() {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -10772,10 +10785,10 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('quantidade', $_POST['qtde1']);
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->set('empresa_id', $empresa_id);
-            if(isset($_POST['observacao'])){
-            $this->db->set('observacao', $_POST['observacao']);    
+            if (isset($_POST['observacao'])) {
+                $this->db->set('observacao', $_POST['observacao']);
             }
-            
+
             $this->db->set('orcamento_id', $ambulatorio_orcamento_id);
 
             if ($_POST['formapamento'] != '') {

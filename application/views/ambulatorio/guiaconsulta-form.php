@@ -23,6 +23,8 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
         
         $botao_faturar_guia = $this->session->userdata('botao_faturar_guia');
         $botao_faturar_proc = $this->session->userdata('botao_faturar_proc');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
         
         $sala = "";
         $ordenador1 = "";
@@ -121,7 +123,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
-                                <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Recomendação</th>
                                 <th class="tabela_header">ordenador</th>
@@ -175,7 +177,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 </td>
 
                                 <td  ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td  ><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
                                 <td >
                                     <select  name="formapamento" id="formapamento" class="size1" >
                                         <option value="0">Selecione</option>

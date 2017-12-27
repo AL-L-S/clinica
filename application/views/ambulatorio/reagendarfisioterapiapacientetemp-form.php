@@ -2,7 +2,7 @@
     <div class="clear"></div>
 
     <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarfisioterapiapacientetempreagendar" method="post">
-        
+
         <fieldset>
             <legend>Reagendar Especialidade</legend>
 
@@ -102,7 +102,7 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                                                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
                             <? if (empty($faltou)) { ?>
                                 <? if ($item->encaixe == 't') { ?>
 
@@ -152,58 +152,86 @@
 
 </fieldset>
 </div> <!-- Final da DIV content -->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
-                            function mascaraTelefone(campo) {
+                    function mascaraTelefone(campo) {
 
-                                function trata(valor, isOnBlur) {
+                        function trata(valor, isOnBlur) {
 
-                                    valor = valor.replace(/\D/g, "");
-                                    valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                            valor = valor.replace(/\D/g, "");
+                            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-                                    if (isOnBlur) {
+                            if (isOnBlur) {
 
-                                        valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-                                    } else {
+                                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                            } else {
 
-                                        valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
-                                    }
-                                    return valor;
-                                }
-
-                                campo.onkeypress = function (evt) {
-
-                                    var code = (window.event) ? window.event.keyCode : evt.which;
-                                    var valor = this.value
-
-                                    if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
-                                        return false;
-                                    } else {
-                                        this.value = trata(valor, false);
-                                    }
-                                }
-
-                                campo.onblur = function () {
-
-                                    var valor = this.value;
-                                    if (valor.length < 13) {
-                                        this.value = ""
-                                    } else {
-                                        this.value = trata(this.value, true);
-                                    }
-                                }
-
-                                campo.maxLength = 14;
+                                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
                             }
+                            return valor;
+                        }
+
+                        campo.onkeypress = function (evt) {
+
+                            var code = (window.event) ? window.event.keyCode : evt.which;
+                            var valor = this.value
+
+                            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                                return false;
+                            } else {
+                                this.value = trata(valor, false);
+                            }
+                        }
+
+                        campo.onblur = function () {
+
+                            var valor = this.value;
+                            if (valor.length < 13) {
+                                this.value = ""
+                            } else {
+                                this.value = trata(this.value, true);
+                            }
+                        }
+
+                        campo.maxLength = 14;
+                    }
 
 
 </script>
 <script type="text/javascript">
-    mascaraTelefone(form_exametemp.txtTelefone);
-    mascaraTelefone(form_exametemp.txtCelular);
+    jQuery("#txtTelefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+    jQuery("#txtCelular")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
 
 
     $(function () {

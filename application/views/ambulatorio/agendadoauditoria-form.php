@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <body bgcolor="#C0C0C0">
     <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Detalhe</h3>
@@ -43,6 +44,14 @@
                                 <tr>
                                     <td width="400px;">Data autorizacao</td>
                                     <td width="150px;"><?= substr($item->data_autorizacao, 8, 2) . "-" . substr($item->data_autorizacao, 5, 2) . "-" . substr($item->data_autorizacao, 0, 4) ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="400px;">Operador Confirmação (Telefonema)</td>
+                                    <td width="150px;"><?= $item->operador_telefonema ?></td>
+                                </tr>
+                                <tr>
+                                    <td width="400px;">Data Confirmação (Telefonema)</td>
+                                    <td width="150px;"><?= substr($item->data_telefonema, 8, 2) . "-" . substr($item->data_telefonema, 5, 2) . "-" . substr($item->data_telefonema, 0, 4) ?></td>
                                 </tr>
                                 <tr>
                                     <td width="400px;">Medico Solicitante</td>

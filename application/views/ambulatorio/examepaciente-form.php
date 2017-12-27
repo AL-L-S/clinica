@@ -1,6 +1,6 @@
 <script>
     function consultasAnteriores() {
-        if( $("#txtNomeid").val() != "" && $("#convenio1").val() != "-1" && $("#procedimento1").val() != ""){
+        if ($("#txtNomeid").val() != "" && $("#convenio1").val() != "-1" && $("#procedimento1").val() != "") {
 //            alert('teste');
             jQuery.ajax({
                 url: "<?= base_url(); ?>autocomplete/buscaexamesanteriores",
@@ -9,29 +9,31 @@
                 dataType: 'json',
                 async: false,
                 success: function (retorno) {
-                    if(retorno.length > 0){
+                    if (retorno.length > 0) {
                         var mensagem = "Este paciente ja fez ";
-                        
-                        if (retorno[0].tipo = "EXAME") { mensagem += "esse exame"; }
-                        else { mensagem += "essa consulta"; }
-                        
+
+                        if (retorno[0].tipo = "EXAME") {
+                            mensagem += "esse exame";
+                        } else {
+                            mensagem += "essa consulta";
+                        }
+
                         mensagem += " nos ultimos 30 dias. Deseja prosseguir?";
                         var escolha = confirm(mensagem);
-                        
-                        if(escolha) document.form_exametemp.submit(); 
-                    }
-                    else{
-                        document.form_exametemp.submit(); 
+
+                        if (escolha)
+                            document.form_exametemp.submit();
+                    } else {
+                        document.form_exametemp.submit();
                     }
                 },
-                error: function(erro){
+                error: function (erro) {
                     return true;
                 }
             });
-            
+
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
@@ -79,7 +81,7 @@
                     <option  value="-1">Selecione</option>
                     <? foreach ($convenio as $value) : ?>
                         <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
-                    <? endforeach; ?>
+<? endforeach; ?>
                 </select>
             </div>
             <div>
@@ -109,8 +111,7 @@
 </fieldset>
 
 <fieldset>
-    <?
-    ?>
+<? ?>
     <table id="table_agente_toxico" border="0">
         <thead>
 
@@ -168,138 +169,165 @@
     /*#procedimento1_chosen a { width: 130px; }*/
 </style>
 <script>
-    function mascaraTelefone(campo) {
+                    function mascaraTelefone(campo) {
 
-        function trata(valor, isOnBlur) {
+                        function trata(valor, isOnBlur) {
 
-            valor = valor.replace(/\D/g, "");
-            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                            valor = valor.replace(/\D/g, "");
+                            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-            if (isOnBlur) {
+                            if (isOnBlur) {
 
-                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-            } else {
+                                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                            } else {
 
-                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
-            }
-            return valor;
-        }
+                                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                            }
+                            return valor;
+                        }
 
-        campo.onkeypress = function (evt) {
+                        campo.onkeypress = function (evt) {
 
-            var code = (window.event) ? window.event.keyCode : evt.which;
-            var valor = this.value
-            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
-                return false;
-            } else {
-                this.value = trata(valor, false);
-            }
-        }
+                            var code = (window.event) ? window.event.keyCode : evt.which;
+                            var valor = this.value
+                            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                                return false;
+                            } else {
+                                this.value = trata(valor, false);
+                            }
+                        }
 
-        campo.onblur = function () {
+                        campo.onblur = function () {
 
-            var valor = this.value;
-            if (valor.length < 13) {
-                this.value = ""
-            } else {
-                this.value = trata(this.value, true);
-            }
-        }
+                            var valor = this.value;
+                            if (valor.length < 13) {
+                                this.value = ""
+                            } else {
+                                this.value = trata(this.value, true);
+                            }
+                        }
 
-        campo.maxLength = 14;
-    }
+                        campo.maxLength = 14;
+                    }
 
 
 </script>
 <script type="text/javascript">
-    mascaraTelefone(form_exametemp.telefone);
-    mascaraTelefone(form_exametemp.txtCelular);
+    jQuery("#telefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+    jQuery("#txtCelular")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
 
 
 //                    jQuery("#nascimento").mask("99/99/9999");
-                    
-                    $(function () {
-                        $('#convenio1').change(function () {
-                            if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                    options = '<option value=""></option>';
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                    }
+
+    $(function () {
+        $('#convenio1').change(function () {
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                    }
 //                                    $('#procedimento1').html(options).show();
-                                    $('#procedimento1 option').remove();
-                                    $('#procedimento1').append(options);
-                                    $("#procedimento1").trigger("chosen:updated");
-                                    $('.carregando').hide();
-                                });
-                            } else {
-                                $('#procedimento1 option').remove();
-                                $('#procedimento1').append('');
-                                $("#procedimento1").trigger("chosen:updated");
-                            }
-                        });
-                    });
+                    $('#procedimento1 option').remove();
+                    $('#procedimento1').append(options);
+                    $("#procedimento1").trigger("chosen:updated");
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#procedimento1 option').remove();
+                $('#procedimento1').append('');
+                $("#procedimento1").trigger("chosen:updated");
+            }
+        });
+    });
 
 
-                    $(function () {
-                        $("#txtNome").autocomplete({
-                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                            minLength: 5,
-                            focus: function (event, ui) {
-                                $("#txtNome").val(ui.item.label);
-                                return false;
-                            },
-                            select: function (event, ui) {
-                                $("#txtNome").val(ui.item.value);
-                                $("#txtNomeid").val(ui.item.id);
-                                $("#telefone").val(ui.item.itens);
-                                $("#txtCelular").val(ui.item.celular);
-                                $("#nascimento").val(ui.item.valor);
-                                return false;
-                            }
-                        });
-                    });
+    $(function () {
+        $("#txtNome").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+            minLength: 5,
+            focus: function (event, ui) {
+                $("#txtNome").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtNome").val(ui.item.value);
+                $("#txtNomeid").val(ui.item.id);
+                $("#telefone").val(ui.item.itens);
+                $("#txtCelular").val(ui.item.celular);
+                $("#nascimento").val(ui.item.valor);
+                return false;
+            }
+        });
+    });
 
-                    $(function () {
-                        $("#nascimento").autocomplete({
-                            source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientenascimento",
-                            minLength: 9,
-                            focus: function (event, ui) {
-                                $("#nascimento").val(ui.item.label);
-                                return false;
-                            },
-                            select: function (event, ui) {
-                                $("#txtNome").val(ui.item.value);
-                                $("#txtNomeid").val(ui.item.id);
-                                $("#telefone").val(ui.item.itens);
-                                $("#nascimento").val(ui.item.valor);
-                                return false;
-                            }
-                        });
-                    });
-
-
+    $(function () {
+        $("#nascimento").autocomplete({
+            source: "<?= base_url() ?>index.php?c=autocomplete&m=pacientenascimento",
+            minLength: 9,
+            focus: function (event, ui) {
+                $("#nascimento").val(ui.item.label);
+                return false;
+            },
+            select: function (event, ui) {
+                $("#txtNome").val(ui.item.value);
+                $("#txtNomeid").val(ui.item.id);
+                $("#telefone").val(ui.item.itens);
+                $("#nascimento").val(ui.item.valor);
+                return false;
+            }
+        });
+    });
 
 
 
-                    //$(function(){     
-                    //    $('#exame').change(function(){
-                    //        exame = $(this).val();
-                    //        if ( exame === '')
-                    //            return false;
-                    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
-                    //            var option = new Array();
-                    //            $.each(data, function(i, obj){
-                    //                console.log(obl);
-                    //                option[i] = document.createElement('option');
-                    //                $( option[i] ).attr( {value : obj.id} );
-                    //                $( option[i] ).append( obj.nome );
-                    //                $("select[name='horarios']").append( option[i] );
-                    //            });
-                    //        });
-                    //    });
-                    //});
+
+
+    //$(function(){     
+    //    $('#exame').change(function(){
+    //        exame = $(this).val();
+    //        if ( exame === '')
+    //            return false;
+    //        $.getJSON( <?= base_url() ?>autocomplete/horariosambulatorio, exame, function (data){
+    //            var option = new Array();
+    //            $.each(data, function(i, obj){
+    //                console.log(obl);
+    //                option[i] = document.createElement('option');
+    //                $( option[i] ).attr( {value : obj.id} );
+    //                $( option[i] ).append( obj.nome );
+    //                $("select[name='horarios']").append( option[i] );
+    //            });
+    //        });
+    //    });
+    //});
 
 
 
@@ -326,11 +354,11 @@
 //            }
 //        });
 //    });
-                    function calculoIdade() {
-                        var data = document.getElementById("nascimento").value;
-                        var ano = data.substring(6, 12);
-                        var idade = new Date().getFullYear() - ano;
-                        document.getElementById("idade2").value = idade;
-                    }
+    function calculoIdade() {
+        var data = document.getElementById("nascimento").value;
+        var ano = data.substring(6, 12);
+        var idade = new Date().getFullYear() - ano;
+        document.getElementById("idade2").value = idade;
+    }
 
 </script>

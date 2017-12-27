@@ -488,7 +488,7 @@ if (count($pacs) > 0) {
                                 <br>
                                 <br>
                                 <fieldset>
-                                    <legend><b><font size="3" color="red">Historico de exames</font></b></legend>
+                                    <legend><b><font size="3" color="red">Histórico de exames</font></b></legend>
                                     <div>
                                         <table>
                                             <tbody>

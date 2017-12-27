@@ -31,6 +31,14 @@ class login_model extends Model {
                            ep.calendario_layout, 
                            ep.recomendacao_configuravel, 
                            ep.recomendacao_obrigatorio, 
+                           ep.valor_autorizar,
+                           ep.gerente_contasapagar,
+                           ep.cpf_obrigatorio,
+                           ep.orcamento_recepcao,
+                           ep.relatorio_ordem,
+                           ep.relatorio_producao,
+                           ep.relatorios_recepcao,
+                           ep.financeiro_cadastro,       
                            ep.botao_ativar_sala');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
@@ -67,11 +75,19 @@ class login_model extends Model {
             $recomendacao_configuravel = $retorno[0]->recomendacao_configuravel;
             $recomendacao_obrigatorio = $retorno[0]->recomendacao_obrigatorio;
             $botao_ativar_sala = $retorno[0]->botao_ativar_sala;
+
+
+            $gerente_contasapagar = $retorno[0]->gerente_contasapagar;
+            $orcamento_recepcao = $retorno[0]->orcamento_recepcao;
+            $relatorio_ordem = $retorno[0]->relatorio_ordem;
+            $relatorio_producao = $retorno[0]->relatorio_producao;
+            $relatorios_recepcao = $retorno[0]->relatorios_recepcao;
+            $financeiro_cadastro = $retorno[0]->financeiro_cadastro;
         } else {
             $empresanome = "";
             $internacao = false;
         }
-
+//        var_dump($gerente_contasapagar); die;
         if (isset($return) && count($return) > 0) {
 
             //marcando o usuario como 'online'
@@ -95,6 +111,12 @@ class login_model extends Model {
                 'perfil' => $return[0]->perfil,
                 'modulo' => $modulo,
                 'centrocirurgico' => $centrocirurgico,
+                'gerente_contasapagar' => $gerente_contasapagar,
+                'orcamento_recepcao' => $orcamento_recepcao,
+                'relatorio_ordem' => $relatorio_ordem,
+                'relatorio_producao' => $relatorio_producao,
+                'relatorios_recepcao' => $relatorios_recepcao,
+                'financeiro_cadastro' => $financeiro_cadastro,
                 'relatoriorm' => $relatoriorm,
                 'imagem' => $imagem,
                 'consulta' => $consulta,
@@ -150,13 +172,13 @@ class login_model extends Model {
                 $this->db->set('sms_enviado', 't');
                 $this->db->where('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
-                
+
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
-                
+
                 $numero = ($item->celular != '') ? $item->celular : $item->telefone;
-                
+
                 $this->db->set('numero', preg_replace('/[^\d]+/', '', $numero));
                 $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'AGRADECIMENTO');
@@ -189,9 +211,9 @@ class login_model extends Model {
                 $this->db->set('sms_enviado', 't');
                 $this->db->where('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
-                
+
                 $numero = ($item->celular != '') ? $item->celular : $item->telefone;
-                        
+
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
@@ -277,7 +299,40 @@ class login_model extends Model {
         $retorno = $this->db->get()->result();
         return $retorno;
     }
-    
+
+    function listarempresapermissoes($empresa_id = null) {
+        if ($empresa_id == null) {
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
+
+        $this->db->select('e.empresa_id,
+                            ordem_chegada,
+                            promotor_medico,
+                            excluir_transferencia,
+                            orcamento_config,
+                            rodape_config,
+                            ep.valor_autorizar,
+                            ep.gerente_contasapagar,
+                            ep.cpf_obrigatorio,
+                            ep.orcamento_recepcao,
+                            ep.relatorio_ordem,
+                            ep.relatorio_producao,
+                            ep.relatorios_recepcao,
+                            ep.financeiro_cadastro,                            
+                            cabecalho_config,
+                            valor_recibo_guia,
+                            odontologia_valor_alterar,
+                            selecionar_retorno,
+                            oftamologia,
+                            ');
+        $this->db->from('tb_empresa e');
+        $this->db->where('e.empresa_id', $empresa_id);
+        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+        $this->db->orderby('e.empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function atualizandoaniversariantestabelasms($aniversariantes, $disponivel) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -313,7 +368,7 @@ class login_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
 
         $horario = date('Y-m-d');
-        
+
         $this->db->select('COUNT(*) as total');
         $this->db->from('tb_empresa_sms_registro');
         $this->db->where('data_verificacao', $horario);
@@ -324,9 +379,9 @@ class login_model extends Model {
 
     function criandoregistrosms() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $horario = date('Y-m-d');        
+        $horario = date('Y-m-d');
         $periodo = date('m/Y');
-        
+
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('periodo', $periodo);
         $this->db->set('data_verificacao', $horario);
@@ -493,10 +548,10 @@ class login_model extends Model {
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         date_default_timezone_set('America/Fortaleza');
-        
+
         $totime = strtotime("-1 days");
         $data_atual = date('Y-m-d', $totime);
-        
+
         $this->db->where('ae.cancelada', 'f');
         $this->db->where('ae.realizada', 'f');
         $this->db->where("(p.cns IS NOT NULL AND p.cns != '')");
@@ -554,7 +609,7 @@ class login_model extends Model {
                     $mensagem = "Email enviado com sucesso!";
                 }
             }
-            
+
             foreach ($faltas as $value) {
                 $mail->setLanguage('br');                             // Habilita as saídas de erro em Português
                 $mail->CharSet = 'UTF-8';                             // Habilita o envio do email como 'UTF-8'
@@ -579,7 +634,7 @@ class login_model extends Model {
                     $mensagem = "Email enviado com sucesso!";
                 }
             }
-            
+
             foreach ($revisoes as $item) {
                 $msg = "O paciente: " . $item->paciente . " tem uma revisão marcada para a data " . date("d/m/Y", strtotime($item->data_revisao));
                 $mail->setLanguage('br');                             // Habilita as saídas de erro em Português

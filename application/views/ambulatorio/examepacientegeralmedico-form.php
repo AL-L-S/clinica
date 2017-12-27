@@ -1,6 +1,6 @@
 <script>
     function consultasAnteriores() {
-        if( $("#txtNomeid").val() != "" && $("#convenio1").val() != "" && $("#procedimento1").val() != "" && $("#exame").val() ){
+        if ($("#txtNomeid").val() != "" && $("#convenio1").val() != "" && $("#procedimento1").val() != "" && $("#exame").val()) {
             jQuery.ajax({
                 url: "<?= base_url(); ?>autocomplete/buscaconsultasanteriores",
                 type: "GET",
@@ -8,32 +8,34 @@
                 dataType: 'json',
                 async: false,
                 success: function (retorno) {
-                    if(retorno.length > 0){
+                    if (retorno.length > 0) {
                         var mensagem = "Este paciente ja fez ";
-                        
-                        if (retorno[0].tipo = "EXAME") { mensagem += "esse exame"; }
-                        else { mensagem += "essa consulta"; }
-                        
+
+                        if (retorno[0].tipo = "EXAME") {
+                            mensagem += "esse exame";
+                        } else {
+                            mensagem += "essa consulta";
+                        }
+
                         mensagem += " nos ultimos 30 dias. Deseja prosseguir?";
                         var escolha = confirm(mensagem);
-                        
-                        if(escolha) document.form_exametemp.submit(); 
-                    }
-                    else{
-                        document.form_exametemp.submit(); 
+
+                        if (escolha)
+                            document.form_exametemp.submit();
+                    } else {
+                        document.form_exametemp.submit();
                     }
                 },
-                error: function(erro){
+                error: function (erro) {
                     return true;
                 }
             });
-            
+
             return false;
-        }
-        else{
+        } else {
             return true;
         }
-        
+
     }
 </script>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
@@ -70,7 +72,7 @@
                     <option value="" >Selecione</option>
                     <? foreach ($medico as $item) : ?>
                         <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
-                    <? endforeach; ?>
+<? endforeach; ?>
                 </select>
             </div>
             <div>
@@ -102,8 +104,7 @@
 </fieldset>
 
 <fieldset>
-    <?
-    ?>
+<? ?>
     <table id="table_agente_toxico" border="0">
         <thead>
 
@@ -148,53 +149,80 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
-    function mascaraTelefone(campo) {
+                    function mascaraTelefone(campo) {
 
-        function trata(valor, isOnBlur) {
+                        function trata(valor, isOnBlur) {
 
-            valor = valor.replace(/\D/g, "");
-            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                            valor = valor.replace(/\D/g, "");
+                            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-            if (isOnBlur) {
+                            if (isOnBlur) {
 
-                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-            } else {
+                                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                            } else {
 
-                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
-            }
-            return valor;
-        }
+                                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                            }
+                            return valor;
+                        }
 
-        campo.onkeypress = function (evt) {
+                        campo.onkeypress = function (evt) {
 
-            var code = (window.event) ? window.event.keyCode : evt.which;
-            var valor = this.value
+                            var code = (window.event) ? window.event.keyCode : evt.which;
+                            var valor = this.value
 
-            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
-                return false;
-            } else {
-                this.value = trata(valor, false);
-            }
-        }
+                            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                                return false;
+                            } else {
+                                this.value = trata(valor, false);
+                            }
+                        }
 
-        campo.onblur = function () {
+                        campo.onblur = function () {
 
-            var valor = this.value;
-            if (valor.length < 13) {
-                this.value = ""
-            } else {
-                this.value = trata(this.value, true);
-            }
-        }
+                            var valor = this.value;
+                            if (valor.length < 13) {
+                                this.value = ""
+                            } else {
+                                this.value = trata(this.value, true);
+                            }
+                        }
 
-        campo.maxLength = 14;
-    }
+                        campo.maxLength = 14;
+                    }
 
 
 </script>
 <script type="text/javascript">
-    mascaraTelefone(form_exametemp.telefone);
-    mascaraTelefone(form_exametemp.txtCelular);
+    jQuery("#telefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+    jQuery("#txtCelular")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
 
     $(function () {
         $('#exame').change(function () {

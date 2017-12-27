@@ -1,11 +1,12 @@
 <!--<body onload="alert('blablab');">-->
-<? 
-$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
-$empresa = $this->guia->listarempresapermissoes(); 
+<?
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');
+$empresa = $this->guia->listarempresapermissoes();
 $odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
 $retorno_alterar = $empresa[0]->selecionar_retorno;
+$empresa_id = $this->session->userdata('empresa_id');
+$empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
 //var_dump($retorno_alterar); die;
-
 ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
@@ -32,11 +33,11 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                     <label>Sexo</label>
                     <input name="sexo" id="txtSexo" class="size2" 
                            value="<?
-                           if ($paciente['0']->sexo == "M"):echo 'Masculino';
-                           endif;
-                           if ($paciente['0']->sexo == "F"):echo 'Feminino';
-                           endif;
-                           ?>" readonly="true">
+if ($paciente['0']->sexo == "M"):echo 'Masculino';
+endif;
+if ($paciente['0']->sexo == "F"):echo 'Feminino';
+endif;
+?>" readonly="true">
                 </div>
 
                 <div>
@@ -97,7 +98,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                             <th class="tabela_header">Convenio</th>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">autorizacao</th>
-                            <th class="tabela_header">V. Unit</th>
+                            <th class="tabela_header"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
                             <th class="tabela_header">Pagamento</th>
                             <th class="tabela_header">Recomendação</th>
                             <th class="tabela_header">ordenador</th>
@@ -121,7 +122,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         <? foreach ($salas as $itens) : ?>
                                             <option value="<?= $itens->exame_sala_id; ?>" <? if (@$item->agenda_exames_nome_id == @$itens->exame_sala_id) echo "selected"; ?>>
                                                 <?= $itens->nome; ?></option>
-                                        <? endforeach; ?>
+                                            <? endforeach; ?>
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
@@ -129,8 +130,8 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $value) : ?>
                                             <option value="<?= $value->operador_id; ?>" <?
-                                            if ($value->operador_id == $item->medico_consulta_id):echo 'selected';
-                                            endif;
+                                    if ($value->operador_id == $item->medico_consulta_id):echo 'selected';
+                                    endif;
                                             ?>><?= $value->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select>
@@ -153,7 +154,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
+                                <td <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>  class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>
@@ -273,20 +274,20 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
 
                                                                 $('#checkbox<?= $b ?>').change(function () {
                                                                     if ($(this).is(":checked")) {
-                                                                        
+
                                                                         $("#medico_id<?= $b; ?>").prop('required', true);
                                                                         $("#sala<?= $b; ?>").prop('required', true);
                                                                         $("#convenio<?= $b; ?>").prop('required', true);
                                                                         $("#procedimento<?= $b; ?>").prop('required', true);
 
-                                                                        <? if ($recomendacao_obrigatorio == 't') { ?>
+    <? if ($recomendacao_obrigatorio == 't') { ?>
                                                                             $("#indicacao<?= $b; ?>").prop('required', true);
-                                                                         <? } ?>
+    <? } ?>
                                                                         if ($("#procedimento<?= $b; ?>").val() != '') {
-                                                                           
+
                                                                             $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $("#procedimento<?= $b; ?>").val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
-    //                                                        console.log(r); 
-//                                                            alert('dddd');
+                                                                                //                                                        console.log(r); 
+    //                                                            alert('dddd');
                                                                                 if (r.qtdeConsultas == 0 && r.grupo == "RETORNO") {
                                                                                     alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
                                                                                     $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
@@ -298,32 +299,32 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
 
                                                                             $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $("#procedimento<?= $b; ?>").val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
 
-    //                                                        console.log(r);
+                                                                                //                                                        console.log(r);
 
                                                                                 if (r.qtdeConsultas > 0 && r.retorno_realizado == 0) {
-    //                                                            alert('asdasd'); 
-    //                                                            alert("Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
-//                                                                alert(r.procedimento_retorno);
-                                                                               if('<?=$retorno_alterar?>' == 'f'){
-                                                                                  if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
-    //                                                                alert('asdas');
-                                                                                        $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
-                                                                                        //                                                            $('#valor1').val('0.00');
-                                                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
-                                                                                            options = "";
-                                                                                            options += j[0].valortotal;
-                                                                                            document.getElementById("valor<?= $b; ?>").value = options;
-                                                                                            $('.carregando').hide();
-                                                                                        });
-                                                                                    } else {
+                                                                                    //                                                            alert('asdasd'); 
+                                                                                    //                                                            alert("Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+    //                                                                alert(r.procedimento_retorno);
+                                                                                    if ('<?= $retorno_alterar ?>' == 'f') {
+                                                                                        if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
+                                                                                            //                                                                alert('asdas');
+                                                                                            $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                                                                            //                                                            $('#valor1').val('0.00');
+                                                                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                                                options = "";
+                                                                                                options += j[0].valortotal;
+                                                                                                document.getElementById("valor<?= $b; ?>").value = options;
+                                                                                                $('.carregando').hide();
+                                                                                            });
+                                                                                        } else {
 
-                                                                                    }    
-                                                                                  }else{
-                                                                                  alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
-                                                                                  $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);    
-                                                                                  }
-                                                                                  
-                                                                                    
+                                                                                        }
+                                                                                    } else {
+                                                                                        alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
+                                                                                        $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                                                                    }
+
+
 
                                                                                 }
                                                                             });
@@ -344,10 +345,10 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
 
                                                                 $(function () {
                                                                     $('#procedimento<?= $b; ?>').change(function () {
-    //                                                alert('asd');
+                                                                        //                                                alert('asd');
                                                                         if ($(this).val()) {
                                                                             $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
-    //                                                        console.log(r);
+                                                                                //                                                        console.log(r);
                                                                                 if (r.qtdeConsultas == 0 && r.grupo == "RETORNO") {
                                                                                     alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
                                                                                     $("select[name=procedimento<?= $b; ?>]").val($("select[name=procedimento<?= $b; ?>] option:first-child").val(''));
@@ -359,36 +360,36 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
 
                                                                             $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
 
-    //                                                        console.log(r);
+                                                                                //                                                        console.log(r);
 
                                                                                 if (r.qtdeConsultas > 0 && r.retorno_realizado == 0) {
-    //                                                            alert('asdasd'); 
-    //                                                            alert("Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
-    //                                                            alert(r.procedimento_retorno);
-                                                                                    if('<?=$retorno_alterar?>' == 'f'){
-                                                                                  if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
-    //                                                                alert('asdas');
+                                                                                    //                                                            alert('asdasd'); 
+                                                                                    //                                                            alert("Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+                                                                                    //                                                            alert(r.procedimento_retorno);
+                                                                                    if ('<?= $retorno_alterar ?>' == 'f') {
+                                                                                        if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
+                                                                                            //                                                                alert('asdas');
+                                                                                            $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                                                                            //                                                            $('#valor1').val('0.00');
+                                                                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                                                options = "";
+                                                                                                options += j[0].valortotal;
+                                                                                                document.getElementById("valor<?= $b; ?>").value = options;
+                                                                                                $('.carregando').hide();
+                                                                                            });
+                                                                                        } else {
+
+                                                                                        }
+                                                                                    } else {
+                                                                                        alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
                                                                                         $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
-                                                                                        //                                                            $('#valor1').val('0.00');
                                                                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                                             options = "";
                                                                                             options += j[0].valortotal;
                                                                                             document.getElementById("valor<?= $b; ?>").value = options;
                                                                                             $('.carregando').hide();
                                                                                         });
-                                                                                    } else {
-
-                                                                                    }    
-                                                                                  }else{
-                                                                                  alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
-                                                                                  $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);   
-                                                                                  $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
-                                                                                            options = "";
-                                                                                            options += j[0].valortotal;
-                                                                                            document.getElementById("valor<?= $b; ?>").value = options;
-                                                                                            $('.carregando').hide();
-                                                                                        });
-                                                                                  }
+                                                                                    }
 
                                                                                 }
                                                                             });

@@ -83,7 +83,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>autorizacao</td>
+                            <td>Autorização</td>
                             <td><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
                         </tr>
                         <tr>
@@ -94,7 +94,9 @@
                         </tr>
                         <tr>
                             <td>Pagamento</td>
-                            <td><select  name="formapamento" id="formapamento" class="size2" >
+                            <td><select  name="formapamento" id="formapamento" class="size2"  <? if ($perfil_id != 1) {
+                                                echo 'disabled';
+                                            } ?>>
                                     <option value="0">Selecione</option>
                                     <? foreach ($forma_pagamento as $item) : ?>
                                         <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>

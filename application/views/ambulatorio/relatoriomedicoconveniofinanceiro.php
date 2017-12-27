@@ -82,7 +82,7 @@
                     <dd>
                         <select name="clinica" id="clinica" class="size1" >
                             <option value='SIM' >SIM</option>
-                            <option value='NAO' >NAO</option>
+                            <option value='NAO' >NÃO</option>
                         </select>
                     </dd>
                     <dt>
@@ -90,7 +90,7 @@
                     </dt>
                     <dd>
                         <select name="promotor" id="promotor" class="size1" >
-                            <option value='NAO' >NAO</option>
+                            <option value='NAO' >NÃO</option>
                             <option value='SIM' >SIM</option>
                         </select>
                     </dd>
@@ -99,7 +99,7 @@
                     </dt>
                     <dd>
                         <select name="forma_pagamento" id="forma_pagamento" class="size1" >
-                            <option value='NAO' >NAO</option>
+                            <option value='NAO' >NÃO</option>
                             <option value='SIM' >SIM</option>
                         </select>
                     </dd>
@@ -119,8 +119,8 @@
                     </dt>
                     <dd>
                         <select name="solicitante" id="solicitante" class="size1" >
+                            <option value='NAO' selected="">NÃO</option>
                             <option value='SIM' >SIM</option>
-                            <option value='NAO' selected="">NAO</option>
                         </select>
                     </dd>
 
@@ -153,6 +153,16 @@
 
                             <option value='NAO' >NÃO</option>
                             <option value='SIM' >SIM</option>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Ordem do Relatório</label>
+                    </dt>
+                    <dd>
+                        <select name="ordem" id="recibo" class="size1" >
+
+                            <option value='0' >NORMAL</option>
+                            <option value='1' >ATENDIMENTO</option>
                         </select>
                     </dd>
                     <dt>

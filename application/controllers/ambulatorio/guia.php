@@ -424,11 +424,20 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichageral', $data);
             }
         }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////        
+        elseif ($data['empresa'][0]->impressao_tipo == 49) {//CITYCOR COM INFORMACOES DA HUMANA
+            if ($dinheiro == "t") {
+                $this->load->View('ambulatorio/impressaofichageralparticularcitycor', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaofichageralcitycor', $data);
+            }
+        }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////        
         elseif ($data['empresa'][0]->impressao_tipo == 9) { // CLINICA SAO PAULO
             $this->load->View('ambulatorio/impressaofichaconsultasaopaulo', $data);
-        } elseif ($data['empresa'][0]->impressao_tipo == '') { //GERAL
+        } else { //GERAL
             if ($dinheiro == "t") {
                 $this->load->View('ambulatorio/impressaofichageralparticular', $data);
             } else {

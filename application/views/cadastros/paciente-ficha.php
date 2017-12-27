@@ -60,7 +60,7 @@
                 <label>CPF</label>
 
 
-                <input type="text" name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" />
+                <input type="text" <?if($empresapermissoes[0]->cpf_obrigatorio == 't'){?>required <?}?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" />
             </div>
             <div>
                 <label>RG</label>
@@ -116,7 +116,7 @@
                               }
                               ?> 
                 </select>
-                
+
                 <? if ($this->session->userdata('recomendacao_configuravel') != "t") { ?>
                     <label>Indicacao</label>
                     <select name="indicacao" id="indicacao" class="size2" >
@@ -426,6 +426,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
         function mascaraTelefone(campo) {
 
@@ -472,9 +473,53 @@
 
 </script>
 <script type="text/javascript">
-    mascaraTelefone(form_paciente.txtTelefone);
-    mascaraTelefone(form_paciente.txtwhatsapp);
-    mascaraTelefone(form_paciente.txtCelular);
+//    mascaraTelefone(form_paciente.txtTelefone);
+//    mascaraTelefone(form_paciente.txtwhatsapp);
+//    mascaraTelefone(form_paciente.txtCelular);
+    jQuery("#txtwhatsapp")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+    jQuery("#txtTelefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+    jQuery("#txtCelular")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
 //(99) 9999-9999
 
 

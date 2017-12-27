@@ -1,6 +1,6 @@
 <script>
     function consultasAnteriores() {
-        if( $("#txtNomeid").val() != "" && $("#convenio").val() != "" && $("#procedimento").val() != ""){
+        if ($("#txtNomeid").val() != "" && $("#convenio").val() != "" && $("#procedimento").val() != "") {
             jQuery.ajax({
                 url: "<?= base_url(); ?>autocomplete/buscaconsultasanteriores",
                 type: "GET",
@@ -8,32 +8,34 @@
                 dataType: 'json',
                 async: false,
                 success: function (retorno) {
-                    if(retorno.length > 0){
+                    if (retorno.length > 0) {
                         var mensagem = "Este paciente ja fez ";
-                        
-                        if (retorno[0].tipo = "EXAME") { mensagem += "esse exame"; }
-                        else { mensagem += "essa consulta"; }
-                        
+
+                        if (retorno[0].tipo = "EXAME") {
+                            mensagem += "esse exame";
+                        } else {
+                            mensagem += "essa consulta";
+                        }
+
                         mensagem += " nos ultimos 30 dias. Deseja prosseguir?";
                         var escolha = confirm(mensagem);
-                        
-                        if(escolha) document.form_exametemp.submit(); 
-                    }
-                    else{
-                        document.form_exametemp.submit(); 
+
+                        if (escolha)
+                            document.form_exametemp.submit();
+                    } else {
+                        document.form_exametemp.submit();
                     }
                 },
-                error: function(erro){
+                error: function (erro) {
                     return true;
                 }
             });
-            
+
             return false;
-        }
-        else{
+        } else {
             return true;
         }
-        
+
     }
 </script>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
@@ -73,7 +75,7 @@
                     <option  value="0">Selecione</option>
                     <? foreach ($convenio as $value) : ?>
                         <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
-                    <? endforeach; ?>
+<? endforeach; ?>
                 </select>
             </div>
             <div>
@@ -108,8 +110,7 @@
         </fieldset>
 
         <fieldset>
-            <?
-            ?>
+<? ?>
             <table id="table_agente_toxico" border="0">
                 <thead>
 
@@ -125,7 +126,7 @@
                 $estilo_linha = "tabela_content01";
                 foreach ($consultas as $item) {
                     ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                    $datadia_atual = date('Y-m-d',strtotime($item->data));
+                    $datadia_atual = date('Y-m-d', strtotime($item->data));
                     $dia_atual = strftime("%A", strtotime($datadia_atual));
                     switch ($dia_atual) {
                         case"Sunday": $data_atual = "Domingo";
@@ -143,7 +144,6 @@
                         case"Saturday": $data_atual = "Sabado";
                             break;
                     }
-                    
                     ?>
                     <tbody>
                         <tr>
@@ -208,14 +208,14 @@
                 ?>
                 <input style="display:none;" type="checkbox" checked="true" name="dia[<?= $dia ?>]" value="<?= $numerodia_atual ?>">
                 <input style="display:none;" type="hidden" name="medico[<?= $dia ?>]" value="<?= $consultas[0]->medico_agenda ?>">
-                <input style="display:none;" type="hidden" name="horarios[1]" value="<?=$agenda_exames_id  ?>">
-                <input style="display:none;" type="hidden" name="data[<?= $dia ?>]" value="<?=$consultas[0]->data  ?>">
+                <input style="display:none;" type="hidden" name="horarios[1]" value="<?= $agenda_exames_id ?>">
+                <input style="display:none;" type="hidden" name="data[<?= $dia ?>]" value="<?= $consultas[0]->data ?>">
                 <?
                 $datadia = date('Y-m-d', strtotime("+1 days", strtotime($consultas[0]->data)));
                 $estilo_linha = "tabela_content01";
                 $contador_array = 1;
                 for ($i = 1; $i <= 6; $i++) {
-                $contador_array++;
+                    $contador_array++;
                     $dia = strftime("%A", strtotime($datadia));
                     switch ($dia) {
                         case"Sunday": $data = "Domingo";
@@ -257,7 +257,7 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $data ?></td>
                         <td class="<?php echo $estilo_linha; ?>">
                             <!--<label>Medico</label>-->
-                            <select name="medico[<?= $dia ?>]" id="medico<?=$numerodia?>" class="size2">
+                            <select name="medico[<?= $dia ?>]" id="medico<?= $numerodia ?>" class="size2">
                                 <option value="" >Selecione</option>
                                 <? foreach ($medico as $item) : ?>
                                     <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
@@ -265,10 +265,10 @@
                             </select>
                         </td>
                         <td class="<?php echo $estilo_linha; ?>">
-                            <select name="horarios[<?= $contador_array ?>]" id="horarios<?=$numerodia?>" class="size2" >
+                            <select name="horarios[<?= $contador_array ?>]" id="horarios<?= $numerodia ?>" class="size2" >
                                 <option value="" >-- Escolha um médico --</option>
                             </select>
-                            
+
                             <input type="hidden" name="data[<?= $dia ?>]" id="data<?= $dia ?>" value="<?= $datadia ?>">
                         </td>
                         <td class="<?php echo $estilo_linha; ?>"><input type="checkbox" name="dia[<?= $dia ?>]" value="<?= $numerodia ?>"></td>
@@ -392,33 +392,59 @@ for ($i = 1; $i <= 6; $i++) {
     }
     ?>
         $(function () {
-            $('#medico<?=$numerodia?>').change(function () {
+            $('#medico<?= $numerodia ?>').change(function () {
                 if ($(this).val()) {
                     $('#horarios').hide();
                     $('.carregando').show();
-                    $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorioespecialidadepersonalizado', {exame: $(this).val(), teste:$('#data<?= $dia ?>').val() }, function (j) {
+                    $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorioespecialidadepersonalizado', {exame: $(this).val(), teste: $('#data<?= $dia ?>').val()}, function (j) {
                         var options = '<option value=""></option>';
                         for (var i = 0; i < j.length; i++) {
                             options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + ' ' + j[i].medico + '</option>';
                         }
-                        $('#horarios<?=$numerodia?>').html(options).show();
+                        $('#horarios<?= $numerodia ?>').html(options).show();
                         $('.carregando').hide();
                     });
                 } else {
-                    $('#horarios<?=$numerodia?>').html('<option value="">-- Escolha um exame --</option>');
+                    $('#horarios<?= $numerodia ?>').html('<option value="">-- Escolha um exame --</option>');
                 }
             });
         });
-//        alert('<?=$datadia?>');
+    //        alert('<?= $datadia ?>');
 
     <?
     $datadia = date('Y-m-d', strtotime("+1 days", strtotime($datadia)));
 }
 ?>
 
+    jQuery("#txtTelefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
 
-    mascaraTelefone(form_exametemp.txtTelefone);
-    mascaraTelefone(form_exametemp.txtCelular);
+    jQuery("#txtCelular")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
 
     $(function () {
         $("#data_ficha").datepicker({

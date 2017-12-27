@@ -4,35 +4,35 @@
         <fieldset>
             <legend>Marcar Exames</legend>
             <?
-                if (@$obj->_telefone != '' && strlen(@$obj->_telefone) > 3) {
+            if (@$obj->_telefone != '' && strlen(@$obj->_telefone) > 3) {
 
-                    if (preg_match('/\(/', @$obj->_telefone)) {
-                        $telefone = @$obj->_telefone;
-                    } else {
-                        $telefone = "(" . substr(@$obj->_telefone, 0, 2) . ")" . substr(@$obj->_telefone, 2, strlen(@$obj->_telefone) - 2);
-                    }
+                if (preg_match('/\(/', @$obj->_telefone)) {
+                    $telefone = @$obj->_telefone;
                 } else {
-                    $telefone = '';
+                    $telefone = "(" . substr(@$obj->_telefone, 0, 2) . ")" . substr(@$obj->_telefone, 2, strlen(@$obj->_telefone) - 2);
                 }
-                if (@$obj->_celular != '' && strlen(@$obj->_celular) > 3) {
-                    if (preg_match('/\(/', @$obj->_celular)) {
-                        $celular = @$obj->_celular;
-                    } else {
-                        $celular = "(" . substr(@$obj->_celular, 0, 2) . ")" . substr(@$obj->_celular, 2, strlen(@$obj->_celular) - 2);
-                    }
+            } else {
+                $telefone = '';
+            }
+            if (@$obj->_celular != '' && strlen(@$obj->_celular) > 3) {
+                if (preg_match('/\(/', @$obj->_celular)) {
+                    $celular = @$obj->_celular;
                 } else {
-                    $celular = '';
+                    $celular = "(" . substr(@$obj->_celular, 0, 2) . ")" . substr(@$obj->_celular, 2, strlen(@$obj->_celular) - 2);
                 }
-                if (@$obj->_whatsapp != '' && strlen(@$obj->_whatsapp) > 3) {
-                    if (preg_match('/\(/', @$obj->_whatsapp)) {
-                        $whatsapp = @$obj->_whatsapp;
-                    } else {
-                        $whatsapp = "(" . substr(@$obj->_whatsapp, 0, 2) . ")" . substr(@$obj->_whatsapp, 2, strlen(@$obj->_whatsapp) - 2);
-                    }
+            } else {
+                $celular = '';
+            }
+            if (@$obj->_whatsapp != '' && strlen(@$obj->_whatsapp) > 3) {
+                if (preg_match('/\(/', @$obj->_whatsapp)) {
+                    $whatsapp = @$obj->_whatsapp;
                 } else {
-                    $whatsapp = '';
+                    $whatsapp = "(" . substr(@$obj->_whatsapp, 0, 2) . ")" . substr(@$obj->_whatsapp, 2, strlen(@$obj->_whatsapp) - 2);
                 }
-                ?>
+            } else {
+                $whatsapp = '';
+            }
+            ?>
             <div>
                 <label>Nome</label>
                 <input type="text" name="txtNome" class="texto10 bestupper" value="<?= @$obj->_nome; ?>" />
@@ -66,7 +66,9 @@
         <fieldset>
             <div>
                 <label>Data</label>
-                <input type="text"  id="data_ficha" name="data_ficha" class="size1" required value="<?if (count($exames) > 0) { echo date("d/m/Y", strtotime(@$exames[0]->data)); } ?>"/>
+                <input type="text"  id="data_ficha" name="data_ficha" class="size1" required value="<? if (count($exames) > 0) {
+                echo date("d/m/Y", strtotime(@$exames[0]->data));
+            } ?>"/>
                 <input type="hidden" name="txtpaciente_id" value="<?= @$obj->_paciente_id; ?>" />
             </div>
             <legend>Exames tipo</legend>
@@ -80,9 +82,9 @@
                     foreach ($salas as $item) {
                         ?>
                         <option value="<?= $item->exame_sala_id ?>" <? if ($lastSala == $item->exame_sala_id) echo 'selected'; ?>>
-                            <?= $item->nome ?>
+                        <?= $item->nome ?>
                         </option>
-                    <? } ?>
+<? } ?>
                     <!--                    <option value="RX" >RX</option>
                                         <option value="TOMOGRAFIA" >TOMOGRAFIA</option>
                                         <option value="RM" >RM</option>
@@ -176,9 +178,9 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/vizualizarpreparo/<?= $item->tuss_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                        width=800,height=400');"><?= $item->procedimento; ?></a></td>
+                                                                                                                                width=800,height=400');"><?= $item->procedimento; ?></a></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                                                                                                                                width=500,height=230');">=><?= $item->observacoes; ?></a></td>
 
                         <? if (empty($faltou)) { ?>
 
@@ -191,7 +193,7 @@
                                         <a onclick="javascript: return confirm('Deseja realmente excluir o exame?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirexametemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
                                             Excluir</a></td></div>
 
-                            <? } ?>
+            <? } ?>
         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/reservarexametemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->agenda_exames_nome_id; ?>/<?= $item->data; ?>">
@@ -235,10 +237,11 @@
 
 </fieldset>
 </div> <!-- Final da DIV content -->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
 <!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
 <link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
@@ -343,8 +346,35 @@
 
 </script>
 <script type="text/javascript">
-    mascaraTelefone(form_exametemp.telefone);
-    mascaraTelefone(form_exametemp.txtCelular);
+    jQuery("#telefone")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
+
+    jQuery("#txtCelular")
+            .mask("(99) 9999-9999?9")
+            .focusout(function (event) {
+                var target, phone, element;
+                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                phone = target.value.replace(/\D/g, '');
+                element = $(target);
+                element.unmask();
+                if (phone.length > 10) {
+                    element.mask("(99) 99999-999?9");
+                } else {
+                    element.mask("(99) 9999-9999?9");
+                }
+            });
 
 
     $(function () {

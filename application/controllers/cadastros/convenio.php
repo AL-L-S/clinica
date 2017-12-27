@@ -46,7 +46,8 @@ class Convenio extends BaseController {
     }
 
     function copiar($convenio_id) {
-        $data['convenio'] = $this->convenio->listardados();
+        $data['convenio'] = $this->convenio->listarconvenioscopiar($convenio_id);
+        $data['convenio_selecionado'] = $this->convenio->listarconvenioselecionado($convenio_id);
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['convenioid'] = $convenio_id;
         $this->loadView('cadastros/copiarconvenio-form', $data);

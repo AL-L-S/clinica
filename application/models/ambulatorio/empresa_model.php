@@ -128,7 +128,7 @@ class empresa_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarconfiguracaoimpressaoorcamento() {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -342,7 +342,7 @@ class empresa_model extends Model {
         else
             return true;
     }
-    
+
     function ativarconfiguracaoorcamento($impressao_id) {
 //        var_dump($impressao_id); die;
         $horario = date("Y-m-d H:i:s");
@@ -541,7 +541,7 @@ class empresa_model extends Model {
             return false;
         }
     }
-    
+
     function gravarconfiguracaoimpressaolaudo() {
         try {
 //            var_dump($_POST['impressao_id']); die;
@@ -943,6 +943,46 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
+                if (isset($_POST['valor_autorizar'])) {
+                    $this->db->set('valor_autorizar', 't');
+                } else {
+                    $this->db->set('valor_autorizar', 'f');
+                }
+                if (isset($_POST['gerente_contasapagar'])) {
+                    $this->db->set('gerente_contasapagar', 't');
+                } else {
+                    $this->db->set('gerente_contasapagar', 'f');
+                }
+                if (isset($_POST['cpf_obrigatorio'])) {
+                    $this->db->set('cpf_obrigatorio', 't');
+                } else {
+                    $this->db->set('cpf_obrigatorio', 'f');
+                }
+                if (isset($_POST['orcamento_recepcao'])) {
+                    $this->db->set('orcamento_recepcao', 't');
+                } else {
+                    $this->db->set('orcamento_recepcao', 'f');
+                }
+                if (isset($_POST['relatorio_ordem'])) {
+                    $this->db->set('relatorio_ordem', 't');
+                } else {
+                    $this->db->set('relatorio_ordem', 'f');
+                }
+                if (isset($_POST['relatorio_producao'])) {
+                    $this->db->set('relatorio_producao', 't');
+                } else {
+                    $this->db->set('relatorio_producao', 'f');
+                }
+                if (isset($_POST['relatorios_recepcao'])) {
+                    $this->db->set('relatorios_recepcao', 't');
+                } else {
+                    $this->db->set('relatorios_recepcao', 'f');
+                }
+                if (isset($_POST['financeiro_cadastro'])) {
+                    $this->db->set('financeiro_cadastro', 't');
+                } else {
+                    $this->db->set('financeiro_cadastro', 'f');
+                }
                 if (isset($_POST['valor_recibo_guia'])) {
                     $this->db->set('valor_recibo_guia', 't');
                 } else {
@@ -953,7 +993,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('orcamento_config', 'f');
                 }
-                
+
                 if (isset($_POST['odontologia_valor_alterar'])) {
                     $this->db->set('odontologia_valor_alterar', 't');
                 } else {
@@ -964,7 +1004,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('selecionar_retorno', 'f');
                 }
-                
+
                 if (isset($_POST['excluir_transferencia'])) {
                     $this->db->set('excluir_transferencia', 't');
                 } else {
@@ -1046,6 +1086,47 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('procedimento_excecao', 'f');
                 }
+                                if (isset($_POST['valor_autorizar'])) {
+                    $this->db->set('valor_autorizar', 't');
+                } else {
+                    $this->db->set('valor_autorizar', 'f');
+                }
+                if (isset($_POST['gerente_contasapagar'])) {
+                    $this->db->set('gerente_contasapagar', 't');
+                } else {
+                    $this->db->set('gerente_contasapagar', 'f');
+                }
+                if (isset($_POST['cpf_obrigatorio'])) {
+                    $this->db->set('cpf_obrigatorio', 't');
+                } else {
+                    $this->db->set('cpf_obrigatorio', 'f');
+                }
+                if (isset($_POST['orcamento_recepcao'])) {
+                    $this->db->set('orcamento_recepcao', 't');
+                } else {
+                    $this->db->set('orcamento_recepcao', 'f');
+                }
+                if (isset($_POST['relatorio_ordem'])) {
+                    $this->db->set('relatorio_ordem', 't');
+                } else {
+                    $this->db->set('relatorio_ordem', 'f');
+                }
+                if (isset($_POST['relatorio_producao'])) {
+                    $this->db->set('relatorio_producao', 't');
+                } else {
+                    $this->db->set('relatorio_producao', 'f');
+                }
+                if (isset($_POST['relatorios_recepcao'])) {
+                    $this->db->set('relatorios_recepcao', 't');
+                } else {
+                    $this->db->set('relatorios_recepcao', 'f');
+                }
+                if (isset($_POST['financeiro_cadastro'])) {
+                    $this->db->set('financeiro_cadastro', 't');
+                } else {
+                    $this->db->set('financeiro_cadastro', 'f');
+                }
+                
                 if (isset($_POST['ordem_chegada'])) {
                     $this->db->set('ordem_chegada', 't');
                 } else {
@@ -1062,14 +1143,14 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('credito', 'f');
                 }
-                
+
                 if (isset($_POST['orcamento_config'])) {
                     $this->db->set('orcamento_config', 't');
                 } else {
                     $this->db->set('orcamento_config', 'f');
                 }
-                
-                 if (isset($_POST['odontologia_valor_alterar'])) {
+
+                if (isset($_POST['odontologia_valor_alterar'])) {
                     $this->db->set('odontologia_valor_alterar', 't');
                 } else {
                     $this->db->set('odontologia_valor_alterar', 'f');
@@ -1208,6 +1289,14 @@ class empresa_model extends Model {
                                chat,
                                procedimento_excecao,
                                ordem_chegada,
+                               ep.valor_autorizar,
+                               ep.gerente_contasapagar,
+                               ep.cpf_obrigatorio,
+                               ep.orcamento_recepcao,
+                               ep.relatorio_ordem,
+                               ep.relatorio_producao,
+                               ep.relatorios_recepcao,
+                               ep.financeiro_cadastro,
                                botao_faturar_guia,
                                botao_faturar_procedimento,
                                producao_medica_saida,
@@ -1293,7 +1382,15 @@ class empresa_model extends Model {
             $this->_recomendacao_obrigatorio = $return[0]->recomendacao_obrigatorio;
             $this->_botao_ativar_sala = $return[0]->botao_ativar_sala;
             $this->_oftamologia = $return[0]->oftamologia;
-            $this->_cancelar_sala_espera = $return[0]->cancelar_sala_espera;
+            
+            $this->_valor_autorizar = $return[0]->valor_autorizar;
+            $this->_gerente_contasapagar = $return[0]->gerente_contasapagar;
+            $this->_cpf_obrigatorio = $return[0]->cpf_obrigatorio;
+            $this->_orcamento_recepcao = $return[0]->orcamento_recepcao;
+            $this->_relatorio_ordem = $return[0]->relatorio_ordem;
+            $this->_relatorio_producao = $return[0]->relatorio_producao;
+            $this->_relatorios_recepcao = $return[0]->relatorios_recepcao;
+            $this->_financeiro_cadastro = $return[0]->financeiro_cadastro;
         } else {
             $this->_empresa_id = null;
         }

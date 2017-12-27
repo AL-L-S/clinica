@@ -1,10 +1,9 @@
-<? 
-$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
-$empresa = $this->guia->listarempresapermissoes(); 
+<?
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');
+$empresa = $this->guia->listarempresapermissoes();
 $odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
 $retorno_alterar = $empresa[0]->selecionar_retorno;
 //var_dump($retorno_alterar); die;
-
 ?>
 <div class="content ficha_ceatox">
     <div class="bt_link_new" style="width: 150pt">
@@ -20,11 +19,13 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
     <div >
         <?
         $perfil_id = $this->session->userdata('perfil_id');
-        
+
         $botao_faturar_guia = $this->session->userdata('botao_faturar_guia');
         $botao_faturar_proc = $this->session->userdata('botao_faturar_proc');
         $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');
-        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
+
         $sala = "";
         $ordenador1 = "";
         $sala_id = "";
@@ -58,11 +59,11 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                         <label>Sexo</label>
                         <input name="sexo" id="txtSexo" class="size2" 
                                value="<?
-                               if ($paciente['0']->sexo == "M"):echo 'Masculino';
-                               endif;
-                               if ($paciente['0']->sexo == "F"):echo 'Feminino';
-                               endif;
-                               ?>" readonly="true">
+        if ($paciente['0']->sexo == "M"):echo 'Masculino';
+        endif;
+        if ($paciente['0']->sexo == "F"):echo 'Feminino';
+        endif;
+        ?>" readonly="true">
                     </div>
 
                     <div>
@@ -100,7 +101,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
-                                <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
                                 <th class="tabela_header">Qtde</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Recomendação</th>
@@ -116,8 +117,8 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $item) : ?>
                                             <option value="<?= $item->exame_sala_id; ?>"<?
-                                            if ($sala == $item->nome):echo 'selected';
-                                            endif;
+                                        if ($sala == $item->nome):echo 'selected';
+                                        endif;
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
@@ -126,22 +127,22 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
                                             <option value="<?= $item->operador_id; ?>"<?
-                                            $lastMed = (count($exames) > 0) ? $exames[count($exames) - 1]->medico_agenda_id : '';
-                                            if ($lastMed == $item->operador_id):echo 'selected';
-                                            endif;
+                                        $lastMed = (count($exames) > 0) ? $exames[count($exames) - 1]->medico_agenda_id : '';
+                                        if ($lastMed == $item->operador_id):echo 'selected';
+                                        endif;
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
                                 <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
-                                
+
                                 <td  width="50px;">
                                     <select name="convenio1" id="convenio1" class="size1" required="">
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
-                                
+
                                 <td  width="50px;">
                                     <select  name="grupo1" id="grupo1" class="size1" >
                                         <option value="">Selecione</option>
@@ -155,7 +156,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-                                
+
                                 <td  width="50px;">
 <!--                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
                                         <option value="">Selecione</option>
@@ -166,19 +167,21 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 </td>
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
                                 <td  ><input type="text" name="qtde" id="qtde" class="texto01" readonly=""/></td>
                                 <td  width="50px;">
                                     <select  name="formapamento" id="formapamento" class="size1" >
                                         <option value="0">Selecione</option>
-                                        <? foreach ($forma_pagamento as $item) : 
-                                            if($item->forma_pagamento_id == 1000) continue;?>
+                                        <? foreach ($forma_pagamento as $item) :
+                                            if ($item->forma_pagamento_id == 1000)
+                                                continue;
+                                            ?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                        <? endforeach; ?>
+<? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="50px;">
-                                    <select name="indicacao" id="indicacao" class="size1" <?= $recomendacao_obrigatorio == 't' ? 'required' : ''?>>
+                                    <select name="indicacao" id="indicacao" class="size1" <?= $recomendacao_obrigatorio == 't' ? 'required' : '' ?>>
                                         <option value='' >Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
@@ -219,7 +222,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
             <fieldset>
                 <?
                 if ($contador > 0) {
-                    
+
                     foreach ($grupo_pagamento as $grupo) { //buscar exames com forma de pagamento pre-definida (inicio)
                         $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id, $grupo->financeiro_grupo_id);
 
@@ -264,8 +267,8 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
 
                                                     </a></div>
-<!--                                            </td>
-                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                <!--                                            </td>
+                                                                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                                     </a></div>
@@ -273,18 +276,18 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                                     </a></div>
-                                            <!--</td>-->
-                                            <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-                                                <? if ($perfil_id != 11) { ?>
-                                                    <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                <!--</td>-->
+                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+                    <? if ($perfil_id != 11) { ?>
+                                                                <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                         <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                             </a></div>
-                                                    <!--</td>-->
-                                                <? } ?>
-                                            <? } ?>
-                                                    </td>
+                                                        <!--</td>-->
+                                                    <? } ?>
+                <? } ?>
+                                            </td>
                                         </tr>
                                     </tbody>
                                     <?
@@ -297,24 +300,27 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         </th>
                                         <? if ($perfil_id != 11) { ?>
 
-                                            <? if ($perfil_id == 1 || $faturado == 0) { 
-                                                if ($botao_faturar_guia == 't') { ?>
+                                            <? if ($perfil_id == 1 || $faturado == 0) {
+                                                if ($botao_faturar_guia == 't') {
+                                                    ?>
                                                     <th colspan="2" align="center"><center><div class="bt_linkf">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
 
                                                     </a></div></center></th>
-                                            <? } 
-                                            if ($botao_faturar_proc == 't') { ?>
-                                                <th colspan="2" align="center">    
-                                                    <div class="bt_linkf">
+                    <? }
+                    if ($botao_faturar_proc == 't') {
+                        ?>
+                                            <th colspan="2" align="center">    
+                                                <div class="bt_linkf">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 
                                                     </a></div></center>
-                                                </th>
-                                                <?
-                                            }
+                                            </th>
+                                            <?
+                                        }
                                     }
-                                 } ?>
+                                }
+                                ?>
                                 </tr>
                                 </tfoot>
                             </table> 
@@ -345,7 +351,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                             foreach ($exames as $value) {
 
                                 $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
-                                if ( empty($teste) ) {
+                                if (empty($teste)) {
 //                                    die;
                                     $exames_sem_formapagamento = $this->exametemp->listarprocedimentosemformapagamentogeral($ambulatorio_guia_id, $value->procedimento_tuss_id);
                                     foreach ($exames_sem_formapagamento as $item) {
@@ -368,8 +374,8 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
 
                                                         </a></div>
-<!--                                                </td>
-                                                <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                    <!--                                                </td>
+                                                                                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                     <div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                                         </a></div>
@@ -378,18 +384,18 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                                         </a></div>
-                                                <!--</td>-->
-                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-                                                    <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                    <!--</td>-->
+                    <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+                                                            <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                         <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                             </a></div>
-                                                <?
-                                                } else {
-                                                    $faturado++;
-                                                }
-                                                ?>
+                                                        <?
+                                                    } else {
+                                                        $faturado++;
+                                                    }
+                                                    ?>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -397,50 +403,51 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                     }
                                     ?>
 
-                                    <?
-                                }
-                            }
-                            ?>
+                <?
+            }
+        }
+        ?>
                             <tfoot>
                                 <tr>
                                     <th class="tabela_footer" colspan="6">
                                         Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                     </th>
 
-                                    <? if ($perfil_id != 11) { ?>
+        <? if ($perfil_id != 11) { ?>
 
-                                        <? if ($perfil_id == 1 || $faturado == 0) { 
-                                            if ($botao_faturar_guia == 't') {?>
+            <? if ($perfil_id == 1 || $faturado == 0) {
+                if ($botao_faturar_guia == 't') {
+                    ?>
                                                 <th colspan="2" align="center"><center><div class="bt_linkf">
-                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Guia
 
-                                                    </a></div></center>
-                                                </th>
-                                            <? }
-                                            if ($botao_faturar_proc == 't') { ?>
-                                                <th colspan="2" align="center">    
-                                                    <div class="bt_linkf">
-                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+                                                </a></div></center>
+                                        </th>
+                <? }
+                if ($botao_faturar_proc == 't') {
+                    ?>
+                                        <th colspan="2" align="center">    
+                                            <div class="bt_linkf">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 
-                                                    </a></div></center>
-                                                </th>
-                                                <?
-                                            }
-                                        }
-                                    }
-                                    ?>
+                                                </a></div></center>
+                                        </th>
+                    <?
+                }
+            }
+        }
+        ?>
                             </tr>
                             </tfoot>
                         </table> 
                         <br/>
-                        <?
-                    }
+                    <?
                 }
-                ?>
+            }
+            ?>
 
             </fieldset>
-            <?
-            if (count(@$exames_pacote) > 0) { ?>
+<? if (count(@$exames_pacote) > 0) { ?>
                 <fieldset>
                     <table id="table_agente_toxico" border="0">
                         <thead>
@@ -456,85 +463,88 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                             </tr>
                         </thead>
 
-                            <?
-                            $total = 0;
-                            $guia = 0;
-                            $faturado = 0;
-                            foreach ($exames_pacote as $item) {
-                                $estilo_linha = "tabela_content01";
-                                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                                $total = $total + $item->valor_total;
-                                $guia = $item->guia_id;
-                                ?>
-                                <tbody>
-                                    <tr>
-                                        <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->pacote_nome; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <div class="bt_link_new">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/atendimentocancelamentopacote/<?= $guia ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>');">Cancelar Pacote
-
-                                                </a>
-                                            </div>
-                                            <div class="bt_link_new">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
-                                                </a></div>
-                                        </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
-                                                </a></div>
-                                        <!--</td>-->
-                                        <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-                                            <? if ($perfil_id != 11) { ?>
-                                                <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
-                                                    <div class="bt_link_new">
-                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
-
-                                                        </a></div>
-                                                <!--</td>-->
-                                            <? } ?>
-                                        <? } ?>
-                                                </td>
-                                    </tr>
-                                </tbody>
-                                <?
-                            }
+                        <?
+                        $total = 0;
+                        $guia = 0;
+                        $faturado = 0;
+                        foreach ($exames_pacote as $item) {
+                            $estilo_linha = "tabela_content01";
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            $total = $total + $item->valor_total;
+                            $guia = $item->guia_id;
                             ?>
-                            <tfoot>
+                            <tbody>
                                 <tr>
-                                    <th class="tabela_footer" colspan="6">
-                                        Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
-                                    </th>
-                                    <? if ($perfil_id != 11) { ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->pacote_nome; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                        <div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/atendimentocancelamentopacote/<?= $guia ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>');">Cancelar Pacote
 
-                                        <? if ($perfil_id == 1 || $faturado == 0) { 
-                                            if ($botao_faturar_guia == 't') { ?>
-                                                <th colspan="2" align="center"><center><div class="bt_linkf">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
+                                            </a>
+                                        </div>
+                                        <div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
+                                            </a></div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
+                                            </a></div>
+                                        <!--</td>-->
+        <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+            <? if ($perfil_id != 11) { ?>
+                                                        <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                <div class="bt_link_new">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
-                                                </a></div></center></th>
-                                        <? } 
-                                        if ($botao_faturar_proc == 't') { ?>
-                                            <th colspan="2" align="center">    
-                                                <div class="bt_linkf">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
-
-                                                </a></div></center>
-                                            </th>
-                                            <?
-                                        }
-                                }
-                             } ?>
+                                                    </a></div>
+                                                <!--</td>-->
+                                <? } ?>
+                            <? } ?>
+                                    </td>
                                 </tr>
-                            </tfoot>
-                        </table> 
+                            </tbody>
+        <?
+    }
+    ?>
+                        <tfoot>
+                            <tr>
+                                <th class="tabela_footer" colspan="6">
+                                    Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
+                                </th>
+    <? if ($perfil_id != 11) { ?>
+
+                            <? if ($perfil_id == 1 || $faturado == 0) {
+                                if ($botao_faturar_guia == 't') {
+                                    ?>
+                                            <th colspan="2" align="center"><center><div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
+
+                                            </a></div></center></th>
+            <? }
+            if ($botao_faturar_proc == 't') {
+                ?>
+                                    <th colspan="2" align="center">    
+                                        <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+
+                                            </a></div></center>
+                                    </th>
+                            <?
+                        }
+                    }
+                }
+                ?>
+                        </tr>
+                        </tfoot>
+                    </table> 
                 </fieldset>
-            <? } ?>
+<? } ?>
 
         </div> 
     </div> 
@@ -558,7 +568,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 // Fazendo com que ao clicar no botão de submit, este passe a ficar desabilitado
                                 var formID = document.getElementById("form_guia");
                                 var send = $("#submitButton");
-                                $(formID).submit(function(event){ 
+                                $(formID).submit(function (event) {
                                     if (formID.checkValidity()) {
                                         send.attr('disabled', 'disabled');
                                     }
@@ -578,20 +588,20 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 $(function () {
                                     $("#accordion").accordion();
                                 });
-                                
-                                if($("#exame").val()){
-                                    
+
+                                if ($("#exame").val()) {
+
                                     var convenio = <?= (@$exames[count(@$exames) - 1]->convenio_id != "") ? @$exames[count(@$exames) - 1]->convenio_id : 0; ?>;
                                     $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $("#exame").val(), ajax: true}, function (j) {
                                         var options = '<option value=""></option>';
                                         for (var i = 0; i < j.length; i++) {
                                             var select = (convenio == j[i].convenio_id) ? " selected " : "";
-                                            options += '<option value="' + j[i].convenio_id + '" '+ select + '>' + j[i].nome + '</option>';
+                                            options += '<option value="' + j[i].convenio_id + '" ' + select + '>' + j[i].nome + '</option>';
                                         }
                                         $('#convenio1').html(options).show();
                                         $('.carregando').hide();
-                                        
-                                        if( $('#grupo1').val() && select != ""){
+
+                                        if ($('#grupo1').val() && select != "") {
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $('#grupo1').val(), convenio1: convenio, teste: $('#exame').val()}, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
@@ -676,9 +686,9 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                 $("#procedimento1").trigger("chosen:updated");
                                                 $('.carregando').hide();
                                             });
-                                            
-                                            if($("#grupo1").val()){
-                                                
+
+                                            if ($("#grupo1").val()) {
+
                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val(), teste: $('#exame').val()}, function (j) {
                                                     options = '<option value=""></option>';
                                                     for (var c = 0; c < j.length; c++) {
@@ -691,7 +701,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     $('.carregando').hide();
                                                 });
                                             }
-                                            
+
                                         } else {
                                             $('#procedimento1').html('<option value="">Selecione</option>');
                                         }
@@ -708,86 +718,86 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                 options += j[0].valortotal;
                                                 qtde = "";
                                                 qtde += j[0].qtde;
-                                                <?if($odontologia_alterar == 't'){?>
-                                                if(j[0].grupo == 'ODONTOLOGIA'){
-                                                    $("#valor1").prop('readonly', false);
-                                                }else{
-                                                    $("#valor1").prop('readonly', true);
-                                                }    
-                                                <?}?>
+<? if ($odontologia_alterar == 't') { ?>
+                                                    if (j[0].grupo == 'ODONTOLOGIA') {
+                                                        $("#valor1").prop('readonly', false);
+                                                    } else {
+                                                        $("#valor1").prop('readonly', true);
+                                                    }
+<? } ?>
                                                 document.getElementById("valor1").value = options;
                                                 document.getElementById("qtde").value = qtde;
                                                 $('.carregando').hide();
                                             });
-                                            
-                                            
+
+
                                         } else {
                                             $('#valor1').html('value=""');
                                         }
                                     });
                                 });
-                                
-                                
+
+
                                 $(function () {
-                                            $('#procedimento1').change(function () {
-                                                if ($(this).val()) {
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                        options = "";
-                                                        options += j[0].valortotal;
-                                                        document.getElementById("valor1").value = options
-                                                        $('.carregando').hide();
-                                                    });
-                                                    $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+                                    $('#procedimento1').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                options = "";
+                                                options += j[0].valortotal;
+                                                document.getElementById("valor1").value = options
+                                                $('.carregando').hide();
+                                            });
+                                            $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
 //                                                        console.log(r);
-                                                        if(r.qtdeConsultas == 0 && r.grupo == "RETORNO"){
-                                                            alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
-                                                            $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val(''));
-                                                        }else if(r.qtdeConsultas > 0 && r.grupo == "RETORNO" && r.retorno_realizado > 0){
-                                                            alert("Erro ao selecionar retorno. Esse paciente já realizou o retorno associado a esse procedimento no tempo cadastrado");
-                                                            $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val(''));
-                                                        }
-                                                    });
-                                                    
-                                                    $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
-                                                       
+                                                if (r.qtdeConsultas == 0 && r.grupo == "RETORNO") {
+                                                    alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
+                                                    $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val(''));
+                                                } else if (r.qtdeConsultas > 0 && r.grupo == "RETORNO" && r.retorno_realizado > 0) {
+                                                    alert("Erro ao selecionar retorno. Esse paciente já realizou o retorno associado a esse procedimento no tempo cadastrado");
+                                                    $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val(''));
+                                                }
+                                            });
+
+                                            $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimentoinverso', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
+
 //                                                        console.log(r);
-                    
-                                                        if(r.qtdeConsultas > 0 && r.retorno_realizado == 0){
+
+                                                if (r.qtdeConsultas > 0 && r.retorno_realizado == 0) {
 //                                                            alert('asdasd'); 
 //                                                            alert("Esse paciente executou um procedimento associado a um retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
 //                                                            alert(r.procedimento_retorno);
-                                                         if('<?=$retorno_alterar?>' == 'f'){
-                                                          if(confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")){
+                                                    if ('<?= $retorno_alterar ?>' == 'f') {
+                                                        if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
 //                                                                alert('asdas');
-                                                                $("#procedimento1").val(r.procedimento_retorno);
-    //                                                            $('#valor1').val('0.00');
-                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
-                                                                    $('.carregando').hide();
-                                                                });    
-                                                            }   
-                                                         }else{
-                                                          alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
-                                                          $("#procedimento1").val(r.procedimento_retorno);   
-                                                          $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
-                                                                    options = "";
-                                                                    options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
-                                                                    $('.carregando').hide();
-                                                                });
-                                                         }
-                                                            
-                                                            
+                                                            $("#procedimento1").val(r.procedimento_retorno);
+                                                            //                                                            $('#valor1').val('0.00');
+                                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                                options = "";
+                                                                options += j[0].valortotal;
+                                                                document.getElementById("valor1").value = options
+                                                                $('.carregando').hide();
+                                                            });
                                                         }
-                                                    });
-                                                } else {
-                                                    $('#valor1').html('value=""');
+                                                    } else {
+                                                        alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
+                                                        $("#procedimento1").val(r.procedimento_retorno);
+                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
+                                                            options = "";
+                                                            options += j[0].valortotal;
+                                                            document.getElementById("valor1").value = options
+                                                            $('.carregando').hide();
+                                                        });
+                                                    }
+
+
                                                 }
                                             });
-                                        });
+                                        } else {
+                                            $('#valor1').html('value=""');
+                                        }
+                                    });
+                                });
 
                                 $(function () {
                                     $('#procedimento1').change(function () {
@@ -803,10 +813,10 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                 $('#formapamento').html(options).show();
                                                 $('.carregando').hide();
                                             });
-                                            
+
                                             $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
 //                                                console.log(r);
-                                                if( r.qtdeConsultas == 0 && r.grupo == "RETORNO" ){
+                                                if (r.qtdeConsultas == 0 && r.grupo == "RETORNO") {
                                                     alert("Erro ao selecionar retorno. Esse paciente não executou o procedimento associado a esse retorno no(s) ultimo(s) " + r.diasRetorno + " dia(s).");
                                                     $("select[name=procedimento1]").val($("select[name=procedimento1] option:first-child").val());
                                                 }

@@ -3,6 +3,8 @@ $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio')
 $empresa = $this->guia->listarempresapermissoes(); 
 $odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
 $retorno_alterar = $empresa[0]->selecionar_retorno;
+$empresa_id = $this->session->userdata('empresa_id');
+$empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
 //var_dump($retorno_alterar); die;
 
 ?>
@@ -97,7 +99,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                             <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">autorizacao</th>
-                            <th class="tabela_header">V. Unit</th>
+                            <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
                             <th class="tabela_header">Qtde</th>
                             <th class="tabela_header">Pagamento</th>
                             <th class="tabela_header">Recomendação</th>
@@ -161,7 +163,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
+                                <td class="<?php echo $estilo_linha; ?>" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1"  min="1" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >

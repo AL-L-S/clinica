@@ -6217,9 +6217,11 @@ class exame_model extends Model {
                             ae.data_cadastro as datacadastro,
                             ae.data_autorizacao,
                             ae.data_atualizacao,
+                            ae.data_telefonema,
                             o.usuario as medico,
                             op.nome as operadorcadastro,
                             ope.nome as operadoratualizacao,
+                            opt.nome as operador_telefonema,
                             opa.nome as operadorautorizacao,
                             opai.nome as operador_bloqueio');
         $this->db->from('tb_agenda_exames ae');
@@ -6230,6 +6232,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador opa', 'opa.operador_id = ae.operador_autorizacao', 'left');
         $this->db->join('tb_operador ope', 'ope.operador_id = ae.operador_atualizacao', 'left');
         $this->db->join('tb_operador opai', 'opai.operador_id = ae.operador_bloqueio', 'left');
+        $this->db->join('tb_operador opt', 'opt.operador_id = ae.operador_telefonema', 'left');
         $this->db->where("ae.agenda_exames_id", $agenda_exames_id);
         $return = $this->db->get();
         return $return->result();

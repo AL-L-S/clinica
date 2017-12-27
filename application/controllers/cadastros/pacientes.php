@@ -321,6 +321,7 @@ class pacientes extends BaseController {
 
     function carregar($paciente_id) {
         $obj_paciente = new paciente_model($paciente_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
         $data['obj'] = $obj_paciente;
         $data['idade'] = 1;
         $this->loadView('cadastros/paciente-ficha', $data);
