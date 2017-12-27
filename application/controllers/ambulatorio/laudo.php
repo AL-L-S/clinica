@@ -99,6 +99,11 @@ class Laudo extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
+    function chamarpacientesalaespera($ambulatorio_laudo_id) {
+        $this->laudo->chamarpacientesalaespera($ambulatorio_laudo_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function chamarpaciente($ambulatorio_laudo_id) {
         $this->laudo->chamada($ambulatorio_laudo_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
