@@ -122,11 +122,11 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Procedimento*</th>
-                                <th class="tabela_header">autorizacao</th>
+                                <th class="tabela_header">Autorizacao</th>
                                 <th class="tabela_header"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Recomendação</th>
-                                <th class="tabela_header">ordenador</th>
+                                <th class="tabela_header">Ordenador</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
                         </thead>
