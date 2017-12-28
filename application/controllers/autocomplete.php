@@ -883,6 +883,16 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoconveniomedicocadastrosala() {
+
+        if (isset($_GET['convenio1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentoconveniomedicocadastrosala($_GET['convenio1'], $_GET['teste'], $_GET['sala']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentoconveniomedicocadastrosala();
+        }
+        echo json_encode($result);
+    }
+
     function procedimentoconveniomedicocadastro() {
 
         if (isset($_GET['convenio1'])) {
@@ -1218,6 +1228,14 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompleteprocedimentosgrupo($_GET['convenio1'], $_GET['grupo1']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentosgrupo(@$_GET['convenio1'], @$_GET['grupo1']);
+        }
+
+        echo json_encode($result);
+    }
+
+    function listargruposala() {
+        if ( isset($_GET['sala']) ) {
+            $result = $this->exametemp->listarautocompletegruposala($_GET['sala']);
         }
 
         echo json_encode($result);
