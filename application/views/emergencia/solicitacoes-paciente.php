@@ -47,6 +47,9 @@
                         <td width="80px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/novoatendimento/<?= $paciente_id ?>">Novo Atendimento</a></div></td>
                     <? } ?>
                     <td ><div style="width:80px; text-align: center;" class="bt_linkm botao_pequeno"><a class="botao_pequeno" href="<?= base_url() ?>ambulatorio/guia/pesquisar/<?= $args['paciente'] ?>">Guias</a></div></td>
+                    <? if ($imagem != 't') { ?>
+                        <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/acompanhamento/<?= $paciente_id ?>">Acompanhamento</a></div></td>
+                    <? } ?>
                 </tr>
                 <tr>
                     <? if ($imagem == 't') { ?>

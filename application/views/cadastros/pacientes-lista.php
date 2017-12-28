@@ -1,5 +1,8 @@
 <div class="content"> <!-- Inicio da DIV content -->
+<?
+//print_r($_SESSION); 
 
+?>
     <table>
         <tr>
             <td width="20px;">
