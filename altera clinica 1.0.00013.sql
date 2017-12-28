@@ -31,4 +31,9 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN financeiro_cadastro boolean D
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN retirar_botao_ficha boolean DEFAULT false;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN desativar_personalizacao_impressao boolean DEFAULT false;
 
+-- Dia 28/12/2017
+ALTER TABLE ponto.tb_empresa ADD COLUMN mostrar_logo_clinica boolean DEFAULT false;
+
+
+
 

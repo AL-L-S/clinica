@@ -54,6 +54,9 @@
                                 if ($perfil_id == 1):
                                     ?>
                                     <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                            <a   href="<?= base_url() ?>ambulatorio/empresa/configurarlogomarca/<?= $item->empresa_id ?>">Logomarca</a></div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
                                             <a   href="<?= base_url() ?>ambulatorio/empresa/configurarsms/<?= $item->empresa_id ?>">Serviço SMS</a></div>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">

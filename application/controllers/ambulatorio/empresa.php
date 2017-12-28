@@ -62,6 +62,92 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/configurarimpressaoorcamento-lista');
     }
 
+    function configurarlogomarca($empresa_id) {
+        
+        $obj_empresa = new empresa_model($empresa_id);
+        $data['obj'] = $obj_empresa;
+        
+        $this->load->helper('directory');
+        
+        if (!is_dir("./upload/logomarca")) {
+            mkdir("./upload/logomarca");
+            $destino = "./upload/logomarca";
+            chmod($destino, 0777);
+        }
+        if (!is_dir("./upload/logomarca/$empresa_id")) {
+            mkdir("./upload/logomarca/$empresa_id");
+            $destino = "./upload/logomarca/$empresa_id";
+            chmod($destino, 0777);
+        }
+        $data['empresa_id'] = $empresa_id;
+        $data['arquivo_pasta'] = directory_map("./upload/logomarca/$empresa_id/");
+//        echo "<pre>"; var_dump($data); die;
+        $this->loadView('ambulatorio/configurarlogomarca-form', $data);
+    }
+    
+    function gravarlogomarca() {
+        $empresa_id = $_POST['empresa_id'];
+        $data = $_FILES['userfile'];
+        $nome = $_FILES['userfile']['name'];
+        
+        $this->empresa->gravarlogomarca();
+        
+        if (!is_dir("./upload/logomarca")) {
+            mkdir("./upload/logomarca");
+            $destino = "./upload/logomarca";
+            chmod($destino, 0777);
+        }
+        if (!is_dir("./upload/logomarca/$empresa_id")) {
+            mkdir("./upload/logomarca/$empresa_id");
+            $destino = "./upload/logomarca/$empresa_id";
+            chmod($destino, 0777);
+        }
+        
+        array_map('unlink', glob("./upload/logomarca/$empresa_id/*.*"));
+        
+        
+        $config['upload_path'] = "./upload/logomarca/$empresa_id/";
+        $config['allowed_types'] = 'gif|jpg|JPG|png|jpeg|JPEG|pdf|doc|docx|xls|xlsx|ppt|zip|rar|bmp|BMP';
+        $config['max_size'] = '0';
+        $config['overwrite'] = TRUE;
+        $config['encrypt_name'] = FALSE;
+        $config['name'] = FALSE;
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload()) {
+            $error = array('error' => $this->upload->display_errors());
+        } else {
+            $error = null;
+            $data = array('upload_data' => $this->upload->data());
+        }
+
+        $arquivo = "./upload/logomarca/$empresa_id/$nome";
+        $str = explode(".", $nome);
+        $ext = $str[count($str) - 1];
+        $arquivoNome = "./upload/logomarca/$empresa_id/logomarca.{$ext}";
+        rename($arquivo, $arquivoNome);
+
+        redirect(base_url() . "ambulatorio/empresa/configurarlogomarca/$empresa_id");
+    }
+    
+    function excluirlogomarca($empresa_id) {
+        
+        if (!is_dir("./upload/logomarca")) {
+            mkdir("./upload/logomarca");
+            $destino = "./upload/logomarca";
+            chmod($destino, 0777);
+        }
+        if (!is_dir("./upload/logomarca/$empresa_id")) {
+            mkdir("./upload/logomarca/$empresa_id");
+            $destino = "./upload/logomarca/$empresa_id";
+            chmod($destino, 0777);
+        }
+        
+        array_map('unlink', glob("./upload/logomarca/$empresa_id/*.*"));
+
+        redirect(base_url() . "ambulatorio/empresa/configurarlogomarca/$empresa_id");
+    }
+
     function configurarcabecalho($empresa_impressao_cabecalho_id) {
         $data['empresa_impressao_cabecalho_id'] = $empresa_impressao_cabecalho_id;
         $data['impressao'] = $this->empresa->listarconfiguracaoimpressaocabecalho($empresa_impressao_cabecalho_id);

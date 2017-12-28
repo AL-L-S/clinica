@@ -525,7 +525,6 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                     });
                                 }
                                 
-//                                alert('asd2');
                                 $(function () {
                                     $('#sala1').change(function () {
 //                                        alert($('#sala1').val());
@@ -534,9 +533,13 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                             $.getJSON('<?= base_url() ?>autocomplete/listargruposala', { sala: $(this).val() }, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
-                                                    options += '<option value="' + j[c].nome + '">' + j[c].nome + '</option>';
+                                                    if( $('#grupo1').val() == j[c].nome ){
+                                                        options += '<option value="' + j[c].nome + '" selected>' + j[c].nome + '</option>';
+                                                    }
+                                                    else{
+                                                        options += '<option value="' + j[c].nome + '">' + j[c].nome + '</option>';
+                                                    }
                                                 }
-//                                                alert('asd');
                                                 $('#grupo1 option').remove();
                                                 $('#grupo1').append(options);
                                                 $("#grupo1").trigger("chosen:updated");
@@ -544,17 +547,31 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                             }); 
                                             
                                             if($('#convenio1').val()) {
-                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedicocadastrosala', {convenio1: $('#convenio1').val(), sala: $('#sala1').val(), teste: $('#exame').val(), ajax: true}, function (j) {
+                                                if ( $('#grupo1').val() ){
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val(), teste: $('#exame').val()}, function (j) {
                                                     options = '<option value=""></option>';
                                                     for (var c = 0; c < j.length; c++) {
                                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                                     }
-    //                                                $('#procedimento1').html(options).show();
                                                     $('#procedimento1 option').remove();
                                                     $('#procedimento1').append(options);
                                                     $("#procedimento1").trigger("chosen:updated");
                                                     $('.carregando').hide();
                                                 });
+                                                }
+                                                else{
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedicocadastrosala', {convenio1: $('#convenio1').val(), sala: $('#sala1').val(), teste: $('#exame').val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        for (var c = 0; c < j.length; c++) {
+                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                        }
+        //                                                $('#procedimento1').html(options).show();
+                                                        $('#procedimento1 option').remove();
+                                                        $('#procedimento1').append(options);
+                                                        $("#procedimento1").trigger("chosen:updated");
+                                                        $('.carregando').hide();
+                                                    });                                                                            
+                                                }
                                             }
                                         }
                                     });
