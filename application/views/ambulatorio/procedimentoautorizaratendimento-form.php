@@ -560,17 +560,22 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                         });
                     }
                     else{
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedicocadastrosala', {convenio1: $('#convenio<?= $b ?>').val(), sala: $('#sala<?= $b ?>').val(), teste: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
-                            options = '<option value=""></option>';
-                            for (var c = 0; c < j.length; c++) {
-                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                            }
-//                                                $('#procedimento1').html(options).show();
-                            $('#procedimento<?= $b ?> option').remove();
-                            $('#procedimento<?= $b ?>').append(options);
-                            $("#procedimento<?= $b ?>").trigger("chosen:updated");
-                            $('.carregando').hide();
-                        });
+                        if( $('#sala<?= $b ?>').val() ) {
+                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedicocadastrosala', {convenio1: $('#convenio<?= $b ?>').val(), sala: $('#sala<?= $b ?>').val(), teste: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
+                                options = '<option value=""></option>';
+                                for (var c = 0; c < j.length; c++) {
+                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                }
+    //                                                $('#procedimento1').html(options).show();
+                                $('#procedimento<?= $b ?> option').remove();
+                                $('#procedimento<?= $b ?>').append(options);
+                                $("#procedimento<?= $b ?>").trigger("chosen:updated");
+                                $('.carregando').hide();
+                            });
+                        }
+                        else{
+                            alert("Favor, selecione uma sala.");
+                        }
                     }
                 } else {
                     $('#procedimento<?= $b ?>').html('<option value="">-- Escolha um exame --</option>');

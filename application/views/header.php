@@ -13,22 +13,24 @@ $perfil_id = $this->session->userdata('perfil_id');
 $marketing = $this->session->userdata('marketing');
 $internacao = $this->session->userdata('internacao');
 $financeiro = $this->session->userdata('financeiro');
+$empresa_id = $this->session->userdata('empresa_id');
 $calendario = $this->session->userdata('calendario');
 $operador_id = $this->session->userdata('operador_id');
 $relatoriorm = $this->session->userdata('relatoriorm');
 $odontologia = $this->session->userdata('odontologia');
 $laboratorio = $this->session->userdata('laboratorio');
 $faturamento = $this->session->userdata('faturamento');
+$logo_clinica = $this->session->userdata('logo_clinica');
 $especialidade = $this->session->userdata('especialidade');
 $centrocirurgico = $this->session->userdata('centrocirurgico');
-$calendario_layout = $this->session->userdata('calendario_layout');
-
-$gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
-$orcamento_recepcao = $this->session->userdata('orcamento_recepcao');
 $relatorio_ordem = $this->session->userdata('relatorio_ordem');
+$calendario_layout = $this->session->userdata('calendario_layout');
+$orcamento_recepcao = $this->session->userdata('orcamento_recepcao');
 $relatorio_producao = $this->session->userdata('relatorio_producao');
 $relatorios_recepcao = $this->session->userdata('relatorios_recepcao');
 $financeiro_cadastro = $this->session->userdata('financeiro_cadastro');
+$gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
+
 //var_dump($gerente_contasapagar); die;
 function alerta($valor) {
     echo "<script>alert('$valor');</script>";
@@ -81,7 +83,7 @@ function debug($object) {
                     $('input:text').setMask();
                 });
             })(jQuery);
-
+            
             // Fazendo atualização da tabela de SMS
             jQuery(function () {
                 jQuery.ajax({
@@ -309,6 +311,7 @@ function debug($object) {
                      title="Logo" height="70" id="Insert_logo"
                      style="display:block;" />
             </div>
+            
             <div id="login">
                 <div id="user_info">
                     <label style='font-family: serif; font-size: 8pt;'>Seja bem vindo <?= $this->session->userdata('login'); ?>! </label>
@@ -316,7 +319,7 @@ function debug($object) {
                     $numLetras = strlen($this->session->userdata('empresa'));
                     $css = ($numLetras > 20) ? 'font-size: 7pt' : '';
                     ?>
-                    <label style='font-family: serif; font-size: 8pt;'>Empresa: <span style="<?= $css ?>"><?= $this->session->userdata('empresa'); ?></span></label>
+                    <label style='font-family: serif; font-size: 8pt;'><?=$logo_clinica;?>Empresa: <span style="<?= $css ?>"><?= $this->session->userdata('empresa'); ?></span></label>
                 </div>
                 <div id="login_controles">
 
@@ -336,6 +339,14 @@ function debug($object) {
                 <!--<div id="user_foto">Imagem</div>-->
 
             </div>
+            
+            
+            <? if ($logo_clinica == 't') { ?>
+                <div id="imgLogoClinica">
+                    <img src="<?= base_url(); ?>upload/logomarca/<?= $empresa_id; ?>/logomarca" alt="Logo Clinica"
+                         title="Logo Clinica" height="70" id="Insert_logo" />
+                </div>
+            <? } ?>
         </div>
         <div class="decoration_header">&nbsp;</div>
 

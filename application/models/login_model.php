@@ -83,6 +83,7 @@ class login_model extends Model {
             $relatorio_producao = $retorno[0]->relatorio_producao;
             $relatorios_recepcao = $retorno[0]->relatorios_recepcao;
             $financeiro_cadastro = $retorno[0]->financeiro_cadastro;
+            $logo_clinica = $retorno[0]->mostrar_logo_clinica;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -145,6 +146,7 @@ class login_model extends Model {
                 'recomendacao_configuravel' => $recomendacao_configuravel,
                 'recomendacao_obrigatorio' => $recomendacao_obrigatorio,
                 'botao_ativar_sala' => $botao_ativar_sala,
+                'logo_clinica' => $logo_clinica,
                 'empresa' => $empresanome
             );
             $this->session->set_userdata($p);

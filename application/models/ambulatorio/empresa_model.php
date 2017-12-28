@@ -621,6 +621,23 @@ class empresa_model extends Model {
             return true;
     }
 
+    function gravarlogomarca() {
+        try {
+            if(isset($_POST['mostrarLogo'])){
+                $this->db->set('mostrar_logo_clinica', 't');
+            }
+            else{
+                $this->db->set('mostrar_logo_clinica', 'f');
+            }
+            $this->db->where('empresa_id', $_POST['empresa_id']);
+            $this->db->update('tb_empresa');
+
+            return $empresa_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarconfiguracaoemail() {
         try {
 //            var_dump($_POST['empresa_id']); die;
@@ -1329,6 +1346,7 @@ class empresa_model extends Model {
                                ep.retirar_botao_ficha,
                                ep.desativar_personalizacao_impressao,
                                ep.recomendacao_configuravel,
+                               f.mostrar_logo_clinica,
                                ep.recomendacao_obrigatorio');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -1418,6 +1436,7 @@ class empresa_model extends Model {
             $this->_financeiro_cadastro = $return[0]->financeiro_cadastro;
             $this->_retirar_botao_ficha = $return[0]->retirar_botao_ficha;
             $this->_desativar_personalizacao_impressao = $return[0]->desativar_personalizacao_impressao;
+            $this->_mostrar_logo_clinica = $return[0]->mostrar_logo_clinica;
         } else {
             $this->_empresa_id = null;
         }

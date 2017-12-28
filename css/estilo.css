@@ -40,7 +40,7 @@ body {
     padding:7px;
     min-height:65px;
 }
-
+.header div { display: inline-block }
 
 div .mensagem {
     text-align: center;
@@ -58,6 +58,9 @@ div .mensagem {
     float:left;
 }
 
+#imgLogoClinica{
+    float:right;
+}
 
 /* Icone de batepapo */
 
@@ -93,7 +96,7 @@ a#contatos_chat_lista img{
     color: #333;
     background: #f3f3f3 url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png");
     /* background: #f3f3f3 url("images/ui-bg_highlight-soft_75_ffe45c_1x100.png"); */
-    width:300px;
+    width:350px;
     height:65px;
     float:right;
     margin-right:5px;
@@ -105,6 +108,7 @@ a#contatos_chat_lista img{
     -webkit-border-radius: 4px;
 
 }
+
 #login_controles{
     float: right;
     width: 50px;
