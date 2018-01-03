@@ -160,6 +160,25 @@ class app_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function buscarQuantidadeAtendimentos($operador_id) {
+                
+        $this->db->select('ae.telefonema, 
+                           o.nome as medico,
+                           ae.inicio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        
+        $this->db->where('ae.paciente_id IS NOT NULL');
+        $this->db->where('ae.situacao', 'OK');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.data', date("Y-m-d"));
+        $this->db->where('ae.medico_consulta_id', $operador_id);
+        $this->db->orderby('ae.inicio');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
 }
 
 ?>

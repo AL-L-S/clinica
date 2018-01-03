@@ -123,6 +123,39 @@ class App extends Controller {
 
         die(json_encode($result));
     }
+    
+    function confirmarAtendimento(){
+        header('Access-Control-Allow-Origin: *');
+        die(json_encode(array("status" => "success")));
+    }
+    function buscarQuantidadeAtendimentos(){
+        header('Access-Control-Allow-Origin: *');
+        
+        $operador_id = $_GET['operador_id'];
+        $retorno = $this->app->buscarQuantidadeAtendimentos($operador_id);
+        
+        $marcados = count($retorno);
+        $confirmados = 0;
+        
+        if( $marcados > 0 ){
+            
+            $inicio = substr($retorno[0]->inicio, 0, 5);
+            $medico = $retorno[0]->medico;
+            
+            foreach($retorno as $value){
+                if( $value->telefonema == 't') $confirmados ++;
+            }
+        }
+        
+        $result = array(
+            "inicio" => $inicio,
+            "medico" => $medico,
+            "marcados" => $marcados,
+            "confirmados" => $confirmados
+        );
+        
+        die(json_encode($result));
+    }
 }
 
 /* End of file welcome.php */
