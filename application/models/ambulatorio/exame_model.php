@@ -1840,6 +1840,7 @@ class exame_model extends Model {
                             ae.telefonema,
                             ae.observacoes,
                             ae.encaixe,
+                            ae.confirmacao_medico,
                             p.celular,
                             ae.bloqueado,
                             p.telefone,

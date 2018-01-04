@@ -64,12 +64,14 @@ class App extends Controller {
                             $situacao = "OK";
                         }
                     }
-                    
                     $paciente = '';
                     if($item->paciente != ''){
                         @$exp = explode(" ", $item->paciente);
-                        $paciente = $exp[0] . " " . $exp[1] . (strlen($exp[1]) <= 2 ? " " . @$exp[2] : '');
+                        foreach ($exp as $value) {
+                            $paciente .= $value . " ";
+                        }
                     }
+//                    die;
 
                     $retorno['agenda_exames_id'] = $item->agenda_exames_id;
                     $retorno['paciente'] = $paciente;
@@ -121,6 +123,45 @@ class App extends Controller {
             );
         }
 
+        die(json_encode($result));
+    }
+    
+    function confirmarAtendimento(){
+        header('Access-Control-Allow-Origin: *');
+        
+        $retorno = $this->app->confirmarAtendimento();
+        
+        die ( json_encode( array("status" => "success") ) );
+    }
+    function buscarQuantidadeAtendimentos(){
+        header('Access-Control-Allow-Origin: *');
+        
+        $operador_id = $_GET['operador_id'];
+        $retorno = $this->app->buscarQuantidadeAtendimentos($operador_id);
+        
+        $marcados = count($retorno);
+        $confirmados = 0;
+        
+        $inicio = '';
+        $medico = '';
+        
+        if( $marcados > 0 ){
+            
+            $inicio = substr($retorno[0]->inicio, 0, 5);
+            $medico = $retorno[0]->medico;
+            
+            foreach($retorno as $value){
+                if( $value->telefonema == 't') $confirmados ++;
+            }
+        }
+        
+        $result = array(
+            "inicio" => $inicio,
+            "medico" => $medico,
+            "marcados" => $marcados,
+            "confirmados" => $confirmados
+        );
+        
         die(json_encode($result));
     }
 }
