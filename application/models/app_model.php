@@ -30,21 +30,6 @@ class app_model extends Model {
     }
 
     function buscandoAgenda() {
-//        var_dump($_GET);die;
-        $dataAtual = date("Y-m-d");
-        $this->db->select('operador_id');
-        $this->db->from('tb_operador o');
-        $this->db->where('o.ativo', 't');
-        $this->db->where('o.usuario', $_GET['usuario']);
-//        $this->db->where('o.senha', $_GET['senha']);
-        $retorno = $this->db->get()->result();
-        if(count($retorno) == 0){
-            return array("Erro" => "Nao foi encontrado nenhum usuario com os dados informados. "
-                                 . "Por favor, certifique de ter configurado corretamente o nome de usuario e senha.");
-        }
-        
-//        var_dump($retorno);die;
-        
         ini_set('display_errors',1);
         ini_set('display_startup_erros',1);
         error_reporting(E_ALL);
@@ -98,7 +83,7 @@ class app_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
 //        $this->db->where('ae.data', $dataAtual);
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where('ae.medico_consulta_id', @$retorno[0]->operador_id);
+        $this->db->where('ae.medico_consulta_id', $_GET['operador_id']);
         if (@$_GET['situacao'] != '') {
             switch ($_GET['situacao']) {
                 case 'o':
@@ -168,16 +153,27 @@ class app_model extends Model {
                            ae.inicio');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
-        
         $this->db->where('ae.paciente_id IS NOT NULL');
         $this->db->where('ae.situacao', 'OK');
-        $this->db->where('ae.cancelada', 'false');
-        $this->db->where('ae.data', date("Y-m-d"));
+        $this->db->where('ae.data', date("Y-m-d", strtotime("+1 day")) );
         $this->db->where('ae.medico_consulta_id', $operador_id);
         $this->db->orderby('ae.inicio');
         
         $return = $this->db->get();
+        
         return $return->result();
+    }
+    
+    function confirmarAtendimento(){
+        $operador_id = $_GET['operador_id'];
+        $resposta = $_GET['value'];
+        $data = date("Y-m-d", strtotime("+1 day"));
+        
+        $this->db->set("confirmacao_medico", $resposta);
+        $this->db->where("data", $data);
+        $this->db->where("medico_consulta_id", $operador_id);
+        $this->db->update("tb_agenda_exames");
+        
     }
 }
 

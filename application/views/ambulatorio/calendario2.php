@@ -613,12 +613,31 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                         <? } ?>
 
                         <!-- SALA -->   
-                        <? if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") { ?>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala; ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala; ?></b></td>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->medicoagenda; ?>"><b><a style="color:red;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->medicoagenda ?></b></td>
+                        <? 
+                        if($verifica = 2){ $cor = "green"; }
+                        else if($verifica = 3){ $cor = "red"; }
+                        else if($verifica = 4){ $cor = "blue"; }
+                        else if($verifica = 5){ $cor = "gray"; }
+                        else{ $cor = "black"; }
+                              
+                        $title = $item->medicoagenda;
+                        $corMedico = $cor;
+                        if ($item->confirmacao_medico != '') {
+                            if($item->confirmacao_medico == 'f'){
+                                $corMedico = "#ff8c00";
+                                $title .= ". Não comparecerá na clinica.";
+                            } 
+                            else{
+                                $corMedico = "green";
+                                $title .=  ". Comparecerá na clinica.";
+                            }
+                        }
+                        if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") {  ?>
+                            <td style="cursor: pointer; color: <?=$cor?>;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala; ?>"><b><a style="color:<?=$cor?>;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala; ?></b></td>
+                            <td style="cursor: pointer; color: <?= $corMedico; ?>" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $title; ?>"><b><a style="color:<?=$corMedico?>;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->medicoagenda ?></b></td>
                         <? } else { ?>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala ?>"><?= $item->sala ?></td>
-                            <td style="cursor: pointer; color:red;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->medicoagenda ?>"><?= $item->medicoagenda; ?></td>
+                            <td style="cursor: pointer; color: <?=$cor?>;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala ?>"><?= $item->sala ?></td>
+                            <td style="cursor: pointer; color: <?= $corMedico; ?>" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $title; ?>"><?= $item->medicoagenda; ?></td>
 
                         <? } ?>  
                         <!-- OBSERVAÇOES -->

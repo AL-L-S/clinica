@@ -34,6 +34,9 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN desativar_personalizacao_impr
 -- Dia 28/12/2017
 ALTER TABLE ponto.tb_empresa ADD COLUMN mostrar_logo_clinica boolean DEFAULT false;
 
+-- Dia 04/01/2018
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN confirmacao_medico boolean;
+
 
 
 

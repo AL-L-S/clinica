@@ -64,12 +64,14 @@ class App extends Controller {
                             $situacao = "OK";
                         }
                     }
-                    
                     $paciente = '';
                     if($item->paciente != ''){
                         @$exp = explode(" ", $item->paciente);
-                        $paciente = $exp[0] . " " . $exp[1] . (strlen($exp[1]) <= 2 ? " " . @$exp[2] : '');
+                        foreach ($exp as $value) {
+                            $paciente .= $value . " ";
+                        }
                     }
+//                    die;
 
                     $retorno['agenda_exames_id'] = $item->agenda_exames_id;
                     $retorno['paciente'] = $paciente;
@@ -126,7 +128,10 @@ class App extends Controller {
     
     function confirmarAtendimento(){
         header('Access-Control-Allow-Origin: *');
-        die(json_encode(array("status" => "success")));
+        
+        $retorno = $this->app->confirmarAtendimento();
+        
+        die ( json_encode( array("status" => "success") ) );
     }
     function buscarQuantidadeAtendimentos(){
         header('Access-Control-Allow-Origin: *');
@@ -136,6 +141,9 @@ class App extends Controller {
         
         $marcados = count($retorno);
         $confirmados = 0;
+        
+        $inicio = '';
+        $medico = '';
         
         if( $marcados > 0 ){
             
