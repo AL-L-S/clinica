@@ -37,6 +37,22 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN mostrar_logo_clinica boolean DEFAULT fal
 -- Dia 04/01/2018
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN confirmacao_medico boolean;
 
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_perfil WHERE nome = 'CONTADOR');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_perfil(perfil_id, nome)
+        VALUES (17, 'CONTADOR');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();
+
 
 
 

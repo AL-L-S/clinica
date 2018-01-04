@@ -763,7 +763,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || ($perfil_id == 5 && $gerente_contasapagar == 't'))) { ?>
+                    <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 ||($perfil_id == 5 && $gerente_contasapagar == 't'))) { ?>
 
 
                         <li><span class="folder">Financeiro</span>
@@ -791,7 +791,7 @@ function debug($object) {
                                 </li> 
                                 <li><span class="folder">Relatorios</span>
                                     <?
-                                    if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16) {
+                                    if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaida">Relatorio Saida</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaidagrupo">Relatorio Saida Tipo</a></span></ul>
@@ -809,7 +809,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatorioacompanhamentodecontas">Relatorio Acompanhamento de contas</a></span></ul>
                                         <?
                                     }
-                                    if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16) {
+                                    if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixapersonalizado">Relatorio Caixa Personalizado</a></span></ul>
@@ -824,13 +824,13 @@ function debug($object) {
                                         <?
                                     }
                                     ?>
-                                    <? if ($perfil_id == 1|| $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 6) {
+                                    <? if ($perfil_id == 1|| $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 6 || $perfil_id == 17) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconveniofinanceiro">Relatorio Produ&ccedil;&atilde;o M&eacute;dica</a></span></ul>
                                         <?
                                     }
                                     ?>
-                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16) {
+                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenioprevisaofinanceiro">Relatorio Previs&atilde;o M&eacute;dica</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoatendimentomensal">Relatorio Atendimento Mensal</a></span></ul>
@@ -954,7 +954,7 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <? if ($perfil_id != 4 && $perfil_id != 16) { ?>
+                    <? if ($perfil_id != 4 && $perfil_id != 16 && $perfil_id != 17) { ?>
                         <li><span class="folder">Configura&ccedil;&atilde;o</span>
                             <ul>
                                 <li><span class="folder">Recep&ccedil;&atilde;o</span>

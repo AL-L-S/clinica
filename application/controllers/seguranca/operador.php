@@ -12,6 +12,7 @@ class Operador extends BaseController {
         $this->load->model('cadastro/tipo_model', 'tipo');
         $this->load->model('cadastro/forma_model', 'forma');
         $this->load->model('cadastro/classe_model', 'classe');
+        $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -79,6 +80,10 @@ class Operador extends BaseController {
         $data['obj'] = $obj_operador_id;
         $data['classe'] = $this->classe->listarclasse();
         $data['listarPerfil'] = $this->operador_m->listarPerfil();
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
+        
         $this->loadView('seguranca/operador-form', $data);
     }
 

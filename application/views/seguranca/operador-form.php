@@ -335,36 +335,40 @@
 
                 </fieldset>
             </fieldset>
-            <fieldset>
-                <div>
-                    <label>Carimbo</label>
-                    <textarea name="carimbo" id="carimbo" rows="5" cols="30"  ><?= @$obj->_carimbo; ?></textarea>
-                </div>
-                <div>
-                    <label>Mini-Curriculo</label>
-                    <textarea name="curriculo" id="curriculo" rows="5" cols="50"  ><?= @$obj->_curriculo; ?></textarea>
-                </div>
-            </fieldset>
-            <fieldset>
-                <div>
-                    <label>Cabeçalho</label>
-                    <textarea name="cabecalho" id="cabecalho" rows="10" cols="100"  ><?= @$obj->_cabecalho; ?></textarea>
-                </div>
-                <div>
-                    <label>Rodapé</label>
-                    <textarea name="rodape" id="rodape" rows="10" cols="100"  ><?= @$obj->_rodape; ?></textarea>
-                </div>
-                <div>
-                    <label>Timbrado</label>
-                    <textarea name="timbrado" id="timbrado" rows="10" cols="100"  ><?= @$obj->_timbrado; ?></textarea>
-                </div>
-                <div>
-                    <p>
-                        Obs: O tamanho da imagem é padrão: 800px X 600px <br>
-                        Obs²: O formato da imagem importada deverá ser .png (Sendo possivel dessa forma, aplicar opacidade na imagem através de edição da mesma por softwares de terceiros)
-                    </p>
-                </div>
-            </fieldset>
+            
+            <? if (@$empresapermissao[0]->desativar_personalizacao_impressao == 'f'){ ?>
+                <fieldset>
+                    <div>
+                        <label>Carimbo</label>
+                        <textarea name="carimbo" id="carimbo" rows="5" cols="30"  ><?= @$obj->_carimbo; ?></textarea>
+                    </div>
+                    <div>
+                        <label>Mini-Curriculo</label>
+                        <textarea name="curriculo" id="curriculo" rows="5" cols="50"  ><?= @$obj->_curriculo; ?></textarea>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div>
+                        <label>Cabeçalho</label>
+                        <textarea name="cabecalho" id="cabecalho" rows="10" cols="100"  ><?= @$obj->_cabecalho; ?></textarea>
+                    </div>
+                    <div>
+                        <label>Rodapé</label>
+                        <textarea name="rodape" id="rodape" rows="10" cols="100"  ><?= @$obj->_rodape; ?></textarea>
+                    </div>
+                    <div>
+                        <label>Timbrado</label>
+                        <textarea name="timbrado" id="timbrado" rows="10" cols="100"  ><?= @$obj->_timbrado; ?></textarea>
+                    </div>
+                    <div>
+                        <p>
+                            Obs: O tamanho da imagem é padrão: 800px X 600px <br>
+                            Obs²: O formato da imagem importada deverá ser .png (Sendo possivel dessa forma, aplicar opacidade na imagem através de edição da mesma por softwares de terceiros)
+                        </p>
+                    </div>
+                </fieldset>
+            <? } ?>
+            
             <fieldset style="dislpay:block">
 
                 <button type="submit" name="btnEnviar">Enviar</button>
