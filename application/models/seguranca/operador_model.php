@@ -67,7 +67,10 @@ class Operador_model extends BaseModel {
 
         $this->db->where('tb_operador.usuario IS NOT NULL');
 //        $this->db->where('tb_operador.senha IS NOT NULL');
-
+        $operador_id = $this->session->userdata('operador_id');
+        if ($operador_id != 1) {
+            $this->db->where('tb_operador.operador_id != 1');
+        }
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 // $this->db->like('tb_operador.nome', $args['nome'], 'left');
