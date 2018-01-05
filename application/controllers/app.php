@@ -133,6 +133,41 @@ class App extends Controller {
         
         die ( json_encode( array("status" => "success") ) );
     }
+    
+    function listarLembretes(){
+        header('Access-Control-Allow-Origin: *');
+        $retorno = $this->app->listarLembretes();
+           
+        $var = array();
+        foreach($retorno as $value){
+            $var[] = array(
+                "empresa_lembretes_id" => $value->empresa_lembretes_id,
+                "remetente" => $value->remetente,
+                "texto" => $value->texto,
+                "data" => date("d/m/Y H:i", strtotime($value->data_cadastro) ),
+                "visualizado" => $value->visualizado
+            ); 
+        }
+        
+        die ( json_encode( $var ) );
+    }
+    
+    
+    function buscarLembreteNaoLido(){
+        header('Access-Control-Allow-Origin: *');
+        $retorno = $this->app->buscarLembreteNaoLido();
+           
+        $var = array();
+        foreach($retorno as $value){
+            $var[] = array(
+                "operador" => $value->operador,
+                "texto" => $value->texto
+            ); 
+        }
+        
+        die ( json_encode( $var ) );
+    }
+    
     function buscarQuantidadeAtendimentos(){
         header('Access-Control-Allow-Origin: *');
         

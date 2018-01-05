@@ -53,7 +53,7 @@ class empresa_model extends Model {
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
 
-        $this->db->select("el.empresa_lembretes_id,
+        $this->db->select(" el.empresa_lembretes_id,
                             el.texto,
                             el.perfil_destino,
                             el.operador_destino,
@@ -67,7 +67,6 @@ class empresa_model extends Model {
         $this->db->from('tb_empresa_lembretes el');
         $this->db->join('tb_operador o', "o.operador_id = el.operador_destino");
         $this->db->where('el.empresa_id', $empresa_id);
-//        $this->db->where('el.ativo', 't');
 
         if (isset($args['texto']) && strlen(@$args['texto']) > 0) {
             $this->db->where('el.texto ilike', "%" . $args['texto'] . "%");
@@ -397,8 +396,6 @@ class empresa_model extends Model {
 
         if ($_POST['operador_id'] == 'TODOS') {
             foreach ($return as $value) {
-
-
                 if ($empresa_lembretes_id == "" || $empresa_lembretes_id == "0") {// insert
                     $this->db->set('texto', $_POST['descricao']);
                     $this->db->set('operador_destino', $value->operador_id);

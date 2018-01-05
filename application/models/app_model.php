@@ -18,6 +18,67 @@ class app_model extends Model {
         return $return->result();
     }
 
+    function listarLembretes() {
+        
+        $operador_id = $_GET['operador_id'];
+
+        $this->db->select(" el.empresa_lembretes_id,
+                            el.texto,
+                            el.data_cadastro,
+                            o.nome as operador,
+                            op.nome as remetente,
+                            (
+                                SELECT COUNT(*) 
+                                FROM ponto.tb_empresa_lembretes_visualizacao 
+                                WHERE ponto.tb_empresa_lembretes_visualizacao.empresa_lembretes_id = el.empresa_lembretes_id 
+                            ) as visualizado");
+        $this->db->from('tb_empresa_lembretes el');
+        $this->db->join('tb_operador o', "o.operador_id = el.operador_destino");
+        $this->db->join('tb_operador op', "op.operador_id = el.operador_cadastro");
+        $this->db->where('el.ativo', 't');
+        $this->db->where('operador_destino', $operador_id);
+        $this->db->orderby('data_cadastro DESC');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function buscarLembreteNaoLido() {
+        
+        $operador_id = $_GET['operador_id'];
+//        var_dump($operador_id); die;
+        $this->db->select('empresa_lembretes_id,
+                            texto,
+                            empresa_id,
+                            o.nome as operador');
+        $this->db->from('tb_empresa_lembretes el');
+        $this->db->join('tb_operador o', 'o.operador_id = el.operador_cadastro', 'left');
+        $this->db->where('el.ativo', 't');
+        $this->db->where('operador_destino', $operador_id);
+        $this->db->where('(
+                            SELECT COUNT(*) 
+                            FROM ponto.tb_empresa_lembretes_visualizacao 
+                            WHERE ponto.tb_empresa_lembretes_visualizacao.empresa_lembretes_id = el.empresa_lembretes_id 
+                            AND ponto.tb_empresa_lembretes_visualizacao.operador_visualizacao = ' . $operador_id . '
+                        ) =', 0);
+        $return = $this->db->get();
+        $retorno = $return->result();
+        
+        foreach($retorno as $value){
+            
+            $empresa_id = $value->empresa_id;
+            $horario = date("Y-m-d H:i:s");
+
+            $this->db->set('empresa_lembretes_id', $value->empresa_lembretes_id);
+            $this->db->set('data_visualizacao', $horario);
+            $this->db->set('operador_visualizacao', $operador_id);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->insert('tb_empresa_lembretes_visualizacao');
+            
+        }
+        
+        return $retorno;
+    }
+
     function validaUsuario() {
         $this->db->select('operador_id');
         $this->db->from('tb_operador');

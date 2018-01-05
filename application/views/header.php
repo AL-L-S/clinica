@@ -319,7 +319,7 @@ function debug($object) {
                     $numLetras = strlen($this->session->userdata('empresa'));
                     $css = ($numLetras > 20) ? 'font-size: 7pt' : '';
                     ?>
-                    <label style='font-family: serif; font-size: 8pt;'><?=$logo_clinica;?>Empresa: <span style="<?= $css ?>"><?= $this->session->userdata('empresa'); ?></span></label>
+                    <label style='font-family: serif; font-size: 8pt;'>Empresa: <span style="<?= $css ?>"><?= $this->session->userdata('empresa'); ?></span></label>
                 </div>
                 <div id="login_controles">
 
