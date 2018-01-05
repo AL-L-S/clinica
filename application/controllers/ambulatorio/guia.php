@@ -1318,15 +1318,18 @@ class Guia extends BaseController {
         $data['grupo_pagamento'] = $this->formapagamento->listargrupos();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        
         if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
             $data['exames_lista'] = $this->exametemp->listarexamespacienteatendimento($ambulatorio_guia_id);
+            $data['exames_particular'] = $this->exametemp->listarexamespacienteatendimentoparticular($ambulatorio_guia_id);
             $data['exames_pacote'] = $this->exametemp->listarpacoteexamespaciente($ambulatorio_guia_id);
         } else {
             $data['exames'] = array();
             $data['exames_lista'] = array();
             $data['exames_pacote'] = array();
         }
+        
         $data['grupos'] = $this->procedimento->listargruposatendimento();
 
         $data['x'] = 0;

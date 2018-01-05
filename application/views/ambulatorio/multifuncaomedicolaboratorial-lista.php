@@ -173,7 +173,7 @@
                                         </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
                                             <div class="bt_link">
-                                                <a target="_blank" onclick="javascript: return confirm('Deseja realmente enviar o paciente?');" href="<?= base_url() ?>ambulatorio/exame/enviarsalaesperamedicolaboratorial/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>/<?= $item->medico_consulta_id ?>">Enviar</a>
+                                                <a target="_blank" onclick="javascript: return confirm('Deseja realmente confirmar o paciente?');" href="<?= base_url() ?>ambulatorio/exame/enviarsalaesperamedicolaboratorial/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>/<?= $item->medico_consulta_id ?>">Confirmar</a>
                                             </div>
                                         </td>
                                     <? } else { ?>
