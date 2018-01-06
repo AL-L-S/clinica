@@ -19,6 +19,11 @@
             <tr>
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
             </tr>
+            <? if( isset($_POST['filtro_hora']) ){ ?>
+                <tr>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">DE <?= $_POST['horario_inicio']; ?>hrs as <?= $_POST['horario_fim']; ?>hrs</th>
+                </tr>
+            <? } ?>
             <? if ($grupo == "0") { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: TODOS</th>
@@ -137,9 +142,18 @@
                             <? } else { ?>
                                 <td><?= $item->guia_id; ?></td>
                                 <td>
-                                    <?if($item->data_antiga != ""){ echo " ** ";}?>
-                                    <?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
-                                    <?if($item->data_antiga != ""){ echo " ** ";}?>
+                                    <?
+                                    if($item->data_antiga != "") echo " ** ";
+                                    
+                                    if( isset($_POST['filtro_hora']) ){
+                                        echo date("d/m/Y H:i", strtotime($item->data . " " . $item->inicio));
+                                    }
+                                    else{
+                                        echo date("d/m/Y", strtotime($item->data));
+                                    }
+                                    
+                                    if($item->data_antiga != "") echo " ** ";
+                                    ?>
                                 </td>
                                 <td><?= utf8_decode($item->paciente); ?></td>
                                 <?

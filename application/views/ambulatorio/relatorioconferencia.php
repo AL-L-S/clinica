@@ -29,17 +29,36 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
-                    <dt>
-                    <label>Data fim</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
-                    </dd>
+                    <div>
+                        <dt>
+                            <label>Data fim</label>
+                        </dt>
+                        <dd  style="margin-bottom: 5pt; position: relative">
+                            <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
+                            <input type="checkbox" name="filtro_hora" id="filtro_hora"><label for="filtro_hora">Filtrar por horario?</label>
+                        </dd>
+                    </div>
+                    
+                    <div id="div-filtro-hora">
+                        <dt>
+                            <label>Hora inicio</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="horario_inicio" id="horario_inicio" alt="29:99"/>
+                        </dd>
+                        <dt>
+                            <label>Hora fim</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="horario_fim" id="horario_fim" alt="29:99"/>
+                        </dd>
+                    </div>
+                    
                     <dt>
                     <label>Data De Pesquisa</label>
                     </dt>
@@ -185,8 +204,26 @@
 <style>
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 130px; }
+    form { min-height: 400pt; }
 </style>
 <script type="text/javascript">
+    
+    $('#filtro_hora').change(function () {
+        if ($(this).is(":checked")) {
+            $("#div-filtro-hora").show();
+//            $("#horario_inicio").prop('required', true);
+//            $("#horario_fim").prop('required', true);
+        }
+        else{
+            $("#div-filtro-hora").hide();
+//            $("#horario_inicio").prop('required', false);
+//            $("#horario_fim").prop('required', false);
+            
+        }
+    });    
+    $("#div-filtro-hora").hide();
+    
+    
     $(function() {
         $("#txtdata_inicio").datepicker({
             autosize: true,

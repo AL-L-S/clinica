@@ -611,6 +611,15 @@ class guia_model extends Model {
             $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
             $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         }
+        
+        if( isset($_POST['filtro_hora']) ){
+            $_POST['horario_inicio'] = ($_POST['horario_inicio'] == '') ? '00:00' : $_POST['horario_inicio'];
+            $_POST['horario_fim'] = ($_POST['horario_fim'] == '') ? '00:00' : $_POST['horario_fim'];
+            
+            $this->db->where("ae.inicio >=", $_POST['horario_inicio']);
+            $this->db->where("ae.fim <=", $_POST['horario_fim']);
+        }
+        
         if ($_POST['grupoconvenio'] != "0") {
             $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
         }
