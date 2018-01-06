@@ -617,7 +617,7 @@ class guia_model extends Model {
             $_POST['horario_fim'] = ($_POST['horario_fim'] == '') ? '00:00' : $_POST['horario_fim'];
             
             $this->db->where("ae.inicio >=", $_POST['horario_inicio']);
-            $this->db->where("ae.fim <=", $_POST['horario_fim']);
+            $this->db->where("ae.inicio <=", $_POST['horario_fim']);
         }
         
         if ($_POST['grupoconvenio'] != "0") {
