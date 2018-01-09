@@ -16,7 +16,7 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th class="tabela_header"><font size="-1">Data</th>
+                    <th class="tabela_header"><font size="-1">Data De Nascimento</th>
                     <th class="tabela_header"><font size="-1">Nome</th>
                     <th class="tabela_header"><font size="-1">Email</th>
                     <th class="tabela_header"><font size="-1">Telefone/Celular</th>

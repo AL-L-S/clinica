@@ -2199,8 +2199,11 @@ class guia_model extends Model {
                            distinct(p.paciente_id), 
                            p.nome as paciente,
                            p.sexo, 
+                           p.cns, 
                            p.nascimento,
                            p.whatsapp,
+                           p.celular,
+                           p.telefone,
                            p.escolaridade_id,
                            p.estado_civil_id
                            ');
@@ -3592,7 +3595,7 @@ class guia_model extends Model {
                 FROM ponto.tb_paciente p
                 LEFT JOIN ponto.tb_convenio c ON c.convenio_id = p.convenio_id
                 WHERE (Extract(DOY From p.nascimento) >= $mes_incial) AND (Extract(DOY From p.nascimento) <= $mes_final)
-                ORDER BY Extract(Month From p.nascimento), Extract(Day From p.nascimento)";
+                ORDER BY Extract(Month From p.nascimento), Extract(Day From p.nascimento), Extract(Year From p.nascimento),p.nome ";
         $return = $this->db->query($sql)->result();
         return $return;
     }

@@ -15,7 +15,7 @@
             </tr>
             <tr>
                 <td ><font size = -1><?= $exame[0]->logradouro; ?><?= $exame[0]->numero; ?> - <?= $exame[0]->bairro; ?></td>
-                <td ></td>
+                <td ><font size = -2>Obs: Exame impresso na hora</td>
             </tr>
             <tr>
                 <td ><font size = -1>Fone: <?= $exame[0]->telefoneempresa; ?></td>
