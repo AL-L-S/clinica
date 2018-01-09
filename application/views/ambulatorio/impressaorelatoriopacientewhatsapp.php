@@ -53,10 +53,13 @@
     <table border="1" cellpadding="5">
         <thead>
             <tr>
-                <td class="tabela_teste">Nome</td>
-                <td class="tabela_teste">WhatsApp</td>
-                <td class="tabela_teste">Sexo</td>
-                <td class="tabela_teste">Estado Civil</td>
+                <th class="tabela_teste">Nome</th>
+                <th class="tabela_teste">Data de Nascimento</th>
+                <th class="tabela_teste">WhatsApp</th>
+                <th class="tabela_teste">Telefone/Celular</th>
+                <th class="tabela_teste">Email</th>
+                <th class="tabela_teste">Sexo</td>
+                <th class="tabela_teste">Estado Civil</th>
             </tr>
         </thead>
         <hr>
@@ -107,7 +110,7 @@
                 } else {
                     $whatsapp = '';
                 }
-                
+
                 $i++;
                 $qtdetotal++;
 
@@ -117,12 +120,15 @@
                 $diff = $date_time->diff(new DateTime($dataFuturo));
                 $teste = $diff->format('%Ya %mm %dd');
                 $idade = $teste = $diff->format('%Y');
-                
                 ?>
                 <tr>
 
                     <td><?= utf8_decode($item->paciente); ?></td>
+                    <td style='text-align: center;'><font size="-1"><?= date("d/m/Y",strtotime($item->nascimento)); ?></td>
                     <td style='text-align: center;'><font size="-1"><?= @$whatsapp; ?></td>
+                    
+                    <td><?= $item->telefone . " / " . $item->celular; ?></td>
+                    <td style='text-align: center;'><font size="-1"><?= $item->cns; ?></td>
                     <td style='text-align: center;'><?
                         if ($item->sexo == "M") {
                             echo 'Masculino';
@@ -132,6 +138,7 @@
                             echo 'Feminino';
                         }
                         ?></td>
+                    
                     <td style='text-align: center;'><?
                         if ($item->estado_civil_id == "1") {
                             echo 'Solteiro(a)';
@@ -154,7 +161,7 @@
             <? endforeach; ?>
 
             <tr>
-                <td width="140px;" align="Right" colspan="4"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
+                <td width="140px;" align="Right" colspan="7"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
             </tr>
         </tbody>
     </table>
