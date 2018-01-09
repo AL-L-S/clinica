@@ -586,7 +586,7 @@ class guia_model extends Model {
                             p.nome as paciente,
                             ae.procedimento_tuss_id,
                             pt.nome as exame,
-                            ag.tipo,
+                            ag.tipo
                             pt.grupo,
                             pt.descricao as procedimento,
                             pt.codigo');
