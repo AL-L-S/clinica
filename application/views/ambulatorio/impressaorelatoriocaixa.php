@@ -1160,11 +1160,11 @@
                 }
                 ?>
                 <? if (count($creditos) > 0) { ?>
-                    <? foreach ($creditos as $item) {
-                        if($item->faturado == 'f'){
-                         $faturado = 'f';   
+                    <?
+                    foreach ($creditos as $item) {
+                        if ($item->faturado == 'f') {
+                            $faturado = 'f';
                         }
-                        
                         ?>
 
                         <?
@@ -1310,25 +1310,26 @@
                         </tr>
                         <?
                         $valorcreditototal = 0;
-                        foreach ($creditos as $item) {?>
-                        <?
-                        $valorcreditototal = $valorcreditototal + $item->valor;
-                        ?>
-                        <tr <?if($item->faturado == 'f') {?> style="color: red;" <? }?>>
-                                    <td><font size="-2"><?= $item->paciente ?></td>
-                                    <td><font size="-2"><?= date("d/m/Y", strtotime($item->data)) ?></td>
-                                    <td><font size="-2"><?= number_format($item->valor, 2, ',', '') ?></td>
-                                    <td><font size="-2"><?= $item->forma_pagamento ?></td>
-                                    <td><font size="-2"><?= number_format($item->valor1, 2, ',', '') ?></td>
-                                    <td><font size="-2"><?= $item->forma_pagamento_2 ?></td>
-                                    <td><font size="-2"><?= number_format($item->valor2, 2, ',', '') ?></td>
-                                    <td><font size="-2"><?= $item->forma_pagamento_3 ?></td>
-                                    <td><font size="-2"><?= number_format($item->valor3, 2, ',', '') ?></td>
-                                    <td><font size="-2"><?= $item->forma_pagamento_4 ?></td>
-                                    <td><font size="-2"><?= number_format($item->valor4, 2, ',', '') ?></td>
-                                </tr>
-                            
-                        <?}
+                        foreach ($creditos as $item) {
+                            ?>
+                            <?
+                            $valorcreditototal = $valorcreditototal + $item->valor;
+                            ?>
+                            <tr <? if ($item->faturado == 'f') { ?> style="color: red;" <? } ?>>
+                                <td><font size="-2"><?= $item->paciente ?></td>
+                                <td><font size="-2"><?= date("d/m/Y", strtotime($item->data)) ?></td>
+                                <td><font size="-2"><?= number_format($item->valor, 2, ',', '') ?></td>
+                                <td><font size="-2"><?= $item->forma_pagamento ?></td>
+                                <td><font size="-2"><?= number_format($item->valor1, 2, ',', '') ?></td>
+                                <td><font size="-2"><?= $item->forma_pagamento_2 ?></td>
+                                <td><font size="-2"><?= number_format($item->valor2, 2, ',', '') ?></td>
+                                <td><font size="-2"><?= $item->forma_pagamento_3 ?></td>
+                                <td><font size="-2"><?= number_format($item->valor3, 2, ',', '') ?></td>
+                                <td><font size="-2"><?= $item->forma_pagamento_4 ?></td>
+                                <td><font size="-2"><?= number_format($item->valor4, 2, ',', '') ?></td>
+                            </tr>
+
+                        <? }
                         ?>
                     </tbody>
                 </table> 
@@ -1342,16 +1343,22 @@
                         <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
                 <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
                 </tr>
-                <? foreach ($formapagamento as $value) { ?>
-                    <tr>
-                        <td width="140px;"><font size="-1"><?= $value->nome ?></td>
-                        <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
-                        <td width="200px;"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
-                        <td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>
-                    </tr>    
+                <?
+                foreach ($formapagamento as $value) {
+                    if ($numero[$value->nome] > 0) {
+                        ?>
+                        <tr>
+                            <td width="140px;"><font size="-1"><?= $value->nome ?></td>
+                            <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
+                            <td width="200px;"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
+                            <td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>
+                        </tr>    
 
 
-                <? } ?>
+                        <?
+                    }
+                }
+                ?>
                 <tr>
                     <td width="140px;"><font size="-1">PENDENTES</td>
                     <td width="140px;"><font size="-1"><?= $NUMEROOUTROS ?></td>
@@ -1394,17 +1401,23 @@
                             <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO CRÉDITO</center></td>
                     <!--<td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>-->
                     </tr>
-                    <? foreach ($formapagamento as $value) { ?>
-                        <tr>
-                            <td width="140px;"><font size="-1"><?= $value->nome ?></td>
-                            <td width="140px;"><font size="-1"><?= $numerocredito[$value->nome]; ?></td>
-                            <td width="200px;"><font size="-1"><?= number_format($datacredito[$value->nome], 2, ',', '.'); ?></td>
-                            <!--<td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>-->
-                        </tr>    
+                    <?
+                    foreach ($formapagamento as $value) {
+                        if ($numerocredito[$value->nome] > 0) {
+                            ?>
+                            <tr>
+                                <td width="140px;"><font size="-1"><?= $value->nome ?></td>
+                                <td width="140px;"><font size="-1"><?= $numerocredito[$value->nome]; ?></td>
+                                <td width="200px;"><font size="-1"><?= number_format($datacredito[$value->nome], 2, ',', '.'); ?></td>
+                                <!--<td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>-->
+                            </tr>    
 
 
-                    <? } ?>
-                     
+                            <?
+                        }
+                    }
+                    ?>
+
                     <?
                     $TOTALCARTAO = 0;
                     $QTDECARTAO = 0;

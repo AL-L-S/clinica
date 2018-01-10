@@ -184,6 +184,32 @@
                             ?>>N&Atilde;O</option>
                         </select>
                     </dd>
+                    
+                    <dt>
+                        <label>Perc./Valor Laboratório</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtperc_laboratorio" id="txtperc_laboratorio" class="texto" value="<?=@ $obj->_valor_laboratorio; ?>" />
+                    </dd>
+                    <dt>
+                        <label>Laboratório Percentual</label>
+                    </dt>
+                    <dd>
+                        <select name="percentual_laboratorio" id="percentual_laboratorio" class="size2">
+                            <option value="" <?
+                            if (@$obj->_percentual_laboratorio == ""):echo 'selected';
+                            endif;
+                            ?>>Selecione</option>
+                            <option value="1" <?
+                            if (@$obj->_percentual_laboratorio == "t"):echo 'selected';
+                            endif;
+                            ?>>SIM</option>
+                            <option value="0" <?
+                            if (@$obj->_percentual_laboratorio == "f"):echo 'selected';
+                            endif;
+                            ?>>N&Atilde;O</option>
+                        </select>
+                    </dd>
                             
                     <dt>
                         <label>Qtde de sess&otilde;es</label>

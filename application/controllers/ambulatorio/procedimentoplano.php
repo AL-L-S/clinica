@@ -51,11 +51,24 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/conveniopercentualmedico-lista', $args);
     }
 
+    function conveniopercentuallaboratorio($args = array()) {
+        $this->loadView('ambulatorio/conveniopercentuallaboratorio-lista', $args);
+    }
+
+//    function procedimentoconveniopercentuallaboratorio($convenio_id) {
+//        $data['convenio_id'] = $convenio_id;
+////        var_dump($_GET);die;
+////        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconveniopercentuallaboratorio($convenio_id);
+//        $data['grupo'] = $this->procedimento->listargrupos();
+////        var_dump($data['grupo']);die;
+//        $this->loadView('ambulatorio/procedimentopercentuallaboratorio-lista', $data);
+//    }
+    
     function procedimentoconveniopercentual($convenio_id) {
-        $data['convenio_id']= $convenio_id;
+        $data['convenio_id'] = $convenio_id;
 //        var_dump($_GET);die;
 //        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconveniopercentual($convenio_id);
-        $data['grupo']= $this->procedimento->listargrupos(); 
+        $data['grupo'] = $this->procedimento->listargrupos();
 //        var_dump($data['grupo']);die;
         $this->loadView('ambulatorio/procedimentopercentualmedico-lista', $data);
     }
@@ -63,6 +76,11 @@ class Procedimentoplano extends BaseController {
     function procedimentopercentual($args = array()) {
 
         $this->loadView('ambulatorio/procedimentopercentualmedico-lista', $args);
+    }
+
+    function procedimentopercentuallaboratorio($args = array()) {
+
+        $this->loadView('ambulatorio/procedimentopercentuallaboratorio-lista', $args);
     }
 
     function procedimentopercentualpromotor($args = array()) {
@@ -125,12 +143,12 @@ class Procedimentoplano extends BaseController {
         $this->procedimentoplano->excluirformapagamentoplanoconvenio($convenio_formapagamento_id, $grupopagamento_id, $convenio_id);
         redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
     }
-    
+
     function excluirprocedimentoplanoconveniosessao($procedimento_convenio_sessao_id, $procedimento_convenio_id) {
         $this->procedimentoplano->excluirprocedimentoplanoconveniosessao($procedimento_convenio_sessao_id, $procedimento_convenio_id);
         redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanosessao/$procedimento_convenio_id");
     }
-    
+
     function excluirprocedimentoagrupador($procedimento_agrupado_id, $agrupador_id) {
         $this->procedimentoplano->excluirprocedimentoagrupador($procedimento_agrupado_id);
 //        $this->session->set_flashdata('message', $data['mensagem']);
@@ -142,7 +160,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
-        
+
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/multiplosprocedimentoplano-form', $data);
     }
@@ -154,7 +172,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimento->listargruposmatmed();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
-        
+
         $this->loadView('ambulatorio/procedimentoplanoagrupador-form', $data);
     }
 
@@ -165,25 +183,25 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimento->listargruposmatmed();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
-        
+
         $this->loadView('ambulatorio/procedimentoplano-form', $data);
     }
 
     function carregarprocedimentoplanoformapagamento($convenio_id) {
 
         $data['convenio_id'] = $convenio_id;
-        
+
         $data["formapagamento_grupo"] = $this->formapagamento->listargrupos();
         $data['formas'] = $this->procedimentoplano->listarformaspagamentoconvenio($convenio_id);
-        
+
         $this->loadView('ambulatorio/procedimentoplanoformapagamento', $data);
     }
-    
+
     function carregarprocedimentoplanosessao($convenio_id) {
 
         $data['convenio_id'] = $convenio_id;
         $data['sessao'] = $this->procedimentoplano->listarprocedimentoconveniosessao($convenio_id);
-        
+
         $this->loadView('ambulatorio/procedimentoplanosessao', $data);
     }
 
@@ -210,22 +228,22 @@ class Procedimentoplano extends BaseController {
             redirect(base_url() . "ambulatorio/guia/orcamento/$paciente_id");
         } else {
             $retorno = $this->guia->listarorcamentorecepcao();
-            
+
             $resultadoorcamento = $retorno['orcamento'];
             $paciente_id = $retorno['paciente_id'];
-            
+
             if ($resultadoorcamento == null) {
                 $ambulatorio_orcamento = $this->guia->gravarorcamentorecepcao($paciente_id);
             } else {
                 $ambulatorio_orcamento = $resultadoorcamento['ambulatorio_orcamento_id'];
             }
-            
+
             $this->guia->gravarorcamentoitemrecepcao($ambulatorio_orcamento);
-            
+
             redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$ambulatorio_orcamento");
         }
-    }    
-    
+    }
+
     function excluirorcamentorecepcao($ambulatorio_orcamento_item_id, $paciente_id, $orcamento_id) {
         if ($this->procedimento->excluirorcamentorecepcao($ambulatorio_orcamento_item_id)) {
             $mensagem = 'Sucesso ao excluir o Procedimento';
@@ -236,12 +254,12 @@ class Procedimentoplano extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$orcamento_id");
     }
-    
+
     function orcamento($paciente_id = 0, $ambulatorio_orcamento = 0) {
-        
+
         $obj_paciente = new paciente_model($paciente_id);
         $data['obj'] = $obj_paciente;
-        
+
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['grupos'] = $this->procedimento->listargrupos();
@@ -250,10 +268,10 @@ class Procedimentoplano extends BaseController {
         $data['responsavel'] = $this->procedimento->listaresponsavelorcamento($ambulatorio_orcamento);
 //        echo "<pre>";
 //        var_dump($data['exames']); die;
-        
+
         $this->loadView('ambulatorio/orcamentogeral-form_1', $data);
     }
-    
+
     function orcamentorecepcaofila($orcamento) {
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -262,23 +280,23 @@ class Procedimentoplano extends BaseController {
         $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
         $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);
         $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
-        $data['cabecalho'] =  @$data['cabecalhoconfig'][0]->cabecalho;
-        $data['rodape'] =  @$data['cabecalhoconfig'][0]->rodape;
-        $paciente = $data['exames'][0]->paciente; 
-        $paciente_id = $data['exames'][0]->paciente_id; 
+        $data['cabecalho'] = @$data['cabecalhoconfig'][0]->cabecalho;
+        $data['rodape'] = @$data['cabecalhoconfig'][0]->rodape;
+        $paciente = $data['exames'][0]->paciente;
+        $paciente_id = $data['exames'][0]->paciente_id;
 //        var_dump($paciente); die;
-        
-        if($data['permissoes'][0]->orcamento_config == 't'){
-           $html = $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data, true);
-        }else{
-           $html = $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data, true);  
+
+        if ($data['permissoes'][0]->orcamento_config == 't') {
+            $html = $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data, true);
+        } else {
+            $html = $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data, true);
         }
         $html = utf8_decode($html);
         $tipo = 'ORÇAMENTO';
         $this->guia->gravarfiladeimpressao($html, $tipo, $paciente, $paciente_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-    
+
     function impressaoorcamentorecepcao($orcamento) {
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -286,20 +304,18 @@ class Procedimentoplano extends BaseController {
         $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
         $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);
         $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
-        $data['cabecalho'] =  @$data['cabecalhoconfig'][0]->cabecalho;
-        $data['rodape'] =  @$data['cabecalhoconfig'][0]->rodape;
+        $data['cabecalho'] = @$data['cabecalhoconfig'][0]->cabecalho;
+        $data['rodape'] = @$data['cabecalhoconfig'][0]->rodape;
         $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
 //        var_dump($data['exames']); die;
-        
-        if($data['permissoes'][0]->orcamento_config == 't'){
-           $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);    
-        }elseif($data['empresa'][0]->impressao_orcamento == 1){// MODELO SOLICITADO PELA AME
-           $this->load->View('ambulatorio/impressaoorcamentorecepcao1', $data);    
-        }else{
-           $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data);    
+
+        if ($data['permissoes'][0]->orcamento_config == 't') {
+            $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);
+        } elseif ($data['empresa'][0]->impressao_orcamento == 1) {// MODELO SOLICITADO PELA AME
+            $this->load->View('ambulatorio/impressaoorcamentorecepcao1', $data);
+        } else {
+            $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data);
         }
-        
-        
     }
 
     function replicarpercentualmedico() {
@@ -328,6 +344,15 @@ class Procedimentoplano extends BaseController {
         $data['medicos'] = $this->operador_m->listarmedicos();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimentoconveniopercentualmedico-form', $data);
+    }
+    
+    function procedimentoconveniopercentuallaboratorio() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['procedimento'] = $this->procedimentoplano->listarprocedimento();
+        $data['grupo'] = $this->procedimentoplano->listargrupo();
+        $data['laboratorios'] = $this->operador_m->listarlaboratorios();
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/procedimentoconveniopercentuallaboratorio-form', $data);
     }
 
     function procedimentopercentualmedico($convenio_id) {
@@ -408,15 +433,15 @@ class Procedimentoplano extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
     }
-    
+
     function gravarprocedimentoconveniosessao($procedimento_convenio_id) {
         $return = $this->procedimentoplano->gravarprocedimentoconveniosessao();
-        if($return == 1){
-        $mensagem = 'Sucesso ao gravar o valor da sessão.';    
-        }else{
-        $mensagem = 'Sessão já cadastrada.';    
+        if ($return == 1) {
+            $mensagem = 'Sucesso ao gravar o valor da sessão.';
+        } else {
+            $mensagem = 'Sessão já cadastrada.';
         }
-        
+
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanosessao/$procedimento_convenio_id");
     }
@@ -444,6 +469,7 @@ class Procedimentoplano extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano");
     }
+
     function excluirporgrupo() {
         if ($this->procedimentoplano->excluirporgrupo()) {
             $mensagem = 'Sucesso ao excluir o Procedimentoplano';
@@ -528,7 +554,7 @@ class Procedimentoplano extends BaseController {
     function gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id) {
         $convenio_id = $_POST['convenio_id'];
         $percentual_medico_id = $_POST['percentual_medico_id'];
-        
+
         if ($this->procedimentoplano->gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id)) {
             $mensagem = 'Sucesso ao editar o Percentual medico';
         } else {
@@ -562,7 +588,7 @@ class Procedimentoplano extends BaseController {
     }
 
     function gravaragrupador() {
-        
+
         $verifica = $this->procedimentoplano->verificaagrupadorconvenio($_POST['convenio'], $_POST['procedimento']);
         if ($verifica == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Agrupador. Alguns procedimentos do pacote não estão cadastrados nesse convenio.';
@@ -574,8 +600,8 @@ class Procedimentoplano extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar. Esse Agrupador ja está cadastrado.';
             } elseif ($procedimento_id == "-3") {
                 $data['mensagem'] = 'Erro ao gravar. Algum(ns) convenio(s) associado(s) a esse, não estão vinculados através dos grupos contidos no agrupador.';
-            } else{
-                $data['mensagem'] = 'Sucesso ao gravar Agrupador.';  
+            } else {
+                $data['mensagem'] = 'Sucesso ao gravar Agrupador.';
             }
         }
         $this->session->set_flashdata('message', $data['mensagem']);

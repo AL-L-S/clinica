@@ -61,6 +61,13 @@ class Empresa extends BaseController {
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaoorcamento-lista');
     }
+    
+    function listarencaminhamentoconfig() {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarmsgencaminhamento-lista');
+    }
 
     function configurarlogomarca($empresa_id) {
         
@@ -236,6 +243,13 @@ class Empresa extends BaseController {
         $data['impressao'] = $this->empresa->listarconfiguracaoimpressaoorcamentoform($empresa_impressao_orcamento_id);
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaoorcamento-form', $data);
+    }
+    
+    function configurarencaminhamento($empresa_impressao_encaminhamento_id) {
+        $data['empresa_impressao_encaminhamento_id'] = $empresa_impressao_encaminhamento_id;
+        $data['impressao'] = $this->empresa->listarconfiguracaoimpressaoencaminhamentoform($empresa_impressao_encaminhamento_id);
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaoencaminhamento-form', $data);
     }
     
     function configurarlaudo($empresa_impressao_laudo_id) {

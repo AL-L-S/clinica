@@ -634,6 +634,13 @@ class procedimento_model extends Model {
             if ($_POST['percentual_revisor'] != '') {
                 $this->db->set('percentual_revisor', $_POST['percentual_revisor']);
             }
+            
+            if ($_POST['txtperc_laboratorio'] != '') {
+                $this->db->set('valor_laboratorio', str_replace(",", ".", $_POST['txtperc_laboratorio']));
+            }
+            if ($_POST['percentual_laboratorio'] != '') {
+                $this->db->set('percentual_laboratorio', $_POST['percentual_laboratorio']);
+            }
 //
 //            if ($_POST['txtperc_promotor'] != '') {
 //                $this->db->set('valor_promotor', str_replace(",", ".", $_POST['txtperc_promotor']));
@@ -818,7 +825,7 @@ class procedimento_model extends Model {
                                pt.home_care, pt.descricao_procedimento, pt.entrega, 
                                pt.medico, pt.percentual,  t.descricao, pt.perc_medico,  pt.valor_promotor,  pt.percentual_promotor, 
                                pt.valor_revisor,  pt.percentual_revisor, 
-                               pt.qtde, pt.dencidade_calorica, pt.proteinas, 
+                               pt.qtde, pt.dencidade_calorica, pt.proteinas, pt.percentual_laboratorio, pt.valor_laboratorio,
                                pt.carboidratos, pt.lipidios, pt.kcal,
                                pt.revisao, pt.sala_preparo, pt.revisao_dias,
                                pt.associacao_procedimento_tuss_id, pt.retorno_dias');
@@ -854,6 +861,8 @@ class procedimento_model extends Model {
             $this->_valor_revisor = $return[0]->valor_revisor;
             $this->_percentual_revisor = $return[0]->percentual_revisor;
             $this->_associacao_procedimento_tuss_id = $return[0]->associacao_procedimento_tuss_id;
+            $this->_percentual_laboratorio = $return[0]->percentual_laboratorio;
+            $this->_valor_laboratorio = $return[0]->valor_laboratorio;
             $this->_retorno_dias = $return[0]->retorno_dias;
         } else {
             $this->_procedimento_tuss_id = null;

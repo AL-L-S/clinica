@@ -85,8 +85,59 @@ class Laudo extends BaseController {
     }
 
     function gravarencaminhamentoatendimento() {
-        $this->laudo->gravarencaminhamentoatendimento();
+        $empresapermissao = $this->guia->listarempresapermissoes();
+        $laudo_id = $_POST["ambulatorio_laudo_id"];
+        $medico_id = $_POST["medico_id"];
+        $email_ativado = $empresapermissao[0]->encaminhamento_citycor;
+//        var_dump($_POST);
+//        die;
+//        $this->laudo->gravarencaminhamentoatendimento();
+        if ($email_ativado == 't') {
+            $this->enviaremailencaminhamento($medico_id, $laudo_id);
+        }
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function enviaremailencaminhamento($medico_id, $laudo_id) {
+        $empresa = $this->guia->listarempresa();
+
+        $resposta = $this->laudo->listarlaudoemailencaminhamento($laudo_id);
+        $resposta2 = $this->laudo->listarmedicoenviarencaminhamento($medico_id);
+
+        $medico1 = $resposta[0]->medico;
+        $medico_encaminhar = $resposta2[0]->medico;
+        $medico_email = $resposta2[0]->email;
+//            $senha = $resposta[0]->agenda_exames_id;
+        $mensagem = "Dr(a). $medico1 indicou você para um paciente. Continue a corrente e sempre que possível, indique outro procedimento da CityCor para fazer a clinica ainda mais forte <br><br><br><br> <span>Obs: Não responda esse email. Email automático</span>";
+//            echo '<pre>';
+//            var_dump($empresa); die;           
+        $this->load->library('email');
+
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'ssl://smtp.gmail.com';
+        $config['smtp_port'] = '465';
+        $config['smtp_user'] = 'equipe2016gcjh@gmail.com';
+        $config['smtp_pass'] = 'DUCOCOFRUTOPCE';
+        $config['validate'] = TRUE;
+        $config['mailtype'] = 'html';
+        $config['charset'] = 'utf-8';
+        $config['newline'] = "\r\n";
+
+        $this->email->initialize($config);
+        if (@$empresa[0]->email != '') {
+            $this->email->from($empresa[0]->email, $empresa[0]->nome);
+        } else {
+            $this->email->from('equipe2016gcjh@gmail.com', 'Citycor');
+        }
+
+        $this->email->to($medico_email);
+        $this->email->subject("Encaminhamento de Paciente");
+        $this->email->message($mensagem);
+        if ($this->email->send()) {
+            $data['mensagem'] = "Email enviado com sucesso.";
+        } else {
+            $data['mensagem'] = "Envio de Email malsucedido.";
+        }
     }
 
     function limparnomes($exame_id) {
@@ -338,14 +389,14 @@ class Laudo extends BaseController {
         $data['obj'] = $obj_laudo;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['paciente_id'] = $paciente_id;
-        
+
         $data['primeiroQuadrante'] = $this->odontograma->instanciarprimeiroquadrantepacienteodontograma($ambulatorio_laudo_id);
         $data['segundoQuadrante'] = $this->odontograma->instanciarsegundoquadrantepacienteodontograma($ambulatorio_laudo_id);
         $data['terceiroQuadrante'] = $this->odontograma->instanciarterceiroquadrantepacienteodontograma($ambulatorio_laudo_id);
         $data['quartoQuadrante'] = $this->odontograma->instanciarquartoquadrantepacienteodontograma($ambulatorio_laudo_id);
-        
+
         $data['procedimentos'] = $this->convenio->listarprocedimentoconvenioodontograma(@$data['obj']->_convenio_id);
-        
+
         $this->load->View('ambulatorio/odontograma-form', $data);
     }
 
@@ -407,6 +458,7 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/laudoodontologia-form', $data);
     }
+
     function carregaranaminese($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
@@ -848,6 +900,31 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/laudoantigo-form', $data);
     }
 
+    function adicionalcabecalho($cabecalho, $laudo) {
+        
+//        $cabecalho = $impressaolaudo[0]->texto;
+        $cabecalho = str_replace("_paciente_", $laudo['0']->paciente, $cabecalho);
+        $cabecalho = str_replace("_sexo_", $laudo['0']->sexo, $cabecalho);
+        $cabecalho = str_replace("_nascimento_", date("d/m/Y", strtotime($laudo['0']->nascimento)), $cabecalho);
+        $cabecalho = str_replace("_convenio_", $laudo['0']->convenio, $cabecalho);
+        $cabecalho = str_replace("_sala_", $laudo['0']->sala, $cabecalho);
+        $cabecalho = str_replace("_CPF_", $laudo['0']->cpf, $cabecalho);
+        $cabecalho = str_replace("_solicitante_", $laudo['0']->solicitante, $cabecalho);
+        $cabecalho = str_replace("_data_", substr($laudo['0']->data_cadastro, 8, 2) . '/' . substr($laudo['0']->data_cadastro, 5, 2) . '/' . substr($laudo['0']->data_cadastro, 0, 4), $cabecalho);
+        $cabecalho = str_replace("_medico_", $laudo['0']->medico, $cabecalho);
+        $cabecalho = str_replace("_revisor_", $laudo['0']->medicorevisor, $cabecalho);
+        $cabecalho = str_replace("_procedimento_", $laudo['0']->procedimento, $cabecalho);
+        $cabecalho = str_replace("_laudo_", $laudo['0']->texto, $cabecalho);
+        $cabecalho = str_replace("_nomedolaudo_", $laudo['0']->cabecalho, $cabecalho);
+        $cabecalho = str_replace("_queixa_", $laudo['0']->cabecalho, $cabecalho);
+        $cabecalho = str_replace("_peso_", $laudo['0']->peso, $cabecalho);
+        $cabecalho = str_replace("_altura_", $laudo['0']->altura, $cabecalho);
+        $cabecalho = str_replace("_cid1_", $laudo['0']->cid1, $cabecalho);
+        $cabecalho = str_replace("_cid2_", $laudo['0']->cid2, $cabecalho);
+        
+        return $cabecalho;
+    }
+
     function impressaolaudo($ambulatorio_laudo_id, $exame_id) {
 
 
@@ -893,6 +970,11 @@ class Laudo extends BaseController {
             } else {
                 $cabecalho = '';
             }
+            $cabecalho = $cabecalho . "<br> {$data['impressaolaudo'][0]->adicional_cabecalho}";
+           
+            $cabecalho = $this->adicionalcabecalho($cabecalho, $data['laudo']);
+//             var_dump($cabecalho);
+//            die;
             if (file_exists("upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {
                 $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg'>";
             } else {
@@ -2035,7 +2117,7 @@ class Laudo extends BaseController {
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
-        
+
         if ($data['empresa'][0]->ficha_config == 't') {
             if ($arquivo_existe) {
                 $src = base_url() . "upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . '.jpg';

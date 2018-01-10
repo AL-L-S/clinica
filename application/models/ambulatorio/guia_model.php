@@ -100,6 +100,7 @@ class guia_model extends Model {
                             relatorio_ordem,
                             relatorio_producao,
                             relatorios_recepcao,
+                            encaminhamento_citycor,
                             financeiro_cadastro,
                             odontologia_valor_alterar,
                             selecionar_retorno,
@@ -9926,7 +9927,7 @@ ORDER BY ae.agenda_exames_id)";
     function listarconfiguracaoimpressaolaudo() {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('ei.empresa_impressao_laudo_id,ei.cabecalho,ei.texto,ei.rodape, e.nome as empresa');
+        $this->db->select('ei.empresa_impressao_laudo_id,ei.cabecalho,ei.texto,ei.adicional_cabecalho,ei.rodape, e.nome as empresa');
         $this->db->from('tb_empresa_impressao_laudo ei');
         $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
         $this->db->where('ei.empresa_id', $empresa_id);

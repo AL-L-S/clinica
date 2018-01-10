@@ -118,7 +118,7 @@ class empresa_model extends Model {
     function listarconfiguracaoimpressaolaudoform($empresa_impressao_cabecalho_id) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('ei.empresa_impressao_laudo_id, ei.nome as nome_laudo,ei.texto, ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->select('ei.empresa_impressao_laudo_id, ei.nome as nome_laudo,ei.texto,ei.adicional_cabecalho, ei.cabecalho,ei.rodape, e.nome as empresa');
         $this->db->from('tb_empresa_impressao_laudo ei');
         $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
         $this->db->where('ei.empresa_impressao_laudo_id', $empresa_impressao_cabecalho_id);
@@ -147,6 +147,31 @@ class empresa_model extends Model {
         $this->db->from('tb_empresa_impressao_orcamento ei');
         $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
         $this->db->where('ei.empresa_impressao_orcamento_id', $empresa_impressao_cabecalho_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarconfiguracaoimpressaoencaminhamento() {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_encaminhamento_id,ei.nome as nome_encaminhamento, ei.cabecalho,ei.ativo,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_encaminhamento ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_id', $empresa_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        return $this->db;
+    }
+
+    function listarconfiguracaoimpressaoencaminhamentoform($empresa_impressao_cabecalho_id) {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_encaminhamento_id, ei.nome as nome_encaminhamento,ei.texto, ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_encaminhamento ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_impressao_encaminhamento_id', $empresa_impressao_cabecalho_id);
 //        $this->db->where('paciente_id', $paciente_id);
 //        $this->db->where('data_criacao', $data);
         $return = $this->db->get();
@@ -564,6 +589,7 @@ class empresa_model extends Model {
                 $this->db->set('cabecalho', $_POST['cabecalho']);
                 $this->db->set('rodape', $_POST['rodape']);
                 $this->db->set('texto', $_POST['texto']);
+                $this->db->set('adicional_cabecalho', $_POST['adicional_cabecalho']);
                 $this->db->set('empresa_id', $empresa_id);
                 if (count($teste2) > 0) {
                     $this->db->set('ativo', 'f');
@@ -572,6 +598,7 @@ class empresa_model extends Model {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_impressao_laudo');
             } else {
+                $this->db->set('adicional_cabecalho', $_POST['adicional_cabecalho']);
                 $this->db->set('nome', $_POST['nome']);
                 $this->db->set('cabecalho', $_POST['cabecalho']);
                 $this->db->set('rodape', $_POST['rodape']);
@@ -620,10 +647,9 @@ class empresa_model extends Model {
 
     function gravarlogomarca() {
         try {
-            if(isset($_POST['mostrarLogo'])){
+            if (isset($_POST['mostrarLogo'])) {
                 $this->db->set('mostrar_logo_clinica', 't');
-            }
-            else{
+            } else {
                 $this->db->set('mostrar_logo_clinica', 'f');
             }
             $this->db->where('empresa_id', $_POST['empresa_id']);
@@ -957,6 +983,11 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
+                if (isset($_POST['encaminhamento_citycor'])) {
+                    $this->db->set('encaminhamento_citycor', 't');
+                } else {
+                    $this->db->set('encaminhamento_citycor', 'f');
+                }
                 if (isset($_POST['valor_autorizar'])) {
                     $this->db->set('valor_autorizar', 't');
                 } else {
@@ -1076,13 +1107,13 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('promotor_medico', 'f');
                 }
-                
+
                 if (isset($_POST['retirar_botao_ficha'])) {
                     $this->db->set('retirar_botao_ficha', 't');
                 } else {
                     $this->db->set('retirar_botao_ficha', 'f');
                 }
-                
+
                 if (isset($_POST['desativar_personalizacao_impressao'])) {
                     $this->db->set('desativar_personalizacao_impressao', 't');
                 } else {
@@ -1112,7 +1143,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('procedimento_excecao', 'f');
                 }
-                                if (isset($_POST['valor_autorizar'])) {
+                if (isset($_POST['valor_autorizar'])) {
                     $this->db->set('valor_autorizar', 't');
                 } else {
                     $this->db->set('valor_autorizar', 'f');
@@ -1121,6 +1152,11 @@ class empresa_model extends Model {
                     $this->db->set('gerente_contasapagar', 't');
                 } else {
                     $this->db->set('gerente_contasapagar', 'f');
+                }
+                if (isset($_POST['encaminhamento_citycor'])) {
+                    $this->db->set('encaminhamento_citycor', 't');
+                } else {
+                    $this->db->set('encaminhamento_citycor', 'f');
                 }
                 if (isset($_POST['cpf_obrigatorio'])) {
                     $this->db->set('cpf_obrigatorio', 't');
@@ -1152,7 +1188,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('financeiro_cadastro', 'f');
                 }
-                
+
                 if (isset($_POST['ordem_chegada'])) {
                     $this->db->set('ordem_chegada', 't');
                 } else {
@@ -1235,14 +1271,14 @@ class empresa_model extends Model {
                     $this->db->set('promotor_medico', 't');
                 } else {
                     $this->db->set('promotor_medico', 'f');
-                }                
-                
+                }
+
                 if (isset($_POST['retirar_botao_ficha'])) {
                     $this->db->set('retirar_botao_ficha', 't');
                 } else {
                     $this->db->set('retirar_botao_ficha', 'f');
                 }
-                
+
                 if (isset($_POST['desativar_personalizacao_impressao'])) {
                     $this->db->set('desativar_personalizacao_impressao', 't');
                 } else {
@@ -1341,6 +1377,7 @@ class empresa_model extends Model {
                                ep.calendario_layout,
                                ep.botao_ativar_sala,
                                ep.retirar_botao_ficha,
+                               ep.encaminhamento_citycor,
                                ep.desativar_personalizacao_impressao,
                                ep.recomendacao_configuravel,
                                f.mostrar_logo_clinica,
@@ -1366,6 +1403,7 @@ class empresa_model extends Model {
             $this->_caixa = $return[0]->caixa;
             $this->_promotor_medico = $return[0]->promotor_medico;
             $this->_municipio = $return[0]->municipio;
+            $this->_encaminhamento_citycor = $return[0]->encaminhamento_citycor;
             $this->_nome = $return[0]->nome;
             $this->_orcamento_config = $return[0]->orcamento_config;
             $this->_odontologia_valor_alterar = $return[0]->odontologia_valor_alterar;
@@ -1422,7 +1460,7 @@ class empresa_model extends Model {
             $this->_recomendacao_obrigatorio = $return[0]->recomendacao_obrigatorio;
             $this->_botao_ativar_sala = $return[0]->botao_ativar_sala;
             $this->_oftamologia = $return[0]->oftamologia;
-            
+
             $this->_valor_autorizar = $return[0]->valor_autorizar;
             $this->_gerente_contasapagar = $return[0]->gerente_contasapagar;
             $this->_cpf_obrigatorio = $return[0]->cpf_obrigatorio;

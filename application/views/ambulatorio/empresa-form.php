@@ -494,6 +494,12 @@
                         <dd>
                             <input type="checkbox" id="desativar_personalizacao_impressao" name="desativar_personalizacao_impressao" <? if (@$obj->_desativar_personalizacao_impressao == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa flag, quando encaminhar um paciente será disparado um email para o médico que recebe (Padrão Citycor).">Encaminhamento Email Citycor</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="encaminhamento_citycor" name="encaminhamento_citycor" <? if (@$obj->_encaminhamento_citycor == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

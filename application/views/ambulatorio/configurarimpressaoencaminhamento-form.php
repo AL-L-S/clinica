@@ -1,39 +1,17 @@
 
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <h3>Configurações Cabeçalho e Rodapé das impressões</h3>
+    <!--<h3>Configurações Cabeçalho e Rodapé das impressões</h3>-->
     <!--<div style="width: 100%">-->
-    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/empresa/gravarimpressaolaudo" method="post">
+    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/empresa/gravarimpressaoencaminhamento" method="post">
 
         <fieldset>
-            <legend>Adicional do Cabeçalho</legend>
+            <legend>Email Encaminhamento</legend>
             
-            <textarea style="width: 100%; height:400px;" name="adicional_cabecalho" id=""><?= @$impressao[0]->adicional_cabecalho ?></textarea>
-            <div>
-                    <p>
-                        Obs: Adicional do Cabeçalho seria no caso de você querer alguma das informações abaixo se repedindo em todas as páginas na parte superior da página
-                    </p>
-                </div>    
-        </fieldset>
-        <fieldset>
-            <legend>Laudo</legend>
-            <label for="cabecalho">Cabeçalho</label>
-            <input type="checkbox" id="cabecalho" <?
-            if (@$impressao[0]->cabecalho == 't') {
-                echo 'checked';
-            }
-            ?> name="cabecalho" id="cabecalho"/>
-
-            <label for="rodape">Rodapé</label>
-            <input type="checkbox" id="assinatura" <?
-            if (@$impressao[0]->rodape == 't') {
-                echo 'checked';
-            }
-            ?>  name="rodape" id="rodape"/>
             <textarea style="width: 100%; height:400px;" name="texto" id=""><?= @$impressao[0]->texto ?></textarea>
             <div>
                 <label>Nome</label>
-                <input type="text" name="nome" id="nome" class="texto10" value="<?= @$impressao[0]->nome_laudo; ?>" />
-                <input type="hidden" id="impressao_id" name="impressao_id" value="<?= @$empresa_impressao_laudo_id ?>"/>
+                <input type="text" name="nome" id="nome" class="texto10" value="<?= @$impressao[0]->nome_encaminhamento; ?>" />
+                <input type="hidden" id="impressao_id" name="impressao_id" value="<?= @$empresa_impressao_encaminhamento_id ?>"/>
             </div>
             <div style="width: 100%">
                 <hr/>
@@ -43,22 +21,22 @@
 
         </fieldset>
         <fieldset>
-            <legend>Opções do Laudo</legend>
+            <legend>Opções do Orçamento</legend>
 
 
             <table border="1">
                 <thead>
                 <tr class="tabela_header">
                     <th style="text-align: center;">
-                        OPÇÕES DE CONFIGURAÇÃO DO LAUDO
+                        OPÇÕES DE CONFIGURAÇÃO DO EMAIL
                     </th>
                 </tr>
                  </thead>
                 <tr class="tabela_content01">
                     <td style="text-align: justify;">
-                        Aqui se encontram as opções que você pode estar utilizando na hora de montar seu padrão de laudo.
+                        Aqui se encontram as opções que você pode estar utilizando na hora de montar seu padrão de encaminhamento.
 
-                        Formate na caixa acima o texto do laudo como quiser e posicione as opções de acordo com sua necessidade.
+                        Formate na caixa acima o texto do encaminhamento como quiser e posicione as opções de acordo com sua necessidade.
 
                         Por exemplo, você pode estar colocando _paciente_ para informar o nome do paciente e ao lado separado por um espaço, colocar _sexo_ para mostrar o sexo
 
@@ -108,14 +86,7 @@
                         _nascimento_
                     </td>
                 </tr>
-                <tr class="tabela_content02">
-                    <td>
-                        Convênio ----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _convenio_
-                    </td>
-                </tr>
+                
                 <tr class="tabela_content01">
                     <td>
                         CPF ----------->
@@ -124,46 +95,18 @@
                         _CPF_
                     </td>
                 </tr>
+
+                
                 <tr class="tabela_content02">
                     <td>
-                        Sala ----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _sala_
-                    </td>
-                </tr>
-                <tr class="tabela_content01">
-                    <td>
-                        Solicitante ----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _solicitante_
-                    </td>
-                </tr>
-                <tr class="tabela_content02">
-                    <td>
-                        Emissão (Data onde foi realizado o exame----------->
+                        Emissão (Data onde foi emitido o orçamento----------->
                     </td>
                     <td style="text-align: left;">
                         _data_
                     </td>
                 </tr>
-                <tr class="tabela_content01">
-                    <td>
-                        Medico (Médico responsável----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _medico_
-                    </td>
-                </tr>
-                <tr class="tabela_content02">
-                    <td>
-                        Medico Revisor----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _revisor_
-                    </td>
-                </tr>
+               
+               
                 <tr class="tabela_content01">
                     <td>
                         Procedimento----------->
@@ -172,70 +115,19 @@
                         _procedimento_ 
                     </td>
                 </tr>
-                <tr class="tabela_content02">
-                    <td>
-                        Texto descrito pelo médico no laudo----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _laudo_
-                    </td>
-                </tr>
                 <tr class="tabela_content01">
                     <td>
-                        Nome do Laudo (Apenas Exame----------->
+                        Valor Total----------->
                     </td>
                     <td style="text-align: left;">
-                        _nomedolaudo_
+                        _total_ 
                     </td>
                 </tr>
-                <tr class="tabela_content02">
-                    <td>
-                        Queixa Principal (Apenas Consulta----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _queixa_
-                    </td>
-                </tr>
-                <tr class="tabela_content01">
-                    <td>
-                        Cid Primário (Apenas Consulta----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _cid1_
-                    </td>
-                </tr>
-                <tr class="tabela_content02">
-                    <td>
-                        Cid Secundário (Apenas Consulta----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _cid2_
-                    </td>
-                </tr>
-                <tr class="tabela_content01">
-                    <td>
-                        Peso----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _peso_
-                    </td>
-                </tr>
-                <tr class="tabela_content02">
-                    <td>
-                        Altura----------->
-                    </td>
-                    <td style="text-align: left;">
-                        _altura_
-                    </td>
-                </tr>
-                <tr class="tabela_content01">
-                    <td>
-                        Assinatura do médico (Apenas se quiser no corpo do texto. Também pode ser colocado no rodapé nas configurações de rodapé)
-                    </td>
-                    <td style="text-align: left;">
-                        _assinatura_
-                    </td>
-                </tr>
+                
+                
+                
+                
+               
             </table>
 
         </fieldset>

@@ -1219,6 +1219,30 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+        function listarlaudoemailencaminhamento($ambulatorio_laudo_id) {
+
+
+        $this->db->select('o.nome as medico,
+                            o.email');
+        $this->db->from('tb_ambulatorio_laudo ag');
+        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->where("ag.ambulatorio_laudo_id", $ambulatorio_laudo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarmedicoenviarencaminhamento($medico_id) {
+
+
+        $this->db->select('o.nome as medico,
+                            o.email');
+        $this->db->from('tb_operador o');
+        $this->db->where("o.operador_id", $medico_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
 
     function contadorlistarreceita($ambulatorio_laudo_id) {
 

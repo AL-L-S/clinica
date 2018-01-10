@@ -139,6 +139,26 @@ class procedimentoplano_model extends Model {
 
         return $this->db;
     }
+    
+    function listarpercentualconveniolaboratorio($args = array()) {
+        $this->db->select(' c.nome as convenio,
+                            c.convenio_id');
+        $this->db->from('tb_convenio c');
+        $this->db->where("c.convenio_id IN (
+                            SELECT pc.convenio_id
+                            FROM ponto.tb_procedimento_percentual_laboratorio pm
+                            INNER JOIN ponto.tb_procedimento_convenio pc
+                            ON pc.procedimento_convenio_id = pm.procedimento_tuss_id
+                            WHERE pm.ativo = 't'
+                            GROUP BY pc.convenio_id)");
+
+
+        if (isset($args['convenio']) && @$args['convenio'] != '') {
+            $this->db->where('c.convenio_id', $args['convenio']);
+        }
+
+        return $this->db;
+    }
 
     function listarprocedimentoconveniopercentual($convenio_id) {
 
