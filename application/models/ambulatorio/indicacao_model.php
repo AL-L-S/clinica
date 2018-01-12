@@ -25,9 +25,10 @@ class indicacao_model extends Model {
 
     function listar($args = array()) {
         $this->db->select('paciente_indicacao_id,
-                            aml.nome,
-                            grupo_id,
-                            pig.nome as grupo');
+                           aml.nome,
+                           aml.registro,
+                           grupo_id,
+                           pig.nome as grupo');
         $this->db->from('tb_paciente_indicacao aml');
         $this->db->join('tb_paciente_indicacao_grupo pig', 'pig.paciente_indicacao_grupo_id = aml.grupo_id', 'left');
         $this->db->where('aml.ativo', 't');
@@ -126,7 +127,9 @@ class indicacao_model extends Model {
         try {
             /* inicia o mapeamento no banco */
             $paciente_indicacao_id = $_POST['paciente_indicacao_id'];
+            $this->db->set('registro', $_POST['registro']);
             $this->db->set('nome', $_POST['txtNome']);
+            
             if($_POST['grupo_id'] != ''){
                 $this->db->set('grupo_id', $_POST['grupo_id']);
             }
@@ -160,6 +163,7 @@ class indicacao_model extends Model {
         if ($paciente_indicacao_id != 0) {
             $this->db->select('paciente_indicacao_id,
                                 aml.nome,
+                                aml.registro,
                                 grupo_id');
             $this->db->from('tb_paciente_indicacao aml');
             $this->db->where("paciente_indicacao_id", $paciente_indicacao_id);
@@ -168,6 +172,7 @@ class indicacao_model extends Model {
             $this->_paciente_indicacao_id = $paciente_indicacao_id;
             $this->_nome = $return[0]->nome;
             $this->_grupo_id = $return[0]->grupo_id;
+            $this->_registro = $return[0]->registro;
         } else {
             $this->_paciente_indicacao_id = null;
         }

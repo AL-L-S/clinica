@@ -2169,6 +2169,7 @@ class guia_model extends Model {
     }
 
     function relatorioindicacaoexames() {
+//        die;
         $this->db->select('p.nome as paciente, ae.paciente_id,ae.valor_promotor,ae.percentual_promotor, ae.valor_total,
             pt.nome as procedimento,
             ae.data,
@@ -2177,7 +2178,7 @@ class guia_model extends Model {
             pi.nome as indicacao');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
-        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');

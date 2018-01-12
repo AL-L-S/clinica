@@ -33,4 +33,5 @@ CREATE TABLE ponto.tb_paciente_indicacao_grupo
 ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN data_cadastro timestamp without time zone;
 ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN operador_cadastro integer;
 ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN grupo_id integer;
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN registro character varying(60);
 

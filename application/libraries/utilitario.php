@@ -37,8 +37,8 @@ class Utilitario {
          * As verificações feitas aqui serão: 
          *      -- A quantidade de caracteres no numero   
          *      -- Caso o numero esteja correto, porem sem o digito 9 na frente, ele adcionará
-         *      -- Se possui um DDD válido
-         */
+         *      -- Se possui um DDD válido */
+        
         $numFor = $this->removerCaracter($telefone);
         $result = false;
         
@@ -53,13 +53,10 @@ class Utilitario {
                 $num = substr($numFor, 2);
                 $result = true;
             }
-            else { // Verifica se os digitos a mais são o codigo do pais.
-                
-            }
             
-//            if () {
-//                
-//            }
+            if ( in_array( (int) substr($num, 1, 1), array(9,8,7,6)) ) { // Verificando se o numero é de telefonia movel             
+                $result = true;
+            }
             
             $numFor = "+55" . $ddd . $num;
         } 
@@ -70,6 +67,7 @@ class Utilitario {
             "valido" => $result
         );
         
+        return $retorno;        
         
     }
     

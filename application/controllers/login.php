@@ -6,6 +6,7 @@ class Login extends Controller {
         parent::Controller();
         $this->load->model('login_model', 'login');
         $this->load->library('mensagem');
+        $this->load->library('utilitario');
     }
 
     function index() {
@@ -109,75 +110,38 @@ class Login extends Controller {
             // Buscando mensagens  no banco que deverao ser mandadas
             $dados = $this->login->listarsms();
 //                var_dump($dados); die;
-//            if (count($dados) > 0) {
-//                
-//                
-//                /* INTEGRAÇÃO ZENVIA API */
-//                require_once ('./application/libraries/php-rest-api/autoload.php');
-//                $smsFacade = new SmsFacade("stgs.api", "ydaLex6jin");
-//                $smsLote = array();
-//
-////                foreach ($dados as $value) {
-////                    $sms = new Sms();
-////                    $sms->setTo($value['numero']);
-////                    $sms->setMsg('+55' . $value['mensagem']);
-////                    $sms->setId($value['numero_indentificacao'] . "-" . $value['sms_id']);
-//////                    $sms->setFrom($from);
-//////                    $sms->setSchedule("2014-07-13T16:00:00");
-////                    $smsLote[] = $sms;
-////                }
-//                
-//                $sms = new Sms();
-//                $sms->setTo('+5585996150680');
-//                $sms->setMsg("
-//Quem
-//Somos
-//
-//A necessidade de suprir a falta de softwares profissionais na área da saúde foi o fator preponderante para se dar os primeiros passos no intuito da melhores soluções Tecnológica, Com um plantel de profissionais conhecedores na área da tecnologia e da saúde. A STGSaúde busca permanentemente: Capacitar seus colaboradores nas mais diversas áreas, visando sempre o crescimento pessoal, para a certeza de produção de softwares seguros e inovadores. Proporcionar também aos hospitais e clínicas de pequeno e médio porte um sistema altamente confiável e que se adapte facilmente às suas rotinas diárias e às suas condições financeiras.
-//Missão
-//
-//Desenvolver aplicações de qualidade elevada e com custo acessível para a área da saúde, facilitando a rotina diária dos usuários, auxiliando no gerenciamento das instituições de saúde, visando o armazenamento e recuperação de dados de forma íntegra e segura e focando a garantia da privacidade e confidencialidade dos dados dos pacientes.
-//Visão
-//
-//Desenvolver eficientemente aplicações que satisfaçam às necessidades dos clientes e à legislação da área da saúde, com colaboradores capacitados e métodos inovadores.
-//
-//
-//Metas
-//
-//Nossa meta é sempre acompanhar a evolução das tecnologias, a informática tem essa característica de sempre surgirem novidades, e temos que ter sempre essa sintônia, e junto com nossos parceiros sempre achar a melhor solução.
-//
-//Valores
-//
-//Ética; Profissionalismo; Excelência nos serviços; Segurança das Informações; Lucratividade; Inovação.
-//
-//Locação de Impressora
-//
-//Projetos personalizados para redução e otimização de custos na área de impressões e cópias. Nosso grande diferencial são nossos equipamentos de longa durabilidade e confiabilidade. Nossos preços são compatíveis com o mercado, mesmo oferecendo uma qualidade superior de impressão. Abastecimento de suprimentos e suporte técnico.
-//
-//Gestão de Hardware
-//
-//Manutenção Preventiva e Corretiva em equipamento de Informática. Inúmeras vezes nos deparamos com problemas em computadores, tanto nas empresas quanto nas máquinas pessoais, que acarretam em perda parcial e na maioria das vezes total de arquivos, sistemas etc, o que nos causa um transtorno terrível e irreparável. E é aí que entra a Gestão de Hardware. Compõem a Gestão de Hardware: Manutenção Preventiva e Corretiva; Administração de Redes Gerenciamento de Backups; Entre outros.
-//");
-//                $sms->setId("0-2");
-//                $smsLote[] = $sms;
-////                
-////                $sms = new Sms();
-////                $sms->setTo('+5585996954467');
-////                $sms->setMsg("Teste de Mensagem");
-////                $sms->setId("0-1");
-////                $smsLote[] = $sms;
-////                
-//                try {
+            if (count($dados) > 0) {
+                
+                
+                /* INTEGRAÇÃO ZENVIA API */
+                require_once ('./application/libraries/php-rest-api/autoload.php');
+                $smsFacade = new SmsFacade("stgs.api", "ydaLex6jin");
+                $smsLote = array();
+
+                foreach ($dados as $value) {
+                    $numero = $this->utilitario->validaTelefone($value['numero']);
+                    
+                    $sms = new Sms();
+                    $sms->setTo($numero);
+                    $sms->setMsg($value['mensagem']);
+                    $sms->setId($value['numero_indentificacao'] . "-" . $value['sms_id']);
+//                    $sms->setFrom($from);
+//                    $sms->setSchedule("2014-07-13T16:00:00");
+                    $smsLote[] = $sms;
+                }
+                
+                
+                try {
 //                    $responses = $smsFacade->sendMultiple($smsLote);
 //                    foreach ($responses as $response) {
 //                        echo "Status: " . $response->getStatusCode() . " - " . $response->getStatusDescription();
 //                        echo "\nDetalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "\n";
 //                    }
-//                } catch( Exception $ex ){
-////                    echo "<pre>";
-////                    var_dump($ex->message);
-//                }
-//            }          
+                } catch( Exception $ex ){
+//                    echo "<pre>";
+//                    var_dump($ex->message);
+                }
+            }          
             
         }
     }

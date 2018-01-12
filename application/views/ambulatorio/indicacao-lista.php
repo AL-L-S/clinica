@@ -37,6 +37,7 @@ $grupos = $this->indicacao->listargrupoindicacao();
                     </form>
                     <tr>
                         <th class="tabela_header">Nome</th>
+                        <th class="tabela_header">Registro</th>
                         <th class="tabela_header">Grupo</th>
                         <th class="tabela_header">Detalhes</th>
                     </tr>
@@ -59,14 +60,15 @@ $grupos = $this->indicacao->listargrupoindicacao();
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->registro; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
 
                                     <a href="<?= base_url() ?>ambulatorio/indicacao/carregarindicacao/<?= $item->paciente_indicacao_id ?>">
-                                        editar
-                                    </a>&zwnj;&nbsp;
+                                        Editar
+                                    </a>&nbsp;
                                     <a href="<?= base_url() ?>ambulatorio/indicacao/excluir/<?= $item->paciente_indicacao_id ?>">
-                                        excluir
+                                        Excluir
                                     </a>
                                 </td>
                             </tr>
